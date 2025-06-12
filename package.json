@@ -2,26 +2,22 @@
   "name": "@meeting-baas/sdk",
   "version": "4.0.5",
   "description": "Official SDK for Meeting BaaS API - https://meetingbaas.com",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "dist/baas/api/client.js",
+  "module": "dist/baas/api/client.mjs",
+  "types": "dist/baas/api/client.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "types": "./dist/baas/api/client.d.ts",
+      "import": "./dist/baas/api/client.mjs",
+      "require": "./dist/baas/api/client.js"
     },
-    "./dist/baas/*": {
+    "./baas/*": {
       "types": "./dist/baas/*.d.ts",
       "import": "./dist/baas/*.mjs",
       "require": "./dist/baas/*.js"
     }
   },
   "files": [
-    "dist/index.js",
-    "dist/index.mjs",
-    "dist/index.d.ts",
-    "dist/index.d.mts",
     "dist/baas",
     "README.md",
     "LICENSE"
@@ -75,5 +71,6 @@
   "dependencies": {
     "axios": "1.8.3",
     "zod": "3.24.2"
-  }
+  },
+  "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677"
 }
