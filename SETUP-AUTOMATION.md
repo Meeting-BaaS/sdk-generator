@@ -91,7 +91,7 @@ Ensure your `package.json` has:
 ### 1. Manual Test Run
 
 1. Go to your repository's Actions tab
-2. Select "Auto Update SDK" workflow
+2. Select "Auto-Update SDK" workflow
 3. Click "Run workflow"
 4. Monitor the execution
 
@@ -117,7 +117,7 @@ To test the publishing process:
 
 Monitor workflows in the Actions tab:
 
-- **Auto Update SDK**: Daily automated updates
+- **Auto-Update SDK**: Daily automated updates
 - **Test SDK**: Manual and PR testing
 
 ### 2. Notifications

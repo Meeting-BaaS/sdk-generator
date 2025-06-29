@@ -54,17 +54,19 @@ const client = createBaasClient({
   api_key: "your-api-key", // Get yours at https://meetingbaas.com
 });
 
-// Join a meeting
-const { success, data, error } = await client.joinMeeting({
-  bot_name: "Meeting Assistant",
-  meeting_url: "https://meet.google.com/abc-def-ghi",
-  reserved: true,
-});
-
-if (success) {
-  console.log("Bot joined successfully:", data.bot_id);
-} else {
-  console.error("Error joining meeting:", error);
+async function example() {
+  // Join a meeting
+  const { success, data, error } = await client.joinMeeting({
+    bot_name: "Meeting Assistant",
+    meeting_url: "https://meet.google.com/abc-def-ghi",
+    reserved: true,
+  });
+  
+  if (success) {
+    console.log("Bot joined successfully:", data.bot_id);
+  } else {
+    console.error("Error joining meeting:", error);
+  }
 }
 ```
 
