@@ -24,6 +24,13 @@ Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) AP
 - **Tree-shakeable**: Only import the methods you need
 - **Comprehensive Testing**: Full test coverage with MSW mocking
 
+## System Requirements
+
+- **Node.js**: Version 18.0.0 or higher.
+- **Package Managers**: npm, yarn, or pnpm
+
+**Tested Node.js Versions**: 18, 19, 20, 21, 22
+
 ## Installation
 
 ```bash
