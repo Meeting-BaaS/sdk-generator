@@ -210,7 +210,7 @@ Track these metrics to monitor the automation:
 
 ### Updates
 
-1. **Workflow Updates**: Keep GitHub Actions up to date
+1. **Workflow Updates**: Keep GitHub Actions up-to-date
 2. **Node.js Versions**: Update supported Node.js versions
 3. **Test Improvements**: Enhance test coverage and reliability
 
@@ -218,7 +218,7 @@ Track these metrics to monitor the automation:
 
 1. **Test Locally**: Test changes locally before pushing
 2. **Incremental Updates**: Make small, focused changes
-3. **Documentation**: Keep documentation up to date
+3. **Documentation**: Keep documentation up-to-date
 4. **Monitoring**: Set up alerts for workflow failures
 5. **Backup**: Keep manual publishing capability as backup
 

@@ -124,7 +124,7 @@ if (success) {
   
   if (meetingDataResult.success) {
     const deleteResult = await client.deleteBotData({
-      uuid: data.bot_id
+      uuid: meetingDataResult.data.bot_id
     });
   }
 }

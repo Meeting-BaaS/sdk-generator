@@ -121,28 +121,32 @@ const client = createBaasClient({
   api_key: "your-api-key",
 });
 
-// Join a meeting
-const { success, data, error } = await client.joinMeeting({
-  bot_name: "My Assistant",
-  meeting_url: "https://meet.google.com/abc-def-ghi",
-  reserved: true,
-});
+const joinMeeting = async () => {
+  // Join a meeting
+  const { success, data, error } = await client.joinMeeting({
+    bot_name: "My Assistant",
+    meeting_url: "https://meet.google.com/abc-def-ghi",
+    reserved: true,
+  });
 
-if (success) {
-  console.log("Bot joined successfully:", data.bot_id);
-} else {
-  console.error("Error joining meeting:", error);
+  if (success) {
+    console.log("Bot joined successfully:", data.bot_id);
+  } else {
+    console.error("Error joining meeting:", error);
+  }
 }
 
-// Leave a meeting
-const { success, data, error } = await client.leaveMeeting({
-  uuid: "123e4567-e89b-12d3-a456-426614174000"
-});
-
-if (success) {
-  console.log("Bot left the meeting successfully:", data.bot_id);
-} else {
-  console.error("Error leaving meeting:", error);
+const leaveMeeting = async () => {
+  // Leave a meeting
+  const { success, data, error } = await client.leaveMeeting({
+    uuid: "123e4567-e89b-12d3-a456-426614174000"
+  });
+  
+  if (success) {
+    console.log("Bot left the meeting successfully:", data.bot_id);
+  } else {
+    console.error("Error leaving meeting:", error);
+  }
 }
 
 ```
