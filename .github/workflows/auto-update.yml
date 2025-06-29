@@ -59,7 +59,7 @@ jobs:
     needs: check-and-update
     with:
       node-versions: '[18, 19, 20, 21, 22]'
-      upload-coverage: false
+      upload-coverage: 'false'
 
   bump-version-and-publish:
     if: needs.check-and-update.outputs.has_changes == 'true'

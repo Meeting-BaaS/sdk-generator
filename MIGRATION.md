@@ -18,6 +18,7 @@ This guide helps you migrate from Meeting BaaS SDK v4.x to v5.0.0. Version 5.0.0
 ### 1. Client Creation
 
 **Before (v4.x):**
+
 ```typescript
 import { BaasClient } from "@meeting-baas/sdk";
 
@@ -28,6 +29,7 @@ const client = new BaasClient({
 ```
 
 **After (v5.0.0):**
+
 ```typescript
 import { createBaasClient } from "@meeting-baas/sdk";
 
@@ -38,6 +40,7 @@ const client = createBaasClient({
 ```
 
 **Changes:**
+
 - `new BaasClient()` → `createBaasClient()`
 - `apiKey` → `api_key`
 - `baseUrl` → `base_url`
@@ -45,6 +48,7 @@ const client = createBaasClient({
 ### 2. API Response Handling
 
 **Before (v4.x):**
+
 ```typescript
 try {
   const botId = await client.joinMeeting({
@@ -59,6 +63,7 @@ try {
 ```
 
 **After (v5.0.0):**
+
 ```typescript
 const result = await client.joinMeeting({
   bot_name: "My Bot",
@@ -74,6 +79,7 @@ if (result.success) {
 ```
 
 **Changes:**
+
 - All methods now return discriminated union responses
 - No more try/catch for API errors (they're returned to the caller in the response)
 - Parameter names changed to snake_case.
@@ -93,11 +99,12 @@ All parameter names have changed from camelCase to snake_case to match the API s
 | `oauthRefreshToken` | `oauth_refresh_token` |
 | `includeTranscripts` | `include_transcripts` |
 
-Since the parameters of the APIs were in snake_case, it made sense to embrace it. This makes the SDK more performant (no more case conversion) and more intuitive for users already well versed with our APIs. 
+Since the parameters of the APIs were in snake_case, it made sense to embrace it. This makes the SDK more performant (no more case conversion) and more intuitive for users already well versed with our APIs.
 
 ### 4. Method Signatures
 
 **Before (v4.x):**
+
 ```typescript
 // Direct return values
 const botId = await client.joinMeeting(params);
@@ -106,6 +113,7 @@ await client.deleteData(botId);
 ```
 
 **After (v5.0.0):**
+
 ```typescript
 // Discriminated union responses
 const { success, data, error } = await client.joinMeeting(params);
@@ -125,6 +133,7 @@ if (success) {
 ### 5. MCP Tools Registration
 
 **Before (v4.x):**
+
 ```typescript
 import { allTools, registerTools } from "@meeting-baas/sdk/tools";
 import { BaasClient } from "@meeting-baas/sdk";
@@ -183,6 +192,7 @@ server.registerTool(
 ```
 
 **Changes:**
+
 - Removed pre-built MCP tool registration helpers
 - Users now have full control over tool schemas, descriptions, and registration
 - SDK functions can be used directly within custom MCP tool handlers
@@ -191,6 +201,7 @@ server.registerTool(
 ### 6. Configuration Interface
 
 **Before (v4.x):**
+
 ```typescript
 interface BaasClientConfig {
   apiKey: string;
@@ -199,6 +210,7 @@ interface BaasClientConfig {
 ```
 
 **After (v5.0.0):**
+
 ```typescript
 interface BaasClientConfig {
   api_key: string;
@@ -277,6 +289,7 @@ if (success) {
 ### Example 1: Basic Bot Operations
 
 **Before (v4.x):**
+
 ```typescript
 import { BaasClient } from "@meeting-baas/sdk";
 
@@ -301,6 +314,7 @@ try {
 ```
 
 **After (v5.0.0):**
+
 ```typescript
 import { createBaasClient } from "@meeting-baas/sdk";
 
@@ -342,6 +356,7 @@ if (joinResult.success) {
 ### Example 2: Calendar Operations
 
 **Before (v4.x):**
+
 ```typescript
 import { BaasClient, Provider } from "@meeting-baas/sdk";
 
@@ -365,6 +380,7 @@ try {
 ```
 
 **After (v5.0.0):**
+
 ```typescript
 import { createBaasClient } from "@meeting-baas/sdk";
 
@@ -409,15 +425,19 @@ After migrating, test your code thoroughly:
 ## 🆘 Common Issues
 
 ### Issue 1: TypeScript Errors
+
 If you see TypeScript errors about missing properties, check that you've updated all parameter names to snake_case.
 
 ### Issue 2: Runtime Errors
+
 If you see runtime errors about missing methods, ensure you're using `createBaasClient()` instead of `new BaasClient()`.
 
 ### Issue 3: Undefined Results
+
 If you're getting undefined results, make sure you're checking `result.success` before accessing `result.data`.
 
 ### Issue 4: Parameter Validation Errors
+
 If you see Zod validation errors, check that all required parameters are provided and have the correct types.
 
 ## 📞 Getting Help
@@ -440,4 +460,4 @@ After migration, you'll enjoy:
 - **Comprehensive testing** ensuring reliability
 - **Cleaner API** focused on core functionality
 
-The migration effort is worth it for the improved developer experience and reliability! 
+The migration effort is worth it for the improved developer experience and reliability!

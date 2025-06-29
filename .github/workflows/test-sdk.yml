@@ -12,7 +12,7 @@ on:
         description: 'Whether to upload coverage artifacts'
         required: false
         default: 'true'
-        type: boolean
+        type: string
 
 jobs:
   test:

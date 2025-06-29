@@ -11,7 +11,6 @@ The automated workflow will:
 - Test across multiple Node.js versions (18, 19, 20, 21, 22)
 - Auto-publish to npm when tests pass
 
-
 ## 📋 Prerequisites
 
 1. **GitHub Repository**: SDK must be in a GitHub repository
@@ -28,6 +27,7 @@ You need to configure these secrets in your GitHub repository:
 **Purpose**: Allows the workflow to publish to npm
 
 **How to get it**:
+
 1. Go to [npmjs.com](https://www.npmjs.com)
 2. Log in to your account
 3. Go to your profile → Access Tokens
@@ -35,6 +35,7 @@ You need to configure these secrets in your GitHub repository:
 5. Copy the token
 
 **How to set it**:
+
 1. Go to your GitHub repository
 2. Settings → Secrets and variables → Actions
 3. Click "New repository secret"
@@ -115,12 +116,14 @@ To test the publishing process:
 ### 1. Workflow Status
 
 Monitor workflows in the Actions tab:
+
 - **Auto Update SDK**: Daily automated updates
 - **Test SDK**: Manual and PR testing
 
 ### 2. Notifications
 
 Set up notifications for:
+
 - Workflow failures
 - New releases
 - Security alerts
@@ -128,6 +131,7 @@ Set up notifications for:
 ### 3. Logs
 
 Check workflow logs for:
+
 - API change detection
 - Test results
 - Publishing status
@@ -141,6 +145,7 @@ Check workflow logs for:
 **Problem**: Publishing fails with authentication errors
 
 **Solution**:
+
 - Verify the NPM_TOKEN secret is set correctly
 - Ensure the token has "Automation" type
 - Check that the package name matches your npm account
@@ -150,6 +155,7 @@ Check workflow logs for:
 **Problem**: Workflow can't push commits or create releases
 
 **Solution**:
+
 - Verify GITHUB_TOKEN permissions
 - Check repository settings
 - Ensure workflow has write permissions
@@ -159,6 +165,7 @@ Check workflow logs for:
 **Problem**: Tests fail on some Node versions
 
 **Solution**:
+
 - Review test logs for specific failures
 - Update test dependencies
 - Check for Node.js compatibility issues
@@ -168,6 +175,7 @@ Check workflow logs for:
 **Problem**: Can't fetch the OpenAPI specification
 
 **Solution**:
+
 - Verify the API endpoint is accessible
 - Check network connectivity
 - Review API rate limits

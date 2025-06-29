@@ -11,16 +11,16 @@ This document contains development and contribution guidelines for the Meeting B
 
 1. Clone the repository
 
-```bash
-git clone https://github.com/meeting-baas/sdk-generator.git
-cd sdk-generator
-```
+   ```bash
+   git clone https://github.com/meeting-baas/sdk-generator.git
+   cd sdk-generator
+   ```
 
 2. Install dependencies
 
-```bash
-pnpm install
-```
+   ```bash
+   pnpm install
+   ```
 
 ## Build Process
 
@@ -219,6 +219,7 @@ This provides:
 ### Unit Tests
 
 Unit tests focus on:
+
 - Client creation and configuration
 - Parameter validation
 - Error handling
@@ -227,6 +228,7 @@ Unit tests focus on:
 ### Integration Tests
 
 Integration tests focus on:
+
 - End-to-end API calls
 - Real API responses
 - Error scenarios
@@ -235,6 +237,7 @@ Integration tests focus on:
 ### Mock Strategy
 
 Tests use MSW (Mock Service Worker) to:
+
 - Mock API responses
 - Test error scenarios
 - Provide consistent test data
@@ -245,6 +248,7 @@ Tests use MSW (Mock Service Worker) to:
 ### Linting
 
 The project uses **Biome** for:
+
 - Code formatting
 - Linting
 - Type checking
@@ -298,6 +302,7 @@ No environment variables are required for development. The SDK uses the public O
 If you encounter build issues:
 
 1. Clean and rebuild:
+
    ```bash
    pnpm clean
    pnpm openapi:rebuild
@@ -305,11 +310,13 @@ If you encounter build issues:
    ```
 
 2. Check TypeScript errors:
+
    ```bash
    pnpm lint
    ```
 
 3. Verify generated code:
+
    ```bash
    ls src/generated/
    ```
@@ -319,16 +326,19 @@ If you encounter build issues:
 If tests are failing:
 
 1. Check mock setup:
+
    ```bash
    pnpm test:unit
    ```
 
 2. Verify API responses:
+
    ```bash
    pnpm test:integration
    ```
 
 3. Check test coverage:
+
    ```bash
    pnpm test:coverage
    ```
@@ -373,6 +383,7 @@ This SDK automatically stays up-to-date with the Meeting BaaS API through our au
 ### Manual Trigger
 
 You can manually trigger the update process:
+
 1. Go to the [Actions tab](https://github.com/meeting-baas/sdk-generator/actions)
 2. Select "Auto Update SDK" workflow
 3. Click "Run workflow"
@@ -384,7 +395,7 @@ The automation uses three GitHub Actions workflows:
 #### 1. `test-sdk.yml` (Reusable)
 
 - **Purpose**: Reusable testing workflow
-- **Inputs**: 
+- **Inputs**:
   - `node-versions`: Array of Node.js versions to test
   - `upload-coverage`: Whether to upload coverage artifacts
 - **Used by**: Both `test.yml` and `auto-update.yml`
@@ -412,12 +423,3 @@ To enable automated updates, ensure these GitHub secrets are configured:
 - **Workflow Status**: Check the [Actions tab](https://github.com/meeting-baas/sdk-generator/actions)
 - **Release History**: View [releases](https://github.com/meeting-baas/sdk-generator/releases)
 - **NPM Package**: Monitor [npm package](https://www.npmjs.com/package/@meeting-baas/sdk)
-
-### Troubleshooting Automation
-
-If the automation fails:
-
-1. **Check Workflow Logs**: Review the failed workflow run
-2. **Verify API Changes**: Ensure the OpenAPI spec is accessible
-3. **Test Locally**: Run `pnpm openapi:rebuild` to verify SDK generation
-4. **Manual Trigger**: Use manual dispatch to retry the workflow

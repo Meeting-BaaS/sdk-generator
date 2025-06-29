@@ -10,7 +10,7 @@ This directory contains comprehensive tests for the Meeting BaaS SDK, covering b
 
 ## Test Structure
 
-```
+```text
 test/
 ├── setup.ts                 # Global test setup and MSW configuration
 ├── unit/                   # Unit tests for individual components
@@ -112,6 +112,7 @@ describe('Calendar Operations Integration', () => {
 ### Dynamic Mocking
 
 If you need to override a handler for a specific test, you can still use MSW's `server.use()` in your test setup:
+
 ```typescript
 import { rest } from 'msw'
 import { server } from '../setup'
@@ -221,6 +222,7 @@ describe('Feature Name', () => {
 ```bash
 pnpm test:ui
 ```
+
 - Interactive test runner
 - Real-time feedback
 - Easy debugging
@@ -291,7 +293,7 @@ pnpm test -t "should join a meeting successfully"
 
 ### Getting Help
 
-- Check Vitest documentation: https://vitest.dev/
-- MSW documentation: https://mswjs.io/
-- Orval documentation: https://orval.dev/
+- Check Vitest documentation: <https://vitest.dev/>
+- MSW documentation: <https://mswjs.io/>
+- Orval documentation: <https://orval.dev/>
 - Review existing tests for patterns and examples

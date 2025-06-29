@@ -2,7 +2,6 @@
 
 <p align="center"><a href="https://discord.com/invite/dsvFgDTr6c"><img height="60px" src="https://user-images.githubusercontent.com/31022056/158916278-4504b838-7ecb-4ab9-a900-7dc002aade78.png" alt="Join our Discord!"></a></p>
 
-
 <p align="center">
   <img src="https://meetingbaas.com/static/a3e9f3dbde935920a3558317a514ff1a/b5380/preview.png" alt="Meeting BaaS" width="720">
 </p>
@@ -391,5 +390,3 @@ We welcome contributions! Please see [DEVELOPMENT.md](DEVELOPMENT.md) for develo
 ## License
 
 [MIT](LICENSE)
-
-
