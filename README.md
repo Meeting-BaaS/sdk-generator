@@ -11,6 +11,8 @@ Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) AP
 
 > **Note**: This package is automatically generated from the Meeting BaaS OpenAPI specification. For development and contribution guidelines, see [DEVELOPMENT.md](https://github.com/meeting-baas/sdk-generator/blob/HEAD/DEVELOPMENT.md). For the official API reference, visit [docs.meetingbaas.com](https://docs.meetingbaas.com).
 
+> **🚀 New in v5.0.0**: Complete architectural redesign with improved TypeScript support, better error handling, and enhanced developer experience. See [MIGRATION.md](MIGRATION.md) for upgrade guide.
+
 ## Features
 
 - **BaaS API Client**: Strongly typed functions for interacting with the Meeting BaaS API
@@ -18,10 +20,10 @@ Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) AP
 - **Calendar Integration**: Connect calendars and automatically schedule meeting recordings
 - **Complete API Coverage**: Access to all Meeting BaaS API endpoints
 - **TypeScript Support**: Full TypeScript definitions for all APIs
-- **MPC Tool Registration**: Simple way to register client tools with an MPC server
-- **CLI Interface**: Command-line tools for common operations
-- **Automatic MPC Tool Generation**: Pre-generated MPC tools for all SDK methods
-- **Combined Package Mode**: Special bundle for MPC server installations
+- **Enhanced Error Handling**: Discriminated union responses for type-safe error handling
+- **Parameter Validation**: Automatic Zod schema validation for all API calls
+- **Tree-shakeable**: Only import the methods you need
+- **Comprehensive Testing**: Full test coverage with MSW mocking
 
 ## Installation
 
@@ -39,23 +41,73 @@ pnpm add @meeting-baas/sdk
 ## Quick Start
 
 ```typescript
-import { BaasClient } from "@meeting-baas/sdk";
+import { createBaasClient } from "@meeting-baas/sdk";
 
 // Create a BaaS client
-const client = new BaasClient({
-  apiKey: "your-api-key", // Get yours at https://meetingbaas.com
+const client = createBaasClient({
+  api_key: "your-api-key", // Get yours at https://meetingbaas.com
 });
 
 // Join a meeting
-const botId = await client.joinMeeting({
-  botName: "Meeting Assistant",
-  meetingUrl: "https://meet.google.com/abc-def-ghi",
+const { success, data, error } = await client.joinMeeting({
+  bot_name: "Meeting Assistant",
+  meeting_url: "https://meet.google.com/abc-def-ghi",
   reserved: true,
 });
 
-// Get meeting data
-const meetingData = await client.getMeetingData(botId);
-console.log("Meeting data:", meetingData);
+if (success) {
+  console.log("Bot joined successfully:", data.bot_id);
+} else {
+  console.error("Error joining meeting:", error);
+}
+```
+
+### For MCP Servers
+
+```typescript
+import { type JoinRequest, createBaasClient } from "@meeting-baas/sdk"
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
+import { z } from "zod"
+
+// Create an MCP server
+const server = new McpServer({
+  name: "demo-server",
+  version: "1.0.0"
+})
+
+const joinToolInputSchema = {
+  bot_name: z.string().default("Meeting BaaS Bot"),
+  meeting_url: z.string(),
+  reserved: z.boolean().default(false)
+}
+
+// Add an joinMeeting tool
+server.registerTool(
+  "joinMeeting",
+  {
+    title: "Send a Meeting BaaS bot to a meeting",
+    description:
+      "Send a Meeting BaaS bot to a Google Meet/Teams/Zoom meeting to automatically record and transcribe the meeting with speech diarization",
+    inputSchema: joinToolInputSchema
+  },
+  async (args) => {
+    const client = createBaasClient({
+      api_key: "your-api-key"
+    })
+
+    const { success, data, error } = await client.joinMeeting(args as JoinRequest)
+
+    if (success) {
+      return {
+        content: [{ type: "text", text: `Successfully joined meeting: ${JSON.stringify(data)}` }]
+      }
+    }
+
+    return {
+      content: [{ type: "text", text: `Failed to join meeting: ${error}` }]
+    }
+  }
+)
 ```
 
 ## Usage Examples
@@ -63,647 +115,281 @@ console.log("Meeting data:", meetingData);
 ### Basic Usage
 
 ```typescript
-import { BaasClient } from "@meeting-baas/sdk";
+import { createBaasClient } from "@meeting-baas/sdk";
 
 // Create a BaaS client
-const client = new BaasClient({
-  apiKey: "your-api-key",
+const client = createBaasClient({
+  api_key: "your-api-key",
 });
 
 // Join a meeting
-const botId = await client.joinMeeting({
-  botName: "My Assistant",
-  meetingUrl: "https://meet.google.com/abc-def-ghi",
+const { success, data, error } = await client.joinMeeting({
+  bot_name: "My Assistant",
+  meeting_url: "https://meet.google.com/abc-def-ghi",
   reserved: true,
 });
 
-// Get meeting data
-const meetingData = await client.getMeetingData(botId);
-console.log("Meeting data:", meetingData);
+if (success) {
+  console.log("Bot joined successfully:", data.bot_id);
+} else {
+  console.error("Error joining meeting:", error);
+}
 
-// Delete meeting data
-await client.deleteData(botId);
-```
-
-### Using MPC Tools
-
-```typescript
-import { register_tool } from "your-mpc-server";
-import {
-  join_meeting_tool,
-  get_meeting_data_tool,
-  delete_data_tool,
-} from "@meeting-baas/sdk/tools";
-
-// Register tools with your MPC server
-register_tool(join_meeting_tool);
-register_tool(get_meeting_data_tool);
-register_tool(delete_data_tool);
-
-// Or import all tools at once
-import { allTools, registerTools } from "@meeting-baas/sdk/tools";
-await registerTools(allTools, register_tool);
-```
-
-### MPC Server Bundle Mode
-
-For MPC server deployments, use the combined package mode:
-
-```typescript
-import { BaasClient, registerTools, SDK_MODE } from "@meeting-baas/sdk/tools";
-import { allTools } from "@meeting-baas/sdk/tools";
-
-// Verify we're using the MPC tools package
-console.log(`SDK Mode: ${SDK_MODE}`); // Outputs: SDK Mode: MPC_TOOLS
-
-// Create a BaaS client
-const client = new BaasClient({
-  apiKey: "your-api-key",
+// Leave a meeting
+const { success, data, error } = await client.leaveMeeting({
+  uuid: "123e4567-e89b-12d3-a456-426614174000"
 });
 
-// Register all tools with your MPC server
-import { register_tool } from "your-mpc-server";
-await registerTools(allTools, register_tool);
+if (success) {
+  console.log("Bot left the meeting successfully:", data.bot_id);
+} else {
+  console.error("Error leaving meeting:", error);
+}
+
 ```
 
 ### Calendar Integration
 
 ```typescript
-import { BaasClient, Provider } from "@meeting-baas/sdk";
+import { createBaasClient } from "@meeting-baas/sdk";
 
-const client = new BaasClient({
-  apiKey: "your-api-key",
+const client = createBaasClient({
+  api_key: "your-api-key",
 });
 
 // Create a calendar integration
-const calendar = await client.createCalendar({
-  oauthClientId: "your-oauth-client-id",
-  oauthClientSecret: "your-oauth-client-secret",
-  oauthRefreshToken: "your-oauth-refresh-token",
-  platform: Provider.Google,
+const calendarResult = await client.createCalendar({
+  oauth_client_id: "your-oauth-client-id",
+  oauth_client_secret: "your-oauth-client-secret",
+  oauth_refresh_token: "your-oauth-refresh-token",
+  platform: "Google",
 });
 
-// List all calendars
-const calendars = await client.listCalendars();
+if (calendarResult.success) {
+  console.log("Calendar created:", calendarResult.data);
 
-// List events from a calendar
-const events = await client.listEvents(calendar.uuid);
+  // List all calendars
+  const calendarsResult = await client.listCalendars();
+  if (calendarsResult.success) {
+    console.log("All calendars:", calendarsResult.data);
+  }
 
-// Schedule a recording for an event
-await client.scheduleRecordEvent(events[0].uuid, {
-  botName: "Event Recording Bot",
-  extra: { customId: "my-event-123" },
-});
-```
-
-## MPC Server Integration
-
-The Meeting BaaS SDK comes with pre-generated MPC (Model Context Protocol) tools that can be easily integrated with any MPC server implementation. These tools are bundled by default and can be imported directly.
-
-### Simple Integration
-
-The simplest way to use the MPC tools:
-
-```typescript
-import { allTools, registerTools } from "@meeting-baas/sdk/tools";
-import { BaasClient } from "@meeting-baas/sdk";
-
-// Create a BaaS client with your API key
-const client = new BaasClient({
-  apiKey: process.env.MEETING_BAAS_API_KEY,
-});
-
-// Register all tools with your MPC server
-// Replace registerTool with your server's registration function
-registerTools(allTools, (tool) => {
-  server.registerTool(tool);
-});
-```
-
-### One-Line Setup
-
-For even simpler integration, use the `setupBaasTools` convenience function:
-
-```typescript
-import { allTools, setupBaasTools } from "@meeting-baas/sdk/tools";
-
-// Create a client and register all tools in one step
-const client = setupBaasTools(
-  allTools,
-  server.registerTool,
-  process.env.MEETING_BAAS_API_KEY
-);
-```
-
-### Using Specific Tools
-
-If you only need specific tools:
-
-```typescript
-import {
-  join_meeting_tool,
-  get_meeting_data_tool,
-  registerTools,
-} from "@meeting-baas/sdk/tools";
-
-// Register only the tools you need
-registerTools([join_meeting_tool, get_meeting_data_tool], server.registerTool);
-```
-
-### Accessing Tool Definitions
-
-The tool definitions include detailed parameter schemas and metadata:
-
-```typescript
-import { getToolByName } from "@meeting-baas/sdk/tools";
-
-// Get a specific tool by name
-const joinMeetingTool = getToolByName("join_meeting");
-console.log(joinMeetingTool.parameters); // View parameter schema
-```
-
-### Next.js API Route Example
-
-For Next.js applications:
-
-```typescript
-// app/api/mcp/route.ts
-import { allTools, registerTools } from "@meeting-baas/sdk/tools";
-import { BaasClient } from "@meeting-baas/sdk";
-import { McpServer } from "your-mcp-server-library";
-
-export async function POST(req: Request) {
-  const { messages } = await req.json();
-
-  // Initialize your MPC server
-  const server = new McpServer();
-
-  // Create BaaS client
-  const client = new BaasClient({
-    apiKey: process.env.MEETING_BAAS_API_KEY,
+  // List events from a calendar
+  const eventsResult = await client.listCalendarEvents({
+    calendar_id: calendarResult.data.calendar.uuid,
+    start_date_gte: new Date().toISOString(),
+    start_date_lte: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
   });
-
-  // Register tools
-  await registerTools(allTools, server.registerTool);
-
-  // Process the request with your MPC server
-  const result = await server.processRequest(messages);
-
-  return Response.json(result);
+  
+  if (eventsResult.success) {
+    console.log("Events:", eventsResult.data);
+  }
 }
 ```
 
-## Available MPC Tools
-
-The SDK includes pre-generated MPC tools for all API endpoints that can be directly imported and used in your MPC server implementation.
-
-### Using MPC Tools
-
-The Meeting BaaS SDK provides MPC tools with zero configuration. You can import and use them directly:
+### Advanced Usage with Error Handling
 
 ```typescript
-// Import specific tools
-import {
-  join_meeting_tool,
-  leave_meeting_tool,
-  get_meeting_data_tool,
-} from "@meeting-baas/sdk/tools";
+import { createBaasClient } from "@meeting-baas/sdk";
 
-// Import all tools
-import { allTools } from "@meeting-baas/sdk/tools";
-
-// Register with your MPC server
-import { register_tool } from "your-mpc-server";
-
-// Register individual tools
-register_tool(join_meeting_tool);
-register_tool(get_meeting_data_tool);
-
-// Or register all tools at once
-import { registerTools } from "@meeting-baas/sdk/tools";
-await registerTools(allTools, register_tool);
-```
-
-### MPC Server Bundle Mode
-
-For MPC server deployments, use the combined package mode:
-
-```typescript
-import { BaasClient, registerTools, SDK_MODE } from "@meeting-baas/sdk/tools";
-import { allTools } from "@meeting-baas/sdk/tools";
-
-// Verify we're using the MPC tools package
-console.log(`SDK Mode: ${SDK_MODE}`); // Outputs: SDK Mode: MPC_TOOLS
-
-// Create a BaaS client
-const client = new BaasClient({
-  apiKey: "your-api-key",
+const client = createBaasClient({
+  api_key: "your-api-key",
+  timeout: 60000
 });
 
-// Register all tools with your MPC server
-import { register_tool } from "your-mpc-server";
-await registerTools(allTools, register_tool);
+async function comprehensiveExample() {
+  try {
+    // Join a meeting with all options
+    const joinResult = await client.joinMeeting({
+      meeting_url: "https://meet.google.com/abc-defg-hij",
+      bot_name: "Advanced Test Bot",
+      reserved: false,
+      bot_image: "https://example.com/bot-image.jpg",
+      enter_message: "Hello from the advanced test bot!",
+      extra: { test_id: "advanced-example" },
+      recording_mode: "speaker_view",
+      speech_to_text: { provider: "Gladia" },
+      webhook_url: "https://example.com/webhook"
+    });
+
+    if (joinResult.success) {
+      const botId = joinResult.data.bot_id;
+      console.log("Bot joined with ID:", botId);
+
+      // Get meeting data with transcripts
+      const meetingDataResult = await client.getMeetingData({
+        bot_id: botId,
+        include_transcripts: true
+      });
+
+      if (meetingDataResult.success) {
+        console.log("Meeting duration:", meetingDataResult.data.duration);
+        console.log("Has MP4:", !!meetingDataResult.data.mp4);
+      }
+
+      // Leave the meeting
+      const leaveResult = await client.leaveMeeting({
+        uuid: botId
+      });
+
+      if (leaveResult.success) {
+        console.log("Bot left meeting successfully");
+      }
+
+      // Delete bot data
+      const deleteResult = await client.deleteBotData({
+        uuid: botId
+      });
+
+      if (deleteResult.success) {
+        console.log("Bot data deleted successfully");
+      }
+    }
+  } catch (error) {
+    console.error("Unexpected error:", error);
+  }
+}
 ```
 
-## Generated MPC Tools List
+## API Reference
 
-All SDK methods are automatically converted to snake_case MPC tools. Here's the complete list:
-
-### Bots API Tools
-
-- `join_meeting`
-- `leave_meeting`
-- `get_meeting_data`
-- `delete_data`
-- `bots_with_metadata`
-- `list_recent_bots`
-- `retranscribe_bot`
-
-### Calendars API Tools
-
-- `create_calendar`
-- `delete_calendar`
-- `get_calendar`
-- `get_event`
-- `list_calendars`
-- `list_events`
-- `list_raw_calendars`
-- `patch_bot`
-- `resync_all_calendars`
-- `schedule_record_event`
-- `unschedule_record_event`
-- `update_calendar`
-
-### Webhooks API Tools
-
-- `bot_webhook_documentation`
-- `calendar_webhook_documentation`
-- `webhook_documentation`
-
-Each tool accepts parameters matching the SDK method's signature, converted to snake_case. For example:
+The SDK provides a comprehensive interface for all Meeting BaaS API endpoints. All methods return a discriminated union response:
 
 ```typescript
-join_meeting({
-  bot_name: "Meeting Assistant",
+type ApiResponse<T> = 
+  | { success: true; data: T; error?: never }
+  | { success: false; error: ZodError | Error; data?: never }
+```
+
+### Available Methods
+
+#### Bot Management
+
+| Method | Description | Parameters |
+|--------|-------------|------------|
+| `joinMeeting` | Have a bot join a meeting, now or in the future | [`JoinRequest`](https://docs.meetingbaas.com/api/reference/join) |
+| `leaveMeeting` | Have a bot leave a meeting | [`{ uuid: string }`](https://docs.meetingbaas.com/api/reference/leave) |
+| `getMeetingData` | Get meeting recording and metadata | [`GetMeetingDataParams`](https://docs.meetingbaas.com/api/reference/get_meeting_data) |
+| `deleteBotData` | Delete bot data | [`{ uuid: string }`](https://docs.meetingbaas.com/api/reference/delete_data) |
+| `listBots` | Retrieves a paginated list of the user's bots with essential metadata, including IDs, names, and meeting details. Supports filtering, sorting, and advanced querying options. | [`BotsWithMetadataParams?`](https://docs.meetingbaas.com/api/reference/bots_with_metadata) |
+| `retranscribeBot` | Transcribe or retranscribe a bot's audio using the Default or your provided Speech to Text Provider | [`RetranscribeBody`](https://docs.meetingbaas.com/api/reference/retranscribe_bot) |
+| `getScreenshots` | Retrieves screenshots captured during the bot's session before it joins a meeting | [`{ uuid: string }`](https://docs.meetingbaas.com/api/reference/get_screenshots) |
+
+#### Calendar Management
+
+| Method | Description | Parameters |
+|--------|-------------|------------|
+| `createCalendar` | Integrates a new calendar with the system using OAuth credentials. This endpoint establishes a connection with the calendar provider (Google, Microsoft), sets up webhook notifications for real-time updates, and performs an initial sync of all calendar events. It requires OAuth credentials (client ID, client secret, and refresh token) and the platform type. Once created, the calendar is assigned a unique UUID that should be used for all subsequent operations. Returns the newly created calendar object with all integration details. | [`CreateCalendarParams`](https://docs.meetingbaas.com/api/reference/calendars/create_calendar) |
+| `listCalendars` | Retrieves all calendars that have been integrated with the system for the authenticated user. Returns a list of calendars with their names, email addresses, provider information, and sync status. This endpoint shows only calendars that have been formally connected through the create_calendar endpoint, not all available calendars from the provider. | None |
+| `getCalendar` | Retrieves detailed information about a specific calendar integration by its UUID. Returns comprehensive calendar data including the calendar name, email address, provider details (Google, Microsoft), sync status, and other metadata. This endpoint is useful for displaying calendar information to users or verifying the status of a calendar integration before performing operations on its events. | [`{ uuid: string }`](https://docs.meetingbaas.com/api/reference/calendars/get_calendar) |
+| `updateCalendar` | Updates a calendar integration with new credentials or platform while maintaining the same UUID. This operation is performed as an atomic transaction to ensure data integrity. The system automatically unschedules existing bots to prevent duplicates, updates the calendar credentials, and triggers a full resync of all events. Useful when OAuth tokens need to be refreshed or when migrating a calendar between providers. Returns the updated calendar object with its new configuration. | [`{ uuid: string; body: UpdateCalendarParams }`](https://docs.meetingbaas.com/api/reference/calendars/update_calendar) |
+| `deleteCalendar` | Permanently removes a calendar integration by its UUID, including all associated events and bot configurations. This operation cancels any active subscriptions with the calendar provider, stops all webhook notifications, and unschedules any pending recordings. All related resources are cleaned up in the database. This action cannot be undone, and subsequent requests to this calendar's UUID will return 404 Not Found errors. | [`{ uuid: string }`](https://docs.meetingbaas.com/api/reference/calendars/delete_calendar) |
+| `getCalendarEvent` | Retrieves comprehensive details about a specific calendar event by its UUID. Returns complete event information including title, meeting link, start and end times, organizer status, recurrence information, and the full list of attendees with their names and email addresses. Also includes any associated bot parameters if recording is scheduled for this event. The raw calendar data from the provider is also included for advanced use cases. | [`{ uuid: string }`](https://docs.meetingbaas.com/api/reference/calendars/get_event) |
+| `scheduleCalendarRecordEvent` | Configures a bot to automatically join and record a specific calendar event at its scheduled time. The request body contains detailed bot configuration, including recording options, streaming settings, and webhook notification URLs. For recurring events, the 'all_occurrences' parameter can be set to true to schedule recording for all instances of the recurring series, or false (default) to schedule only the specific instance. Returns the updated event(s) with the bot parameters attached. | [`{ uuid: string; body: BotParam2; query?: ScheduleRecordEventParams }`](https://docs.meetingbaas.com/api/reference/calendars/schedule_record_event) |
+| `unscheduleCalendarRecordEvent` | Cancels a previously scheduled recording for a calendar event and releases associated bot resources. For recurring events, the 'all_occurrences' parameter controls whether to unschedule from all instances of the recurring series or just the specific occurrence. This operation is idempotent and will not error if no bot was scheduled. Returns the updated event(s) with the bot parameters removed. | [`{ uuid: string; query?: UnscheduleRecordEventParams }`](https://docs.meetingbaas.com/api/reference/calendars/unschedule_record_event) |
+| `patchBot` | Updates the configuration of a bot already scheduled to record an event. Allows modification of recording settings, webhook URLs, and other bot parameters without canceling and recreating the scheduled recording. For recurring events, the 'all_occurrences' parameter determines whether changes apply to all instances or just the specific occurrence. Returns the updated event(s) with the modified bot parameters. | [`{ uuid: string; body: BotParam3; query?: PatchBotParams }`](https://docs.meetingbaas.com/api/reference/calendars/patch_bot) |
+| `listCalendarEvents` | Retrieves a paginated list of calendar events with comprehensive filtering options. Supports filtering by organizer email, attendee email, date ranges (start_date_gte, start_date_lte), and event status. Results can be limited to upcoming events (default), past events, or all events. Each event includes full details such as meeting links, participants, and recording status. The response includes a 'next' pagination cursor for retrieving additional results. | [`ListEventsParams`](https://docs.meetingbaas.com/api/reference/calendars/list_events) |
+| `resyncAllCalendars` | Triggers a full resync of all calendar events for all integrated calendars. This operation is useful when you need to ensure that all calendar data is up-to-date in the system. It will re-fetch all events from the calendar providers and update the system's internal state. Returns a response indicating the status of the resync operation. | None |
+| `listRawCalendars` | Retrieves unprocessed calendar data directly from the provider (Google, Microsoft) using provided OAuth credentials. This endpoint is typically used during the initial setup process to allow users to select which calendars to integrate. Returns a list of available calendars with their unique IDs, email addresses, and primary status. This data is not persisted until a calendar is formally created using the create_calendar endpoint. | [`ListRawCalendarsParams`](https://docs.meetingbaas.com/api/reference/calendars/list_raw_calendars) |
+
+#### Webhooks
+
+| Method | Description | Parameters |
+|--------|-------------|------------|
+| `getWebhookDocumentation` | Retrieves the full documentation for the webhook events that Meeting BaaS sends to your webhook URL. This includes all event types, their payload structures, and any additional metadata. Useful for developers to understand and integrate webhook functionality into their applications. | None |
+| `getBotWebhookDocumentation` | Retrieves the full documentation for the webhook events that Meeting BaaS sends to your webhook URL for a specific bot. This includes all event types, their payload structures, and any additional metadata. Useful for developers to understand and integrate webhook functionality into their applications. | None |
+| `getCalendarWebhookDocumentation` | Retrieves the full documentation for the webhook events that Meeting BaaS sends to your webhook URL for a specific calendar. This includes all event types, their payload structures, and any additional metadata. Useful for developers to understand and integrate webhook functionality into their applications. | None |
+
+## TypeScript Support
+
+The SDK provides full TypeScript support with generated types from the OpenAPI specification:
+
+```typescript
+import type { 
+  JoinRequest, 
+  JoinResponse, 
+  Metadata, 
+  CreateCalendarParams 
+} from "@meeting-baas/sdk";
+
+// All types are available for advanced usage
+const joinParams: JoinRequest = {
   meeting_url: "https://meet.google.com/abc-def-ghi",
-  reserved: true,
+  bot_name: "My Bot",
+  reserved: false
+};
+```
+
+## Error Handling
+
+The SDK provides type-safe error handling with discriminated union responses:
+
+```typescript
+const result = await client.joinMeeting({
+  meeting_url: "https://meet.google.com/abc-def-ghi",
+  bot_name: "My Bot",
+  reserved: false
 });
+
+if (result.success) {
+  // TypeScript knows result.data is JoinResponse
+  console.log("Bot ID:", result.data.bot_id);
+} else {
+  // TypeScript knows result.error is ZodError | Error
+  if (result.error instanceof ZodError) {
+    console.error("Validation error:", result.error.errors);
+  } else {
+    console.error("API error:", result.error.message);
+  }
+}
 ```
 
-## Available Methods
+## Configuration
 
-The SDK provides a simple interface for interacting with Meeting BaaS. Initialize the client with your API key:
+The client accepts the following configuration options:
 
 ```typescript
-import { BaasClient } from "@meeting-baas/sdk";
-
-const client = new BaasClient({
-  apiKey: "your-api-key"
-});
+interface BaasClientConfig {
+  api_key: string;           // Required: Your Meeting BaaS API key
+  timeout?: number;          // Optional: Request timeout in ms (default: 30000)
+}
 ```
 
-### Calendars API
+### Configuration Options
 
-#### `createCalendar(createCalendarParams: CreateCalendarParams)`
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `api_key` | `string` | ✅ Yes | - | Your Meeting BaaS API key. Get yours at [meetingbaas.com](https://meetingbaas.com) |
+| `timeout` | `number` | ❌ No | `30000` | Request timeout in milliseconds. Some requests may take longer, so we recommend setting a longer timeout if you notice timeouts |
 
-*Some*CalendarsApi
+## Testing
 
-<details>
-<summary>Example</summary>
+The SDK includes comprehensive tests with MSW (Mock Service Worker) for reliable testing:
 
-```typescript
-import { CreateCalendarParams } from "@meeting-baas/sdk";
+```bash
+# Run all tests
+pnpm test
 
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.createCalendar({
-  // ... CreateCalendarParams properties
-});
+# Run unit tests only
+pnpm test:unit
+
+# Run integration tests only
+pnpm test:integration
+
+# Run tests with coverage
+pnpm test:coverage
 ```
-</details>
 
-#### `createCalendar(createCalendarParams: CreateCalendarParams)`
+## Migration from v4.x
 
-CalendarsApi
+If you're upgrading from v4.x, see [MIGRATION.md](MIGRATION.md) for detailed migration instructions.
 
-<details>
-<summary>Example</summary>
+## Contributing
 
-```typescript
-import { CreateCalendarParams } from "@meeting-baas/sdk";
+We welcome contributions! Please see [DEVELOPMENT.md](DEVELOPMENT.md) for development guidelines.
 
-// Returns: Promise<CreateCalendarResponse>
-await client.calendars.createCalendar({
-  // ... CreateCalendarParams properties
-});
-```
-</details>
+## License
 
-#### `deleteCalendar(uuid: string)`
-
-Permanently removes a calendar integration by its UUID, including all associated events and bot configurations
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.deleteCalendar('example');
-```
-</details>
-
-#### `deleteCalendar(uuid: string)`
-
-Permanently removes a calendar integration by its UUID, including all associated events and bot configurations
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<void>
-await client.calendars.deleteCalendar('example');
-```
-</details>
-
-#### `getCalendar(uuid: string)`
-
-Retrieves detailed information about a specific calendar integration by its UUID
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.getCalendar('example');
-```
-</details>
-
-#### `getCalendar(uuid: string)`
-
-Retrieves detailed information about a specific calendar integration by its UUID
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<Calendar>
-await client.calendars.getCalendar('example');
-```
-</details>
-
-#### `getEvent(uuid: string)`
-
-Retrieves comprehensive details about a specific calendar event by its UUID
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.getEvent('example');
-```
-</details>
-
-#### `getEvent(uuid: string)`
-
-Retrieves comprehensive details about a specific calendar event by its UUID
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<Event>
-await client.calendars.getEvent('example');
-```
-</details>
-
-#### `listCalendars()`
-
-Retrieves all calendars that have been integrated with the system for the authenticated user
-
-#### `listCalendars()`
-
-Retrieves all calendars that have been integrated with the system for the authenticated user
-
-#### `listEvents(calendarId: string, attendeeEmail?: string?, cursor?: string?, organizerEmail?: string?, startDateGte?: string?, startDateLte?: string?, status?: string?, updatedAtGte?: string?)`
-
-Retrieves a paginated list of calendar events with comprehensive filtering options
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.listEvents('example', 'example', 'example', 'example', 'example', 'example', 'example', 'example');
-```
-</details>
-
-#### `listEvents(calendarId: string, attendeeEmail?: string?, cursor?: string?, organizerEmail?: string?, startDateGte?: string?, startDateLte?: string?, status?: string?, updatedAtGte?: string?)`
-
-Retrieves a paginated list of calendar events with comprehensive filtering options
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<ListEventResponse>
-await client.calendars.listEvents('example', 'example', 'example', 'example', 'example', 'example', 'example', 'example');
-```
-</details>
-
-#### `listRawCalendars(listRawCalendarsParams: ListRawCalendarsParams)`
-
-Retrieves unprocessed calendar data directly from the provider (Google, Microsoft) using provided OAuth credentials
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { ListRawCalendarsParams } from "@meeting-baas/sdk";
-
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.listRawCalendars({
-  // ... ListRawCalendarsParams properties
-});
-```
-</details>
-
-#### `listRawCalendars(listRawCalendarsParams: ListRawCalendarsParams)`
-
-Retrieves unprocessed calendar data directly from the provider (Google, Microsoft) using provided OAuth credentials
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { ListRawCalendarsParams } from "@meeting-baas/sdk";
-
-// Returns: Promise<ListRawCalendarsResponse>
-await client.calendars.listRawCalendars({
-  // ... ListRawCalendarsParams properties
-});
-```
-</details>
-
-#### `patchBot(uuid: string, botParam3: BotParam3, allOccurrences?: boolean?)`
-
-Updates the configuration of a bot already scheduled to record an event
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { BotParam3 } from "@meeting-baas/sdk";
-
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.patchBot('example', {
-  // ... BotParam3 properties
-}, true);
-```
-</details>
-
-#### `patchBot(uuid: string, botParam3: BotParam3, allOccurrences?: boolean?)`
-
-Updates the configuration of a bot already scheduled to record an event
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { BotParam3 } from "@meeting-baas/sdk";
-
-// Returns: Promise<Array<Event>
-await client.calendars.patchBot('example', {
-  // ... BotParam3 properties
-}, true);
-```
-</details>
-
-#### `resyncAll()`
-
-Forces a sync of all your connected calendars with their providers (Google, Microsoft)
-
-#### `resyncAll()`
-
-Forces a sync of all your connected calendars with their providers (Google, Microsoft)
-
-#### `scheduleRecordEvent(uuid: string, botParam2: BotParam2, allOccurrences?: boolean?)`
-
-Configures a bot to automatically join and record a specific calendar event at its scheduled time
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { BotParam2 } from "@meeting-baas/sdk";
-
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.scheduleRecordEvent('example', {
-  // ... BotParam2 properties
-}, true);
-```
-</details>
-
-#### `scheduleRecordEvent(uuid: string, botParam2: BotParam2, allOccurrences?: boolean?)`
-
-Configures a bot to automatically join and record a specific calendar event at its scheduled time
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { BotParam2 } from "@meeting-baas/sdk";
-
-// Returns: Promise<Array<Event>
-await client.calendars.scheduleRecordEvent('example', {
-  // ... BotParam2 properties
-}, true);
-```
-</details>
-
-#### `unscheduleRecordEvent(uuid: string, allOccurrences?: boolean?)`
-
-Cancels a previously scheduled recording for a calendar event and releases associated bot resources
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.unscheduleRecordEvent('example', true);
-```
-</details>
-
-#### `unscheduleRecordEvent(uuid: string, allOccurrences?: boolean?)`
-
-Cancels a previously scheduled recording for a calendar event and releases associated bot resources
-
-<details>
-<summary>Example</summary>
-
-```typescript
-// Returns: Promise<Array<Event>
-await client.calendars.unscheduleRecordEvent('example', true);
-```
-</details>
-
-#### `updateCalendar(uuid: string, updateCalendarParams: UpdateCalendarParams)`
-
-Updates a calendar integration with new credentials or platform while maintaining the same UUID
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { UpdateCalendarParams } from "@meeting-baas/sdk";
-
-// Returns: Promise<(axios?: AxiosInstance, basePath?: string) =>
-await client.calendars.updateCalendar('example', {
-  // ... UpdateCalendarParams properties
-});
-```
-</details>
-
-#### `updateCalendar(uuid: string, updateCalendarParams: UpdateCalendarParams)`
-
-Updates a calendar integration with new credentials or platform while maintaining the same UUID
-
-<details>
-<summary>Example</summary>
-
-```typescript
-import { UpdateCalendarParams } from "@meeting-baas/sdk";
-
-// Returns: Promise<CreateCalendarResponse>
-await client.calendars.updateCalendar('example', {
-  // ... UpdateCalendarParams properties
-});
-```
-</details>
-
-### Webhooks API
-
-#### `botWebhookDocumentation()`
-
-*Some*WebhooksApi
-
-#### `botWebhookDocumentation()`
-
-WebhooksApi
-
-#### `calendarWebhookDocumentation()`
-
-Meeting BaaS sends the following webhook events related to calendar integrations
-
-#### `calendarWebhookDocumentation()`
-
-Meeting BaaS sends the following webhook events related to calendar integrations
-
-#### `webhookDocumentation()`
-
-Meeting BaaS sends webhook events to your configured webhook URL when specific events occur
-
-#### `webhookDocumentation()`
-
-Meeting BaaS sends webhook events to your configured webhook URL when specific events occur
+[MIT](LICENSE)
 
 

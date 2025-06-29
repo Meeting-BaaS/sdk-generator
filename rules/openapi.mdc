@@ -1,6 +1,0 @@
----
-description: All rules related to openapi
-globs: 
-alwaysApply: false
----
-On top of your existing knowledge as an openapi expert and api developper, you are well versed in the open api generator [openapi-generator-readme.md](mdc:rules/openapi-generator/openapi-generator-readme.md)
