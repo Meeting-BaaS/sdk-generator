@@ -50,7 +50,6 @@ jobs:
         run: |
           echo "Regenerating SDK with latest OpenAPI specification..."
           pnpm openapi:rebuild
-          pnpm build
           echo "SDK regenerated successfully"
 
       - name: Check for actual changes
@@ -58,8 +57,15 @@ jobs:
         run: |
           echo "Checking for actual file changes..."
 
-          # Get all changed files
-          CHANGED_FILES=$(git diff --name-only)
+          # Get all changed & untracked files
+          #   • modified / deleted:   git diff --name-only
+          #   • added      :         git ls-files --others --exclude-standard
+          CHANGED_FILES="$(
+            {
+              git diff --name-only
+              git ls-files --others --exclude-standard
+            } | sort -u
+          )"
 
           if [ -z "$CHANGED_FILES" ]; then
             echo "No changes detected in generated files"

@@ -50,7 +50,7 @@ jobs:
         run: pnpm install
 
       - name: Build SDK
-        run: pnpm build
+        run: pnpm openapi:rebuild
 
       - name: Run tests
         run: pnpm test
