@@ -33,7 +33,6 @@
     "openapi:clean": "rm -rf src/generated",
     "openapi:generate": "pnpm openapi:clean && orval",
     "openapi:rebuild": "pnpm openapi:generate && pnpm build",
-    "openapi:check": "node scripts/check-openapi-changes.js",
     "prepublishOnly": "pnpm lint:fix && pnpm build"
   },
   "publishConfig": {

@@ -46,12 +46,14 @@ function preprocess(obj, path = "") {
  * @return {OpenAPIObject}
  */
 module.exports = (inputSchema) => {
-  preprocess(inputSchema)
+  // Clone to avoid mutating the original
+  const schema = JSON.parse(JSON.stringify(inputSchema))
+  const issues = preprocess(schema)
   if (issues.length) {
     console.log("Issues found and/or fixed during preprocessing:")
     issues.forEach((i) => console.log(" -", i))
   } else {
     console.log("No issues found during preprocessing.")
   }
-  return inputSchema
+  return schema
 }

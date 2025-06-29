@@ -5,10 +5,12 @@ This guide explains how to set up the automated SDK update workflow for Meeting 
 ## 🚀 Overview
 
 The automated workflow will:
+
 - Check for API changes daily
 - Regenerate the SDK when changes are detected
 - Test across multiple Node.js versions (18, 19, 20, 21, 22)
 - Auto-publish to npm when tests pass
+
 
 ## 📋 Prerequisites
 
@@ -78,7 +80,6 @@ Ensure your `package.json` has:
     "access": "public"
   },
   "scripts": {
-    "openapi:check": "node scripts/check-openapi-changes.js",
     "openapi:rebuild": "pnpm openapi:generate && pnpm build"
   }
 }
@@ -97,7 +98,7 @@ Ensure your `package.json` has:
 
 To test the change detection:
 
-1. Modify the OpenAPI spec URL in `scripts/check-openapi-changes.js`
+1. Make a small change to the OpenAPI spec (if you control it)
 2. Run the workflow manually
 3. Verify it detects changes and regenerates the SDK
 
@@ -232,4 +233,4 @@ Your automation is working correctly when:
 - ✅ Test coverage remains high
 - ✅ No manual intervention required
 
-This setup creates a fully automated SDK that stays current with your API changes while maintaining high quality and reliability! 
+This setup creates a fully automated SDK that stays current with your API changes while maintaining high quality and reliability!

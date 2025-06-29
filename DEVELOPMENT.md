@@ -147,7 +147,7 @@ pnpm build && pnpm test
 
 ## Project Structure
 
-```
+```text
 src/
 ├── generated/          # Generated OpenAPI client
 │   ├── api/           # Generated API functions
@@ -332,6 +332,15 @@ If tests are failing:
    pnpm test:coverage
    ```
 
+### Troubleshooting Automation
+
+If the automation fails:
+
+1. **Check Workflow Logs**: Review the failed workflow run
+2. **Verify API Changes**: Ensure the OpenAPI spec is accessible
+3. **Test Locally**: Run `pnpm openapi:rebuild` to verify SDK generation
+4. **Manual Trigger**: Use manual dispatch to retry the workflow
+
 ## License
 
 [MIT](LICENSE)
@@ -409,5 +418,5 @@ If the automation fails:
 
 1. **Check Workflow Logs**: Review the failed workflow run
 2. **Verify API Changes**: Ensure the OpenAPI spec is accessible
-3. **Test Locally**: Run `pnpm openapi:check` to verify change detection
+3. **Test Locally**: Run `pnpm openapi:rebuild` to verify SDK generation
 4. **Manual Trigger**: Use manual dispatch to retry the workflow

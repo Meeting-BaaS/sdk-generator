@@ -1,13 +1,15 @@
 import { defineConfig } from "orval"
 
+const SHARED_INPUT = {
+  target: "https://api.meetingbaas.com/openapi.json",
+  override: {
+    transformer: "./scripts/preprocess.js"
+  }
+}
+
 export default defineConfig({
   baasApi: {
-    input: {
-      target: "https://api.meetingbaas.com/openapi.json",
-      override: {
-        transformer: "./scripts/preprocess.js"
-      }
-    },
+    input: SHARED_INPUT,
     output: {
       target: "./src/generated/api",
       schemas: "./src/generated/schema",
@@ -22,12 +24,7 @@ export default defineConfig({
   },
   // Generate Zod schemas
   baasZod: {
-    input: {
-      target: "https://api.meetingbaas.com/openapi.json",
-      override: {
-        transformer: "./scripts/preprocess.js"
-      }
-    },
+    input: SHARED_INPUT,
     output: {
       target: "./src/generated/api",
       client: "zod",

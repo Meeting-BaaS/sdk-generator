@@ -75,8 +75,8 @@ if (result.success) {
 
 **Changes:**
 - All methods now return discriminated union responses
-- No more try/catch for API errors (they're returned in the response)
-- Parameter names changed to snake_case. 
+- No more try/catch for API errors (they're returned to the caller in the response)
+- Parameter names changed to snake_case.
 - Response data is wrapped in `result.data`
 
 ### 3. Parameter Naming Convention

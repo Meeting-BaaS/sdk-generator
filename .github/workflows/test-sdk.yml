@@ -20,42 +20,42 @@ jobs:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.8.1
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Build SDK
         run: pnpm build
-      
+
       - name: Run tests
         run: pnpm test
-      
+
       - name: Run linting
         run: pnpm lint
-      
+
       - name: Check test coverage
         if: inputs.upload-coverage == 'true'
         run: pnpm test:coverage
-      
+
       - name: Upload coverage artifacts
         if: inputs.upload-coverage == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.node-version }}
           path: coverage/
-          retention-days: 30 
+          retention-days: 30
