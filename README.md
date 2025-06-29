@@ -87,7 +87,7 @@ const joinToolInputSchema = {
   reserved: z.boolean().default(false)
 }
 
-// Add an joinMeeting tool
+// Add a joinMeeting tool
 server.registerTool(
   "joinMeeting",
   {
