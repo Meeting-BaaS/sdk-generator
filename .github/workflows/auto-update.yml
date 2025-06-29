@@ -129,6 +129,10 @@ jobs:
           echo "New version: $NEW_VERSION"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
+      # 🔨 Re-build artefacts *after* bumping the version with new open api spec
+      - name: Build SDK
+        run: pnpm openapi:rebuild
+
       - name: Commit and push changes
         run: |
           git add .

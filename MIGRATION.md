@@ -156,6 +156,7 @@ const server = new McpServer({
   version: "1.0.0"
 })
 
+// @modelcontextprotocol/sdk expects the input schema to be a ZodRawShape (plain object with zod types)
 const joinToolInputSchema = {
   bot_name: z.string().default("Meeting BaaS Bot"),
   meeting_url: z.string(),
