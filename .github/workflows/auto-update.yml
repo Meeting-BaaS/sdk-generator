@@ -59,7 +59,7 @@ jobs:
     needs: check-and-update
     with:
       node-versions: '[18, 19, 20, 21, 22]'
-      upload-coverage: 'false'
+      upload-coverage: false
 
   bump-version-and-publish:
     if: needs.check-and-update.outputs.has_changes == 'true'
@@ -104,9 +104,6 @@ jobs:
           NEW_VERSION=$(pnpm version patch --no-git-tag-version)
           echo "New version: $NEW_VERSION"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          
-          # Update package.json
-          sed -i "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" package.json
       
       - name: Commit and push changes
         run: |

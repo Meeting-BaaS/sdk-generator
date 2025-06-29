@@ -208,6 +208,7 @@ type ApiResponse<T> =
 ```
 
 This provides:
+
 - Type-safe error handling
 - Automatic parameter validation
 - Consistent error responses
