@@ -331,7 +331,7 @@ export const botsWithMetadataQueryParams = zod.object({
     )
 })
 
-export const botsWithMetadataResponseLastUpdatedDefault = "2025-06-12T15:46:43.839274312+00:00"
+export const botsWithMetadataResponseLastUpdatedDefault = "2025-01-01T00:00:00.000000000+00:00"
 
 export const botsWithMetadataResponse = zod
   .object({

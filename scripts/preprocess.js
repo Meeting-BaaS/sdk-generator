@@ -28,6 +28,24 @@ function preprocess(obj, path = "") {
           additionalProperties: true
         }
       }
+      // Stabilize the last_updated default in ListRecentBotsResponse
+      else if (
+        path.includes("ListRecentBotsResponse") &&
+        path.includes("last_updated") &&
+        key === "default" &&
+        typeof obj[key] === "string" &&
+        obj[key].includes("T")
+      ) {
+        // Replace dynamic timestamp default with a fixed reference timestamp.
+        // This timestamp changes frequently and would cause unnecessary spam in the SDK versions.
+        const originalTimestamp = obj[key]
+        obj[key] = "2025-01-01T00:00:00.000000000+00:00"
+        if (originalTimestamp !== obj[key]) {
+          issues.push(
+            `Stabilized ListRecentBotsResponse.last_updated default: ${originalTimestamp} -> ${obj[key]}`
+          )
+        }
+      }
       // Log other boolean values for reference
       else if (typeof obj[key] === "boolean") {
         issues.push(`Boolean value at ${currentPath}: ${obj[key]}`)
@@ -48,7 +66,7 @@ function preprocess(obj, path = "") {
 module.exports = (inputSchema) => {
   // Clone to avoid mutating the original
   const schema = JSON.parse(JSON.stringify(inputSchema))
-  const issues = preprocess(schema)
+  preprocess(schema)
   if (issues.length) {
     console.log("Issues found and/or fixed during preprocessing:")
     issues.forEach((i) => console.log(" -", i))
