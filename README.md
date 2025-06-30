@@ -375,24 +375,6 @@ interface BaasClientConfig {
 | `api_key` | `string` | ✅ Yes | - | Your Meeting BaaS API key. Get yours at [meetingbaas.com](https://meetingbaas.com) |
 | `timeout` | `number` | ❌ No | `30000` | Request timeout in milliseconds. Some requests may take longer, so we recommend setting a longer timeout if you notice timeouts |
 
-## Testing
-
-The SDK includes comprehensive tests with MSW (Mock Service Worker) for reliable testing:
-
-```bash
-# Run all tests
-pnpm test
-
-# Run unit tests only
-pnpm test:unit
-
-# Run integration tests only
-pnpm test:integration
-
-# Run tests with coverage
-pnpm test:coverage
-```
-
 ## Migration from v4.x
 
 If you're upgrading from v4.x, see [MIGRATION.md](MIGRATION.md) for detailed migration instructions.
