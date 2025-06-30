@@ -1,6 +1,6 @@
 {
   "name": "@meeting-baas/sdk",
-  "version": "4.0.5",
+  "version": "5.0.0",
   "description": "Official SDK for Meeting BaaS API - https://meetingbaas.com",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -10,34 +10,33 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    },
-    "./dist/baas/*": {
-      "types": "./dist/baas/*.d.ts",
-      "import": "./dist/baas/*.mjs",
-      "require": "./dist/baas/*.js"
     }
   },
   "files": [
-    "dist/index.js",
-    "dist/index.mjs",
-    "dist/index.d.ts",
-    "dist/index.d.mts",
-    "dist/baas",
+    "dist",
     "README.md",
     "LICENSE"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --clean && node scripts/copy-generated.js",
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "lint": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "openapi:fetch": "node scripts/fetch-openapi.js",
-    "openapi:generate": "pnpm openapi:fetch && openapi-generator-cli generate -i tmp/openapi.json -g typescript-axios -o src/generated/baas -c openapi-generator-config.json --skip-validate-spec && node scripts/post-generate.js",
-    "openapi:clean": "rm -rf src/generated/baas",
-    "openapi:rebuild": "pnpm openapi:clean && pnpm openapi:generate && pnpm build",
-    "docs:generate": "node scripts/generate-docs.js",
-    "prepublishOnly": "pnpm lint && pnpm build",
-    "prepare-release": "pnpm lint && pnpm docs:generate"
+    "clean": "rm -rf dist",
+    "build": "tsup",
+    "clean:build": "pnpm clean && pnpm build",
+    "dev": "tsup --watch",
+    "lint": "biome check",
+    "lint:fix": "biome format --write",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:unit": "vitest run test/unit/",
+    "test:integration": "vitest run test/integration/",
+    "test:error-handling": "vitest run test/error-handling.test.ts",
+    "openapi:clean": "rm -rf src/generated",
+    "openapi:generate": "pnpm openapi:clean && orval",
+    "openapi:rebuild": "pnpm openapi:generate && pnpm build",
+    "prepublishOnly": "pnpm lint:fix && pnpm build"
   },
   "publishConfig": {
     "access": "public"
@@ -53,7 +52,7 @@
   "keywords": [
     "meeting",
     "baas",
-    "mpc",
+    "mcp",
     "api",
     "sdk",
     "google-meet",
@@ -66,14 +65,21 @@
   "author": "SAS SPOKE <support@meetingbaas.com> (https://meetingbaas.com)",
   "license": "MIT",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.18.4",
+    "@biomejs/biome": "^2.0.5",
+    "@faker-js/faker": "^9.8.0",
     "@types/node": "22.13.10",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/ui": "^2.1.8",
+    "msw": "^2.3.3",
+    "orval": "^7.9.0",
     "ts-node": "10.9.2",
     "tsup": "8.4.0",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "vitest": "^2.1.8"
   },
   "dependencies": {
     "axios": "1.8.3",
     "zod": "3.24.2"
-  }
+  },
+  "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677"
 }

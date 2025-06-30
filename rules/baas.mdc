@@ -1,9 +1,0 @@
----
-description: Interaction with the MeetingBaas API
-globs: 
-alwaysApply: false
----
-The specs are here [openapi.json](mdc:rules/baas/openapi.json)
-
-The documentation is here [complete_baas_docs.md](mdc:rules/baas/baas_docs/complete_baas_docs.md)
-

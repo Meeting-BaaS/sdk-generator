@@ -1,35 +1,26 @@
 # Meeting BaaS SDK Development
 
-This document contains development and contribution guidelines for the Meeting BaaS SDK.
+This document contains development and contribution guidelines for the Meeting BaaS SDK v5.0.0.
 
 ## Prerequisites
 
 - Node.js 18+
 - pnpm
-- Anthropic API key (for MPC tools generation)
 
 ## Setup
 
 1. Clone the repository
 
-```bash
-git clone https://github.com/meeting-baas/sdk-generator.git
-cd sdk-generator
-```
+   ```bash
+   git clone https://github.com/meeting-baas/sdk-generator.git
+   cd sdk-generator
+   ```
 
 2. Install dependencies
 
-```bash
-pnpm install
-```
-
-3. Create a `.env` file with required API keys:
-
-```bash
-# Required for MPC tools generation
-ANTHROPIC_API_KEY=your_anthropic_api_key
-DEBUG=true
-```
+   ```bash
+   pnpm install
+   ```
 
 ## Build Process
 
@@ -38,21 +29,17 @@ The SDK build process consists of several steps, each with a specific purpose:
 ### 1. OpenAPI Client Generation
 
 ```bash
-# Clean existing generated files
-pnpm openapi:clean
-
 # Generate TypeScript client from OpenAPI spec
 pnpm openapi:generate
-
-# Or run both in sequence
-pnpm openapi:rebuild
 ```
 
 This step:
 
-- Cleans the `src/generated/baas` directory
-- Fetches the latest OpenAPI spec
-- Generates TypeScript client code using OpenAPI Generator
+- Cleans the `src/generated/` directory
+- Fetches the latest OpenAPI spec from `https://api.meetingbaas.com/openapi.json`
+- Generates TypeScript client code using Orval
+- Creates API functions, Zod schemas, and MSW mocks
+- Outputs organized by API tags (default, calendars, webhooks)
 
 ### 2. SDK Build
 
@@ -65,83 +52,49 @@ This step:
 - Compiles the SDK using tsup
 - Generates CommonJS, ESM, and TypeScript declaration files
 - Outputs to `dist/` directory
+- Creates tree-shakeable bundles
 
-### 3. MPC Tools Generation
-
-```bash
-pnpm tools:generate
-```
-
-This step:
-
-- Uses Anthropic API to generate MPC tool definitions
-- Requires `ANTHROPIC_API_KEY` in `.env`
-- Generates TypeScript tool files in `dist/generated-tools/`
-- Creates tool definitions for each SDK method
-- **Extracts schemas from the OpenAPI spec** for parameter validation
-
-#### Schema Extraction
-
-The tools generator extracts schemas from the OpenAPI specification to:
-
-1. Generate accurate parameter definitions for MPC tools
-2. Create JSON schemas for runtime validation
-3. Support full type information including enums and complex objects
-
-The extraction process:
-
-- Maps OpenAPI types to JSON Schema types
-- Preserves enum values, descriptions, and required fields
-- Generates validation schemas that match the API contract
-
-### 4. Bundle Build
+### 3. Testing
 
 ```bash
-pnpm bundle:build
+# Run all tests
+pnpm test
+
+# Run unit tests only
+pnpm test:unit
+
+# Run integration tests only
+pnpm test:integration
+
+# Run tests with coverage
+pnpm test:coverage
+
+# Run tests with UI
+pnpm test:ui
 ```
 
-⚠️ **Important**: This command regenerates all tools using the Anthropic API before building the bundle.
-
-This step:
-
-- Builds the base SDK
-- Regenerates all MPC tools (calling the Anthropic API)
-- Compiles all tools to JavaScript
-- Creates the necessary exports in the `dist/` directory
-- Bundles parameter schemas and validation utilities
-
-### 5. Bundle Without Regenerating Tools
-
-If you've already generated the tools and want to avoid regenerating them (to save API calls or time), you can directly use the prepare-bundle script:
+### 4. Code Quality
 
 ```bash
-node scripts/prepare-bundle.js
+# Lint and format code
+pnpm lint
+
+# Fix formatting issues
+pnpm lint:fix
 ```
 
-This script:
-
-- Takes existing TypeScript tool definitions from `dist/generated-tools/`
-- Extracts parameter schemas and validation rules
-- Compiles them to JavaScript
-- Creates the bundled exports without regenerating the tools
-
-### 6. MPC Tools Registration (Optional)
+### 5. Publishing
 
 ```bash
-pnpm tools:register
+# Prepare for publishing (runs lint and build)
+pnpm prepublishOnly
 ```
 
-This step:
+## Common Workflows
 
-- Registers generated tools with an MPC server
-- Requires `MPC_SERVER_URL` in `.env` (defaults to http://localhost:3000)
-- Note: This requires the tools to be already bundled (run `node scripts/prepare-bundle.js` first)
+### Complete Development Workflow
 
-### Common Workflows
-
-#### Complete Development Workflow
-
-For a complete development cycle from OpenAPI spec to bundled tools:
+For a complete development cycle from OpenAPI spec to published package:
 
 ```bash
 # 1. Update OpenAPI client
@@ -150,198 +103,163 @@ pnpm openapi:rebuild
 # 2. Build the SDK
 pnpm build
 
-# 3. Generate MPC tools
-pnpm tools:generate
+# 3. Run tests
+pnpm test
 
-# 4. Create the bundle (without regenerating tools)
-node scripts/prepare-bundle.js
+# 4. Check code quality
+pnpm lint
 
-# 5. Test the bundle
-pnpm bundle:test
-```
-
-#### Tools-Only Workflow
-
-If you're only making changes to MPC tools:
-
-```bash
-# 1. Generate tools
-pnpm tools:generate
-
-# 2. Create the bundle (without regenerating)
-node scripts/prepare-bundle.js
-```
-
-#### Schema Validation Workflow
-
-When adding or updating schema validation:
-
-```bash
-# 1. Modify schema-extractor.ts if needed
-# 2. Generate tools with updated schemas
-pnpm tools:generate
-
-# 3. Create the bundle
-node scripts/prepare-bundle.js
-
-# 4. Test validation
-pnpm bundle:test
-```
-
-#### Quick Build for Publishing
-
-There are now two main publishing-related scripts:
-
-```bash
-# 1. Prepare a full release (when making significant changes or version bumps)
-pnpm prepare-release
-
-# 2. Publish the package (after preparing it)
+# 5. Publish (if ready)
 pnpm publish
 ```
 
-The scripts do the following:
+### Quick Development Workflow
 
-- **prepare-release**: Comprehensive preparation for a new release
-
-  - Runs TypeScript linting
-  - Builds the complete bundle (including regenerating tools)
-  - Generates documentation
-  - Use this when creating a new version or significant update
-
-- **prepublishOnly**: Lightweight check before publishing
-  - Only runs `bundle:test` to verify the package is correctly built
-  - Does NOT rebuild anything or make API calls
-  - This makes publishing faster and prevents unnecessary regeneration
-
-This separation allows for:
-
-1. Thorough preparation of releases when needed
-2. Quick publishing without rebuilding everything
-3. Prevention of unnecessary API calls to Anthropic during publishing
-
-## Environment Variables
-
-Required environment variables for different steps:
+For making changes to the SDK wrapper:
 
 ```bash
-# Required for MPC tools generation
-ANTHROPIC_API_KEY=your_anthropic_api_key
+# 1. Make your changes to src/node/
+# 2. Build the SDK
+pnpm build
 
-# Optional for MPC tools registration
-MPC_SERVER_URL=http://localhost:3000  # Default value
-PROTOCOL_VERSION=1.0.0               # Optional
-DEBUG=true                          # For verbose output
+# 3. Run tests
+pnpm test
+
+# 4. Check code quality
+pnpm lint
 ```
 
-## MPC Tools Generation
+### OpenAPI Schema Updates
 
-The SDK includes an automatic MPC tool generation system that creates Claude Plugin (MPC) tools from SDK methods. These tools are now included by default in the package and can be accessed via the `/tools` export path.
-
-### How MPC Tools Are Generated and Distributed
-
-1. **Template-Based Generation**: The SDK uses example templates in `src/tools-generator/example-tool-templates.ts` to inform the tool generation process.
-
-2. **Schema Extraction**: The generator extracts schemas from the OpenAPI spec via `schema-extractor.ts`.
-
-   - Automatically converts OpenAPI parameters to tool parameters
-   - Preserves type information, enums, and validation constraints
-   - Generates JSON schemas for runtime validation
-
-3. **AI-Powered Generation**: When you run `pnpm tools:generate`, the system:
-
-   - Analyzes all methods in the BaasClient SDK
-   - Calls the Anthropic API with method signatures and example templates
-   - Generates properly formatted MPC tool definitions for each SDK method
-   - Writes these generated tools to the output directory (`dist/generated-tools`)
-
-4. **Generated Tool Structure**: Each generated tool includes:
-
-   - Properly defined parameters (with types, descriptions, and required flags)
-   - Parameter conversion between snake_case (tool) and camelCase (SDK)
-   - User-friendly formatting for complex responses
-   - Comprehensive error handling
-   - Schema definitions for validation
-
-5. **Schema Validation**: The package includes validation utilities:
-
-   - JSON Schema definitions for all tool parameters
-   - Zod-based validation for type checking
-   - Functions to validate parameters before API calls
-   - Error reporting for invalid parameters
-
-6. **Distribution**: All generated tools are:
-   - Built automatically during the bundling process
-   - Included in the published package
-   - Available via the `/tools` export path: `import { join_meeting_tool } from "@meeting-baas/sdk/tools"`
-   - Schema information available via `allSchemas` and `getSchemaByName`
-
-### Testing MPC Tools
-
-You can test the generated and bundled tools using:
+When the OpenAPI spec changes:
 
 ```bash
-# Test the bundled tools
-pnpm bundle:test
+# 1. Regenerate from latest spec
+pnpm openapi:rebuild
 
-# Or create a simple test script
-echo 'const { allTools, allSchemas } = require("./dist/tools"); console.log(`Loaded ${allTools.length} tools with ${Object.keys(allSchemas).length} schemas`);' > test.js
-node test.js
+# 2. Review generated changes
+git diff src/generated/
+
+# 3. Update SDK wrapper if needed
+# 4. Build and test
+pnpm build && pnpm test
 ```
 
-### Using Schema Validation
+## Project Structure
 
-The SDK provides schema validation utilities that can be used to validate parameters before calling API methods:
+```text
+src/
+├── generated/          # Generated OpenAPI client
+│   ├── api/           # Generated API functions
+│   │   ├── calendars/ # Calendar API functions
+│   │   ├── default/   # Default API functions
+│   │   └── webhooks/  # Webhook API functions
+│   └── schema/        # Generated TypeScript types
+├── node/              # SDK wrapper implementation
+│   ├── api.ts         # API wrapper functions
+│   ├── client.ts      # Main client factory
+│   └── types.d.ts     # Configuration types
+└── index.ts           # Main entry point
 
-```javascript
-const { allSchemas, validateParameters } = require("@meeting-baas/sdk/tools");
+dist/                  # Built output
+├── index.js           # CommonJS bundle
+├── index.mjs          # ES Module bundle
+└── index.d.ts         # TypeScript declarations
 
-// Get the schema for a specific tool
-const joinMeetingSchema = allSchemas["join-meeting"];
+test/                  # Test files
+├── unit/              # Unit tests
+├── integration/       # Integration tests
+├── setup.ts           # Test setup
+└── error-handling.test.ts # Error handling tests
 
-// Validate parameters
-const params = {
-  api_key: "your-api-key",
-  bot_name: "My Bot",
-  meeting_url: "https://meet.google.com/abc-def-ghi",
-  // Missing required parameter: reserved
-};
-
-const validation = validateParameters(params, joinMeetingSchema);
-if (!validation.success) {
-  console.error("Parameter validation failed:", validation.errors);
-} else {
-  console.log("Parameters are valid");
-}
+scripts/
+├── preprocess.js      # OpenAPI preprocessing
+└── ...                # Other build scripts
 ```
 
-## Implementing Schema Extraction
+## Architecture Overview
 
-To implement or update the schema extraction:
+### Code Generation
 
-1. **Understand the OpenAPI Structure**:
+The SDK uses **Orval** for code generation from the OpenAPI specification:
 
-   - The SDK is generated from an OpenAPI spec
-   - The spec contains complete schema information for all endpoints
+- **API Functions**: Generated TypeScript functions for each endpoint
+- **Zod Schemas**: Generated validation schemas for all parameters
+- **MSW Mocks**: Generated mock handlers for testing
+- **TypeScript Types**: Generated types for all API models
 
-2. **Create/Modify Schema Extractor**:
+### SDK Wrapper
 
-   - Create `src/tools-generator/schema-extractor.ts` if it doesn't exist
-   - Implement functions to extract parameter types from the OpenAPI-generated SDK
+The SDK wrapper (`src/node/`) provides:
 
-3. **Update Tools Generator**:
+- **Client Factory**: `createBaasClient()` function for creating clients
+- **API Wrapper**: Generic wrapper functions with error handling
+- **Type Safety**: Discriminated union responses for type-safe error handling
+- **Validation**: Automatic Zod schema validation for all parameters
 
-   - Modify `src/tools-generator/index.ts` to use the schema extractor
-   - Update the tool generation templates to include schema information
+### Error Handling
 
-4. **Update Bundle Preparation**:
+All API methods return discriminated union responses:
 
-   - Ensure `scripts/prepare-bundle.js` extracts schemas from generated tools
-   - Generate proper JSON schemas for validation
+```typescript
+type ApiResponse<T> = 
+  | { success: true; data: T; error?: never }
+  | { success: false; error: ZodError | Error; data?: never }
+```
 
-5. **Add Validation Utilities**:
-   - Create `src/mpc/validation.ts` with Zod-based validation utilities
-   - Implement functions to validate parameters against schemas
+This provides:
+
+- Type-safe error handling
+- Automatic parameter validation
+- Consistent error responses
+- No need for try/catch blocks
+
+## Testing Strategy
+
+### Unit Tests
+
+Unit tests focus on:
+
+- Client creation and configuration
+- Parameter validation
+- Error handling
+- Individual method behavior
+
+### Integration Tests
+
+Integration tests focus on:
+
+- End-to-end API calls
+- Real API responses
+- Error scenarios
+- Complex workflows
+
+### Mock Strategy
+
+Tests use MSW (Mock Service Worker) to:
+
+- Mock API responses
+- Test error scenarios
+- Provide consistent test data
+- Avoid real API calls during testing
+
+## Code Quality
+
+### Linting
+
+The project uses **Biome** for:
+
+- Code formatting
+- Linting
+- Type checking
+- Import sorting
+
+### TypeScript
+
+- Strict TypeScript configuration
+- Generated types from OpenAPI spec
+- Full type coverage
+- No `any` types
 
 ## Contributing
 
@@ -361,44 +279,147 @@ We welcome contributions to the Meeting BaaS SDK! Please feel free to submit iss
 3. Run tests and build
 4. Submit a pull request
 
-## Project Structure
+### Before Submitting
 
+Ensure your changes pass:
+
+```bash
+# Run all checks
+pnpm lint
+pnpm build
+pnpm test
+pnpm test:coverage
 ```
-src/
-├── generated/      # Generated OpenAPI client
-│   └── baas/      # BaaS specific generated code
-│       ├── api/   # Generated API classes
-│       │   ├── calendars-api.ts
-│       │   ├── default-api.ts
-│       │   └── client.ts    # Auto-generated unified client
-│       ├── models/ # Generated model types
-│       ├── base.ts
-│       ├── common.ts
-│       └── configuration.ts
-├── mpc/           # MPC tools and types
-│   └── validation.ts # Schema validation utilities
-├── tools-generator/ # MPC tools generation
-│   └── schema-extractor.ts # OpenAPI schema extraction
-└── index.ts       # Main entry point
 
-dist/
-├── index.js       # CommonJS bundle
-├── index.mjs      # ES Module bundle
-├── tools.js       # CommonJS tools bundle
-├── tools.mjs      # ES Module tools bundle
-└── generated-tools/ # Generated TypeScript tool definitions
+## Environment Variables
 
-scripts/
-├── fetch-openapi.js     # Fetches latest OpenAPI spec
-├── post-generate.js     # Post-generation processing
-└── prepare-bundle.js    # Bundle preparation
+No environment variables are required for development. The SDK uses the public OpenAPI specification.
 
-Import paths:
-├── "@meeting-baas/sdk"          # Main SDK (BaasClient)
-├── "@meeting-baas/sdk/tools"    # MPC tools
-└── "@meeting-baas/sdk/bundle"   # Complete bundle
-```
+## Troubleshooting
+
+### Build Issues
+
+If you encounter build issues:
+
+1. Clean and rebuild:
+
+   ```bash
+   pnpm clean
+   pnpm openapi:rebuild
+   pnpm build
+   ```
+
+2. Check TypeScript errors:
+
+   ```bash
+   pnpm lint
+   ```
+
+3. Verify generated code:
+
+   ```bash
+   ls src/generated/
+   ```
+
+### Test Issues
+
+If tests are failing:
+
+1. Check mock setup:
+
+   ```bash
+   pnpm test:unit
+   ```
+
+2. Verify API responses:
+
+   ```bash
+   pnpm test:integration
+   ```
+
+3. Check test coverage:
+
+   ```bash
+   pnpm test:coverage
+   ```
+
+### Troubleshooting Automation
+
+If the automation fails:
+
+1. **Check Workflow Logs**: Review the failed workflow run
+2. **Verify API Changes**: Ensure the OpenAPI spec is accessible
+3. **Test Locally**: Run `pnpm openapi:rebuild` to verify SDK generation
+4. **Manual Trigger**: Use manual dispatch to retry the workflow
 
 ## License
 
 [MIT](LICENSE)
+
+## 🤖 Automated Updates
+
+This SDK automatically stays up-to-date with the Meeting BaaS API through our automated workflow:
+
+- **Daily Checks**: Monitors the API specification for changes
+- **Auto-Generation**: Regenerates the SDK when changes are detected
+- **Multi-Node Testing**: Tests across Node.js versions 18, 19, 20, 21, and 22
+- **Auto-Publishing**: Publishes new versions when all tests pass
+
+### How It Works
+
+1. **Daily at 2 AM UTC**: GitHub Actions checks for API changes
+2. **Change Detection**: Compares current vs. previous OpenAPI specification
+3. **SDK Regeneration**: If changes detected, regenerates TypeScript client
+4. **Comprehensive Testing**: Runs full test suite across multiple Node versions
+5. **Auto-Publish**: If all tests pass, bumps version and publishes to npm
+
+### Benefits
+
+- **Always Current**: SDK automatically reflects latest API changes
+- **Zero Maintenance**: No manual intervention required
+- **Quality Assured**: Only publishes if all tests pass
+- **Multi-Platform**: Ensures compatibility across Node.js versions
+
+### Manual Trigger
+
+You can manually trigger the update process:
+
+1. Go to the [Actions tab](https://github.com/meeting-baas/sdk-generator/actions)
+2. Select "Auto Update SDK" workflow
+3. Click "Run workflow"
+
+### Workflow Structure
+
+The automation uses three GitHub Actions workflows:
+
+#### 1. `test-sdk.yml` (Reusable)
+
+- **Purpose**: Reusable testing workflow
+- **Inputs**:
+  - `node-versions`: Array of Node.js versions to test
+  - `upload-coverage`: Whether to upload coverage artifacts
+- **Used by**: Both `test.yml` and `auto-update.yml`
+
+#### 2. `test.yml` (Regular Testing)
+
+- **Triggers**: PRs, pushes to main/develop, manual dispatch
+- **Uses**: `test-sdk.yml` with full coverage upload
+
+#### 3. `auto-update.yml` (Auto Updates)
+
+- **Triggers**: Daily schedule, manual dispatch
+- **Uses**: `test-sdk.yml` without coverage upload (faster)
+- **Flow**: Check changes → Test → Bump version → Publish → Create release
+
+### Setup Requirements
+
+To enable automated updates, ensure these GitHub secrets are configured:
+
+- `NPM_TOKEN`: NPM authentication token for publishing
+- `GITHUB_TOKEN`: GitHub token (automatically provided)
+
+### Monitoring
+
+- **Workflow Status**: Check the [Actions tab](https://github.com/meeting-baas/sdk-generator/actions)
+- **Release History**: View [releases](https://github.com/meeting-baas/sdk-generator/releases)
+- **NPM Package**: Monitor [npm package](https://www.npmjs.com/package/@meeting-baas/sdk)

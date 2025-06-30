@@ -1,8 +1,0 @@
----
-description: Any information on the MPC protocol for AI communication, server or client definition, and related code for AI to execute commands from APIs
-globs: ./MPC-docs/*
-alwaysApply: false
----
-These rule helps with any information related to MCP servers and specs in
-
-Always refer to the official typescript schema when in doubt [2024-11-05-schema.ts .ts](mdc:rules/MPC-docs/2024-11-05-schema.ts .ts)
