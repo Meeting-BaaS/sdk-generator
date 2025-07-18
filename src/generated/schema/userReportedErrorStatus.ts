@@ -9,7 +9,7 @@
 /**
  * Example usage for frontend developers
 
-```ignore // How to use in your API handler: let status = calculate_bot_status(bot.errors, bot.ended_at, bot.duration, Some(bot.created_at)); let status_response = status_to_response(status);
+```ignore // How to use in your API handler: let status = calculate_bot_status(bot.errors, bot.ended_at, bot.duration, bot.created_at); let status_response = status_to_response(status);
 
 // How to sort by priority: bots.sort_by_key(|bot| bot.status.sort_priority);
 

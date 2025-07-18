@@ -5,8 +5,10 @@
  * Meeting BaaS API
  * OpenAPI spec version: 1.1
  */
+import type { FailedRecordRequestErrorCode } from "./failedRecordRequestErrorCode"
 
 export interface FailedRecordRequest {
+  error_code?: FailedRecordRequestErrorCode
   meeting_url: string
   message: string
 }
