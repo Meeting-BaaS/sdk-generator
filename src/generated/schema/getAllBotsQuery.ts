@@ -19,6 +19,7 @@ import type { GetAllBotsQueryStatus } from "./getAllBotsQueryStatus"
 import type { GetAllBotsQueryStatusCategory } from "./getAllBotsQueryStatusCategory"
 import type { GetAllBotsQueryStatusPriority } from "./getAllBotsQueryStatusPriority"
 import type { GetAllBotsQueryStatusType } from "./getAllBotsQueryStatusType"
+import type { GetAllBotsQueryUserEmail } from "./getAllBotsQueryUserEmail"
 import type { GetAllBotsQueryUserReportedErrorContains } from "./getAllBotsQueryUserReportedErrorContains"
 import type { GetAllBotsQueryUserReportedErrorJson } from "./getAllBotsQueryUserReportedErrorJson"
 
@@ -88,6 +89,10 @@ Example: "success,error,warning,pending" will match bots with any of these statu
 
 Status types are: - success: Bot completed successfully or is in progress - error: Bot encountered a system error - warning: Bot has a non-critical issue - pending: Bot is waiting to start */
   status_type?: GetAllBotsQueryStatusType
+  /** Filter by user email (comma-separated for multiple values)
+
+Example: "user1@example.com,user2@example.com" will match bots from accounts with these emails */
+  user_email?: GetAllBotsQueryUserEmail
   /** Filter by user reported error containing any of these texts (comma-separated)
 
 Example: "failed,error" will match errors containing either "failed" or "error" */
