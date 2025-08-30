@@ -29,6 +29,7 @@ export const getLeaveResponseMock = (
 export const getGetMeetingDataResponseMock = (
   overrideResponse: Partial<Metadata> = {}
 ): Metadata => ({
+  audio: faker.string.alpha(20),
   bot_data: {
     bot: {
       account_id: faker.number.int({ min: undefined, max: undefined }),

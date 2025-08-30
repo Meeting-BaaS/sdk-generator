@@ -8,6 +8,8 @@
 import type { BotData } from "./botData"
 
 export interface Metadata {
+  /** URL to access the recording WAV audio file. Will be an empty string if the file doesn't exist in S3. */
+  audio: string
   bot_data: BotData
   /** Duration of the recording in seconds */
   duration: number

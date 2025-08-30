@@ -6,12 +6,14 @@
  * OpenAPI spec version: 1.1
  */
 import type { EndMeetingTrampolineRequestDiarizationFailCount } from "./endMeetingTrampolineRequestDiarizationFailCount"
+import type { EndMeetingTrampolineRequestFilesGenerated } from "./endMeetingTrampolineRequestFilesGenerated"
 import type { EndMeetingTrampolineRequestTranscriptionFailCount } from "./endMeetingTrampolineRequestTranscriptionFailCount"
 
 export interface EndMeetingTrampolineRequest {
   /** @minimum 0 */
   diarization_fail_count?: EndMeetingTrampolineRequestDiarizationFailCount
   diarization_v2: boolean
+  files_generated?: EndMeetingTrampolineRequestFilesGenerated
   /** @minimum 0 */
   transcription_fail_count?: EndMeetingTrampolineRequestTranscriptionFailCount
 }

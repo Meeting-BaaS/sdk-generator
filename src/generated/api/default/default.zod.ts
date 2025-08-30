@@ -155,6 +155,11 @@ export const getMeetingDataQueryParams = zod.object({
 })
 
 export const getMeetingDataResponse = zod.object({
+  audio: zod
+    .string()
+    .describe(
+      "URL to access the recording WAV audio file. Will be an empty string if the file doesn't exist in S3."
+    ),
   bot_data: zod.object({
     bot: zod.object({
       account_id: zod.number(),
