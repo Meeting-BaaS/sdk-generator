@@ -31,7 +31,7 @@ export const joinBody = zod.object({
         .min(joinBodyAutomaticLeaveWaitingRoomTimeoutMin)
         .nullish()
         .describe(
-          "The timeout in seconds for the bot to wait in the waiting room before leaving the meeting, defaults to 600 seconds"
+          "The timeout in seconds for the bot to wait in the waiting room before leaving the meeting, defaults to 600 seconds. Note: Google Meet also has it's own waiting room timeout (about ~10 minutes). Setting a higher value for such meetings would have no effect because Google Meet will deny entry to the bot after its own timeout."
         )
     })
     .or(zod.null())
