@@ -238,6 +238,11 @@ export const getMeetingDataResponse = zod.object({
     .string()
     .describe(
       "URL to access the recording MP4 file. Will be an empty string if the file doesn't exist in S3."
+    ),
+  speaker_diarization_file: zod
+    .string()
+    .describe(
+      "URL to access the speaker diarization metadata file. Contains real-time speaker activity data with timestamps indicating when each speaker is talking. The file contains JSON arrays with speaker information including name, ID, timestamp, and speaking status. Will be an empty string if the file doesn't exist in S3."
     )
 })
 

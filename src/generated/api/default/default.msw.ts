@@ -178,6 +178,7 @@ export const getGetMeetingDataResponseMock = (
   },
   duration: faker.number.int({ min: undefined, max: undefined }),
   mp4: faker.string.alpha(20),
+  speaker_diarization_file: faker.string.alpha(20),
   ...overrideResponse
 })
 
