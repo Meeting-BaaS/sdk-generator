@@ -202,6 +202,7 @@ export const getEventResponse = zod.object({
         .describe("Custom data object"),
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
+      zoom_access_token_url: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -284,6 +285,7 @@ export const scheduleRecordEventBody = zod.object({
     .describe("Custom data object"),
   waiting_room_timeout: zod.number().nullish(),
   webhook_url: zod.string().nullish(),
+  zoom_access_token_url: zod.string().nullish(),
   zoom_sdk_id: zod.string().nullish(),
   zoom_sdk_pwd: zod.string().nullish()
 })
@@ -330,6 +332,7 @@ export const scheduleRecordEventResponseItem = zod.object({
         .describe("Custom data object"),
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
+      zoom_access_token_url: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -421,6 +424,7 @@ export const unscheduleRecordEventResponseItem = zod.object({
         .describe("Custom data object"),
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
+      zoom_access_token_url: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -481,6 +485,7 @@ export const patchBotBodyStreamingInputDefault = null
 export const patchBotBodyStreamingOutputDefault = null
 export const patchBotBodyTranscriptionCustomParametersDefault = null
 export const patchBotBodyWaitingRoomTimeoutDefault = null
+export const patchBotBodyZoomAccessTokenUrlDefault = null
 export const patchBotBodyZoomSdkIdDefault = null
 export const patchBotBodyZoomSdkPwdDefault = null
 
@@ -517,6 +522,7 @@ export const patchBotBody = zod.object({
   transcription_custom_parameters: zod.any().optional(),
   waiting_room_timeout: zod.number().nullish(),
   webhook_url: zod.string().nullish(),
+  zoom_access_token_url: zod.string().nullish(),
   zoom_sdk_id: zod.string().nullish(),
   zoom_sdk_pwd: zod.string().nullish()
 })
@@ -563,6 +569,7 @@ export const patchBotResponseItem = zod.object({
         .describe("Custom data object"),
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
+      zoom_access_token_url: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -699,6 +706,7 @@ export const listEventsResponse = zod.object({
               .describe("Custom data object"),
             waiting_room_timeout: zod.number().nullish(),
             webhook_url: zod.string(),
+            zoom_access_token_url: zod.string().nullish(),
             zoom_sdk_id: zod.string().nullish(),
             zoom_sdk_pwd: zod.string().nullish()
           })

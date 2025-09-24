@@ -16,6 +16,7 @@ import type { BotParamStreamingAudioFrequency } from "./botParamStreamingAudioFr
 import type { BotParamStreamingInput } from "./botParamStreamingInput"
 import type { BotParamStreamingOutput } from "./botParamStreamingOutput"
 import type { BotParamWaitingRoomTimeout } from "./botParamWaitingRoomTimeout"
+import type { BotParamZoomAccessTokenUrl } from "./botParamZoomAccessTokenUrl"
 import type { BotParamZoomSdkId } from "./botParamZoomSdkId"
 import type { BotParamZoomSdkPwd } from "./botParamZoomSdkPwd"
 import type { Extra } from "./extra"
@@ -36,6 +37,7 @@ export interface BotParam {
   transcription_custom_parameters: Extra
   waiting_room_timeout?: BotParamWaitingRoomTimeout
   webhook_url: string
+  zoom_access_token_url?: BotParamZoomAccessTokenUrl
   zoom_sdk_id?: BotParamZoomSdkId
   zoom_sdk_pwd?: BotParamZoomSdkPwd
 }

@@ -89,7 +89,7 @@ export const joinBody = zod.object({
     .min(joinBodyStartTimeMin)
     .nullish()
     .describe(
-      "Unix timestamp (in milliseconds) for when the bot should join the meeting. The bot joins 4 minutes before the start time."
+      "Unix timestamp (in seconds) for when the bot should join the meeting. The bot joins 4 minutes before the start time."
     ),
   streaming: zod
     .object({
@@ -111,6 +111,12 @@ export const joinBody = zod.object({
     .nullish()
     .describe(
       "A webhook URL to send events to, overrides the webhook URL set in your account settings."
+    ),
+  zoom_access_token_url: zod
+    .string()
+    .nullish()
+    .describe(
+      "URL that returns a Zoom ZAK token (short-lived access token) for joining authenticated meetings."
     ),
   zoom_sdk_id: zod
     .string()
@@ -208,6 +214,7 @@ export const getMeetingDataResponse = zod.object({
       uuid: zod.string().uuid(),
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
+      zoom_access_token_url: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     }),

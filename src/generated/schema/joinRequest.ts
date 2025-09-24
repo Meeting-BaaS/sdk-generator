@@ -16,6 +16,7 @@ import type { JoinRequestSpeechToText } from "./joinRequestSpeechToText"
 import type { JoinRequestStartTime } from "./joinRequestStartTime"
 import type { JoinRequestStreaming } from "./joinRequestStreaming"
 import type { JoinRequestWebhookUrl } from "./joinRequestWebhookUrl"
+import type { JoinRequestZoomAccessTokenUrl } from "./joinRequestZoomAccessTokenUrl"
 import type { JoinRequestZoomSdkId } from "./joinRequestZoomSdkId"
 import type { JoinRequestZoomSdkPwd } from "./joinRequestZoomSdkPwd"
 
@@ -39,7 +40,7 @@ export interface JoinRequest {
   /** The default speech to text provider is Gladia. */
   speech_to_text?: JoinRequestSpeechToText
   /**
-   * Unix timestamp (in milliseconds) for when the bot should join the meeting. The bot joins 4 minutes before the start time.
+   * Unix timestamp (in seconds) for when the bot should join the meeting. The bot joins 4 minutes before the start time.
    * @minimum 0
    */
   start_time?: JoinRequestStartTime
@@ -49,6 +50,8 @@ export interface JoinRequest {
   transcription_custom_parameters?: unknown
   /** A webhook URL to send events to, overrides the webhook URL set in your account settings. */
   webhook_url?: JoinRequestWebhookUrl
+  /** URL that returns a Zoom ZAK token (short-lived access token) for joining authenticated meetings. */
+  zoom_access_token_url?: JoinRequestZoomAccessTokenUrl
   /** For the Own Zoom Credentials feature, we need your zoom sdk id. */
   zoom_sdk_id?: JoinRequestZoomSdkId
   /** For the Own Zoom Credentials feature, we need your zoom sdk pwd. */

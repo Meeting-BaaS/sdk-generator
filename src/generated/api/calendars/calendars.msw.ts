@@ -180,6 +180,10 @@ export const getGetEventResponseMock = (overrideResponse: Partial<Event> = {}): 
           undefined
         ]),
         webhook_url: faker.string.alpha(20),
+        zoom_access_token_url: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
         zoom_sdk_id: faker.helpers.arrayElement([
           faker.helpers.arrayElement([faker.string.alpha(20), null]),
           undefined
@@ -299,6 +303,10 @@ export const getScheduleRecordEventResponseMock = (): Event[] =>
             undefined
           ]),
           webhook_url: faker.string.alpha(20),
+          zoom_access_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
           zoom_sdk_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
@@ -417,6 +425,10 @@ export const getUnscheduleRecordEventResponseMock = (): Event[] =>
             undefined
           ]),
           webhook_url: faker.string.alpha(20),
+          zoom_access_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
           zoom_sdk_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
@@ -535,6 +547,10 @@ export const getPatchBotResponseMock = (): Event[] =>
             undefined
           ]),
           webhook_url: faker.string.alpha(20),
+          zoom_access_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
           zoom_sdk_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
@@ -655,6 +671,10 @@ export const getListEventsResponseMock = (
             undefined
           ]),
           webhook_url: faker.string.alpha(20),
+          zoom_access_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
           zoom_sdk_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined

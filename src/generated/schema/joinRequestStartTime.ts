@@ -7,7 +7,7 @@
  */
 
 /**
- * Unix timestamp (in milliseconds) for when the bot should join the meeting. The bot joins 4 minutes before the start time.
+ * Unix timestamp (in seconds) for when the bot should join the meeting. The bot joins 4 minutes before the start time.
  * @minimum 0
  */
 export type JoinRequestStartTime = number | null

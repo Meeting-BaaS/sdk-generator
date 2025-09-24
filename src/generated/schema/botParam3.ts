@@ -17,6 +17,7 @@ import type { BotParam3StreamingInput } from "./botParam3StreamingInput"
 import type { BotParam3StreamingOutput } from "./botParam3StreamingOutput"
 import type { BotParam3WaitingRoomTimeout } from "./botParam3WaitingRoomTimeout"
 import type { BotParam3WebhookUrl } from "./botParam3WebhookUrl"
+import type { BotParam3ZoomAccessTokenUrl } from "./botParam3ZoomAccessTokenUrl"
 import type { BotParam3ZoomSdkId } from "./botParam3ZoomSdkId"
 import type { BotParam3ZoomSdkPwd } from "./botParam3ZoomSdkPwd"
 
@@ -35,6 +36,7 @@ export interface BotParam3 {
   transcription_custom_parameters?: unknown
   waiting_room_timeout?: BotParam3WaitingRoomTimeout
   webhook_url?: BotParam3WebhookUrl
+  zoom_access_token_url?: BotParam3ZoomAccessTokenUrl
   zoom_sdk_id?: BotParam3ZoomSdkId
   zoom_sdk_pwd?: BotParam3ZoomSdkPwd
 }
