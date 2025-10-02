@@ -35,8 +35,8 @@ export interface JoinRequest {
   meeting_url: string
   /** The recording mode for the bot, defaults to 'speaker_view'. */
   recording_mode?: JoinRequestRecordingMode
-  /** Whether or not the bot should come from the available pool of bots or be a dedicated bot. Reserved bots come in exactly 4 minutes after the request. */
-  reserved: boolean
+  /** Deprecated, do not use. */
+  reserved?: boolean
   /** The default speech to text provider is Gladia. */
   speech_to_text?: JoinRequestSpeechToText
   /**

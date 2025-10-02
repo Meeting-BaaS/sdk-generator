@@ -13,6 +13,7 @@ import { z as zod } from "zod"
  */
 export const joinBodyAutomaticLeaveNooneJoinedTimeoutMin = 0
 export const joinBodyAutomaticLeaveWaitingRoomTimeoutMin = 0
+export const joinBodyReservedDefault = false
 export const joinBodyStartTimeMin = 0
 export const joinBodyTranscriptionCustomParametersDefault = null
 
@@ -70,11 +71,7 @@ export const joinBody = zod.object({
     .or(zod.null())
     .optional()
     .describe("The recording mode for the bot, defaults to 'speaker_view'."),
-  reserved: zod
-    .boolean()
-    .describe(
-      "Whether or not the bot should come from the available pool of bots or be a dedicated bot. Reserved bots come in exactly 4 minutes after the request."
-    ),
+  reserved: zod.boolean().optional().describe("Deprecated, do not use."),
   speech_to_text: zod
     .object({
       api_key: zod.string().nullish(),
