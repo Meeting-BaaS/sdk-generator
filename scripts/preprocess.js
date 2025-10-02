@@ -11,7 +11,8 @@ function preprocess(obj, path = "") {
         obj[key] = {}
       }
       // Fix boolean properties in schema properties (invalid OpenAPI)
-      else if (typeof obj[key] === "boolean" && currentPath.includes("properties.")) {
+      // Only fix boolean values that are invalid, not valid boolean defaults
+      else if (typeof obj[key] === "boolean" && currentPath.includes("properties.") && key !== "default") {
         issues.push(`Fixed boolean property in schema at ${currentPath}: ${obj[key]} -> {}`)
         obj[key] = {}
       }
