@@ -11,6 +11,10 @@ import type { EndMeetingTrampolineRequestTranscriptionFailCount } from "./endMee
 
 export interface EndMeetingTrampolineRequest {
   /** @minimum 0 */
+  bot_exited_at: number
+  /** @minimum 0 */
+  bot_joined_at: number
+  /** @minimum 0 */
   diarization_fail_count?: EndMeetingTrampolineRequestDiarizationFailCount
   diarization_v2: boolean
   files_generated?: EndMeetingTrampolineRequestFilesGenerated

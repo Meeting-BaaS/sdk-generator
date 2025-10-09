@@ -33,10 +33,12 @@ export const getGetMeetingDataResponseMock = (
   bot_data: {
     bot: {
       account_id: faker.number.int({ min: undefined, max: undefined }),
+      bot_exited_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       bot_image: faker.helpers.arrayElement([
         faker.helpers.arrayElement([faker.string.alpha(20), null]),
         undefined
       ]),
+      bot_joined_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
       bot_name: faker.string.alpha(20),
       bot_param_id: faker.number.int({ min: undefined, max: undefined }),
       created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,

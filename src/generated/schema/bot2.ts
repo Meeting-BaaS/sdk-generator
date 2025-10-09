@@ -17,6 +17,8 @@ import type { OptionalDateTime } from "./optionalDateTime"
 
 export interface Bot2 {
   account_id: number
+  bot_exited_at: OptionalDateTime
+  bot_joined_at: OptionalDateTime
   bot_param_id: number
   created_at: DateTime
   diarization_fails?: Bot2DiarizationFails

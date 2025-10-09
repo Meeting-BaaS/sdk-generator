@@ -28,6 +28,10 @@ export interface BotWithStatus {
   account_email?: BotWithStatusAccountEmail
   /** The account that owns this bot */
   account_id: number
+  /** When the bot actually exited the meeting (precise timing) */
+  bot_exited_at: OptionalDateTime
+  /** When the bot actually joined the meeting (precise timing) */
+  bot_joined_at: OptionalDateTime
   /** ID of the bot parameters used */
   bot_param_id: number
   /** When the bot was created */

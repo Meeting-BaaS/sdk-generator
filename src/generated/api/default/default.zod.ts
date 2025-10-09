@@ -86,7 +86,7 @@ export const joinBody = zod.object({
     .min(joinBodyStartTimeMin)
     .nullish()
     .describe(
-      "Unix timestamp (in seconds) for when the bot should join the meeting. The bot joins 4 minutes before the start time."
+      "Reserved has been deprecated in favour of start_time. Unix timestamp (in seconds) for when the bot should join the meeting. The bot joins eaxctly at the start time."
     ),
   streaming: zod
     .object({
@@ -166,7 +166,9 @@ export const getMeetingDataResponse = zod.object({
   bot_data: zod.object({
     bot: zod.object({
       account_id: zod.number(),
+      bot_exited_at: zod.string().datetime({}).nullable(),
       bot_image: zod.string().nullish(),
+      bot_joined_at: zod.string().datetime({}).nullable(),
       bot_name: zod.string(),
       bot_param_id: zod.number(),
       created_at: zod.string().datetime({}),

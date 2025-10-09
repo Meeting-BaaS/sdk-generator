@@ -1,6 +1,6 @@
 {
   "name": "@meeting-baas/sdk",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "Official SDK for Meeting BaaS API - https://meetingbaas.com",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

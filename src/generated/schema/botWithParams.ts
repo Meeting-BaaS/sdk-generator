@@ -5,6 +5,7 @@
  * Meeting BaaS API
  * OpenAPI spec version: 1.1
  */
+
 import type { BotWithParamsBotImage } from "./botWithParamsBotImage"
 import type { BotWithParamsDeduplicationKey } from "./botWithParamsDeduplicationKey"
 import type { BotWithParamsDiarizationFails } from "./botWithParamsDiarizationFails"
@@ -31,7 +32,9 @@ import type { OptionalDateTime } from "./optionalDateTime"
 
 export interface BotWithParams {
   account_id: number
+  bot_exited_at: OptionalDateTime
   bot_image?: BotWithParamsBotImage
+  bot_joined_at: OptionalDateTime
   bot_name: string
   bot_param_id: number
   created_at: DateTime

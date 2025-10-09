@@ -40,8 +40,8 @@ Sent when a bot successfully completes recording a meeting. Contains full transc
       }
     ],
     \"speakers\": [
-      \"Jane Smith\",
-      \"John Doe\"
+      \"John Doe\",
+      \"Jane Smith\"
     ],
     \"mp4\": \"https://storage.example.com/recordings/video123.mp4?token=abc\",
     \"audio\": \"https://storage.example.com/recordings/audio123.wav?token=abc\",
@@ -52,6 +52,7 @@ Sent when a bot successfully completes recording a meeting. Contains full transc
 
 The `complete` event includes:
 - **bot_id**: Unique identifier for the bot that completed recording
+- **event_uuid**: UUID of the calendar event (if this bot was created from an event)
 - **speakers**: A set of speaker names identified in the meeting
 - **transcript**: Full transcript data with speaker identification and word timing
 - **mp4**: URL to the recording file (valid for 24 hours by default)
@@ -72,6 +73,7 @@ Sent when a bot fails to join or record a meeting. Contains error details.
 
 The `failed` event includes:
 - **bot_id**: Unique identifier for the bot that failed
+- **event_uuid**: UUID of the calendar event (if this bot was created from an event)
 - **error**: Error code identifying the type of failure
 - **message**: Detailed human-readable error message
 
@@ -191,8 +193,8 @@ Sent when a bot successfully completes recording a meeting.
       }
     ],
     \"speakers\": [
-      \"Jane Smith\",
-      \"John Doe\"
+      \"John Doe\",
+      \"Jane Smith\"
     ],
     \"mp4\": \"https://storage.example.com/recordings/video123.mp4?token=abc\",
     \"audio\": \"https://storage.example.com/recordings/audio123.wav?token=abc\",
