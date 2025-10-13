@@ -70,7 +70,9 @@ export const joinBody = zod.object({
     .describe("Recording mode for the bot")
     .or(zod.null())
     .optional()
-    .describe("The recording mode for the bot, defaults to 'speaker_view'."),
+    .describe(
+      "The recording mode for the bot, defaults to 'speaker_view'. Supported values are 'speaker_view' and 'audio_only'. 'gallery_view' is currently under development."
+    ),
   reserved: zod.boolean().optional().describe("Deprecated, do not use."),
   speech_to_text: zod
     .object({

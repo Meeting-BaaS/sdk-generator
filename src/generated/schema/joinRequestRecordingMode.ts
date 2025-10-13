@@ -8,6 +8,6 @@
 import type { RecordingMode } from "./recordingMode"
 
 /**
- * The recording mode for the bot, defaults to 'speaker_view'.
+ * The recording mode for the bot, defaults to 'speaker_view'. Supported values are 'speaker_view' and 'audio_only'. 'gallery_view' is currently under development.
  */
 export type JoinRequestRecordingMode = RecordingMode | null

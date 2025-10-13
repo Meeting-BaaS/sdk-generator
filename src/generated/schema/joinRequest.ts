@@ -33,7 +33,7 @@ export interface JoinRequest {
   /** A JSON object that allows you to add custom data to a bot for your convenience, e.g. your end user's ID. */
   extra?: Extra
   meeting_url: string
-  /** The recording mode for the bot, defaults to 'speaker_view'. */
+  /** The recording mode for the bot, defaults to 'speaker_view'. Supported values are 'speaker_view' and 'audio_only'. 'gallery_view' is currently under development. */
   recording_mode?: JoinRequestRecordingMode
   /** Deprecated, do not use. */
   reserved?: boolean

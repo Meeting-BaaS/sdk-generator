@@ -8,34 +8,6 @@
 import { z as zod } from "zod"
 
 /**
- * Forces a sync of all your connected calendars with their providers (Google, Microsoft).
-
-Processes each calendar individually and returns:
-- `synced_calendars`: UUIDs of successfully synced calendars
-- `errors`: Details of any failures
-
-Sends webhook notifications for calendars with updates.
- * @summary Resync All Calendars
- */
-export const resyncAllResponseErrorsItemMin = 2
-
-export const resyncAllResponseErrorsItemMax = 2
-
-export const resyncAllResponse = zod.object({
-  errors: zod
-    .array(
-      zod
-        .array(zod.record(zod.string(), zod.any()))
-        .min(resyncAllResponseErrorsItemMin)
-        .max(resyncAllResponseErrorsItemMax)
-    )
-    .describe("List of calendar UUIDs that failed to resync, with error messages"),
-  synced_calendars: zod
-    .array(zod.string().uuid())
-    .describe("List of calendar UUIDs that were successfully resynced")
-})
-
-/**
  * Retrieves unprocessed calendar data directly from the provider (Google, Microsoft) using provided OAuth credentials. This endpoint is typically used during the initial setup process to allow users to select which calendars to integrate. Returns a list of available calendars with their unique IDs, email addresses, and primary status. This data is not persisted until a calendar is formally created using the create_calendar endpoint.
  * @summary List Raw Calendars
  */
@@ -97,6 +69,45 @@ export const createCalendarResponse = zod.object({
     resource_id: zod.string().nullish(),
     uuid: zod.string().uuid()
   })
+})
+
+/**
+ * Forces a sync of all your connected calendars with their providers (Google, Microsoft).
+
+Processes each calendar individually and returns:
+- `synced_calendars`: UUIDs of successfully synced calendars
+- `errors`: Details of any failures
+
+Sends webhook notifications for calendars with updates.
+ * @summary Resync All Calendars
+ */
+export const resyncAllCalendarsQueryParams = zod.object({
+  days: zod
+    .number()
+    .nullish()
+    .describe("Number of days to sync forward (default: 30 for rolling window)")
+})
+
+export const resyncAllCalendarsResponseErrorsItemMin = 2
+
+export const resyncAllCalendarsResponseErrorsItemMax = 2
+
+export const resyncAllCalendarsResponse = zod.object({
+  errors: zod
+    .array(
+      zod
+        .array(zod.record(zod.string(), zod.any()))
+        .min(resyncAllCalendarsResponseErrorsItemMin)
+        .max(resyncAllCalendarsResponseErrorsItemMax)
+    )
+    .describe(
+      "List of calendar UUIDs that failed to resync, with detailed error messages explaining the failure reason"
+    ),
+  synced_calendars: zod
+    .array(zod.string().uuid())
+    .describe(
+      "List of calendar UUIDs that were successfully resynced with their calendar provider (Google, Microsoft)"
+    )
 })
 
 /**
@@ -237,7 +248,7 @@ export const getEventResponse = zod.object({
 })
 
 /**
- * Configures a bot to automatically join and record a specific calendar event at its scheduled time. The request body contains detailed bot configuration, including recording options, streaming settings, and webhook notification URLs. For recurring events, the 'all_occurrences' parameter can be set to true to schedule recording for all instances of the recurring series, or false (default) to schedule only the specific instance. Returns the updated event(s) with the bot parameters attached.
+ * Configures a bot to automatically join and record a specific calendar event at its scheduled time. The UUID in the request path is the event UUID. The request body contains detailed bot configuration, including recording options, streaming settings, and webhook notification URLs. For recurring events, the 'all_occurrences' parameter can be set to true to schedule recording for all instances of the recurring series, or false (default) to schedule only the specific instance. Returns the updated event(s) with the bot parameters attached.
  * @summary Schedule Record Event
  */
 export const scheduleRecordEventParams = zod.object({

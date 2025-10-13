@@ -21,27 +21,13 @@ import type {
   ListRawCalendarsParams,
   ListRawCalendarsResponse,
   PatchBotParams,
-  ResyncAllResponse,
+  ResyncAllCalendarsParams,
+  ResyncAllCalendarsResponse,
   ScheduleRecordEventParams,
   UnscheduleRecordEventParams,
   UpdateCalendarParams
 } from "../../schema"
 
-/**
- * Forces a sync of all your connected calendars with their providers (Google, Microsoft).
-
-Processes each calendar individually and returns:
-- `synced_calendars`: UUIDs of successfully synced calendars
-- `errors`: Details of any failures
-
-Sends webhook notifications for calendars with updates.
- * @summary Resync All Calendars
- */
-export const resyncAll = <TData = AxiosResponse<ResyncAllResponse>>(
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/internal/calendar/resync_all", undefined, options)
-}
 /**
  * Retrieves unprocessed calendar data directly from the provider (Google, Microsoft) using provided OAuth credentials. This endpoint is typically used during the initial setup process to allow users to select which calendars to integrate. Returns a list of available calendars with their unique IDs, email addresses, and primary status. This data is not persisted until a calendar is formally created using the create_calendar endpoint.
  * @summary List Raw Calendars
@@ -70,6 +56,25 @@ export const createCalendar = <TData = AxiosResponse<CreateCalendarResponse>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
   return axios.post("/calendars/", createCalendarParams, options)
+}
+/**
+ * Forces a sync of all your connected calendars with their providers (Google, Microsoft).
+
+Processes each calendar individually and returns:
+- `synced_calendars`: UUIDs of successfully synced calendars
+- `errors`: Details of any failures
+
+Sends webhook notifications for calendars with updates.
+ * @summary Resync All Calendars
+ */
+export const resyncAllCalendars = <TData = AxiosResponse<ResyncAllCalendarsResponse>>(
+  params?: ResyncAllCalendarsParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post("/calendars/resync_all", undefined, {
+    ...options,
+    params: { ...params, ...options?.params }
+  })
 }
 /**
  * Retrieves detailed information about a specific calendar integration by its UUID. Returns comprehensive calendar data including the calendar name, email address, provider details (Google, Microsoft), sync status, and other metadata. This endpoint is useful for displaying calendar information to users or verifying the status of a calendar integration before performing operations on its events.
@@ -113,7 +118,7 @@ export const getEvent = <TData = AxiosResponse<Event>>(
   return axios.get(`/calendar_events/${uuid}`, options)
 }
 /**
- * Configures a bot to automatically join and record a specific calendar event at its scheduled time. The request body contains detailed bot configuration, including recording options, streaming settings, and webhook notification URLs. For recurring events, the 'all_occurrences' parameter can be set to true to schedule recording for all instances of the recurring series, or false (default) to schedule only the specific instance. Returns the updated event(s) with the bot parameters attached.
+ * Configures a bot to automatically join and record a specific calendar event at its scheduled time. The UUID in the request path is the event UUID. The request body contains detailed bot configuration, including recording options, streaming settings, and webhook notification URLs. For recurring events, the 'all_occurrences' parameter can be set to true to schedule recording for all instances of the recurring series, or false (default) to schedule only the specific instance. Returns the updated event(s) with the bot parameters attached.
  * @summary Schedule Record Event
  */
 export const scheduleRecordEvent = <TData = AxiosResponse<Event[]>>(
@@ -169,10 +174,10 @@ export const listEvents = <TData = AxiosResponse<ListEventResponse>>(
     params: { ...params, ...options?.params }
   })
 }
-export type ResyncAllResult = AxiosResponse<ResyncAllResponse>
 export type ListRawCalendarsResult = AxiosResponse<ListRawCalendarsResponse>
 export type ListCalendarsResult = AxiosResponse<Calendar[]>
 export type CreateCalendarResult = AxiosResponse<CreateCalendarResponse>
+export type ResyncAllCalendarsResult = AxiosResponse<ResyncAllCalendarsResponse>
 export type GetCalendarResult = AxiosResponse<Calendar>
 export type DeleteCalendarResult = AxiosResponse<void>
 export type UpdateCalendarResult = AxiosResponse<CreateCalendarResponse>

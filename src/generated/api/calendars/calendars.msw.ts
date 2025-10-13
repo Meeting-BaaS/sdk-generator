@@ -14,24 +14,9 @@ import type {
   Event,
   ListEventResponse,
   ListRawCalendarsResponse,
-  ResyncAllResponse
+  ResyncAllCalendarsResponse
 } from "../../schema"
 import { AudioFrequency, SpeechToTextProvider } from "../../schema"
-
-export const getResyncAllResponseMock = (
-  overrideResponse: Partial<ResyncAllResponse> = {}
-): ResyncAllResponse => ({
-  errors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-      [faker.string.alphanumeric(5)]: {}
-    }))
-  ),
-  synced_calendars: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1
-  ).map(() => faker.string.uuid()),
-  ...overrideResponse
-})
 
 export const getListRawCalendarsResponseMock = (
   overrideResponse: Partial<ListRawCalendarsResponse> = {}
@@ -71,6 +56,21 @@ export const getCreateCalendarResponseMock = (
     ]),
     uuid: faker.string.uuid()
   },
+  ...overrideResponse
+})
+
+export const getResyncAllCalendarsResponseMock = (
+  overrideResponse: Partial<ResyncAllCalendarsResponse> = {}
+): ResyncAllCalendarsResponse => ({
+  errors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      [faker.string.alphanumeric(5)]: {}
+    }))
+  ),
+  synced_calendars: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1
+  ).map(() => faker.string.uuid()),
   ...overrideResponse
 })
 
@@ -714,29 +714,6 @@ export const getListEventsResponseMock = (
   ...overrideResponse
 })
 
-export const getResyncAllMockHandler = (
-  overrideResponse?:
-    | ResyncAllResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<ResyncAllResponse> | ResyncAllResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/internal/calendar/resync_all", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getResyncAllResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
-  })
-}
-
 export const getListRawCalendarsMockHandler = (
   overrideResponse?:
     | ListRawCalendarsResponse
@@ -798,6 +775,29 @@ export const getCreateCalendarMockHandler = (
             ? await overrideResponse(info)
             : overrideResponse
           : getCreateCalendarResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
+  })
+}
+
+export const getResyncAllCalendarsMockHandler = (
+  overrideResponse?:
+    | ResyncAllCalendarsResponse
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0]
+      ) => Promise<ResyncAllCalendarsResponse> | ResyncAllCalendarsResponse)
+) => {
+  return http.post("https://api.meetingbaas.com/calendars/resync_all", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getResyncAllCalendarsResponseMock()
       ),
       { status: 200, headers: { "Content-Type": "application/json" } }
     )
@@ -969,10 +969,10 @@ export const getListEventsMockHandler = (
   })
 }
 export const getCalendarsMock = () => [
-  getResyncAllMockHandler(),
   getListRawCalendarsMockHandler(),
   getListCalendarsMockHandler(),
   getCreateCalendarMockHandler(),
+  getResyncAllCalendarsMockHandler(),
   getGetCalendarMockHandler(),
   getDeleteCalendarMockHandler(),
   getUpdateCalendarMockHandler(),
