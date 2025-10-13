@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest"
 import {
   getListRawCalendarsMockHandler,
   getListRawCalendarsResponseMock,
-  getResyncAllMockHandler,
-  getResyncAllResponseMock
+  getResyncAllCalendarsMockHandler,
+  getResyncAllCalendarsResponseMock
 } from "../../src/generated/api/calendars/calendars.msw"
 import { createBaasClient } from "../../src/node/client"
 import { createMockApiKey, server } from "../setup"
@@ -19,7 +19,7 @@ describe("Utility Operations Integration Tests", () => {
 
   describe("resyncAllCalendars", () => {
     it("should resync all calendars successfully", async () => {
-      const mockResponse = getResyncAllResponseMock({
+      const mockResponse = getResyncAllCalendarsResponseMock({
         synced_calendars: [
           "123e4567-e89b-12d3-a456-426614174000",
           "987fcdeb-51a2-43d1-b789-123456789abc"
@@ -27,7 +27,7 @@ describe("Utility Operations Integration Tests", () => {
         errors: []
       })
 
-      server.use(getResyncAllMockHandler(mockResponse))
+      server.use(getResyncAllCalendarsMockHandler(mockResponse))
 
       const result = await client.resyncAllCalendars()
       expect(result.success).toBe(true)
@@ -37,14 +37,14 @@ describe("Utility Operations Integration Tests", () => {
     })
 
     it("should handle resync errors", async () => {
-      const mockResponse = getResyncAllResponseMock({
+      const mockResponse = getResyncAllCalendarsResponseMock({
         synced_calendars: ["123e4567-e89b-12d3-a456-426614174000"],
         errors: [
           [{ error: "Calendar not found", calendar_id: "987fcdeb-51a2-43d1-b789-123456789abc" }]
         ]
       })
 
-      server.use(getResyncAllMockHandler(mockResponse))
+      server.use(getResyncAllCalendarsMockHandler(mockResponse))
 
       const result = await client.resyncAllCalendars()
       expect(result.success).toBe(true)

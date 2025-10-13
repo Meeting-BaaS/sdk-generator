@@ -20,7 +20,8 @@ import type {
   ListRecentBotsResponse,
   Metadata,
   PatchBotParams,
-  ResyncAllResponse,
+  ResyncAllCalendarsParams,
+  ResyncAllCalendarsResponse,
   RetranscribeBody,
   ScheduleRecordEventParams,
   ScreenshotsList,
@@ -425,10 +426,21 @@ export function createBaasClient(config: BaasClientConfig) {
      * Triggers a full resync of all calendar events for all integrated calendars. This operation is useful when you need to ensure that all calendar data is up-to-date in the system. It will re-fetch all events from the calendar providers and update the system's internal state. Returns a response indicating the status of the resync operation.
      * @returns The response from the resync all calendars request
      */
-    async resyncAllCalendars(): Promise<ApiResponse<ResyncAllResponse>> {
-      const { resyncAll } = await import("../generated/api/calendars/calendars.js")
+    async resyncAllCalendars(
+      query?: ResyncAllCalendarsParams
+    ): Promise<ApiResponse<ResyncAllCalendarsResponse>> {
+      const { resyncAllCalendars } = await import("../generated/api/calendars/calendars.js")
 
-      return apiWrapperNoParams(resyncAll, state.getOptions())
+      const { resyncAllCalendarsQueryParams } = await import(
+        "../generated/api/calendars/calendars.zod.js"
+      )
+
+      return apiWrapper(
+        resyncAllCalendars,
+        resyncAllCalendarsQueryParams,
+        query ?? {},
+        state.getOptions()
+      )
     },
 
     /**

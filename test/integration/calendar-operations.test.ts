@@ -15,8 +15,8 @@ import {
   getListRawCalendarsResponseMock,
   getPatchBotMockHandler,
   getPatchBotResponseMock,
-  getResyncAllMockHandler,
-  getResyncAllResponseMock,
+  getResyncAllCalendarsMockHandler,
+  getResyncAllCalendarsResponseMock,
   getScheduleRecordEventMockHandler,
   getScheduleRecordEventResponseMock,
   getUnscheduleRecordEventMockHandler,
@@ -292,8 +292,8 @@ describe("Calendar Operations Integration", () => {
 
   describe("Calendar Sync Operations", () => {
     it("should resync all calendars", async () => {
-      const mockResyncResult = getResyncAllResponseMock()
-      server.use(getResyncAllMockHandler(mockResyncResult))
+      const mockResyncResult = getResyncAllCalendarsResponseMock()
+      server.use(getResyncAllCalendarsMockHandler(mockResyncResult))
 
       const result = await client.resyncAllCalendars()
 
