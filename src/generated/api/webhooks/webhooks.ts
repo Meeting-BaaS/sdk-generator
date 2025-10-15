@@ -21,6 +21,7 @@ Sent when a bot successfully completes recording a meeting. Contains full transc
   \"event\": \"complete\",
   \"data\": {
     \"bot_id\": \"123e4567-e89b-12d3-a456-426614174000\",
+    \"event_uuid\": \"123e4567-e89b-12d3-a456-426614174001\",
     \"transcript\": [
       {
         \"speaker\": \"John Doe\",
@@ -42,8 +43,8 @@ Sent when a bot successfully completes recording a meeting. Contains full transc
       }
     ],
     \"speakers\": [
-      \"John Doe\",
-      \"Jane Smith\"
+      \"Jane Smith\",
+      \"John Doe\"
     ],
     \"mp4\": \"https://storage.example.com/recordings/video123.mp4?token=abc\",
     \"audio\": \"https://storage.example.com/recordings/audio123.wav?token=abc\",
@@ -67,6 +68,7 @@ Sent when a bot fails to join or record a meeting. Contains error details.
   \"event\": \"failed\",
   \"data\": {
     \"bot_id\": \"123e4567-e89b-12d3-a456-426614174000\",
+    \"event_uuid\": \"123e4567-e89b-12d3-a456-426614174001\",
     \"error\": \"meeting_not_found\",
     \"message\": \"Could not join meeting: The meeting ID was not found or has expired\"
   }
@@ -177,6 +179,7 @@ Sent when a bot successfully completes recording a meeting.
   \"event\": \"complete\",
   \"data\": {
     \"bot_id\": \"123e4567-e89b-12d3-a456-426614174000\",
+    \"event_uuid\": \"123e4567-e89b-12d3-a456-426614174001\",
     \"transcript\": [
       {
         \"speaker\": \"John Doe\",
@@ -198,8 +201,8 @@ Sent when a bot successfully completes recording a meeting.
       }
     ],
     \"speakers\": [
-      \"Jane Smith\",
-      \"John Doe\"
+      \"John Doe\",
+      \"Jane Smith\"
     ],
     \"mp4\": \"https://storage.example.com/recordings/video123.mp4?token=abc\",
     \"audio\": \"https://storage.example.com/recordings/audio123.wav?token=abc\",
@@ -218,6 +221,7 @@ Sent when a bot successfully completes recording a meeting.
 - Store the transcript data in your database
 - Update meeting status in your application
 - Notify users that the recording is available
+- Use `event_uuid` to correlate with calendar events (if applicable)
 
 ### 2. `failed`
 Sent when a bot fails to join or record a meeting.
@@ -228,6 +232,7 @@ Sent when a bot fails to join or record a meeting.
   \"event\": \"failed\",
   \"data\": {
     \"bot_id\": \"123e4567-e89b-12d3-a456-426614174000\",
+    \"event_uuid\": \"123e4567-e89b-12d3-a456-426614174001\",
     \"error\": \"meeting_not_found\",
     \"message\": \"Could not join meeting: The meeting ID was not found or has expired\"
   }
@@ -246,6 +251,7 @@ Sent when a bot fails to join or record a meeting.
 - Notify administrators or users about the failed recording
 - Attempt to reschedule if appropriate
 - Update meeting status in your system
+- Use `event_uuid` to correlate with calendar events (if applicable)
 
 ### 3. `transcription_complete`
 Sent when transcription is completed separately from recording.
@@ -273,6 +279,7 @@ Sent when transcription is completed separately from recording.
 ## Webhook Usage Tips
 
 - Each event includes the `bot_id` so you can correlate with your internal data
+- The `event_uuid` field is included when the bot was created from a calendar event (null for direct bots or scheduled bots)
 - The complete event includes speaker identification and full transcript data
 - For downloading recordings, the mp4 URL is valid for 24 hours
 - Handle the webhook asynchronously and return 200 OK quickly to prevent timeouts

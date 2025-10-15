@@ -267,7 +267,7 @@ export const scheduleRecordEventBody = zod.object({
   bot_name: zod.string(),
   deduplication_key: zod.string().nullish(),
   enter_message: zod.string().nullish(),
-  extra: zod.record(zod.string(), zod.any()).describe("Custom data object"),
+  extra: zod.record(zod.string(), zod.any()).optional().describe("Custom data object"),
   noone_joined_timeout: zod.number().nullish(),
   recording_mode: zod
     .enum(["speaker_view"])
@@ -486,6 +486,7 @@ export const patchBotQueryParams = zod.object({
 })
 
 export const patchBotBodyBotImageDefault = null
+export const patchBotBodyBotNameDefault = null
 export const patchBotBodyDeduplicationKeyDefault = null
 export const patchBotBodyEnterMessageDefault = null
 export const patchBotBodyExtraDefault = null
@@ -496,6 +497,7 @@ export const patchBotBodyStreamingInputDefault = null
 export const patchBotBodyStreamingOutputDefault = null
 export const patchBotBodyTranscriptionCustomParametersDefault = null
 export const patchBotBodyWaitingRoomTimeoutDefault = null
+export const patchBotBodyWebhookUrlDefault = null
 export const patchBotBodyZoomAccessTokenUrlDefault = null
 export const patchBotBodyZoomSdkIdDefault = null
 export const patchBotBodyZoomSdkPwdDefault = null

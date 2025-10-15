@@ -26,7 +26,7 @@ export interface BotParam2 {
   bot_name: string
   deduplication_key?: BotParam2DeduplicationKey
   enter_message?: BotParam2EnterMessage
-  extra: Extra
+  extra?: Extra
   noone_joined_timeout?: BotParam2NooneJoinedTimeout
   recording_mode?: BotParam2RecordingMode
   speech_to_text?: BotParam2SpeechToText

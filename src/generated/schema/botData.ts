@@ -5,10 +5,14 @@
  * Meeting BaaS API
  * OpenAPI spec version: 1.1
  */
+
+import type { BotDataEventUuid } from "./botDataEventUuid"
 import type { BotWithParams } from "./botWithParams"
 import type { Transcript } from "./transcript"
 
 export interface BotData {
   bot: BotWithParams
+  /** UUID of the calendar event (if this bot was created from an event) */
+  event_uuid?: BotDataEventUuid
   transcripts: Transcript[]
 }

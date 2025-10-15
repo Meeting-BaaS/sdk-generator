@@ -219,6 +219,11 @@ export const getMeetingDataResponse = zod.object({
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     }),
+    event_uuid: zod
+      .string()
+      .uuid()
+      .nullish()
+      .describe("UUID of the calendar event (if this bot was created from an event)"),
     transcripts: zod.array(
       zod.object({
         bot_id: zod.number(),

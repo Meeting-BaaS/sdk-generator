@@ -148,6 +148,7 @@ export const getGetMeetingDataResponseMock = (
         undefined
       ])
     },
+    event_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
     transcripts: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
       () => ({
         bot_id: faker.number.int({ min: undefined, max: undefined }),
