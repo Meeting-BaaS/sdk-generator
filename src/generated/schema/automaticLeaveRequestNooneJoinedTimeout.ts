@@ -7,7 +7,7 @@
  */
 
 /**
- * The timeout in seconds for the bot to wait for participants to join before leaving the meeting, defaults to 600 seconds
+ * The timeout in seconds for the bot to wait for participants to join before leaving the meeting, defaults to 300 seconds (5 minutes). Minimum: 120 seconds (2 minutes). Maximum: 1800 seconds (30 minutes). When a bot first joins a meeting, it uses this timeout to determine if any participants have joined. If no participants are detected within this period, the bot will leave the meeting. Once participants are detected, the silence_timeout takes over. Applies to Google Meet and Microsoft Teams only.
  * @minimum 0
  */
 export type AutomaticLeaveRequestNooneJoinedTimeout = number | null

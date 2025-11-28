@@ -13,8 +13,12 @@ export interface Metadata {
   bot_data: BotData
   /** Duration of the recording in seconds */
   duration: number
+  /** URL to access the meeting participants log file. Contains information about meeting participants. Will be an empty string if the file doesn't exist in S3. */
+  meeting_participants_file: string
   /** URL to access the recording MP4 file. Will be an empty string if the file doesn't exist in S3. */
   mp4: string
   /** URL to access the speaker diarization metadata file. Contains real-time speaker activity data with timestamps indicating when each speaker is talking. The file contains JSON arrays with speaker information including name, ID, timestamp, and speaking status. Will be an empty string if the file doesn't exist in S3. */
   speaker_diarization_file: string
+  /** URL to access the network speaker detection log file. Contains speaker observation observed through network (not UI changes). Will be an empty string if the file doesn't exist in S3. */
+  speaker_diarization_file_network: string
 }

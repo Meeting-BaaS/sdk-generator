@@ -21,7 +21,7 @@ import type { JoinRequestZoomSdkId } from "./joinRequestZoomSdkId"
 import type { JoinRequestZoomSdkPwd } from "./joinRequestZoomSdkPwd"
 
 export interface JoinRequest {
-  /** The bot will leave the meeting automatically after the timeout, defaults to 600 seconds. */
+  /** Configuration for automatic meeting exit behavior. The bot uses waiting_room_timeout to wait in the waiting room, then noone_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Applies to Google Meet and Microsoft Teams only. */
   automatic_leave?: JoinRequestAutomaticLeave
   /** The image to use for the bot, must be a URL. Recommended ratio is 16:9. */
   bot_image?: JoinRequestBotImage

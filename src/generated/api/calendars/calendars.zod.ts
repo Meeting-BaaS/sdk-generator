@@ -279,6 +279,7 @@ export const scheduleRecordEventBody = zod.object({
     .describe("Recording mode for the bot")
     .or(zod.null())
     .optional(),
+  silence_timeout: zod.number().nullish(),
   speech_to_text: zod
     .object({
       api_key: zod.string().nullish(),

@@ -94,6 +94,10 @@ export const getGetMeetingDataResponseMock = (
         faker.helpers.arrayElement([faker.string.alpha(20), null]),
         undefined
       ]),
+      silence_timeout: faker.helpers.arrayElement([
+        faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
+        undefined
+      ]),
       speech_to_text_api_key: faker.helpers.arrayElement([
         faker.helpers.arrayElement([faker.string.alpha(20), null]),
         undefined
@@ -184,8 +188,10 @@ export const getGetMeetingDataResponseMock = (
     )
   },
   duration: faker.number.int({ min: undefined, max: undefined }),
+  meeting_participants_file: faker.string.alpha(20),
   mp4: faker.string.alpha(20),
   speaker_diarization_file: faker.string.alpha(20),
+  speaker_diarization_file_network: faker.string.alpha(20),
   ...overrideResponse
 })
 

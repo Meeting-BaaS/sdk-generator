@@ -10,6 +10,7 @@ import type { BotParam2DeduplicationKey } from "./botParam2DeduplicationKey"
 import type { BotParam2EnterMessage } from "./botParam2EnterMessage"
 import type { BotParam2NooneJoinedTimeout } from "./botParam2NooneJoinedTimeout"
 import type { BotParam2RecordingMode } from "./botParam2RecordingMode"
+import type { BotParam2SilenceTimeout } from "./botParam2SilenceTimeout"
 import type { BotParam2SpeechToText } from "./botParam2SpeechToText"
 import type { BotParam2StreamingAudioFrequency } from "./botParam2StreamingAudioFrequency"
 import type { BotParam2StreamingInput } from "./botParam2StreamingInput"
@@ -29,6 +30,7 @@ export interface BotParam2 {
   extra?: Extra
   noone_joined_timeout?: BotParam2NooneJoinedTimeout
   recording_mode?: BotParam2RecordingMode
+  silence_timeout?: BotParam2SilenceTimeout
   speech_to_text?: BotParam2SpeechToText
   streaming_audio_frequency?: BotParam2StreamingAudioFrequency
   streaming_input?: BotParam2StreamingInput

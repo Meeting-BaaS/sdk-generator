@@ -7,7 +7,7 @@
  */
 
 /**
- * The timeout in seconds for the bot to wait in the waiting room before leaving the meeting, defaults to 600 seconds. Note: Google Meet also has it's own waiting room timeout (about ~10 minutes). Setting a higher value for such meetings would have no effect because Google Meet will deny entry to the bot after its own timeout.
+ * The timeout in seconds for the bot to wait in the waiting room before leaving the meeting, defaults to 600 seconds (10 minutes). Minimum: 120 seconds (2 minutes). Maximum: 1800 seconds (30 minutes). Note: Google Meet also has it's own waiting room timeout (about ~10 minutes). Setting a higher value for such meetings would have no effect because Google Meet will deny entry to the bot after its own timeout.
  * @minimum 0
  */
 export type AutomaticLeaveRequestWaitingRoomTimeout = number | null

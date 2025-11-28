@@ -16,6 +16,7 @@ import type { BotWithParamsNooneJoinedTimeout } from "./botWithParamsNooneJoined
 import type { BotWithParamsRecordingMode } from "./botWithParamsRecordingMode"
 import type { BotWithParamsScheduledBotId } from "./botWithParamsScheduledBotId"
 import type { BotWithParamsSessionId } from "./botWithParamsSessionId"
+import type { BotWithParamsSilenceTimeout } from "./botWithParamsSilenceTimeout"
 import type { BotWithParamsSpeechToTextApiKey } from "./botWithParamsSpeechToTextApiKey"
 import type { BotWithParamsSpeechToTextProvider } from "./botWithParamsSpeechToTextProvider"
 import type { BotWithParamsStreamingAudioFrequency } from "./botWithParamsStreamingAudioFrequency"
@@ -54,6 +55,7 @@ export interface BotWithParams {
   reserved: boolean
   scheduled_bot_id?: BotWithParamsScheduledBotId
   session_id?: BotWithParamsSessionId
+  silence_timeout?: BotWithParamsSilenceTimeout
   speech_to_text_api_key?: BotWithParamsSpeechToTextApiKey
   speech_to_text_provider?: BotWithParamsSpeechToTextProvider
   streaming_audio_frequency?: BotWithParamsStreamingAudioFrequency

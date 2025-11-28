@@ -12,6 +12,7 @@ import { z as zod } from "zod"
  * @summary Join
  */
 export const joinBodyAutomaticLeaveNooneJoinedTimeoutMin = 0
+export const joinBodyAutomaticLeaveSilenceTimeoutMin = 0
 export const joinBodyAutomaticLeaveWaitingRoomTimeoutMin = 0
 export const joinBodyReservedDefault = false
 export const joinBodyStartTimeMin = 0
@@ -25,20 +26,27 @@ export const joinBody = zod.object({
         .min(joinBodyAutomaticLeaveNooneJoinedTimeoutMin)
         .nullish()
         .describe(
-          "The timeout in seconds for the bot to wait for participants to join before leaving the meeting, defaults to 600 seconds"
+          "The timeout in seconds for the bot to wait for participants to join before leaving the meeting, defaults to 300 seconds (5 minutes). Minimum: 120 seconds (2 minutes). Maximum: 1800 seconds (30 minutes). When a bot first joins a meeting, it uses this timeout to determine if any participants have joined. If no participants are detected within this period, the bot will leave the meeting. Once participants are detected, the silence_timeout takes over. Applies to Google Meet and Microsoft Teams only."
+        ),
+      silence_timeout: zod
+        .number()
+        .min(joinBodyAutomaticLeaveSilenceTimeoutMin)
+        .nullish()
+        .describe(
+          "The timeout in seconds for the bot to leave the meeting if no speaker activity is detected, defaults to 600 seconds (10 minutes). Minimum: 300 seconds (5 minutes). Maximum: 1800 seconds (30 minutes). This timeout becomes active after the noone_joined_timeout period ends (either when participants are detected or when the timeout elapses). The bot monitors for audio activity, and if no sound is detected for the duration of this timeout, it will automatically leave the meeting. Important: Configure these timeouts carefully to ensure the bot doesn't leave too early - the noone_joined_timeout should be long enough to wait for late joiners, and the silence_timeout should account for natural pauses in conversation. Applies to Google Meet and Microsoft Teams only."
         ),
       waiting_room_timeout: zod
         .number()
         .min(joinBodyAutomaticLeaveWaitingRoomTimeoutMin)
         .nullish()
         .describe(
-          "The timeout in seconds for the bot to wait in the waiting room before leaving the meeting, defaults to 600 seconds. Note: Google Meet also has it's own waiting room timeout (about ~10 minutes). Setting a higher value for such meetings would have no effect because Google Meet will deny entry to the bot after its own timeout."
+          "The timeout in seconds for the bot to wait in the waiting room before leaving the meeting, defaults to 600 seconds (10 minutes). Minimum: 120 seconds (2 minutes). Maximum: 1800 seconds (30 minutes). Note: Google Meet also has it's own waiting room timeout (about ~10 minutes). Setting a higher value for such meetings would have no effect because Google Meet will deny entry to the bot after its own timeout."
         )
     })
     .or(zod.null())
     .optional()
     .describe(
-      "The bot will leave the meeting automatically after the timeout, defaults to 600 seconds."
+      "Configuration for automatic meeting exit behavior. The bot uses waiting_room_timeout to wait in the waiting room, then noone_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Applies to Google Meet and Microsoft Teams only."
     ),
   bot_image: zod
     .string()
@@ -201,6 +209,7 @@ export const getMeetingDataResponse = zod.object({
       reserved: zod.boolean(),
       scheduled_bot_id: zod.number().nullish(),
       session_id: zod.string().nullish(),
+      silence_timeout: zod.number().nullish(),
       speech_to_text_api_key: zod.string().nullish(),
       speech_to_text_provider: zod.enum(["Gladia", "Runpod", "Default"]).or(zod.null()).optional(),
       streaming_audio_frequency: zod.enum(["16khz", "24khz"]).or(zod.null()).optional(),
@@ -247,6 +256,11 @@ export const getMeetingDataResponse = zod.object({
     )
   }),
   duration: zod.number().describe("Duration of the recording in seconds"),
+  meeting_participants_file: zod
+    .string()
+    .describe(
+      "URL to access the meeting participants log file. Contains information about meeting participants. Will be an empty string if the file doesn't exist in S3."
+    ),
   mp4: zod
     .string()
     .describe(
@@ -256,6 +270,11 @@ export const getMeetingDataResponse = zod.object({
     .string()
     .describe(
       "URL to access the speaker diarization metadata file. Contains real-time speaker activity data with timestamps indicating when each speaker is talking. The file contains JSON arrays with speaker information including name, ID, timestamp, and speaking status. Will be an empty string if the file doesn't exist in S3."
+    ),
+  speaker_diarization_file_network: zod
+    .string()
+    .describe(
+      "URL to access the network speaker detection log file. Contains speaker observation observed through network (not UI changes). Will be an empty string if the file doesn't exist in S3."
     )
 })
 

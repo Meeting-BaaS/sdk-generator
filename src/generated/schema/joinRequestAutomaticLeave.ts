@@ -8,6 +8,6 @@
 import type { AutomaticLeaveRequest } from "./automaticLeaveRequest"
 
 /**
- * The bot will leave the meeting automatically after the timeout, defaults to 600 seconds.
+ * Configuration for automatic meeting exit behavior. The bot uses waiting_room_timeout to wait in the waiting room, then noone_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Applies to Google Meet and Microsoft Teams only.
  */
 export type JoinRequestAutomaticLeave = AutomaticLeaveRequest | null
