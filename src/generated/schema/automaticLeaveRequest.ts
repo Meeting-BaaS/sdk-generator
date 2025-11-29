@@ -11,12 +11,12 @@ import type { AutomaticLeaveRequestWaitingRoomTimeout } from "./automaticLeaveRe
 
 export interface AutomaticLeaveRequest {
   /**
-   * The timeout in seconds for the bot to wait for participants to join before leaving the meeting, defaults to 300 seconds (5 minutes). Minimum: 120 seconds (2 minutes). Maximum: 1800 seconds (30 minutes). When a bot first joins a meeting, it uses this timeout to determine if any participants have joined. If no participants are detected within this period, the bot will leave the meeting. Once participants are detected, the silence_timeout takes over. Applies to Google Meet and Microsoft Teams only.
+   * The timeout in seconds for the bot to wait for participants to join before leaving the meeting, defaults to 600 seconds (10 minutes). Minimum: 120 seconds (2 minutes). Maximum: 1800 seconds (30 minutes). When a bot first joins a meeting, it uses this timeout to determine if any participants have joined. If no participants are detected within this period, the bot will leave the meeting. Once participants are detected, the silence_timeout takes over. Applies to Google Meet and Microsoft Teams only.
    * @minimum 0
    */
   noone_joined_timeout?: AutomaticLeaveRequestNooneJoinedTimeout
   /**
-   * The timeout in seconds for the bot to leave the meeting if no speaker activity is detected, defaults to 600 seconds (10 minutes). Minimum: 300 seconds (5 minutes). Maximum: 1800 seconds (30 minutes). This timeout becomes active after the noone_joined_timeout period ends (either when participants are detected or when the timeout elapses). The bot monitors for audio activity, and if no sound is detected for the duration of this timeout, it will automatically leave the meeting. Important: Configure these timeouts carefully to ensure the bot doesn't leave too early - the noone_joined_timeout should be long enough to wait for late joiners, and the silence_timeout should account for natural pauses in conversation. Applies to Google Meet and Microsoft Teams only.
+   * The timeout in seconds for the bot to leave the meeting if no speaker activity is detected, defaults to 600 seconds (10 minutes). Minimum: 300 seconds (5 minutes). Maximum: 1800 seconds (30 minutes). This timeout becomes active after participants are detected. The bot monitors for audio activity, and if no sound is detected for the duration of this timeout, it will automatically leave the meeting. Important: Configure these timeouts carefully to ensure the bot doesn't leave too early - the noone_joined_timeout should be long enough to wait for late joiners, and the silence_timeout should account for intentional pauses. Applies to Google Meet and Microsoft Teams only.
    * @minimum 0
    */
   silence_timeout?: AutomaticLeaveRequestSilenceTimeout
