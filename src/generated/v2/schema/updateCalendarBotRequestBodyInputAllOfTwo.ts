@@ -55,7 +55,7 @@ Maximum: 500 characters */
   timeout_config?: UpdateCalendarBotRequestBodyInputAllOfTwoTimeoutConfig
   /** The URL to get the Zoom access token (ZAK - Zoom Access Token).
 
-This is required for Zoom meetings where the bot needs to join in the absence of the host. The bot will make a GET request to this URL to retrieve the access token.
+This is required for Zoom meetings where the bot needs to join in the absence of the host. The bot will make a GET request to this URL to retrieve the access token. Follow the guide in Zoom to understand how to get Zoom Access Token at https://developers.zoom.us/docs/api/users/#tag/users/get/users/me/zak.
 
 **Expected Response Format:**
 

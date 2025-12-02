@@ -7,6 +7,6 @@
  */
 
 /**
- * The transcription provider used (e.g., 'gladia', 'assemblyai'). Null if transcription was not enabled or if provider information is not available
+ * The transcription provider used (e.g., 'gladia'). Null if transcription was not enabled or if provider information is not available
  */
 export type CallbackCompletedInputDataTranscriptionProvider = string | null

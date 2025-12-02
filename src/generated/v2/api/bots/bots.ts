@@ -196,7 +196,7 @@ export const getBotScreenshots = <TData = AxiosResponse<GetBotScreenshotsRespons
 /**
  * Instruct a bot to leave the meeting immediately.
     
-    The bot will stop recording and processing, then exit the meeting. Only works if the bot is currently in the meeting (status is `in_call_recording` or `transcribing`). The bot will send a final webhook event when it leaves.
+    The bot will stop recording and processing, then exit the meeting. Only works if the bot is currently in the meeting (status is `joining_call`, `in_waiting_room`, `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`). The bot will send a final webhook event when it leaves.
     
     **Status Requirements:** The bot must be in a state that allows leaving. Bots that have already completed, failed, or are not yet in the meeting cannot be left via this endpoint. If the bot is in an invalid state, the request will fail with a 409 Conflict status.
     

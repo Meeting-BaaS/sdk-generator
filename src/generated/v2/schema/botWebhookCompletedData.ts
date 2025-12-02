@@ -49,7 +49,7 @@ export type BotWebhookCompletedData = {
   raw_transcription: BotWebhookCompletedDataRawTranscription
   /** Signed URL to download the processed transcription file. Valid for 4 hours. Null if transcription is not available or has been deleted */
   transcription: BotWebhookCompletedDataTranscription
-  /** The transcription provider used (e.g., 'gladia', 'assemblyai'). Null if transcription was not enabled or if provider information is not available */
+  /** The transcription provider used (e.g., 'gladia'). Null if transcription was not enabled or if provider information is not available */
   transcription_provider: BotWebhookCompletedDataTranscriptionProvider
   /** Array of transcription job IDs from the transcription provider. Null if transcription was not enabled or if IDs are not available */
   transcription_ids: BotWebhookCompletedDataTranscriptionIds

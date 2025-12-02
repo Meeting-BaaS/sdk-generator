@@ -5,7 +5,9 @@
  * API for managing meeting bots, calendar integrations, and webhooks
  * OpenAPI spec version: 2.0.0
  */
+
 import type { ErrorResponseDetails } from "./errorResponseDetails"
+import type { ErrorResponseMessage } from "./errorResponseMessage"
 
 export interface ErrorResponse {
   success: false
@@ -18,6 +20,8 @@ export interface ErrorResponse {
    * @maximum 9007199254740991
    */
   statusCode: number
+  /** Human-readable error message */
+  message?: ErrorResponseMessage
   /** Additional error details (string or null) */
   details?: ErrorResponseDetails
 }
