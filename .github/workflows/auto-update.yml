@@ -77,7 +77,7 @@ jobs:
           echo "$CHANGED_FILES"
 
           # Filter out webhook files since they are purely documentation and shouldn't trigger a new release
-          FILTERED_CHANGES=$(echo "$CHANGED_FILES" | grep -v "src/generated/api/webhooks/" || true)
+          FILTERED_CHANGES=$(echo "$CHANGED_FILES" | grep -v "src/generated/v1/api/webhooks/" || true)
 
           if [ -z "$FILTERED_CHANGES" ]; then
             echo "Only webhook documentation changes detected - ignoring"

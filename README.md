@@ -3,7 +3,7 @@
 <p align="center"><a href="https://discord.com/invite/dsvFgDTr6c"><img height="60px" src="https://user-images.githubusercontent.com/31022056/158916278-4504b838-7ecb-4ab9-a900-7dc002aade78.png" alt="Join our Discord!"></a></p>
 
 <p align="center">
-  <img src="https://meetingbaas.com/static/a3e9f3dbde935920a3558317a514ff1a/b5380/preview.png" alt="Meeting BaaS" width="720">
+  <img src="https://www.meetingbaas.com/images/logos/logo.svg" alt="Meeting BaaS" width="720">
 </p>
 
 Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) API - The unified API for Google Meet, Zoom, and Microsoft Teams.
@@ -11,6 +11,8 @@ Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) AP
 > **Note**: This package is automatically generated from the Meeting BaaS OpenAPI specification. For development and contribution guidelines, see [DEVELOPMENT.md](https://github.com/meeting-baas/sdk-generator/blob/HEAD/DEVELOPMENT.md). For the official API reference, visit [docs.meetingbaas.com](https://docs.meetingbaas.com).
 
 > **🚀 New in v5.0.0**: Complete architectural redesign with improved TypeScript support, better error handling, and enhanced developer experience. See [MIGRATION.md](MIGRATION.md) for upgrade guide.
+
+> **🆕 New in v6.0.0**: Support for Meeting BaaS v2 API with type-safe version selection. Use `api_version: "v2"` to access the new API endpoints. See [API Versioning](#api-versioning) section below.
 
 ## Features
 
@@ -46,10 +48,12 @@ pnpm add @meeting-baas/sdk
 
 ## Quick Start
 
+### v1 API (Default)
+
 ```typescript
 import { createBaasClient } from "@meeting-baas/sdk";
 
-// Create a BaaS client
+// Create a BaaS client (defaults to v1 API)
 const client = createBaasClient({
   api_key: "your-api-key", // Get yours at https://meetingbaas.com
 });
@@ -66,6 +70,32 @@ async function example() {
     console.log("Bot joined successfully:", data.bot_id);
   } else {
     console.error("Error joining meeting:", error);
+  }
+}
+```
+
+### v2 API
+
+```typescript
+import { createBaasClient } from "@meeting-baas/sdk";
+
+// Create a v2 BaaS client
+const client = createBaasClient({
+  api_key: "your-api-key",
+  api_version: "v2" // Use v2 API
+});
+
+async function example() {
+  // Create a bot (v2 API method)
+  const { success, data, error } = await client.createBot({
+    meeting_url: "https://meet.google.com/abc-def-ghi",
+    bot_name: "Meeting Assistant"
+  });
+  
+  if (success) {
+    console.log("Bot created successfully:", data.bot_id);
+  } else {
+    console.error("Error creating bot:", error);
   }
 }
 ```
@@ -357,6 +387,67 @@ if (result.success) {
 }
 ```
 
+## API Versioning
+
+The SDK supports both Meeting BaaS v1 and v2 APIs. You can select which API version to use when creating the client:
+
+```typescript
+// v1 API (default, for backward compatibility)
+const v1Client = createBaasClient({
+  api_key: "your-api-key"
+  // api_version defaults to "v1"
+});
+
+// v2 API
+const v2Client = createBaasClient({
+  api_key: "your-api-key",
+  api_version: "v2"
+});
+```
+
+### Type-Safe Version Selection
+
+TypeScript automatically infers the available methods based on the `api_version` you specify:
+
+```typescript
+// v1 client - only v1 methods available
+const v1Client = createBaasClient({ api_key: "key" });
+v1Client.joinMeeting({ ... }); // ✅ Available
+v1Client.createBot({ ... }); // ❌ Not available
+
+// v2 client - only v2 methods available
+const v2Client = createBaasClient({ api_key: "key", api_version: "v2" });
+v2Client.createBot({ ... }); // ✅ Available
+v2Client.joinMeeting({ ... }); // ❌ Not available
+```
+
+### Response Format Differences
+
+**v1 API**: SDK wraps responses in `{ success: true, data: T }` or `{ success: false, error: ZodError | Error }`
+
+**v2 API**: API already returns `{ success: true, data: T }` or `{ success: false, error: string, code: string, statusCode: number, details: unknown | null }`. The SDK passes these through without transformation.
+
+**Batch Routes (v2)**: Special case returning `{ success: true, data: [...], errors: [...] }` for partial success scenarios.
+
+### Migration from v1 to v2
+
+To migrate from v1 to v2, simply change the `api_version` in your client configuration:
+
+```typescript
+// Before (v1)
+const client = createBaasClient({
+  api_key: "your-api-key"
+});
+
+// After (v2)
+const client = createBaasClient({
+  api_key: "your-api-key",
+  api_version: "v2"
+});
+```
+
+TypeScript will automatically show only v2 methods, making migration straightforward. See [MIGRATION.md](MIGRATION.md) for detailed migration guide.
+
 ## Configuration
 
 The client accepts the following configuration options:
@@ -364,6 +455,8 @@ The client accepts the following configuration options:
 ```typescript
 interface BaasClientConfig {
   api_key: string;           // Required: Your Meeting BaaS API key
+  api_version?: "v1" | "v2"; // Optional: API version (default: "v1")
+  base_url?: string;         // Optional: Base URL (internal use)
   timeout?: number;          // Optional: Request timeout in ms (default: 30000)
 }
 ```
@@ -373,6 +466,7 @@ interface BaasClientConfig {
 | Option | Type | Required | Default | Description |
 |--------|------|----------|---------|-------------|
 | `api_key` | `string` | ✅ Yes | - | Your Meeting BaaS API key. Get yours at [meetingbaas.com](https://meetingbaas.com) |
+| `api_version` | `"v1" \| "v2"` | ❌ No | `"v1"` | API version to use. Use `"v2"` for the new Meeting BaaS v2 API |
 | `timeout` | `number` | ❌ No | `30000` | Request timeout in milliseconds. Some requests may take longer, so we recommend setting a longer timeout if you notice timeouts |
 
 ## Migration from v4.x

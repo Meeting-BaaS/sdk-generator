@@ -9,16 +9,17 @@ import {
   getJoinMockHandler,
   getLeaveMockHandler,
   getRetranscribeBotMockHandler
-} from "../../src/generated/api/default/default.msw"
-import { createBaasClient } from "../../src/node/client"
+} from "../../src/generated/v1/api/default/default.msw"
+import { type BaasClient, createBaasClient } from "../../src/node/client"
 import { createMockApiKey, server } from "../setup"
 
 describe("Bot Operations Integration Tests", () => {
-  let client: ReturnType<typeof createBaasClient>
+  let client: BaasClient<"v1">
 
   beforeEach(() => {
     client = createBaasClient({
-      api_key: createMockApiKey()
+      api_key: createMockApiKey(),
+      api_version: "v1"
     })
   })
 

@@ -34,8 +34,13 @@
     "test:integration": "vitest run test/integration/",
     "test:error-handling": "vitest run test/error-handling.test.ts",
     "openapi:clean": "rm -rf src/generated",
+    "openapi:clean:v1": "rm -rf src/generated/v1",
+    "openapi:clean:v2": "rm -rf src/generated/v2",
     "openapi:generate": "pnpm openapi:clean && orval",
+    "openapi:generate:v1": "pnpm openapi:clean:v1 && orval --config orval.config.ts baasApiV1 baasZodV1",
+    "openapi:generate:v2": "pnpm openapi:clean:v2 && orval --config orval.config.ts baasApiV2 baasZodV2",
     "openapi:rebuild": "pnpm openapi:generate && pnpm build",
+    "openapi:rebuild:v2": "pnpm openapi:generate:v2 && pnpm build",
     "prepublishOnly": "pnpm lint:fix && pnpm build"
   },
   "publishConfig": {
