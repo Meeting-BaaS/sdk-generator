@@ -9,7 +9,7 @@ const V1_INPUT = {
 
 // No preprocessing needed for v2 (v2 has proper defaults in OpenAPI spec)
 const V2_INPUT = {
-  target: "https://api.pre-prod-meetingbaas.com/v2/openapi.json"
+  target: "https://api.meetingbaas.com/v2/openapi.json"
 }
 
 export default defineConfig({

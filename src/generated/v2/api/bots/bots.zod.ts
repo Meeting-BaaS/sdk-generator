@@ -252,7 +252,7 @@ export const createBotBody = zod.object({
     
     Filter by status (queued, joining, in_call_recording, transcribing, completed, failed), meeting platform (zoom, meet, teams), and date range. Results are ordered by creation date (newest first). Use cursor-based pagination for efficient navigation through large result sets.
     
-    **Pagination:** Uses cursor-based pagination. Provide a `cursor` query parameter to fetch the next page. The response includes a `next_cursor` if more results are available. The `limit` parameter controls how many results are returned per page (default: 20, max: 100).
+    **Pagination:** Uses cursor-based pagination. Provide a `cursor` query parameter to fetch the next page. The response includes a `next_cursor` if more results are available. The `limit` parameter controls how many results are returned per page (default: 50, max: 250).
     
     **Filtering:** 
     - `status`: Filter by bot status (comma-separated for multiple statuses)

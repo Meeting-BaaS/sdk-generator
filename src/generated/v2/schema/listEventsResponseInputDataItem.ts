@@ -5,12 +5,19 @@
  * API for managing meeting bots, calendar integrations, and webhooks
  * OpenAPI spec version: 2.0.0
  */
-
+import type { ListEventsResponseInputDataItemEventType } from "./listEventsResponseInputDataItemEventType"
 import type { ListEventsResponseInputDataItemMeetingPlatform } from "./listEventsResponseInputDataItemMeetingPlatform"
 import type { ListEventsResponseInputDataItemMeetingUrl } from "./listEventsResponseInputDataItemMeetingUrl"
 import type { ListEventsResponseInputDataItemStatus } from "./listEventsResponseInputDataItemStatus"
 
 export type ListEventsResponseInputDataItem = {
+  /**
+   * The UUID of the event series this instance belongs to. Every event instance (both one-off and recurring) is associated with a series. Use this ID when scheduling bots for all occurrences of a recurring series
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  series_id: string
+  /** The type of event. 'one_off' for single events that occur once, 'recurring' for events that are part of a recurring series with multiple occurrences */
+  event_type: ListEventsResponseInputDataItemEventType
   /**
    * The UUID of the event instance
    * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$

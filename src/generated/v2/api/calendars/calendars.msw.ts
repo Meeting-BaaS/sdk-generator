@@ -175,6 +175,8 @@ export const getListEventsResponseMock = (
 ): ListEventsResponse => ({
   success: true,
   data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+    series_id: faker.string.uuid(),
+    event_type: faker.helpers.arrayElement(["one_off", "recurring"] as const),
     event_id: faker.string.uuid(),
     title: faker.string.alpha(20),
     start_time: `${faker.date.past().toISOString().split(".")[0]}Z`,
