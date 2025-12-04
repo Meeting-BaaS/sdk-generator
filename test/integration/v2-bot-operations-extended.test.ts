@@ -135,9 +135,11 @@ describe("v2 Bot Operations Extended Tests", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toContain("Required")
+        expect(result.error).toBe("Bad Request")
+        expect(result.message).toBe("Validation failed")
         expect(result.code).toBe("VALIDATION_ERROR")
         expect(result.statusCode).toBe(400)
+        expect(result.details).toContain("Required")
       }
     })
 

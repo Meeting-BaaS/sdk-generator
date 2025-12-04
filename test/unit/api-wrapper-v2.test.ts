@@ -32,7 +32,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Please configure the api key when creating the client")
+        expect(result.error).toBe("Unauthorized")
+        expect(result.message).toBe("Please configure the api key when creating the client")
         expect(result.code).toBe("MISSING_API_KEY")
         expect(result.statusCode).toBe(401)
       }
@@ -55,7 +56,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Please configure the api key when creating the client")
+        expect(result.error).toBe("Unauthorized")
+        expect(result.message).toBe("Please configure the api key when creating the client")
         expect(result.code).toBe("MISSING_API_KEY")
         expect(result.statusCode).toBe(401)
       }
@@ -83,10 +85,11 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toContain("Required")
+        expect(result.error).toBe("Bad Request")
+        expect(result.message).toBe("Validation failed")
         expect(result.code).toBe("VALIDATION_ERROR")
         expect(result.statusCode).toBe(400)
-        expect(result.details).toBeDefined()
+        expect(result.details).toContain("Required")
       }
     })
 
@@ -153,6 +156,7 @@ describe("API Wrapper V2 Functions", () => {
         error: "Custom error message",
         code: "CUSTOM_ERROR",
         statusCode: 402,
+        message: "Custom error message",
         details: { field: "value" }
       }
 
@@ -195,6 +199,7 @@ describe("API Wrapper V2 Functions", () => {
         error: "Validation failed",
         code: "VALIDATION_ERROR",
         statusCode: 400,
+        message: "Validation failed",
         details: null
       }
 
@@ -471,10 +476,11 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Network error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Network error")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(500)
-        expect(result.details).toEqual({ message: "Internal server error" })
+        expect(result.details).toContain("Internal server error")
       }
     })
 
@@ -504,10 +510,11 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Network error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Network error")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(500) // Should default to 500 when status is undefined
-        expect(result.details).toEqual({ message: "Error" })
+        expect(result.details).toContain("Error")
       }
     })
 
@@ -531,7 +538,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Network error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Network error")
         // When AxiosError has no response, it's treated as UNKNOWN_ERROR, not HTTP_ERROR
         expect(result.code).toBe("UNKNOWN_ERROR")
         expect(result.statusCode).toBe(500)
@@ -556,7 +564,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("String error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("String error")
         expect(result.code).toBe("UNKNOWN_ERROR")
         expect(result.statusCode).toBe(500)
       }
@@ -587,7 +596,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Custom error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Custom error")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(404)
       }
@@ -608,7 +618,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Please configure the api key when creating the client")
+        expect(result.error).toBe("Unauthorized")
+        expect(result.message).toBe("Please configure the api key when creating the client")
         expect(result.code).toBe("MISSING_API_KEY")
         expect(result.statusCode).toBe(401)
       }
@@ -625,7 +636,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Please configure the api key when creating the client")
+        expect(result.error).toBe("Unauthorized")
+        expect(result.message).toBe("Please configure the api key when creating the client")
         expect(result.code).toBe("MISSING_API_KEY")
         expect(result.statusCode).toBe(401)
       }
@@ -663,7 +675,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Network error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Network error")
         expect(result.code).toBe("UNKNOWN_ERROR")
         expect(result.statusCode).toBe(500)
       }
@@ -690,10 +703,11 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Request failed")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Request failed")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(404)
-        expect(result.details).toEqual({ message: "Not found" })
+        expect(result.details).toContain("Not found")
       }
     })
 
@@ -705,6 +719,7 @@ describe("API Wrapper V2 Functions", () => {
         error: "Validation failed",
         code: "VALIDATION_ERROR",
         statusCode: 400,
+        message: "Validation failed",
         details: { field: "value" }
       }
 
@@ -756,10 +771,11 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Request failed")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Request failed")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(500) // Should default to 500 when status is undefined
-        expect(result.details).toEqual({ message: "Error" })
+        expect(result.details).toContain("Error")
       }
     })
 
@@ -785,7 +801,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Request failed")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Request failed")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(500)
         expect(result.details).toBeNull() // Should be null when responseData is undefined
@@ -805,7 +822,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("String error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("String error")
         expect(result.code).toBe("UNKNOWN_ERROR")
         expect(result.statusCode).toBe(500)
       }
@@ -832,7 +850,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Please configure the api key when creating the client")
+        expect(result.error).toBe("Unauthorized")
+        expect(result.message).toBe("Please configure the api key when creating the client")
         expect(result.code).toBe("MISSING_API_KEY")
         expect(result.statusCode).toBe(401)
       }
@@ -855,7 +874,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Please configure the api key when creating the client")
+        expect(result.error).toBe("Unauthorized")
+        expect(result.message).toBe("Please configure the api key when creating the client")
         expect(result.code).toBe("MISSING_API_KEY")
         expect(result.statusCode).toBe(401)
       }
@@ -932,6 +952,7 @@ describe("API Wrapper V2 Functions", () => {
       ): Promise<{ data: ListApiResponseV2<string> }> => ({
         data: {
           success: false as const,
+          message: "Not found",
           error: "Not found",
           code: "NOT_FOUND",
           statusCode: 404,
@@ -951,6 +972,7 @@ describe("API Wrapper V2 Functions", () => {
       expect(result.success).toBe(false)
       if (!result.success) {
         expect(result.error).toBe("Not found")
+        expect(result.message).toBe("Not found")
         expect(result.code).toBe("NOT_FOUND")
         expect(result.statusCode).toBe(404)
       }
@@ -1022,10 +1044,11 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Request failed")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Request failed")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(500)
-        expect(result.details).toEqual({ message: "Internal server error" })
+        expect(result.details).toContain("Internal server error")
       }
     })
 
@@ -1057,10 +1080,11 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Request failed")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Request failed")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(500) // Should default to 500 when status is undefined
-        expect(result.details).toEqual({ message: "Error" })
+        expect(result.details).toContain("Error")
       }
     })
 
@@ -1092,7 +1116,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Request failed")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Request failed")
         expect(result.code).toBe("HTTP_ERROR")
         expect(result.statusCode).toBe(500)
         expect(result.details).toBeNull() // Should be null when responseData is undefined
@@ -1119,7 +1144,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("Network error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("Network error")
         expect(result.code).toBe("UNKNOWN_ERROR")
         expect(result.statusCode).toBe(500)
       }
@@ -1144,7 +1170,8 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error).toBe("String error")
+        expect(result.error).toBe("Internal Server Error")
+        expect(result.message).toBe("String error")
         expect(result.code).toBe("UNKNOWN_ERROR")
         expect(result.statusCode).toBe(500)
       }

@@ -528,6 +528,7 @@ describe("BaasClient v2", () => {
         error: "Custom error message",
         code: "CUSTOM_ERROR",
         statusCode: 400,
+        message: "Custom error message",
         details: { field: "value" }
       }
 

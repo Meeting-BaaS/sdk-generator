@@ -72,6 +72,7 @@ export const createMockV2ErrorResponse = (error: string, code = "ERROR", statusC
   error,
   code,
   statusCode,
+  message: error,
   details: null
 })
 

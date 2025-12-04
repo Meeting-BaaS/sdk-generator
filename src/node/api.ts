@@ -89,14 +89,30 @@ export async function apiWrapperNoParams<TData>(
  */
 export type ApiResponseV2<T> =
   | { success: true; data: T }
-  | { success: false; error: string; code: string; statusCode: number; details: unknown | null }
+  | {
+      success: false
+      error: string
+      code: string
+      statusCode: number
+      message: string
+      retryAfter?: number | null
+      details: string | null
+    }
 
 /**
  * v2 Batch API response type - Batch routes return success with data and errors arrays
  */
 export type BatchApiResponseV2<TData, TError = { item: unknown; error: string }> =
   | { success: true; data: TData[]; errors: TError[] }
-  | { success: false; error: string; code: string; statusCode: number; details: unknown | null }
+  | {
+      success: false
+      error: string
+      code: string
+      statusCode: number
+      message: string
+      retryAfter?: number | null
+      details: string | null
+    }
 
 /**
  * List API response type with flattened cursor fields
@@ -118,7 +134,9 @@ export type ListApiResponseV2<TData> =
       error: string
       code: string
       statusCode: number
-      details: unknown
+      details: string | null
+      message: string
+      retryAfter?: number | null
       data?: never
       cursor?: never
       prev_cursor?: never
@@ -145,7 +163,8 @@ export async function apiWrapperV2<TData, TParams = void>(
     if (!options.headers || !options.headers["x-meeting-baas-api-key"]) {
       return {
         success: false,
-        error: "Please configure the api key when creating the client",
+        error: "Unauthorized",
+        message: "Please configure the api key when creating the client",
         code: "MISSING_API_KEY",
         statusCode: 401,
         details: null
@@ -159,10 +178,11 @@ export async function apiWrapperV2<TData, TParams = void>(
       if (!validationResult.success) {
         return {
           success: false,
-          error: validationResult.error.message,
+          error: "Bad Request",
           code: "VALIDATION_ERROR",
           statusCode: 400,
-          details: validationResult.error.errors
+          message: "Validation failed",
+          details: validationResult.error.message
         }
       }
       validatedParams = validationResult.data
@@ -189,7 +209,8 @@ export async function apiWrapperV2<TData, TParams = void>(
         responseData.success === false &&
         "error" in responseData &&
         "code" in responseData &&
-        "statusCode" in responseData
+        "statusCode" in responseData &&
+        "message" in responseData
       ) {
         return responseData as ApiResponseV2<TData>
       }
@@ -197,17 +218,19 @@ export async function apiWrapperV2<TData, TParams = void>(
       // Otherwise, wrap it in a generic error format
       return {
         success: false,
-        error: error.message,
+        error: "Internal Server Error",
         code: "HTTP_ERROR",
         statusCode: axiosError.response?.status ?? 500,
-        details: responseData ?? null
+        message: error.message,
+        details: responseData ? JSON.stringify(responseData) : null
       }
     }
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: "Internal Server Error",
       code: "UNKNOWN_ERROR",
       statusCode: 500,
+      message: error instanceof Error ? error.message : String(error),
       details: null
     }
   }
@@ -224,7 +247,8 @@ export async function apiWrapperV2NoParams<TData>(
     if (!options.headers || !options.headers["x-meeting-baas-api-key"]) {
       return {
         success: false,
-        error: "Please configure the api key when creating the client",
+        error: "Unauthorized",
+        message: "Please configure the api key when creating the client",
         code: "MISSING_API_KEY",
         statusCode: 401,
         details: null
@@ -248,7 +272,8 @@ export async function apiWrapperV2NoParams<TData>(
         responseData.success === false &&
         "error" in responseData &&
         "code" in responseData &&
-        "statusCode" in responseData
+        "statusCode" in responseData &&
+        "message" in responseData
       ) {
         return responseData as ApiResponseV2<TData>
       }
@@ -256,17 +281,19 @@ export async function apiWrapperV2NoParams<TData>(
       // Otherwise, wrap it in a generic error format
       return {
         success: false,
-        error: error.message,
+        error: "Internal Server Error",
         code: "HTTP_ERROR",
         statusCode: axiosError.response?.status ?? 500,
-        details: responseData ?? null
+        message: error.message,
+        details: responseData ? JSON.stringify(responseData) : null
       }
     }
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: "Internal Server Error",
       code: "UNKNOWN_ERROR",
       statusCode: 500,
+      message: error instanceof Error ? error.message : String(error),
       details: null
     }
   }
@@ -300,9 +327,10 @@ export async function apiWrapperV2List<TData, TParams = void>(
     if (!options.headers || !options.headers["x-meeting-baas-api-key"]) {
       return {
         success: false,
-        error: "Please configure the api key when creating the client",
+        error: "Unauthorized",
         code: "MISSING_API_KEY",
         statusCode: 401,
+        message: "Please configure the api key when creating the client",
         details: null
       }
     }
@@ -314,10 +342,11 @@ export async function apiWrapperV2List<TData, TParams = void>(
       if (!validationResult.success) {
         return {
           success: false,
-          error: validationResult.error.message,
+          error: "Bad Request",
+          message: "Validation failed",
           code: "VALIDATION_ERROR",
           statusCode: 400,
-          details: validationResult.error.errors
+          details: validationResult.error.message
         }
       }
       validatedParams = validationResult.data
@@ -371,17 +400,19 @@ export async function apiWrapperV2List<TData, TParams = void>(
       // Otherwise, wrap it in a generic error format
       return {
         success: false,
-        error: error.message,
+        error: "Internal Server Error",
         code: "HTTP_ERROR",
         statusCode: axiosError.response?.status ?? 500,
-        details: responseData ?? null
+        message: error.message,
+        details: responseData ? JSON.stringify(responseData) : null
       }
     }
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: "Internal Server Error",
       code: "UNKNOWN_ERROR",
       statusCode: 500,
+      message: error instanceof Error ? error.message : String(error),
       details: null
     }
   }
