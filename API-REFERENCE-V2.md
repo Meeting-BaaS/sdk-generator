@@ -12,6 +12,84 @@ type ApiResponseV2<T> =
 
 **Batch Routes (v2)**: Special case returning `{ success: true, data: [...], errors: [...] }` for partial success scenarios.
 
+## Webhook Types and Zod Schemas
+
+The v2 API includes comprehensive TypeScript types and Zod schemas for all webhook events, enabling you to build type-safe webhook handlers.
+
+### Available Webhook Types
+
+All webhook types are exported from the `V2` namespace:
+
+**Bot Webhooks:**
+
+- `BotWebhookCompleted` - Sent when a bot successfully completes recording
+- `BotWebhookFailed` - Sent when a bot fails to join or record
+- `BotWebhookStatusChange` - Sent when a bot's status changes
+
+**Calendar Webhooks:**
+
+- `CalendarWebhookConnectionCreated` - Sent when a calendar connection is created
+- `CalendarWebhookConnectionUpdated` - Sent when a calendar connection is updated
+- `CalendarWebhookConnectionDeleted` - Sent when a calendar connection is deleted
+- `CalendarWebhookEventCreated` - Sent when a calendar event is created
+- `CalendarWebhookEventUpdated` - Sent when a calendar event is updated
+- `CalendarWebhookEventCancelled` - Sent when a calendar event is cancelled
+- `CalendarWebhookEventsSynced` - Sent when a calendar completes the initial sync
+
+**Callback Payloads:**
+
+- `CallbackCompleted` - Callback payload sent when a bot successfully completes recording (event: `"bot.completed"`)
+- `CallbackFailed` - Callback payload sent when a bot fails to join or record (event: `"bot.failed"`)
+
+> **Note:** Callback payloads have the same structure as webhook events but are sent to bot-specific callback URLs configured via `callback_config` when creating bots.
+
+### Usage Example
+
+```typescript
+import type { V2 } from "@meeting-baas/sdk";
+
+// Type-safe webhook handler
+async function handleWebhook(payload: V2.BotWebhookCompleted) {
+  if (payload.event === "bot.completed") {
+    console.log("Bot completed:", payload.data.bot_id);
+    console.log("Transcription:", payload.data.transcription);
+    console.log("Video URL:", payload.data.video);
+  }
+}
+
+// You can also use discriminated unions for multiple event types
+type WebhookEvent = 
+  | V2.BotWebhookCompleted 
+  | V2.BotWebhookFailed 
+  | V2.BotWebhookStatusChange
+  | V2.CalendarWebhookEventCreated;
+
+async function handleAnyWebhook(payload: WebhookEvent) {
+  switch (payload.event) {
+    case "bot.completed":
+      // TypeScript knows payload.data has BotWebhookCompletedData
+      break;
+    case "bot.failed":
+      // TypeScript knows payload.data has BotWebhookFailedData
+      break;
+    // ... other cases
+  }
+}
+
+// Callback payloads can be handled the same way
+async function handleCallback(payload: V2.CallbackCompleted | V2.CallbackFailed) {
+  if (payload.event === "bot.completed") {
+    // TypeScript knows this is CallbackCompleted
+    console.log("Callback - Bot completed:", payload.data.bot_id);
+  } else if (payload.event === "bot.failed") {
+    // TypeScript knows this is CallbackFailed
+    console.log("Callback - Bot failed:", payload.data.bot_id);
+  }
+}
+```
+
+For detailed webhook documentation, see the [v2 API webhook reference](https://docs.meetingbaas.com/api-v2/reference/webhooks).
+
 ## Available Methods
 
 ### Bot Management

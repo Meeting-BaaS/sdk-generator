@@ -2,7 +2,7 @@
 
 This document provides a comprehensive reference for all Meeting BaaS v1 API methods available in the SDK.
 
-The SDK provides a comprehensive interface for all Meeting BaaS API endpoints. All methods return a discriminated union response:
+The SDK provides a comprehensive interface for all Meeting BaaS v1 API endpoints. All methods return a discriminated union response:
 
 ```typescript
 type ApiResponse<T> = 

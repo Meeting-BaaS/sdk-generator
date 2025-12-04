@@ -365,6 +365,30 @@ if (result.success) {
 }
 ```
 
+## Webhook Types (v2)
+
+The v2 API includes comprehensive TypeScript types for all webhook events, enabling you to build type-safe webhook handlers. All webhook types are available through the `V2` namespace:
+
+```typescript
+import type { V2 } from "@meeting-baas/sdk";
+
+// Type-safe webhook handler
+async function handleWebhook(payload: V2.BotWebhookCompleted) {
+  if (payload.event === "bot.completed") {
+    console.log("Bot completed:", payload.data.bot_id);
+    console.log("Transcription:", payload.data.transcription);
+  }
+}
+```
+
+Available webhook types include:
+
+- **Bot webhooks**: `BotWebhookCompleted`, `BotWebhookFailed`, `BotWebhookStatusChange`
+- **Calendar webhooks**: `CalendarWebhookConnectionCreated`, `CalendarWebhookConnectionUpdated`, `CalendarWebhookConnectionDeleted`, `CalendarWebhookEventCreated`, `CalendarWebhookEventUpdated`, `CalendarWebhookEventCancelled`, `CalendarWebhookEventsSynced`
+- **Callback payloads**: `CallbackCompleted`, `CallbackFailed` (for bot-specific callbacks)
+
+See [API Reference - v2](API-REFERENCE-V2.md#webhook-types-and-zod-schemas) for more details and examples.
+
 ## API Versioning
 
 The SDK supports both Meeting BaaS v1 and v2 APIs. You can select which API version to use when creating the client:
