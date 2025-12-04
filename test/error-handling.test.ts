@@ -4,17 +4,18 @@ import {
   getGetMeetingDataMockHandler,
   getJoinMockHandler,
   getLeaveMockHandler
-} from "../src/generated/api/default/default.msw"
-import type { JoinRequest } from "../src/generated/schema"
-import { createBaasClient } from "../src/node/client"
+} from "../src/generated/v1/api/default/default.msw"
+import type { JoinRequest } from "../src/generated/v1/schema"
+import { type BaasClient, createBaasClient } from "../src/node/client"
 import { createMockApiKey, server } from "./setup"
 
 describe("Error Handling", () => {
-  let client: ReturnType<typeof createBaasClient>
+  let client: BaasClient<"v1">
 
   beforeEach(() => {
     client = createBaasClient({
-      api_key: createMockApiKey()
+      api_key: createMockApiKey(),
+      api_version: "v1"
     })
   })
 
@@ -130,6 +131,7 @@ describe("Error Handling", () => {
       // Use a client with a very short timeout
       const timeoutClient = createBaasClient({
         api_key: createMockApiKey(),
+        api_version: "v1",
         timeout: 100 // 100ms timeout
       })
 

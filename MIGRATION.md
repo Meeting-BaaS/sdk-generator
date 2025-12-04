@@ -1,4 +1,15 @@
-# Migration Guide: v4.x to v5.0.0
+# Migration Guide
+
+This guide helps you migrate between SDK versions.
+
+## Table of Contents
+
+- [v4.x to v5.0.0](#migration-guide-v4x-to-v500)
+- [v5.x to v6.0.0](#migration-guide-v5x-to-v600)
+
+---
+
+## Migration Guide: v4.x to v5.0.0
 
 This guide helps you migrate from Meeting BaaS SDK v4.x to v5.0.0. Version 5.0.0 introduces significant architectural improvements with some breaking changes.
 
@@ -462,3 +473,290 @@ After migration, you'll enjoy:
 - **Cleaner API** focused on core functionality
 
 The migration effort is worth it for the improved developer experience and reliability!
+
+---
+
+## Migration Guide: v5.x to v6.0.0
+
+This guide helps you migrate from Meeting BaaS SDK v5.x to v6.0.0. Version 6.0.0 adds support for Meeting BaaS v2 API while maintaining full backward compatibility with v1 API.
+
+## 🚀 What's New in v6.0.0
+
+- **Dual API Support**: Support for both Meeting BaaS v1 and v2 APIs in parallel
+- **Type-Safe Version Selection**: TypeScript automatically infers available methods based on `api_version`
+- **Pass-Through v2 Responses**: v2 API responses are passed through without transformation (API already returns correct format)
+- **Backward Compatible**: All existing v1 code continues to work without changes
+- **Easy Migration Path**: Simply change `api_version: "v2"` to migrate to v2 API
+
+## ⚠️ No Breaking Changes
+
+v6.0.0 is **fully backward compatible** with v5.x. All existing code using v1 API will continue to work without any changes.
+
+## 📋 Using v2 API
+
+### Basic Usage
+
+To use the v2 API, simply specify `api_version: "v2"` when creating the client:
+
+```typescript
+import { createBaasClient } from "@meeting-baas/sdk";
+
+// v1 API (default, backward compatible)
+const v1Client = createBaasClient({
+  api_key: "your-api-key"
+  // api_version defaults to "v1"
+});
+
+// v2 API
+const v2Client = createBaasClient({
+  api_key: "your-api-key",
+  api_version: "v2"
+});
+```
+
+### Type-Safe Method Access
+
+TypeScript automatically infers which methods are available based on the API version:
+
+```typescript
+// v1 client - only v1 methods available
+const v1Client = createBaasClient({ api_key: "key" });
+v1Client.joinMeeting({ ... }); // ✅ Available
+v1Client.createBot({ ... }); // ❌ TypeScript error - not available
+
+// v2 client - only v2 methods available
+const v2Client = createBaasClient({ api_key: "key", api_version: "v2" });
+v2Client.createBot({ ... }); // ✅ Available
+v2Client.joinMeeting({ ... }); // ❌ TypeScript error - not available
+```
+
+### Response Format Differences
+
+**v1 API Response**:
+
+```typescript
+type ApiResponse<T> =
+  | { success: true; data: T; error?: never }
+  | { success: false; error: ZodError | Error; data?: never }
+```
+
+**v2 API Response**:
+
+```typescript
+type ApiResponseV2<T> =
+  | { success: true; data: T }
+  | { success: false; error: string; code: string; statusCode: number; details: unknown | null }
+```
+
+**Key Differences**:
+
+- v1: SDK wraps responses, `error` can be `ZodError | Error`
+- v2: API already returns structured format, SDK passes through as-is
+- v2 error responses include `code`, `statusCode`, and `details` fields
+
+### Batch Routes (v2)
+
+v2 batch routes return a special format for partial success:
+
+```typescript
+// Batch response format
+{
+  success: true,
+  data: [...], // Successful items
+  errors: [...] // Failed items with error details
+}
+
+// Example: batchCreateBots
+const result = await v2Client.batchCreateBots({
+  bots: [...]
+});
+
+if (result.success) {
+  console.log("Successful:", result.data);
+  if (result.errors.length > 0) {
+    console.log("Failed:", result.errors);
+  }
+}
+```
+
+## 🔄 v2 Migration Examples
+
+### Example 1: Migrating from v1 to v2
+
+**Before (v1 API)**:
+
+```typescript
+import { createBaasClient } from "@meeting-baas/sdk";
+
+const client = createBaasClient({
+  api_key: "your-api-key"
+});
+
+const result = await client.joinMeeting({
+  meeting_url: "https://meet.google.com/abc-def-ghi",
+  bot_name: "My Bot",
+  reserved: true
+});
+
+if (result.success) {
+  console.log("Bot ID:", result.data.bot_id);
+}
+```
+
+**After (v2 API)**:
+
+```typescript
+import { createBaasClient } from "@meeting-baas/sdk";
+
+const client = createBaasClient({
+  api_key: "your-api-key",
+  api_version: "v2" // Only change needed!
+});
+
+// v2 uses createBot instead of joinMeeting
+const result = await client.createBot({
+  meeting_url: "https://meet.google.com/abc-def-ghi",
+  bot_name: "My Bot"
+});
+
+if (result.success) {
+  console.log("Bot ID:", result.data.bot_id);
+} else {
+  // v2 error format includes code and statusCode
+  console.error("Error:", result.error);
+  console.error("Code:", result.code);
+  console.error("Status:", result.statusCode);
+}
+```
+
+### Example 2: Using Both APIs in Parallel
+
+You can use both APIs in the same codebase:
+
+```typescript
+import { createBaasClient } from "@meeting-baas/sdk";
+
+const v1Client = createBaasClient({
+  api_key: "your-api-key",
+  api_version: "v1"
+});
+
+const v2Client = createBaasClient({
+  api_key: "your-api-key",
+  api_version: "v2"
+});
+
+// Use v1 for legacy operations
+const v1Result = await v1Client.joinMeeting({ ... });
+
+// Use v2 for new features
+const v2Result = await v2Client.createBot({ ... });
+```
+
+## 📋 v2 Migration Checklist
+
+### Step 1: Update Dependencies to SDK v6
+
+```bash
+# Update to v6.0.0
+npm install @meeting-baas/sdk@^6.0.0
+# or
+yarn add @meeting-baas/sdk@^6.0.0
+# or
+pnpm add @meeting-baas/sdk@^6.0.0
+```
+
+### Step 2: Test Existing Code
+
+All existing v1 code should continue to work without changes. Test your application to ensure everything works as expected.
+
+### Step 3: Migrate to v2 (Optional)
+
+If you want to use v2 API:
+
+1. **Update client creation** to include `api_version: "v2"`
+2. **Update method calls** to use v2 method names (e.g., `createBot` instead of `joinMeeting`)
+3. **Update error handling** to use v2 error format (`code`, `statusCode`, `details`)
+4. **Handle batch responses** if using batch operations (check `errors` array)
+
+### Step 4: Update Type Imports (if needed)
+
+If you're importing types, they're now organized by version:
+
+```typescript
+// v1 types (from generated/v1/schema)
+import type { JoinRequest, JoinResponse } from "@meeting-baas/sdk";
+
+// v2 types (from generated/v2/schema)
+import type { CreateBotRequest, CreateBotResponse } from "@meeting-baas/sdk";
+```
+
+## 🆘 Common Issues when migrating to v6
+
+### Issue 1: TypeScript Shows Wrong Methods
+
+**Problem**: TypeScript shows v1 methods when you want v2, or vice versa.
+
+**Solution**: Ensure `api_version` is correctly set in the client configuration. TypeScript infers methods based on this value.
+
+```typescript
+// Correct
+const client = createBaasClient({
+  api_key: "key",
+  api_version: "v2" // Must be explicitly set for v2
+});
+```
+
+### Issue 2: Error Handling Differences
+
+**Problem**: v2 error format is different from v1.
+
+**Solution**: Update error handling to use v2 error fields:
+
+```typescript
+// v1 error handling
+if (!result.success) {
+  console.error(result.error); // ZodError | Error
+}
+
+// v2 error handling
+if (!result.success) {
+  console.error(result.error); // string
+  console.error(result.code); // string
+  console.error(result.statusCode); // number
+  console.error(result.details); // unknown | null
+}
+```
+
+### Issue 3: Batch Route Errors
+
+**Problem**: Batch routes return `success: true` even when some items fail.
+
+**Solution**: Check the `errors` array for partial failures:
+
+```typescript
+const result = await client.batchCreateBots({ bots: [...] });
+
+if (result.success) {
+  if (result.errors.length > 0) {
+    // Some items failed
+    console.log("Partial success:", result.data);
+    console.log("Errors:", result.errors);
+  } else {
+    // All items succeeded
+    console.log("All succeeded:", result.data);
+  }
+}
+```
+
+## 🎉 Benefits of v6.0.0
+
+After upgrading, you'll enjoy:
+
+- **Dual API Support**: Use both v1 and v2 APIs as needed
+- **Type Safety**: TypeScript ensures you only use methods available for your selected API version
+- **Easy Migration**: Simple configuration change to migrate to v2
+- **Backward Compatible**: All existing v1 code continues to work
+- **Future-Proof**: Ready for v2 API features and improvements
+
+The upgrade is seamless - your existing code continues to work, and you can migrate to v2 at your own pace!
