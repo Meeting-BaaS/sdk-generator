@@ -3,9 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { type BaasClient, createBaasClient } from "../../src/node/client"
 import {
   createMockApiKey,
-  createMockBotId,
   createMockV2BatchResponse,
-  createMockV2ErrorResponse,
   createMockV2SuccessResponse,
   server
 } from "../setup"
