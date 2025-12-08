@@ -1,0 +1,291 @@
+/**
+ * VoiceRouter - Unified transcription API bridge
+ * Provides a provider-agnostic interface for multiple Speech-to-Text services
+ */
+
+import type {
+	TranscriptionAdapter,
+	ProviderConfig,
+} from "../adapters/base-adapter"
+import type {
+	AudioInput,
+	StreamEvent,
+	TranscribeOptions,
+	TranscriptionProvider,
+	UnifiedTranscriptResponse,
+} from "./types"
+
+/**
+ * Configuration for VoiceRouter
+ */
+export interface VoiceRouterConfig {
+	/**
+	 * Provider configurations
+	 * Key: provider name, Value: provider config
+	 */
+	providers: Partial<Record<TranscriptionProvider, ProviderConfig>>
+
+	/**
+	 * Default provider to use when not specified
+	 */
+	defaultProvider?: TranscriptionProvider
+
+	/**
+	 * Strategy for provider selection when multiple providers are configured
+	 * - 'explicit': Always require provider to be specified (throws error if not)
+	 * - 'default': Use defaultProvider if not specified
+	 * - 'round-robin': Rotate between providers for load balancing
+	 * - 'fastest': Choose provider with lowest current queue (future feature)
+	 */
+	selectionStrategy?: "explicit" | "default" | "round-robin"
+}
+
+/**
+ * VoiceRouter - Main class for provider-agnostic transcription
+ */
+export class VoiceRouter {
+	private adapters: Map<TranscriptionProvider, TranscriptionAdapter> =
+		new Map()
+	private config: VoiceRouterConfig
+	private roundRobinIndex = 0
+
+	constructor(config: VoiceRouterConfig) {
+		this.config = {
+			selectionStrategy: "default",
+			...config,
+		}
+
+		// Validate configuration
+		if (Object.keys(config.providers).length === 0) {
+			throw new Error(
+				"VoiceRouter requires at least one provider configuration",
+			)
+		}
+
+		// If using default strategy, ensure a default provider is set
+		if (
+			this.config.selectionStrategy === "default" &&
+			!this.config.defaultProvider
+		) {
+			// Auto-select first provider as default
+			this.config.defaultProvider = Object.keys(
+				config.providers,
+			)[0] as TranscriptionProvider
+		}
+	}
+
+	/**
+	 * Register an adapter for a provider
+	 */
+	registerAdapter(adapter: TranscriptionAdapter): void {
+		// Initialize adapter with config
+		const providerConfig = this.config.providers[adapter.name]
+		if (!providerConfig) {
+			throw new Error(
+				`No configuration found for provider: ${adapter.name}`,
+			)
+		}
+
+		adapter.initialize(providerConfig)
+		this.adapters.set(adapter.name, adapter)
+	}
+
+	/**
+	 * Get an adapter by provider name
+	 */
+	getAdapter(provider: TranscriptionProvider): TranscriptionAdapter {
+		const adapter = this.adapters.get(provider)
+		if (!adapter) {
+			throw new Error(
+				`Provider '${provider}' is not registered. Available providers: ${Array.from(this.adapters.keys()).join(", ")}`,
+			)
+		}
+		return adapter
+	}
+
+	/**
+	 * Select provider based on configured strategy
+	 */
+	private selectProvider(
+		preferredProvider?: TranscriptionProvider,
+	): TranscriptionProvider {
+		// If provider explicitly specified, use it
+		if (preferredProvider) {
+			if (!this.adapters.has(preferredProvider)) {
+				throw new Error(
+					`Provider '${preferredProvider}' is not registered. Available providers: ${Array.from(this.adapters.keys()).join(", ")}`,
+				)
+			}
+			return preferredProvider
+		}
+
+		// Apply selection strategy
+		switch (this.config.selectionStrategy) {
+			case "explicit":
+				throw new Error(
+					"Provider must be explicitly specified when using 'explicit' selection strategy",
+				)
+
+			case "round-robin": {
+				const providers = Array.from(this.adapters.keys())
+				const provider = providers[this.roundRobinIndex % providers.length]
+				this.roundRobinIndex++
+				return provider
+			}
+
+			case "default":
+			default:
+				if (!this.config.defaultProvider) {
+					throw new Error("No default provider configured")
+				}
+				return this.config.defaultProvider
+		}
+	}
+
+	/**
+	 * Transcribe audio using a specific provider or the default
+	 */
+	async transcribe(
+		audio: AudioInput,
+		options?: TranscribeOptions & { provider?: TranscriptionProvider },
+	): Promise<UnifiedTranscriptResponse> {
+		const provider = this.selectProvider(options?.provider)
+		const adapter = this.getAdapter(provider)
+
+		// Remove provider from options before passing to adapter
+		const { provider: _, ...adapterOptions } = options || {}
+
+		return adapter.transcribe(audio, adapterOptions)
+	}
+
+	/**
+	 * Get transcription result by ID
+	 * Provider must be specified since IDs are provider-specific
+	 */
+	async getTranscript(
+		transcriptId: string,
+		provider: TranscriptionProvider,
+	): Promise<UnifiedTranscriptResponse> {
+		const adapter = this.getAdapter(provider)
+		return adapter.getTranscript(transcriptId)
+	}
+
+	/**
+	 * Stream audio for real-time transcription
+	 * Only works with providers that support streaming
+	 */
+	async *transcribeStream(
+		audioStream: ReadableStream,
+		options?: TranscribeOptions & { provider?: TranscriptionProvider },
+	): AsyncIterable<StreamEvent> {
+		const provider = this.selectProvider(options?.provider)
+		const adapter = this.getAdapter(provider)
+
+		// Check if adapter supports streaming
+		if (!adapter.capabilities.streaming || !adapter.transcribeStream) {
+			throw new Error(
+				`Provider '${provider}' does not support streaming transcription`,
+			)
+		}
+
+		// Remove provider from options before passing to adapter
+		const { provider: _, ...adapterOptions } = options || {}
+
+		yield* adapter.transcribeStream(audioStream, adapterOptions)
+	}
+
+	/**
+	 * Delete a transcription
+	 * Not all providers support this operation
+	 */
+	async deleteTranscript(
+		transcriptId: string,
+		provider: TranscriptionProvider,
+	): Promise<{ success: boolean }> {
+		const adapter = this.getAdapter(provider)
+
+		if (!adapter.deleteTranscript) {
+			throw new Error(
+				`Provider '${provider}' does not support deleting transcripts`,
+			)
+		}
+
+		return adapter.deleteTranscript(transcriptId)
+	}
+
+	/**
+	 * List recent transcriptions
+	 * Not all providers support this operation
+	 */
+	async listTranscripts(
+		provider: TranscriptionProvider,
+		options?: {
+			limit?: number
+			offset?: number
+			status?: string
+		},
+	): Promise<{
+		transcripts: UnifiedTranscriptResponse[]
+		total?: number
+		hasMore?: boolean
+	}> {
+		const adapter = this.getAdapter(provider)
+
+		if (!adapter.listTranscripts) {
+			throw new Error(
+				`Provider '${provider}' does not support listing transcripts`,
+			)
+		}
+
+		return adapter.listTranscripts(options)
+	}
+
+	/**
+	 * Get capabilities for a specific provider
+	 */
+	getProviderCapabilities(provider: TranscriptionProvider) {
+		const adapter = this.getAdapter(provider)
+		return adapter.capabilities
+	}
+
+	/**
+	 * Get all registered providers
+	 */
+	getRegisteredProviders(): TranscriptionProvider[] {
+		return Array.from(this.adapters.keys())
+	}
+
+	/**
+	 * Get raw provider client for advanced usage
+	 */
+	getRawProviderClient(provider: TranscriptionProvider): unknown {
+		const adapter = this.getAdapter(provider)
+
+		if (!adapter.getRawClient) {
+			throw new Error(
+				`Provider '${provider}' does not expose a raw client`,
+			)
+		}
+
+		return adapter.getRawClient()
+	}
+}
+
+/**
+ * Factory function to create a VoiceRouter with auto-registered adapters
+ */
+export function createVoiceRouter(
+	config: VoiceRouterConfig,
+	adapters?: TranscriptionAdapter[],
+): VoiceRouter {
+	const router = new VoiceRouter(config)
+
+	// Register provided adapters
+	if (adapters && adapters.length > 0) {
+		for (const adapter of adapters) {
+			router.registerAdapter(adapter)
+		}
+	}
+
+	return router
+}
