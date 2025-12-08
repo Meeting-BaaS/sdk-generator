@@ -1,6 +1,6 @@
 /**
- * Gladia transcription provider adapter
- * Documentation: https://docs.gladia.io/
+ * AssemblyAI transcription provider adapter
+ * Documentation: https://www.assemblyai.com/docs
  */
 
 import axios, { type AxiosInstance } from "axios"
@@ -12,34 +12,35 @@ import type {
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
-// Import Gladia generated types
-import type { InitPreRecordedTranscriptionResponse } from "../generated/gladia/schema/initPreRecordedTranscriptionResponse"
-import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
-import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
-import type { TranscriptionDTO } from "../generated/gladia/schema/transcriptionDTO"
-import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
-import type { WordDTO } from "../generated/gladia/schema/wordDTO"
+// Import AssemblyAI generated types
+import type { Transcript } from "../generated/assemblyai/schema/transcript"
+import type { TranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
+import type { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
+import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
+import type { TranscriptUtterance } from "../generated/assemblyai/schema/transcriptUtterance"
 
 /**
- * Gladia transcription provider adapter
+ * AssemblyAI transcription provider adapter
  *
- * Implements transcription for the Gladia API with support for:
+ * Implements transcription for the AssemblyAI API with support for:
  * - Synchronous and asynchronous transcription
- * - Speaker diarization (identifying different speakers)
+ * - Speaker diarization (speaker labels)
  * - Multi-language detection and transcription
  * - Summarization and sentiment analysis
- * - Custom vocabulary boosting
+ * - Entity detection and content moderation
+ * - Custom vocabulary and spelling
  * - Word-level timestamps
+ * - PII redaction
  *
- * @see https://docs.gladia.io/ Gladia API Documentation
+ * @see https://www.assemblyai.com/docs AssemblyAI API Documentation
  *
  * @example Basic transcription
  * ```typescript
- * import { GladiaAdapter } from '@meeting-baas/sdk';
+ * import { AssemblyAIAdapter } from '@meeting-baas/sdk';
  *
- * const adapter = new GladiaAdapter();
+ * const adapter = new AssemblyAIAdapter();
  * adapter.initialize({
- *   apiKey: process.env.GLADIA_API_KEY
+ *   apiKey: process.env.ASSEMBLYAI_API_KEY
  * });
  *
  * const result = await adapter.transcribe({
@@ -54,19 +55,23 @@ import type { WordDTO } from "../generated/gladia/schema/wordDTO"
  * console.log(result.data.speakers);
  * ```
  *
- * @example With summarization
+ * @example With advanced features
  * ```typescript
  * const result = await adapter.transcribe(audio, {
- *   language: 'en',
+ *   language: 'en_us',
+ *   diarization: true,
  *   summarization: true,
- *   sentimentAnalysis: true
+ *   sentimentAnalysis: true,
+ *   entityDetection: true,
+ *   piiRedaction: true
  * });
  *
  * console.log('Summary:', result.data.summary);
+ * console.log('Entities:', result.data.metadata?.entities);
  * ```
  */
-export class GladiaAdapter extends BaseAdapter {
-	readonly name = "gladia" as const
+export class AssemblyAIAdapter extends BaseAdapter {
+	readonly name = "assemblyai" as const
 	readonly capabilities: ProviderCapabilities = {
 		streaming: true,
 		diarization: true,
@@ -76,11 +81,11 @@ export class GladiaAdapter extends BaseAdapter {
 		summarization: true,
 		sentimentAnalysis: true,
 		entityDetection: true,
-		piiRedaction: false, // Gladia doesn't have PII redaction in their API
+		piiRedaction: true,
 	}
 
 	private client?: AxiosInstance
-	private baseUrl = "https://api.gladia.io/v2"
+	private baseUrl = "https://api.assemblyai.com/v2"
 
 	initialize(config: ProviderConfig): void {
 		super.initialize(config)
@@ -89,7 +94,7 @@ export class GladiaAdapter extends BaseAdapter {
 			baseURL: config.baseUrl || this.baseUrl,
 			timeout: config.timeout || 60000,
 			headers: {
-				"x-gladia-key": config.apiKey,
+				authorization: config.apiKey,
 				"Content-Type": "application/json",
 				...config.headers,
 			},
@@ -99,17 +104,19 @@ export class GladiaAdapter extends BaseAdapter {
 	/**
 	 * Submit audio for transcription
 	 *
-	 * Sends audio to Gladia API for transcription. If a webhook URL is provided,
+	 * Sends audio to AssemblyAI API for transcription. If a webhook URL is provided,
 	 * returns immediately with the job ID. Otherwise, polls until completion.
 	 *
 	 * @param audio - Audio input (currently only URL type supported)
 	 * @param options - Transcription options
-	 * @param options.language - Language code (e.g., 'en', 'es', 'fr')
+	 * @param options.language - Language code (e.g., 'en', 'en_us', 'es', 'fr')
 	 * @param options.languageDetection - Enable automatic language detection
-	 * @param options.diarization - Enable speaker identification
-	 * @param options.speakersExpected - Number of expected speakers (for diarization)
+	 * @param options.diarization - Enable speaker identification (speaker_labels)
+	 * @param options.speakersExpected - Number of expected speakers
 	 * @param options.summarization - Generate text summary
 	 * @param options.sentimentAnalysis - Analyze sentiment of transcription
+	 * @param options.entityDetection - Detect named entities (people, places, etc.)
+	 * @param options.piiRedaction - Redact personally identifiable information
 	 * @param options.customVocabulary - Words to boost in recognition
 	 * @param options.webhookUrl - Callback URL for async results
 	 * @returns Normalized transcription response
@@ -129,10 +136,12 @@ export class GladiaAdapter extends BaseAdapter {
 	 *   type: 'url',
 	 *   url: 'https://example.com/meeting.mp3'
 	 * }, {
-	 *   language: 'en',
+	 *   language: 'en_us',
 	 *   diarization: true,
 	 *   speakersExpected: 3,
 	 *   summarization: true,
+	 *   sentimentAnalysis: true,
+	 *   entityDetection: true,
 	 *   customVocabulary: ['API', 'TypeScript', 'JavaScript']
 	 * });
 	 * ```
@@ -148,13 +157,12 @@ export class GladiaAdapter extends BaseAdapter {
 			const payload = this.buildTranscriptionRequest(audio, options)
 
 			// Submit transcription job
-			const response =
-				await this.client!.post<InitPreRecordedTranscriptionResponse>(
-					"/transcription",
-					payload,
-				)
+			const response = await this.client!.post<Transcript>(
+				"/transcript",
+				payload,
+			)
 
-			const jobId = response.data.id
+			const transcriptId = response.data.id
 
 			// If webhook is provided, return immediately with job ID
 			if (options?.webhookUrl) {
@@ -162,7 +170,7 @@ export class GladiaAdapter extends BaseAdapter {
 					success: true,
 					provider: this.name,
 					data: {
-						id: jobId,
+						id: transcriptId,
 						text: "",
 						status: "queued",
 					},
@@ -171,7 +179,7 @@ export class GladiaAdapter extends BaseAdapter {
 			}
 
 			// Otherwise, poll for results
-			return await this.pollForCompletion(jobId)
+			return await this.pollForCompletion(transcriptId)
 		} catch (error) {
 			return this.createErrorResponse(error)
 		}
@@ -186,8 +194,8 @@ export class GladiaAdapter extends BaseAdapter {
 		this.validateConfig()
 
 		try {
-			const response = await this.client!.get<PreRecordedResponse>(
-				`/transcription/${transcriptId}`,
+			const response = await this.client!.get<Transcript>(
+				`/transcript/${transcriptId}`,
 			)
 
 			return this.normalizeResponse(response.data)
@@ -197,59 +205,60 @@ export class GladiaAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Build Gladia transcription request from unified options
+	 * Build AssemblyAI transcription request from unified options
 	 */
 	private buildTranscriptionRequest(
 		audio: AudioInput,
 		options?: TranscribeOptions,
-	): InitTranscriptionRequest {
+	): TranscriptParams {
 		// Get audio URL
 		let audioUrl: string
 		if (audio.type === "url") {
 			audioUrl = audio.url
 		} else {
 			throw new Error(
-				"Gladia adapter currently only supports URL-based audio input. Use audio.type='url'",
+				"AssemblyAI adapter currently only supports URL-based audio input. Use audio.type='url'",
 			)
 		}
 
-		const request: InitTranscriptionRequest = {
+		const request: TranscriptParams = {
 			audio_url: audioUrl,
 		}
 
-		// Map options to Gladia format
+		// Map options to AssemblyAI format
 		if (options) {
 			// Language configuration
-			if (options.language || options.languageDetection) {
-				request.language_config = {
-					languages: options.language
-						? ([options.language] as any)
-						: undefined,
-					code_switching: options.languageDetection,
-				}
+			if (options.language) {
+				// Convert ISO codes to AssemblyAI format (e.g., 'en' -> 'en_us')
+				const languageCode = options.language.includes("_")
+					? options.language
+					: `${options.language}_us`
+				request.language_code = languageCode as any
 			}
 
-			// Diarization (speaker recognition)
+			if (options.languageDetection) {
+				request.language_detection = true
+			}
+
+			// Speaker diarization
 			if (options.diarization) {
-				request.diarization = true
+				request.speaker_labels = true
 				if (options.speakersExpected) {
-					request.diarization_config = {
-						number_of_speakers: options.speakersExpected,
-					}
+					request.speakers_expected = options.speakersExpected
 				}
 			}
 
-			// Custom vocabulary
+			// Custom vocabulary (word boost)
 			if (options.customVocabulary && options.customVocabulary.length > 0) {
-				request.custom_vocabulary = true
-				request.custom_vocabulary_config = {
-					vocabulary: options.customVocabulary as any,
-				}
+				request.word_boost = options.customVocabulary
+				request.boost_param = "high" // default to high boost
 			}
 
 			// Summarization
 			if (options.summarization) {
 				request.summarization = true
+				request.summary_model = "informative"
+				request.summary_type = "bullets"
 			}
 
 			// Sentiment analysis
@@ -257,35 +266,35 @@ export class GladiaAdapter extends BaseAdapter {
 				request.sentiment_analysis = true
 			}
 
-			// Named entity recognition (entity detection)
+			// Entity detection
 			if (options.entityDetection) {
-				request.named_entity_recognition = true
+				request.entity_detection = true
+			}
+
+			// PII redaction
+			if (options.piiRedaction) {
+				request.redact_pii = true
 			}
 
 			// Webhook callback
 			if (options.webhookUrl) {
-				request.callback = true
-				request.callback_config = {
-					url: options.webhookUrl,
-				}
+				request.webhook_url = options.webhookUrl
 			}
 
-			// Custom metadata
-			if (options.metadata) {
-				request.custom_metadata = options.metadata
-			}
+			// Enable word timestamps by default (AssemblyAI includes them automatically)
+			// Enable punctuation and formatting for better results
+			request.punctuate = true
+			request.format_text = true
 		}
 
 		return request
 	}
 
 	/**
-	 * Normalize Gladia response to unified format
+	 * Normalize AssemblyAI response to unified format
 	 */
-	private normalizeResponse(
-		response: PreRecordedResponse,
-	): UnifiedTranscriptResponse {
-		// Map Gladia status to unified status
+	private normalizeResponse(response: Transcript): UnifiedTranscriptResponse {
+		// Map AssemblyAI status to unified status
 		let status: "queued" | "processing" | "completed" | "error"
 		switch (response.status) {
 			case "queued":
@@ -294,7 +303,7 @@ export class GladiaAdapter extends BaseAdapter {
 			case "processing":
 				status = "processing"
 				break
-			case "done":
+			case "completed":
 				status = "completed"
 				break
 			case "error":
@@ -310,55 +319,53 @@ export class GladiaAdapter extends BaseAdapter {
 				success: false,
 				provider: this.name,
 				error: {
-					code: response.error_code?.toString() || "TRANSCRIPTION_ERROR",
-					message: "Transcription failed",
-					statusCode: response.error_code || undefined,
+					code: "TRANSCRIPTION_ERROR",
+					message: response.error || "Transcription failed",
 				},
 				raw: response,
 			}
 		}
-
-		// Extract transcription result
-		const result = response.result
-		const transcription = result?.transcription
 
 		return {
 			success: true,
 			provider: this.name,
 			data: {
 				id: response.id,
-				text: transcription?.full_transcript || "",
-				confidence: undefined, // Gladia doesn't provide overall confidence
+				text: response.text || "",
+				confidence:
+					response.confidence !== null ? response.confidence : undefined,
 				status,
-				language: transcription?.languages?.[0], // Use first detected language
-				duration: undefined, // Not directly available in Gladia response
-				speakers: this.extractSpeakers(transcription),
-				words: this.extractWords(transcription),
-				utterances: this.extractUtterances(transcription),
-				summary: result?.summarization?.results || undefined,
+				language: response.language_code,
+				duration: response.audio_duration
+					? response.audio_duration / 1000
+					: undefined, // Convert ms to seconds
+				speakers: this.extractSpeakers(response),
+				words: this.extractWords(response),
+				utterances: this.extractUtterances(response),
+				summary: response.summary || undefined,
 				metadata: {
-					requestParams: response.request_params,
-					customMetadata: response.custom_metadata,
+					audioUrl: response.audio_url,
+					entities: response.entities,
+					sentimentAnalysis: response.sentiment_analysis_results,
+					contentModeration: response.content_safety_labels,
 				},
-				createdAt: response.created_at,
-				completedAt: response.completed_at || undefined,
 			},
 			raw: response,
 		}
 	}
 
 	/**
-	 * Extract speaker information from Gladia response
+	 * Extract speaker information from AssemblyAI response
 	 */
-	private extractSpeakers(transcription: TranscriptionDTO | undefined) {
-		if (!transcription?.utterances) {
+	private extractSpeakers(transcript: Transcript) {
+		if (!transcript.utterances || transcript.utterances.length === 0) {
 			return undefined
 		}
 
-		// Gladia stores speakers in utterances - extract unique speakers
-		const speakerSet = new Set<number>()
-		transcription.utterances.forEach((utterance: UtteranceDTO) => {
-			if (utterance.speaker !== undefined) {
+		// Extract unique speakers from utterances
+		const speakerSet = new Set<string>()
+		transcript.utterances.forEach((utterance: TranscriptUtterance) => {
+			if (utterance.speaker) {
 				speakerSet.add(utterance.speaker)
 			}
 		})
@@ -368,51 +375,46 @@ export class GladiaAdapter extends BaseAdapter {
 		}
 
 		return Array.from(speakerSet).map((speakerId) => ({
-			id: speakerId.toString(),
-			label: `Speaker ${speakerId}`,
+			id: speakerId,
+			label: speakerId, // AssemblyAI uses format like "A", "B", "C"
 		}))
 	}
 
 	/**
-	 * Extract word timestamps from Gladia response
+	 * Extract word timestamps from AssemblyAI response
 	 */
-	private extractWords(transcription: TranscriptionDTO | undefined) {
-		if (!transcription?.utterances) {
+	private extractWords(transcript: Transcript) {
+		if (!transcript.words || transcript.words.length === 0) {
 			return undefined
 		}
 
-		// Flatten all words from all utterances
-		const allWords = transcription.utterances.flatMap((utterance: UtteranceDTO) =>
-			utterance.words.map((word: WordDTO) => ({
-				text: word.word,
-				start: word.start,
-				end: word.end,
-				confidence: word.confidence,
-				speaker: utterance.speaker?.toString(),
-			})),
-		)
-
-		return allWords.length > 0 ? allWords : undefined
+		return transcript.words.map((word: TranscriptWord) => ({
+			text: word.text,
+			start: word.start / 1000, // Convert ms to seconds
+			end: word.end / 1000, // Convert ms to seconds
+			confidence: word.confidence,
+			speaker: word.speaker || undefined,
+		}))
 	}
 
 	/**
-	 * Extract utterances from Gladia response
+	 * Extract utterances from AssemblyAI response
 	 */
-	private extractUtterances(transcription: TranscriptionDTO | undefined) {
-		if (!transcription?.utterances) {
+	private extractUtterances(transcript: Transcript) {
+		if (!transcript.utterances || transcript.utterances.length === 0) {
 			return undefined
 		}
 
-		return transcription.utterances.map((utterance: UtteranceDTO) => ({
+		return transcript.utterances.map((utterance: TranscriptUtterance) => ({
 			text: utterance.text,
-			start: utterance.start,
-			end: utterance.end,
-			speaker: utterance.speaker?.toString(),
+			start: utterance.start / 1000, // Convert ms to seconds
+			end: utterance.end / 1000, // Convert ms to seconds
+			speaker: utterance.speaker || undefined,
 			confidence: utterance.confidence,
-			words: utterance.words.map((word: WordDTO) => ({
-				text: word.word,
-				start: word.start,
-				end: word.end,
+			words: utterance.words.map((word: TranscriptWord) => ({
+				text: word.text,
+				start: word.start / 1000,
+				end: word.end / 1000,
 				confidence: word.confidence,
 			})),
 		}))
@@ -422,12 +424,12 @@ export class GladiaAdapter extends BaseAdapter {
 	 * Poll for transcription completion
 	 */
 	private async pollForCompletion(
-		jobId: string,
+		transcriptId: string,
 		maxAttempts = 60,
-		intervalMs = 2000,
+		intervalMs = 3000,
 	): Promise<UnifiedTranscriptResponse> {
 		for (let attempt = 0; attempt < maxAttempts; attempt++) {
-			const result = await this.getTranscript(jobId)
+			const result = await this.getTranscript(transcriptId)
 
 			if (!result.success) {
 				return result
@@ -467,10 +469,12 @@ export class GladiaAdapter extends BaseAdapter {
 }
 
 /**
- * Factory function to create a Gladia adapter
+ * Factory function to create an AssemblyAI adapter
  */
-export function createGladiaAdapter(config: ProviderConfig): GladiaAdapter {
-	const adapter = new GladiaAdapter()
+export function createAssemblyAIAdapter(
+	config: ProviderConfig,
+): AssemblyAIAdapter {
+	const adapter = new AssemblyAIAdapter()
 	adapter.initialize(config)
 	return adapter
 }

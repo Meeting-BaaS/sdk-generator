@@ -48,7 +48,7 @@
     "openapi:generate:deepgram": "pnpm openapi:clean:deepgram && orval --config orval.config.ts --project deepgramApi && orval --config orval.config.ts --project deepgramZod",
     "openapi:rebuild": "pnpm openapi:generate && pnpm build",
     "docs:clean": "rm -rf docs/generated",
-    "docs:generate": "pnpm docs:clean && pnpm docs:generate:router && pnpm docs:generate:gladia",
+    "docs:generate": "pnpm docs:clean && pnpm docs:generate:router && pnpm docs:generate:gladia && pnpm docs:generate:assemblyai",
     "docs:generate:router": "typedoc --options typedoc.router.config.mjs",
     "docs:generate:gladia": "typedoc --options typedoc.gladia.config.mjs",
     "docs:generate:assemblyai": "typedoc --options typedoc.assemblyai.config.mjs",

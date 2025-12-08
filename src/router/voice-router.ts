@@ -42,6 +42,50 @@ export interface VoiceRouterConfig {
 
 /**
  * VoiceRouter - Main class for provider-agnostic transcription
+ *
+ * Provides a unified interface across multiple Speech-to-Text providers
+ * (Gladia, AssemblyAI, Deepgram, etc.). Automatically handles provider
+ * selection, adapter management, and response normalization.
+ *
+ * @example Basic usage with single provider
+ * ```typescript
+ * import { VoiceRouter, GladiaAdapter } from '@meeting-baas/sdk';
+ *
+ * const router = new VoiceRouter({
+ *   providers: {
+ *     gladia: { apiKey: process.env.GLADIA_API_KEY }
+ *   },
+ *   defaultProvider: 'gladia'
+ * });
+ *
+ * router.registerAdapter(new GladiaAdapter());
+ *
+ * const result = await router.transcribe({
+ *   type: 'url',
+ *   url: 'https://example.com/audio.mp3'
+ * });
+ *
+ * console.log(result.data.text);
+ * ```
+ *
+ * @example Multi-provider with round-robin
+ * ```typescript
+ * const router = new VoiceRouter({
+ *   providers: {
+ *     gladia: { apiKey: process.env.GLADIA_API_KEY },
+ *     assemblyai: { apiKey: process.env.ASSEMBLYAI_API_KEY }
+ *   },
+ *   selectionStrategy: 'round-robin'
+ * });
+ *
+ * router.registerAdapter(new GladiaAdapter());
+ * router.registerAdapter(new AssemblyAIAdapter());
+ *
+ * // Automatically alternates between providers
+ * await router.transcribe(audio1); // Uses Gladia
+ * await router.transcribe(audio2); // Uses AssemblyAI
+ * await router.transcribe(audio3); // Uses Gladia again
+ * ```
  */
 export class VoiceRouter {
 	private adapters: Map<TranscriptionProvider, TranscriptionAdapter> =
@@ -76,6 +120,23 @@ export class VoiceRouter {
 
 	/**
 	 * Register an adapter for a provider
+	 *
+	 * Call this method for each provider you want to use. The adapter will be
+	 * initialized with the configuration provided in the constructor.
+	 *
+	 * @param adapter - Provider adapter instance to register
+	 * @throws {Error} If no configuration found for the provider
+	 *
+	 * @example
+	 * ```typescript
+	 * const router = new VoiceRouter({
+	 *   providers: {
+	 *     gladia: { apiKey: 'YOUR_KEY' }
+	 *   }
+	 * });
+	 *
+	 * router.registerAdapter(new GladiaAdapter());
+	 * ```
 	 */
 	registerAdapter(adapter: TranscriptionAdapter): void {
 		// Initialize adapter with config
@@ -144,6 +205,41 @@ export class VoiceRouter {
 
 	/**
 	 * Transcribe audio using a specific provider or the default
+	 *
+	 * Submit audio for transcription. The provider will be selected based on
+	 * your configuration strategy (explicit, default, or round-robin).
+	 *
+	 * @param audio - Audio input (URL, file buffer, or stream)
+	 * @param options - Transcription options (language, diarization, etc.)
+	 * @param options.provider - Specific provider to use (overrides selection strategy)
+	 * @returns Unified transcription response with normalized format
+	 * @throws {Error} If provider not registered or selection fails
+	 *
+	 * @example URL audio
+	 * ```typescript
+	 * const result = await router.transcribe({
+	 *   type: 'url',
+	 *   url: 'https://example.com/audio.mp3'
+	 * }, {
+	 *   language: 'en',
+	 *   diarization: true,
+	 *   summarization: true
+	 * });
+	 *
+	 * if (result.success) {
+	 *   console.log('Transcript:', result.data.text);
+	 *   console.log('Speakers:', result.data.speakers);
+	 *   console.log('Summary:', result.data.summary);
+	 * }
+	 * ```
+	 *
+	 * @example Specific provider
+	 * ```typescript
+	 * const result = await router.transcribe(audio, {
+	 *   provider: 'gladia',  // Force use of Gladia
+	 *   language: 'en'
+	 * });
+	 * ```
 	 */
 	async transcribe(
 		audio: AudioInput,
