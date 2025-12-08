@@ -73,7 +73,16 @@ import type {
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponseData
 } from "../generated/v2/schema"
-import type { ApiResponse, ApiResponseV2, BatchApiResponseV2, ListApiResponseV2 } from "./api"
+import type {
+  BotStatusResponse,
+  MeetingListResponse,
+  MeetingResponse,
+  Platform,
+  RequestBotProxyBotsPostBody,
+  TranscriptionResponse,
+  UpdateMeetingDataProxyMeetingsPlatformNativeMeetingIdPatchBodyData
+} from "../generated/vexa/schema"
+import type { ApiResponse, ApiResponseV2, ApiResponseVexa, BatchApiResponseV2, ListApiResponseV2 } from "./api"
 
 /**
  * Configuration for the BaasClient
@@ -87,9 +96,10 @@ export interface BaasClientConfig {
    * API version to use
    * - "v1": Meeting BaaS v1 API (default, for backward compatibility)
    * - "v2": Meeting BaaS v2 API
+   * - "vexa": Vexa API
    * @default "v1"
    */
-  api_version?: "v1" | "v2"
+  api_version?: "v1" | "v2" | "vexa"
   /**
    * Base URL for the API
    * This is an internal parameter and should not be accessed directly
@@ -116,6 +126,13 @@ export interface BaasClientConfigV1 extends Omit<BaasClientConfig, "api_version"
  */
 export interface BaasClientConfigV2 extends Omit<BaasClientConfig, "api_version"> {
   api_version: "v2"
+}
+
+/**
+ * Base configuration for Vexa client
+ */
+export interface BaasClientConfigVexa extends Omit<BaasClientConfig, "api_version"> {
+  api_version: "vexa"
 }
 
 /**
@@ -270,6 +287,47 @@ export interface BaasClientV2Methods {
   }): Promise<
     BatchApiResponseV2<DeleteCalendarBotResponseDataItem, DeleteCalendarBotResponseErrorsItem>
   >
+  getApiKey(): string
+  getBaseUrl(): string
+}
+
+/**
+ * Vexa Client methods interface
+ * These methods use Vexa API response format (ApiResponseVexa<T>)
+ */
+export interface BaasClientVexaMethods {
+  // Bot Management
+  requestBot(params: RequestBotProxyBotsPostBody): Promise<ApiResponseVexa<MeetingResponse>>
+  stopBot(params: { platform: Platform; native_meeting_id: string }): Promise<ApiResponseVexa<MeetingResponse>>
+  getBotsStatus(): Promise<ApiResponseVexa<BotStatusResponse>>
+  updateBotConfig(params: {
+    platform: Platform
+    native_meeting_id: string
+    config: {
+      language?: string
+      task?: string
+    }
+  }): Promise<ApiResponseVexa<void>>
+
+  // Transcriptions
+  getTranscript(params: {
+    platform: Platform
+    native_meeting_id: string
+  }): Promise<ApiResponseVexa<TranscriptionResponse>>
+  getMeetings(): Promise<ApiResponseVexa<MeetingListResponse>>
+  deleteMeeting(params: {
+    platform: Platform
+    native_meeting_id: string
+  }): Promise<ApiResponseVexa<void>>
+  updateMeetingData(params: {
+    platform: Platform
+    native_meeting_id: string
+    data: UpdateMeetingDataProxyMeetingsPlatformNativeMeetingIdPatchBodyData
+  }): Promise<ApiResponseVexa<MeetingResponse>>
+
+  // User
+  setWebhook(params: { webhook_url: string }): Promise<ApiResponseVexa<void>>
+
   getApiKey(): string
   getBaseUrl(): string
 }

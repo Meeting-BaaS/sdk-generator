@@ -300,6 +300,43 @@ export async function apiWrapperV2NoParams<TData>(
 }
 
 /**
+ * Vexa API response type - simpler format without retryAfter
+ */
+export type ApiResponseVexa<T> =
+  | { success: true; data: T }
+  | {
+      success: false
+      error: string
+      statusCode: number
+      code: string
+      message: string
+      details: string | null
+    }
+
+/**
+ * Vexa API wrapper - simpler pattern for cleaner code
+ * Wraps API calls and standardizes error handling
+ */
+export async function apiWrapperVexa<T>(
+  fn: () => Promise<T>
+): Promise<ApiResponseVexa<T>> {
+  try {
+    const data = await fn()
+    return { success: true, data }
+  } catch (error: any) {
+    const errorResponse = error.response?.data
+    return {
+      success: false,
+      error: errorResponse?.error || error.message || "Unknown error",
+      statusCode: error.response?.status || 500,
+      code: errorResponse?.code || "UNKNOWN_ERROR",
+      message: errorResponse?.message || error.message || "An error occurred",
+      details: errorResponse?.details || null
+    }
+  }
+}
+
+/**
  * Wrapper function for v2 list API calls that flattens cursor fields
  * Transforms API response from { success: true, data: [...], cursor: ..., prev_cursor: ... }
  * to { success: true, data: [...], cursor: ..., prev_cursor: ... } with cursor/prev_cursor at top level
