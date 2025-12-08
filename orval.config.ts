@@ -1,64 +1,94 @@
 import { defineConfig } from "orval"
 
-const V1_INPUT = {
-  target: "https://api.meetingbaas.com/openapi.json",
-  override: {
-    transformer: "./scripts/preprocess.js"
-  }
+// Transcription Provider OpenAPI Specs
+const GLADIA_INPUT = {
+  target: "https://api.gladia.io/openapi.json"
 }
 
-// No preprocessing needed for v2 (v2 has proper defaults in OpenAPI spec)
-const V2_INPUT = {
-  target: "https://api.meetingbaas.com/v2/openapi.json"
+const ASSEMBLYAI_INPUT = {
+  target: "https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/main/openapi.json"
+}
+
+const DEEPGRAM_INPUT = {
+  // TODO: Find Deepgram OpenAPI spec URL
+  target: "https://api.deepgram.com/openapi.json"
 }
 
 export default defineConfig({
-  // v1 API generation (existing, reorganized to v1 directory)
-  baasApiV1: {
-    input: V1_INPUT,
+  // Gladia API generation
+  gladiaApi: {
+    input: GLADIA_INPUT,
     output: {
-      target: "./src/generated/v1/api",
-      schemas: "./src/generated/v1/schema",
+      target: "./src/generated/gladia/api",
+      schemas: "./src/generated/gladia/schema",
       client: "axios-functions",
-      mode: "tags-split",
+      mode: "single",  // Use single mode instead of tags-split to avoid toSorted issue
       biome: true,
       mock: {
         type: "msw",
-        baseUrl: "https://api.meetingbaas.com"
+        baseUrl: "https://api.gladia.io"
       }
     }
   },
-  // Generate Zod schemas for v1
-  baasZodV1: {
-    input: V1_INPUT,
+  // Generate Zod schemas for Gladia
+  gladiaZod: {
+    input: GLADIA_INPUT,
     output: {
-      target: "./src/generated/v1/api",
+      target: "./src/generated/gladia/api",
       client: "zod",
       mode: "tags-split",
       fileExtension: ".zod.ts",
       biome: true
     }
   },
-  // v2 API generation (new)
-  baasApiV2: {
-    input: V2_INPUT,
+
+  // AssemblyAI API generation
+  assemblyaiApi: {
+    input: ASSEMBLYAI_INPUT,
     output: {
-      target: "./src/generated/v2/api",
-      schemas: "./src/generated/v2/schema",
+      target: "./src/generated/assemblyai/api",
+      schemas: "./src/generated/assemblyai/schema",
       client: "axios-functions",
       mode: "tags-split",
       biome: true,
       mock: {
         type: "msw",
-        baseUrl: "https://api.meetingbaas.com"
+        baseUrl: "https://api.assemblyai.com"
       }
     }
   },
-  // Generate Zod schemas for v2
-  baasZodV2: {
-    input: V2_INPUT,
+  // Generate Zod schemas for AssemblyAI
+  assemblyaiZod: {
+    input: ASSEMBLYAI_INPUT,
     output: {
-      target: "./src/generated/v2/api",
+      target: "./src/generated/assemblyai/api",
+      client: "zod",
+      mode: "tags-split",
+      fileExtension: ".zod.ts",
+      biome: true
+    }
+  },
+
+  // Deepgram API generation
+  deepgramApi: {
+    input: DEEPGRAM_INPUT,
+    output: {
+      target: "./src/generated/deepgram/api",
+      schemas: "./src/generated/deepgram/schema",
+      client: "axios-functions",
+      mode: "tags-split",
+      biome: true,
+      mock: {
+        type: "msw",
+        baseUrl: "https://api.deepgram.com"
+      }
+    }
+  },
+  // Generate Zod schemas for Deepgram
+  deepgramZod: {
+    input: DEEPGRAM_INPUT,
+    output: {
+      target: "./src/generated/deepgram/api",
       client: "zod",
       mode: "tags-split",
       fileExtension: ".zod.ts",
