@@ -43,10 +43,10 @@
     "openapi:generate:deepgram": "pnpm openapi:clean:deepgram && orval --config orval.config.ts deepgramApi deepgramZod",
     "openapi:rebuild": "pnpm openapi:generate && pnpm build",
     "docs:clean": "rm -rf docs/generated",
-    "docs:generate": "pnpm docs:clean && pnpm docs:generate:v1 && pnpm docs:generate:v2 && pnpm docs:generate:client",
-    "docs:generate:client": "typedoc --options typedoc.config.mjs",
-    "docs:generate:v1": "typedoc --options typedoc.v1.config.mjs",
-    "docs:generate:v2": "typedoc --options typedoc.v2.config.mjs",
+    "docs:generate": "pnpm docs:clean && pnpm docs:generate:router && pnpm docs:generate:gladia && pnpm docs:generate:assemblyai",
+    "docs:generate:router": "typedoc --options typedoc.router.config.mjs",
+    "docs:generate:gladia": "typedoc --options typedoc.gladia.config.mjs",
+    "docs:generate:assemblyai": "typedoc --options typedoc.assemblyai.config.mjs",
     "prepublishOnly": "pnpm lint:fix && pnpm build"
   },
   "publishConfig": {
