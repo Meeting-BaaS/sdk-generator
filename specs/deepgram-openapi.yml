@@ -1,0 +1,5169 @@
+openapi: 3.1.0
+info:
+  title: Deepgram API Specification
+  version: 1.0.0
+  description: |
+    APIs for speech-to-text transcription, text-to-speech synthesis, language understanding, and account management.
+  termsOfService: 'https://deepgram.com/terms/'
+  contact:
+    email: devrel@deepgram.com
+    url: 'https://community.deepgram.com'
+    name: Deepgram Developer Relations
+  license:
+    name: Privacy Notice
+    url: 'https://deepgram.com/privacy/'
+servers:
+  - url: 'https://api.deepgram.com'
+    description: Deepgram Production API
+    x-fern-server-name: Production
+  - url: 'https://agent.deepgram.com'
+    description: Deepgram Agent API
+    x-fern-server-name: Agent
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |
+        Use `Authorization: Token <API_KEY>`
+        Example: `Authorization: Token 12345abcdef`
+      x-fern-header:
+        prefix: Token
+        env: DEEPGRAM_API_KEY
+    JwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Use `Authorization: Bearer <JWT>`
+        Example: `Authorization: Bearer eyJhbGciOiJ...`
+      x-fern-header:
+        name: authToken
+        env: DEEPGRAM_TOKEN
+  schemas:
+    AgentThinkModelsV1Response:
+      type: object
+      properties:
+        models:
+          type: array
+          items:
+            oneOf:
+              - type: object
+                description: OpenAI models
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - gpt-5
+                      - gpt-5-mini
+                      - gpt-5-nano
+                      - gpt-4.1
+                      - gpt-4.1-mini
+                      - gpt-4.1-nano
+                      - gpt-4o
+                      - gpt-4o-mini
+                    description: The unique identifier of the OpenAI model
+                  name:
+                    type: string
+                    description: The display name of the model
+                  provider:
+                    const: open_ai
+                    description: The provider of the model
+                required:
+                  - id
+                  - name
+                  - provider
+              - type: object
+                description: Anthropic models
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - claude-3-5-haiku-latest
+                      - claude-sonnet-4-20250514
+                    description: The unique identifier of the Anthropic model
+                  name:
+                    type: string
+                    description: The display name of the model
+                  provider:
+                    const: anthropic
+                    description: The provider of the model
+                required:
+                  - id
+                  - name
+                  - provider
+              - type: object
+                description: Google models
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - gemini-2.5-flash
+                      - gemini-2.0-flash
+                      - gemini-2.0-flash-lite
+                    description: The unique identifier of the Google model
+                  name:
+                    type: string
+                    description: The display name of the model
+                  provider:
+                    const: google
+                    description: The provider of the model
+                required:
+                  - id
+                  - name
+                  - provider
+              - type: object
+                description: Groq models
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - openai/gpt-oss-20b
+                    description: The unique identifier of the Groq model
+                  name:
+                    type: string
+                    description: The display name of the model
+                  provider:
+                    const: groq
+                    description: The provider of the model
+                required:
+                  - id
+                  - name
+                  - provider
+              - type: object
+                description: AWS Bedrock models (custom models accepted)
+                properties:
+                  id:
+                    type: string
+                    description: The unique identifier of the AWS Bedrock model (any model string accepted for BYO LLMs)
+                  name:
+                    type: string
+                    description: The display name of the model
+                  provider:
+                    const: aws_bedrock
+                    description: The provider of the model
+                required:
+                  - id
+                  - name
+                  - provider
+      required:
+        - models
+    ErrorResponseTextError:
+      type: string
+    ErrorResponseLegacyError:
+      type: object
+      properties:
+        err_code:
+          type: string
+          description: The error code
+        err_msg:
+          type: string
+          description: The error message
+        request_id:
+          type: string
+          description: The request ID
+    ErrorResponseModernError:
+      type: object
+      properties:
+        category:
+          type: string
+          description: The category of the error
+        message:
+          type: string
+          description: A message about the error
+        details:
+          type: string
+          description: A description of the error
+        request_id:
+          type: string
+          description: The unique identifier of the request
+    ErrorResponse:
+      oneOf:
+        - $ref: '#/components/schemas/ErrorResponseTextError'
+        - $ref: '#/components/schemas/ErrorResponseLegacyError'
+        - $ref: '#/components/schemas/ErrorResponseModernError'
+    GrantV1Request:
+      type: object
+      properties:
+        ttl_seconds:
+          type: number
+          minimum: 1
+          maximum: 3600
+          description: Time to live in seconds for the token. Defaults to 30 seconds.
+          example: 30
+    GrantV1Response:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: JSON Web Token (JWT)
+        expires_in:
+          type: number
+          description: Time in seconds until the JWT expires
+      required:
+        - access_token
+      example:
+        access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U
+        expires_in: 30
+    ListenV1RequestUrl:
+      type: object
+      description: Audio file URL to transcribe
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          format: uri
+          example: 'https://dpgr.am/spacewalk.wav'
+    ListenV1RequestFile:
+      type: string
+      format: binary
+      description: Binary audio file to transcribe
+    ListenV1ResponseMetadata:
+      required:
+        - request_id
+        - sha256
+        - created
+        - duration
+        - channels
+        - models
+        - model_info
+      type: object
+      properties:
+        transaction_key:
+          type: string
+          default: deprecated
+          deprecated: true
+        request_id:
+          type: string
+          format: uuid
+          example: a847f427-4ad5-4d67-9b95-db801e58251c
+        sha256:
+          type: string
+          example: 154e291ecfa8be6ab8343560bcc109008fa7853eb5372533e8efdefc9b504c33
+        created:
+          type: string
+          format: date-time
+          example: '2024-05-12T18:57:13.426Z'
+        duration:
+          type: number
+          example: 25.933313
+        channels:
+          type: number
+          example: 1
+        models:
+          type: array
+          items:
+            type: string
+          example:
+            - 30089e05-99d1-4376-b32e-c263170674af
+        model_info:
+          type: object
+          patternProperties:
+            '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$':
+              type: object
+              properties:
+                name:
+                  type: string
+                version:
+                  type: string
+                arch:
+                  type: string
+          additionalProperties: false
+          example:
+            30089e05-99d1-4376-b32e-c263170674af:
+              name: 2-general-nova
+              version: 2024-01-09.29447
+              arch: nova-2
+        summary_info:
+          type: object
+          properties:
+            model_uuid:
+              type: string
+              example: 67875a7f-c9c4-48a0-aa55-5bdb8a91c34a
+            input_tokens:
+              type: number
+              example: 95
+            output_tokens:
+              type: number
+              example: 63
+        sentiment_info:
+          type: object
+          properties:
+            model_uuid:
+              type: string
+              example: 80ab3179-d113-4254-bd6b-4a2f96498695
+            input_tokens:
+              type: number
+              example: 105
+            output_tokens:
+              type: number
+              example: 105
+        topics_info:
+          type: object
+          properties:
+            model_uuid:
+              type: string
+              example: 80ab3179-d113-4254-bd6b-4a2f96498695
+            input_tokens:
+              type: number
+              example: 105
+            output_tokens:
+              type: number
+              example: 7
+        intents_info:
+          type: object
+          properties:
+            model_uuid:
+              type: string
+              example: 80ab3179-d113-4254-bd6b-4a2f96498695
+            input_tokens:
+              type: number
+              example: 105
+            output_tokens:
+              type: number
+              example: 4
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - test
+    ListenV1ResponseResultsChannels:
+      type: array
+      items:
+        type: object
+        properties:
+          search:
+            type: array
+            items:
+              type: object
+              properties:
+                query:
+                  type: string
+                hits:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      confidence:
+                        type: number
+                        format: float
+                      start:
+                        type: number
+                        format: float
+                      end:
+                        type: number
+                        format: float
+                      snippet:
+                        type: string
+          alternatives:
+            type: array
+            items:
+              type: object
+              properties:
+                transcript:
+                  type: string
+                confidence:
+                  type: number
+                  format: float
+                words:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      word:
+                        type: string
+                      start:
+                        type: number
+                        format: float
+                      end:
+                        type: number
+                        format: float
+                      confidence:
+                        type: number
+                        format: float
+                paragraphs:
+                  type: object
+                  properties:
+                    transcript:
+                      type: string
+                    paragraphs:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          sentences:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                text:
+                                  type: string
+                                start:
+                                  type: number
+                                  format: float
+                                end:
+                                  type: number
+                                  format: float
+                          speaker:
+                            type: number
+                            format: float
+                          num_words:
+                            type: number
+                            format: float
+                          start:
+                            type: number
+                            format: float
+                          end:
+                            type: number
+                            format: float
+                summaries:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      summary:
+                        type: string
+                      start_word:
+                        type: number
+                        format: float
+                      end_word:
+                        type: number
+                        format: float
+                topics:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      text:
+                        type: string
+                      start_word:
+                        type: number
+                        format: float
+                      end_word:
+                        type: number
+                        format: float
+                      topics:
+                        type: array
+                        items:
+                          type: string
+          detected_language:
+            type: string
+    ListenV1ResponseResultsUtterances:
+      type: array
+      items:
+        type: object
+        properties:
+          start:
+            type: number
+            format: float
+          end:
+            type: number
+            format: float
+          confidence:
+            type: number
+            format: float
+          channel:
+            type: number
+            format: float
+          transcript:
+            type: string
+          words:
+            type: array
+            items:
+              type: object
+              properties:
+                word:
+                  type: string
+                start:
+                  type: number
+                  format: float
+                end:
+                  type: number
+                  format: float
+                confidence:
+                  type: number
+                  format: float
+                speaker:
+                  type: number
+                  format: float
+                speaker_confidence:
+                  type: number
+                  format: float
+                punctuated_word:
+                  type: string
+          speaker:
+            type: number
+            format: float
+          id:
+            type: string
+            format: uuid
+    ListenV1ResponseResultsSummary:
+      type: object
+      properties:
+        result:
+          type: string
+          example: success
+        short:
+          type: string
+          example: 'Speaker 0 discusses the significance of the first all-female spacewalk with an all-female team, stating that it is a tribute to the skilled and qualified women who were denied opportunities in the past.'
+    SharedTopics:
+      type: object
+      description: Output whenever `topics=true` is used
+      properties:
+        results:
+          type: object
+          properties:
+            topics:
+              type: object
+              properties:
+                segments:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      text:
+                        type: string
+                        example: 'And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn''t get the the same opportunities that we have today.'
+                      start_word:
+                        type: number
+                        example: 32
+                      end_word:
+                        type: number
+                        example: 69
+                      topics:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            topic:
+                              type: string
+                              example: Spacewalk
+                            confidence_score:
+                              type: number
+                              format: float
+                              example: 0.91581345
+    SharedIntents:
+      type: object
+      description: Output whenever `intents=true` is used
+      properties:
+        results:
+          type: object
+          properties:
+            intents:
+              type: object
+              properties:
+                segments:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      text:
+                        type: string
+                        example: 'If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app.'
+                      start_word:
+                        type: number
+                        example: 354
+                      end_word:
+                        type: number
+                        example: 414
+                      intents:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            intent:
+                              type: string
+                              example: Encourage podcasting
+                            confidence_score:
+                              type: number
+                              format: float
+                              example: 0.0038975573
+    SharedSentiments:
+      type: object
+      description: Output whenever `sentiment=true` is used
+      properties:
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+                example: 'Yeah. As as much as, um, it''s worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn''t get the the same opportunities that we have today.'
+              start_word:
+                type: number
+                example: 0
+              end_word:
+                type: number
+                example: 69
+              sentiment:
+                type: string
+                example: positive
+              sentiment_score:
+                type: number
+                example: 0.5810546875
+        average:
+          type: object
+          properties:
+            sentiment:
+              type: string
+              example: positive
+            sentiment_score:
+              type: number
+              example: 0.5810185185185185
+    ListenV1ResponseResults:
+      required:
+        - channels
+      type: object
+      properties:
+        channels:
+          $ref: '#/components/schemas/ListenV1ResponseResultsChannels'
+        utterances:
+          $ref: '#/components/schemas/ListenV1ResponseResultsUtterances'
+        summary:
+          $ref: '#/components/schemas/ListenV1ResponseResultsSummary'
+        topics:
+          $ref: '#/components/schemas/SharedTopics'
+        intents:
+          $ref: '#/components/schemas/SharedIntents'
+        sentiments:
+          $ref: '#/components/schemas/SharedSentiments'
+    ListenV1Response:
+      description: The standard transcription response
+      required:
+        - metadata
+        - results
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ListenV1ResponseMetadata'
+        results:
+          $ref: '#/components/schemas/ListenV1ResponseResults'
+    ListenV1AcceptedResponse:
+      description: Accepted response for asynchronous transcription requests
+      type: object
+      required:
+        - request_id
+      properties:
+        request_id:
+          type: string
+          format: uuid
+          description: Unique identifier for tracking the asynchronous request
+    ListModelsV1ResponseSttModels:
+      type: object
+      properties:
+        name:
+          type: string
+          example: nova-3
+        canonical_name:
+          type: string
+          example: nova-3
+        architecture:
+          type: string
+          example: base
+        languages:
+          type: array
+          items:
+            type: string
+          example:
+            - en
+            - en-us
+        version:
+          type: string
+          example: 2021-11-10.1
+        uuid:
+          type: string
+          example: 6b28e919-8427-4f32-9847-492e2efd7daf
+        batch:
+          type: boolean
+          example: true
+        streaming:
+          type: boolean
+          example: true
+        formatted_output:
+          type: boolean
+          example: true
+    ListModelsV1ResponseTtsModels:
+      type: object
+      properties:
+        name:
+          type: string
+          example: zeus
+        canonical_name:
+          type: string
+          example: aura-2-zeus-en
+        architecture:
+          type: string
+          example: aura-2
+        languages:
+          type: array
+          items:
+            type: string
+          example:
+            - en
+            - en-US
+        version:
+          type: string
+          example: 2025-04-07.0
+        uuid:
+          type: string
+          format: uuid
+          example: 2baf189d-91ac-481d-b6d1-750888667b31
+        metadata:
+          type: object
+          properties:
+            accent:
+              type: string
+              example: American
+            age:
+              type: string
+              example: Adult
+            color:
+              type: string
+              example: '#C58DFF'
+            image:
+              type: string
+              format: uri
+              example: 'https://static.deepgram.com/examples/avatars/zeus.jpg'
+            sample:
+              type: string
+              format: uri
+              example: 'https://static.deepgram.com/examples/Aura-2-zeus.wav'
+            tags:
+              type: array
+              items:
+                type: string
+              example:
+                - masculine
+                - deep
+                - trustworthy
+                - smooth
+            use_cases:
+              type: array
+              items:
+                type: string
+              example:
+                - IVR
+    ListModelsV1Response:
+      type: object
+      properties:
+        stt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListModelsV1ResponseSttModels'
+        tts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListModelsV1ResponseTtsModels'
+    GetModelV1Response:
+      oneOf:
+        - type: object
+          properties:
+            name:
+              type: string
+              example: general
+            canonical_name:
+              type: string
+              example: enhanced-general
+            architecture:
+              type: string
+              example: polaris
+            languages:
+              type: array
+              items:
+                type: string
+              example:
+                - en
+                - en-us
+            version:
+              type: string
+              example: 2022-05-18.1
+            uuid:
+              type: string
+              format: uuid
+              example: c7226e9e-ae1c-4057-ae2a-a71a6b0dc588
+            batch:
+              type: boolean
+              example: true
+            streaming:
+              type: boolean
+              example: true
+            formatted_output:
+              type: boolean
+              example: false
+        - type: object
+          properties:
+            name:
+              type: string
+              example: zeus
+            canonical_name:
+              type: string
+              example: aura-2-zeus-en
+            architecture:
+              type: string
+              example: aura-2
+            languages:
+              type: array
+              items:
+                type: string
+              example:
+                - en
+                - en-US
+            version:
+              type: string
+              example: 2025-04-07.0
+            uuid:
+              type: string
+              format: uuid
+              example: 2baf189d-91ac-481d-b6d1-750888667b31
+            metadata:
+              type: object
+              properties:
+                accent:
+                  type: string
+                  example: American
+                age:
+                  type: string
+                  example: Adult
+                color:
+                  type: string
+                  example: '#C58DFF'
+                image:
+                  type: string
+                  format: uri
+                  example: 'https://static.deepgram.com/examples/avatars/zeus.jpg'
+                sample:
+                  type: string
+                  format: uri
+                  example: 'https://static.deepgram.com/examples/Aura-2-zeus.wav'
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - masculine
+                    - deep
+                    - trustworthy
+                    - smooth
+                use_cases:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - IVR
+    ListProjectsV1Response:
+      type: object
+      properties:
+        projects:
+          type: array
+          items:
+            type: object
+            properties:
+              project_id:
+                type: string
+                description: The unique identifier of the project
+              name:
+                type: string
+                description: The name of the project
+    GetProjectV1Response:
+      type: object
+      properties:
+        project_id:
+          type: string
+          description: The unique identifier of the project
+        mip_opt_out:
+          type: boolean
+          description: Model Improvement Program opt-out
+        name:
+          type: string
+          description: The name of the project
+    UpdateProjectV1Request:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the project
+    UpdateProjectV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: confirmation message
+      example:
+        message: Successfully updated project info.
+    DeleteProjectV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Confirmation message
+    ListProjectBalancesV1Response:
+      type: object
+      properties:
+        balances:
+          type: array
+          items:
+            type: object
+            properties:
+              balance_id:
+                type: string
+                description: The unique identifier of the balance
+              amount:
+                type: number
+                default: 0
+                description: The amount of the balance
+              units:
+                type: string
+                description: 'The units of the balance, such as "USD"'
+              purchase_order_id:
+                type: string
+                description: Description or reference of the purchase
+    GetProjectBalanceV1Response:
+      type: object
+      properties:
+        balance_id:
+          type: string
+          description: The unique identifier of the balance
+        amount:
+          type: number
+          default: 0
+          description: The amount of the balance
+        units:
+          type: string
+          description: 'The units of the balance, such as "USD"'
+        purchase_order_id:
+          type: string
+          description: Description or reference of the purchase
+    BillingBreakdownV1Response:
+      type: object
+      required:
+        - start
+        - end
+        - resolution
+        - results
+      properties:
+        start:
+          type: string
+          format: date
+          description: Start date of the billing summmary period
+          example: '2025-01-16'
+        end:
+          type: string
+          format: date
+          description: End date of the billing summary period
+          example: '2025-01-23'
+        resolution:
+          type: object
+          required:
+            - units
+            - amount
+          properties:
+            units:
+              type: string
+              description: Time unit for the resolution
+              example: day
+            amount:
+              type: number
+              description: Amount of units
+              example: 1
+        results:
+          type: array
+          items:
+            type: object
+            required:
+              - dollars
+              - grouping
+            properties:
+              dollars:
+                type: number
+                format: float
+                description: USD cost of the billing for this grouping
+                example: 0.25
+              grouping:
+                type: object
+                properties:
+                  start:
+                    type: string
+                    format: date
+                    description: Start date for this group
+                    example: '2025-01-16'
+                  end:
+                    type: string
+                    format: date
+                    description: End date for this group
+                    example: '2025-01-16'
+                  accessor:
+                    type: string
+                    nullable: true
+                    description: 'Optional accessor identifier, null unless grouped by accessor.'
+                    example: '123456789012345678901234'
+                  deployment:
+                    type: string
+                    nullable: true
+                    description: 'Optional deployment identifier, null unless grouped by deployment.'
+                    example: hosted
+                  line_item:
+                    type: string
+                    nullable: true
+                    description: 'Optional line item identifier, null unless grouped by line item.'
+                    example: 'streaming::nova-3'
+                  tags:
+                    type: array
+                    nullable: true
+                    description: 'Optional list of tags, null unless grouped by tags.'
+                    items:
+                      type: string
+                    example:
+                      - tag1
+                      - tag2
+    ListBillingFieldsV1Response:
+      type: object
+      properties:
+        accessors:
+          type: array
+          description: List of accessor UUIDs for the time period
+          items:
+            type: string
+            format: uuid
+          example:
+            - 12345678-1234-1234-1234-123456789012
+            - 87654321-4321-4321-4321-210987654321
+        deployments:
+          type: array
+          description: List of deployment types for the time period
+          items:
+            type: string
+            enum:
+              - hosted
+              - beta
+              - self-hosted
+              - dedicated
+          example:
+            - hosted
+            - self-hosted
+        tags:
+          type: array
+          description: List of tags for the time period
+          items:
+            type: string
+          example:
+            - dev
+            - production
+        line_items:
+          type: object
+          description: Map of line item names to human-readable descriptions for the time period
+          additionalProperties:
+            type: string
+          example:
+            'streaming::nova-3': Nova - 3 (Stream)
+            'sync::aura-2': Aura -2 (Sync)
+    ListProjectInvitesV1Response:
+      type: object
+      properties:
+        invites:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                description: The email address of the invitee
+              scope:
+                type: string
+                description: The scope of the invitee
+    CreateProjectInviteV1Request:
+      type: object
+      description: Request body for creating a project invite
+      required:
+        - email
+        - scope
+      properties:
+        email:
+          type: string
+          description: The email address of the invitee
+        scope:
+          type: string
+          description: The scope of the invitee
+    CreateProjectInviteV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: confirmation message
+    DeleteProjectInviteV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: confirmation message
+    ListProjectKeysV1Response:
+      type: object
+      properties:
+        api_keys:
+          type: array
+          items:
+            type: object
+            properties:
+              member:
+                type: object
+                properties:
+                  member_id:
+                    type: string
+                    example: 1000-2000-3000-4000
+                  email:
+                    type: string
+                    example: john@test.com
+              api_key:
+                type: object
+                properties:
+                  api_key_id:
+                    type: string
+                    example: 1234567890abcdef1234567890abcdef
+                  comment:
+                    type: string
+                    example: A comment
+                  scopes:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - admin
+                  created:
+                    type: string
+                    format: date-time
+                    example: '2021-01-01T00:00:00Z'
+    CreateKeyV1Request:
+      type: object
+      required:
+        - comment
+        - scopes
+      properties:
+        comment:
+          type: string
+          example: A comment
+        scopes:
+          type: array
+          items:
+            type: string
+          example:
+            - admin
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+            - prod
+            - west-region
+        expiration_date:
+          type: string
+          format: date-time
+          example: '2026-01-01T00:00:00Z'
+        time_to_live_in_seconds:
+          type: number
+          example: 3600
+      oneOf:
+        - required:
+            - expiration_date
+        - required:
+            - time_to_live_in_seconds
+      not:
+        required:
+          - expiration_date
+          - time_to_live_in_seconds
+    CreateKeyV1Response:
+      type: object
+      description: API key created
+      properties:
+        api_key_id:
+          type: string
+          description: The unique identifier of the API key
+        key:
+          type: string
+          description: The API key
+        comment:
+          type: string
+          description: A comment for the API key
+        scopes:
+          type: array
+          description: The scopes for the API key
+          items:
+            type: string
+        tags:
+          type: array
+          description: The tags for the API key
+          items:
+            type: string
+        expiration_date:
+          type: string
+          description: The expiration date of the API key
+          format: date-time
+      example:
+        api_key_id: 1234567890abcdef1234567890abcdef
+        key: 1234567890abcdef1234567890abcdef
+        comment: a comment
+        scopes:
+          - member
+        tags:
+          - tag-1
+        expiration_date: '2024-05-01T00:00:00.000000Z'
+    GetProjectKeyV1Response:
+      type: object
+      properties:
+        item:
+          type: object
+          properties:
+            member:
+              type: object
+              properties:
+                member_id:
+                  type: string
+                  example: 1000-2000-3000-4000
+                email:
+                  type: string
+                  example: john@test.com
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                api_key:
+                  type: object
+                  properties:
+                    api_key_id:
+                      type: string
+                      example: 1000-2000-3000-4000
+                    comment:
+                      type: string
+                      example: A comment
+                    scopes:
+                      type: array
+                      items:
+                        type: string
+                      example:
+                        - admin
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                      example:
+                        - prod
+                        - west-region
+                    expiration_date:
+                      type: string
+                      format: date-time
+                      example: '2021-01-01T00:00:00Z'
+                    created:
+                      type: string
+                      format: date-time
+                      example: '2021-01-01T00:00:00Z'
+    DeleteProjectKeyV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+    LeaveProjectV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: confirmation message
+    ListProjectMembersV1Response:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              member_id:
+                type: string
+                description: The unique identifier of the member
+                scopes:
+                  type: array
+                  items:
+                    type: string
+                  description: The API scopes of the member
+              email:
+                type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+    DeleteProjectMemberV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: confirmation message
+    ListProjectMemberScopesV1Response:
+      type: object
+      properties:
+        scopes:
+          type: array
+          items:
+            type: string
+          description: The API scopes of the member
+    UpdateProjectMemberScopesV1Request:
+      type: object
+      required:
+        - scope
+      properties:
+        scope:
+          type: string
+          description: A scope to update
+          example: admin
+    UpdateProjectMemberScopesV1Response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: confirmation message
+    ListProjectPurchasesV1Response:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            type: object
+            properties:
+              order_id:
+                type: string
+                format: uuid
+                example: 025e19ba-b6d9-4a04-9f99-4fe715aca5f1
+              expiration:
+                type: string
+                format: date-time
+                example: '2026-03-04T00:00:00Z'
+              created:
+                type: string
+                format: date-time
+                example: '2023-02-21T21:13:40.014373Z'
+              amount:
+                type: number
+                format: float
+                example: 150
+              units:
+                type: string
+                example: usd
+              order_type:
+                type: string
+                example: promotional
+    ProjectRequestResponse:
+      type: object
+      description: A single request
+      properties:
+        request_id:
+          type: string
+          description: The unique identifier of the request
+        project_uuid:
+          type: string
+          description: The unique identifier of the project
+        created:
+          type: string
+          format: date-time
+          description: The date and time the request was created
+        path:
+          type: string
+          description: The API path of the request
+        api_key_id:
+          type: string
+          description: The unique identifier of the API key
+        response:
+          type: object
+          description: The response of the request
+        code:
+          type: number
+          description: The response code of the request
+        deployment:
+          type: string
+          description: The deployment type
+        callback:
+          type: string
+          description: The callback URL for the request
+    ListProjectRequestsV1Response:
+      type: object
+      properties:
+        page:
+          type: number
+          description: The page number of the paginated response
+        limit:
+          type: number
+          description: The number of results per page
+        requests:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectRequestResponse'
+    GetProjectRequestV1Response:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/ProjectRequestResponse'
+          type: object
+    ListProjectDistributionCredentialsV1Response:
+      type: object
+      properties:
+        distribution_credentials:
+          type: array
+          description: Array of distribution credentials with associated member information
+          items:
+            type: object
+            required:
+              - member
+              - distribution_credentials
+            properties:
+              member:
+                type: object
+                required:
+                  - member_id
+                  - email
+                properties:
+                  member_id:
+                    type: string
+                    format: uuid
+                    description: Unique identifier for the member
+                    example: 3376abcd-8e5e-49d3-92d4-876d3a4f0363
+                  email:
+                    type: string
+                    format: email
+                    description: Email address of the member
+                    example: email@example.com
+              distribution_credentials:
+                type: object
+                required:
+                  - distribution_credentials_id
+                  - provider
+                  - scopes
+                  - created
+                properties:
+                  distribution_credentials_id:
+                    type: string
+                    format: uuid
+                    description: Unique identifier for the distribution credentials
+                    example: 8b36cfd0-472f-4a21-833f-2d6343c3a2f3
+                  provider:
+                    type: string
+                    description: The provider of the distribution service
+                    example: quay
+                  comment:
+                    type: string
+                    description: Optional comment about the credentials
+                    example: My Self-Hosted Distribution Credentials
+                  scopes:
+                    type: array
+                    description: List of permission scopes for the credentials
+                    items:
+                      type: string
+                    example:
+                      - 'self-hosted:product:api'
+                      - 'self-hosted:product:engine'
+                  created:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the credentials were created
+                    example: '2023-06-28T15:36:59.609841Z'
+    CreateProjectDistributionCredentialsV1Request:
+      type: object
+      description: Request body for creating distribution credentials
+      properties:
+        comment:
+          type: string
+          description: Optional comment about the credentials
+    CreateProjectDistributionCredentialsV1Response:
+      type: object
+      required:
+        - member
+        - distribution_credentials
+      properties:
+        member:
+          type: object
+          required:
+            - member_id
+            - email
+          properties:
+            member_id:
+              type: string
+              format: uuid
+              description: Unique identifier for the member
+              example: c7b9b131-73f3-11d9-8665-0b00d2e44b83
+            email:
+              type: string
+              format: email
+              description: Email address of the member
+              example: email@example.com
+        distribution_credentials:
+          type: object
+          required:
+            - distribution_credentials_id
+            - provider
+            - scopes
+            - created
+          properties:
+            distribution_credentials_id:
+              type: string
+              format: uuid
+              description: Unique identifier for the distribution credentials
+              example: 82c32c10-53b2-4d23-993f-864b3d44502a
+            provider:
+              type: string
+              description: The provider of the distribution service
+              example: quay
+            comment:
+              type: string
+              description: Optional comment about the credentials
+              example: My Self-Hosted Distribution Credentials
+            scopes:
+              type: array
+              description: List of permission scopes for the credentials
+              items:
+                type: string
+              example:
+                - 'self-hosted:product:api'
+                - 'self-hosted:product:engine'
+            created:
+              type: string
+              format: date-time
+              description: Timestamp when the credentials were created
+              example: '2023-06-28T15:36:59.609841Z'
+    GetProjectDistributionCredentialsV1Response:
+      type: object
+      required:
+        - member
+        - distribution_credentials
+      properties:
+        member:
+          type: object
+          required:
+            - member_id
+            - email
+          properties:
+            member_id:
+              type: string
+              format: uuid
+              description: Unique identifier for the member
+              example: c7b9b131-73f3-11d9-8665-0b00d2e44b83
+            email:
+              type: string
+              format: email
+              description: Email address of the member
+              example: email@example.com
+        distribution_credentials:
+          type: object
+          required:
+            - distribution_credentials_id
+            - provider
+            - scopes
+            - created
+          properties:
+            distribution_credentials_id:
+              type: string
+              format: uuid
+              description: Unique identifier for the distribution credentials
+              example: 82c32c10-53b2-4d23-993f-864b3d44502a
+            provider:
+              type: string
+              description: The provider of the distribution service
+              example: quay
+            comment:
+              type: string
+              description: Optional comment about the credentials
+              example: My Self-Hosted Distribution Credentials
+            scopes:
+              type: array
+              description: List of permission scopes for the credentials
+              items:
+                type: string
+              example:
+                - 'self-hosted:product:api'
+                - 'self-hosted:product:engine'
+            created:
+              type: string
+              format: date-time
+              description: Timestamp when the credentials were created
+              example: '2023-06-28T15:36:59.609841Z'
+    UsageV1Response:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date
+          example: '2024-10-16'
+        end:
+          type: string
+          format: date
+          example: '2024-10-23'
+        resolution:
+          type: object
+          properties:
+            units:
+              type: string
+              example: day
+            amount:
+              type: number
+              example: 1
+          results:
+            type: array
+            items:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date
+                  example: '2024-10-16'
+                end:
+                  type: string
+                  format: date
+                  example: '2024-10-16'
+                hours:
+                  type: number
+                  format: float
+                  example: 1097.4274322222223
+                total_hours:
+                  type: number
+                  format: float
+                  example: 1099.3888366666667
+                requests:
+                  type: number
+                  example: 425109
+                tokens:
+                  type: object
+                  properties:
+                    in:
+                      type: number
+                      example: 24770
+                    out:
+                      type: number
+                      example: 7521
+                tts:
+                  type: object
+                  properties:
+                    characters:
+                      type: number
+                      example: 9004185
+                    requests:
+                      type: number
+                      example: 23126
+    UsageBreakdownV1Response:
+      type: object
+      required:
+        - start
+        - end
+        - resolution
+        - results
+      properties:
+        start:
+          type: string
+          format: date
+          description: Start date of the usage period
+          example: '2025-01-16'
+        end:
+          type: string
+          format: date
+          description: End date of the usage period
+          example: '2025-01-23'
+        resolution:
+          type: object
+          required:
+            - units
+            - amount
+          properties:
+            units:
+              type: string
+              description: Time unit for the resolution
+              example: day
+            amount:
+              type: number
+              description: Amount of units
+              example: 1
+        results:
+          type: array
+          items:
+            type: object
+            required:
+              - hours
+              - total_hours
+              - agent_hours
+              - tokens_in
+              - tokens_out
+              - tts_characters
+              - requests
+              - grouping
+            properties:
+              hours:
+                type: number
+                format: float
+                description: Audio hours processed
+                example: 1619.7242069444444
+              total_hours:
+                type: number
+                format: float
+                description: Total hours including all processing
+                example: 1621.7395791666668
+              agent_hours:
+                type: number
+                format: float
+                description: Agent hours used
+                example: 41.33564388888889
+              tokens_in:
+                type: number
+                description: Number of input tokens
+                example: 0
+              tokens_out:
+                type: number
+                description: Number of output tokens
+                example: 0
+              tts_characters:
+                type: number
+                description: Number of text-to-speech characters processed
+                example: 9158866
+              requests:
+                type: number
+                description: Number of requests
+                example: 373381
+              grouping:
+                type: object
+                properties:
+                  start:
+                    type: string
+                    format: date
+                    description: Start date for this group
+                    example: '2025-01-16'
+                  end:
+                    type: string
+                    format: date
+                    description: End date for this group
+                    example: '2025-01-16'
+                  accessor:
+                    type: string
+                    nullable: true
+                    description: Optional accessor identifier
+                    example: '123456789012345678901234'
+                  endpoint:
+                    type: string
+                    nullable: true
+                    description: Optional endpoint identifier
+                    example: listen
+                  feature_set:
+                    type: string
+                    nullable: true
+                    description: Optional feature set identifier
+                    example: punctuate
+                  models:
+                    type: string
+                    nullable: true
+                    description: Optional models identifier
+                    example: Nova-2
+                  method:
+                    type: string
+                    nullable: true
+                    description: Optional method identifier
+                    example: async
+                  tags:
+                    type: string
+                    nullable: true
+                    description: Optional tags
+                    example: tag1
+                  deployment:
+                    type: string
+                    nullable: true
+                    description: Optional deployment identifier
+                    example: self-hosted
+    UsageFieldsV1Response:
+      type: object
+      properties:
+        tags:
+          type: array
+          description: List of tags associated with the project
+          items:
+            type: string
+          example:
+            - tag=dev
+            - tag=production
+        models:
+          type: array
+          description: List of models available for the project.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the model.
+                example: 2-medical-nova
+              language:
+                type: string
+                description: The language supported by the model (IETF language tag).
+                example: en-MY
+              version:
+                type: string
+                description: 'Version identifier of the model, typically with a date and a revision number.'
+                example: 2024-05-31.13574
+              model_id:
+                type: string
+                description: Unique identifier for the model.
+                example: 1234567890-12345-67890
+        processing_methods:
+          type: array
+          description: Processing methods supported by the API
+          items:
+            type: string
+          example:
+            - sync
+            - streaming
+        features:
+          type: array
+          description: API features available to the project
+          items:
+            type: string
+          example:
+            - alternatives
+            - detect_entities
+            - detect_language
+    ReadV1RequestUrl:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          description: A URL pointing to the text source
+      required:
+        - url
+    ReadV1RequestText:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The plain text to analyze
+      required:
+        - text
+    ReadV1Request:
+      oneOf:
+        - $ref: '#/components/schemas/ReadV1RequestUrl'
+        - $ref: '#/components/schemas/ReadV1RequestText'
+    ReadV1ResponseMetadata:
+      required:
+        - request_id
+        - created
+        - language
+        - summary_info
+        - sentiment_info
+        - topics_info
+        - intents_info
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            request_id:
+              type: string
+              format: uuid
+              example: d04af392-db11-4c1d-83e1-20e34f0b8999
+            created:
+              type: string
+              format: date-time
+              example: '2024-11-18T23:47:44.674Z'
+            language:
+              type: string
+              example: en
+            summary_info:
+              type: object
+              properties:
+                model_uuid:
+                  type: string
+                  format: uuid
+                input_tokens:
+                  type: number
+                output_tokens:
+                  type: number
+            sentiment_info:
+              type: object
+              properties:
+                model_uuid:
+                  type: string
+                  format: uuid
+                input_tokens:
+                  type: number
+                output_tokens:
+                  type: number
+            topics_info:
+              type: object
+              properties:
+                model_uuid:
+                  type: string
+                  format: uuid
+                input_tokens:
+                  type: number
+                output_tokens:
+                  type: number
+            intents_info:
+              type: object
+              properties:
+                model_uuid:
+                  type: string
+                  format: uuid
+                input_tokens:
+                  type: number
+                output_tokens:
+                  type: number
+    ReadV1ResponseResultsSummary:
+      type: object
+      description: Output whenever `summary=true` is used
+      properties:
+        results:
+          type: object
+          properties:
+            summary:
+              type: object
+              properties:
+                text:
+                  type: string
+                  example: The summary of the text submitted.
+    ReadV1ResponseResults:
+      type: object
+      properties:
+        summary:
+          $ref: '#/components/schemas/ReadV1ResponseResultsSummary'
+        topics:
+          $ref: '#/components/schemas/SharedTopics'
+        intents:
+          $ref: '#/components/schemas/SharedIntents'
+        sentiments:
+          $ref: '#/components/schemas/SharedSentiments'
+    ReadV1Response:
+      description: The standard text response
+      required:
+        - metadata
+        - results
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ReadV1ResponseMetadata'
+          x-collapse: true
+        results:
+          $ref: '#/components/schemas/ReadV1ResponseResults'
+    SpeakV1Request:
+      type: object
+      description: Request body for text-to-speech conversion
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: The text content to be converted to speech
+          example: 'Hello, welcome to Deepgram!'
+    SpeakV1Response:
+      type: string
+      format: binary
+  parameters:
+    SharedCallback:
+      x-fern-optional: true
+      x-fern-type-name: SharedCallback
+      name: callback
+      in: query
+      required: false
+      description: URL to which we'll make the callback request
+      schema:
+        type: string
+    SharedCallbackMethod:
+      x-fern-optional: true
+      x-fern-type-name: SharedCallbackMethod
+      name: callback_method
+      in: query
+      required: false
+      description: HTTP method by which the callback request will be made
+      schema:
+        default: POST
+        enum:
+          - POST
+          - PUT
+    SharedExtra:
+      x-fern-optional: true
+      x-fern-type-name: SharedExtra
+      name: extra
+      in: query
+      required: false
+      description: Arbitrary key-value pairs that are attached to the API response for usage in downstream processing
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    SharedSentiment:
+      x-fern-optional: true
+      x-fern-type-name: SharedSentiment
+      name: sentiment
+      in: query
+      required: false
+      description: Recognizes the sentiment throughout a transcript or text
+      schema:
+        default: false
+        type: boolean
+    SharedSummarize:
+      x-fern-optional: true
+      x-fern-type-name: SharedSummarize
+      name: summarize
+      in: query
+      required: false
+      description: 'Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.'
+      schema:
+        oneOf:
+          - title: Listen API Version Option
+            type: string
+            enum:
+              - v2
+          - title: Read API Boolean Option
+            type: boolean
+            default: false
+    SharedTag:
+      x-fern-optional: true
+      x-fern-type-name: SharedTag
+      name: tag
+      in: query
+      required: false
+      description: Label your requests for the purpose of identification during usage reporting
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    SharedTopics:
+      x-fern-optional: true
+      x-fern-type-name: SharedTopics
+      name: topics
+      in: query
+      required: false
+      description: Detect topics throughout a transcript or text
+      schema:
+        default: false
+        type: boolean
+    SharedCustomTopic:
+      x-fern-optional: true
+      x-fern-type-name: SharedCustomTopic
+      name: custom_topic
+      in: query
+      required: false
+      description: Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+            maxItems: 100
+    SharedCustomTopicMode:
+      x-fern-optional: true
+      x-fern-type-name: SharedCustomTopicMode
+      name: custom_topic_mode
+      in: query
+      required: false
+      description: 'Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param'
+      schema:
+        default: extended
+        type: string
+        enum:
+          - extended
+          - strict
+    SharedIntents:
+      x-fern-optional: true
+      x-fern-type-name: SharedIntents
+      name: intents
+      in: query
+      required: false
+      description: Recognizes speaker intent throughout a transcript or text
+      schema:
+        default: false
+        type: boolean
+    SharedCustomIntent:
+      x-fern-optional: true
+      x-fern-type-name: SharedCustomIntent
+      name: custom_intent
+      in: query
+      required: false
+      description: Custom intents you want the model to detect within your input audio if present
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+              maxItems: 100
+    SharedCustomIntentMode:
+      x-fern-optional: true
+      x-fern-type-name: SharedCustomIntentMode
+      name: custom_intent_mode
+      in: query
+      required: false
+      description: 'Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.'
+      schema:
+        default: extended
+        type: string
+        enum:
+          - extended
+          - strict
+    ListenV1DetectEntities:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1DetectEntities
+      name: detect_entities
+      in: query
+      required: false
+      description: Identifies and extracts key entities from content in submitted audio
+      schema:
+        default: false
+        type: boolean
+    ListenV1DetectLanguage:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1DetectLanguage
+      name: detect_language
+      in: query
+      required: false
+      description: Identifies the dominant language spoken in submitted audio
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: boolean
+            default: false
+          - type: array
+            items:
+              type: string
+    ListenV1Diarize:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Diarize
+      name: diarize
+      in: query
+      required: false
+      description: Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0
+      schema:
+        default: false
+        type: boolean
+    ListenV1Dictation:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Dictation
+      name: dictation
+      in: query
+      required: false
+      description: Dictation mode for controlling formatting with dictated speech
+      schema:
+        default: false
+        type: boolean
+    ListenV1Encoding:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Encoding
+      name: encoding
+      in: query
+      required: false
+      description: Specify the expected encoding of your submitted audio
+      schema:
+        type: string
+        enum:
+          - linear16
+          - flac
+          - mulaw
+          - amr-nb
+          - amr-wb
+          - opus
+          - speex
+          - g729
+    ListenV1FillerWords:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1FillerWords
+      name: filler_words
+      in: query
+      required: false
+      description: 'Filler Words can help transcribe interruptions in your audio, like "uh" and "um"'
+      schema:
+        default: false
+        type: boolean
+    ListenV1Keyterm:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Keyterm
+      name: keyterm
+      in: query
+      required: false
+      description: Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+    ListenV1Keywords:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Keywords
+      name: keywords
+      in: query
+      required: false
+      description: Keywords can boost or suppress specialized terminology and brands
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    ListenV1Language:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Language
+      name: language
+      in: query
+      required: false
+      description: 'The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available'
+      schema:
+        type: string
+        default: en
+    ListenV1Measurements:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Measurements
+      name: measurements
+      in: query
+      required: false
+      description: Spoken measurements will be converted to their corresponding abbreviations
+      schema:
+        default: false
+        type: boolean
+    ListenV1Model:
+      x-fern-type-name: ListenV1Model
+      name: model
+      in: query
+      description: AI model used to process submitted audio
+      schema:
+        default: base-general
+        oneOf:
+          - type: string
+            description: Our public models available to all accounts
+            enum:
+              - nova-3
+              - nova-3-general
+              - nova-3-medical
+              - nova-2
+              - nova-2-general
+              - nova-2-meeting
+              - nova-2-finance
+              - nova-2-conversationalai
+              - nova-2-voicemail
+              - nova-2-video
+              - nova-2-medical
+              - nova-2-drivethru
+              - nova-2-automotive
+              - nova
+              - nova-general
+              - nova-phonecall
+              - nova-medical
+              - enhanced
+              - enhanced-general
+              - enhanced-meeting
+              - enhanced-phonecall
+              - enhanced-finance
+              - base
+              - meeting
+              - phonecall
+              - finance
+              - conversationalai
+              - voicemail
+              - video
+          - type: string
+            description: Custom string if you've had a model trained by Deepgram
+        example: nova-3
+    ListenV1Multichannel:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Multichannel
+      name: multichannel
+      in: query
+      required: false
+      description: Transcribe each audio channel independently
+      schema:
+        default: false
+        type: boolean
+    ListenV1Numerals:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Numerals
+      name: numerals
+      in: query
+      required: false
+      description: Numerals converts numbers from written format to numerical format
+      schema:
+        default: false
+        type: boolean
+    ListenV1Paragraphs:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Paragraphs
+      name: paragraphs
+      in: query
+      required: false
+      description: Splits audio into paragraphs to improve transcript readability
+      schema:
+        default: false
+        type: boolean
+    ListenV1ProfanityFilter:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1ProfanityFilter
+      name: profanity_filter
+      in: query
+      required: false
+      description: Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely
+      schema:
+        default: false
+        type: boolean
+    ListenV1Punctuate:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Punctuate
+      name: punctuate
+      in: query
+      required: false
+      description: Add punctuation and capitalization to the transcript
+      schema:
+        default: false
+        type: boolean
+    ListenV1Redact:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Redact
+      name: redact
+      in: query
+      required: false
+      description: Redaction removes sensitive information from your transcripts
+      style: form
+      explode: true
+      schema:
+        default: false
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+              enum:
+                - pci
+                - pii
+                - numbers
+            maxItems: 100
+    ListenV1Replace:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Replace
+      name: replace
+      in: query
+      required: false
+      description: Search for terms or phrases in submitted audio and replaces them
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    ListenV1Search:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Search
+      name: search
+      in: query
+      required: false
+      description: Search for terms or phrases in submitted audio
+      style: form
+      explode: true
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    ListenV1SmartFormat:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1SmartFormat
+      name: smart_format
+      in: query
+      required: false
+      description: 'Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability'
+      schema:
+        default: false
+        type: boolean
+    ListenV1Utterances:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Utterances
+      name: utterances
+      in: query
+      required: false
+      description: Segments speech into meaningful semantic units
+      schema:
+        default: false
+        type: boolean
+    ListenV1UttSplit:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1UttSplit
+      name: utt_split
+      in: query
+      required: false
+      description: Seconds to wait before detecting a pause between words in submitted audio
+      schema:
+        default: 0.8
+        type: number
+    ListenV1Version:
+      x-fern-optional: true
+      x-fern-type-name: ListenV1Version
+      name: version
+      in: query
+      required: false
+      description: Version of an AI model to use
+      schema:
+        default: latest
+        oneOf:
+          - type: string
+            description: Use the latest version of a model
+            enum:
+              - latest
+          - type: string
+            description: Use a previous version of a model
+    SharedMipOptOut:
+      x-fern-optional: true
+      x-fern-type-name: SharedMipOptOut
+      name: mip_opt_out
+      in: query
+      required: false
+      description: 'Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip'
+      schema:
+        default: false
+        type: boolean
+    ManageV1IncludeOutdatedModels:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1IncludeOutdatedModels
+      name: include_outdated
+      in: query
+      required: false
+      description: returns non-latest versions of models
+      schema:
+        type: boolean
+    ManageV1ModelId:
+      x-fern-type-name: ManageV1ModelId
+      name: model_id
+      in: path
+      required: true
+      description: The specific UUID of the model
+      schema:
+        type: string
+      example: af6e9977-99f6-4d8f-b6f5-dfdf6fb6e291
+    ManageV1ProjectId:
+      x-fern-type-name: ManageV1ProjectId
+      name: project_id
+      required: true
+      in: path
+      description: The unique identifier of the project
+      schema:
+        type: string
+      example: 123456-7890-1234-5678-901234
+    ManageV1Limit:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1Limit
+      name: limit
+      in: query
+      required: false
+      description: 'Number of results to return per page. Default 10. Range [1,1000]'
+      schema:
+        type: number
+        default: 10
+        minimum: 1
+        maximum: 1000
+    ManageV1Page:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1Page
+      name: page
+      in: query
+      required: false
+      description: Navigate and return the results to retrieve specific portions of information of the response
+      schema:
+        type: number
+    ManageV1BalanceId:
+      x-fern-type-name: ManageV1BalanceId
+      name: balance_id
+      required: true
+      in: path
+      description: The unique identifier of the balance
+      schema:
+        type: string
+      example: 123456-7890-1234-5678-901234
+    ManageV1StartDate:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1StartDate
+      name: start
+      in: query
+      required: false
+      description: Start date of the requested date range. Format accepted is YYYY-MM-DD
+      schema:
+        type: string
+        format: date
+    ManageV1EndDate:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1EndDate
+      name: end
+      in: query
+      required: false
+      description: End date of the requested date range. Format accepted is YYYY-MM-DD
+      schema:
+        type: string
+        format: date
+    ManageV1FilterAccessor:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterAccessor
+      name: accessor
+      in: query
+      required: false
+      description: Filter for requests where a specific accessor was used
+      schema:
+        type: string
+      example: 12345678-1234-1234-1234-123456789012
+    ManageV1FilterDeployment:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterDeployment
+      name: deployment
+      in: query
+      required: false
+      description: Filter for requests where a specific deployment was used
+      schema:
+        type: string
+        enum:
+          - hosted
+          - beta
+          - self-hosted
+        description: Deployment type for the requests
+      example: hosted
+    ManageV1FilterTag:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterTag
+      name: tag
+      in: query
+      required: false
+      description: Filter for requests where a specific tag was used
+      schema:
+        type: string
+      example: tag1
+    ManageV1FilterLineItem:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterLineItem
+      name: line_item
+      in: query
+      required: false
+      description: 'Filter requests by line item (e.g. streaming::nova-3)'
+      schema:
+        type: string
+      example: 'streaming::nova-3'
+    ManageV1BillingGrouping:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1BillingGrouping
+      name: grouping
+      in: query
+      required: false
+      description: 'Group billing breakdown by one or more dimensions (accessor, deployment, line_item, tags)'
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - accessor
+            - deployment
+            - line_item
+            - tags
+      example:
+        - deployment
+        - line_item
+    ManageV1ProjectMemberEmail:
+      x-fern-type-name: ManageV1ProjectMemberEmail
+      name: email
+      in: path
+      required: true
+      description: The email address of the member
+      schema:
+        type: string
+      example: john.doe@example.com
+    ManageV1ProjectKeysStatus:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1ProjectKeysStatus
+      name: status
+      in: query
+      required: false
+      description: Only return keys with a specific status
+      schema:
+        type: string
+        enum:
+          - active
+          - expired
+    ManageV1ProjectKeyId:
+      x-fern-type-name: ManageV1ProjectKeyId
+      name: key_id
+      in: path
+      required: true
+      description: The unique identifier of the API key
+      schema:
+        type: string
+      example: '123456789012345678901234'
+    ManageV1ProjectMemberId:
+      x-fern-type-name: ManageV1ProjectMemberId
+      name: member_id
+      required: true
+      in: path
+      description: The unique identifier of the Member
+      schema:
+        type: string
+      example: '123456789012345678901234'
+    ManageV1StartDateTime:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1StartDateTime
+      name: start
+      in: query
+      required: false
+      description: 'Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'
+      schema:
+        type: string
+        format: date-time
+    ManageV1EndDateTime:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1EndDateTime
+      name: end
+      in: query
+      required: false
+      description: 'End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'
+      schema:
+        type: string
+        format: date-time
+    ManageV1FilterRequestId:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterRequestId
+      name: request_id
+      in: query
+      required: false
+      description: Filter for a specific request id
+      schema:
+        type: string
+      example: 12345678-1234-1234-1234-123456789012
+    ManageV1FilterEndpoint:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterEndpoint
+      name: endpoint
+      in: query
+      required: false
+      description: Filter for requests where a specific endpoint was used
+      schema:
+        type: string
+        enum:
+          - listen
+          - read
+          - speak
+          - agent
+      example: listen
+    ManageV1FilterMethod:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterMethod
+      name: method
+      in: query
+      required: false
+      description: Filter for requests where a specific method was used
+      schema:
+        type: string
+        enum:
+          - sync
+          - async
+          - streaming
+        description: Method type for the request
+      example: async
+    ManageV1FilterStatus:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterStatus
+      name: status
+      in: query
+      required: false
+      description: Filter for requests that succeeded (status code < 300) or failed (status code >=400)
+      schema:
+        type: string
+        enum:
+          - succeeded
+          - failed
+      example: succeeded
+    ManageV1RequestId:
+      x-fern-type-name: ManageV1RequestId
+      name: request_id
+      in: path
+      required: true
+      description: The unique identifier of the request
+      schema:
+        type: string
+      example: 123456-7890-1234-5678-901234
+    SelfHostedV1ParamsDistributionScopes:
+      x-fern-optional: true
+      x-fern-type-name: SelfHostedV1ParamsDistributionScopes
+      name: scopes
+      in: query
+      required: false
+      description: List of permission scopes for the credentials
+      schema:
+        default:
+          - 'self-hosted:products'
+        type: array
+        items:
+          type: string
+          enum:
+            - 'self-hosted:products'
+            - 'self-hosted:product:api'
+            - 'self-hosted:product:engine'
+            - 'self-hosted:product:license-proxy'
+            - 'self-hosted:product:dgtools'
+            - 'self-hosted:product:billing'
+            - 'self-hosted:product:hotpepper'
+            - 'self-hosted:product:metrics-server'
+    SelfHostedV1ParamsDistributionProvider:
+      x-fern-optional: true
+      x-fern-type-name: SelfHostedV1ParamsDistributionProvider
+      name: provider
+      in: query
+      required: false
+      description: The provider of the distribution service
+      schema:
+        default: quay
+        type: string
+        enum:
+          - quay
+    SelfHostedV1ParamsDistributionCredentialsId:
+      x-fern-type-name: SelfHostedV1ParamsDistributionCredentialsId
+      name: distribution_credentials_id
+      in: path
+      required: true
+      description: The UUID of the distribution credentials
+      schema:
+        type: string
+      example: 8b36cfd0-472f-4a21-833f-2d6343c3a2f3
+    ManageV1FilterAlternatives:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterAlternatives
+      name: alternatives
+      in: query
+      required: false
+      description: Filter for requests where alternatives were used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterCallbackMethod:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterCallbackMethod
+      name: callback_method
+      in: query
+      required: false
+      description: Filter for requests where callback method was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterCallback:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterCallback
+      name: callback
+      in: query
+      required: false
+      description: Filter for requests where callback was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterChannels:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterChannels
+      name: channels
+      in: query
+      required: false
+      description: Filter for requests where channels were used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterCustomIntentMode:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterCustomIntentMode
+      name: custom_intent_mode
+      in: query
+      required: false
+      description: Filter for requests where custom intent mode was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterCustomIntent:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterCustomIntent
+      name: custom_intent
+      in: query
+      required: false
+      description: Filter for requests where custom intent was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterCustomTopicMode:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterCustomTopicMode
+      name: custom_topic_mode
+      in: query
+      required: false
+      description: Filter for requests where custom topic mode was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterCustomTopic:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterCustomTopic
+      name: custom_topic
+      in: query
+      required: false
+      description: Filter for requests where custom topic was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterDetectEntities:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterDetectEntities
+      name: detect_entities
+      in: query
+      required: false
+      description: Filter for requests where detect entities was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterDetectLanguage:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterDetectLanguage
+      name: detect_language
+      in: query
+      required: false
+      description: Filter for requests where detect language was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterDiarize:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterDiarize
+      name: diarize
+      in: query
+      required: false
+      description: Filter for requests where diarize was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterDictation:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterDictation
+      name: dictation
+      in: query
+      required: false
+      description: Filter for requests where dictation was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterEncoding:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterEncoding
+      name: encoding
+      in: query
+      required: false
+      description: Filter for requests where encoding was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterExtra:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterExtra
+      name: extra
+      in: query
+      required: false
+      description: Filter for requests where extra was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterFillerWords:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterFillerWords
+      name: filler_words
+      in: query
+      required: false
+      description: Filter for requests where filler words was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterIntents:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterIntents
+      name: intents
+      in: query
+      required: false
+      description: Filter for requests where intents was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterKeyterm:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterKeyterm
+      name: keyterm
+      in: query
+      required: false
+      description: Filter for requests where keyterm was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterKeywords:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterKeywords
+      name: keywords
+      in: query
+      required: false
+      description: Filter for requests where keywords was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterLanguage:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterLanguage
+      name: language
+      in: query
+      required: false
+      description: Filter for requests where language was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterMeasurements:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterMeasurements
+      name: measurements
+      in: query
+      required: false
+      description: Filter for requests where measurements were used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterModel:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterModel
+      name: model
+      in: query
+      required: false
+      description: Filter for requests where a specific model uuid was used
+      schema:
+        type: string
+      example: 6f548761-c9c0-429a-9315-11a1d28499c8
+    ManageV1FilterMultichannel:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterMultichannel
+      name: multichannel
+      in: query
+      required: false
+      description: Filter for requests where multichannel was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterNumerals:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterNumerals
+      name: numerals
+      in: query
+      required: false
+      description: Filter for requests where numerals were used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterParagraphs:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterParagraphs
+      name: paragraphs
+      in: query
+      required: false
+      description: Filter for requests where paragraphs were used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterProfanityFilter:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterProfanityFilter
+      name: profanity_filter
+      in: query
+      required: false
+      description: Filter for requests where profanity filter was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterPunctuate:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterPunctuate
+      name: punctuate
+      in: query
+      required: false
+      description: Filter for requests where punctuate was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterRedact:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterRedact
+      name: redact
+      in: query
+      required: false
+      description: Filter for requests where redact was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterReplace:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterReplace
+      name: replace
+      in: query
+      required: false
+      description: Filter for requests where replace was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterSampleRate:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterSampleRate
+      name: sample_rate
+      in: query
+      required: false
+      description: Filter for requests where sample rate was used
+      schema:
+        type: boolean
+        example: true
+    ManageV1FilterSearch:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterSearch
+      name: search
+      in: query
+      required: false
+      description: Filter for requests where search was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterSentiment:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterSentiment
+      name: sentiment
+      in: query
+      required: false
+      description: Filter for requests where sentiment was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterSmartFormat:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterSmartFormat
+      name: smart_format
+      in: query
+      required: false
+      description: Filter for requests where smart format was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterSummarize:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterSummarize
+      name: summarize
+      in: query
+      required: false
+      description: Filter for requests where summarize was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterTopics:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterTopics
+      name: topics
+      in: query
+      required: false
+      description: Filter for requests where topics was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterUttSplit:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterUttSplit
+      name: utt_split
+      in: query
+      required: false
+      description: Filter for requests where utt split was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterUtterances:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterUtterances
+      name: utterances
+      in: query
+      required: false
+      description: Filter for requests where utterances was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1FilterVersion:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1FilterVersion
+      name: version
+      in: query
+      required: false
+      description: Filter for requests where version was used
+      schema:
+        type: boolean
+      example: true
+    ManageV1Grouping:
+      x-fern-optional: true
+      x-fern-type-name: ManageV1Grouping
+      name: grouping
+      in: query
+      required: false
+      description: Common usage grouping parameters
+      schema:
+        type: string
+        enum:
+          - accessor
+          - endpoint
+          - feature_set
+          - models
+          - method
+          - tags
+          - deployment
+    ReadV1Language:
+      x-fern-optional: true
+      x-fern-type-name: ReadV1Language
+      name: language
+      in: query
+      required: false
+      description: 'The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available'
+      schema:
+        type: string
+        default: en
+    SpeakV1BitRate:
+      x-fern-optional: true
+      x-fern-type-name: SpeakV1BitRate
+      name: bit_rate
+      in: query
+      required: false
+      description: The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
+      schema:
+        default: 48000
+        oneOf:
+          - title: mp3(default)
+            description: 'Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.'
+            type: number
+            nullable: true
+            enum:
+              - 32000
+              - 48000
+            x-fern-enum:
+              '32000':
+                name: ThirtyTwoThousand
+              '48000':
+                name: FortyEightThousand
+          - title: opus
+            description: Encoding - opus. Bitrate range - 4000-650000 bps.
+            type: number
+            nullable: true
+            minimum: 4000
+            maximum: 650000
+            x-fern-enum:
+              '4000':
+                name: FourThousand
+              '650000':
+                name: SixHundredFiftyThousand
+          - title: aac
+            description: Encoding -aac. Bitrate range - 4000-192000 bps.
+            type: number
+            nullable: true
+            minimum: 4000
+            maximum: 192000
+            x-fern-enum:
+              '4000':
+                name: FourThousand
+              '192000':
+                name: OneHundredNinetyTwoThousand
+    SpeakV1Container:
+      x-fern-optional: true
+      x-fern-type-name: SpeakV1Container
+      name: container
+      in: query
+      required: false
+      description: Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
+      schema:
+        default: wav
+        oneOf:
+          - title: none
+            description: No container.
+            type: string
+            enum:
+              - none
+            nullable: true
+          - title: linear16
+            description: 'Encoding - linear16. Supported container - wav (default), or no container.'
+            type: string
+            enum:
+              - wav
+            nullable: true
+          - title: mulaw
+            description: 'Encoding - mulaw. Supported container - wav (default), or no container.'
+            type: string
+            enum:
+              - wav
+            nullable: true
+          - title: alaw
+            description: 'Encoding - alaw. Supported container - wav (default), or no container.'
+            type: string
+            enum:
+              - wav
+            nullable: true
+          - title: opus
+            description: Encoding - opus. Supported container - ogg (default).
+            type: string
+            enum:
+              - ogg
+    SpeakV1Encoding:
+      x-fern-optional: true
+      x-fern-type-name: SpeakV1Encoding
+      name: encoding
+      in: query
+      required: false
+      description: Encoding allows you to specify the expected encoding of your audio output
+      schema:
+        default: mp3
+        oneOf:
+          - title: linear16
+            description: 'Encoding - linear16. Uncompressed, high-quality audio format often used for telephony or audio processing.'
+            type: string
+            enum:
+              - linear16
+          - title: flac
+            description: Encoding - flac. Lossless audio format for high-quality compression.
+            type: string
+            enum:
+              - flac
+          - title: mulaw
+            description: Encoding - mulaw. Compressed audio format commonly used in telephony.
+            type: string
+            enum:
+              - mulaw
+          - title: alaw
+            description: Encoding - alaw. Similar to mulaw but used in international telephony.
+            type: string
+            enum:
+              - alaw
+          - title: mp3
+            description: Encoding - mp3. Popular compressed audio format for music and streaming.
+            type: string
+            enum:
+              - mp3
+          - title: opus
+            description: Encoding - opus. High-compression audio format optimized for real-time communications.
+            type: string
+            enum:
+              - opus
+          - title: aac
+            description: Encoding - aac. Advanced audio format offering better quality at smaller file sizes than mp3.
+            type: string
+            enum:
+              - aac
+    SpeakV1Model:
+      x-fern-type-name: SpeakV1Model
+      name: model
+      in: query
+      description: AI model used to process submitted text
+      schema:
+        default: aura-asteria-en
+        type: string
+        enum:
+          - aura-asteria-en
+          - aura-luna-en
+          - aura-stella-en
+          - aura-athena-en
+          - aura-hera-en
+          - aura-orion-en
+          - aura-arcas-en
+          - aura-perseus-en
+          - aura-angus-en
+          - aura-orpheus-en
+          - aura-helios-en
+          - aura-zeus-en
+          - aura-2-amalthea-en
+          - aura-2-andromeda-en
+          - aura-2-apollo-en
+          - aura-2-arcas-en
+          - aura-2-aries-en
+          - aura-2-asteria-en
+          - aura-2-athena-en
+          - aura-2-atlas-en
+          - aura-2-aurora-en
+          - aura-2-callista-en
+          - aura-2-cordelia-en
+          - aura-2-cora-en
+          - aura-2-delia-en
+          - aura-2-draco-en
+          - aura-2-electra-en
+          - aura-2-harmonia-en
+          - aura-2-helena-en
+          - aura-2-hera-en
+          - aura-2-hermes-en
+          - aura-2-hyperion-en
+          - aura-2-iris-en
+          - aura-2-janus-en
+          - aura-2-juno-en
+          - aura-2-jupiter-en
+          - aura-2-luna-en
+          - aura-2-mars-en
+          - aura-2-minerva-en
+          - aura-2-neptune-en
+          - aura-2-odysseus-en
+          - aura-2-ophelia-en
+          - aura-2-orion-en
+          - aura-2-orpheus-en
+          - aura-2-pandora-en
+          - aura-2-phoebe-en
+          - aura-2-pluto-en
+          - aura-2-saturn-en
+          - aura-2-selene-en
+          - aura-2-thalia-en
+          - aura-2-theia-en
+          - aura-2-vesta-en
+          - aura-2-zeus-en
+          - aura-2-sirio-es
+          - aura-2-nestor-es
+          - aura-2-carina-es
+          - aura-2-celeste-es
+          - aura-2-alvaro-es
+          - aura-2-diana-es
+          - aura-2-aquila-es
+          - aura-2-selena-es
+          - aura-2-estrella-es
+          - aura-2-javier-es
+      example: aura-2-thalia-en
+    SpeakV1SampleRate:
+      x-fern-optional: true
+      x-fern-type-name: SpeakV1SampleRate
+      name: sample_rate
+      in: query
+      required: false
+      description: 'Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable'
+      schema:
+        default: 24000
+        oneOf:
+          - title: linear16
+            description: 'Encoding - linear16. Supported sample rates - 8000, 16000, 24000, 32000, 48000 Hz.'
+            type: number
+            nullable: true
+            enum:
+              - 8000
+              - 16000
+              - 24000
+              - 32000
+              - 48000
+            x-fern-enum:
+              '8000':
+                name: EightThousand
+              '16000':
+                name: SixteenThousand
+              '24000':
+                name: TwentyFourThousand
+              '32000':
+                name: ThirtyTwoThousand
+              '48000':
+                name: FortyEightThousand
+          - title: mulaw
+            description: 'Encoding - mulaw. Supported sample rates - 8000, 16000 Hz.'
+            type: number
+            nullable: true
+            enum:
+              - 8000
+              - 16000
+            x-fern-enum:
+              '8000':
+                name: EightThousand
+              '16000':
+                name: SixteenThousand
+          - title: alaw
+            description: 'Encoding - alaw. Supported sample rates - 8000, 16000 Hz.'
+            type: number
+            nullable: true
+            enum:
+              - 8000
+              - 16000
+            x-fern-enum:
+              '8000':
+                name: EightThousand
+              '16000':
+                name: SixteenThousand
+          - title: mp3
+            description: Encoding - mp3. Sample rate is fixed and not configurable (22050 Hz).
+            type: number
+            nullable: true
+            enum:
+              - 22050
+            x-fern-enum:
+              '22050':
+                name: TwentyTwoThousandFifty
+          - title: opus
+            description: Encoding - opus. Sample rate is fixed at 48000 Hz.
+            type: number
+            nullable: true
+            enum:
+              - 48000
+            x-fern-enum:
+              '48000':
+                name: FortyEightThousand
+paths:
+  /v1/agent/settings/think/models:
+    x-dg-public: true
+    description: Get available think models for AI agent
+    servers:
+      - url: 'https://agent.deepgram.com'
+        description: Deepgram Agent API
+        x-fern-server-name: Agent
+    get:
+      summary: List Agent Think Models
+      tags:
+        - Agent
+        - V1
+        - Settings
+        - Think
+        - Models
+      x-fern-sdk-group-name:
+        - agent
+        - v1
+        - settings
+        - think
+        - models
+      x-fern-sdk-method-name: list
+      operationId: agent.v1.settings.think.models.list
+      description: Retrieves the available think models that can be used for AI agent processing
+      responses:
+        '200':
+          description: List of available think models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentThinkModelsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/auth/grant:
+    x-dg-public: true
+    description: Token-based Authentication
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    post:
+      summary: Token-based Authentication
+      tags:
+        - Auth
+        - V1
+        - Tokens
+      x-fern-sdk-group-name:
+        - auth
+        - v1
+        - tokens
+      x-fern-sdk-method-name: grant
+      security:
+        - ApiKeyAuth: []
+      operationId: auth.v1.tokens.grant
+      description: 'Generates a temporary JSON Web Token (JWT) with a 30-second (by default) TTL and usage::write permission for core voice APIs, requiring an API key with Member or higher authorization. Tokens created with this endpoint will not work with the Manage APIs.'
+      requestBody:
+        description: Time to live settings
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantV1Request'
+      responses:
+        '200':
+          description: Grant response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GrantV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/listen:
+    x-dg-public: true
+    description: Use Deepgram's speech-to-text API to transcribe and analyze pre-recorded audio and video
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    post:
+      summary: Transcribe and analyze pre-recorded audio and video
+      tags:
+        - Listen
+        - V1
+        - Media
+      x-fern-sdk-group-name:
+        - listen
+        - v1
+        - media
+      security:
+        - ApiKeyAuth: []
+        - JwtAuth: []
+      operationId: listen.v1.media.transcribe
+      x-fern-sdk-method-name: transcribe
+      description: Transcribe audio and video using Deepgram's speech-to-text REST API
+      parameters:
+        - $ref: '#/components/parameters/SharedCallback'
+        - $ref: '#/components/parameters/SharedCallbackMethod'
+        - $ref: '#/components/parameters/SharedExtra'
+        - $ref: '#/components/parameters/SharedSentiment'
+        - $ref: '#/components/parameters/SharedSummarize'
+        - $ref: '#/components/parameters/SharedTag'
+        - $ref: '#/components/parameters/SharedTopics'
+        - $ref: '#/components/parameters/SharedCustomTopic'
+        - $ref: '#/components/parameters/SharedCustomTopicMode'
+        - $ref: '#/components/parameters/SharedIntents'
+        - $ref: '#/components/parameters/SharedCustomIntent'
+        - $ref: '#/components/parameters/SharedCustomIntentMode'
+        - $ref: '#/components/parameters/ListenV1DetectEntities'
+        - $ref: '#/components/parameters/ListenV1DetectLanguage'
+        - $ref: '#/components/parameters/ListenV1Diarize'
+        - $ref: '#/components/parameters/ListenV1Dictation'
+        - $ref: '#/components/parameters/ListenV1Encoding'
+        - $ref: '#/components/parameters/ListenV1FillerWords'
+        - $ref: '#/components/parameters/ListenV1Keyterm'
+        - $ref: '#/components/parameters/ListenV1Keywords'
+        - $ref: '#/components/parameters/ListenV1Language'
+        - $ref: '#/components/parameters/ListenV1Measurements'
+        - $ref: '#/components/parameters/ListenV1Model'
+        - $ref: '#/components/parameters/ListenV1Multichannel'
+        - $ref: '#/components/parameters/ListenV1Numerals'
+        - $ref: '#/components/parameters/ListenV1Paragraphs'
+        - $ref: '#/components/parameters/ListenV1ProfanityFilter'
+        - $ref: '#/components/parameters/ListenV1Punctuate'
+        - $ref: '#/components/parameters/ListenV1Redact'
+        - $ref: '#/components/parameters/ListenV1Replace'
+        - $ref: '#/components/parameters/ListenV1Search'
+        - $ref: '#/components/parameters/ListenV1SmartFormat'
+        - $ref: '#/components/parameters/ListenV1Utterances'
+        - $ref: '#/components/parameters/ListenV1UttSplit'
+        - $ref: '#/components/parameters/ListenV1Version'
+        - $ref: '#/components/parameters/SharedMipOptOut'
+      requestBody:
+        description: Transcribe an audio or video file
+        content:
+          application/json:
+            x-fern-sdk-method-name: transcribeUrl
+            schema:
+              $ref: '#/components/schemas/ListenV1RequestUrl'
+          application/octet-stream:
+            x-fern-sdk-method-name: transcribeFile
+            schema:
+              $ref: '#/components/schemas/ListenV1RequestFile'
+        required: true
+      responses:
+        '200':
+          description: 'Returns either transcription results, or a request_id when using a callback.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ListenV1Response'
+                  - $ref: '#/components/schemas/ListenV1AcceptedResponse'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListenV1Response'
+      callbacks:
+        listenCallback:
+          '{$request.query.callback}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/ListenV1Response'
+              responses:
+                '200':
+                  description: We expect a 200 to determine whether the callback was successfully received
+  /v1/models:
+    x-dg-public: true
+    description: Get information on public models
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    get:
+      summary: List Models
+      tags:
+        - Manage
+        - V1
+        - Models
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - models
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.models.list
+      description: 'Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.'
+      parameters:
+        - $ref: '#/components/parameters/ManageV1IncludeOutdatedModels'
+      responses:
+        '200':
+          description: A list of models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/models/{model_id}':
+    x-dg-public: true
+    description: Get information on a specific public model
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ModelId'
+    get:
+      tags:
+        - Manage
+        - V1
+        - Models
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - models
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.models.get
+      summary: Get a specific Model
+      description: Returns metadata for a specific public model
+      responses:
+        '200':
+          description: A model object that can be either STT or TTS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/projects:
+    x-dg-public: true
+    description: Manage your projects
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    get:
+      summary: List Projects
+      tags:
+        - Manage
+        - V1
+        - Projects
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.list
+      description: Retrieves basic information about the projects associated with the API key
+      responses:
+        '200':
+          description: A list of projects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}':
+    description: Manage individual project details and settings
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: Get a Project
+      tags:
+        - Manage
+        - V1
+        - Projects
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.get
+      description: Retrieves information about the specified project
+      parameters:
+        - $ref: '#/components/parameters/ManageV1Limit'
+        - $ref: '#/components/parameters/ManageV1Page'
+      responses:
+        '200':
+          description: A project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a Project
+      tags:
+        - Manage
+        - V1
+        - Projects
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+      x-fern-sdk-method-name: update
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.projects.update
+      description: Updates the name or other properties of an existing project
+      requestBody:
+        description: The name of the project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectV1Request'
+      responses:
+        '200':
+          description: A project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateProjectV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a Project
+      tags:
+        - Manage
+        - V1
+        - Projects
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+      x-fern-sdk-method-name: delete
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.projects.delete
+      description: Deletes the specified project
+      responses:
+        '200':
+          description: A project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProjectV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/balances':
+    x-dg-public: true
+    description: Manage your project balances
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: Get Project Balances
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Billing
+        - Balances
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - billing
+        - balances
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.billing.balances.list
+      description: Generates a list of outstanding balances for the specified project
+      responses:
+        '200':
+          description: A list of outstanding balances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectBalancesV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/balances/{balance_id}':
+    x-dg-public: true
+    description: Manage your project balances
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/ManageV1BalanceId'
+    get:
+      summary: Get a Project Balance
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Billing
+        - Balances
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - billing
+        - balances
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.billing.balances.get
+      description: Retrieves details about the specified balance
+      responses:
+        '200':
+          description: A specific balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectBalanceV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/billing/breakdown':
+    x-dg-public: true
+    description: View billing summary for a given time period
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: Get Project Billing Breakdown
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Billing
+        - Breakdown
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - billing
+        - breakdown
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.billing.breakdown.list
+      description: 'Retrieves the billing summary for a specific project, with various filter options or by grouping options.'
+      parameters:
+        - $ref: '#/components/parameters/ManageV1StartDate'
+        - $ref: '#/components/parameters/ManageV1EndDate'
+        - $ref: '#/components/parameters/ManageV1FilterAccessor'
+        - $ref: '#/components/parameters/ManageV1FilterDeployment'
+        - $ref: '#/components/parameters/ManageV1FilterTag'
+        - $ref: '#/components/parameters/ManageV1FilterLineItem'
+        - $ref: '#/components/parameters/ManageV1BillingGrouping'
+      responses:
+        '200':
+          description: Billing breakdown response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingBreakdownV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/billing/fields':
+    x-dg-public: true
+    description: View billing fields for a given time period
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Billing Fields
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Billing
+        - Fields
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - billing
+        - fields
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.billing.fields.list
+      description: 'Lists the accessors, deployment types, tags, and line items used for billing data in the specified time period. Use this endpoint if you want to filter your results from the Billing Breakdown endpoint and want to know what filters are available.'
+      parameters:
+        - $ref: '#/components/parameters/ManageV1StartDate'
+        - $ref: '#/components/parameters/ManageV1EndDate'
+      responses:
+        '200':
+          description: A list of billing fields for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBillingFieldsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/invites':
+    x-dg-public: true
+    description: Manage your project invites
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Invites
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Members
+        - Invites
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - members
+        - invites
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.members.invites.list
+      description: Generates a list of invites for a specific project
+      responses:
+        '200':
+          description: A list of invites for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectInvitesV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a Project Invite
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Members
+        - Invites
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - members
+        - invites
+      x-fern-sdk-method-name: create
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.members.invites.create
+      description: Generates an invite for a specific project
+      requestBody:
+        description: email to invite to the project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectInviteV1Request'
+      responses:
+        '200':
+          description: The invite was successfully generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProjectInviteV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/invites/{email}':
+    x-dg-public: true
+    description: Manage your project invites
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/ManageV1ProjectMemberEmail'
+    delete:
+      summary: Delete a Project Invite
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Members
+        - Invites
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - members
+        - invites
+      x-fern-sdk-method-name: delete
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.members.invites.delete
+      description: Deletes an invite for a specific project
+      responses:
+        '200':
+          description: The invite was successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProjectInviteV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/keys':
+    x-dg-public: true
+    description: Manage your project keys
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Keys
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Keys
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - keys
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.keys.list
+      description: Retrieves all API keys associated with the specified project
+      parameters:
+        - $ref: '#/components/parameters/ManageV1ProjectKeysStatus'
+      responses:
+        '200':
+          description: A list of API keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectKeysV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a Project Key
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Keys
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - keys
+      x-fern-sdk-method-name: create
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.projects.keys.create
+      description: Creates a new API key with specified settings for the project
+      requestBody:
+        description: API key settings
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateKeyV1Request'
+      responses:
+        '200':
+          description: API key created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateKeyV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/keys/{key_id}':
+    x-dg-public: true
+    description: Manage your project keys
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/ManageV1ProjectKeyId'
+    get:
+      summary: Get a Project Key
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Keys
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - keys
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.keys.get
+      description: Retrieves information about a specified API key
+      responses:
+        '200':
+          description: A specific API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectKeyV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a Project Key
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Keys
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - keys
+      x-fern-sdk-method-name: delete
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.projects.keys.delete
+      description: Deletes an API key for a specific project
+      responses:
+        '200':
+          description: API key deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProjectKeyV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/leave':
+    x-dg-public: true
+    description: Remove your account from a project
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    delete:
+      summary: Leave a Project
+      tags:
+        - Manage
+        - V1
+        - Projects
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+      x-fern-sdk-method-name: leave
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.leave
+      description: Removes the authenticated account from the specific project
+      responses:
+        '200':
+          description: Successfully removed account from project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveProjectV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/members':
+    x-dg-public: true
+    description: Manage your project members
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Members
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Members
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - members
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.members.list
+      description: Retrieves a list of members for a given project
+      responses:
+        '200':
+          description: A list of members for a given project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectMembersV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/members/{member_id}':
+    x-dg-public: true
+    description: Manage your project members
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/ManageV1ProjectMemberId'
+    delete:
+      summary: Delete a Project Member
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Members
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - members
+      x-fern-sdk-method-name: delete
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.members.delete
+      description: Removes a member from the project using their unique member ID
+      responses:
+        '200':
+          description: Delete the specific member from the project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProjectMemberV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/members/{member_id}/scopes':
+    x-dg-public: true
+    description: Manage your project members
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/ManageV1ProjectMemberId'
+    get:
+      summary: List Project Member Scopes
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Members
+        - Scopes
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - members
+        - scopes
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.members.scopes.list
+      description: Retrieves a list of scopes for a specific member
+      responses:
+        '200':
+          description: A list of scopes for a specific member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectMemberScopesV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update Project Member Scopes
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Members
+        - Scopes
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - members
+        - scopes
+      x-fern-sdk-method-name: update
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.projects.members.scopes.update
+      description: Updates the scopes for a specific member
+      requestBody:
+        description: A scope to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectMemberScopesV1Request'
+      responses:
+        '200':
+          description: Updated the scopes for a specific member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateProjectMemberScopesV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/models':
+    x-dg-public: true
+    description: Manage your project models
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Models
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Models
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - models
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.models.list
+      description: 'Returns metadata on all the latest models that a specific project has access to, including non-public models'
+      parameters:
+        - $ref: '#/components/parameters/ManageV1IncludeOutdatedModels'
+      responses:
+        '200':
+          description: A list of models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/models/{model_id}':
+    x-dg-public: true
+    description: Manage your project models
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/ManageV1ModelId'
+    get:
+      summary: Get a Project Model
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Models
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - models
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.models.get
+      description: Returns metadata for a specific model
+      responses:
+        '200':
+          description: A model object that can be either STT or TTS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/purchases':
+    x-dg-public: true
+    description: Manage your project purchases
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Purchases
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Billing
+        - Purchases
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - billing
+        - purchases
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.billing.purchases.list
+      description: Returns the original purchased amount on an order transaction
+      parameters:
+        - $ref: '#/components/parameters/ManageV1Limit'
+      responses:
+        '200':
+          description: A list of purchases for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectPurchasesV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/requests':
+    x-dg-public: true
+    description: Manage your project requests
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Requests
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Requests
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - requests
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.requests.list
+      description: Generates a list of requests for a specific project
+      parameters:
+        - $ref: '#/components/parameters/ManageV1StartDateTime'
+        - $ref: '#/components/parameters/ManageV1EndDateTime'
+        - $ref: '#/components/parameters/ManageV1Limit'
+        - $ref: '#/components/parameters/ManageV1Page'
+        - $ref: '#/components/parameters/ManageV1FilterAccessor'
+        - $ref: '#/components/parameters/ManageV1FilterRequestId'
+        - $ref: '#/components/parameters/ManageV1FilterDeployment'
+        - $ref: '#/components/parameters/ManageV1FilterEndpoint'
+        - $ref: '#/components/parameters/ManageV1FilterMethod'
+        - $ref: '#/components/parameters/ManageV1FilterStatus'
+      responses:
+        '200':
+          description: A list of requests for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectRequestsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/requests/{request_id}':
+    x-dg-public: true
+    description: Manage your project requests
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/ManageV1RequestId'
+    get:
+      summary: Get a Project Request
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Requests
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - requests
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.requests.get
+      description: Retrieves a specific request for a specific project
+      responses:
+        '200':
+          description: A specific request for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectRequestV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/self-hosted/distribution/credentials':
+    x-dg-public: true
+    description: Returns sets of distribution credentials for the specified project
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Self-Hosted Distribution Credentials
+      tags:
+        - Self-Hosted
+        - V1
+        - Distribution Credentials
+      x-fern-sdk-group-name:
+        - selfHosted
+        - v1
+        - distributionCredentials
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: selfHosted.v1.distributionCredentials.list
+      description: Lists sets of distribution credentials for the specified project
+      responses:
+        '200':
+          description: A list of distribution credentials for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectDistributionCredentialsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a Project Self-Hosted Distribution Credential
+      tags:
+        - Self-Hosted
+        - V1
+        - Distribution Credentials
+      x-fern-sdk-group-name:
+        - selfHosted
+        - v1
+        - distributionCredentials
+      x-fern-sdk-method-name: create
+      security:
+        - ApiKeyAuth: []
+      operationId: selfHosted.v1.distributionCredentials.create
+      description: Creates a set of distribution credentials for the specified project
+      parameters:
+        - $ref: '#/components/parameters/SelfHostedV1ParamsDistributionScopes'
+        - $ref: '#/components/parameters/SelfHostedV1ParamsDistributionProvider'
+      requestBody:
+        description: The set of distribution credentials to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectDistributionCredentialsV1Request'
+      responses:
+        '200':
+          description: Single distribution credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProjectDistributionCredentialsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/self-hosted/distribution/credentials/{distribution_credentials_id}':
+    x-dg-public: true
+    description: Returns a single set of distribution credentials for the specified project
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: '#/components/parameters/SelfHostedV1ParamsDistributionCredentialsId'
+    get:
+      summary: Get a Project Self-Hosted Distribution Credential
+      tags:
+        - Self-Hosted
+        - V1
+        - Distribution Credentials
+      x-fern-sdk-group-name:
+        - selfHosted
+        - v1
+        - distributionCredentials
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: selfHosted.v1.distributionCredentials.get
+      description: Returns a set of distribution credentials for the specified project
+      responses:
+        '200':
+          description: Single distribution credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectDistributionCredentialsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a Project Self-Hosted Distribution Credential
+      tags:
+        - Self-Hosted
+        - V1
+        - Distribution Credentials
+      x-fern-sdk-group-name:
+        - selfHosted
+        - v1
+        - distributionCredentials
+      x-fern-sdk-method-name: delete
+      security:
+        - ApiKeyAuth: []
+      operationId: selfHosted.v1.distributionCredentials.delete
+      description: Deletes a set of distribution credentials for the specified project
+      responses:
+        '200':
+          description: Single distribution credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectDistributionCredentialsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/usage':
+    x-dg-public: true
+    description: Manage your project usage
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: Get Project Usage
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Usage
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - usage
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.usage.get
+      description: Retrieves the usage for a specific project. Use Get Project Usage Breakdown for a more comprehensive usage summary.
+      deprecated: true
+      x-fern-availability: deprecated
+      parameters:
+        - $ref: '#/components/parameters/ManageV1StartDate'
+        - $ref: '#/components/parameters/ManageV1EndDate'
+        - $ref: '#/components/parameters/ManageV1FilterAccessor'
+        - $ref: '#/components/parameters/ManageV1FilterAlternatives'
+        - $ref: '#/components/parameters/ManageV1FilterCallbackMethod'
+        - $ref: '#/components/parameters/ManageV1FilterCallback'
+        - $ref: '#/components/parameters/ManageV1FilterChannels'
+        - $ref: '#/components/parameters/ManageV1FilterCustomIntentMode'
+        - $ref: '#/components/parameters/ManageV1FilterCustomIntent'
+        - $ref: '#/components/parameters/ManageV1FilterCustomTopicMode'
+        - $ref: '#/components/parameters/ManageV1FilterCustomTopic'
+        - $ref: '#/components/parameters/ManageV1FilterDeployment'
+        - $ref: '#/components/parameters/ManageV1FilterDetectEntities'
+        - $ref: '#/components/parameters/ManageV1FilterDetectLanguage'
+        - $ref: '#/components/parameters/ManageV1FilterDiarize'
+        - $ref: '#/components/parameters/ManageV1FilterDictation'
+        - $ref: '#/components/parameters/ManageV1FilterEncoding'
+        - $ref: '#/components/parameters/ManageV1FilterEndpoint'
+        - $ref: '#/components/parameters/ManageV1FilterExtra'
+        - $ref: '#/components/parameters/ManageV1FilterFillerWords'
+        - $ref: '#/components/parameters/ManageV1FilterIntents'
+        - $ref: '#/components/parameters/ManageV1FilterKeyterm'
+        - $ref: '#/components/parameters/ManageV1FilterKeywords'
+        - $ref: '#/components/parameters/ManageV1FilterLanguage'
+        - $ref: '#/components/parameters/ManageV1FilterMeasurements'
+        - $ref: '#/components/parameters/ManageV1FilterMethod'
+        - $ref: '#/components/parameters/ManageV1FilterModel'
+        - $ref: '#/components/parameters/ManageV1FilterMultichannel'
+        - $ref: '#/components/parameters/ManageV1FilterNumerals'
+        - $ref: '#/components/parameters/ManageV1FilterParagraphs'
+        - $ref: '#/components/parameters/ManageV1FilterProfanityFilter'
+        - $ref: '#/components/parameters/ManageV1FilterPunctuate'
+        - $ref: '#/components/parameters/ManageV1FilterRedact'
+        - $ref: '#/components/parameters/ManageV1FilterReplace'
+        - $ref: '#/components/parameters/ManageV1FilterSampleRate'
+        - $ref: '#/components/parameters/ManageV1FilterSearch'
+        - $ref: '#/components/parameters/ManageV1FilterSentiment'
+        - $ref: '#/components/parameters/ManageV1FilterSmartFormat'
+        - $ref: '#/components/parameters/ManageV1FilterSummarize'
+        - $ref: '#/components/parameters/ManageV1FilterTag'
+        - $ref: '#/components/parameters/ManageV1FilterTopics'
+        - $ref: '#/components/parameters/ManageV1FilterUttSplit'
+        - $ref: '#/components/parameters/ManageV1FilterUtterances'
+        - $ref: '#/components/parameters/ManageV1FilterVersion'
+      responses:
+        '200':
+          description: A specific request for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/usage/breakdown':
+    x-dg-public: true
+    description: Manage your project usage breakdown with various filter options
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: Get Project Usage Breakdown
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Usage
+        - Breakdown
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - usage
+        - breakdown
+      x-fern-sdk-method-name: get
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.usage.breakdown.get
+      description: 'Retrieves the usage breakdown for a specific project, with various filter options by API feature or by groupings. Setting a feature (e.g. diarize) to true includes requests that used that feature, while false excludes requests that used it. Multiple true filters are combined with OR logic, while false filters use AND logic.'
+      parameters:
+        - $ref: '#/components/parameters/ManageV1StartDate'
+        - $ref: '#/components/parameters/ManageV1EndDate'
+        - $ref: '#/components/parameters/ManageV1Grouping'
+        - $ref: '#/components/parameters/ManageV1FilterAccessor'
+        - $ref: '#/components/parameters/ManageV1FilterAlternatives'
+        - $ref: '#/components/parameters/ManageV1FilterCallbackMethod'
+        - $ref: '#/components/parameters/ManageV1FilterCallback'
+        - $ref: '#/components/parameters/ManageV1FilterChannels'
+        - $ref: '#/components/parameters/ManageV1FilterCustomIntentMode'
+        - $ref: '#/components/parameters/ManageV1FilterCustomIntent'
+        - $ref: '#/components/parameters/ManageV1FilterCustomTopicMode'
+        - $ref: '#/components/parameters/ManageV1FilterCustomTopic'
+        - $ref: '#/components/parameters/ManageV1FilterDeployment'
+        - $ref: '#/components/parameters/ManageV1FilterDetectEntities'
+        - $ref: '#/components/parameters/ManageV1FilterDetectLanguage'
+        - $ref: '#/components/parameters/ManageV1FilterDiarize'
+        - $ref: '#/components/parameters/ManageV1FilterDictation'
+        - $ref: '#/components/parameters/ManageV1FilterEncoding'
+        - $ref: '#/components/parameters/ManageV1FilterEndpoint'
+        - $ref: '#/components/parameters/ManageV1FilterExtra'
+        - $ref: '#/components/parameters/ManageV1FilterFillerWords'
+        - $ref: '#/components/parameters/ManageV1FilterIntents'
+        - $ref: '#/components/parameters/ManageV1FilterKeyterm'
+        - $ref: '#/components/parameters/ManageV1FilterKeywords'
+        - $ref: '#/components/parameters/ManageV1FilterLanguage'
+        - $ref: '#/components/parameters/ManageV1FilterMeasurements'
+        - $ref: '#/components/parameters/ManageV1FilterMethod'
+        - $ref: '#/components/parameters/ManageV1FilterModel'
+        - $ref: '#/components/parameters/ManageV1FilterMultichannel'
+        - $ref: '#/components/parameters/ManageV1FilterNumerals'
+        - $ref: '#/components/parameters/ManageV1FilterParagraphs'
+        - $ref: '#/components/parameters/ManageV1FilterProfanityFilter'
+        - $ref: '#/components/parameters/ManageV1FilterPunctuate'
+        - $ref: '#/components/parameters/ManageV1FilterRedact'
+        - $ref: '#/components/parameters/ManageV1FilterReplace'
+        - $ref: '#/components/parameters/ManageV1FilterSampleRate'
+        - $ref: '#/components/parameters/ManageV1FilterSearch'
+        - $ref: '#/components/parameters/ManageV1FilterSentiment'
+        - $ref: '#/components/parameters/ManageV1FilterSmartFormat'
+        - $ref: '#/components/parameters/ManageV1FilterSummarize'
+        - $ref: '#/components/parameters/ManageV1FilterTag'
+        - $ref: '#/components/parameters/ManageV1FilterTopics'
+        - $ref: '#/components/parameters/ManageV1FilterUttSplit'
+        - $ref: '#/components/parameters/ManageV1FilterUtterances'
+        - $ref: '#/components/parameters/ManageV1FilterVersion'
+      responses:
+        '200':
+          description: Usage breakdown response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageBreakdownV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/v1/projects/{project_id}/usage/fields':
+    x-dg-public: true
+    description: Project usage fields
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    parameters:
+      - $ref: '#/components/parameters/ManageV1ProjectId'
+    get:
+      summary: List Project Usage Fields
+      tags:
+        - Manage
+        - V1
+        - Projects
+        - Usage
+        - Fields
+      x-fern-sdk-group-name:
+        - manage
+        - v1
+        - projects
+        - usage
+        - fields
+      x-fern-sdk-method-name: list
+      security:
+        - ApiKeyAuth: []
+      operationId: manage.v1.projects.usage.fields.list
+      description: 'Lists the features, models, tags, languages, and processing method used for requests in the specified project'
+      parameters:
+        - $ref: '#/components/parameters/ManageV1StartDate'
+        - $ref: '#/components/parameters/ManageV1EndDate'
+      responses:
+        '200':
+          description: A list of fields for a specific project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageFieldsV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v1/read:
+    x-dg-public: true
+    description: Use Deepgrams text analysis API to analyze text
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    post:
+      summary: Analyze text content
+      tags:
+        - Read
+        - V1
+        - Text
+      x-fern-sdk-group-name:
+        - read
+        - v1
+        - text
+      x-fern-sdk-method-name: analyze
+      security:
+        - ApiKeyAuth: []
+        - JwtAuth: []
+      operationId: read.v1.text.analyze
+      description: Analyze text content using Deepgrams text analysis API
+      parameters:
+        - $ref: '#/components/parameters/SharedCallback'
+        - $ref: '#/components/parameters/SharedCallbackMethod'
+        - $ref: '#/components/parameters/SharedSentiment'
+        - $ref: '#/components/parameters/SharedSummarize'
+        - $ref: '#/components/parameters/SharedTag'
+        - $ref: '#/components/parameters/SharedTopics'
+        - $ref: '#/components/parameters/SharedCustomTopic'
+        - $ref: '#/components/parameters/SharedCustomTopicMode'
+        - $ref: '#/components/parameters/SharedIntents'
+        - $ref: '#/components/parameters/SharedCustomIntent'
+        - $ref: '#/components/parameters/SharedCustomIntentMode'
+        - $ref: '#/components/parameters/ReadV1Language'
+      requestBody:
+        description: Analyze a text file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadV1Request'
+      responses:
+        '200':
+          description: Successful text analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      callbacks:
+        readCallback:
+          '{$request.query.callback}':
+            post:
+              description: Callback endpoint for text analysis results
+              requestBody:
+                description: The text analysis results
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/ReadV1Response'
+              responses:
+                '200':
+                  description: We expect a 200 to determine whether the callback was successfully received
+  /v1/speak:
+    x-dg-public: true
+    description: Use Deepgram's Aura text-to-speech API to generate audio from text
+    servers:
+      - url: 'https://api.deepgram.com'
+        description: Deepgram Production API
+        x-fern-server-name: Production
+    post:
+      summary: Text to Speech transformation
+      tags:
+        - Speak
+        - V1
+      x-fern-sdk-group-name:
+        - speak
+        - v1
+        - audio
+      x-fern-sdk-method-name: generate
+      security:
+        - ApiKeyAuth: []
+        - JwtAuth: []
+      operationId: speak.v1.audio.generate
+      description: Convert text into natural-sounding speech using Deepgram's TTS REST API
+      parameters:
+        - $ref: '#/components/parameters/SharedCallback'
+        - $ref: '#/components/parameters/SharedCallbackMethod'
+        - $ref: '#/components/parameters/SharedMipOptOut'
+        - $ref: '#/components/parameters/SharedTag'
+        - $ref: '#/components/parameters/SpeakV1BitRate'
+        - $ref: '#/components/parameters/SpeakV1Container'
+        - $ref: '#/components/parameters/SpeakV1Encoding'
+        - $ref: '#/components/parameters/SpeakV1Model'
+        - $ref: '#/components/parameters/SpeakV1SampleRate'
+      requestBody:
+        description: Transform text to speech
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeakV1Request'
+      responses:
+        '200':
+          description: Successful text-to-speech transformation
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/SpeakV1Response'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      callbacks:
+        speakCallback:
+          '{$request.query.callback}':
+            post:
+              description: Callback endpoint for text-to-speech results
+              requestBody:
+                description: The text-to-speech processing results
+                required: true
+                content:
+                  application/octet-stream:
+                    schema:
+                      $ref: '#/components/schemas/SpeakV1Response'
+              responses:
+                '200':
+                  description: We expect a 200 to determine whether the callback was successfully received
+externalDocs:
+  description: Visit our docs to learn more about using Deepgram APIs
+  url: 'https://developers.deepgram.com'
+tags:
+  - name: Auth
+    description: Authentication operations
+  - name: Listen
+    description: Speech-to-text transcription
+  - name: Read
+    description: Text analysis
+  - name: Speak
+    description: Text-to-speech generation
+  - name: Manage
+    description: Project and account management
+  - name: Agent
+    description: AI agent operations
+  - name: Self-Hosted
+    description: On-premise deployments

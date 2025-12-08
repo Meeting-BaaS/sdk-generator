@@ -73,19 +73,28 @@ interface UnifiedTranscriptResponse {
 
 ## 📦 Target Providers
 
-### Priority 1 ✅ COMPLETED
+**⚠️ See [PROVIDER_INTEGRATION_PLAN.md](./PROVIDER_INTEGRATION_PLAN.md) for comprehensive provider integration roadmap**
+
+### ✅ Completed (2/11 providers)
 - [x] **Gladia** - https://api.gladia.io/openapi.json - ✅ Adapter implemented
-- [x] **AssemblyAI** - https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/main/openapi.json - ✅ Adapter implemented
+- [x] **AssemblyAI** - https://github.com/AssemblyAI/assemblyai-api-spec - ✅ Adapter implemented
 
-### Priority 2
-- [ ] **Deepgram** - (Need to find OpenAPI spec or manual types) - 🔴 No public OpenAPI spec
-- [ ] **Rev.ai** - https://www.rev.ai/docs
-- [ ] **Speechmatics** - https://docs.speechmatics.com/
+### 🚧 Phase 2: High Priority (3 providers)
+- [ ] **Deepgram** - https://github.com/deepgram/deepgram-api-specs - 🔴 TODO - **NEXT**
+- [ ] **OpenAI Whisper** - https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml - 🔴 TODO
+- [ ] **Azure Speech-to-Text** - https://github.com/Azure/azure-rest-api-specs - 🔴 TODO
 
-### Priority 3 (Future)
-- [ ] **Google Speech-to-Text**
-- [ ] **Azure Speech Services**
-- [ ] **AWS Transcribe**
+### 📋 Phase 3: Medium Priority (2 providers)
+- [ ] **Speechmatics** - https://docs.speechmatics.com/jobsapi - 🔴 TODO
+- [ ] **Google Cloud STT** - https://speech.googleapis.com/$discovery/rest?version=v2 - ⚠️ Discovery Doc (needs conversion)
+
+### 🔻 Phase 4: Low Priority (2 providers)
+- [ ] **Rev.ai** - No public OpenAPI spec - Manual typing required
+- [ ] **Amazon Transcribe** - AWS proprietary - Manual typing required
+
+### ⏸️ Skipped (2 providers)
+- IBM Watson STT (deprecated)
+- Kaldi (self-hosted toolkit)
 
 ## 🔧 Implementation Steps
 
