@@ -51,5 +51,42 @@ export default {
   hideGenerator: true,
   githubPages: false,
 
-  name: "@meeting-baas/sdk - Client API & Bridge"
+  name: "@meeting-baas/sdk - Client API & Bridge",
+
+  // Enhanced documentation options
+  includeVersion: true,
+
+  // Add external documents for comprehensive guides
+  projectDocuments: [
+    "docs/guides/client-configuration.md",
+    "docs/guides/version-selection.md",
+    "docs/guides/typescript-support.md"
+  ],
+
+  // Better categorization
+  groupOrder: [
+    "Client Factory",
+    "Configuration",
+    "Type Guards",
+    "*"
+  ],
+
+  // Enhanced navigation
+  navigation: {
+    includeCategories: true,
+    includeGroups: true,
+    includeFolders: true
+  },
+
+  // Show parameter descriptions and examples
+  parametersFormat: "table",
+  enumMembersFormat: "table",
+
+  // Include type hierarchy for better understanding
+  visibilityFilters: {
+    protected: false,
+    private: false,
+    inherited: true,
+    external: false
+  }
 };

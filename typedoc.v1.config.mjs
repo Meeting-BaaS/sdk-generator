@@ -51,5 +51,45 @@ export default {
   hideGenerator: true,
   githubPages: false,
 
-  name: "@meeting-baas/sdk - v1 API Reference"
+  name: "@meeting-baas/sdk - v1 API Reference",
+
+  // Enhanced documentation options
+  includeVersion: true,
+
+  // Add external documents for comprehensive guides
+  projectDocuments: [
+    "docs/guides/v1-getting-started.md",
+    "docs/guides/v1-error-handling.md",
+    "docs/guides/v1-migration-to-v2.md",
+    "docs/guides/v1-best-practices.md"
+  ],
+
+  // Better categorization
+  groupOrder: [
+    "Bot Management",
+    "Calendar Integration",
+    "Request Types",
+    "Response Types",
+    "Validation Schemas",
+    "*"
+  ],
+
+  // Enhanced navigation
+  navigation: {
+    includeCategories: true,
+    includeGroups: true,
+    includeFolders: true
+  },
+
+  // Show parameter descriptions and examples
+  parametersFormat: "table",
+  enumMembersFormat: "table",
+
+  // Include type hierarchy for better understanding
+  visibilityFilters: {
+    protected: false,
+    private: false,
+    inherited: true,
+    external: false
+  }
 };
