@@ -10,8 +10,7 @@ const ASSEMBLYAI_INPUT = {
 }
 
 const DEEPGRAM_INPUT = {
-  // TODO: Find Deepgram OpenAPI spec URL
-  target: "https://api.deepgram.com/openapi.json"
+  target: "./specs/deepgram-openapi.yml"
 }
 
 export default defineConfig({
@@ -76,7 +75,7 @@ export default defineConfig({
       target: "./src/generated/deepgram/api",
       schemas: "./src/generated/deepgram/schema",
       client: "axios-functions",
-      mode: "tags-split",
+      mode: "single",  // Use single mode for Node 18 compatibility
       biome: true,
       mock: {
         type: "msw",
@@ -90,7 +89,7 @@ export default defineConfig({
     output: {
       target: "./src/generated/deepgram/api",
       client: "zod",
-      mode: "tags-split",
+      mode: "single",  // Use single mode for Node 18 compatibility
       fileExtension: ".zod.ts",
       biome: true
     }

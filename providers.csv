@@ -1,0 +1,11 @@
+Provider,Rank,OpenAPI Spec Available,Spec Format,Spec URL/Location,Notes
+Deepgram,1,Yes,OpenAPI + AsyncAPI,https://github.com/deepgram/deepgram-api-specs,GitHub repository contains both OpenAPI and AsyncAPI specifications
+OpenAI Whisper,2,Yes,OpenAPI (YAML),https://github.com/openai/openai-openapi,Direct spec: https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml - Covers full OpenAI API including Whisper audio endpoints
+Microsoft Azure Speech-to-Text,3,Yes,OpenAPI/Swagger (JSON),https://github.com/Azure/azure-rest-api-specs/blob/master/specification/cognitiveservices/data-plane/Speech/SpeechToText/stable/v3.1/speechtotext.json,Also available via Swagger UI at https://<region>.dev.cognitive.microsoft.com/docs/services/speech-to-text-api-v3-0
+Google Cloud Speech-to-Text,4,No (Discovery Doc),Google Discovery Document,https://speech.googleapis.com/$discovery/rest?version=v2,Google uses proprietary Discovery Document format instead of OpenAPI. Also available: v1 and v1p1beta1 versions
+AssemblyAI,5,Yes,OpenAPI (YAML),https://github.com/AssemblyAI/assemblyai-api-spec/blob/main/openapi.yml,Repository also includes AsyncAPI spec and Postman collection
+Rev AI,6,No,N/A,N/A,No public OpenAPI spec found. SDKs available at https://github.com/revdotcom but no formal API spec published
+Speechmatics,7,Yes,OpenAPI,https://docs.speechmatics.com/jobsapi (Download button),OpenAPI spec downloadable from their API documentation page - rendered via Redocly
+Amazon Transcribe,8,No,N/A,N/A,AWS uses proprietary API definitions. No public OpenAPI spec. Use AWS SDKs or service documentation
+IBM Watson Speech-to-Text,9,Deprecated,OpenAPI 2.0 (Swagger),https://watson-api-explorer.ng.bluemix.net/,Legacy service - OpenAPI 2.0 specs are deprecated and no longer maintained per IBM
+Kaldi,10,N/A,N/A,N/A,Open-source toolkit - not a hosted API service. Requires self-hosting and custom implementation
