@@ -1,17 +1,11 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
-  // Voice Router - Main API documentation (including webhooks)
+  // OpenAI Whisper Provider Documentation
   entryPoints: [
-    "./src/router/voice-router.ts",
-    "./src/router/types.ts",
-    "./src/adapters/base-adapter.ts",
-    "./src/webhooks/index.ts",
-    "./src/webhooks/types.ts",
-    "./src/webhooks/webhook-router.ts",
-    "./src/webhooks/base-webhook.ts"
+    "./src/adapters/openai-whisper-adapter.ts"
   ],
 
-  out: "./docs/generated/router",
+  out: "./docs/generated/openai",
   plugin: ["typedoc-plugin-markdown"],
 
   // Output settings
@@ -21,20 +15,21 @@ export default {
   // Source settings
   disableSources: true,
   excludeExternals: true,
-  excludePrivate: false,  // Include private methods for adapter developers
+  excludePrivate: false,  // Show private methods for advanced users
   excludeProtected: false,
   excludeInternal: true,
 
-  // Exclude test files and generated provider types
+  // Exclude test files and other providers
   exclude: [
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/test/**/*",
     "**/examples/**/*",
-    "**/src/generated/**/*",
     "**/src/adapters/gladia-adapter.ts",
     "**/src/adapters/assemblyai-adapter.ts",
-    "**/src/adapters/deepgram-adapter.ts"
+    "**/src/adapters/deepgram-adapter.ts",
+    "**/src/adapters/azure-stt-adapter.ts",
+    "**/src/generated/**/*"  // Exclude all generated types to avoid build errors
   ],
 
   includeVersion: true,
@@ -42,7 +37,7 @@ export default {
 
   // Organization
   categorizeByGroup: true,
-  defaultCategory: "Core",
+  defaultCategory: "OpenAI Whisper",
 
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
@@ -55,33 +50,23 @@ export default {
     "Enum"
   ],
 
-  // Keep readable - don't expand too deeply
+  // Keep readable
   maxTypeConversionDepth: 5,
 
   hideGenerator: true,
   githubPages: false,
 
-  name: "Voice Router SDK - Core API",
+  name: "Voice Router SDK - OpenAI Whisper Provider",
 
   // Enhanced documentation options
   includeVersion: true,
 
-  // TODO: Add external documents for comprehensive guides
-  // projectDocuments: [
-  //   "docs/guides/getting-started.md",
-  //   "docs/guides/provider-selection.md",
-  //   "docs/guides/error-handling.md",
-  //   "docs/guides/creating-adapters.md"
-  // ],
-
   // Better categorization
   groupOrder: [
-    "Router",
-    "Webhooks",
+    "Adapter",
     "Configuration",
+    "Methods",
     "Types",
-    "Adapters",
-    "Responses",
     "*"
   ],
 
@@ -96,7 +81,7 @@ export default {
   parametersFormat: "table",
   enumMembersFormat: "table",
 
-  // Include type hierarchy for better understanding
+  // Include type hierarchy
   visibilityFilters: {
     protected: true,
     private: true,

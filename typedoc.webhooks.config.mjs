@@ -1,17 +1,18 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
-  // Voice Router - Main API documentation (including webhooks)
+  // Webhook Normalization - Complete documentation
   entryPoints: [
-    "./src/router/voice-router.ts",
-    "./src/router/types.ts",
-    "./src/adapters/base-adapter.ts",
     "./src/webhooks/index.ts",
     "./src/webhooks/types.ts",
     "./src/webhooks/webhook-router.ts",
-    "./src/webhooks/base-webhook.ts"
+    "./src/webhooks/base-webhook.ts",
+    "./src/webhooks/gladia-webhook.ts",
+    "./src/webhooks/assemblyai-webhook.ts",
+    "./src/webhooks/deepgram-webhook.ts",
+    "./src/webhooks/azure-webhook.ts"
   ],
 
-  out: "./docs/generated/router",
+  out: "./docs/generated/webhooks",
   plugin: ["typedoc-plugin-markdown"],
 
   // Output settings
@@ -21,20 +22,16 @@ export default {
   // Source settings
   disableSources: true,
   excludeExternals: true,
-  excludePrivate: false,  // Include private methods for adapter developers
+  excludePrivate: false,  // Include private methods for debugging
   excludeProtected: false,
   excludeInternal: true,
 
-  // Exclude test files and generated provider types
+  // Exclude test files
   exclude: [
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/test/**/*",
-    "**/examples/**/*",
-    "**/src/generated/**/*",
-    "**/src/adapters/gladia-adapter.ts",
-    "**/src/adapters/assemblyai-adapter.ts",
-    "**/src/adapters/deepgram-adapter.ts"
+    "**/examples/**/*"
   ],
 
   includeVersion: true,
@@ -42,7 +39,7 @@ export default {
 
   // Organization
   categorizeByGroup: true,
-  defaultCategory: "Core",
+  defaultCategory: "Webhooks",
 
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
@@ -61,27 +58,17 @@ export default {
   hideGenerator: true,
   githubPages: false,
 
-  name: "Voice Router SDK - Core API",
+  name: "Voice Router SDK - Webhook Normalization",
 
   // Enhanced documentation options
   includeVersion: true,
 
-  // TODO: Add external documents for comprehensive guides
-  // projectDocuments: [
-  //   "docs/guides/getting-started.md",
-  //   "docs/guides/provider-selection.md",
-  //   "docs/guides/error-handling.md",
-  //   "docs/guides/creating-adapters.md"
-  // ],
-
   // Better categorization
   groupOrder: [
     "Router",
-    "Webhooks",
-    "Configuration",
+    "Handlers",
     "Types",
-    "Adapters",
-    "Responses",
+    "Validation",
     "*"
   ],
 
