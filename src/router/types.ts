@@ -6,7 +6,7 @@
 /**
  * Supported transcription providers
  */
-export type TranscriptionProvider = "gladia" | "assemblyai" | "deepgram"
+export type TranscriptionProvider = "gladia" | "assemblyai" | "deepgram" | "azure-stt" | "openai-whisper" | "speechmatics"
 
 /**
  * Provider capabilities - indicates which features each provider supports
@@ -181,10 +181,12 @@ export interface UnifiedTranscriptResponse {
  * Streaming transcription event types
  */
 export type StreamEventType =
+	| "open" // Connection established
 	| "transcript" // Partial or final transcript
+	| "utterance" // Complete utterance detected
 	| "metadata" // Metadata about the stream
 	| "error" // Error event
-	| "end" // Stream ended
+	| "close" // Stream ended/closed
 
 /**
  * Streaming transcription event
@@ -195,6 +197,14 @@ export interface StreamEvent {
 	text?: string
 	/** Whether this is a final transcript (vs interim) */
 	isFinal?: boolean
+	/** Utterance data (for type: "utterance") */
+	utterance?: Utterance
+	/** Words in this event */
+	words?: Word[]
+	/** Speaker ID if diarization is enabled */
+	speaker?: string
+	/** Confidence score for this event */
+	confidence?: number
 	/** Error information (for type: "error") */
 	error?: {
 		code: string
@@ -203,4 +213,70 @@ export interface StreamEvent {
 	}
 	/** Additional event data */
 	data?: unknown
+}
+
+/**
+ * Audio chunk for streaming transcription
+ */
+export interface AudioChunk {
+	/** Audio data as Buffer or Uint8Array */
+	data: Buffer | Uint8Array
+	/** Whether this is the last chunk */
+	isLast?: boolean
+}
+
+/**
+ * Options for streaming transcription
+ */
+export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> {
+	/** Audio encoding format (e.g., 'linear16', 'mulaw') */
+	encoding?: string
+	/** Sample rate in Hz (e.g., 16000, 48000) */
+	sampleRate?: number
+	/** Number of audio channels (1 for mono, 2 for stereo) */
+	channels?: number
+	/** Bit depth (e.g., 16, 24) */
+	bitDepth?: number
+	/** Enable interim results (partial transcripts) */
+	interimResults?: boolean
+	/** Utterance end silence threshold in milliseconds */
+	endpointing?: number
+	/** Maximum duration without endpointing in seconds */
+	maxSilence?: number
+}
+
+/**
+ * Callback functions for streaming events
+ */
+export interface StreamingCallbacks {
+	/** Called when connection is established */
+	onOpen?: () => void
+	/** Called when a transcript (interim or final) is received */
+	onTranscript?: (event: StreamEvent) => void
+	/** Called when a complete utterance is detected */
+	onUtterance?: (utterance: Utterance) => void
+	/** Called when metadata is received */
+	onMetadata?: (metadata: Record<string, unknown>) => void
+	/** Called when an error occurs */
+	onError?: (error: { code: string; message: string; details?: unknown }) => void
+	/** Called when the stream is closed */
+	onClose?: (code?: number, reason?: string) => void
+}
+
+/**
+ * Represents an active streaming transcription session
+ */
+export interface StreamingSession {
+	/** Unique session ID */
+	id: string
+	/** Provider handling this stream */
+	provider: TranscriptionProvider
+	/** Send an audio chunk to the stream */
+	sendAudio: (chunk: AudioChunk) => Promise<void>
+	/** Close the streaming session */
+	close: () => Promise<void>
+	/** Get current session status */
+	getStatus: () => "connecting" | "open" | "closing" | "closed"
+	/** Session creation timestamp */
+	createdAt: Date
 }

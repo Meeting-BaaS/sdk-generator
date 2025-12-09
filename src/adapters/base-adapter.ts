@@ -7,6 +7,9 @@ import type {
 	AudioInput,
 	ProviderCapabilities,
 	StreamEvent,
+	StreamingCallbacks,
+	StreamingOptions,
+	StreamingSession,
 	TranscribeOptions,
 	TranscriptionProvider,
 	UnifiedTranscriptResponse,
@@ -63,12 +66,49 @@ export interface TranscriptionAdapter {
 	getTranscript(transcriptId: string): Promise<UnifiedTranscriptResponse>
 
 	/**
-	 * Stream audio for real-time transcription
+	 * Stream audio for real-time transcription (callback-based)
 	 * Only available if capabilities.streaming is true
+	 *
+	 * This method creates a streaming session that accepts audio chunks
+	 * and returns transcription results via callbacks.
+	 *
+	 * @param options - Streaming configuration options
+	 * @param callbacks - Event callbacks for transcription results
+	 * @returns Promise that resolves with a StreamingSession
+	 *
+	 * @example
+	 * ```typescript
+	 * const session = await adapter.transcribeStream({
+	 *   encoding: 'linear16',
+	 *   sampleRate: 16000,
+	 *   language: 'en'
+	 * }, {
+	 *   onTranscript: (event) => console.log(event.text),
+	 *   onError: (error) => console.error(error)
+	 * });
+	 *
+	 * // Send audio chunks
+	 * await session.sendAudio({ data: audioBuffer });
+	 *
+	 * // Close when done
+	 * await session.close();
+	 * ```
 	 */
 	transcribeStream?(
+		options?: StreamingOptions,
+		callbacks?: StreamingCallbacks,
+	): Promise<StreamingSession>
+
+	/**
+	 * Stream audio for real-time transcription (async iterator)
+	 * Alternative streaming API that returns an async iterable
+	 * Only available if capabilities.streaming is true
+	 *
+	 * @deprecated Prefer transcribeStream() with callbacks for better control
+	 */
+	transcribeStreamIterator?(
 		audioStream: ReadableStream,
-		options?: TranscribeOptions,
+		options?: StreamingOptions,
 	): AsyncIterable<StreamEvent>
 
 	/**

@@ -4,9 +4,14 @@
  */
 
 import axios, { type AxiosInstance } from "axios"
+import WebSocket from "ws"
 import type {
+	AudioChunk,
 	AudioInput,
 	ProviderCapabilities,
+	StreamingCallbacks,
+	StreamingOptions,
+	StreamingSession,
 	TranscribeOptions,
 	UnifiedTranscriptResponse,
 } from "../router/types"
@@ -14,8 +19,10 @@ import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 // Import Gladia generated types
 import type { InitPreRecordedTranscriptionResponse } from "../generated/gladia/schema/initPreRecordedTranscriptionResponse"
+import type { InitStreamingResponse } from "../generated/gladia/schema/initStreamingResponse"
 import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
 import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
+import type { StreamingRequest } from "../generated/gladia/schema/streamingRequest"
 import type { TranscriptionDTO } from "../generated/gladia/schema/transcriptionDTO"
 import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
 import type { WordDTO } from "../generated/gladia/schema/wordDTO"
@@ -135,6 +142,28 @@ export class GladiaAdapter extends BaseAdapter {
 	 *   summarization: true,
 	 *   customVocabulary: ['API', 'TypeScript', 'JavaScript']
 	 * });
+	 * ```
+	 *
+	 * @example With webhook (returns job ID immediately for polling)
+	 * ```typescript
+	 * // Submit transcription with webhook
+	 * const result = await adapter.transcribe({
+	 *   type: 'url',
+	 *   url: 'https://example.com/meeting.mp3'
+	 * }, {
+	 *   webhookUrl: 'https://myapp.com/webhook/transcription',
+	 *   language: 'en'
+	 * });
+	 *
+	 * // Get job ID for polling
+	 * const jobId = result.data?.id;
+	 * console.log('Job ID:', jobId); // Use this to poll for status
+	 *
+	 * // Later: Poll for completion (if webhook fails or you want to check)
+	 * const status = await adapter.getTranscript(jobId);
+	 * if (status.data?.status === 'completed') {
+	 *   console.log('Transcript:', status.data.text);
+	 * }
 	 * ```
 	 */
 	async transcribe(
@@ -461,6 +490,223 @@ export class GladiaAdapter extends BaseAdapter {
 			error: {
 				code: "POLLING_TIMEOUT",
 				message: `Transcription did not complete after ${maxAttempts} attempts`,
+			},
+		}
+	}
+
+	/**
+	 * Stream audio for real-time transcription
+	 *
+	 * Creates a WebSocket connection to Gladia for streaming transcription.
+	 * First initializes a session via REST API, then connects to WebSocket.
+	 *
+	 * @param options - Streaming configuration options
+	 * @param callbacks - Event callbacks for transcription results
+	 * @returns Promise that resolves with a StreamingSession
+	 *
+	 * @example Real-time streaming
+	 * ```typescript
+	 * const session = await adapter.transcribeStream({
+	 *   encoding: 'wav/pcm',
+	 *   sampleRate: 16000,
+	 *   channels: 1,
+	 *   language: 'en',
+	 *   interimResults: true
+	 * }, {
+	 *   onOpen: () => console.log('Connected'),
+	 *   onTranscript: (event) => {
+	 *     if (event.isFinal) {
+	 *       console.log('Final:', event.text);
+	 *     } else {
+	 *       console.log('Interim:', event.text);
+	 *     }
+	 *   },
+	 *   onError: (error) => console.error('Error:', error),
+	 *   onClose: () => console.log('Disconnected')
+	 * });
+	 *
+	 * // Send audio chunks
+	 * const audioChunk = getAudioChunk(); // Your audio source
+	 * await session.sendAudio({ data: audioChunk });
+	 *
+	 * // Close when done
+	 * await session.close();
+	 * ```
+	 */
+	async transcribeStream(
+		options?: StreamingOptions,
+		callbacks?: StreamingCallbacks,
+	): Promise<StreamingSession> {
+		this.validateConfig()
+
+		// Step 1: Initialize streaming session via REST API
+		const streamingRequest: Partial<StreamingRequest> = {
+			encoding: options?.encoding as any,
+			sample_rate: options?.sampleRate as any,
+			channels: options?.channels,
+			endpointing: options?.endpointing,
+		}
+
+		if (options?.language) {
+			streamingRequest.language_config = {
+				languages: [options.language as any],
+			}
+		}
+
+		const initResponse = await this.client!.post<InitStreamingResponse>(
+			"/streaming/init",
+			streamingRequest,
+		)
+
+		const { id, url: wsUrl } = initResponse.data
+
+		// Step 2: Connect to WebSocket
+		const ws = new WebSocket(wsUrl)
+
+		let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
+
+		// Handle WebSocket events
+		ws.on("open", () => {
+			sessionStatus = "open"
+			callbacks?.onOpen?.()
+		})
+
+		ws.on("message", (data: Buffer) => {
+			try {
+				const message = JSON.parse(data.toString())
+
+				// Handle different message types from Gladia
+				if (message.type === "transcript") {
+					// Transcript event
+					callbacks?.onTranscript?.({
+						type: "transcript",
+						text: message.text || "",
+						isFinal: message.is_final === true,
+						confidence: message.confidence,
+						words: message.words?.map((word: any) => ({
+							text: word.word || word.text,
+							start: word.start,
+							end: word.end,
+							confidence: word.confidence,
+						})),
+						data: message,
+					})
+				} else if (message.type === "utterance") {
+					// Utterance completed
+					const utterance = {
+						text: message.text || "",
+						start: message.start || 0,
+						end: message.end || 0,
+						speaker: message.speaker?.toString(),
+						confidence: message.confidence,
+						words: message.words?.map((word: any) => ({
+							text: word.word || word.text,
+							start: word.start,
+							end: word.end,
+							confidence: word.confidence,
+						})),
+					}
+					callbacks?.onUtterance?.(utterance)
+				} else if (message.type === "metadata") {
+					callbacks?.onMetadata?.(message)
+				}
+			} catch (error) {
+				callbacks?.onError?.({
+					code: "PARSE_ERROR",
+					message: "Failed to parse WebSocket message",
+					details: error,
+				})
+			}
+		})
+
+		ws.on("error", (error: Error) => {
+			callbacks?.onError?.({
+				code: "WEBSOCKET_ERROR",
+				message: error.message,
+				details: error,
+			})
+		})
+
+		ws.on("close", (code: number, reason: Buffer) => {
+			sessionStatus = "closed"
+			callbacks?.onClose?.(code, reason.toString())
+		})
+
+		// Wait for connection to open
+		await new Promise<void>((resolve, reject) => {
+			const timeout = setTimeout(() => {
+				reject(new Error("WebSocket connection timeout"))
+			}, 10000)
+
+			ws.once("open", () => {
+				clearTimeout(timeout)
+				resolve()
+			})
+
+			ws.once("error", (error) => {
+				clearTimeout(timeout)
+				reject(error)
+			})
+		})
+
+		// Return StreamingSession interface
+		return {
+			id,
+			provider: this.name,
+			createdAt: new Date(),
+			getStatus: () => sessionStatus,
+			sendAudio: async (chunk: AudioChunk) => {
+				if (sessionStatus !== "open") {
+					throw new Error(`Cannot send audio: session is ${sessionStatus}`)
+				}
+
+				if (ws.readyState !== WebSocket.OPEN) {
+					throw new Error("WebSocket is not open")
+				}
+
+				// Send raw audio data
+				ws.send(chunk.data)
+
+				// Send stop recording message if this is the last chunk
+				if (chunk.isLast) {
+					ws.send(
+						JSON.stringify({
+							type: "stop_recording",
+						}),
+					)
+				}
+			},
+			close: async () => {
+				if (sessionStatus === "closed" || sessionStatus === "closing") {
+					return
+				}
+
+				sessionStatus = "closing"
+
+				// Send stop recording message before closing
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(
+						JSON.stringify({
+							type: "stop_recording",
+						}),
+					)
+				}
+
+				// Close WebSocket
+				return new Promise<void>((resolve) => {
+					const timeout = setTimeout(() => {
+						ws.terminate()
+						resolve()
+					}, 5000)
+
+					ws.close()
+
+					ws.once("close", () => {
+						clearTimeout(timeout)
+						sessionStatus = "closed"
+						resolve()
+					})
+				})
 			},
 		}
 	}

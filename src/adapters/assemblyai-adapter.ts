@@ -4,9 +4,14 @@
  */
 
 import axios, { type AxiosInstance } from "axios"
+import WebSocket from "ws"
 import type {
+	AudioChunk,
 	AudioInput,
 	ProviderCapabilities,
+	StreamingCallbacks,
+	StreamingOptions,
+	StreamingSession,
 	TranscribeOptions,
 	UnifiedTranscriptResponse,
 } from "../router/types"
@@ -86,6 +91,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
 	private client?: AxiosInstance
 	private baseUrl = "https://api.assemblyai.com/v2"
+	private wsBaseUrl = "wss://api.assemblyai.com/v2/realtime/ws"
 
 	initialize(config: ProviderConfig): void {
 		super.initialize(config)
@@ -144,6 +150,28 @@ export class AssemblyAIAdapter extends BaseAdapter {
 	 *   entityDetection: true,
 	 *   customVocabulary: ['API', 'TypeScript', 'JavaScript']
 	 * });
+	 * ```
+	 *
+	 * @example With webhook (returns transcript ID immediately for polling)
+	 * ```typescript
+	 * // Submit transcription with webhook
+	 * const result = await adapter.transcribe({
+	 *   type: 'url',
+	 *   url: 'https://example.com/meeting.mp3'
+	 * }, {
+	 *   webhookUrl: 'https://myapp.com/webhook/transcription',
+	 *   language: 'en_us'
+	 * });
+	 *
+	 * // Get transcript ID for polling
+	 * const transcriptId = result.data?.id;
+	 * console.log('Transcript ID:', transcriptId); // Use this to poll for status
+	 *
+	 * // Later: Poll for completion (if webhook fails or you want to check)
+	 * const status = await adapter.getTranscript(transcriptId);
+	 * if (status.data?.status === 'completed') {
+	 *   console.log('Transcript:', status.data.text);
+	 * }
 	 * ```
 	 */
 	async transcribe(
@@ -463,6 +491,225 @@ export class AssemblyAIAdapter extends BaseAdapter {
 			error: {
 				code: "POLLING_TIMEOUT",
 				message: `Transcription did not complete after ${maxAttempts} attempts`,
+			},
+		}
+	}
+
+	/**
+	 * Stream audio for real-time transcription
+	 *
+	 * Creates a WebSocket connection to AssemblyAI for streaming transcription.
+	 * First obtains a temporary token, then connects and streams audio chunks.
+	 *
+	 * @param options - Streaming configuration options
+	 * @param callbacks - Event callbacks for transcription results
+	 * @returns Promise that resolves with a StreamingSession
+	 *
+	 * @example Real-time streaming
+	 * ```typescript
+	 * const session = await adapter.transcribeStream({
+	 *   encoding: 'pcm_s16le',
+	 *   sampleRate: 16000,
+	 *   language: 'en',
+	 *   interimResults: true
+	 * }, {
+	 *   onOpen: () => console.log('Connected'),
+	 *   onTranscript: (event) => {
+	 *     if (event.isFinal) {
+	 *       console.log('Final:', event.text);
+	 *     } else {
+	 *       console.log('Interim:', event.text);
+	 *     }
+	 *   },
+	 *   onError: (error) => console.error('Error:', error),
+	 *   onClose: () => console.log('Disconnected')
+	 * });
+	 *
+	 * // Send audio chunks
+	 * const audioChunk = getAudioChunk(); // Your audio source
+	 * await session.sendAudio({ data: audioChunk });
+	 *
+	 * // Close when done
+	 * await session.close();
+	 * ```
+	 */
+	async transcribeStream(
+		options?: StreamingOptions,
+		callbacks?: StreamingCallbacks,
+	): Promise<StreamingSession> {
+		this.validateConfig()
+
+		// Step 1: Get temporary token for real-time API
+		const tokenResponse = await this.client!.post("/realtime/token", {
+			expires_in: 3600, // Token expires in 1 hour
+		})
+
+		const token = tokenResponse.data.token
+
+		// Step 2: Build WebSocket URL with token
+		const wsUrl = `${this.wsBaseUrl}?sample_rate=${options?.sampleRate || 16000}&token=${token}`
+
+		// Step 3: Create WebSocket connection
+		const ws = new WebSocket(wsUrl)
+
+		let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
+		const sessionId = `assemblyai-${Date.now()}-${Math.random().toString(36).substring(7)}`
+
+		// Handle WebSocket events
+		ws.on("open", () => {
+			sessionStatus = "open"
+			callbacks?.onOpen?.()
+		})
+
+		ws.on("message", (data: Buffer) => {
+			try {
+				const message = JSON.parse(data.toString())
+
+				// Handle different message types from AssemblyAI
+				if (message.message_type === "SessionBegins") {
+					// Session started
+					callbacks?.onMetadata?.({
+						sessionId: message.session_id,
+						expiresAt: message.expires_at,
+					})
+				} else if (message.message_type === "PartialTranscript") {
+					// Interim result
+					callbacks?.onTranscript?.({
+						type: "transcript",
+						text: message.text || "",
+						isFinal: false,
+						confidence: message.confidence,
+						words: message.words?.map((word: any) => ({
+							text: word.text,
+							start: word.start / 1000,
+							end: word.end / 1000,
+							confidence: word.confidence,
+						})),
+						data: message,
+					})
+				} else if (message.message_type === "FinalTranscript") {
+					// Final result
+					callbacks?.onTranscript?.({
+						type: "transcript",
+						text: message.text || "",
+						isFinal: true,
+						confidence: message.confidence,
+						words: message.words?.map((word: any) => ({
+							text: word.text,
+							start: word.start / 1000,
+							end: word.end / 1000,
+							confidence: word.confidence,
+						})),
+						data: message,
+					})
+				} else if (message.message_type === "SessionTerminated") {
+					// Session ended by server
+					callbacks?.onMetadata?.({ terminated: true })
+				}
+			} catch (error) {
+				callbacks?.onError?.({
+					code: "PARSE_ERROR",
+					message: "Failed to parse WebSocket message",
+					details: error,
+				})
+			}
+		})
+
+		ws.on("error", (error: Error) => {
+			callbacks?.onError?.({
+				code: "WEBSOCKET_ERROR",
+				message: error.message,
+				details: error,
+			})
+		})
+
+		ws.on("close", (code: number, reason: Buffer) => {
+			sessionStatus = "closed"
+			callbacks?.onClose?.(code, reason.toString())
+		})
+
+		// Wait for connection to open
+		await new Promise<void>((resolve, reject) => {
+			const timeout = setTimeout(() => {
+				reject(new Error("WebSocket connection timeout"))
+			}, 10000)
+
+			ws.once("open", () => {
+				clearTimeout(timeout)
+				resolve()
+			})
+
+			ws.once("error", (error) => {
+				clearTimeout(timeout)
+				reject(error)
+			})
+		})
+
+		// Return StreamingSession interface
+		return {
+			id: sessionId,
+			provider: this.name,
+			createdAt: new Date(),
+			getStatus: () => sessionStatus,
+			sendAudio: async (chunk: AudioChunk) => {
+				if (sessionStatus !== "open") {
+					throw new Error(`Cannot send audio: session is ${sessionStatus}`)
+				}
+
+				if (ws.readyState !== WebSocket.OPEN) {
+					throw new Error("WebSocket is not open")
+				}
+
+				// AssemblyAI expects base64-encoded audio data
+				const base64Audio = chunk.data.toString("base64")
+
+				// Send audio data as JSON message
+				ws.send(
+					JSON.stringify({
+						audio_data: base64Audio,
+					}),
+				)
+
+				// Send termination message if this is the last chunk
+				if (chunk.isLast) {
+					ws.send(
+						JSON.stringify({
+							terminate_session: true,
+						}),
+					)
+				}
+			},
+			close: async () => {
+				if (sessionStatus === "closed" || sessionStatus === "closing") {
+					return
+				}
+
+				sessionStatus = "closing"
+
+				// Send termination message before closing
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(
+						JSON.stringify({
+							terminate_session: true,
+						}),
+					)
+				}
+
+				// Close WebSocket
+				return new Promise<void>((resolve) => {
+					const timeout = setTimeout(() => {
+						ws.terminate()
+						resolve()
+					}, 5000)
+
+					ws.close()
+
+					ws.once("close", () => {
+						clearTimeout(timeout)
+						sessionStatus = "closed"
+						resolve()
+					})
+				})
 			},
 		}
 	}
