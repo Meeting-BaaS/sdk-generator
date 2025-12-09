@@ -8,13 +8,10 @@
  */
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SpeakV1ContainerParameter = {  none: 'none',
-  null: null,
+export const SpeakV1ContainerParameter = {
+  none: 'none',
   wav: 'wav',
-  null: null,
-  wav: 'wav',
-  null: null,
-  wav: 'wav',
-  null: null,
   ogg: 'ogg',
-} as const] ;
+} as const;
+
+export type SpeakV1ContainerParameter = typeof SpeakV1ContainerParameter[keyof typeof SpeakV1ContainerParameter];
