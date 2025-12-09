@@ -19,6 +19,9 @@ Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) AP
 - **BaaS API Client**: Strongly typed functions for interacting with the Meeting BaaS API
 - **Bot Management**: Create, join, and manage meeting bots across platforms
 - **Calendar Integration**: Connect calendars and automatically schedule meeting recordings
+- **Transcription Services**: Unified interface for multiple transcription providers (Gladia, AssemblyAI, Deepgram, Azure STT)
+- **Webhook Normalization**: Automatically parse and normalize webhooks from all transcription providers
+- **Streaming Transcription**: Real-time WebSocket streaming for live transcription
 - **Complete API Coverage**: Access to all Meeting BaaS API endpoints
 - **TypeScript Support**: Full TypeScript definitions for all APIs
 - **Enhanced Error Handling**: Discriminated union responses for type-safe error handling
@@ -28,10 +31,12 @@ Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) AP
 
 ## System Requirements
 
-- **Node.js**: Version 18.0.0 or higher.
+- **Node.js**: Version 20.0.0 or higher (required for development and type generation).
 - **Package Managers**: npm, yarn, or pnpm
 
-**Tested Node.js Versions**: 18, 19, 20, 21, 22
+**Tested Node.js Versions**: 20, 21, 22
+
+> **Note**: Development requires Node 20+ due to dependencies on modern JavaScript features (`toSorted()`) used by the OpenAPI type generator (Orval). Runtime usage may work with Node 18+, but type generation and builds require Node 20+.
 
 ## Installation
 
@@ -229,6 +234,56 @@ if (calendarResult.success) {
   }
 }
 ```
+
+### Webhook Normalization
+
+The SDK includes webhook normalization for transcription providers, automatically parsing and unifying webhook callbacks from Gladia, AssemblyAI, Deepgram, and Azure STT:
+
+```typescript
+import { WebhookRouter } from "@meeting-baas/sdk";
+import express from "express";
+
+const app = express();
+const router = new WebhookRouter();
+
+// Single endpoint handles all transcription providers
+app.post('/webhooks/transcription', express.json(), (req, res) => {
+  // Auto-detect provider and parse webhook
+  const result = router.route(req.body, {
+    verification: {
+      signature: req.headers['x-signature'] as string,
+      secret: process.env.WEBHOOK_SECRET!
+    }
+  });
+
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+
+  // Unified event format across all providers
+  console.log('Provider:', result.provider);
+  console.log('Event type:', result.event?.eventType);
+  console.log('Transcript ID:', result.event?.data?.id);
+
+  if (result.event?.eventType === 'transcription.completed') {
+    console.log('Transcription completed!');
+    // Fetch full transcript using provider's adapter
+  }
+
+  res.status(200).json({ received: true });
+});
+
+app.listen(3000);
+```
+
+Supported webhook events:
+- `transcription.created` - Transcription job created
+- `transcription.processing` - Transcription is processing
+- `transcription.completed` - Transcription completed successfully
+- `transcription.failed` - Transcription failed with error
+- `live.session_started` - Live streaming session started
+- `live.session_ended` - Live streaming session ended
+- `live.transcript` - Live transcript update
 
 ### Advanced Usage with Error Handling
 

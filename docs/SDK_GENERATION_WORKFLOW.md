@@ -605,7 +605,7 @@ private normalizeResponse(
 
 ```typescript
 /**
- * Unified transcription response
+ * Unified transcription response (Batch/Async)
  * All providers normalize to this format
  */
 export interface UnifiedTranscriptResponse {
@@ -644,7 +644,650 @@ export interface UnifiedTranscriptResponse {
   }
   raw?: unknown  // Original provider response
 }
+
+/**
+ * Streaming Types (Real-time)
+ * For WebSocket-based real-time transcription
+ */
+export interface StreamingSession {
+  id: string
+  provider: TranscriptionProvider
+  sendAudio: (chunk: AudioChunk) => Promise<void>
+  close: () => Promise<void>
+  getStatus: () => "connecting" | "open" | "closing" | "closed"
+  createdAt: Date
+}
+
+export interface StreamingOptions {
+  encoding?: string        // 'linear16', 'mulaw', etc.
+  sampleRate?: number      // 16000, 48000, etc.
+  channels?: number        // 1 (mono), 2 (stereo)
+  bitDepth?: number        // 16, 24, etc.
+  language?: string
+  diarization?: boolean
+  interimResults?: boolean // Get partial transcripts
+  // ... other transcription options
+}
+
+export interface StreamingCallbacks {
+  onOpen?: () => void
+  onTranscript?: (event: StreamEvent) => void
+  onUtterance?: (utterance: Utterance) => void
+  onMetadata?: (metadata: Record<string, unknown>) => void
+  onError?: (error: { code: string; message: string }) => void
+  onClose?: (code?: number, reason?: string) => void
+}
 ```
+
+---
+
+## Phase 3.5: Streaming Architecture (Real-time Transcription)
+
+### Overview
+
+In addition to batch transcription, the SDK supports **real-time streaming transcription** via WebSocket connections. This enables low-latency, live audio processing with interim results.
+
+### Streaming vs Batch
+
+| Feature | Batch Transcription | Streaming Transcription |
+|---------|-------------------|------------------------|
+| **Latency** | Minutes (async processing) | Milliseconds (real-time) |
+| **Protocol** | REST API + Polling | WebSocket |
+| **Results** | Single final transcript | Interim + final transcripts |
+| **Use Case** | Pre-recorded audio files | Live audio (microphone, calls) |
+| **Complexity** | Simple (one request) | Complex (connection management) |
+
+### Streaming Flow Diagram
+
+```
+User Audio Stream → SDK StreamingSession → WebSocket → Provider API
+                                          ←            ← Interim Results
+                                          ←            ← Final Results
+```
+
+### Implementation Architecture
+
+**1. Initialize Session**
+```typescript
+const session = await adapter.transcribeStream({
+  encoding: 'linear16',
+  sampleRate: 16000,
+  channels: 1,
+  language: 'en'
+}, {
+  onTranscript: (event) => console.log(event.text),
+  onError: (error) => console.error(error)
+});
+```
+
+**2. Send Audio Chunks**
+```typescript
+// Stream audio in chunks
+while (hasMoreAudio) {
+  const audioChunk = getNextAudioChunk() // Your audio source
+  await session.sendAudio({ data: audioChunk })
+}
+
+// Signal last chunk
+await session.sendAudio({
+  data: lastChunk,
+  isLast: true
+})
+```
+
+**3. Handle Results**
+```typescript
+// Callbacks are invoked automatically
+onTranscript: (event) => {
+  if (event.isFinal) {
+    console.log('Final:', event.text)
+    // Save to database, display to user, etc.
+  } else {
+    console.log('Interim:', event.text)
+    // Update UI with partial results
+  }
+}
+```
+
+**4. Clean Up**
+```typescript
+await session.close()
+```
+
+### Provider-Specific Streaming
+
+Each provider implements streaming differently:
+
+#### Deepgram Streaming
+- **Protocol**: Direct WebSocket with query params
+- **Auth**: `Token ${apiKey}` header
+- **Message Format**: JSON with `type: "Results"`
+- **Features**: Interim results, utterance detection, speaker diarization
+```typescript
+// URL: wss://api.deepgram.com/v1/listen?encoding=linear16&sample_rate=16000
+// Send: Raw audio bytes
+// Receive: { type: "Results", channel: { alternatives: [...] } }
+```
+
+#### AssemblyAI Streaming
+- **Protocol**: Token-based WebSocket
+- **Auth**: Temporary token from `/realtime/token` endpoint
+- **Message Format**: JSON with `message_type`
+- **Features**: Partial + final transcripts, word timings
+```typescript
+// Step 1: POST /realtime/token → { token }
+// Step 2: wss://api.assemblyai.com/v2/realtime/ws?token=${token}
+// Send: { audio_data: base64String }
+// Receive: { message_type: "PartialTranscript", text: "..." }
+```
+
+#### Gladia Streaming
+- **Protocol**: REST init → WebSocket URL
+- **Auth**: API key in init request
+- **Message Format**: JSON with event types
+- **Features**: Utterances, post-processing, translations
+```typescript
+// Step 1: POST /streaming/init → { id, url }
+// Step 2: Connect to WebSocket URL
+// Send: Raw audio bytes
+// Receive: { type: "transcript", text: "...", is_final: true }
+```
+
+#### Azure STT Streaming
+- **Status**: ❌ Not supported (batch only in SDK v3.1)
+- **Note**: Azure has WebSocket streaming but requires different API version
+
+### Streaming Types Deep Dive
+
+**StreamingSession** - Active connection handle
+```typescript
+interface StreamingSession {
+  id: string                    // Unique session ID
+  provider: TranscriptionProvider
+  sendAudio: (chunk: AudioChunk) => Promise<void>
+  close: () => Promise<void>
+  getStatus: () => "connecting" | "open" | "closing" | "closed"
+  createdAt: Date
+}
+```
+
+**AudioChunk** - Audio data packet
+```typescript
+interface AudioChunk {
+  data: Buffer | Uint8Array    // Audio bytes
+  isLast?: boolean             // Signal end of stream
+}
+```
+
+**StreamingCallbacks** - Event handlers
+```typescript
+interface StreamingCallbacks {
+  onOpen?: () => void                        // Connection established
+  onTranscript?: (event: StreamEvent) => void // Transcript received
+  onUtterance?: (utterance: Utterance) => void // Complete utterance
+  onMetadata?: (meta: Record) => void         // Session metadata
+  onError?: (error: Error) => void            // Error occurred
+  onClose?: (code?, reason?) => void          // Connection closed
+}
+```
+
+**StreamEvent** - Transcript event
+```typescript
+interface StreamEvent {
+  type: "open" | "transcript" | "utterance" | "metadata" | "error" | "close"
+  text?: string              // Transcript text
+  isFinal?: boolean          // Is this the final version?
+  words?: Word[]             // Word-level timings
+  confidence?: number        // Confidence score
+  speaker?: string           // Speaker ID (if diarization)
+}
+```
+
+### Error Handling in Streaming
+
+Streaming requires robust error handling:
+
+```typescript
+const session = await adapter.transcribeStream(options, {
+  onError: (error) => {
+    if (error.code === 'WEBSOCKET_ERROR') {
+      // Connection lost - implement reconnection logic
+      reconnect()
+    } else if (error.code === 'PARSE_ERROR') {
+      // Malformed message - log and continue
+      console.error('Parse error:', error)
+    } else {
+      // Fatal error - stop streaming
+      session.close()
+    }
+  },
+  onClose: (code, reason) => {
+    console.log(`Connection closed: ${code} - ${reason}`)
+    // Clean up resources
+  }
+})
+```
+
+### Performance Considerations
+
+**Buffering Strategy**
+```typescript
+// Collect audio chunks before sending
+const buffer: Buffer[] = []
+const CHUNK_SIZE = 8000 // bytes
+
+while (recording) {
+  const sample = await microphone.read()
+  buffer.push(sample)
+
+  if (buffer.length >= CHUNK_SIZE) {
+    const chunk = Buffer.concat(buffer)
+    await session.sendAudio({ data: chunk })
+    buffer.length = 0 // Clear buffer
+  }
+}
+```
+
+**Latency Optimization**
+- Send smaller chunks (e.g., 100ms of audio) for lower latency
+- Send larger chunks (e.g., 500ms) for better network efficiency
+- Enable `interimResults` for real-time feedback
+- Trade-off: Latency vs accuracy vs bandwidth
+
+### Testing Streaming
+
+Testing streaming requires different approaches:
+
+```typescript
+// Mock audio stream for testing
+async function testStreaming() {
+  const adapter = new DeepgramAdapter()
+  adapter.initialize({ apiKey: 'test-key' })
+
+  const transcripts: string[] = []
+
+  const session = await adapter.transcribeStream({
+    encoding: 'linear16',
+    sampleRate: 16000
+  }, {
+    onTranscript: (event) => {
+      if (event.isFinal) {
+        transcripts.push(event.text)
+      }
+    }
+  })
+
+  // Simulate sending audio chunks
+  for (let i = 0; i < 10; i++) {
+    const mockAudio = generateTestAudio() // Mock function
+    await session.sendAudio({
+      data: mockAudio,
+      isLast: i === 9
+    })
+  }
+
+  await session.close()
+
+  expect(transcripts.length).toBeGreaterThan(0)
+}
+```
+
+### Streaming Checklist
+
+When implementing streaming for a new provider:
+
+- [ ] Research provider's WebSocket API documentation
+- [ ] Determine authentication method (header, token, query param)
+- [ ] Map provider message formats to `StreamEvent`
+- [ ] Implement connection lifecycle (open, send, close)
+- [ ] Handle interim vs final results
+- [ ] Extract word-level timings if available
+- [ ] Support speaker diarization if available
+- [ ] Add comprehensive error handling
+- [ ] Write JSDoc with streaming examples
+- [ ] Test with real audio streams
+- [ ] Document audio format requirements
+
+---
+
+## Phase 3.6: Webhook Normalization (Callback Handling)
+
+### Overview
+
+While streaming (Phase 3.5) handles **real-time transcription**, and batch adapters handle **asynchronous job submission**, webhooks provide the **callback mechanism** when transcriptions complete. Each provider sends webhook notifications in different formats, requiring normalization.
+
+### The Problem
+
+**Provider-specific webhook formats**:
+
+| Provider | Webhook Format | Signature Verification |
+|----------|---------------|------------------------|
+| Gladia | `{event: "transcription.success", payload: {id}}` | ❌ None |
+| AssemblyAI | `{transcript_id, status: "completed"}` | ✅ HMAC-SHA256 |
+| Deepgram | Full `ListenV1Response` object | ❌ None |
+| Azure STT | `{action: "TranscriptionSucceeded", timestamp, self}` | ✅ HMAC-SHA256 (optional) |
+
+### The Solution: Webhook Router
+
+A unified `WebhookRouter` with automatic provider detection and normalized event format.
+
+### Implementation Architecture
+
+```
+Incoming Webhook → WebhookRouter.route() → Auto-detect Provider → Provider Handler → UnifiedWebhookEvent
+                                                                      ↓
+                                                          Signature Verification (if supported)
+```
+
+### Core Components
+
+#### 1. Unified Webhook Types
+
+**File**: `src/webhooks/types.ts`
+
+```typescript
+// Unified event types across all providers
+export type WebhookEventType =
+  | "transcription.created"       // Job created/queued
+  | "transcription.processing"    // Job started processing
+  | "transcription.completed"     // Job completed successfully
+  | "transcription.failed"        // Job failed with error
+  | "live.session_started"        // Live streaming session started
+  | "live.session_ended"          // Live streaming session ended
+  | "live.transcript"             // Live transcript update
+
+// Normalized webhook event structure
+export interface UnifiedWebhookEvent {
+  success: boolean
+  provider: TranscriptionProvider
+  eventType: WebhookEventType
+  data?: {
+    id: string
+    status: TranscriptionStatus
+    text?: string
+    confidence?: number
+    duration?: number
+    language?: string
+    speakers?: Speaker[]
+    words?: Word[]
+    utterances?: Utterance[]
+    summary?: string
+    error?: string
+    metadata?: Record<string, unknown>
+  }
+  timestamp: string
+  raw: unknown  // Original payload for debugging
+}
+```
+
+#### 2. Base Webhook Handler
+
+**File**: `src/webhooks/base-webhook.ts`
+
+Abstract base class that all provider handlers extend:
+
+```typescript
+export abstract class BaseWebhookHandler {
+  abstract readonly provider: TranscriptionProvider
+
+  // Detect if payload matches this provider's format
+  abstract matches(payload: unknown): boolean
+
+  // Parse provider payload to UnifiedWebhookEvent
+  abstract parse(payload: unknown): UnifiedWebhookEvent
+
+  // Optional signature verification
+  verify?(payload: unknown, options: WebhookVerificationOptions): boolean
+
+  // Validate payload structure
+  validate(payload: unknown): WebhookValidation {
+    // Default implementation using matches() and parse()
+  }
+}
+```
+
+#### 3. Provider-Specific Handlers
+
+Each provider has a dedicated handler:
+
+**Gladia Handler** (`src/webhooks/gladia-webhook.ts`):
+```typescript
+export class GladiaWebhookHandler extends BaseWebhookHandler {
+  readonly provider = "gladia"
+
+  matches(payload: unknown): boolean {
+    // Check for {event, payload} structure
+    return payload.event?.startsWith("transcription.")
+  }
+
+  parse(payload: unknown): UnifiedWebhookEvent {
+    // Map event: "transcription.success" → eventType: "transcription.completed"
+    // Return normalized event
+  }
+}
+```
+
+**AssemblyAI Handler** (`src/webhooks/assemblyai-webhook.ts`):
+```typescript
+export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
+  readonly provider = "assemblyai"
+
+  verify(payload: unknown, options: WebhookVerificationOptions): boolean {
+    // HMAC-SHA256 signature verification
+    const computed = crypto.createHmac('sha256', secret).update(body).digest('hex')
+    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(computed))
+  }
+}
+```
+
+**Deepgram Handler** (`src/webhooks/deepgram-webhook.ts`):
+```typescript
+export class DeepgramWebhookHandler extends BaseWebhookHandler {
+  parse(payload: unknown): UnifiedWebhookEvent {
+    // Deepgram sends full ListenV1Response
+    // Extract transcript, words, speakers, utterances, etc.
+    // Return comprehensive normalized event
+  }
+}
+```
+
+**Azure Handler** (`src/webhooks/azure-webhook.ts`):
+```typescript
+export class AzureWebhookHandler extends BaseWebhookHandler {
+  parse(payload: unknown): UnifiedWebhookEvent {
+    // Map action: "TranscriptionSucceeded" → eventType: "transcription.completed"
+    // Extract transcription ID from self link
+  }
+}
+```
+
+#### 4. Webhook Router
+
+**File**: `src/webhooks/webhook-router.ts`
+
+Central routing with auto-detection:
+
+```typescript
+export class WebhookRouter {
+  private handlers: Map<TranscriptionProvider, BaseWebhookHandler>
+
+  route(payload: unknown, options?: WebhookRouterOptions): WebhookRouterResult {
+    // 1. Detect provider (if not specified)
+    const provider = options?.provider || this.detectProvider(payload)
+
+    // 2. Get provider handler
+    const handler = this.handlers.get(provider)
+
+    // 3. Verify signature (if requested and supported)
+    if (options?.verification && handler.verify) {
+      const verified = handler.verify(payload, options.verification)
+      if (!verified) return { success: false, verified: false }
+    }
+
+    // 4. Validate payload
+    const validation = handler.validate(payload)
+    if (!validation.valid) return { success: false, error: validation.error }
+
+    // 5. Parse to UnifiedWebhookEvent
+    const event = handler.parse(payload)
+
+    return { success: true, provider, event, verified: true }
+  }
+
+  detectProvider(payload: unknown): TranscriptionProvider | undefined {
+    // Try each handler's matches() method
+    for (const [provider, handler] of this.handlers) {
+      if (handler.matches(payload)) return provider
+    }
+  }
+}
+```
+
+### Usage Examples
+
+#### Express.js Webhook Endpoint
+
+```typescript
+import express from 'express';
+import { WebhookRouter } from '@meeting-baas/sdk';
+
+const app = express();
+const router = new WebhookRouter();
+
+// Single endpoint handles all transcription providers
+app.post('/webhooks/transcription', express.json(), (req, res) => {
+  const result = router.route(req.body, {
+    verification: {
+      signature: req.headers['x-signature'] as string,
+      secret: process.env.WEBHOOK_SECRET!
+    }
+  });
+
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+
+  // Unified event format across all providers
+  console.log('Provider:', result.provider);
+  console.log('Event:', result.event?.eventType);
+
+  if (result.event?.eventType === 'transcription.completed') {
+    // Fetch full transcript
+    console.log('Transcript ID:', result.event.data?.id);
+  }
+
+  res.status(200).json({ received: true });
+});
+```
+
+#### Provider-Specific Handler
+
+```typescript
+import { GladiaWebhookHandler } from '@meeting-baas/sdk';
+
+const handler = new GladiaWebhookHandler();
+
+// Validate
+const validation = handler.validate(req.body);
+if (!validation.valid) {
+  return res.status(400).json({ error: validation.error });
+}
+
+// Parse
+const event = handler.parse(req.body);
+console.log('Job ID:', event.data?.id);
+```
+
+### Security: Signature Verification
+
+#### AssemblyAI Signature Verification
+
+```typescript
+const result = router.route(req.body, {
+  verification: {
+    signature: req.headers['x-assemblyai-signature'],
+    secret: process.env.ASSEMBLYAI_WEBHOOK_SECRET,
+    rawBody: req.rawBody  // Must be raw body for HMAC
+  }
+});
+
+if (!result.verified) {
+  return res.status(401).json({ error: 'Invalid signature' });
+}
+```
+
+#### Azure Signature Verification
+
+```typescript
+const result = router.route(req.body, {
+  provider: 'azure-stt',  // Skip auto-detection
+  verification: {
+    signature: req.headers['x-azure-signature'],
+    secret: process.env.AZURE_WEBHOOK_SECRET
+  }
+});
+```
+
+### Documentation Generation
+
+Webhook documentation is automatically generated via TypeDoc:
+
+**Command**: `pnpm docs:generate:webhooks`
+
+**Config**: `typedoc.webhooks.config.mjs`
+
+```javascript
+export default {
+  entryPoints: [
+    "./src/webhooks/index.ts",
+    "./src/webhooks/types.ts",
+    "./src/webhooks/webhook-router.ts",
+    "./src/webhooks/base-webhook.ts",
+    "./src/webhooks/gladia-webhook.ts",
+    "./src/webhooks/assemblyai-webhook.ts",
+    "./src/webhooks/deepgram-webhook.ts",
+    "./src/webhooks/azure-webhook.ts"
+  ],
+  out: "./docs/generated/webhooks",
+  // ...
+}
+```
+
+**Generated documentation includes**:
+- Complete API reference for all webhook classes
+- Type definitions with descriptions
+- Usage examples extracted from JSDoc
+- Provider-specific webhook formats
+
+### Testing Webhooks
+
+You can test webhook handlers with sample payloads:
+
+```typescript
+import { WebhookRouter } from '@meeting-baas/sdk';
+
+const router = new WebhookRouter();
+
+// Test Gladia webhook
+const gladiaPayload = {
+  event: "transcription.success",
+  payload: { id: "abc-123" }
+};
+
+const result = router.route(gladiaPayload);
+console.assert(result.provider === 'gladia');
+console.assert(result.event?.eventType === 'transcription.completed');
+```
+
+### Key Benefits
+
+✅ **Single webhook endpoint** for all providers
+✅ **Automatic provider detection** from payload structure
+✅ **Unified event format** - same interface regardless of provider
+✅ **Type-safe** - Full TypeScript support with generated types
+✅ **Signature verification** - Security for supported providers
+✅ **Comprehensive validation** - Catch malformed payloads early
+✅ **Original payload preserved** - Access raw data when needed
 
 ---
 

@@ -10,6 +10,9 @@ import type {
 import type {
 	AudioInput,
 	StreamEvent,
+	StreamingCallbacks,
+	StreamingOptions,
+	StreamingSession,
 	TranscribeOptions,
 	TranscriptionProvider,
 	UnifiedTranscriptResponse,
@@ -269,11 +272,40 @@ export class VoiceRouter {
 	/**
 	 * Stream audio for real-time transcription
 	 * Only works with providers that support streaming
+	 *
+	 * @param options - Streaming options including provider selection
+	 * @param callbacks - Event callbacks for transcription results
+	 * @returns Promise that resolves with a StreamingSession
+	 *
+	 * @example
+	 * ```typescript
+	 * import { VoiceRouter } from '@meeting-baas/sdk';
+	 *
+	 * const router = new VoiceRouter();
+	 * router.initialize({
+	 *   gladia: { apiKey: process.env.GLADIA_KEY },
+	 *   deepgram: { apiKey: process.env.DEEPGRAM_KEY }
+	 * });
+	 *
+	 * const session = await router.transcribeStream({
+	 *   provider: 'deepgram',
+	 *   encoding: 'linear16',
+	 *   sampleRate: 16000,
+	 *   language: 'en'
+	 * }, {
+	 *   onTranscript: (event) => console.log(event.text),
+	 *   onError: (error) => console.error(error)
+	 * });
+	 *
+	 * // Send audio chunks
+	 * await session.sendAudio({ data: audioBuffer });
+	 * await session.close();
+	 * ```
 	 */
-	async *transcribeStream(
-		audioStream: ReadableStream,
-		options?: TranscribeOptions & { provider?: TranscriptionProvider },
-	): AsyncIterable<StreamEvent> {
+	async transcribeStream(
+		options?: StreamingOptions & { provider?: TranscriptionProvider },
+		callbacks?: StreamingCallbacks,
+	): Promise<StreamingSession> {
 		const provider = this.selectProvider(options?.provider)
 		const adapter = this.getAdapter(provider)
 
@@ -287,7 +319,7 @@ export class VoiceRouter {
 		// Remove provider from options before passing to adapter
 		const { provider: _, ...adapterOptions } = options || {}
 
-		yield* adapter.transcribeStream(audioStream, adapterOptions)
+		return adapter.transcribeStream(adapterOptions, callbacks)
 	}
 
 	/**
