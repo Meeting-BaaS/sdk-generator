@@ -1,18 +1,29 @@
-# Meeting BaaS SDK
+# Voice Router SDK
 
-<p align="center"><a href="https://discord.com/invite/dsvFgDTr6c"><img height="60px" src="https://user-images.githubusercontent.com/31022056/158916278-4504b838-7ecb-4ab9-a900-7dc002aade78.png" alt="Join our Discord!"></a></p>
+Universal speech-to-text router for 6+ transcription providers with a single, unified API.
 
-<p align="center">
-  <img src="https://www.meetingbaas.com/images/logos/logo.svg" alt="Meeting BaaS" width="200">
-</p>
+[![npm version](https://badge.fury.io/js/voice-router.svg)](https://www.npmjs.com/package/voice-router)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) API - The unified API for Google Meet, Zoom, and Microsoft Teams.
+## Overview
 
-> **Note**: This package is automatically generated from the Meeting BaaS OpenAPI specification. For development and contribution guidelines, see [DEVELOPMENT.md](https://github.com/meeting-baas/sdk-generator/blob/HEAD/DEVELOPMENT.md). For the official API reference, visit [docs.meetingbaas.com](https://docs.meetingbaas.com).
+Voice Router is a unified TypeScript SDK that provides a single interface to interact with multiple speech-to-text transcription providers:
 
-> **🚀 New in v5.0.0**: Complete architectural redesign with improved TypeScript support, better error handling, and enhanced developer experience. See [MIGRATION.md](MIGRATION.md) for upgrade guide.
+- ✅ **Gladia** - Batch + Real-time streaming
+- ✅ **AssemblyAI** - Batch + Real-time streaming
+- ✅ **Deepgram** - Batch + Real-time streaming
+- ✅ **Azure Speech-to-Text** - Batch transcription
+- ✅ **OpenAI Whisper** - Synchronous transcription (gpt-4o, whisper-1)
+- ✅ **Speechmatics** - Batch transcription
 
-> **🆕 New in v6.0.0**: Support for Meeting BaaS v2 API with type-safe version selection. Use `api_version: "v2"` to access the new API endpoints. See [API Versioning](#api-versioning) section below.
+**Why Voice Router?**
+- 🔄 Switch providers without changing code
+- 🎯 Unified API across all providers
+- 📦 Webhook normalization with auto-detection
+- 🔊 Real-time streaming support (WebSocket)
+- 📊 Speaker diarization, sentiment analysis, summarization
+- 🔒 Type-safe with full TypeScript support
+- ⚡ Zero-config provider fallback strategies
 
 ## Features
 
@@ -42,13 +53,13 @@ Official SDK for interacting with the [Meeting BaaS](https://meetingbaas.com) AP
 
 ```bash
 # With npm
-npm install @meeting-baas/sdk
+npm install voice-router
 
 # With yarn
-yarn add @meeting-baas/sdk
+yarn add voice-router
 
 # With pnpm
-pnpm add @meeting-baas/sdk
+pnpm add voice-router
 ```
 
 ## Quick Start
@@ -56,7 +67,7 @@ pnpm add @meeting-baas/sdk
 ### v1 API (Default)
 
 ```typescript
-import { createBaasClient } from "@meeting-baas/sdk";
+import { createBaasClient } from "voice-router";
 
 // Create a BaaS client (defaults to v1 API)
 const client = createBaasClient({
@@ -82,7 +93,7 @@ async function example() {
 ### v2 API
 
 ```typescript
-import { createBaasClient } from "@meeting-baas/sdk";
+import { createBaasClient } from "voice-router";
 
 // Create a v2 BaaS client
 const client = createBaasClient({
@@ -108,7 +119,7 @@ async function example() {
 ### For MCP Servers
 
 ```typescript
-import { type JoinRequest, createBaasClient } from "@meeting-baas/sdk"
+import { type JoinRequest, createBaasClient } from "voice-router"
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { z } from "zod"
 
@@ -159,7 +170,7 @@ server.registerTool(
 ### Basic Usage
 
 ```typescript
-import { createBaasClient } from "@meeting-baas/sdk";
+import { createBaasClient } from "voice-router";
 
 // Create a BaaS client
 const client = createBaasClient({
@@ -199,7 +210,7 @@ const leaveMeeting = async () => {
 ### Calendar Integration
 
 ```typescript
-import { createBaasClient } from "@meeting-baas/sdk";
+import { createBaasClient } from "voice-router";
 
 const client = createBaasClient({
   api_key: "your-api-key",
@@ -240,7 +251,7 @@ if (calendarResult.success) {
 The SDK includes webhook normalization for transcription providers, automatically parsing and unifying webhook callbacks from Gladia, AssemblyAI, Deepgram, and Azure STT:
 
 ```typescript
-import { WebhookRouter } from "@meeting-baas/sdk";
+import { WebhookRouter } from "voice-router";
 import express from "express";
 
 const app = express();
@@ -288,7 +299,7 @@ Supported webhook events:
 ### Advanced Usage with Error Handling
 
 ```typescript
-import { createBaasClient } from "@meeting-baas/sdk";
+import { createBaasClient } from "voice-router";
 
 const client = createBaasClient({
   api_key: "your-api-key",
@@ -386,7 +397,7 @@ import type {
   JoinResponse, 
   Metadata, 
   CreateCalendarParams 
-} from "@meeting-baas/sdk";
+} from "voice-router";
 
 // All types are available for advanced usage
 const joinParams: JoinRequest = {
@@ -425,7 +436,7 @@ if (result.success) {
 The v2 API includes comprehensive TypeScript types for all webhook events, enabling you to build type-safe webhook handlers. All webhook types are available through the `V2` namespace:
 
 ```typescript
-import type { V2 } from "@meeting-baas/sdk";
+import type { V2 } from "voice-router";
 
 // Type-safe webhook handler
 async function handleWebhook(payload: V2.BotWebhookCompleted) {

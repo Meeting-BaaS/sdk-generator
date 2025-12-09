@@ -1,7 +1,7 @@
 {
-  "name": "@meeting-baas/sdk",
-  "version": "6.0.0",
-  "description": "Official SDK for Meeting BaaS API - https://meetingbaas.com",
+  "name": "voice-router-dev",
+  "version": "0.1.0",
+  "description": "[DEV] Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, and Speechmatics",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -64,26 +64,33 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meeting-baas/sdk-generator.git"
+    "url": "git+https://github.com/Meeting-Baas/sdk-generator.git"
   },
-  "homepage": "https://meetingbaas.com",
+  "homepage": "https://github.com/Meeting-Baas/sdk-generator",
   "bugs": {
-    "url": "https://github.com/meeting-baas/sdk-generator/issues"
+    "url": "https://github.com/Meeting-Baas/sdk-generator/issues"
   },
   "keywords": [
-    "meeting",
-    "baas",
-    "mcp",
-    "api",
-    "sdk",
-    "google-meet",
-    "zoom",
-    "microsoft-teams",
+    "speech-to-text",
     "transcription",
-    "recording",
-    "meeting-bot"
+    "voice",
+    "speech",
+    "asr",
+    "gladia",
+    "assemblyai",
+    "deepgram",
+    "azure",
+    "openai",
+    "whisper",
+    "speechmatics",
+    "multi-provider",
+    "router",
+    "sdk",
+    "streaming",
+    "diarization",
+    "real-time"
   ],
-  "author": "SAS SPOKE <support@meetingbaas.com> (https://meetingbaas.com)",
+  "author": "Lazare Zemliak <lazare@meetingbaas.com>",
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "^2.0.5",
