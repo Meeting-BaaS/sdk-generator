@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Error } from './error';
+import type { Error } from "./error"
 
 /**
  * Not found
  */
-export type NotFoundResponse = Error;
+export type NotFoundResponse = Error

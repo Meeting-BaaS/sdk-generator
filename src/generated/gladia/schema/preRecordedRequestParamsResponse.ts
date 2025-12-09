@@ -4,104 +4,104 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CustomVocabularyConfigDTO } from './customVocabularyConfigDTO';
-import type { CodeSwitchingConfigDTO } from './codeSwitchingConfigDTO';
-import type { TranscriptionLanguageCodeEnum } from './transcriptionLanguageCodeEnum';
-import type { CallbackConfigDto } from './callbackConfigDto';
-import type { SubtitlesConfigDTO } from './subtitlesConfigDTO';
-import type { DiarizationConfigDTO } from './diarizationConfigDTO';
-import type { TranslationConfigDTO } from './translationConfigDTO';
-import type { SummarizationConfigDTO } from './summarizationConfigDTO';
-import type { CustomSpellingConfigDTO } from './customSpellingConfigDTO';
-import type { StructuredDataExtractionConfigDTO } from './structuredDataExtractionConfigDTO';
-import type { AudioToLlmListConfigDTO } from './audioToLlmListConfigDTO';
-import type { LanguageConfig } from './languageConfig';
+import type { CustomVocabularyConfigDTO } from "./customVocabularyConfigDTO"
+import type { CodeSwitchingConfigDTO } from "./codeSwitchingConfigDTO"
+import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
+import type { CallbackConfigDto } from "./callbackConfigDto"
+import type { SubtitlesConfigDTO } from "./subtitlesConfigDTO"
+import type { DiarizationConfigDTO } from "./diarizationConfigDTO"
+import type { TranslationConfigDTO } from "./translationConfigDTO"
+import type { SummarizationConfigDTO } from "./summarizationConfigDTO"
+import type { CustomSpellingConfigDTO } from "./customSpellingConfigDTO"
+import type { StructuredDataExtractionConfigDTO } from "./structuredDataExtractionConfigDTO"
+import type { AudioToLlmListConfigDTO } from "./audioToLlmListConfigDTO"
+import type { LanguageConfig } from "./languageConfig"
 
 export interface PreRecordedRequestParamsResponse {
   /**
    * **[Deprecated]** Context to feed the transcription model with for possible better accuracy
    * @deprecated
    */
-  context_prompt?: string;
+  context_prompt?: string
   /** **[Beta]** Can be either boolean to enable custom_vocabulary for this audio or an array with specific vocabulary list to feed the transcription model with */
-  custom_vocabulary?: boolean;
+  custom_vocabulary?: boolean
   /** **[Beta]** Custom vocabulary configuration, if `custom_vocabulary` is enabled */
-  custom_vocabulary_config?: CustomVocabularyConfigDTO;
+  custom_vocabulary_config?: CustomVocabularyConfigDTO
   /**
    * **[Deprecated]** Use `language_config` instead. Detect the language from the given audio
    * @deprecated
    */
-  detect_language?: boolean;
+  detect_language?: boolean
   /**
    * **[Deprecated]** Use `language_config` instead.Detect multiple languages in the given audio
    * @deprecated
    */
-  enable_code_switching?: boolean;
+  enable_code_switching?: boolean
   /**
    * **[Deprecated]** Use `language_config` instead. Specify the configuration for code switching
    * @deprecated
    */
-  code_switching_config?: CodeSwitchingConfigDTO;
+  code_switching_config?: CodeSwitchingConfigDTO
   /**
    * **[Deprecated]** Use `language_config` instead. Set the spoken language for the given audio (ISO 639 standard)
    * @deprecated
    */
-  language?: TranscriptionLanguageCodeEnum;
+  language?: TranscriptionLanguageCodeEnum
   /**
    * **[Deprecated]** Use `callback`/`callback_config` instead. Callback URL we will do a `POST` request to with the result of the transcription
    * @deprecated
    */
-  callback_url?: string;
+  callback_url?: string
   /** Enable callback for this transcription. If true, the `callback_config` property will be used to customize the callback behaviour */
-  callback?: boolean;
+  callback?: boolean
   /** Customize the callback behaviour (url and http method) */
-  callback_config?: CallbackConfigDto;
+  callback_config?: CallbackConfigDto
   /** Enable subtitles generation for this transcription */
-  subtitles?: boolean;
+  subtitles?: boolean
   /** Configuration for subtitles generation if `subtitles` is enabled */
-  subtitles_config?: SubtitlesConfigDTO;
+  subtitles_config?: SubtitlesConfigDTO
   /** Enable speaker recognition (diarization) for this audio */
-  diarization?: boolean;
+  diarization?: boolean
   /** Speaker recognition configuration, if `diarization` is enabled */
-  diarization_config?: DiarizationConfigDTO;
+  diarization_config?: DiarizationConfigDTO
   /** **[Beta]** Enable translation for this audio */
-  translation?: boolean;
+  translation?: boolean
   /** **[Beta]** Translation configuration, if `translation` is enabled */
-  translation_config?: TranslationConfigDTO;
+  translation_config?: TranslationConfigDTO
   /** **[Beta]** Enable summarization for this audio */
-  summarization?: boolean;
+  summarization?: boolean
   /** **[Beta]** Summarization configuration, if `summarization` is enabled */
-  summarization_config?: SummarizationConfigDTO;
+  summarization_config?: SummarizationConfigDTO
   /** **[Alpha]** Enable moderation for this audio */
-  moderation?: boolean;
+  moderation?: boolean
   /** **[Alpha]** Enable named entity recognition for this audio */
-  named_entity_recognition?: boolean;
+  named_entity_recognition?: boolean
   /** **[Alpha]** Enable chapterization for this audio */
-  chapterization?: boolean;
+  chapterization?: boolean
   /** **[Alpha]** Enable names consistency for this audio */
-  name_consistency?: boolean;
+  name_consistency?: boolean
   /** **[Alpha]** Enable custom spelling for this audio */
-  custom_spelling?: boolean;
+  custom_spelling?: boolean
   /** **[Alpha]** Custom spelling configuration, if `custom_spelling` is enabled */
-  custom_spelling_config?: CustomSpellingConfigDTO;
+  custom_spelling_config?: CustomSpellingConfigDTO
   /** **[Alpha]** Enable structured data extraction for this audio */
-  structured_data_extraction?: boolean;
+  structured_data_extraction?: boolean
   /** **[Alpha]** Structured data extraction configuration, if `structured_data_extraction` is enabled */
-  structured_data_extraction_config?: StructuredDataExtractionConfigDTO;
+  structured_data_extraction_config?: StructuredDataExtractionConfigDTO
   /** Enable sentiment analysis for this audio */
-  sentiment_analysis?: boolean;
+  sentiment_analysis?: boolean
   /** **[Alpha]** Enable audio to llm processing for this audio */
-  audio_to_llm?: boolean;
+  audio_to_llm?: boolean
   /** **[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled */
-  audio_to_llm_config?: AudioToLlmListConfigDTO;
+  audio_to_llm_config?: AudioToLlmListConfigDTO
   /** Enable sentences for this audio */
-  sentences?: boolean;
+  sentences?: boolean
   /** **[Alpha]** Allows to change the output display_mode for this audio. The output will be reordered, creating new utterances when speakers overlapped */
-  display_mode?: boolean;
+  display_mode?: boolean
   /** **[Alpha]** Use enhanced punctuation for this audio */
-  punctuation_enhanced?: boolean;
+  punctuation_enhanced?: boolean
   /** Specify the language configuration */
-  language_config?: LanguageConfig;
+  language_config?: LanguageConfig
   /** @nullable */
-  audio_url: string | null;
+  audio_url: string | null
 }

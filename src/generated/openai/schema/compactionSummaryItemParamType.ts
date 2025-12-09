@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `compaction`.
  */
-export type CompactionSummaryItemParamType = typeof CompactionSummaryItemParamType[keyof typeof CompactionSummaryItemParamType];
-
+export type CompactionSummaryItemParamType =
+  (typeof CompactionSummaryItemParamType)[keyof typeof CompactionSummaryItemParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CompactionSummaryItemParamType = {
-  compaction: 'compaction',
-} as const;
+  compaction: "compaction"
+} as const

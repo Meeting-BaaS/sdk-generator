@@ -5,25 +5,25 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RoleObject } from './roleObject';
-import type { RoleDescription } from './roleDescription';
+import type { RoleObject } from "./roleObject"
+import type { RoleDescription } from "./roleDescription"
 
 /**
  * Details about a role that can be assigned through the public Roles API.
  */
 export interface Role {
   /** Always `role`. */
-  object: RoleObject;
+  object: RoleObject
   /** Identifier for the role. */
-  id: string;
+  id: string
   /** Unique name for the role. */
-  name: string;
+  name: string
   /** Optional description of the role. */
-  description: RoleDescription;
+  description: RoleDescription
   /** Permissions granted by the role. */
-  permissions: string[];
+  permissions: string[]
   /** Resource type the role is bound to (for example `api.organization` or `api.project`). */
-  resource_type: string;
+  resource_type: string
   /** Whether the role is predefined and managed by OpenAI. */
-  predefined_role: boolean;
+  predefined_role: boolean
 }

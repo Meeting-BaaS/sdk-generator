@@ -27,11 +27,11 @@ export interface RealtimeClientEventInputAudioBufferAppend {
    * Optional client-generated ID used to identify this event.
    * @maxLength 512
    */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `input_audio_buffer.append`. */
-  type: 'input_audio_buffer.append';
+  type: "input_audio_buffer.append"
   /** Base64-encoded audio bytes. This must be in the format specified by the 
 `input_audio_format` field in the session configuration.
  */
-  audio: string;
+  audio: string
 }

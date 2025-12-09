@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadStreamEventAnyOfEvent } from './threadStreamEventAnyOfEvent';
-import type { ThreadObject } from './threadObject';
+import type { ThreadStreamEventAnyOfEvent } from "./threadStreamEventAnyOfEvent"
+import type { ThreadObject } from "./threadObject"
 
 /**
  * Occurs when a new [thread](https://platform.openai.com/docs/api-reference/threads/object) is created.
  */
 export type ThreadStreamEventAnyOf = {
   /** Whether to enable input audio transcription. */
-  enabled?: boolean;
-  event: ThreadStreamEventAnyOfEvent;
-  data: ThreadObject;
-};
+  enabled?: boolean
+  event: ThreadStreamEventAnyOfEvent
+  data: ThreadObject
+}

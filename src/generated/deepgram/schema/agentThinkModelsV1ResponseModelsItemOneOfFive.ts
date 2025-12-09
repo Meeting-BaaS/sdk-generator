@@ -6,16 +6,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { AgentThinkModelsV1ResponseModelsItemOneOfFiveId } from './agentThinkModelsV1ResponseModelsItemOneOfFiveId';
+import type { AgentThinkModelsV1ResponseModelsItemOneOfFiveId } from "./agentThinkModelsV1ResponseModelsItemOneOfFiveId"
 
 /**
  * Google models
  */
 export type AgentThinkModelsV1ResponseModelsItemOneOfFive = {
   /** The unique identifier of the Google model */
-  id: AgentThinkModelsV1ResponseModelsItemOneOfFiveId;
+  id: AgentThinkModelsV1ResponseModelsItemOneOfFiveId
   /** The display name of the model */
-  name: string;
+  name: string
   /** The provider of the model */
-  provider: 'google';
-};
+  provider: "google"
+}

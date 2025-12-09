@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModelIdsResponses } from './modelIdsResponses';
+import type { ModelIdsResponses } from "./modelIdsResponses"
 
 /**
  * Model ID used to generate the response, like `gpt-5` or `o3`. OpenAI offers a wide range of models with different capabilities, performance characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models) to browse and compare available models.
  */
-export type ModelIdsCompaction = ModelIdsResponses | string | null;
+export type ModelIdsCompaction = ModelIdsResponses | string | null

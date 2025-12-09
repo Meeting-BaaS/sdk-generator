@@ -10,11 +10,11 @@
  * The name of the rate limit (`requests`, `tokens`).
 
  */
-export type RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItemName = typeof RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItemName[keyof typeof RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItemName];
-
+export type RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItemName =
+  (typeof RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItemName)[keyof typeof RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItemName]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItemName = {
-  requests: 'requests',
-  tokens: 'tokens',
-} as const;
+  requests: "requests",
+  tokens: "tokens"
+} as const

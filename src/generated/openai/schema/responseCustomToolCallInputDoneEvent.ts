@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseCustomToolCallInputDoneEventType } from './responseCustomToolCallInputDoneEventType';
+import type { ResponseCustomToolCallInputDoneEventType } from "./responseCustomToolCallInputDoneEventType"
 
 /**
  * Event indicating that input for a custom tool call is complete.
@@ -13,13 +13,13 @@ import type { ResponseCustomToolCallInputDoneEventType } from './responseCustomT
  */
 export interface ResponseCustomToolCallInputDoneEvent {
   /** The event type identifier. */
-  type: ResponseCustomToolCallInputDoneEventType;
+  type: ResponseCustomToolCallInputDoneEventType
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
   /** The index of the output this event applies to. */
-  output_index: number;
+  output_index: number
   /** Unique identifier for the API item associated with this event. */
-  item_id: string;
+  item_id: string
   /** The complete input data for the custom tool call. */
-  input: string;
+  input: string
 }

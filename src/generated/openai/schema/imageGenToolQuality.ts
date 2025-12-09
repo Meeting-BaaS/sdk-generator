@@ -11,13 +11,12 @@
 or `auto`. Default: `auto`.
 
  */
-export type ImageGenToolQuality = typeof ImageGenToolQuality[keyof typeof ImageGenToolQuality];
-
+export type ImageGenToolQuality = (typeof ImageGenToolQuality)[keyof typeof ImageGenToolQuality]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolQuality = {
-  low: 'low',
-  medium: 'medium',
-  high: 'high',
-  auto: 'auto',
-} as const;
+  low: "low",
+  medium: "medium",
+  high: "high",
+  auto: "auto"
+} as const

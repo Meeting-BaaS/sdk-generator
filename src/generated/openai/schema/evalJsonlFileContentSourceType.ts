@@ -9,10 +9,10 @@
 /**
  * The type of jsonl source. Always `file_content`.
  */
-export type EvalJsonlFileContentSourceType = typeof EvalJsonlFileContentSourceType[keyof typeof EvalJsonlFileContentSourceType];
-
+export type EvalJsonlFileContentSourceType =
+  (typeof EvalJsonlFileContentSourceType)[keyof typeof EvalJsonlFileContentSourceType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalJsonlFileContentSourceType = {
-  file_content: 'file_content',
-} as const;
+  file_content: "file_content"
+} as const

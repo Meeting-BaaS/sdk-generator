@@ -14,12 +14,11 @@
 - If listing, activating, or deactivating certificates for a project, the object type is `organization.project.certificate`.
 
  */
-export type CertificateObject = typeof CertificateObject[keyof typeof CertificateObject];
-
+export type CertificateObject = (typeof CertificateObject)[keyof typeof CertificateObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CertificateObject = {
-  certificate: 'certificate',
-  organizationcertificate: 'organization.certificate',
-  organizationprojectcertificate: 'organization.project.certificate',
-} as const;
+  certificate: "certificate",
+  organizationcertificate: "organization.certificate",
+  organizationprojectcertificate: "organization.project.certificate"
+} as const

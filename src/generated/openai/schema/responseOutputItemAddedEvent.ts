@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseOutputItemAddedEventType } from './responseOutputItemAddedEventType';
-import type { OutputItem } from './outputItem';
+import type { ResponseOutputItemAddedEventType } from "./responseOutputItemAddedEventType"
+import type { OutputItem } from "./outputItem"
 
 /**
  * Emitted when a new output item is added.
  */
 export interface ResponseOutputItemAddedEvent {
   /** The type of the event. Always `response.output_item.added`.
- */
-  type: ResponseOutputItemAddedEventType;
+   */
+  type: ResponseOutputItemAddedEventType
   /** The index of the output item that was added.
- */
-  output_index: number;
+   */
+  output_index: number
   /** The sequence number of this event.
- */
-  sequence_number: number;
+   */
+  sequence_number: number
   /** The output item that was added.
- */
-  item: OutputItem;
+   */
+  item: OutputItem
 }

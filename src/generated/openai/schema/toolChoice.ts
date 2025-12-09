@@ -11,5 +11,5 @@
  */
 export interface ToolChoice {
   /** Identifier of the requested tool. */
-  id: string;
+  id: string
 }

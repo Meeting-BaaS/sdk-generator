@@ -9,4 +9,4 @@
 /**
  * @nullable
  */
-export type CreateThreadAndRunRequestTruncationStrategyAllOf = unknown | null;
+export type CreateThreadAndRunRequestTruncationStrategyAllOf = unknown | null

@@ -12,15 +12,15 @@
  */
 export interface CreateKeyV1Response {
   /** The unique identifier of the API key */
-  api_key_id?: string;
+  api_key_id?: string
   /** The API key */
-  key?: string;
+  key?: string
   /** A comment for the API key */
-  comment?: string;
+  comment?: string
   /** The scopes for the API key */
-  scopes?: string[];
+  scopes?: string[]
   /** The tags for the API key */
-  tags?: string[];
+  tags?: string[]
   /** The expiration date of the API key */
-  expiration_date?: string;
+  expiration_date?: string
 }

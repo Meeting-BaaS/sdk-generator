@@ -9,10 +9,11 @@
 /**
  * Always `static`.
  */
-export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType = typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType[keyof typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType];
-
+export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType =
+  (typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType)[keyof typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType = {
-  static: 'static',
-} as const;
+export const CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType =
+  {
+    static: "static"
+  } as const

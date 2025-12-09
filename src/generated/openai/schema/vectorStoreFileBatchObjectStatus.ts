@@ -9,13 +9,13 @@
 /**
  * The status of the vector store files batch, which can be either `in_progress`, `completed`, `cancelled` or `failed`.
  */
-export type VectorStoreFileBatchObjectStatus = typeof VectorStoreFileBatchObjectStatus[keyof typeof VectorStoreFileBatchObjectStatus];
-
+export type VectorStoreFileBatchObjectStatus =
+  (typeof VectorStoreFileBatchObjectStatus)[keyof typeof VectorStoreFileBatchObjectStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreFileBatchObjectStatus = {
-  in_progress: 'in_progress',
-  completed: 'completed',
-  cancelled: 'cancelled',
-  failed: 'failed',
-} as const;
+  in_progress: "in_progress",
+  completed: "completed",
+  cancelled: "cancelled",
+  failed: "failed"
+} as const

@@ -9,10 +9,10 @@
 /**
  * The type of response format being defined. Always `text`.
  */
-export type ResponseFormatTextType = typeof ResponseFormatTextType[keyof typeof ResponseFormatTextType];
-
+export type ResponseFormatTextType =
+  (typeof ResponseFormatTextType)[keyof typeof ResponseFormatTextType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFormatTextType = {
-  text: 'text',
-} as const;
+  text: "text"
+} as const

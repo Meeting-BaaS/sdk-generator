@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputTextContentParamType } from './inputTextContentParamType';
+import type { InputTextContentParamType } from "./inputTextContentParamType"
 
 /**
  * A text input to the model.
  */
 export interface InputTextContentParam {
   /** The type of the input item. Always `input_text`. */
-  type: InputTextContentParamType;
+  type: InputTextContentParamType
   /**
    * The text input to the model.
    * @maxLength 10485760
    */
-  text: string;
+  text: string
 }

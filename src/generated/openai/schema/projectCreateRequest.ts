@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectCreateRequestGeography } from './projectCreateRequestGeography';
+import type { ProjectCreateRequestGeography } from "./projectCreateRequestGeography"
 
 export interface ProjectCreateRequest {
   /** The friendly name of the project, this name appears in reports. */
-  name: string;
+  name: string
   /** Create the project with the specified data residency region. Your organization must have access to Data residency functionality in order to use. See [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls) to review the functionality and limitations of setting this field. */
-  geography?: ProjectCreateRequestGeography;
+  geography?: ProjectCreateRequestGeography
 }

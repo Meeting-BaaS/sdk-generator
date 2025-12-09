@@ -4,26 +4,26 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranslationResultDTOError } from './translationResultDTOError';
-import type { TranslationLanguageCodeEnum } from './translationLanguageCodeEnum';
-import type { SentencesDTO } from './sentencesDTO';
-import type { SubtitleDTO } from './subtitleDTO';
-import type { UtteranceDTO } from './utteranceDTO';
+import type { TranslationResultDTOError } from "./translationResultDTOError"
+import type { TranslationLanguageCodeEnum } from "./translationLanguageCodeEnum"
+import type { SentencesDTO } from "./sentencesDTO"
+import type { SubtitleDTO } from "./subtitleDTO"
+import type { UtteranceDTO } from "./utteranceDTO"
 
 export interface TranslationResultDTO {
   /**
    * Contains the error details of the failed addon
    * @nullable
    */
-  error: TranslationResultDTOError;
+  error: TranslationResultDTOError
   /** All transcription on text format without any other information */
-  full_transcript: string;
+  full_transcript: string
   /** All the detected languages in the audio sorted from the most detected to the less detected */
-  languages: TranslationLanguageCodeEnum[];
+  languages: TranslationLanguageCodeEnum[]
   /** If `sentences` has been enabled, sentences results for this translation */
-  sentences?: SentencesDTO[];
+  sentences?: SentencesDTO[]
   /** If `subtitles` has been enabled, subtitles results for this translation */
-  subtitles?: SubtitleDTO[];
+  subtitles?: SubtitleDTO[]
   /** Transcribed speech utterances present in the audio */
-  utterances: UtteranceDTO[];
+  utterances: UtteranceDTO[]
 }

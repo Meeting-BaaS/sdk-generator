@@ -5,28 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Image } from './image';
-import type { ImagesResponseBackground } from './imagesResponseBackground';
-import type { ImagesResponseOutputFormat } from './imagesResponseOutputFormat';
-import type { ImagesResponseSize } from './imagesResponseSize';
-import type { ImagesResponseQuality } from './imagesResponseQuality';
-import type { ImageGenUsage } from './imageGenUsage';
+import type { Image } from "./image"
+import type { ImagesResponseBackground } from "./imagesResponseBackground"
+import type { ImagesResponseOutputFormat } from "./imagesResponseOutputFormat"
+import type { ImagesResponseSize } from "./imagesResponseSize"
+import type { ImagesResponseQuality } from "./imagesResponseQuality"
+import type { ImageGenUsage } from "./imageGenUsage"
 
 /**
  * The response from the image generation endpoint.
  */
 export interface ImagesResponse {
   /** The Unix timestamp (in seconds) of when the image was created. */
-  created: number;
+  created: number
   /** The list of generated images. */
-  data?: Image[];
+  data?: Image[]
   /** The background parameter used for the image generation. Either `transparent` or `opaque`. */
-  background?: ImagesResponseBackground;
+  background?: ImagesResponseBackground
   /** The output format of the image generation. Either `png`, `webp`, or `jpeg`. */
-  output_format?: ImagesResponseOutputFormat;
+  output_format?: ImagesResponseOutputFormat
   /** The size of the image generated. Either `1024x1024`, `1024x1536`, or `1536x1024`. */
-  size?: ImagesResponseSize;
+  size?: ImagesResponseSize
   /** The quality of the image generated. Either `low`, `medium`, or `high`. */
-  quality?: ImagesResponseQuality;
-  usage?: ImageGenUsage;
+  quality?: ImagesResponseQuality
+  usage?: ImageGenUsage
 }

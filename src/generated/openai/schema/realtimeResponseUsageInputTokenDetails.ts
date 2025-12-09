@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeResponseUsageInputTokenDetailsCachedTokensDetails } from './realtimeResponseUsageInputTokenDetailsCachedTokensDetails';
+import type { RealtimeResponseUsageInputTokenDetailsCachedTokensDetails } from "./realtimeResponseUsageInputTokenDetailsCachedTokensDetails"
 
 /**
  * Details about the input tokens used in the Response. Cached tokens are tokens from previous turns in the conversation that are included as context for the current response. Cached tokens here are counted as a subset of input tokens, meaning input tokens will include cached and uncached tokens.
  */
 export type RealtimeResponseUsageInputTokenDetails = {
   /** The number of cached tokens used as input for the Response. */
-  cached_tokens?: number;
+  cached_tokens?: number
   /** The number of text tokens used as input for the Response. */
-  text_tokens?: number;
+  text_tokens?: number
   /** The number of image tokens used as input for the Response. */
-  image_tokens?: number;
+  image_tokens?: number
   /** The number of audio tokens used as input for the Response. */
-  audio_tokens?: number;
+  audio_tokens?: number
   /** Details about the cached tokens used as input for the Response. */
-  cached_tokens_details?: RealtimeResponseUsageInputTokenDetailsCachedTokensDetails;
-};
+  cached_tokens_details?: RealtimeResponseUsageInputTokenDetailsCachedTokensDetails
+}

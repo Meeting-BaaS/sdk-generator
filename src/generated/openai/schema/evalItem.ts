@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalItemRole } from './evalItemRole';
-import type { EvalItemContent } from './evalItemContent';
-import type { EvalItemType } from './evalItemType';
+import type { EvalItemRole } from "./evalItemRole"
+import type { EvalItemContent } from "./evalItemContent"
+import type { EvalItemType } from "./evalItemType"
 
 /**
  * A message input to the model with a role indicating instruction following
@@ -21,11 +21,11 @@ export interface EvalItem {
   /** The role of the message input. One of `user`, `assistant`, `system`, or
 `developer`.
  */
-  role: EvalItemRole;
+  role: EvalItemRole
   /** Inputs to the model - can contain template strings.
- */
-  content: EvalItemContent;
+   */
+  content: EvalItemContent
   /** The type of the message input. Always `message`.
- */
-  type?: EvalItemType;
+   */
+  type?: EvalItemType
 }

@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageGenToolCallType } from './imageGenToolCallType';
-import type { ImageGenToolCallStatus } from './imageGenToolCallStatus';
-import type { ImageGenToolCallResult } from './imageGenToolCallResult';
+import type { ImageGenToolCallType } from "./imageGenToolCallType"
+import type { ImageGenToolCallStatus } from "./imageGenToolCallStatus"
+import type { ImageGenToolCallResult } from "./imageGenToolCallResult"
 
 /**
  * An image generation request made by the model.
@@ -15,13 +15,13 @@ import type { ImageGenToolCallResult } from './imageGenToolCallResult';
  */
 export interface ImageGenToolCall {
   /** The type of the image generation call. Always `image_generation_call`.
- */
-  type: ImageGenToolCallType;
+   */
+  type: ImageGenToolCallType
   /** The unique ID of the image generation call.
- */
-  id: string;
+   */
+  id: string
   /** The status of the image generation call.
- */
-  status: ImageGenToolCallStatus;
-  result: ImageGenToolCallResult;
+   */
+  status: ImageGenToolCallStatus
+  result: ImageGenToolCallResult
 }

@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalCustomDataSourceConfigType } from './createEvalCustomDataSourceConfigType';
-import type { CreateEvalCustomDataSourceConfigItemSchema } from './createEvalCustomDataSourceConfigItemSchema';
+import type { CreateEvalCustomDataSourceConfigType } from "./createEvalCustomDataSourceConfigType"
+import type { CreateEvalCustomDataSourceConfigItemSchema } from "./createEvalCustomDataSourceConfigItemSchema"
 
 /**
  * A CustomDataSourceConfig object that defines the schema for the data source used for the evaluation runs.
@@ -17,9 +17,9 @@ This schema is used to define the shape of the data that will be:
  */
 export interface CreateEvalCustomDataSourceConfig {
   /** The type of data source. Always `custom`. */
-  type: CreateEvalCustomDataSourceConfigType;
+  type: CreateEvalCustomDataSourceConfigType
   /** The json schema for each row in the data source. */
-  item_schema: CreateEvalCustomDataSourceConfigItemSchema;
+  item_schema: CreateEvalCustomDataSourceConfigItemSchema
   /** Whether the eval should expect you to populate the sample namespace (ie, by generating responses off of your data source) */
-  include_sample_schema?: boolean;
+  include_sample_schema?: boolean
 }

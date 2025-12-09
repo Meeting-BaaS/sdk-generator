@@ -5,7 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateModelResponseProperties } from './createModelResponseProperties';
-import type { CreateChatCompletionRequestAllOf } from './createChatCompletionRequestAllOf';
+import type { CreateModelResponseProperties } from "./createModelResponseProperties"
+import type { CreateChatCompletionRequestAllOf } from "./createChatCompletionRequestAllOf"
 
-export type CreateChatCompletionRequest = CreateModelResponseProperties & CreateChatCompletionRequestAllOf;
+export type CreateChatCompletionRequest = CreateModelResponseProperties &
+  CreateChatCompletionRequestAllOf

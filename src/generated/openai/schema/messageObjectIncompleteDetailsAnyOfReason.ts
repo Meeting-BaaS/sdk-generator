@@ -9,14 +9,14 @@
 /**
  * The reason the message is incomplete.
  */
-export type MessageObjectIncompleteDetailsAnyOfReason = typeof MessageObjectIncompleteDetailsAnyOfReason[keyof typeof MessageObjectIncompleteDetailsAnyOfReason];
-
+export type MessageObjectIncompleteDetailsAnyOfReason =
+  (typeof MessageObjectIncompleteDetailsAnyOfReason)[keyof typeof MessageObjectIncompleteDetailsAnyOfReason]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageObjectIncompleteDetailsAnyOfReason = {
-  content_filter: 'content_filter',
-  max_tokens: 'max_tokens',
-  run_cancelled: 'run_cancelled',
-  run_expired: 'run_expired',
-  run_failed: 'run_failed',
-} as const;
+  content_filter: "content_filter",
+  max_tokens: "max_tokens",
+  run_cancelled: "run_cancelled",
+  run_expired: "run_expired",
+  run_failed: "run_failed"
+} as const

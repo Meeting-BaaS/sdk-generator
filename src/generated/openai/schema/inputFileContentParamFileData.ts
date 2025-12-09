@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type InputFileContentParamFileData = string | null;
+export type InputFileContentParamFileData = string | null

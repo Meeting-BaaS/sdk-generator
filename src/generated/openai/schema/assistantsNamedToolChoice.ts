@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantsNamedToolChoiceType } from './assistantsNamedToolChoiceType';
-import type { AssistantsNamedToolChoiceFunction } from './assistantsNamedToolChoiceFunction';
+import type { AssistantsNamedToolChoiceType } from "./assistantsNamedToolChoiceType"
+import type { AssistantsNamedToolChoiceFunction } from "./assistantsNamedToolChoiceFunction"
 
 /**
  * Specifies a tool the model should use. Use to force the model to call a specific tool.
  */
 export interface AssistantsNamedToolChoice {
   /** The type of the tool. If type is `function`, the function name must be set */
-  type: AssistantsNamedToolChoiceType;
-  function?: AssistantsNamedToolChoiceFunction;
+  type: AssistantsNamedToolChoiceType
+  function?: AssistantsNamedToolChoiceFunction
 }

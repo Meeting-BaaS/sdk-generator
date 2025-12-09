@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputItem } from './inputItem';
+import type { InputItem } from "./inputItem"
 
 /**
  * A system (or developer) message inserted into the model's context.
@@ -15,4 +15,4 @@ response will not be carried over to the next response. This makes it simple
 to swap out system (or developer) messages in new responses.
 
  */
-export type ResponseAllOfInstructionsAnyOf = string | InputItem[];
+export type ResponseAllOfInstructionsAnyOf = string | InputItem[]

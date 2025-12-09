@@ -10,11 +10,11 @@
  * The name of the rate limit (`requests`, `tokens`).
 
  */
-export type RealtimeServerEventRateLimitsUpdatedRateLimitsItemName = typeof RealtimeServerEventRateLimitsUpdatedRateLimitsItemName[keyof typeof RealtimeServerEventRateLimitsUpdatedRateLimitsItemName];
-
+export type RealtimeServerEventRateLimitsUpdatedRateLimitsItemName =
+  (typeof RealtimeServerEventRateLimitsUpdatedRateLimitsItemName)[keyof typeof RealtimeServerEventRateLimitsUpdatedRateLimitsItemName]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeServerEventRateLimitsUpdatedRateLimitsItemName = {
-  requests: 'requests',
-  tokens: 'tokens',
-} as const;
+  requests: "requests",
+  tokens: "tokens"
+} as const

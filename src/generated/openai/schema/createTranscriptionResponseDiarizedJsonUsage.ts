@@ -5,10 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextUsageTokens } from './transcriptTextUsageTokens';
-import type { TranscriptTextUsageDuration } from './transcriptTextUsageDuration';
+import type { TranscriptTextUsageTokens } from "./transcriptTextUsageTokens"
+import type { TranscriptTextUsageDuration } from "./transcriptTextUsageDuration"
 
 /**
  * Token or duration usage statistics for the request.
  */
-export type CreateTranscriptionResponseDiarizedJsonUsage = TranscriptTextUsageTokens | TranscriptTextUsageDuration;
+export type CreateTranscriptionResponseDiarizedJsonUsage =
+  | TranscriptTextUsageTokens
+  | TranscriptTextUsageDuration

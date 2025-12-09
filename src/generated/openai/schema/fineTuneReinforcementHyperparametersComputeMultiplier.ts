@@ -10,4 +10,4 @@
  * Multiplier on amount of compute used for exploring search space during training.
 
  */
-export type FineTuneReinforcementHyperparametersComputeMultiplier = 'auto' | number;
+export type FineTuneReinforcementHyperparametersComputeMultiplier = "auto" | number

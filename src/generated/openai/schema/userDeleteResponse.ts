@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UserDeleteResponseObject } from './userDeleteResponseObject';
+import type { UserDeleteResponseObject } from "./userDeleteResponseObject"
 
 export interface UserDeleteResponse {
-  object: UserDeleteResponseObject;
-  id: string;
-  deleted: boolean;
+  object: UserDeleteResponseObject
+  id: string
+  deleted: boolean
 }

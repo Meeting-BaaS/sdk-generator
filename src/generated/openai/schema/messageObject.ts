@@ -5,41 +5,41 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageObjectObject } from './messageObjectObject';
-import type { MessageObjectStatus } from './messageObjectStatus';
-import type { MessageObjectIncompleteDetails } from './messageObjectIncompleteDetails';
-import type { MessageObjectCompletedAt } from './messageObjectCompletedAt';
-import type { MessageObjectIncompleteAt } from './messageObjectIncompleteAt';
-import type { MessageObjectRole } from './messageObjectRole';
-import type { MessageContent } from './messageContent';
-import type { MessageObjectAssistantId } from './messageObjectAssistantId';
-import type { MessageObjectRunId } from './messageObjectRunId';
-import type { MessageObjectAttachments } from './messageObjectAttachments';
-import type { Metadata } from './metadata';
+import type { MessageObjectObject } from "./messageObjectObject"
+import type { MessageObjectStatus } from "./messageObjectStatus"
+import type { MessageObjectIncompleteDetails } from "./messageObjectIncompleteDetails"
+import type { MessageObjectCompletedAt } from "./messageObjectCompletedAt"
+import type { MessageObjectIncompleteAt } from "./messageObjectIncompleteAt"
+import type { MessageObjectRole } from "./messageObjectRole"
+import type { MessageContent } from "./messageContent"
+import type { MessageObjectAssistantId } from "./messageObjectAssistantId"
+import type { MessageObjectRunId } from "./messageObjectRunId"
+import type { MessageObjectAttachments } from "./messageObjectAttachments"
+import type { Metadata } from "./metadata"
 
 /**
  * Represents a message within a [thread](https://platform.openai.com/docs/api-reference/threads).
  */
 export interface MessageObject {
   /** The identifier, which can be referenced in API endpoints. */
-  id: string;
+  id: string
   /** The object type, which is always `thread.message`. */
-  object: MessageObjectObject;
+  object: MessageObjectObject
   /** The Unix timestamp (in seconds) for when the message was created. */
-  created_at: number;
+  created_at: number
   /** The [thread](https://platform.openai.com/docs/api-reference/threads) ID that this message belongs to. */
-  thread_id: string;
+  thread_id: string
   /** The status of the message, which can be either `in_progress`, `incomplete`, or `completed`. */
-  status: MessageObjectStatus;
-  incomplete_details: MessageObjectIncompleteDetails;
-  completed_at: MessageObjectCompletedAt;
-  incomplete_at: MessageObjectIncompleteAt;
+  status: MessageObjectStatus
+  incomplete_details: MessageObjectIncompleteDetails
+  completed_at: MessageObjectCompletedAt
+  incomplete_at: MessageObjectIncompleteAt
   /** The entity that produced the message. One of `user` or `assistant`. */
-  role: MessageObjectRole;
+  role: MessageObjectRole
   /** The content of the message in array of text and/or images. */
-  content: MessageContent[];
-  assistant_id: MessageObjectAssistantId;
-  run_id: MessageObjectRunId;
-  attachments: MessageObjectAttachments;
-  metadata: Metadata;
+  content: MessageContent[]
+  assistant_id: MessageObjectAssistantId
+  run_id: MessageObjectRunId
+  attachments: MessageObjectAttachments
+  metadata: Metadata
 }

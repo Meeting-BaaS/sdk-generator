@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallOutputExitOutcomeType } from './functionShellCallOutputExitOutcomeType';
+import type { FunctionShellCallOutputExitOutcomeType } from "./functionShellCallOutputExitOutcomeType"
 
 /**
  * Indicates that the shell commands finished and returned an exit code.
  */
 export interface FunctionShellCallOutputExitOutcome {
   /** The outcome type. Always `exit`. */
-  type: FunctionShellCallOutputExitOutcomeType;
+  type: FunctionShellCallOutputExitOutcomeType
   /** Exit code from the shell process. */
-  exit_code: number;
+  exit_code: number
 }

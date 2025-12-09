@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `project.rate_limit`
  */
-export type ProjectRateLimitObject = typeof ProjectRateLimitObject[keyof typeof ProjectRateLimitObject];
-
+export type ProjectRateLimitObject =
+  (typeof ProjectRateLimitObject)[keyof typeof ProjectRateLimitObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectRateLimitObject = {
-  projectrate_limit: 'project.rate_limit',
-} as const;
+  projectrate_limit: "project.rate_limit"
+} as const

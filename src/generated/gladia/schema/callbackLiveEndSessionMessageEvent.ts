@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveEndSessionMessageEvent = typeof CallbackLiveEndSessionMessageEvent[keyof typeof CallbackLiveEndSessionMessageEvent];
-
+export type CallbackLiveEndSessionMessageEvent =
+  (typeof CallbackLiveEndSessionMessageEvent)[keyof typeof CallbackLiveEndSessionMessageEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveEndSessionMessageEvent = {
-  liveend_session: 'live.end_session',
-} as const;
+  liveend_session: "live.end_session"
+} as const

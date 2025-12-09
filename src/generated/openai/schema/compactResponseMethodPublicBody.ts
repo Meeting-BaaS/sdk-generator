@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModelIdsCompaction } from './modelIdsCompaction';
-import type { CompactResponseMethodPublicBodyInput } from './compactResponseMethodPublicBodyInput';
-import type { CompactResponseMethodPublicBodyPreviousResponseId } from './compactResponseMethodPublicBodyPreviousResponseId';
-import type { CompactResponseMethodPublicBodyInstructions } from './compactResponseMethodPublicBodyInstructions';
+import type { ModelIdsCompaction } from "./modelIdsCompaction"
+import type { CompactResponseMethodPublicBodyInput } from "./compactResponseMethodPublicBodyInput"
+import type { CompactResponseMethodPublicBodyPreviousResponseId } from "./compactResponseMethodPublicBodyPreviousResponseId"
+import type { CompactResponseMethodPublicBodyInstructions } from "./compactResponseMethodPublicBodyInstructions"
 
 export interface CompactResponseMethodPublicBody {
-  model?: ModelIdsCompaction;
-  input?: CompactResponseMethodPublicBodyInput;
-  previous_response_id?: CompactResponseMethodPublicBodyPreviousResponseId;
-  instructions?: CompactResponseMethodPublicBodyInstructions;
+  model?: ModelIdsCompaction
+  input?: CompactResponseMethodPublicBodyInput
+  previous_response_id?: CompactResponseMethodPublicBodyPreviousResponseId
+  instructions?: CompactResponseMethodPublicBodyInstructions
 }

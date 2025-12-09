@@ -9,11 +9,11 @@
 /**
  * Project membership role
  */
-export type InviteProjectsItemRole = typeof InviteProjectsItemRole[keyof typeof InviteProjectsItemRole];
-
+export type InviteProjectsItemRole =
+  (typeof InviteProjectsItemRole)[keyof typeof InviteProjectsItemRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InviteProjectsItemRole = {
-  member: 'member',
-  owner: 'owner',
-} as const;
+  member: "member",
+  owner: "owner"
+} as const

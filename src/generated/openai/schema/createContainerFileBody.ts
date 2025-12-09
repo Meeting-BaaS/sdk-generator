@@ -8,8 +8,8 @@
 
 export interface CreateContainerFileBody {
   /** Name of the file to create. */
-  file_id?: string;
+  file_id?: string
   /** The File object (not file name) to be uploaded.
- */
-  file?: Blob;
+   */
+  file?: Blob
 }

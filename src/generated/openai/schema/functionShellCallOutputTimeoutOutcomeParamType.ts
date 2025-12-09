@@ -9,10 +9,10 @@
 /**
  * The outcome type. Always `timeout`.
  */
-export type FunctionShellCallOutputTimeoutOutcomeParamType = typeof FunctionShellCallOutputTimeoutOutcomeParamType[keyof typeof FunctionShellCallOutputTimeoutOutcomeParamType];
-
+export type FunctionShellCallOutputTimeoutOutcomeParamType =
+  (typeof FunctionShellCallOutputTimeoutOutcomeParamType)[keyof typeof FunctionShellCallOutputTimeoutOutcomeParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionShellCallOutputTimeoutOutcomeParamType = {
-  timeout: 'timeout',
-} as const;
+  timeout: "timeout"
+} as const

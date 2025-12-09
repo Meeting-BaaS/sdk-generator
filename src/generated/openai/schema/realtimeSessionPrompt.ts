@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Prompt } from './prompt';
+import type { Prompt } from "./prompt"
 
-export type RealtimeSessionPrompt = Prompt | null;
+export type RealtimeSessionPrompt = Prompt | null

@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLivePostTranscriptMessageEvent } from './callbackLivePostTranscriptMessageEvent';
-import type { PostTranscriptMessage } from './postTranscriptMessage';
+import type { CallbackLivePostTranscriptMessageEvent } from "./callbackLivePostTranscriptMessageEvent"
+import type { PostTranscriptMessage } from "./postTranscriptMessage"
 
 export interface CallbackLivePostTranscriptMessage {
   /** Id of the job */
-  id: string;
-  event: CallbackLivePostTranscriptMessageEvent;
+  id: string
+  event: CallbackLivePostTranscriptMessageEvent
   /** The live message payload as sent to the WebSocket */
-  payload: PostTranscriptMessage;
+  payload: PostTranscriptMessage
 }

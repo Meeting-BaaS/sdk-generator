@@ -33,7 +33,7 @@ export default defineConfig({
       target: "./src/generated/gladia/api",
       schemas: "./src/generated/gladia/schema",
       client: "axios-functions",
-      mode: "single",  // Use single mode instead of tags-split to avoid toSorted issue
+      mode: "single", // Use single mode instead of tags-split to avoid toSorted issue
       biome: true,
       mock: {
         type: "msw",
@@ -47,7 +47,7 @@ export default defineConfig({
     output: {
       target: "./src/generated/gladia/api",
       client: "zod",
-      mode: "single",  // Use single mode for Node 18 compatibility
+      mode: "single", // Use single mode for Node 18 compatibility
       fileExtension: ".zod.ts",
       biome: true
     }
@@ -60,7 +60,7 @@ export default defineConfig({
       target: "./src/generated/assemblyai/api",
       schemas: "./src/generated/assemblyai/schema",
       client: "axios-functions",
-      mode: "single",  // Use single mode for Node 18 compatibility
+      mode: "single", // Use single mode for Node 18 compatibility
       biome: true,
       mock: {
         type: "msw",
@@ -74,7 +74,7 @@ export default defineConfig({
     output: {
       target: "./src/generated/assemblyai/api",
       client: "zod",
-      mode: "single",  // Use single mode for Node 18 compatibility
+      mode: "single", // Use single mode for Node 18 compatibility
       fileExtension: ".zod.ts",
       biome: true
     }
@@ -87,7 +87,7 @@ export default defineConfig({
       target: "./src/generated/deepgram/api",
       schemas: "./src/generated/deepgram/schema",
       client: "axios-functions",
-      mode: "single",  // Use single mode for Node 18 compatibility
+      mode: "single", // Use single mode for Node 18 compatibility
       biome: true,
       mock: {
         type: "msw",
@@ -101,7 +101,7 @@ export default defineConfig({
     output: {
       target: "./src/generated/deepgram/api",
       client: "zod",
-      mode: "single",  // Use single mode for Node 18 compatibility
+      mode: "single", // Use single mode for Node 18 compatibility
       fileExtension: ".zod.ts",
       biome: true
     }
@@ -116,7 +116,7 @@ export default defineConfig({
       client: "axios-functions",
       mode: "single",
       biome: true,
-      mock: false,  // Disable mock generation
+      mock: false, // Disable mock generation
       override: {
         operations: {
           // Only generate types, skip operations to avoid toSorted issue
@@ -131,7 +131,7 @@ export default defineConfig({
     output: {
       target: "./src/generated/openai/api",
       client: "zod",
-      mode: "single",  // Use single mode for Node 18 compatibility
+      mode: "single", // Use single mode for Node 18 compatibility
       fileExtension: ".zod.ts",
       biome: true
     }

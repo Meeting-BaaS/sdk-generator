@@ -9,10 +9,10 @@
 /**
  * Always `text`.
  */
-export type MessageRequestContentTextObjectType = typeof MessageRequestContentTextObjectType[keyof typeof MessageRequestContentTextObjectType];
-
+export type MessageRequestContentTextObjectType =
+  (typeof MessageRequestContentTextObjectType)[keyof typeof MessageRequestContentTextObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageRequestContentTextObjectType = {
-  text: 'text',
-} as const;
+  text: "text"
+} as const

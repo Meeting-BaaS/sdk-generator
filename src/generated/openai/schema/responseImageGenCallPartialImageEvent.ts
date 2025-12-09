@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseImageGenCallPartialImageEventType } from './responseImageGenCallPartialImageEventType';
+import type { ResponseImageGenCallPartialImageEventType } from "./responseImageGenCallPartialImageEventType"
 
 /**
  * Emitted when a partial image is available during image generation streaming.
@@ -13,15 +13,15 @@ import type { ResponseImageGenCallPartialImageEventType } from './responseImageG
  */
 export interface ResponseImageGenCallPartialImageEvent {
   /** The type of the event. Always 'response.image_generation_call.partial_image'. */
-  type: ResponseImageGenCallPartialImageEventType;
+  type: ResponseImageGenCallPartialImageEventType
   /** The index of the output item in the response's output array. */
-  output_index: number;
+  output_index: number
   /** The unique identifier of the image generation item being processed. */
-  item_id: string;
+  item_id: string
   /** The sequence number of the image generation item being processed. */
-  sequence_number: number;
+  sequence_number: number
   /** 0-based index for the partial image (backend is 1-based, but this is 0-based for the user). */
-  partial_image_index: number;
+  partial_image_index: number
   /** Base64-encoded partial image data, suitable for rendering as an image. */
-  partial_image_b64: string;
+  partial_image_b64: string
 }

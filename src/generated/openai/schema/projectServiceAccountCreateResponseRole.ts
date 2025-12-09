@@ -9,10 +9,10 @@
 /**
  * Service accounts can only have one role of type `member`
  */
-export type ProjectServiceAccountCreateResponseRole = typeof ProjectServiceAccountCreateResponseRole[keyof typeof ProjectServiceAccountCreateResponseRole];
-
+export type ProjectServiceAccountCreateResponseRole =
+  (typeof ProjectServiceAccountCreateResponseRole)[keyof typeof ProjectServiceAccountCreateResponseRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectServiceAccountCreateResponseRole = {
-  member: 'member',
-} as const;
+  member: "member"
+} as const

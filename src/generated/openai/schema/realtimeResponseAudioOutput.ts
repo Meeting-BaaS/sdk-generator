@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormats } from './realtimeAudioFormats';
-import type { VoiceIdsShared } from './voiceIdsShared';
+import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
+import type { VoiceIdsShared } from "./voiceIdsShared"
 
 export type RealtimeResponseAudioOutput = {
   /** The format of the output audio. */
-  format?: RealtimeAudioFormats;
+  format?: RealtimeAudioFormats
   /** The voice the model uses to respond. Voice cannot be changed during the
 session once the model has responded with audio at least once. Current
 voice options are `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`,
 `shimmer`, `verse`, `marin`, and `cedar`. We recommend `marin` and `cedar` for
 best quality.
  */
-  voice?: VoiceIdsShared;
-};
+  voice?: VoiceIdsShared
+}

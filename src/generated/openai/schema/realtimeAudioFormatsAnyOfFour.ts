@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormatsAnyOfFourType } from './realtimeAudioFormatsAnyOfFourType';
+import type { RealtimeAudioFormatsAnyOfFourType } from "./realtimeAudioFormatsAnyOfFourType"
 
 /**
  * The G.711 μ-law format.
  */
 export type RealtimeAudioFormatsAnyOfFour = {
   /** The audio format. Always `audio/pcmu`. */
-  type?: RealtimeAudioFormatsAnyOfFourType;
-};
+  type?: RealtimeAudioFormatsAnyOfFourType
+}

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ErrorCode } from './errorCode';
-import type { ErrorParam } from './errorParam';
+import type { ErrorCode } from "./errorCode"
+import type { ErrorParam } from "./errorParam"
 
 export interface Error {
-  code: ErrorCode;
-  message: string;
-  param: ErrorParam;
-  type: string;
+  code: ErrorCode
+  message: string
+  param: ErrorParam
+  type: string
 }

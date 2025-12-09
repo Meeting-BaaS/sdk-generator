@@ -9,10 +9,10 @@
 /**
  * For custom tool calling, the type is always `custom`.
  */
-export type ChatCompletionNamedToolChoiceCustomType = typeof ChatCompletionNamedToolChoiceCustomType[keyof typeof ChatCompletionNamedToolChoiceCustomType];
-
+export type ChatCompletionNamedToolChoiceCustomType =
+  (typeof ChatCompletionNamedToolChoiceCustomType)[keyof typeof ChatCompletionNamedToolChoiceCustomType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionNamedToolChoiceCustomType = {
-  custom: 'custom',
-} as const;
+  custom: "custom"
+} as const

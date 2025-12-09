@@ -9,10 +9,9 @@
 /**
  * Always `project.group`.
  */
-export type ProjectGroupObject = typeof ProjectGroupObject[keyof typeof ProjectGroupObject];
-
+export type ProjectGroupObject = (typeof ProjectGroupObject)[keyof typeof ProjectGroupObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectGroupObject = {
-  projectgroup: 'project.group',
-} as const;
+  projectgroup: "project.group"
+} as const

@@ -7,14 +7,14 @@
 
 export interface TranscriptionMetadataDTO {
   /** Duration of the transcribed audio file */
-  audio_duration: number;
+  audio_duration: number
   /**
    * Number of distinct channels in the transcribed audio file
    * @minimum 1
    */
-  number_of_distinct_channels: number;
+  number_of_distinct_channels: number
   /** Billed duration in seconds (audio_duration * number_of_distinct_channels) */
-  billing_time: number;
+  billing_time: number
   /** Duration of the transcription in seconds */
-  transcription_time: number;
+  transcription_time: number
 }

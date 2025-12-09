@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InferenceOptions } from './inferenceOptions';
+import type { InferenceOptions } from "./inferenceOptions"
 
-export type UserMessageItemInferenceOptions = InferenceOptions | null;
+export type UserMessageItemInferenceOptions = InferenceOptions | null

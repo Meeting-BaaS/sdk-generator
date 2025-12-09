@@ -9,10 +9,10 @@
 /**
  * The type of the output. Always `image`.
  */
-export type CodeInterpreterOutputImageType = typeof CodeInterpreterOutputImageType[keyof typeof CodeInterpreterOutputImageType];
-
+export type CodeInterpreterOutputImageType =
+  (typeof CodeInterpreterOutputImageType)[keyof typeof CodeInterpreterOutputImageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterOutputImageType = {
-  image: 'image',
-} as const;
+  image: "image"
+} as const

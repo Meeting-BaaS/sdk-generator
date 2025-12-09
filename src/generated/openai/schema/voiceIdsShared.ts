@@ -6,4 +6,15 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VoiceIdsShared = string | 'alloy' | 'ash' | 'ballad' | 'coral' | 'echo' | 'sage' | 'shimmer' | 'verse' | 'marin' | 'cedar';
+export type VoiceIdsShared =
+  | string
+  | "alloy"
+  | "ash"
+  | "ballad"
+  | "coral"
+  | "echo"
+  | "sage"
+  | "shimmer"
+  | "verse"
+  | "marin"
+  | "cedar"

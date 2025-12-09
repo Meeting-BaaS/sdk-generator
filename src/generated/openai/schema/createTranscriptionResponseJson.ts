@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateTranscriptionResponseJsonLogprobsItem } from './createTranscriptionResponseJsonLogprobsItem';
-import type { CreateTranscriptionResponseJsonUsage } from './createTranscriptionResponseJsonUsage';
+import type { CreateTranscriptionResponseJsonLogprobsItem } from "./createTranscriptionResponseJsonLogprobsItem"
+import type { CreateTranscriptionResponseJsonUsage } from "./createTranscriptionResponseJsonUsage"
 
 /**
  * Represents a transcription response returned by model, based on the provided input.
  */
 export interface CreateTranscriptionResponseJson {
   /** The transcribed text. */
-  text: string;
+  text: string
   /** The log probabilities of the tokens in the transcription. Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added to the `include` array.
- */
-  logprobs?: CreateTranscriptionResponseJsonLogprobsItem[];
+   */
+  logprobs?: CreateTranscriptionResponseJsonLogprobsItem[]
   /** Token usage statistics for the request. */
-  usage?: CreateTranscriptionResponseJsonUsage;
+  usage?: CreateTranscriptionResponseJsonUsage
 }

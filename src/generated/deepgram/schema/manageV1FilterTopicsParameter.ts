@@ -10,4 +10,4 @@
 /**
  * Filter for requests where topics was used
  */
-export type ManageV1FilterTopicsParameter = boolean;
+export type ManageV1FilterTopicsParameter = boolean

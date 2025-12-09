@@ -5,13 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderStringCheck } from './graderStringCheck';
-import type { GraderTextSimilarity } from './graderTextSimilarity';
-import type { GraderPython } from './graderPython';
-import type { GraderScoreModel } from './graderScoreModel';
-import type { GraderMulti } from './graderMulti';
+import type { GraderStringCheck } from "./graderStringCheck"
+import type { GraderTextSimilarity } from "./graderTextSimilarity"
+import type { GraderPython } from "./graderPython"
+import type { GraderScoreModel } from "./graderScoreModel"
+import type { GraderMulti } from "./graderMulti"
 
 /**
  * The grader used for the fine-tuning job.
  */
-export type FineTuneReinforcementMethodGrader = GraderStringCheck | GraderTextSimilarity | GraderPython | GraderScoreModel | GraderMulti;
+export type FineTuneReinforcementMethodGrader =
+  | GraderStringCheck
+  | GraderTextSimilarity
+  | GraderPython
+  | GraderScoreModel
+  | GraderMulti

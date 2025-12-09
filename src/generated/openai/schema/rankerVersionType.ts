@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RankerVersionType = typeof RankerVersionType[keyof typeof RankerVersionType];
-
+export type RankerVersionType = (typeof RankerVersionType)[keyof typeof RankerVersionType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RankerVersionType = {
-  auto: 'auto',
-  'default-2024-11-15': 'default-2024-11-15',
-} as const;
+  auto: "auto",
+  "default-2024-11-15": "default-2024-11-15"
+} as const

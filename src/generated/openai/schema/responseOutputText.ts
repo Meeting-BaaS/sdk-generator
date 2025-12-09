@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseOutputTextType } from './responseOutputTextType';
-import type { ResponseOutputTextAnnotationsItem } from './responseOutputTextAnnotationsItem';
+import type { ResponseOutputTextType } from "./responseOutputTextType"
+import type { ResponseOutputTextAnnotationsItem } from "./responseOutputTextAnnotationsItem"
 
 /**
  * Assistant response text accompanied by optional annotations.
  */
 export interface ResponseOutputText {
   /** Type discriminator that is always `output_text`. */
-  type: ResponseOutputTextType;
+  type: ResponseOutputTextType
   /** Assistant generated text. */
-  text: string;
+  text: string
   /** Ordered list of annotations attached to the response text. */
-  annotations: ResponseOutputTextAnnotationsItem[];
+  annotations: ResponseOutputTextAnnotationsItem[]
 }

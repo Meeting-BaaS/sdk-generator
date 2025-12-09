@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateContainerBodyExpiresAfter } from './createContainerBodyExpiresAfter';
-import type { CreateContainerBodyMemoryLimit } from './createContainerBodyMemoryLimit';
+import type { CreateContainerBodyExpiresAfter } from "./createContainerBodyExpiresAfter"
+import type { CreateContainerBodyMemoryLimit } from "./createContainerBodyMemoryLimit"
 
 export interface CreateContainerBody {
   /** Name of the container to create. */
-  name: string;
+  name: string
   /** IDs of files to copy to the container. */
-  file_ids?: string[];
+  file_ids?: string[]
   /** Container expiration time in seconds relative to the 'anchor' time. */
-  expires_after?: CreateContainerBodyExpiresAfter;
+  expires_after?: CreateContainerBodyExpiresAfter
   /** Optional memory limit for the container. Defaults to "1g". */
-  memory_limit?: CreateContainerBodyMemoryLimit;
+  memory_limit?: CreateContainerBodyMemoryLimit
 }

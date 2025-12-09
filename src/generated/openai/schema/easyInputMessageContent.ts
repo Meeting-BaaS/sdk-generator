@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputMessageContentList } from './inputMessageContentList';
+import type { InputMessageContentList } from "./inputMessageContentList"
 
 /**
  * Text, image, or audio input to the model, used to generate a response.
 Can also contain previous assistant responses.
 
  */
-export type EasyInputMessageContent = string | InputMessageContentList;
+export type EasyInputMessageContent = string | InputMessageContentList

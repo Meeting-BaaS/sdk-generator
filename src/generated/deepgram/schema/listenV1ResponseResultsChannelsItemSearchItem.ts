@@ -6,9 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItemSearchItemHitsItem } from './listenV1ResponseResultsChannelsItemSearchItemHitsItem';
+import type { ListenV1ResponseResultsChannelsItemSearchItemHitsItem } from "./listenV1ResponseResultsChannelsItemSearchItemHitsItem"
 
 export type ListenV1ResponseResultsChannelsItemSearchItem = {
-  query?: string;
-  hits?: ListenV1ResponseResultsChannelsItemSearchItemHitsItem[];
-};
+  query?: string
+  hits?: ListenV1ResponseResultsChannelsItemSearchItemHitsItem[]
+}

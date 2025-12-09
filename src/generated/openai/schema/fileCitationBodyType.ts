@@ -9,10 +9,9 @@
 /**
  * The type of the file citation. Always `file_citation`.
  */
-export type FileCitationBodyType = typeof FileCitationBodyType[keyof typeof FileCitationBodyType];
-
+export type FileCitationBodyType = (typeof FileCitationBodyType)[keyof typeof FileCitationBodyType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileCitationBodyType = {
-  file_citation: 'file_citation',
-} as const;
+  file_citation: "file_citation"
+} as const

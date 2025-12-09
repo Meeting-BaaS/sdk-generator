@@ -5,28 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseRefusalDoneEventType } from './responseRefusalDoneEventType';
+import type { ResponseRefusalDoneEventType } from "./responseRefusalDoneEventType"
 
 /**
  * Emitted when refusal text is finalized.
  */
 export interface ResponseRefusalDoneEvent {
   /** The type of the event. Always `response.refusal.done`.
- */
-  type: ResponseRefusalDoneEventType;
+   */
+  type: ResponseRefusalDoneEventType
   /** The ID of the output item that the refusal text is finalized.
- */
-  item_id: string;
+   */
+  item_id: string
   /** The index of the output item that the refusal text is finalized.
- */
-  output_index: number;
+   */
+  output_index: number
   /** The index of the content part that the refusal text is finalized.
- */
-  content_index: number;
+   */
+  content_index: number
   /** The refusal text that is finalized.
- */
-  refusal: string;
+   */
+  refusal: string
   /** The sequence number of this event.
- */
-  sequence_number: number;
+   */
+  sequence_number: number
 }

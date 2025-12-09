@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.queued'.
  */
-export type ResponseQueuedEventType = typeof ResponseQueuedEventType[keyof typeof ResponseQueuedEventType];
-
+export type ResponseQueuedEventType =
+  (typeof ResponseQueuedEventType)[keyof typeof ResponseQueuedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseQueuedEventType = {
-  responsequeued: 'response.queued',
-} as const;
+  responsequeued: "response.queued"
+} as const

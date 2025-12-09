@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookBatchCompletedData } from './webhookBatchCompletedData';
-import type { WebhookBatchCompletedObject } from './webhookBatchCompletedObject';
-import type { WebhookBatchCompletedType } from './webhookBatchCompletedType';
+import type { WebhookBatchCompletedData } from "./webhookBatchCompletedData"
+import type { WebhookBatchCompletedObject } from "./webhookBatchCompletedObject"
+import type { WebhookBatchCompletedType } from "./webhookBatchCompletedType"
 
 /**
  * Sent when a batch API request has been completed.
@@ -15,18 +15,18 @@ import type { WebhookBatchCompletedType } from './webhookBatchCompletedType';
  */
 export interface WebhookBatchCompleted {
   /** The Unix timestamp (in seconds) of when the batch API request was completed.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookBatchCompletedData;
+   */
+  data: WebhookBatchCompletedData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookBatchCompletedObject;
+   */
+  object?: WebhookBatchCompletedObject
   /** The type of the event. Always `batch.completed`.
- */
-  type: WebhookBatchCompletedType;
+   */
+  type: WebhookBatchCompletedType
 }

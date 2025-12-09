@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningIntegrationType } from './fineTuningIntegrationType';
-import type { FineTuningIntegrationWandb } from './fineTuningIntegrationWandb';
+import type { FineTuningIntegrationType } from "./fineTuningIntegrationType"
+import type { FineTuningIntegrationWandb } from "./fineTuningIntegrationWandb"
 
 export interface FineTuningIntegration {
   /** The type of the integration being enabled for the fine-tuning job */
-  type: FineTuningIntegrationType;
+  type: FineTuningIntegrationType
   /** The settings for your integration with Weights and Biases. This payload specifies the project that
 metrics will be sent to. Optionally, you can set an explicit display name for your run, add tags
 to your run, and set a default entity (team, username, etc) to be associated with your run.
  */
-  wandb: FineTuningIntegrationWandb;
+  wandb: FineTuningIntegrationWandb
 }

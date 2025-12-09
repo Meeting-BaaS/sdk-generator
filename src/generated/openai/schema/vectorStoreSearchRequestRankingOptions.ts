@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreSearchRequestRankingOptionsRanker } from './vectorStoreSearchRequestRankingOptionsRanker';
+import type { VectorStoreSearchRequestRankingOptionsRanker } from "./vectorStoreSearchRequestRankingOptionsRanker"
 
 /**
  * Ranking options for search.
  */
 export type VectorStoreSearchRequestRankingOptions = {
   /** Enable re-ranking; set to `none` to disable, which can help reduce latency. */
-  ranker?: VectorStoreSearchRequestRankingOptionsRanker;
+  ranker?: VectorStoreSearchRequestRankingOptionsRanker
   /**
    * @minimum 0
    * @maximum 1
    */
-  score_threshold?: number;
-};
+  score_threshold?: number
+}

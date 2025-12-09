@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `organization.invite`
  */
-export type InviteObject = typeof InviteObject[keyof typeof InviteObject];
-
+export type InviteObject = (typeof InviteObject)[keyof typeof InviteObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InviteObject = {
-  organizationinvite: 'organization.invite',
-} as const;
+  organizationinvite: "organization.invite"
+} as const

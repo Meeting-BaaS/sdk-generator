@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningCheckpointPermissionObject } from './fineTuningCheckpointPermissionObject';
+import type { FineTuningCheckpointPermissionObject } from "./fineTuningCheckpointPermissionObject"
 
 /**
  * The `checkpoint.permission` object represents a permission for a fine-tuned model checkpoint.
@@ -13,11 +13,11 @@ import type { FineTuningCheckpointPermissionObject } from './fineTuningCheckpoin
  */
 export interface FineTuningCheckpointPermission {
   /** The permission identifier, which can be referenced in the API endpoints. */
-  id: string;
+  id: string
   /** The Unix timestamp (in seconds) for when the permission was created. */
-  created_at: number;
+  created_at: number
   /** The project identifier that the permission is for. */
-  project_id: string;
+  project_id: string
   /** The object type, which is always "checkpoint.permission". */
-  object: FineTuningCheckpointPermissionObject;
+  object: FineTuningCheckpointPermissionObject
 }

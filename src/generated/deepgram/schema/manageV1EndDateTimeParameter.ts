@@ -10,4 +10,4 @@
 /**
  * End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM
  */
-export type ManageV1EndDateTimeParameter = string;
+export type ManageV1EndDateTimeParameter = string

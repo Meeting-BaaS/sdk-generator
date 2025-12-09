@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaObjectObject } from './messageDeltaObjectObject';
-import type { MessageDeltaObjectDelta } from './messageDeltaObjectDelta';
+import type { MessageDeltaObjectObject } from "./messageDeltaObjectObject"
+import type { MessageDeltaObjectDelta } from "./messageDeltaObjectDelta"
 
 /**
  * Represents a message delta i.e. any changed fields on a message during streaming.
@@ -14,9 +14,9 @@ import type { MessageDeltaObjectDelta } from './messageDeltaObjectDelta';
  */
 export interface MessageDeltaObject {
   /** The identifier of the message, which can be referenced in API endpoints. */
-  id: string;
+  id: string
   /** The object type, which is always `thread.message.delta`. */
-  object: MessageDeltaObjectObject;
+  object: MessageDeltaObjectObject
   /** The delta containing the fields that have changed on the Message. */
-  delta: MessageDeltaObjectDelta;
+  delta: MessageDeltaObjectDelta
 }

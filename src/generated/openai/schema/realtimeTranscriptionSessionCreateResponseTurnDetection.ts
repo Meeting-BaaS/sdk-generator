@@ -14,20 +14,20 @@ audio volume and respond at the end of user speech.
  */
 export type RealtimeTranscriptionSessionCreateResponseTurnDetection = {
   /** Type of turn detection, only `server_vad` is currently supported.
- */
-  type?: string;
+   */
+  type?: string
   /** Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A
 higher threshold will require louder audio to activate the model, and
 thus might perform better in noisy environments.
  */
-  threshold?: number;
+  threshold?: number
   /** Amount of audio to include before the VAD detected speech (in
 milliseconds). Defaults to 300ms.
  */
-  prefix_padding_ms?: number;
+  prefix_padding_ms?: number
   /** Duration of silence to detect speech stop (in milliseconds). Defaults
 to 500ms. With shorter values the model will respond more quickly,
 but may jump in on short pauses from the user.
  */
-  silence_duration_ms?: number;
-};
+  silence_duration_ms?: number
+}

@@ -10,10 +10,9 @@
  * The type of the message input. Always `message`.
 
  */
-export type EvalItemType = typeof EvalItemType[keyof typeof EvalItemType];
-
+export type EvalItemType = (typeof EvalItemType)[keyof typeof EvalItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalItemType = {
-  message: 'message',
-} as const;
+  message: "message"
+} as const

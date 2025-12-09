@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageEmbeddingsResultObject } from './usageEmbeddingsResultObject';
-import type { UsageEmbeddingsResultProjectId } from './usageEmbeddingsResultProjectId';
-import type { UsageEmbeddingsResultUserId } from './usageEmbeddingsResultUserId';
-import type { UsageEmbeddingsResultApiKeyId } from './usageEmbeddingsResultApiKeyId';
-import type { UsageEmbeddingsResultModel } from './usageEmbeddingsResultModel';
+import type { UsageEmbeddingsResultObject } from "./usageEmbeddingsResultObject"
+import type { UsageEmbeddingsResultProjectId } from "./usageEmbeddingsResultProjectId"
+import type { UsageEmbeddingsResultUserId } from "./usageEmbeddingsResultUserId"
+import type { UsageEmbeddingsResultApiKeyId } from "./usageEmbeddingsResultApiKeyId"
+import type { UsageEmbeddingsResultModel } from "./usageEmbeddingsResultModel"
 
 /**
  * The aggregated embeddings usage details of the specific time bucket.
  */
 export interface UsageEmbeddingsResult {
-  object: UsageEmbeddingsResultObject;
+  object: UsageEmbeddingsResultObject
   /** The aggregated number of input tokens used. */
-  input_tokens: number;
+  input_tokens: number
   /** The count of requests made to the model. */
-  num_model_requests: number;
-  project_id?: UsageEmbeddingsResultProjectId;
-  user_id?: UsageEmbeddingsResultUserId;
-  api_key_id?: UsageEmbeddingsResultApiKeyId;
-  model?: UsageEmbeddingsResultModel;
+  num_model_requests: number
+  project_id?: UsageEmbeddingsResultProjectId
+  user_id?: UsageEmbeddingsResultUserId
+  api_key_id?: UsageEmbeddingsResultApiKeyId
+  model?: UsageEmbeddingsResultModel
 }

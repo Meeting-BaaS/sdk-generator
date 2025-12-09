@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ProjectRateLimitListResponseObject = typeof ProjectRateLimitListResponseObject[keyof typeof ProjectRateLimitListResponseObject];
-
+export type ProjectRateLimitListResponseObject =
+  (typeof ProjectRateLimitListResponseObject)[keyof typeof ProjectRateLimitListResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectRateLimitListResponseObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaResponse } from './realtimeBetaResponse';
+import type { RealtimeBetaResponse } from "./realtimeBetaResponse"
 
 /**
  * Returned when a Response is done streaming. Always emitted, no matter the 
@@ -15,8 +15,8 @@ include all output Items in the Response but will omit the raw audio data.
  */
 export interface RealtimeBetaServerEventResponseDone {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `response.done`. */
-  type: 'response.done';
-  response: RealtimeBetaResponse;
+  type: "response.done"
+  response: RealtimeBetaResponse
 }

@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType } from './runStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType';
+import type { RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType } from "./runStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType"
 
 /**
  * Text output from the Code Interpreter tool call as part of a run step.
  */
 export interface RunStepDeltaStepDetailsToolCallsCodeOutputLogsObject {
   /** The index of the output in the outputs array. */
-  index: number;
+  index: number
   /** Always `logs`. */
-  type: RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType;
+  type: RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType
   /** The text output from the Code Interpreter tool call. */
-  logs?: string;
+  logs?: string
 }

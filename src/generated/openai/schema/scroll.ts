@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ScrollType } from './scrollType';
+import type { ScrollType } from "./scrollType"
 
 /**
  * A scroll action.
@@ -15,17 +15,17 @@ export interface Scroll {
   /** Specifies the event type. For a scroll action, this property is 
 always set to `scroll`.
  */
-  type: ScrollType;
+  type: ScrollType
   /** The x-coordinate where the scroll occurred.
- */
-  x: number;
+   */
+  x: number
   /** The y-coordinate where the scroll occurred.
- */
-  y: number;
+   */
+  y: number
   /** The horizontal scroll distance.
- */
-  scroll_x: number;
+   */
+  scroll_x: number
   /** The vertical scroll distance.
- */
-  scroll_y: number;
+   */
+  scroll_y: number
 }

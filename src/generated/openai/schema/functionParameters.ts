@@ -11,4 +11,6 @@
 
 Omitting `parameters` defines a function with an empty parameter list.
  */
-export interface FunctionParameters { [key: string]: unknown }
+export interface FunctionParameters {
+  [key: string]: unknown
+}

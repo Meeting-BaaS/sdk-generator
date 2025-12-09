@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.client_tool_call`.
  */
-export type ClientToolCallItemType = typeof ClientToolCallItemType[keyof typeof ClientToolCallItemType];
-
+export type ClientToolCallItemType =
+  (typeof ClientToolCallItemType)[keyof typeof ClientToolCallItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ClientToolCallItemType = {
-  chatkitclient_tool_call: 'chatkit.client_tool_call',
-} as const;
+  chatkitclient_tool_call: "chatkit.client_tool_call"
+} as const

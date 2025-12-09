@@ -9,12 +9,12 @@
 /**
  * Enable re-ranking; set to `none` to disable, which can help reduce latency.
  */
-export type VectorStoreSearchRequestRankingOptionsRanker = typeof VectorStoreSearchRequestRankingOptionsRanker[keyof typeof VectorStoreSearchRequestRankingOptionsRanker];
-
+export type VectorStoreSearchRequestRankingOptionsRanker =
+  (typeof VectorStoreSearchRequestRankingOptionsRanker)[keyof typeof VectorStoreSearchRequestRankingOptionsRanker]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreSearchRequestRankingOptionsRanker = {
-  none: 'none',
-  auto: 'auto',
-  'default-2024-11-15': 'default-2024-11-15',
-} as const;
+  none: "none",
+  auto: "auto",
+  "default-2024-11-15": "default-2024-11-15"
+} as const

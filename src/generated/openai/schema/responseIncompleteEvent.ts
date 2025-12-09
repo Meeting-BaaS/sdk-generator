@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseIncompleteEventType } from './responseIncompleteEventType';
-import type { Response } from './response';
+import type { ResponseIncompleteEventType } from "./responseIncompleteEventType"
+import type { Response } from "./response"
 
 /**
  * An event that is emitted when a response finishes as incomplete.
@@ -14,11 +14,11 @@ import type { Response } from './response';
  */
 export interface ResponseIncompleteEvent {
   /** The type of the event. Always `response.incomplete`.
- */
-  type: ResponseIncompleteEventType;
+   */
+  type: ResponseIncompleteEventType
   /** The response that was incomplete.
- */
-  response: Response;
+   */
+  response: Response
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
 }

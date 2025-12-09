@@ -14,13 +14,13 @@ or `client_cancelled` (the client sent a cancel event). For an
 (the server-side safety filter activated and cut off the response).
 
  */
-export type RealtimeBetaResponseStatusDetailsReason = typeof RealtimeBetaResponseStatusDetailsReason[keyof typeof RealtimeBetaResponseStatusDetailsReason];
-
+export type RealtimeBetaResponseStatusDetailsReason =
+  (typeof RealtimeBetaResponseStatusDetailsReason)[keyof typeof RealtimeBetaResponseStatusDetailsReason]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeBetaResponseStatusDetailsReason = {
-  turn_detected: 'turn_detected',
-  client_cancelled: 'client_cancelled',
-  max_output_tokens: 'max_output_tokens',
-  content_filter: 'content_filter',
-} as const;
+  turn_detected: "turn_detected",
+  client_cancelled: "client_cancelled",
+  max_output_tokens: "max_output_tokens",
+  content_filter: "content_filter"
+} as const

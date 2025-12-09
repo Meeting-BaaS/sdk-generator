@@ -10,4 +10,4 @@
  * Whether custom topics is enabled, either true or false
  * @deprecated
  */
-export type TranscriptCustomTopics = boolean | null;
+export type TranscriptCustomTopics = boolean | null

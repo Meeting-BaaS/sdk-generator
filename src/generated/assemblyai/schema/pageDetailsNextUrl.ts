@@ -9,4 +9,4 @@
 /**
  * The URL to the next page of transcripts. The next URL always points to a page with newer transcripts.
  */
-export type PageDetailsNextUrl = string | null;
+export type PageDetailsNextUrl = string | null

@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadResourceObject } from './threadResourceObject';
-import type { ThreadResourceTitle } from './threadResourceTitle';
-import type { ThreadResourceStatus } from './threadResourceStatus';
+import type { ThreadResourceObject } from "./threadResourceObject"
+import type { ThreadResourceTitle } from "./threadResourceTitle"
+import type { ThreadResourceStatus } from "./threadResourceStatus"
 
 /**
  * Represents a ChatKit thread and its current status.
  */
 export interface ThreadResource {
   /** Identifier of the thread. */
-  id: string;
+  id: string
   /** Type discriminator that is always `chatkit.thread`. */
-  object: ThreadResourceObject;
+  object: ThreadResourceObject
   /** Unix timestamp (in seconds) for when the thread was created. */
-  created_at: number;
-  title: ThreadResourceTitle;
+  created_at: number
+  title: ThreadResourceTitle
   /** Current status for the thread. Defaults to `active` for newly created threads. */
-  status: ThreadResourceStatus;
+  status: ThreadResourceStatus
   /** Free-form string that identifies your end user who owns the thread. */
-  user: string;
+  user: string
 }

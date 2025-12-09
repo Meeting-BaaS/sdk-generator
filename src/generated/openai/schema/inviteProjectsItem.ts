@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InviteProjectsItemRole } from './inviteProjectsItemRole';
+import type { InviteProjectsItemRole } from "./inviteProjectsItemRole"
 
 export type InviteProjectsItem = {
   /** Project's public ID */
-  id?: string;
+  id?: string
   /** Project membership role */
-  role?: InviteProjectsItemRole;
-};
+  role?: InviteProjectsItemRole
+}

@@ -10,10 +10,10 @@
  * The anchor point for the client secret expiration, meaning that `seconds` will be added to the `created_at` time of the client secret to produce an expiration timestamp. Only `created_at` is currently supported.
 
  */
-export type RealtimeCreateClientSecretRequestExpiresAfterAnchor = typeof RealtimeCreateClientSecretRequestExpiresAfterAnchor[keyof typeof RealtimeCreateClientSecretRequestExpiresAfterAnchor];
-
+export type RealtimeCreateClientSecretRequestExpiresAfterAnchor =
+  (typeof RealtimeCreateClientSecretRequestExpiresAfterAnchor)[keyof typeof RealtimeCreateClientSecretRequestExpiresAfterAnchor]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeCreateClientSecretRequestExpiresAfterAnchor = {
-  created_at: 'created_at',
-} as const;
+  created_at: "created_at"
+} as const

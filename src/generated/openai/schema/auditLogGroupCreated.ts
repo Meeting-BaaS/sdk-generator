@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogGroupCreatedData } from './auditLogGroupCreatedData';
+import type { AuditLogGroupCreatedData } from "./auditLogGroupCreatedData"
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogGroupCreated = {
   /** The ID of the group. */
-  id?: string;
+  id?: string
   /** Information about the created group. */
-  data?: AuditLogGroupCreatedData;
-};
+  data?: AuditLogGroupCreatedData
+}

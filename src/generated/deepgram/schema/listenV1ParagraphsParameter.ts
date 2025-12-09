@@ -10,4 +10,4 @@
 /**
  * Splits audio into paragraphs to improve transcript readability
  */
-export type ListenV1ParagraphsParameter = boolean;
+export type ListenV1ParagraphsParameter = boolean

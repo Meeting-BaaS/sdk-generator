@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalCompletionsRunDataSourceInputMessagesAnyOfType } from './createEvalCompletionsRunDataSourceInputMessagesAnyOfType';
-import type { CreateEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem } from './createEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem';
+import type { CreateEvalCompletionsRunDataSourceInputMessagesAnyOfType } from "./createEvalCompletionsRunDataSourceInputMessagesAnyOfType"
+import type { CreateEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem } from "./createEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem"
 
 export type CreateEvalCompletionsRunDataSourceInputMessagesAnyOf = {
   /** The type of input messages. Always `template`. */
-  type: CreateEvalCompletionsRunDataSourceInputMessagesAnyOfType;
+  type: CreateEvalCompletionsRunDataSourceInputMessagesAnyOfType
   /** A list of chat messages forming the prompt or context. May include variable references to the `item` namespace, ie {{item.name}}. */
-  template: CreateEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem[];
-};
+  template: CreateEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem[]
+}

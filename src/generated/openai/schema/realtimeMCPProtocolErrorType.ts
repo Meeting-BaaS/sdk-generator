@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeMCPProtocolErrorType = typeof RealtimeMCPProtocolErrorType[keyof typeof RealtimeMCPProtocolErrorType];
-
+export type RealtimeMCPProtocolErrorType =
+  (typeof RealtimeMCPProtocolErrorType)[keyof typeof RealtimeMCPProtocolErrorType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeMCPProtocolErrorType = {
-  protocol_error: 'protocol_error',
-} as const;
+  protocol_error: "protocol_error"
+} as const

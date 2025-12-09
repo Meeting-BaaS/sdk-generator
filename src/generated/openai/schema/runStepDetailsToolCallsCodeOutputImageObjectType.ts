@@ -9,10 +9,10 @@
 /**
  * Always `image`.
  */
-export type RunStepDetailsToolCallsCodeOutputImageObjectType = typeof RunStepDetailsToolCallsCodeOutputImageObjectType[keyof typeof RunStepDetailsToolCallsCodeOutputImageObjectType];
-
+export type RunStepDetailsToolCallsCodeOutputImageObjectType =
+  (typeof RunStepDetailsToolCallsCodeOutputImageObjectType)[keyof typeof RunStepDetailsToolCallsCodeOutputImageObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDetailsToolCallsCodeOutputImageObjectType = {
-  image: 'image',
-} as const;
+  image: "image"
+} as const

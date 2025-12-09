@@ -5,10 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AutoChunkingStrategyRequestParam } from './autoChunkingStrategyRequestParam';
-import type { StaticChunkingStrategyRequestParam } from './staticChunkingStrategyRequestParam';
+import type { AutoChunkingStrategyRequestParam } from "./autoChunkingStrategyRequestParam"
+import type { StaticChunkingStrategyRequestParam } from "./staticChunkingStrategyRequestParam"
 
 /**
  * The chunking strategy used to chunk the file(s). If not set, will use the `auto` strategy. Only applicable if `file_ids` is non-empty.
  */
-export type ChunkingStrategyRequestParam = AutoChunkingStrategyRequestParam | StaticChunkingStrategyRequestParam;
+export type ChunkingStrategyRequestParam =
+  | AutoChunkingStrategyRequestParam
+  | StaticChunkingStrategyRequestParam

@@ -8,9 +8,9 @@
 
 export type CertificateCertificateDetails = {
   /** The Unix timestamp (in seconds) of when the certificate becomes valid. */
-  valid_at?: number;
+  valid_at?: number
   /** The Unix timestamp (in seconds) of when the certificate expires. */
-  expires_at?: number;
+  expires_at?: number
   /** The content of the certificate in PEM format. */
-  content?: string;
-};
+  content?: string
+}

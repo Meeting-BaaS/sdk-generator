@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem = typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem[keyof typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem];
-
+export type CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem =
+  (typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem)[keyof typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem = {
-  text: 'text',
-} as const;
+  text: "text"
+} as const

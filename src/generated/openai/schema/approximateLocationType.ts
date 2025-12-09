@@ -9,10 +9,10 @@
 /**
  * The type of location approximation. Always `approximate`.
  */
-export type ApproximateLocationType = typeof ApproximateLocationType[keyof typeof ApproximateLocationType];
-
+export type ApproximateLocationType =
+  (typeof ApproximateLocationType)[keyof typeof ApproximateLocationType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApproximateLocationType = {
-  approximate: 'approximate',
-} as const;
+  approximate: "approximate"
+} as const

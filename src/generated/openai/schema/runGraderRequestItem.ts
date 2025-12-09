@@ -11,4 +11,4 @@
 the `item` namespace. See [the guide](https://platform.openai.com/docs/guides/graders) for more details. 
 
  */
-export type RunGraderRequestItem = { [key: string]: unknown };
+export type RunGraderRequestItem = { [key: string]: unknown }

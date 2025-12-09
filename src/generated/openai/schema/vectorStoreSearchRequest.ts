@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreSearchRequestQuery } from './vectorStoreSearchRequestQuery';
-import type { VectorStoreSearchRequestFilters } from './vectorStoreSearchRequestFilters';
-import type { VectorStoreSearchRequestRankingOptions } from './vectorStoreSearchRequestRankingOptions';
+import type { VectorStoreSearchRequestQuery } from "./vectorStoreSearchRequestQuery"
+import type { VectorStoreSearchRequestFilters } from "./vectorStoreSearchRequestFilters"
+import type { VectorStoreSearchRequestRankingOptions } from "./vectorStoreSearchRequestRankingOptions"
 
 export interface VectorStoreSearchRequest {
   /** A query string for a search */
-  query: VectorStoreSearchRequestQuery;
+  query: VectorStoreSearchRequestQuery
   /** Whether to rewrite the natural language query for vector search. */
-  rewrite_query?: boolean;
+  rewrite_query?: boolean
   /**
    * The maximum number of results to return. This number should be between 1 and 50 inclusive.
    * @minimum 1
    * @maximum 50
    */
-  max_num_results?: number;
+  max_num_results?: number
   /** A filter to apply based on file attributes. */
-  filters?: VectorStoreSearchRequestFilters;
+  filters?: VectorStoreSearchRequestFilters
   /** Ranking options for search. */
-  ranking_options?: VectorStoreSearchRequestRankingOptions;
+  ranking_options?: VectorStoreSearchRequestRankingOptions
 }

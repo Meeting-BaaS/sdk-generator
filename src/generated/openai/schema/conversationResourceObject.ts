@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `conversation`.
  */
-export type ConversationResourceObject = typeof ConversationResourceObject[keyof typeof ConversationResourceObject];
-
+export type ConversationResourceObject =
+  (typeof ConversationResourceObject)[keyof typeof ConversationResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ConversationResourceObject = {
-  conversation: 'conversation',
-} as const;
+  conversation: "conversation"
+} as const

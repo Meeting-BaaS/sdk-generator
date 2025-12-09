@@ -10,10 +10,10 @@
  * The type of the event. Always `response.web_search_call.completed`.
 
  */
-export type ResponseWebSearchCallCompletedEventType = typeof ResponseWebSearchCallCompletedEventType[keyof typeof ResponseWebSearchCallCompletedEventType];
-
+export type ResponseWebSearchCallCompletedEventType =
+  (typeof ResponseWebSearchCallCompletedEventType)[keyof typeof ResponseWebSearchCallCompletedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseWebSearchCallCompletedEventType = {
-  responseweb_search_callcompleted: 'response.web_search_call.completed',
-} as const;
+  responseweb_search_callcompleted: "response.web_search_call.completed"
+} as const

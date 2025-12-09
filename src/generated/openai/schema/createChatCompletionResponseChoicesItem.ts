@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateChatCompletionResponseChoicesItemFinishReason } from './createChatCompletionResponseChoicesItemFinishReason';
-import type { ChatCompletionResponseMessage } from './chatCompletionResponseMessage';
-import type { CreateChatCompletionResponseChoicesItemLogprobs } from './createChatCompletionResponseChoicesItemLogprobs';
+import type { CreateChatCompletionResponseChoicesItemFinishReason } from "./createChatCompletionResponseChoicesItemFinishReason"
+import type { ChatCompletionResponseMessage } from "./chatCompletionResponseMessage"
+import type { CreateChatCompletionResponseChoicesItemLogprobs } from "./createChatCompletionResponseChoicesItemLogprobs"
 
 export type CreateChatCompletionResponseChoicesItem = {
   /** The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
@@ -15,9 +15,9 @@ export type CreateChatCompletionResponseChoicesItem = {
 `content_filter` if content was omitted due to a flag from our content filters,
 `tool_calls` if the model called a tool, or `function_call` (deprecated) if the model called a function.
  */
-  finish_reason: CreateChatCompletionResponseChoicesItemFinishReason;
+  finish_reason: CreateChatCompletionResponseChoicesItemFinishReason
   /** The index of the choice in the list of choices. */
-  index: number;
-  message: ChatCompletionResponseMessage;
-  logprobs: CreateChatCompletionResponseChoicesItemLogprobs;
-};
+  index: number
+  message: ChatCompletionResponseMessage
+  logprobs: CreateChatCompletionResponseChoicesItemLogprobs
+}

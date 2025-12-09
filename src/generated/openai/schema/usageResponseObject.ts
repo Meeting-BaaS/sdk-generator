@@ -6,10 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageResponseObject = typeof UsageResponseObject[keyof typeof UsageResponseObject];
-
+export type UsageResponseObject = (typeof UsageResponseObject)[keyof typeof UsageResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageResponseObject = {
-  page: 'page',
-} as const;
+  page: "page"
+} as const

@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `organization.project.service_account.api_key`
  */
-export type ProjectServiceAccountApiKeyObject = typeof ProjectServiceAccountApiKeyObject[keyof typeof ProjectServiceAccountApiKeyObject];
-
+export type ProjectServiceAccountApiKeyObject =
+  (typeof ProjectServiceAccountApiKeyObject)[keyof typeof ProjectServiceAccountApiKeyObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectServiceAccountApiKeyObject = {
-  organizationprojectservice_accountapi_key: 'organization.project.service_account.api_key',
-} as const;
+  organizationprojectservice_accountapi_key: "organization.project.service_account.api_key"
+} as const

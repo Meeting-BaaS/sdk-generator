@@ -9,10 +9,10 @@
 /**
  * The type of response format being defined. Always `json_schema`.
  */
-export type TextResponseFormatJsonSchemaType = typeof TextResponseFormatJsonSchemaType[keyof typeof TextResponseFormatJsonSchemaType];
-
+export type TextResponseFormatJsonSchemaType =
+  (typeof TextResponseFormatJsonSchemaType)[keyof typeof TextResponseFormatJsonSchemaType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TextResponseFormatJsonSchemaType = {
-  json_schema: 'json_schema',
-} as const;
+  json_schema: "json_schema"
+} as const

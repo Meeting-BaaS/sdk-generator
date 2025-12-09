@@ -10,10 +10,10 @@
  * The action type.
 
  */
-export type WebSearchActionFindType = typeof WebSearchActionFindType[keyof typeof WebSearchActionFindType];
-
+export type WebSearchActionFindType =
+  (typeof WebSearchActionFindType)[keyof typeof WebSearchActionFindType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchActionFindType = {
-  find: 'find',
-} as const;
+  find: "find"
+} as const

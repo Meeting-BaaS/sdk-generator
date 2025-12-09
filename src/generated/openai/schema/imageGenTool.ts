@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageGenToolType } from './imageGenToolType';
-import type { ImageGenToolModel } from './imageGenToolModel';
-import type { ImageGenToolQuality } from './imageGenToolQuality';
-import type { ImageGenToolSize } from './imageGenToolSize';
-import type { ImageGenToolOutputFormat } from './imageGenToolOutputFormat';
-import type { ImageGenToolModeration } from './imageGenToolModeration';
-import type { ImageGenToolBackground } from './imageGenToolBackground';
-import type { ImageGenToolInputFidelity } from './imageGenToolInputFidelity';
-import type { ImageGenToolInputImageMask } from './imageGenToolInputImageMask';
+import type { ImageGenToolType } from "./imageGenToolType"
+import type { ImageGenToolModel } from "./imageGenToolModel"
+import type { ImageGenToolQuality } from "./imageGenToolQuality"
+import type { ImageGenToolSize } from "./imageGenToolSize"
+import type { ImageGenToolOutputFormat } from "./imageGenToolOutputFormat"
+import type { ImageGenToolModeration } from "./imageGenToolModeration"
+import type { ImageGenToolBackground } from "./imageGenToolBackground"
+import type { ImageGenToolInputFidelity } from "./imageGenToolInputFidelity"
+import type { ImageGenToolInputImageMask } from "./imageGenToolInputImageMask"
 
 /**
  * A tool that generates images using a model like `gpt-image-1`.
@@ -21,47 +21,47 @@ import type { ImageGenToolInputImageMask } from './imageGenToolInputImageMask';
  */
 export interface ImageGenTool {
   /** The type of the image generation tool. Always `image_generation`.
- */
-  type: ImageGenToolType;
+   */
+  type: ImageGenToolType
   /** The image generation model to use. Default: `gpt-image-1`.
- */
-  model?: ImageGenToolModel;
+   */
+  model?: ImageGenToolModel
   /** The quality of the generated image. One of `low`, `medium`, `high`,
 or `auto`. Default: `auto`.
  */
-  quality?: ImageGenToolQuality;
+  quality?: ImageGenToolQuality
   /** The size of the generated image. One of `1024x1024`, `1024x1536`,
 `1536x1024`, or `auto`. Default: `auto`.
  */
-  size?: ImageGenToolSize;
+  size?: ImageGenToolSize
   /** The output format of the generated image. One of `png`, `webp`, or
 `jpeg`. Default: `png`.
  */
-  output_format?: ImageGenToolOutputFormat;
+  output_format?: ImageGenToolOutputFormat
   /**
    * Compression level for the output image. Default: 100.
 
    * @minimum 0
    * @maximum 100
    */
-  output_compression?: number;
+  output_compression?: number
   /** Moderation level for the generated image. Default: `auto`.
- */
-  moderation?: ImageGenToolModeration;
+   */
+  moderation?: ImageGenToolModeration
   /** Background type for the generated image. One of `transparent`,
 `opaque`, or `auto`. Default: `auto`.
  */
-  background?: ImageGenToolBackground;
-  input_fidelity?: ImageGenToolInputFidelity;
+  background?: ImageGenToolBackground
+  input_fidelity?: ImageGenToolInputFidelity
   /** Optional mask for inpainting. Contains `image_url`
 (string, optional) and `file_id` (string, optional).
  */
-  input_image_mask?: ImageGenToolInputImageMask;
+  input_image_mask?: ImageGenToolInputImageMask
   /**
    * Number of partial images to generate in streaming mode, from 0 (default value) to 3.
 
    * @minimum 0
    * @maximum 3
    */
-  partial_images?: number;
+  partial_images?: number
 }

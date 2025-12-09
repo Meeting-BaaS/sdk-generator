@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterOutputLogsType } from './codeInterpreterOutputLogsType';
+import type { CodeInterpreterOutputLogsType } from "./codeInterpreterOutputLogsType"
 
 /**
  * The logs output from the code interpreter.
  */
 export interface CodeInterpreterOutputLogs {
   /** The type of the output. Always `logs`. */
-  type: CodeInterpreterOutputLogsType;
+  type: CodeInterpreterOutputLogsType
   /** The logs output from the code interpreter. */
-  logs: string;
+  logs: string
 }

@@ -9,10 +9,10 @@
 /**
  * The type of response format being defined. Always `grammar`.
  */
-export type ResponseFormatTextGrammarType = typeof ResponseFormatTextGrammarType[keyof typeof ResponseFormatTextGrammarType];
-
+export type ResponseFormatTextGrammarType =
+  (typeof ResponseFormatTextGrammarType)[keyof typeof ResponseFormatTextGrammarType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFormatTextGrammarType = {
-  grammar: 'grammar',
-} as const;
+  grammar: "grammar"
+} as const

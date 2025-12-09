@@ -5,9 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaContentImageFileObject } from './messageDeltaContentImageFileObject';
-import type { MessageDeltaContentTextObject } from './messageDeltaContentTextObject';
-import type { MessageDeltaContentRefusalObject } from './messageDeltaContentRefusalObject';
-import type { MessageDeltaContentImageUrlObject } from './messageDeltaContentImageUrlObject';
+import type { MessageDeltaContentImageFileObject } from "./messageDeltaContentImageFileObject"
+import type { MessageDeltaContentTextObject } from "./messageDeltaContentTextObject"
+import type { MessageDeltaContentRefusalObject } from "./messageDeltaContentRefusalObject"
+import type { MessageDeltaContentImageUrlObject } from "./messageDeltaContentImageUrlObject"
 
-export type MessageContentDelta = MessageDeltaContentImageFileObject | MessageDeltaContentTextObject | MessageDeltaContentRefusalObject | MessageDeltaContentImageUrlObject;
+export type MessageContentDelta =
+  | MessageDeltaContentImageFileObject
+  | MessageDeltaContentTextObject
+  | MessageDeltaContentRefusalObject
+  | MessageDeltaContentImageUrlObject

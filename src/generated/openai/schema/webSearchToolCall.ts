@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchToolCallType } from './webSearchToolCallType';
-import type { WebSearchToolCallStatus } from './webSearchToolCallStatus';
-import type { WebSearchToolCallAction } from './webSearchToolCallAction';
+import type { WebSearchToolCallType } from "./webSearchToolCallType"
+import type { WebSearchToolCallStatus } from "./webSearchToolCallStatus"
+import type { WebSearchToolCallAction } from "./webSearchToolCallAction"
 
 /**
  * The results of a web search tool call. See the
@@ -16,16 +16,16 @@ import type { WebSearchToolCallAction } from './webSearchToolCallAction';
  */
 export interface WebSearchToolCall {
   /** The unique ID of the web search tool call.
- */
-  id: string;
+   */
+  id: string
   /** The type of the web search tool call. Always `web_search_call`.
- */
-  type: WebSearchToolCallType;
+   */
+  type: WebSearchToolCallType
   /** The status of the web search tool call.
- */
-  status: WebSearchToolCallStatus;
+   */
+  status: WebSearchToolCallStatus
   /** An object describing the specific action taken in this web search call.
 Includes details on how the model used the web (search, open_page, find).
  */
-  action: WebSearchToolCallAction;
+  action: WebSearchToolCallAction
 }

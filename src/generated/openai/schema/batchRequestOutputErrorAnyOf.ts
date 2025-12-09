@@ -19,7 +19,7 @@ Possible values:
   executed.
 - `request_timeout`: The underlying call to the model timed out.
  */
-  code?: string;
+  code?: string
   /** A human-readable error message. */
-  message?: string;
-};
+  message?: string
+}

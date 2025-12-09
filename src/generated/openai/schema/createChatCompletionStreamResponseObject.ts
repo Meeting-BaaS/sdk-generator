@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `chat.completion.chunk`.
  */
-export type CreateChatCompletionStreamResponseObject = typeof CreateChatCompletionStreamResponseObject[keyof typeof CreateChatCompletionStreamResponseObject];
-
+export type CreateChatCompletionStreamResponseObject =
+  (typeof CreateChatCompletionStreamResponseObject)[keyof typeof CreateChatCompletionStreamResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateChatCompletionStreamResponseObject = {
-  chatcompletionchunk: 'chat.completion.chunk',
-} as const;
+  chatcompletionchunk: "chat.completion.chunk"
+} as const

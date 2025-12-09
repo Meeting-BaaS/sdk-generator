@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDetailsToolCallsFunctionObjectFunctionOutput } from './runStepDetailsToolCallsFunctionObjectFunctionOutput';
+import type { RunStepDetailsToolCallsFunctionObjectFunctionOutput } from "./runStepDetailsToolCallsFunctionObjectFunctionOutput"
 
 /**
  * The definition of the function that was called.
  */
 export type RunStepDetailsToolCallsFunctionObjectFunction = {
   /** The name of the function. */
-  name: string;
+  name: string
   /** The arguments passed to the function. */
-  arguments: string;
-  output: RunStepDetailsToolCallsFunctionObjectFunctionOutput;
-};
+  arguments: string
+  output: RunStepDetailsToolCallsFunctionObjectFunctionOutput
+}

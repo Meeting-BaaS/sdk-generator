@@ -9,10 +9,10 @@
 /**
  * Grammar format. Always `grammar`.
  */
-export type CustomGrammarFormatParamType = typeof CustomGrammarFormatParamType[keyof typeof CustomGrammarFormatParamType];
-
+export type CustomGrammarFormatParamType =
+  (typeof CustomGrammarFormatParamType)[keyof typeof CustomGrammarFormatParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CustomGrammarFormatParamType = {
-  grammar: 'grammar',
-} as const;
+  grammar: "grammar"
+} as const

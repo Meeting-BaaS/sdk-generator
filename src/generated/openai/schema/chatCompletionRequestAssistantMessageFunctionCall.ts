@@ -5,6 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestAssistantMessageFunctionCallAnyOf } from './chatCompletionRequestAssistantMessageFunctionCallAnyOf';
+import type { ChatCompletionRequestAssistantMessageFunctionCallAnyOf } from "./chatCompletionRequestAssistantMessageFunctionCallAnyOf"
 
-export type ChatCompletionRequestAssistantMessageFunctionCall = ChatCompletionRequestAssistantMessageFunctionCallAnyOf | null;
+export type ChatCompletionRequestAssistantMessageFunctionCall =
+  ChatCompletionRequestAssistantMessageFunctionCallAnyOf | null

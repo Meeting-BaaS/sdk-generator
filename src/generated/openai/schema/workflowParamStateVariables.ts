@@ -9,4 +9,4 @@
 /**
  * State variables forwarded to the workflow. Keys may be up to 64 characters, values must be primitive types, and the map defaults to an empty object.
  */
-export type WorkflowParamStateVariables = {[key: string]: string | number | boolean | number};
+export type WorkflowParamStateVariables = { [key: string]: string | number | boolean | number }

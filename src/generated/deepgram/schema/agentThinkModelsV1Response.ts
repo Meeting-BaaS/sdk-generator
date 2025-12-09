@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { AgentThinkModelsV1ResponseModelsItem } from './agentThinkModelsV1ResponseModelsItem';
+import type { AgentThinkModelsV1ResponseModelsItem } from "./agentThinkModelsV1ResponseModelsItem"
 
 export interface AgentThinkModelsV1Response {
-  models: AgentThinkModelsV1ResponseModelsItem[];
+  models: AgentThinkModelsV1ResponseModelsItem[]
 }

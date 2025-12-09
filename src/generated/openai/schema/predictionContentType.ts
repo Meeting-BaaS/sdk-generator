@@ -11,10 +11,10 @@
 currently always `content`.
 
  */
-export type PredictionContentType = typeof PredictionContentType[keyof typeof PredictionContentType];
-
+export type PredictionContentType =
+  (typeof PredictionContentType)[keyof typeof PredictionContentType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PredictionContentType = {
-  content: 'content',
-} as const;
+  content: "content"
+} as const

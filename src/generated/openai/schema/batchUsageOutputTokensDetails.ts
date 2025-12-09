@@ -11,5 +11,5 @@
  */
 export type BatchUsageOutputTokensDetails = {
   /** The number of reasoning tokens. */
-  reasoning_tokens: number;
-};
+  reasoning_tokens: number
+}

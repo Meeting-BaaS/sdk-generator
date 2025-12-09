@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseMCPCallCompletedEventType } from './responseMCPCallCompletedEventType';
+import type { ResponseMCPCallCompletedEventType } from "./responseMCPCallCompletedEventType"
 
 /**
  * Emitted when an MCP  tool call has completed successfully.
@@ -13,11 +13,11 @@ import type { ResponseMCPCallCompletedEventType } from './responseMCPCallComplet
  */
 export interface ResponseMCPCallCompletedEvent {
   /** The type of the event. Always 'response.mcp_call.completed'. */
-  type: ResponseMCPCallCompletedEventType;
+  type: ResponseMCPCallCompletedEventType
   /** The ID of the MCP tool call item that completed. */
-  item_id: string;
+  item_id: string
   /** The index of the output item that completed. */
-  output_index: number;
+  output_index: number
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
 }

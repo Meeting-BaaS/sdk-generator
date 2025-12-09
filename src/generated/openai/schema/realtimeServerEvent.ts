@@ -5,55 +5,101 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationCreated } from './realtimeServerEventConversationCreated';
-import type { RealtimeServerEventConversationItemCreated } from './realtimeServerEventConversationItemCreated';
-import type { RealtimeServerEventConversationItemDeleted } from './realtimeServerEventConversationItemDeleted';
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompleted } from './realtimeServerEventConversationItemInputAudioTranscriptionCompleted';
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionDelta } from './realtimeServerEventConversationItemInputAudioTranscriptionDelta';
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailed } from './realtimeServerEventConversationItemInputAudioTranscriptionFailed';
-import type { RealtimeServerEventConversationItemRetrieved } from './realtimeServerEventConversationItemRetrieved';
-import type { RealtimeServerEventConversationItemTruncated } from './realtimeServerEventConversationItemTruncated';
-import type { RealtimeServerEventError } from './realtimeServerEventError';
-import type { RealtimeServerEventInputAudioBufferCleared } from './realtimeServerEventInputAudioBufferCleared';
-import type { RealtimeServerEventInputAudioBufferCommitted } from './realtimeServerEventInputAudioBufferCommitted';
-import type { RealtimeServerEventInputAudioBufferDtmfEventReceived } from './realtimeServerEventInputAudioBufferDtmfEventReceived';
-import type { RealtimeServerEventInputAudioBufferSpeechStarted } from './realtimeServerEventInputAudioBufferSpeechStarted';
-import type { RealtimeServerEventInputAudioBufferSpeechStopped } from './realtimeServerEventInputAudioBufferSpeechStopped';
-import type { RealtimeServerEventRateLimitsUpdated } from './realtimeServerEventRateLimitsUpdated';
-import type { RealtimeServerEventResponseAudioDelta } from './realtimeServerEventResponseAudioDelta';
-import type { RealtimeServerEventResponseAudioDone } from './realtimeServerEventResponseAudioDone';
-import type { RealtimeServerEventResponseAudioTranscriptDelta } from './realtimeServerEventResponseAudioTranscriptDelta';
-import type { RealtimeServerEventResponseAudioTranscriptDone } from './realtimeServerEventResponseAudioTranscriptDone';
-import type { RealtimeServerEventResponseContentPartAdded } from './realtimeServerEventResponseContentPartAdded';
-import type { RealtimeServerEventResponseContentPartDone } from './realtimeServerEventResponseContentPartDone';
-import type { RealtimeServerEventResponseCreated } from './realtimeServerEventResponseCreated';
-import type { RealtimeServerEventResponseDone } from './realtimeServerEventResponseDone';
-import type { RealtimeServerEventResponseFunctionCallArgumentsDelta } from './realtimeServerEventResponseFunctionCallArgumentsDelta';
-import type { RealtimeServerEventResponseFunctionCallArgumentsDone } from './realtimeServerEventResponseFunctionCallArgumentsDone';
-import type { RealtimeServerEventResponseOutputItemAdded } from './realtimeServerEventResponseOutputItemAdded';
-import type { RealtimeServerEventResponseOutputItemDone } from './realtimeServerEventResponseOutputItemDone';
-import type { RealtimeServerEventResponseTextDelta } from './realtimeServerEventResponseTextDelta';
-import type { RealtimeServerEventResponseTextDone } from './realtimeServerEventResponseTextDone';
-import type { RealtimeServerEventSessionCreated } from './realtimeServerEventSessionCreated';
-import type { RealtimeServerEventSessionUpdated } from './realtimeServerEventSessionUpdated';
-import type { RealtimeServerEventOutputAudioBufferStarted } from './realtimeServerEventOutputAudioBufferStarted';
-import type { RealtimeServerEventOutputAudioBufferStopped } from './realtimeServerEventOutputAudioBufferStopped';
-import type { RealtimeServerEventOutputAudioBufferCleared } from './realtimeServerEventOutputAudioBufferCleared';
-import type { RealtimeServerEventConversationItemAdded } from './realtimeServerEventConversationItemAdded';
-import type { RealtimeServerEventConversationItemDone } from './realtimeServerEventConversationItemDone';
-import type { RealtimeServerEventInputAudioBufferTimeoutTriggered } from './realtimeServerEventInputAudioBufferTimeoutTriggered';
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionSegment } from './realtimeServerEventConversationItemInputAudioTranscriptionSegment';
-import type { RealtimeServerEventMCPListToolsInProgress } from './realtimeServerEventMCPListToolsInProgress';
-import type { RealtimeServerEventMCPListToolsCompleted } from './realtimeServerEventMCPListToolsCompleted';
-import type { RealtimeServerEventMCPListToolsFailed } from './realtimeServerEventMCPListToolsFailed';
-import type { RealtimeServerEventResponseMCPCallArgumentsDelta } from './realtimeServerEventResponseMCPCallArgumentsDelta';
-import type { RealtimeServerEventResponseMCPCallArgumentsDone } from './realtimeServerEventResponseMCPCallArgumentsDone';
-import type { RealtimeServerEventResponseMCPCallInProgress } from './realtimeServerEventResponseMCPCallInProgress';
-import type { RealtimeServerEventResponseMCPCallCompleted } from './realtimeServerEventResponseMCPCallCompleted';
-import type { RealtimeServerEventResponseMCPCallFailed } from './realtimeServerEventResponseMCPCallFailed';
+import type { RealtimeServerEventConversationCreated } from "./realtimeServerEventConversationCreated"
+import type { RealtimeServerEventConversationItemCreated } from "./realtimeServerEventConversationItemCreated"
+import type { RealtimeServerEventConversationItemDeleted } from "./realtimeServerEventConversationItemDeleted"
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompleted } from "./realtimeServerEventConversationItemInputAudioTranscriptionCompleted"
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionDelta } from "./realtimeServerEventConversationItemInputAudioTranscriptionDelta"
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailed } from "./realtimeServerEventConversationItemInputAudioTranscriptionFailed"
+import type { RealtimeServerEventConversationItemRetrieved } from "./realtimeServerEventConversationItemRetrieved"
+import type { RealtimeServerEventConversationItemTruncated } from "./realtimeServerEventConversationItemTruncated"
+import type { RealtimeServerEventError } from "./realtimeServerEventError"
+import type { RealtimeServerEventInputAudioBufferCleared } from "./realtimeServerEventInputAudioBufferCleared"
+import type { RealtimeServerEventInputAudioBufferCommitted } from "./realtimeServerEventInputAudioBufferCommitted"
+import type { RealtimeServerEventInputAudioBufferDtmfEventReceived } from "./realtimeServerEventInputAudioBufferDtmfEventReceived"
+import type { RealtimeServerEventInputAudioBufferSpeechStarted } from "./realtimeServerEventInputAudioBufferSpeechStarted"
+import type { RealtimeServerEventInputAudioBufferSpeechStopped } from "./realtimeServerEventInputAudioBufferSpeechStopped"
+import type { RealtimeServerEventRateLimitsUpdated } from "./realtimeServerEventRateLimitsUpdated"
+import type { RealtimeServerEventResponseAudioDelta } from "./realtimeServerEventResponseAudioDelta"
+import type { RealtimeServerEventResponseAudioDone } from "./realtimeServerEventResponseAudioDone"
+import type { RealtimeServerEventResponseAudioTranscriptDelta } from "./realtimeServerEventResponseAudioTranscriptDelta"
+import type { RealtimeServerEventResponseAudioTranscriptDone } from "./realtimeServerEventResponseAudioTranscriptDone"
+import type { RealtimeServerEventResponseContentPartAdded } from "./realtimeServerEventResponseContentPartAdded"
+import type { RealtimeServerEventResponseContentPartDone } from "./realtimeServerEventResponseContentPartDone"
+import type { RealtimeServerEventResponseCreated } from "./realtimeServerEventResponseCreated"
+import type { RealtimeServerEventResponseDone } from "./realtimeServerEventResponseDone"
+import type { RealtimeServerEventResponseFunctionCallArgumentsDelta } from "./realtimeServerEventResponseFunctionCallArgumentsDelta"
+import type { RealtimeServerEventResponseFunctionCallArgumentsDone } from "./realtimeServerEventResponseFunctionCallArgumentsDone"
+import type { RealtimeServerEventResponseOutputItemAdded } from "./realtimeServerEventResponseOutputItemAdded"
+import type { RealtimeServerEventResponseOutputItemDone } from "./realtimeServerEventResponseOutputItemDone"
+import type { RealtimeServerEventResponseTextDelta } from "./realtimeServerEventResponseTextDelta"
+import type { RealtimeServerEventResponseTextDone } from "./realtimeServerEventResponseTextDone"
+import type { RealtimeServerEventSessionCreated } from "./realtimeServerEventSessionCreated"
+import type { RealtimeServerEventSessionUpdated } from "./realtimeServerEventSessionUpdated"
+import type { RealtimeServerEventOutputAudioBufferStarted } from "./realtimeServerEventOutputAudioBufferStarted"
+import type { RealtimeServerEventOutputAudioBufferStopped } from "./realtimeServerEventOutputAudioBufferStopped"
+import type { RealtimeServerEventOutputAudioBufferCleared } from "./realtimeServerEventOutputAudioBufferCleared"
+import type { RealtimeServerEventConversationItemAdded } from "./realtimeServerEventConversationItemAdded"
+import type { RealtimeServerEventConversationItemDone } from "./realtimeServerEventConversationItemDone"
+import type { RealtimeServerEventInputAudioBufferTimeoutTriggered } from "./realtimeServerEventInputAudioBufferTimeoutTriggered"
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionSegment } from "./realtimeServerEventConversationItemInputAudioTranscriptionSegment"
+import type { RealtimeServerEventMCPListToolsInProgress } from "./realtimeServerEventMCPListToolsInProgress"
+import type { RealtimeServerEventMCPListToolsCompleted } from "./realtimeServerEventMCPListToolsCompleted"
+import type { RealtimeServerEventMCPListToolsFailed } from "./realtimeServerEventMCPListToolsFailed"
+import type { RealtimeServerEventResponseMCPCallArgumentsDelta } from "./realtimeServerEventResponseMCPCallArgumentsDelta"
+import type { RealtimeServerEventResponseMCPCallArgumentsDone } from "./realtimeServerEventResponseMCPCallArgumentsDone"
+import type { RealtimeServerEventResponseMCPCallInProgress } from "./realtimeServerEventResponseMCPCallInProgress"
+import type { RealtimeServerEventResponseMCPCallCompleted } from "./realtimeServerEventResponseMCPCallCompleted"
+import type { RealtimeServerEventResponseMCPCallFailed } from "./realtimeServerEventResponseMCPCallFailed"
 
 /**
  * A realtime server event.
 
  */
-export type RealtimeServerEvent = RealtimeServerEventConversationCreated | RealtimeServerEventConversationItemCreated | RealtimeServerEventConversationItemDeleted | RealtimeServerEventConversationItemInputAudioTranscriptionCompleted | RealtimeServerEventConversationItemInputAudioTranscriptionDelta | RealtimeServerEventConversationItemInputAudioTranscriptionFailed | RealtimeServerEventConversationItemRetrieved | RealtimeServerEventConversationItemTruncated | RealtimeServerEventError | RealtimeServerEventInputAudioBufferCleared | RealtimeServerEventInputAudioBufferCommitted | RealtimeServerEventInputAudioBufferDtmfEventReceived | RealtimeServerEventInputAudioBufferSpeechStarted | RealtimeServerEventInputAudioBufferSpeechStopped | RealtimeServerEventRateLimitsUpdated | RealtimeServerEventResponseAudioDelta | RealtimeServerEventResponseAudioDone | RealtimeServerEventResponseAudioTranscriptDelta | RealtimeServerEventResponseAudioTranscriptDone | RealtimeServerEventResponseContentPartAdded | RealtimeServerEventResponseContentPartDone | RealtimeServerEventResponseCreated | RealtimeServerEventResponseDone | RealtimeServerEventResponseFunctionCallArgumentsDelta | RealtimeServerEventResponseFunctionCallArgumentsDone | RealtimeServerEventResponseOutputItemAdded | RealtimeServerEventResponseOutputItemDone | RealtimeServerEventResponseTextDelta | RealtimeServerEventResponseTextDone | RealtimeServerEventSessionCreated | RealtimeServerEventSessionUpdated | RealtimeServerEventOutputAudioBufferStarted | RealtimeServerEventOutputAudioBufferStopped | RealtimeServerEventOutputAudioBufferCleared | RealtimeServerEventConversationItemAdded | RealtimeServerEventConversationItemDone | RealtimeServerEventInputAudioBufferTimeoutTriggered | RealtimeServerEventConversationItemInputAudioTranscriptionSegment | RealtimeServerEventMCPListToolsInProgress | RealtimeServerEventMCPListToolsCompleted | RealtimeServerEventMCPListToolsFailed | RealtimeServerEventResponseMCPCallArgumentsDelta | RealtimeServerEventResponseMCPCallArgumentsDone | RealtimeServerEventResponseMCPCallInProgress | RealtimeServerEventResponseMCPCallCompleted | RealtimeServerEventResponseMCPCallFailed;
+export type RealtimeServerEvent =
+  | RealtimeServerEventConversationCreated
+  | RealtimeServerEventConversationItemCreated
+  | RealtimeServerEventConversationItemDeleted
+  | RealtimeServerEventConversationItemInputAudioTranscriptionCompleted
+  | RealtimeServerEventConversationItemInputAudioTranscriptionDelta
+  | RealtimeServerEventConversationItemInputAudioTranscriptionFailed
+  | RealtimeServerEventConversationItemRetrieved
+  | RealtimeServerEventConversationItemTruncated
+  | RealtimeServerEventError
+  | RealtimeServerEventInputAudioBufferCleared
+  | RealtimeServerEventInputAudioBufferCommitted
+  | RealtimeServerEventInputAudioBufferDtmfEventReceived
+  | RealtimeServerEventInputAudioBufferSpeechStarted
+  | RealtimeServerEventInputAudioBufferSpeechStopped
+  | RealtimeServerEventRateLimitsUpdated
+  | RealtimeServerEventResponseAudioDelta
+  | RealtimeServerEventResponseAudioDone
+  | RealtimeServerEventResponseAudioTranscriptDelta
+  | RealtimeServerEventResponseAudioTranscriptDone
+  | RealtimeServerEventResponseContentPartAdded
+  | RealtimeServerEventResponseContentPartDone
+  | RealtimeServerEventResponseCreated
+  | RealtimeServerEventResponseDone
+  | RealtimeServerEventResponseFunctionCallArgumentsDelta
+  | RealtimeServerEventResponseFunctionCallArgumentsDone
+  | RealtimeServerEventResponseOutputItemAdded
+  | RealtimeServerEventResponseOutputItemDone
+  | RealtimeServerEventResponseTextDelta
+  | RealtimeServerEventResponseTextDone
+  | RealtimeServerEventSessionCreated
+  | RealtimeServerEventSessionUpdated
+  | RealtimeServerEventOutputAudioBufferStarted
+  | RealtimeServerEventOutputAudioBufferStopped
+  | RealtimeServerEventOutputAudioBufferCleared
+  | RealtimeServerEventConversationItemAdded
+  | RealtimeServerEventConversationItemDone
+  | RealtimeServerEventInputAudioBufferTimeoutTriggered
+  | RealtimeServerEventConversationItemInputAudioTranscriptionSegment
+  | RealtimeServerEventMCPListToolsInProgress
+  | RealtimeServerEventMCPListToolsCompleted
+  | RealtimeServerEventMCPListToolsFailed
+  | RealtimeServerEventResponseMCPCallArgumentsDelta
+  | RealtimeServerEventResponseMCPCallArgumentsDone
+  | RealtimeServerEventResponseMCPCallInProgress
+  | RealtimeServerEventResponseMCPCallCompleted
+  | RealtimeServerEventResponseMCPCallFailed

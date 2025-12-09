@@ -9,10 +9,10 @@
 /**
  * The type of the reasoning text. Always `reasoning_text`.
  */
-export type ReasoningTextContentType = typeof ReasoningTextContentType[keyof typeof ReasoningTextContentType];
-
+export type ReasoningTextContentType =
+  (typeof ReasoningTextContentType)[keyof typeof ReasoningTextContentType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ReasoningTextContentType = {
-  reasoning_text: 'reasoning_text',
-} as const;
+  reasoning_text: "reasoning_text"
+} as const

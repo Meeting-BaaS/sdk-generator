@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseErrorCode } from './responseErrorCode';
+import type { ResponseErrorCode } from "./responseErrorCode"
 
 /**
  * An error object returned when the model fails to generate a Response.
 
  */
 export type ResponseErrorAnyOf = {
-  code: ResponseErrorCode;
+  code: ResponseErrorCode
   /** A human-readable description of the error.
- */
-  message: string;
-};
+   */
+  message: string
+}

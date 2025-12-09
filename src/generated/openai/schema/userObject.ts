@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `organization.user`
  */
-export type UserObject = typeof UserObject[keyof typeof UserObject];
-
+export type UserObject = (typeof UserObject)[keyof typeof UserObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserObject = {
-  organizationuser: 'organization.user',
-} as const;
+  organizationuser: "organization.user"
+} as const

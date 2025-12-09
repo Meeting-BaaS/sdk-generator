@@ -9,11 +9,10 @@
 /**
  * The ranker to use for the file search. If not specified will use the `auto` ranker.
  */
-export type FileSearchRanker = typeof FileSearchRanker[keyof typeof FileSearchRanker];
-
+export type FileSearchRanker = (typeof FileSearchRanker)[keyof typeof FileSearchRanker]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileSearchRanker = {
-  auto: 'auto',
-  default_2024_08_21: 'default_2024_08_21',
-} as const;
+  auto: "auto",
+  default_2024_08_21: "default_2024_08_21"
+} as const

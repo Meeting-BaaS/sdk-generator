@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseStreamOptionsAnyOf } from './responseStreamOptionsAnyOf';
+import type { ResponseStreamOptionsAnyOf } from "./responseStreamOptionsAnyOf"
 
-export type ResponseStreamOptions = ResponseStreamOptionsAnyOf | null;
+export type ResponseStreamOptions = ResponseStreamOptionsAnyOf | null

@@ -9,15 +9,15 @@
 /**
  * The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`.
  */
-export type CreateSpeechRequestResponseFormat = typeof CreateSpeechRequestResponseFormat[keyof typeof CreateSpeechRequestResponseFormat];
-
+export type CreateSpeechRequestResponseFormat =
+  (typeof CreateSpeechRequestResponseFormat)[keyof typeof CreateSpeechRequestResponseFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateSpeechRequestResponseFormat = {
-  mp3: 'mp3',
-  opus: 'opus',
-  aac: 'aac',
-  flac: 'flac',
-  wav: 'wav',
-  pcm: 'pcm',
-} as const;
+  mp3: "mp3",
+  opus: "opus",
+  aac: "aac",
+  flac: "flac",
+  wav: "wav",
+  pcm: "pcm"
+} as const

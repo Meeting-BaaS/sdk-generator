@@ -10,10 +10,10 @@
  * The type of the local shell call. Always `local_shell_call`.
 
  */
-export type LocalShellToolCallType = typeof LocalShellToolCallType[keyof typeof LocalShellToolCallType];
-
+export type LocalShellToolCallType =
+  (typeof LocalShellToolCallType)[keyof typeof LocalShellToolCallType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LocalShellToolCallType = {
-  local_shell_call: 'local_shell_call',
-} as const;
+  local_shell_call: "local_shell_call"
+} as const

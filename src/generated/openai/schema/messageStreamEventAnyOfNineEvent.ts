@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type MessageStreamEventAnyOfNineEvent = typeof MessageStreamEventAnyOfNineEvent[keyof typeof MessageStreamEventAnyOfNineEvent];
-
+export type MessageStreamEventAnyOfNineEvent =
+  (typeof MessageStreamEventAnyOfNineEvent)[keyof typeof MessageStreamEventAnyOfNineEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageStreamEventAnyOfNineEvent = {
-  threadmessageincomplete: 'thread.message.incomplete',
-} as const;
+  threadmessageincomplete: "thread.message.incomplete"
+} as const

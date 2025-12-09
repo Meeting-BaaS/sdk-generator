@@ -10,4 +10,4 @@
 /**
  * Binary audio file to transcribe
  */
-export type ListenV1RequestFile = Blob;
+export type ListenV1RequestFile = Blob

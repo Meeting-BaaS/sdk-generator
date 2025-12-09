@@ -11,5 +11,5 @@
  */
 export type AuditLogProjectUpdatedChangesRequested = {
   /** The title of the project as seen on the dashboard. */
-  title?: string;
-};
+  title?: string
+}

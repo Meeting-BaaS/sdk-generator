@@ -11,10 +11,11 @@
 `conversation.item.input_audio_transcription.failed`.
 
  */
-export type RealtimeServerEventConversationItemInputAudioTranscriptionFailedType = typeof RealtimeServerEventConversationItemInputAudioTranscriptionFailedType[keyof typeof RealtimeServerEventConversationItemInputAudioTranscriptionFailedType];
-
+export type RealtimeServerEventConversationItemInputAudioTranscriptionFailedType =
+  (typeof RealtimeServerEventConversationItemInputAudioTranscriptionFailedType)[keyof typeof RealtimeServerEventConversationItemInputAudioTranscriptionFailedType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeServerEventConversationItemInputAudioTranscriptionFailedType = {
-  conversationiteminput_audio_transcriptionfailed: 'conversation.item.input_audio_transcription.failed',
-} as const;
+  conversationiteminput_audio_transcriptionfailed:
+    "conversation.item.input_audio_transcription.failed"
+} as const

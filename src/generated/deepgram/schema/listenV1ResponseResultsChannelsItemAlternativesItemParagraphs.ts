@@ -6,9 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItem } from './listenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItem';
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItem"
 
 export type ListenV1ResponseResultsChannelsItemAlternativesItemParagraphs = {
-  transcript?: string;
-  paragraphs?: ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItem[];
-};
+  transcript?: string
+  paragraphs?: ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItem[]
+}

@@ -5,6 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestAssistantMessageAudioAnyOf } from './chatCompletionRequestAssistantMessageAudioAnyOf';
+import type { ChatCompletionRequestAssistantMessageAudioAnyOf } from "./chatCompletionRequestAssistantMessageAudioAnyOf"
 
-export type ChatCompletionRequestAssistantMessageAudio = ChatCompletionRequestAssistantMessageAudioAnyOf | null;
+export type ChatCompletionRequestAssistantMessageAudio =
+  ChatCompletionRequestAssistantMessageAudioAnyOf | null

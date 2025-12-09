@@ -1,9 +1,7 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // OpenAI Whisper Provider Documentation
-  entryPoints: [
-    "./src/adapters/openai-whisper-adapter.ts"
-  ],
+  entryPoints: ["./src/adapters/openai-whisper-adapter.ts"],
 
   out: "./docs/generated/openai",
   plugin: ["typedoc-plugin-markdown"],
@@ -15,7 +13,7 @@ export default {
   // Source settings
   disableSources: true,
   excludeExternals: true,
-  excludePrivate: false,  // Show private methods for advanced users
+  excludePrivate: false, // Show private methods for advanced users
   excludeProtected: false,
   excludeInternal: true,
 
@@ -29,7 +27,7 @@ export default {
     "**/src/adapters/assemblyai-adapter.ts",
     "**/src/adapters/deepgram-adapter.ts",
     "**/src/adapters/azure-stt-adapter.ts",
-    "**/src/generated/**/*"  // Exclude all generated types to avoid build errors
+    "**/src/generated/**/*" // Exclude all generated types to avoid build errors
   ],
 
   includeVersion: true,
@@ -42,13 +40,7 @@ export default {
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
 
-  kindSortOrder: [
-    "Class",
-    "Interface",
-    "TypeAlias",
-    "Function",
-    "Enum"
-  ],
+  kindSortOrder: ["Class", "Interface", "TypeAlias", "Function", "Enum"],
 
   // Keep readable
   maxTypeConversionDepth: 5,
@@ -62,13 +54,7 @@ export default {
   includeVersion: true,
 
   // Better categorization
-  groupOrder: [
-    "Adapter",
-    "Configuration",
-    "Methods",
-    "Types",
-    "*"
-  ],
+  groupOrder: ["Adapter", "Configuration", "Methods", "Types", "*"],
 
   // Enhanced navigation
   navigation: {
@@ -88,4 +74,4 @@ export default {
     inherited: true,
     external: false
   }
-};
+}

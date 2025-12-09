@@ -5,43 +5,43 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateThreadRequest } from './createThreadRequest';
-import type { CreateThreadAndRunRequestModel } from './createThreadAndRunRequestModel';
-import type { AssistantTool } from './assistantTool';
-import type { CreateThreadAndRunRequestToolResources } from './createThreadAndRunRequestToolResources';
-import type { Metadata } from './metadata';
-import type { CreateThreadAndRunRequestTruncationStrategy } from './createThreadAndRunRequestTruncationStrategy';
-import type { CreateThreadAndRunRequestToolChoice } from './createThreadAndRunRequestToolChoice';
-import type { ParallelToolCalls } from './parallelToolCalls';
-import type { AssistantsApiResponseFormatOption } from './assistantsApiResponseFormatOption';
+import type { CreateThreadRequest } from "./createThreadRequest"
+import type { CreateThreadAndRunRequestModel } from "./createThreadAndRunRequestModel"
+import type { AssistantTool } from "./assistantTool"
+import type { CreateThreadAndRunRequestToolResources } from "./createThreadAndRunRequestToolResources"
+import type { Metadata } from "./metadata"
+import type { CreateThreadAndRunRequestTruncationStrategy } from "./createThreadAndRunRequestTruncationStrategy"
+import type { CreateThreadAndRunRequestToolChoice } from "./createThreadAndRunRequestToolChoice"
+import type { ParallelToolCalls } from "./parallelToolCalls"
+import type { AssistantsApiResponseFormatOption } from "./assistantsApiResponseFormatOption"
 
 export interface CreateThreadAndRunRequest {
   /** The ID of the [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to execute this run. */
-  assistant_id: string;
-  thread?: CreateThreadRequest;
+  assistant_id: string
+  thread?: CreateThreadRequest
   /**
    * The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to be used to execute this run. If a value is provided here, it will override the model associated with the assistant. If not, the model associated with the assistant will be used.
    * @nullable
    */
-  model?: CreateThreadAndRunRequestModel;
+  model?: CreateThreadAndRunRequestModel
   /**
    * Override the default system message of the assistant. This is useful for modifying the behavior on a per-run basis.
    * @nullable
    */
-  instructions?: string | null;
+  instructions?: string | null
   /**
    * Override the tools the assistant can use for this run. This is useful for modifying the behavior on a per-run basis.
    * @maxItems 20
    * @nullable
    */
-  tools?: AssistantTool[] | null;
+  tools?: AssistantTool[] | null
   /**
    * A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
 
    * @nullable
    */
-  tool_resources?: CreateThreadAndRunRequestToolResources;
-  metadata?: Metadata;
+  tool_resources?: CreateThreadAndRunRequestToolResources
+  metadata?: Metadata
   /**
    * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
 
@@ -49,7 +49,7 @@ export interface CreateThreadAndRunRequest {
    * @maximum 2
    * @nullable
    */
-  temperature?: number | null;
+  temperature?: number | null
   /**
    * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
 
@@ -59,30 +59,30 @@ We generally recommend altering this or temperature but not both.
    * @maximum 1
    * @nullable
    */
-  top_p?: number | null;
+  top_p?: number | null
   /**
    * If `true`, returns a stream of events that happen during the Run as server-sent events, terminating when the Run enters a terminal state with a `data: [DONE]` message.
 
    * @nullable
    */
-  stream?: boolean | null;
+  stream?: boolean | null
   /**
    * The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort to use only the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
 
    * @minimum 256
    * @nullable
    */
-  max_prompt_tokens?: number | null;
+  max_prompt_tokens?: number | null
   /**
    * The maximum number of completion tokens that may be used over the course of the run. The run will make a best effort to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the number of completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
 
    * @minimum 256
    * @nullable
    */
-  max_completion_tokens?: number | null;
-  truncation_strategy?: CreateThreadAndRunRequestTruncationStrategy;
-  tool_choice?: CreateThreadAndRunRequestToolChoice;
-  parallel_tool_calls?: ParallelToolCalls;
+  max_completion_tokens?: number | null
+  truncation_strategy?: CreateThreadAndRunRequestTruncationStrategy
+  tool_choice?: CreateThreadAndRunRequestToolChoice
+  parallel_tool_calls?: ParallelToolCalls
   /** @nullable */
-  response_format?: AssistantsApiResponseFormatOption;
+  response_format?: AssistantsApiResponseFormatOption
 }

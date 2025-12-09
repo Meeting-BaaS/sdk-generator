@@ -6,16 +6,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListBillingFieldsV1ResponseDeploymentsItem } from './listBillingFieldsV1ResponseDeploymentsItem';
-import type { ListBillingFieldsV1ResponseLineItems } from './listBillingFieldsV1ResponseLineItems';
+import type { ListBillingFieldsV1ResponseDeploymentsItem } from "./listBillingFieldsV1ResponseDeploymentsItem"
+import type { ListBillingFieldsV1ResponseLineItems } from "./listBillingFieldsV1ResponseLineItems"
 
 export interface ListBillingFieldsV1Response {
   /** List of accessor UUIDs for the time period */
-  accessors?: string[];
+  accessors?: string[]
   /** List of deployment types for the time period */
-  deployments?: ListBillingFieldsV1ResponseDeploymentsItem[];
+  deployments?: ListBillingFieldsV1ResponseDeploymentsItem[]
   /** List of tags for the time period */
-  tags?: string[];
+  tags?: string[]
   /** Map of line item names to human-readable descriptions for the time period */
-  line_items?: ListBillingFieldsV1ResponseLineItems;
+  line_items?: ListBillingFieldsV1ResponseLineItems
 }

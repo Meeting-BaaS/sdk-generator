@@ -5,8 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDeltaStepDetailsToolCallsCodeObject } from './runStepDeltaStepDetailsToolCallsCodeObject';
-import type { RunStepDeltaStepDetailsToolCallsFileSearchObject } from './runStepDeltaStepDetailsToolCallsFileSearchObject';
-import type { RunStepDeltaStepDetailsToolCallsFunctionObject } from './runStepDeltaStepDetailsToolCallsFunctionObject';
+import type { RunStepDeltaStepDetailsToolCallsCodeObject } from "./runStepDeltaStepDetailsToolCallsCodeObject"
+import type { RunStepDeltaStepDetailsToolCallsFileSearchObject } from "./runStepDeltaStepDetailsToolCallsFileSearchObject"
+import type { RunStepDeltaStepDetailsToolCallsFunctionObject } from "./runStepDeltaStepDetailsToolCallsFunctionObject"
 
-export type RunStepDeltaStepDetailsToolCall = RunStepDeltaStepDetailsToolCallsCodeObject | RunStepDeltaStepDetailsToolCallsFileSearchObject | RunStepDeltaStepDetailsToolCallsFunctionObject;
+export type RunStepDeltaStepDetailsToolCall =
+  | RunStepDeltaStepDetailsToolCallsCodeObject
+  | RunStepDeltaStepDetailsToolCallsFileSearchObject
+  | RunStepDeltaStepDetailsToolCallsFunctionObject

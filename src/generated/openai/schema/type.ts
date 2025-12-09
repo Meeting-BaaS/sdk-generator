@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TypeType } from './typeType';
+import type { TypeType } from "./typeType"
 
 /**
  * An action to type in text.
@@ -15,8 +15,8 @@ export interface Type {
   /** Specifies the event type. For a type action, this property is 
 always set to `type`.
  */
-  type: TypeType;
+  type: TypeType
   /** The text to type.
- */
-  text: string;
+   */
+  text: string
 }

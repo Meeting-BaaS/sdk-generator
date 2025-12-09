@@ -11,7 +11,7 @@
  */
 export type RealtimeServerEventConversationCreatedConversation = {
   /** The unique ID of the conversation. */
-  id?: string;
+  id?: string
   /** The object type, must be `realtime.conversation`. */
-  object?: 'realtime.conversation';
-};
+  object?: "realtime.conversation"
+}

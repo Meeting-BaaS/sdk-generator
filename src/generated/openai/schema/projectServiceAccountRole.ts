@@ -9,11 +9,11 @@
 /**
  * `owner` or `member`
  */
-export type ProjectServiceAccountRole = typeof ProjectServiceAccountRole[keyof typeof ProjectServiceAccountRole];
-
+export type ProjectServiceAccountRole =
+  (typeof ProjectServiceAccountRole)[keyof typeof ProjectServiceAccountRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectServiceAccountRole = {
-  owner: 'owner',
-  member: 'member',
-} as const;
+  owner: "owner",
+  member: "member"
+} as const

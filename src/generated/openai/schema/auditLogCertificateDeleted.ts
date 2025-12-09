@@ -11,9 +11,9 @@
  */
 export type AuditLogCertificateDeleted = {
   /** The certificate ID. */
-  id?: string;
+  id?: string
   /** The name of the certificate. */
-  name?: string;
+  name?: string
   /** The certificate content in PEM format. */
-  certificate?: string;
-};
+  certificate?: string
+}

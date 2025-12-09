@@ -5,11 +5,5 @@
     "skipDefaultLibCheck": true,
     "noErrorTruncation": false
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "test",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "exclude": ["node_modules", "dist", "test", "**/*.test.ts", "**/*.spec.ts"]
 }

@@ -9,10 +9,10 @@
 /**
  * Always `image_url`.
  */
-export type ModerationImageURLInputType = typeof ModerationImageURLInputType[keyof typeof ModerationImageURLInputType];
-
+export type ModerationImageURLInputType =
+  (typeof ModerationImageURLInputType)[keyof typeof ModerationImageURLInputType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModerationImageURLInputType = {
-  image_url: 'image_url',
-} as const;
+  image_url: "image_url"
+} as const

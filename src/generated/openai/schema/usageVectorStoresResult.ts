@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageVectorStoresResultObject } from './usageVectorStoresResultObject';
-import type { UsageVectorStoresResultProjectId } from './usageVectorStoresResultProjectId';
+import type { UsageVectorStoresResultObject } from "./usageVectorStoresResultObject"
+import type { UsageVectorStoresResultProjectId } from "./usageVectorStoresResultProjectId"
 
 /**
  * The aggregated vector stores usage details of the specific time bucket.
  */
 export interface UsageVectorStoresResult {
-  object: UsageVectorStoresResultObject;
+  object: UsageVectorStoresResultObject
   /** The vector stores usage in bytes. */
-  usage_bytes: number;
-  project_id?: UsageVectorStoresResultProjectId;
+  usage_bytes: number
+  project_id?: UsageVectorStoresResultProjectId
 }

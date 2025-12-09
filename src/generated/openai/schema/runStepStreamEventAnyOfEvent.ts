@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunStepStreamEventAnyOfEvent = typeof RunStepStreamEventAnyOfEvent[keyof typeof RunStepStreamEventAnyOfEvent];
-
+export type RunStepStreamEventAnyOfEvent =
+  (typeof RunStepStreamEventAnyOfEvent)[keyof typeof RunStepStreamEventAnyOfEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepStreamEventAnyOfEvent = {
-  threadrunstepcreated: 'thread.run.step.created',
-} as const;
+  threadrunstepcreated: "thread.run.step.created"
+} as const

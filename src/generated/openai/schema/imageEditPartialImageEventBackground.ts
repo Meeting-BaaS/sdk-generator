@@ -10,12 +10,12 @@
  * The background setting for the requested edited image.
 
  */
-export type ImageEditPartialImageEventBackground = typeof ImageEditPartialImageEventBackground[keyof typeof ImageEditPartialImageEventBackground];
-
+export type ImageEditPartialImageEventBackground =
+  (typeof ImageEditPartialImageEventBackground)[keyof typeof ImageEditPartialImageEventBackground]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditPartialImageEventBackground = {
-  transparent: 'transparent',
-  opaque: 'opaque',
-  auto: 'auto',
-} as const;
+  transparent: "transparent",
+  opaque: "opaque",
+  auto: "auto"
+} as const

@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookEvalRunCanceledData } from './webhookEvalRunCanceledData';
-import type { WebhookEvalRunCanceledObject } from './webhookEvalRunCanceledObject';
-import type { WebhookEvalRunCanceledType } from './webhookEvalRunCanceledType';
+import type { WebhookEvalRunCanceledData } from "./webhookEvalRunCanceledData"
+import type { WebhookEvalRunCanceledObject } from "./webhookEvalRunCanceledObject"
+import type { WebhookEvalRunCanceledType } from "./webhookEvalRunCanceledType"
 
 /**
  * Sent when an eval run has been canceled.
@@ -15,18 +15,18 @@ import type { WebhookEvalRunCanceledType } from './webhookEvalRunCanceledType';
  */
 export interface WebhookEvalRunCanceled {
   /** The Unix timestamp (in seconds) of when the eval run was canceled.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookEvalRunCanceledData;
+   */
+  data: WebhookEvalRunCanceledData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookEvalRunCanceledObject;
+   */
+  object?: WebhookEvalRunCanceledObject
   /** The type of the event. Always `eval.run.canceled`.
- */
-  type: WebhookEvalRunCanceledType;
+   */
+  type: WebhookEvalRunCanceledType
 }

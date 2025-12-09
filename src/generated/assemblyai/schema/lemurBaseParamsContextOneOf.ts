@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.3.4
  */
 
-export type LemurBaseParamsContextOneOf = { [key: string]: unknown };
+export type LemurBaseParamsContextOneOf = { [key: string]: unknown }

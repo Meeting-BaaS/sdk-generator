@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunObjectIncompleteDetailsReason } from './runObjectIncompleteDetailsReason';
+import type { RunObjectIncompleteDetailsReason } from "./runObjectIncompleteDetailsReason"
 
 /**
  * Details on why the run is incomplete. Will be `null` if the run is not incomplete.
@@ -13,5 +13,5 @@ import type { RunObjectIncompleteDetailsReason } from './runObjectIncompleteDeta
  */
 export type RunObjectIncompleteDetails = {
   /** The reason why the run is incomplete. This will point to which specific token limit was reached over the course of the run. */
-  reason?: RunObjectIncompleteDetailsReason;
-} | null;
+  reason?: RunObjectIncompleteDetailsReason
+} | null

@@ -15,11 +15,11 @@ message.
 `required` requires the model to call one or more of the allowed tools.
 
  */
-export type ToolChoiceAllowedMode = typeof ToolChoiceAllowedMode[keyof typeof ToolChoiceAllowedMode];
-
+export type ToolChoiceAllowedMode =
+  (typeof ToolChoiceAllowedMode)[keyof typeof ToolChoiceAllowedMode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ToolChoiceAllowedMode = {
-  auto: 'auto',
-  required: 'required',
-} as const;
+  auto: "auto",
+  required: "required"
+} as const

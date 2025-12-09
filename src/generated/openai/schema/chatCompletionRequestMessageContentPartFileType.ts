@@ -9,10 +9,10 @@
 /**
  * The type of the content part. Always `file`.
  */
-export type ChatCompletionRequestMessageContentPartFileType = typeof ChatCompletionRequestMessageContentPartFileType[keyof typeof ChatCompletionRequestMessageContentPartFileType];
-
+export type ChatCompletionRequestMessageContentPartFileType =
+  (typeof ChatCompletionRequestMessageContentPartFileType)[keyof typeof ChatCompletionRequestMessageContentPartFileType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestMessageContentPartFileType = {
-  file: 'file',
-} as const;
+  file: "file"
+} as const

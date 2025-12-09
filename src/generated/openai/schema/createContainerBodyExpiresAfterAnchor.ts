@@ -9,10 +9,10 @@
 /**
  * Time anchor for the expiration time. Currently only 'last_active_at' is supported.
  */
-export type CreateContainerBodyExpiresAfterAnchor = typeof CreateContainerBodyExpiresAfterAnchor[keyof typeof CreateContainerBodyExpiresAfterAnchor];
-
+export type CreateContainerBodyExpiresAfterAnchor =
+  (typeof CreateContainerBodyExpiresAfterAnchor)[keyof typeof CreateContainerBodyExpiresAfterAnchor]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateContainerBodyExpiresAfterAnchor = {
-  last_active_at: 'last_active_at',
-} as const;
+  last_active_at: "last_active_at"
+} as const

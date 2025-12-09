@@ -9,10 +9,10 @@
 /**
  * Always `role.deleted`.
  */
-export type RoleDeletedResourceObject = typeof RoleDeletedResourceObject[keyof typeof RoleDeletedResourceObject];
-
+export type RoleDeletedResourceObject =
+  (typeof RoleDeletedResourceObject)[keyof typeof RoleDeletedResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RoleDeletedResourceObject = {
-  roledeleted: 'role.deleted',
-} as const;
+  roledeleted: "role.deleted"
+} as const

@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `thread.run.step`.
  */
-export type RunStepObjectObject = typeof RunStepObjectObject[keyof typeof RunStepObjectObject];
-
+export type RunStepObjectObject = (typeof RunStepObjectObject)[keyof typeof RunStepObjectObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepObjectObject = {
-  threadrunstep: 'thread.run.step',
-} as const;
+  threadrunstep: "thread.run.step"
+} as const

@@ -4,7 +4,7 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PreRecordedResponse } from './preRecordedResponse';
-import type { StreamingResponse } from './streamingResponse';
+import type { PreRecordedResponse } from "./preRecordedResponse"
+import type { StreamingResponse } from "./streamingResponse"
 
-export type TranscriptionControllerGetTranscriptV2200 = PreRecordedResponse | StreamingResponse;
+export type TranscriptionControllerGetTranscriptV2200 = PreRecordedResponse | StreamingResponse

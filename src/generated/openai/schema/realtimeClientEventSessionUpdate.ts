@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeClientEventSessionUpdateSession } from './realtimeClientEventSessionUpdateSession';
+import type { RealtimeClientEventSessionUpdateSession } from "./realtimeClientEventSessionUpdateSession"
 
 /**
  * Send this event to update the session’s configuration.
@@ -24,11 +24,11 @@ export interface RealtimeClientEventSessionUpdate {
    * Optional client-generated ID used to identify this event. This is an arbitrary string that a client may assign. It will be passed back if there is an error with the event, but the corresponding `session.updated` event will not include it.
    * @maxLength 512
    */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `session.update`. */
-  type: 'session.update';
+  type: "session.update"
   /** Update the Realtime session. Choose either a realtime
 session or a transcription session.
  */
-  session: RealtimeClientEventSessionUpdateSession;
+  session: RealtimeClientEventSessionUpdateSession
 }

@@ -11,12 +11,12 @@
 `incomplete`. Populated when input items are returned via API.
 
  */
-export type ComputerToolCallOutputStatus = typeof ComputerToolCallOutputStatus[keyof typeof ComputerToolCallOutputStatus];
-
+export type ComputerToolCallOutputStatus =
+  (typeof ComputerToolCallOutputStatus)[keyof typeof ComputerToolCallOutputStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerToolCallOutputStatus = {
-  in_progress: 'in_progress',
-  completed: 'completed',
-  incomplete: 'incomplete',
-} as const;
+  in_progress: "in_progress",
+  completed: "completed",
+  incomplete: "incomplete"
+} as const

@@ -8,4 +8,4 @@
 /**
  * If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.
  */
-export type ChapterizationDTOResults = { [key: string]: unknown };
+export type ChapterizationDTOResults = { [key: string]: unknown }

@@ -5,10 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { StaticChunkingStrategyResponseParam } from './staticChunkingStrategyResponseParam';
-import type { OtherChunkingStrategyResponseParam } from './otherChunkingStrategyResponseParam';
+import type { StaticChunkingStrategyResponseParam } from "./staticChunkingStrategyResponseParam"
+import type { OtherChunkingStrategyResponseParam } from "./otherChunkingStrategyResponseParam"
 
 /**
  * The strategy used to chunk the file.
  */
-export type ChunkingStrategyResponse = StaticChunkingStrategyResponseParam | OtherChunkingStrategyResponseParam;
+export type ChunkingStrategyResponse =
+  | StaticChunkingStrategyResponseParam
+  | OtherChunkingStrategyResponseParam

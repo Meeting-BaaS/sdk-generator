@@ -9,11 +9,11 @@
 /**
  * The format to return the embeddings in. Can be either `float` or [`base64`](https://pypi.org/project/pybase64/).
  */
-export type CreateEmbeddingRequestEncodingFormat = typeof CreateEmbeddingRequestEncodingFormat[keyof typeof CreateEmbeddingRequestEncodingFormat];
-
+export type CreateEmbeddingRequestEncodingFormat =
+  (typeof CreateEmbeddingRequestEncodingFormat)[keyof typeof CreateEmbeddingRequestEncodingFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEmbeddingRequestEncodingFormat = {
-  float: 'float',
-  base64: 'base64',
-} as const;
+  float: "float",
+  base64: "base64"
+} as const

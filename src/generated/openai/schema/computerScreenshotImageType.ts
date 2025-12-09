@@ -11,10 +11,10 @@
 always set to `computer_screenshot`.
 
  */
-export type ComputerScreenshotImageType = typeof ComputerScreenshotImageType[keyof typeof ComputerScreenshotImageType];
-
+export type ComputerScreenshotImageType =
+  (typeof ComputerScreenshotImageType)[keyof typeof ComputerScreenshotImageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerScreenshotImageType = {
-  computer_screenshot: 'computer_screenshot',
-} as const;
+  computer_screenshot: "computer_screenshot"
+} as const

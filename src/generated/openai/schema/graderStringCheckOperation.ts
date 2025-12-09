@@ -9,13 +9,13 @@
 /**
  * The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
  */
-export type GraderStringCheckOperation = typeof GraderStringCheckOperation[keyof typeof GraderStringCheckOperation];
-
+export type GraderStringCheckOperation =
+  (typeof GraderStringCheckOperation)[keyof typeof GraderStringCheckOperation]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderStringCheckOperation = {
-  eq: 'eq',
-  ne: 'ne',
-  like: 'like',
-  ilike: 'ilike',
-} as const;
+  eq: "eq",
+  ne: "ne",
+  like: "like",
+  ilike: "ilike"
+} as const

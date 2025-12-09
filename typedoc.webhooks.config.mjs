@@ -22,17 +22,12 @@ export default {
   // Source settings
   disableSources: true,
   excludeExternals: true,
-  excludePrivate: false,  // Include private methods for debugging
+  excludePrivate: false, // Include private methods for debugging
   excludeProtected: false,
   excludeInternal: true,
 
   // Exclude test files
-  exclude: [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/test/**/*",
-    "**/examples/**/*"
-  ],
+  exclude: ["**/*.test.ts", "**/*.spec.ts", "**/test/**/*", "**/examples/**/*"],
 
   includeVersion: true,
   tsconfig: "./tsconfig.json",
@@ -44,13 +39,7 @@ export default {
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
 
-  kindSortOrder: [
-    "Class",
-    "Interface",
-    "TypeAlias",
-    "Function",
-    "Enum"
-  ],
+  kindSortOrder: ["Class", "Interface", "TypeAlias", "Function", "Enum"],
 
   // Keep readable - don't expand too deeply
   maxTypeConversionDepth: 5,
@@ -64,13 +53,7 @@ export default {
   includeVersion: true,
 
   // Better categorization
-  groupOrder: [
-    "Router",
-    "Handlers",
-    "Types",
-    "Validation",
-    "*"
-  ],
+  groupOrder: ["Router", "Handlers", "Types", "Validation", "*"],
 
   // Enhanced navigation
   navigation: {
@@ -90,4 +73,4 @@ export default {
     inherited: true,
     external: false
   }
-};
+}

@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ListBatchesResponseObject = typeof ListBatchesResponseObject[keyof typeof ListBatchesResponseObject];
-
+export type ListBatchesResponseObject =
+  (typeof ListBatchesResponseObject)[keyof typeof ListBatchesResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListBatchesResponseObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

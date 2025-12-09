@@ -10,4 +10,4 @@
 /**
  * Start date of the requested date range. Format accepted is YYYY-MM-DD
  */
-export type ManageV1StartDateParameter = string;
+export type ManageV1StartDateParameter = string

@@ -14,4 +14,4 @@ returned text will not contain the stop sequence.
 
  * @nullable
  */
-export type StopConfiguration = string | null | string[] | null;
+export type StopConfiguration = string | null | string[] | null

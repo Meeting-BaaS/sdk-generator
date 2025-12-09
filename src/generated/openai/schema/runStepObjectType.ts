@@ -9,11 +9,10 @@
 /**
  * The type of run step, which can be either `message_creation` or `tool_calls`.
  */
-export type RunStepObjectType = typeof RunStepObjectType[keyof typeof RunStepObjectType];
-
+export type RunStepObjectType = (typeof RunStepObjectType)[keyof typeof RunStepObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepObjectType = {
-  message_creation: 'message_creation',
-  tool_calls: 'tool_calls',
-} as const;
+  message_creation: "message_creation",
+  tool_calls: "tool_calls"
+} as const

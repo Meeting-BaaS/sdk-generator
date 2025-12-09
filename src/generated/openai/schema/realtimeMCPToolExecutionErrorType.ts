@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeMCPToolExecutionErrorType = typeof RealtimeMCPToolExecutionErrorType[keyof typeof RealtimeMCPToolExecutionErrorType];
-
+export type RealtimeMCPToolExecutionErrorType =
+  (typeof RealtimeMCPToolExecutionErrorType)[keyof typeof RealtimeMCPToolExecutionErrorType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeMCPToolExecutionErrorType = {
-  tool_execution_error: 'tool_execution_error',
-} as const;
+  tool_execution_error: "tool_execution_error"
+} as const

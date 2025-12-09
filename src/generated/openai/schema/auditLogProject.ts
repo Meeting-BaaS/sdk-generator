@@ -11,7 +11,7 @@
  */
 export type AuditLogProject = {
   /** The project ID. */
-  id?: string;
+  id?: string
   /** The project title. */
-  name?: string;
-};
+  name?: string
+}

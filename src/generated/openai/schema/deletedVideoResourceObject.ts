@@ -9,10 +9,10 @@
 /**
  * The object type that signals the deletion response.
  */
-export type DeletedVideoResourceObject = typeof DeletedVideoResourceObject[keyof typeof DeletedVideoResourceObject];
-
+export type DeletedVideoResourceObject =
+  (typeof DeletedVideoResourceObject)[keyof typeof DeletedVideoResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeletedVideoResourceObject = {
-  videodeleted: 'video.deleted',
-} as const;
+  videodeleted: "video.deleted"
+} as const

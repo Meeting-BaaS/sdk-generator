@@ -9,17 +9,16 @@
 /**
  * The current status of the batch.
  */
-export type BatchStatus = typeof BatchStatus[keyof typeof BatchStatus];
-
+export type BatchStatus = (typeof BatchStatus)[keyof typeof BatchStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BatchStatus = {
-  validating: 'validating',
-  failed: 'failed',
-  in_progress: 'in_progress',
-  finalizing: 'finalizing',
-  completed: 'completed',
-  expired: 'expired',
-  cancelling: 'cancelling',
-  cancelled: 'cancelled',
-} as const;
+  validating: "validating",
+  failed: "failed",
+  in_progress: "in_progress",
+  finalizing: "finalizing",
+  completed: "completed",
+  expired: "expired",
+  cancelling: "cancelling",
+  cancelled: "cancelled"
+} as const

@@ -5,39 +5,39 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTurnDetectionAnyOfAnyOfIdleTimeoutMs } from './realtimeTurnDetectionAnyOfAnyOfIdleTimeoutMs';
+import type { RealtimeTurnDetectionAnyOfAnyOfIdleTimeoutMs } from "./realtimeTurnDetectionAnyOfAnyOfIdleTimeoutMs"
 
 /**
  * Server-side voice activity detection (VAD) which flips on when user speech is detected and off after a period of silence.
  */
 export type RealtimeTurnDetectionAnyOfAnyOf = {
   /** Type of turn detection, `server_vad` to turn on simple Server VAD.
- */
-  type: 'server_vad';
+   */
+  type: "server_vad"
   /** Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A
 higher threshold will require louder audio to activate the model, and
 thus might perform better in noisy environments.
  */
-  threshold?: number;
+  threshold?: number
   /** Used only for `server_vad` mode. Amount of audio to include before the VAD detected speech (in
 milliseconds). Defaults to 300ms.
  */
-  prefix_padding_ms?: number;
+  prefix_padding_ms?: number
   /** Used only for `server_vad` mode. Duration of silence to detect speech stop (in milliseconds). Defaults
 to 500ms. With shorter values the model will respond more quickly,
 but may jump in on short pauses from the user.
  */
-  silence_duration_ms?: number;
+  silence_duration_ms?: number
   /** Whether or not to automatically generate a response when a VAD stop event occurs. If `interrupt_response` is set to `false` this may fail to create a response if the model is already responding.
 
 If both `create_response` and `interrupt_response` are set to `false`, the model will never respond automatically but VAD events will still be emitted.
  */
-  create_response?: boolean;
+  create_response?: boolean
   /** Whether or not to automatically interrupt (cancel) any ongoing response with output to the default
 conversation (i.e. `conversation` of `auto`) when a VAD start event occurs. If `true` then the response will be cancelled, otherwise it will continue until complete.
 
 If both `create_response` and `interrupt_response` are set to `false`, the model will never respond automatically but VAD events will still be emitted.
  */
-  interrupt_response?: boolean;
-  idle_timeout_ms?: RealtimeTurnDetectionAnyOfAnyOfIdleTimeoutMs;
-};
+  interrupt_response?: boolean
+  idle_timeout_ms?: RealtimeTurnDetectionAnyOfAnyOfIdleTimeoutMs
+}

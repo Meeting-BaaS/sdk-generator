@@ -12,10 +12,10 @@
  */
 export interface MCPToolFilter {
   /** List of allowed tool names. */
-  tool_names?: string[];
+  tool_names?: string[]
   /** Indicates whether or not a tool modifies data or is read-only. If an
 MCP server is [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
 it will match this filter.
  */
-  read_only?: boolean;
+  read_only?: boolean
 }

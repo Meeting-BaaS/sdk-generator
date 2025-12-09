@@ -9,17 +9,16 @@
 /**
  * The intended purpose of the file. Supported values are `assistants`, `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`, `vision`, and `user_data`.
  */
-export type OpenAIFilePurpose = typeof OpenAIFilePurpose[keyof typeof OpenAIFilePurpose];
-
+export type OpenAIFilePurpose = (typeof OpenAIFilePurpose)[keyof typeof OpenAIFilePurpose]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OpenAIFilePurpose = {
-  assistants: 'assistants',
-  assistants_output: 'assistants_output',
-  batch: 'batch',
-  batch_output: 'batch_output',
-  'fine-tune': 'fine-tune',
-  'fine-tune-results': 'fine-tune-results',
-  vision: 'vision',
-  user_data: 'user_data',
-} as const;
+  assistants: "assistants",
+  assistants_output: "assistants_output",
+  batch: "batch",
+  batch_output: "batch_output",
+  "fine-tune": "fine-tune",
+  "fine-tune-results": "fine-tune-results",
+  vision: "vision",
+  user_data: "user_data"
+} as const

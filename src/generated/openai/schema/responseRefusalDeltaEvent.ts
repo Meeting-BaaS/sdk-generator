@@ -5,28 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseRefusalDeltaEventType } from './responseRefusalDeltaEventType';
+import type { ResponseRefusalDeltaEventType } from "./responseRefusalDeltaEventType"
 
 /**
  * Emitted when there is a partial refusal text.
  */
 export interface ResponseRefusalDeltaEvent {
   /** The type of the event. Always `response.refusal.delta`.
- */
-  type: ResponseRefusalDeltaEventType;
+   */
+  type: ResponseRefusalDeltaEventType
   /** The ID of the output item that the refusal text is added to.
- */
-  item_id: string;
+   */
+  item_id: string
   /** The index of the output item that the refusal text is added to.
- */
-  output_index: number;
+   */
+  output_index: number
   /** The index of the content part that the refusal text is added to.
- */
-  content_index: number;
+   */
+  content_index: number
   /** The refusal text that is added.
- */
-  delta: string;
+   */
+  delta: string
   /** The sequence number of this event.
- */
-  sequence_number: number;
+   */
+  sequence_number: number
 }

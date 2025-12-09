@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ListModelsResponseObject } from './listModelsResponseObject';
-import type { Model } from './model';
+import type { ListModelsResponseObject } from "./listModelsResponseObject"
+import type { Model } from "./model"
 
 export interface ListModelsResponse {
-  object: ListModelsResponseObject;
-  data: Model[];
+  object: ListModelsResponseObject
+  data: Model[]
 }

@@ -9,10 +9,10 @@
 /**
  * Always `static`.
  */
-export type StaticChunkingStrategyRequestParamType = typeof StaticChunkingStrategyRequestParamType[keyof typeof StaticChunkingStrategyRequestParamType];
-
+export type StaticChunkingStrategyRequestParamType =
+  (typeof StaticChunkingStrategyRequestParamType)[keyof typeof StaticChunkingStrategyRequestParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StaticChunkingStrategyRequestParamType = {
-  static: 'static',
-} as const;
+  static: "static"
+} as const

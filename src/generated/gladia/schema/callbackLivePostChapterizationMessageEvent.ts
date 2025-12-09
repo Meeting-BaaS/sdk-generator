@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLivePostChapterizationMessageEvent = typeof CallbackLivePostChapterizationMessageEvent[keyof typeof CallbackLivePostChapterizationMessageEvent];
-
+export type CallbackLivePostChapterizationMessageEvent =
+  (typeof CallbackLivePostChapterizationMessageEvent)[keyof typeof CallbackLivePostChapterizationMessageEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLivePostChapterizationMessageEvent = {
-  livepost_chapterization: 'live.post_chapterization',
-} as const;
+  livepost_chapterization: "live.post_chapterization"
+} as const

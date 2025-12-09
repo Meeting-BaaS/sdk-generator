@@ -10,14 +10,14 @@
  * The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.
 
  */
-export type CreateTranslationRequestResponseFormat = typeof CreateTranslationRequestResponseFormat[keyof typeof CreateTranslationRequestResponseFormat];
-
+export type CreateTranslationRequestResponseFormat =
+  (typeof CreateTranslationRequestResponseFormat)[keyof typeof CreateTranslationRequestResponseFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateTranslationRequestResponseFormat = {
-  json: 'json',
-  text: 'text',
-  srt: 'srt',
-  verbose_json: 'verbose_json',
-  vtt: 'vtt',
-} as const;
+  json: "json",
+  text: "text",
+  srt: "srt",
+  verbose_json: "verbose_json",
+  vtt: "vtt"
+} as const

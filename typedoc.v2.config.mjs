@@ -1,10 +1,7 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // V2 API Documentation - Include methods AND types
-  entryPoints: [
-    "./src/node/v2-methods.ts",
-    "./src/node/types.d.ts"
-  ],
+  entryPoints: ["./src/node/v2-methods.ts", "./src/node/types.d.ts"],
 
   out: "./docs/generated/v2",
   plugin: ["typedoc-plugin-markdown"],
@@ -39,11 +36,7 @@ export default {
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
 
-  kindSortOrder: [
-    "Function",
-    "Interface",
-    "TypeAlias"
-  ],
+  kindSortOrder: ["Function", "Interface", "TypeAlias"],
 
   // Limit depth for readability
   maxTypeConversionDepth: 4,
@@ -93,4 +86,4 @@ export default {
     inherited: true,
     external: false
   }
-};
+}

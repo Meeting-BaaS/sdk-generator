@@ -9,10 +9,10 @@
 /**
  * The object type, which is always "list".
  */
-export type CreateEmbeddingResponseObject = typeof CreateEmbeddingResponseObject[keyof typeof CreateEmbeddingResponseObject];
-
+export type CreateEmbeddingResponseObject =
+  (typeof CreateEmbeddingResponseObject)[keyof typeof CreateEmbeddingResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEmbeddingResponseObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

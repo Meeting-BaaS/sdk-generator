@@ -7,17 +7,17 @@
  * OpenAPI spec version: 1.0.0
  */
 
-
 /**
  * Encoding allows you to specify the expected encoding of your audio output
  */
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeakV1EncodingParameter = {
-  linear16: 'linear16',
-  mulaw: 'mulaw',
-  alaw: 'alaw',
-  opus: 'opus',
-  aac: 'aac',
-} as const;
+  linear16: "linear16",
+  mulaw: "mulaw",
+  alaw: "alaw",
+  opus: "opus",
+  aac: "aac"
+} as const
 
-export type SpeakV1EncodingParameter = typeof SpeakV1EncodingParameter[keyof typeof SpeakV1EncodingParameter];
+export type SpeakV1EncodingParameter =
+  (typeof SpeakV1EncodingParameter)[keyof typeof SpeakV1EncodingParameter]

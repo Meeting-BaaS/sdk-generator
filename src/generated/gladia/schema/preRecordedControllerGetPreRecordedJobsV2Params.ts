@@ -4,34 +4,34 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PreRecordedControllerGetPreRecordedJobsV2StatusItem } from './preRecordedControllerGetPreRecordedJobsV2StatusItem';
+import type { PreRecordedControllerGetPreRecordedJobsV2StatusItem } from "./preRecordedControllerGetPreRecordedJobsV2StatusItem"
 
 export type PreRecordedControllerGetPreRecordedJobsV2Params = {
-/**
- * The starting point for pagination. A value of 0 starts from the first item.
- * @minimum 0
- */
-offset?: number;
-/**
- * The maximum number of items to return. Useful for pagination and controlling data payload size.
- * @minimum 1
- */
-limit?: number;
-/**
- * Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
- */
-date?: string;
-/**
- * Include items that occurred before the specified date in ISO format.
- */
-before_date?: string;
-/**
- * Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.
- */
-after_date?: string;
-/**
- * Filter the list based on item status. Accepts multiple values from the predefined list.
- */
-status?: PreRecordedControllerGetPreRecordedJobsV2StatusItem[];
-custom_metadata?: { [key: string]: unknown };
-};
+  /**
+   * The starting point for pagination. A value of 0 starts from the first item.
+   * @minimum 0
+   */
+  offset?: number
+  /**
+   * The maximum number of items to return. Useful for pagination and controlling data payload size.
+   * @minimum 1
+   */
+  limit?: number
+  /**
+   * Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
+   */
+  date?: string
+  /**
+   * Include items that occurred before the specified date in ISO format.
+   */
+  before_date?: string
+  /**
+   * Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.
+   */
+  after_date?: string
+  /**
+   * Filter the list based on item status. Accepts multiple values from the predefined list.
+   */
+  status?: PreRecordedControllerGetPreRecordedJobsV2StatusItem[]
+  custom_metadata?: { [key: string]: unknown }
+}

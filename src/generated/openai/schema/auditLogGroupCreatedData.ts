@@ -11,5 +11,5 @@
  */
 export type AuditLogGroupCreatedData = {
   /** The group name. */
-  group_name?: string;
-};
+  group_name?: string
+}

@@ -9,11 +9,10 @@
 /**
  * The entity that produced the message. One of `user` or `assistant`.
  */
-export type MessageObjectRole = typeof MessageObjectRole[keyof typeof MessageObjectRole];
-
+export type MessageObjectRole = (typeof MessageObjectRole)[keyof typeof MessageObjectRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageObjectRole = {
-  user: 'user',
-  assistant: 'assistant',
-} as const;
+  user: "user",
+  assistant: "assistant"
+} as const

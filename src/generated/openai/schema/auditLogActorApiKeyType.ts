@@ -9,11 +9,11 @@
 /**
  * The type of API key. Can be either `user` or `service_account`.
  */
-export type AuditLogActorApiKeyType = typeof AuditLogActorApiKeyType[keyof typeof AuditLogActorApiKeyType];
-
+export type AuditLogActorApiKeyType =
+  (typeof AuditLogActorApiKeyType)[keyof typeof AuditLogActorApiKeyType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AuditLogActorApiKeyType = {
-  user: 'user',
-  service_account: 'service_account',
-} as const;
+  user: "user",
+  service_account: "service_account"
+} as const

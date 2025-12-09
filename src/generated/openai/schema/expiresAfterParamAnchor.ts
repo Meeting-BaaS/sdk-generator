@@ -9,10 +9,10 @@
 /**
  * Base timestamp used to calculate expiration. Currently fixed to `created_at`.
  */
-export type ExpiresAfterParamAnchor = typeof ExpiresAfterParamAnchor[keyof typeof ExpiresAfterParamAnchor];
-
+export type ExpiresAfterParamAnchor =
+  (typeof ExpiresAfterParamAnchor)[keyof typeof ExpiresAfterParamAnchor]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ExpiresAfterParamAnchor = {
-  created_at: 'created_at',
-} as const;
+  created_at: "created_at"
+} as const

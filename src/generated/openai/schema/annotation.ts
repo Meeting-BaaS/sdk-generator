@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileCitationBody } from './fileCitationBody';
-import type { UrlCitationBody } from './urlCitationBody';
-import type { ContainerFileCitationBody } from './containerFileCitationBody';
-import type { FilePath } from './filePath';
+import type { FileCitationBody } from "./fileCitationBody"
+import type { UrlCitationBody } from "./urlCitationBody"
+import type { ContainerFileCitationBody } from "./containerFileCitationBody"
+import type { FilePath } from "./filePath"
 
-export type Annotation = FileCitationBody | UrlCitationBody | ContainerFileCitationBody | FilePath;
+export type Annotation = FileCitationBody | UrlCitationBody | ContainerFileCitationBody | FilePath

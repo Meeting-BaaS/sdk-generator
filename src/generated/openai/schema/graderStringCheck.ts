@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderStringCheckType } from './graderStringCheckType';
-import type { GraderStringCheckOperation } from './graderStringCheckOperation';
+import type { GraderStringCheckType } from "./graderStringCheckType"
+import type { GraderStringCheckOperation } from "./graderStringCheckOperation"
 
 /**
  * A StringCheckGrader object that performs a string comparison between input and reference using a specified operation.
@@ -14,13 +14,13 @@ import type { GraderStringCheckOperation } from './graderStringCheckOperation';
  */
 export interface GraderStringCheck {
   /** The object type, which is always `string_check`. */
-  type: GraderStringCheckType;
+  type: GraderStringCheckType
   /** The name of the grader. */
-  name: string;
+  name: string
   /** The input text. This may include template strings. */
-  input: string;
+  input: string
   /** The reference text. This may include template strings. */
-  reference: string;
+  reference: string
   /** The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`. */
-  operation: GraderStringCheckOperation;
+  operation: GraderStringCheckOperation
 }

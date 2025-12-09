@@ -12,6 +12,6 @@
  */
 export type WebhookResponseCancelledData = {
   /** The unique ID of the model response.
- */
-  id: string;
-};
+   */
+  id: string
+}

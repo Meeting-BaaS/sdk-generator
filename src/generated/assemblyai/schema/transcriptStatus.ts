@@ -9,13 +9,12 @@
 /**
  * The status of your transcript. Possible values are queued, processing, completed, or error.
  */
-export type TranscriptStatus = typeof TranscriptStatus[keyof typeof TranscriptStatus];
-
+export type TranscriptStatus = (typeof TranscriptStatus)[keyof typeof TranscriptStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptStatus = {
-  queued: 'queued',
-  processing: 'processing',
-  completed: 'completed',
-  error: 'error',
-} as const;
+  queued: "queued",
+  processing: "processing",
+  completed: "completed",
+  error: "error"
+} as const

@@ -10,4 +10,4 @@
  * Number of evaluation samples to generate per training step.
 
  */
-export type FineTuneReinforcementHyperparametersEvalSamples = 'auto' | number;
+export type FineTuneReinforcementHyperparametersEvalSamples = "auto" | number

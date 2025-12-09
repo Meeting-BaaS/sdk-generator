@@ -5,19 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseAudioDeltaEventType } from './responseAudioDeltaEventType';
+import type { ResponseAudioDeltaEventType } from "./responseAudioDeltaEventType"
 
 /**
  * Emitted when there is a partial audio response.
  */
 export interface ResponseAudioDeltaEvent {
   /** The type of the event. Always `response.audio.delta`.
- */
-  type: ResponseAudioDeltaEventType;
+   */
+  type: ResponseAudioDeltaEventType
   /** A sequence number for this chunk of the stream response.
- */
-  sequence_number: number;
+   */
+  sequence_number: number
   /** A chunk of Base64 encoded response audio bytes.
- */
-  delta: string;
+   */
+  delta: string
 }

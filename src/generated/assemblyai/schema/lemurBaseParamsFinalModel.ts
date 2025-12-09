@@ -5,10 +5,10 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { LemurModel } from './lemurModel';
+import type { LemurModel } from "./lemurModel"
 
 /**
  * The model that is used for the final prompt after compression is performed.
 
  */
-export type LemurBaseParamsFinalModel = LemurModel | string;
+export type LemurBaseParamsFinalModel = LemurModel | string

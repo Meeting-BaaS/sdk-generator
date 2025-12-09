@@ -10,10 +10,9 @@
  * The role of the output message. Always `assistant`.
 
  */
-export type OutputMessageRole = typeof OutputMessageRole[keyof typeof OutputMessageRole];
-
+export type OutputMessageRole = (typeof OutputMessageRole)[keyof typeof OutputMessageRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OutputMessageRole = {
-  assistant: 'assistant',
-} as const;
+  assistant: "assistant"
+} as const

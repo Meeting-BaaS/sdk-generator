@@ -8,9 +8,9 @@
 
 export type CodeInterpreterFileOutputFilesItem = {
   /** The MIME type of the file.
- */
-  mime_type: string;
+   */
+  mime_type: string
   /** The ID of the file.
- */
-  file_id: string;
-};
+   */
+  file_id: string
+}

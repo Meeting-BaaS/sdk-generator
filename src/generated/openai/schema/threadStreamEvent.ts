@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadStreamEventAnyOf } from './threadStreamEventAnyOf';
+import type { ThreadStreamEventAnyOf } from "./threadStreamEventAnyOf"
 
-export type ThreadStreamEvent = ThreadStreamEventAnyOf;
+export type ThreadStreamEvent = ThreadStreamEventAnyOf

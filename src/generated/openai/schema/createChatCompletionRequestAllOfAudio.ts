@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VoiceIdsShared } from './voiceIdsShared';
-import type { CreateChatCompletionRequestAllOfAudioFormat } from './createChatCompletionRequestAllOfAudioFormat';
+import type { VoiceIdsShared } from "./voiceIdsShared"
+import type { CreateChatCompletionRequestAllOfAudioFormat } from "./createChatCompletionRequestAllOfAudioFormat"
 
 /**
  * Parameters for audio output. Required when audio output is requested with
@@ -18,9 +18,9 @@ export type CreateChatCompletionRequestAllOfAudio = {
   /** The voice the model uses to respond. Supported voices are
 `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
  */
-  voice: VoiceIdsShared;
+  voice: VoiceIdsShared
   /** Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
 `opus`, or `pcm16`.
  */
-  format: CreateChatCompletionRequestAllOfAudioFormat;
-} | null;
+  format: CreateChatCompletionRequestAllOfAudioFormat
+} | null

@@ -10,4 +10,4 @@
  * Whether speed boost is enabled
  * @deprecated
  */
-export type TranscriptSpeedBoost = boolean | null;
+export type TranscriptSpeedBoost = boolean | null

@@ -9,4 +9,4 @@
 /**
  * When the role was created.
  */
-export type AssignedRoleDetailsCreatedAt = number | null;
+export type AssignedRoleDetailsCreatedAt = number | null

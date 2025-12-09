@@ -13,4 +13,4 @@ limit output tokens, or `inf` for the maximum available tokens for a
 given model. Defaults to `inf`.
 
  */
-export type RealtimeSessionCreateRequestGAMaxOutputTokens = number | 'inf';
+export type RealtimeSessionCreateRequestGAMaxOutputTokens = number | "inf"

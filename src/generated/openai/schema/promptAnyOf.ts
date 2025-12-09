@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { PromptAnyOfVersion } from './promptAnyOfVersion';
-import type { ResponsePromptVariables } from './responsePromptVariables';
+import type { PromptAnyOfVersion } from "./promptAnyOfVersion"
+import type { ResponsePromptVariables } from "./responsePromptVariables"
 
 /**
  * Reference to a prompt template and its variables.
@@ -15,7 +15,7 @@ import type { ResponsePromptVariables } from './responsePromptVariables';
  */
 export type PromptAnyOf = {
   /** The unique identifier of the prompt template to use. */
-  id: string;
-  version?: PromptAnyOfVersion;
-  variables?: ResponsePromptVariables;
-};
+  id: string
+  version?: PromptAnyOfVersion
+  variables?: ResponsePromptVariables
+}

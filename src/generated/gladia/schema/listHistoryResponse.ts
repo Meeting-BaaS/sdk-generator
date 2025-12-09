@@ -4,18 +4,18 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { ListHistoryResponseItemsItem } from './listHistoryResponseItemsItem';
+import type { ListHistoryResponseItemsItem } from "./listHistoryResponseItemsItem"
 
 export interface ListHistoryResponse {
   /** URL to fetch the first page */
-  first: string;
+  first: string
   /** URL to fetch the current page */
-  current: string;
+  current: string
   /**
    * URL to fetch the next page
    * @nullable
    */
-  next: string | null;
+  next: string | null
   /** List of jobs */
-  items: ListHistoryResponseItemsItem[];
+  items: ListHistoryResponseItemsItem[]
 }

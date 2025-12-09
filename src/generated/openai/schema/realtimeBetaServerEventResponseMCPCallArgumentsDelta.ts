@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaServerEventResponseMCPCallArgumentsDeltaObfuscation } from './realtimeBetaServerEventResponseMCPCallArgumentsDeltaObfuscation';
+import type { RealtimeBetaServerEventResponseMCPCallArgumentsDeltaObfuscation } from "./realtimeBetaServerEventResponseMCPCallArgumentsDeltaObfuscation"
 
 /**
  * Returned when MCP tool call arguments are updated during response generation.
  */
 export interface RealtimeBetaServerEventResponseMCPCallArgumentsDelta {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `response.mcp_call_arguments.delta`. */
-  type: 'response.mcp_call_arguments.delta';
+  type: "response.mcp_call_arguments.delta"
   /** The ID of the response. */
-  response_id: string;
+  response_id: string
   /** The ID of the MCP tool call item. */
-  item_id: string;
+  item_id: string
   /** The index of the output item in the response. */
-  output_index: number;
+  output_index: number
   /** The JSON-encoded arguments delta. */
-  delta: string;
-  obfuscation?: RealtimeBetaServerEventResponseMCPCallArgumentsDeltaObfuscation;
+  delta: string
+  obfuscation?: RealtimeBetaServerEventResponseMCPCallArgumentsDeltaObfuscation
 }

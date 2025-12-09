@@ -5,6 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComputerCallSafetyCheckParam } from './computerCallSafetyCheckParam';
+import type { ComputerCallSafetyCheckParam } from "./computerCallSafetyCheckParam"
 
-export type ComputerCallOutputItemParamAcknowledgedSafetyChecks = ComputerCallSafetyCheckParam[] | null;
+export type ComputerCallOutputItemParamAcknowledgedSafetyChecks =
+  | ComputerCallSafetyCheckParam[]
+  | null

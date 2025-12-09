@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveSpeechStartMessageEvent = typeof CallbackLiveSpeechStartMessageEvent[keyof typeof CallbackLiveSpeechStartMessageEvent];
-
+export type CallbackLiveSpeechStartMessageEvent =
+  (typeof CallbackLiveSpeechStartMessageEvent)[keyof typeof CallbackLiveSpeechStartMessageEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveSpeechStartMessageEvent = {
-  livespeech_start: 'live.speech_start',
-} as const;
+  livespeech_start: "live.speech_start"
+} as const

@@ -5,19 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WorkflowParamStateVariables } from './workflowParamStateVariables';
-import type { WorkflowTracingParam } from './workflowTracingParam';
+import type { WorkflowParamStateVariables } from "./workflowParamStateVariables"
+import type { WorkflowTracingParam } from "./workflowTracingParam"
 
 /**
  * Workflow reference and overrides applied to the chat session.
  */
 export interface WorkflowParam {
   /** Identifier for the workflow invoked by the session. */
-  id: string;
+  id: string
   /** Specific workflow version to run. Defaults to the latest deployed version. */
-  version?: string;
+  version?: string
   /** State variables forwarded to the workflow. Keys may be up to 64 characters, values must be primitive types, and the map defaults to an empty object. */
-  state_variables?: WorkflowParamStateVariables;
+  state_variables?: WorkflowParamStateVariables
   /** Optional tracing overrides for the workflow invocation. When omitted, tracing is enabled by default. */
-  tracing?: WorkflowTracingParam;
+  tracing?: WorkflowTracingParam
 }

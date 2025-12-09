@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeCreateClientSecretRequestExpiresAfterAnchor } from './realtimeCreateClientSecretRequestExpiresAfterAnchor';
+import type { RealtimeCreateClientSecretRequestExpiresAfterAnchor } from "./realtimeCreateClientSecretRequestExpiresAfterAnchor"
 
 /**
  * Configuration for the client secret expiration. Expiration refers to the time after which
@@ -16,13 +16,13 @@ until it expires.
  */
 export type RealtimeCreateClientSecretRequestExpiresAfter = {
   /** The anchor point for the client secret expiration, meaning that `seconds` will be added to the `created_at` time of the client secret to produce an expiration timestamp. Only `created_at` is currently supported.
- */
-  anchor?: RealtimeCreateClientSecretRequestExpiresAfterAnchor;
+   */
+  anchor?: RealtimeCreateClientSecretRequestExpiresAfterAnchor
   /**
    * The number of seconds from the anchor point to the expiration. Select a value between `10` and `7200` (2 hours). This default to 600 seconds (10 minutes) if not specified.
 
    * @minimum 10
    * @maximum 7200
    */
-  seconds?: number;
-};
+  seconds?: number
+}

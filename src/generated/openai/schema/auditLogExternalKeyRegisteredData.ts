@@ -9,4 +9,4 @@
 /**
  * The configuration for the external key.
  */
-export type AuditLogExternalKeyRegisteredData = { [key: string]: unknown };
+export type AuditLogExternalKeyRegisteredData = { [key: string]: unknown }

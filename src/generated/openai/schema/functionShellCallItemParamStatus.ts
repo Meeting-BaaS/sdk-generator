@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallItemStatus } from './functionShellCallItemStatus';
+import type { FunctionShellCallItemStatus } from "./functionShellCallItemStatus"
 
-export type FunctionShellCallItemParamStatus = FunctionShellCallItemStatus | null;
+export type FunctionShellCallItemParamStatus = FunctionShellCallItemStatus | null

@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectServiceAccountDeleteResponseObject } from './projectServiceAccountDeleteResponseObject';
+import type { ProjectServiceAccountDeleteResponseObject } from "./projectServiceAccountDeleteResponseObject"
 
 export interface ProjectServiceAccountDeleteResponse {
-  object: ProjectServiceAccountDeleteResponseObject;
-  id: string;
-  deleted: boolean;
+  object: ProjectServiceAccountDeleteResponseObject
+  id: string
+  deleted: boolean
 }

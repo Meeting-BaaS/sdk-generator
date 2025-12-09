@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterToolCallType } from './codeInterpreterToolCallType';
-import type { CodeInterpreterToolCallStatus } from './codeInterpreterToolCallStatus';
-import type { CodeInterpreterToolCallCode } from './codeInterpreterToolCallCode';
-import type { CodeInterpreterToolCallOutputs } from './codeInterpreterToolCallOutputs';
+import type { CodeInterpreterToolCallType } from "./codeInterpreterToolCallType"
+import type { CodeInterpreterToolCallStatus } from "./codeInterpreterToolCallStatus"
+import type { CodeInterpreterToolCallCode } from "./codeInterpreterToolCallCode"
+import type { CodeInterpreterToolCallOutputs } from "./codeInterpreterToolCallOutputs"
 
 /**
  * A tool call to run code.
@@ -16,17 +16,17 @@ import type { CodeInterpreterToolCallOutputs } from './codeInterpreterToolCallOu
  */
 export interface CodeInterpreterToolCall {
   /** The type of the code interpreter tool call. Always `code_interpreter_call`.
- */
-  type: CodeInterpreterToolCallType;
+   */
+  type: CodeInterpreterToolCallType
   /** The unique ID of the code interpreter tool call.
- */
-  id: string;
+   */
+  id: string
   /** The status of the code interpreter tool call. Valid values are `in_progress`, `completed`, `incomplete`, `interpreting`, and `failed`.
- */
-  status: CodeInterpreterToolCallStatus;
+   */
+  status: CodeInterpreterToolCallStatus
   /** The ID of the container used to run the code.
- */
-  container_id: string;
-  code: CodeInterpreterToolCallCode;
-  outputs: CodeInterpreterToolCallOutputs;
+   */
+  container_id: string
+  code: CodeInterpreterToolCallCode
+  outputs: CodeInterpreterToolCallOutputs
 }

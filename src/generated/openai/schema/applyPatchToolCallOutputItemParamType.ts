@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `apply_patch_call_output`.
  */
-export type ApplyPatchToolCallOutputItemParamType = typeof ApplyPatchToolCallOutputItemParamType[keyof typeof ApplyPatchToolCallOutputItemParamType];
-
+export type ApplyPatchToolCallOutputItemParamType =
+  (typeof ApplyPatchToolCallOutputItemParamType)[keyof typeof ApplyPatchToolCallOutputItemParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchToolCallOutputItemParamType = {
-  apply_patch_call_output: 'apply_patch_call_output',
-} as const;
+  apply_patch_call_output: "apply_patch_call_output"
+} as const

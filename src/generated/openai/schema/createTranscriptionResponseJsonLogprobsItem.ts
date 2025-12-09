@@ -8,9 +8,9 @@
 
 export type CreateTranscriptionResponseJsonLogprobsItem = {
   /** The token in the transcription. */
-  token?: string;
+  token?: string
   /** The log probability of the token. */
-  logprob?: number;
+  logprob?: number
   /** The bytes of the token. */
-  bytes?: number[];
-};
+  bytes?: number[]
+}

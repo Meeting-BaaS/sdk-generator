@@ -9,12 +9,12 @@
 /**
  * One of `server_error`, `unsupported_file`, or `invalid_file`.
  */
-export type VectorStoreFileObjectLastErrorAnyOfCode = typeof VectorStoreFileObjectLastErrorAnyOfCode[keyof typeof VectorStoreFileObjectLastErrorAnyOfCode];
-
+export type VectorStoreFileObjectLastErrorAnyOfCode =
+  (typeof VectorStoreFileObjectLastErrorAnyOfCode)[keyof typeof VectorStoreFileObjectLastErrorAnyOfCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreFileObjectLastErrorAnyOfCode = {
-  server_error: 'server_error',
-  unsupported_file: 'unsupported_file',
-  invalid_file: 'invalid_file',
-} as const;
+  server_error: "server_error",
+  unsupported_file: "unsupported_file",
+  invalid_file: "invalid_file"
+} as const

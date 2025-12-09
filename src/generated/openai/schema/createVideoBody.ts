@@ -5,26 +5,26 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VideoModel } from './videoModel';
-import type { VideoSeconds } from './videoSeconds';
-import type { VideoSize } from './videoSize';
+import type { VideoModel } from "./videoModel"
+import type { VideoSeconds } from "./videoSeconds"
+import type { VideoSize } from "./videoSize"
 
 /**
  * Parameters for creating a new video generation job.
  */
 export interface CreateVideoBody {
   /** The video generation model to use (allowed values: sora-2, sora-2-pro). Defaults to `sora-2`. */
-  model?: VideoModel;
+  model?: VideoModel
   /**
    * Text prompt that describes the video to generate.
    * @minLength 1
    * @maxLength 32000
    */
-  prompt: string;
+  prompt: string
   /** Optional image reference that guides generation. */
-  input_reference?: Blob;
+  input_reference?: Blob
   /** Clip duration in seconds (allowed values: 4, 8, 12). Defaults to 4 seconds. */
-  seconds?: VideoSeconds;
+  seconds?: VideoSeconds
   /** Output resolution formatted as width x height (allowed values: 720x1280, 1280x720, 1024x1792, 1792x1024). Defaults to 720x1280. */
-  size?: VideoSize;
+  size?: VideoSize
 }

@@ -8,7 +8,7 @@
 
 export type ResponseLogProbTopLogprobsItem = {
   /** A possible text token. */
-  token?: string;
+  token?: string
   /** The log probability of this token. */
-  logprob?: number;
-};
+  logprob?: number
+}

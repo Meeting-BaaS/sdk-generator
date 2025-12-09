@@ -8,5 +8,5 @@
  */
 
 export type ReadV1ResponseResultsSummaryResultsSummary = {
-  text?: string;
-};
+  text?: string
+}

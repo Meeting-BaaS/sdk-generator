@@ -18,9 +18,9 @@ export interface RealtimeClientEventConversationItemDelete {
    * Optional client-generated ID used to identify this event.
    * @maxLength 512
    */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `conversation.item.delete`. */
-  type: 'conversation.item.delete';
+  type: "conversation.item.delete"
   /** The ID of the item to delete. */
-  item_id: string;
+  item_id: string
 }

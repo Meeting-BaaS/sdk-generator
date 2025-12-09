@@ -10,10 +10,9 @@
  * The type of the custom tool call. Always `custom_tool_call`.
 
  */
-export type CustomToolCallType = typeof CustomToolCallType[keyof typeof CustomToolCallType];
-
+export type CustomToolCallType = (typeof CustomToolCallType)[keyof typeof CustomToolCallType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CustomToolCallType = {
-  custom_tool_call: 'custom_tool_call',
-} as const;
+  custom_tool_call: "custom_tool_call"
+} as const

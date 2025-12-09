@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepCompletionUsageAnyOf } from './runStepCompletionUsageAnyOf';
+import type { RunStepCompletionUsageAnyOf } from "./runStepCompletionUsageAnyOf"
 
-export type RunStepCompletionUsage = RunStepCompletionUsageAnyOf | null;
+export type RunStepCompletionUsage = RunStepCompletionUsageAnyOf | null

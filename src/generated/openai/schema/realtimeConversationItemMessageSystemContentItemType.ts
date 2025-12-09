@@ -9,10 +9,10 @@
 /**
  * The content type. Always `input_text` for system messages.
  */
-export type RealtimeConversationItemMessageSystemContentItemType = typeof RealtimeConversationItemMessageSystemContentItemType[keyof typeof RealtimeConversationItemMessageSystemContentItemType];
-
+export type RealtimeConversationItemMessageSystemContentItemType =
+  (typeof RealtimeConversationItemMessageSystemContentItemType)[keyof typeof RealtimeConversationItemMessageSystemContentItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageSystemContentItemType = {
-  input_text: 'input_text',
-} as const;
+  input_text: "input_text"
+} as const

@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ContainerFileResource } from './containerFileResource';
+import type { ContainerFileResource } from "./containerFileResource"
 
 export interface ContainerFileListResource {
   /** The type of object returned, must be 'list'. */
-  object: 'list';
+  object: "list"
   /** A list of container files. */
-  data: ContainerFileResource[];
+  data: ContainerFileResource[]
   /** The ID of the first file in the list. */
-  first_id: string;
+  first_id: string
   /** The ID of the last file in the list. */
-  last_id: string;
+  last_id: string
   /** Whether there are more files available. */
-  has_more: boolean;
+  has_more: boolean
 }

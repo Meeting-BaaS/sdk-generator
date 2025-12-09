@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellToolParamType } from './functionShellToolParamType';
+import type { FunctionShellToolParamType } from "./functionShellToolParamType"
 
 /**
  * A tool that allows the model to execute shell commands.
  */
 export interface FunctionShellToolParam {
   /** The type of the shell tool. Always `shell`. */
-  type: FunctionShellToolParamType;
+  type: FunctionShellToolParamType
 }

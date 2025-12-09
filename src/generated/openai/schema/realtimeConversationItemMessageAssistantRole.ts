@@ -9,10 +9,10 @@
 /**
  * The role of the message sender. Always `assistant`.
  */
-export type RealtimeConversationItemMessageAssistantRole = typeof RealtimeConversationItemMessageAssistantRole[keyof typeof RealtimeConversationItemMessageAssistantRole];
-
+export type RealtimeConversationItemMessageAssistantRole =
+  (typeof RealtimeConversationItemMessageAssistantRole)[keyof typeof RealtimeConversationItemMessageAssistantRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageAssistantRole = {
-  assistant: 'assistant',
-} as const;
+  assistant: "assistant"
+} as const

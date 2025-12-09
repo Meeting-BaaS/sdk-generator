@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ReasoningEffort } from './reasoningEffort';
-import type { CreateEvalCompletionsRunDataSourceSamplingParamsResponseFormat } from './createEvalCompletionsRunDataSourceSamplingParamsResponseFormat';
-import type { ChatCompletionTool } from './chatCompletionTool';
+import type { ReasoningEffort } from "./reasoningEffort"
+import type { CreateEvalCompletionsRunDataSourceSamplingParamsResponseFormat } from "./createEvalCompletionsRunDataSourceSamplingParamsResponseFormat"
+import type { ChatCompletionTool } from "./chatCompletionTool"
 
 export type CreateEvalCompletionsRunDataSourceSamplingParams = {
-  reasoning_effort?: ReasoningEffort;
+  reasoning_effort?: ReasoningEffort
   /** A higher temperature increases randomness in the outputs. */
-  temperature?: number;
+  temperature?: number
   /** The maximum number of tokens in the generated output. */
-  max_completion_tokens?: number;
+  max_completion_tokens?: number
   /** An alternative to temperature for nucleus sampling; 1.0 includes all tokens. */
-  top_p?: number;
+  top_p?: number
   /** A seed value to initialize the randomness, during sampling. */
-  seed?: number;
+  seed?: number
   /** An object specifying the format that the model must output.
 
 Setting to `{ "type": "json_schema", "json_schema": {...} }` enables
@@ -30,8 +30,8 @@ Setting to `{ "type": "json_object" }` enables the older JSON mode, which
 ensures the message the model generates is valid JSON. Using `json_schema`
 is preferred for models that support it.
  */
-  response_format?: CreateEvalCompletionsRunDataSourceSamplingParamsResponseFormat;
+  response_format?: CreateEvalCompletionsRunDataSourceSamplingParamsResponseFormat
   /** A list of tools the model may call. Currently, only functions are supported as a tool. Use this to provide a list of functions the model may generate JSON inputs for. A max of 128 functions are supported.
- */
-  tools?: ChatCompletionTool[];
-};
+   */
+  tools?: ChatCompletionTool[]
+}

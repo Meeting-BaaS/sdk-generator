@@ -10,10 +10,10 @@
  * The type of the event. Always `fine_tuning.job.cancelled`.
 
  */
-export type WebhookFineTuningJobCancelledType = typeof WebhookFineTuningJobCancelledType[keyof typeof WebhookFineTuningJobCancelledType];
-
+export type WebhookFineTuningJobCancelledType =
+  (typeof WebhookFineTuningJobCancelledType)[keyof typeof WebhookFineTuningJobCancelledType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookFineTuningJobCancelledType = {
-  fine_tuningjobcancelled: 'fine_tuning.job.cancelled',
-} as const;
+  fine_tuningjobcancelled: "fine_tuning.job.cancelled"
+} as const

@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalLogsDataSourceConfigType } from './createEvalLogsDataSourceConfigType';
-import type { CreateEvalLogsDataSourceConfigMetadata } from './createEvalLogsDataSourceConfigMetadata';
+import type { CreateEvalLogsDataSourceConfigType } from "./createEvalLogsDataSourceConfigType"
+import type { CreateEvalLogsDataSourceConfigMetadata } from "./createEvalLogsDataSourceConfigMetadata"
 
 /**
  * A data source config which specifies the metadata property of your logs query.
@@ -15,7 +15,7 @@ This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
  */
 export interface CreateEvalLogsDataSourceConfig {
   /** The type of data source. Always `logs`. */
-  type: CreateEvalLogsDataSourceConfigType;
+  type: CreateEvalLogsDataSourceConfigType
   /** Metadata filters for the logs data source. */
-  metadata?: CreateEvalLogsDataSourceConfigMetadata;
+  metadata?: CreateEvalLogsDataSourceConfigMetadata
 }

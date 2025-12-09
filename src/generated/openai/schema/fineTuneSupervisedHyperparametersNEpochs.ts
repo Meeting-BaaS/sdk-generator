@@ -10,4 +10,4 @@
  * The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
 
  */
-export type FineTuneSupervisedHyperparametersNEpochs = 'auto' | number;
+export type FineTuneSupervisedHyperparametersNEpochs = "auto" | number

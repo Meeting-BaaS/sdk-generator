@@ -9,10 +9,10 @@
 /**
  * The audio format. Always `audio/pcmu`.
  */
-export type RealtimeAudioFormatsAnyOfFourType = typeof RealtimeAudioFormatsAnyOfFourType[keyof typeof RealtimeAudioFormatsAnyOfFourType];
-
+export type RealtimeAudioFormatsAnyOfFourType =
+  (typeof RealtimeAudioFormatsAnyOfFourType)[keyof typeof RealtimeAudioFormatsAnyOfFourType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeAudioFormatsAnyOfFourType = {
-  'audio/pcmu': 'audio/pcmu',
-} as const;
+  "audio/pcmu": "audio/pcmu"
+} as const

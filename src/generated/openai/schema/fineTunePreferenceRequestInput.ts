@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTunePreferenceRequestInputInput } from './fineTunePreferenceRequestInputInput';
-import type { ChatCompletionRequestAssistantMessage } from './chatCompletionRequestAssistantMessage';
+import type { FineTunePreferenceRequestInputInput } from "./fineTunePreferenceRequestInputInput"
+import type { ChatCompletionRequestAssistantMessage } from "./chatCompletionRequestAssistantMessage"
 
 /**
  * The per-line training example of a fine-tuning input file for chat models using the dpo method.
@@ -15,15 +15,15 @@ are not currently supported for fine-tuning.
 
  */
 export interface FineTunePreferenceRequestInput {
-  input?: FineTunePreferenceRequestInputInput;
+  input?: FineTunePreferenceRequestInputInput
   /**
    * The preferred completion message for the output.
    * @maxItems 1
    */
-  preferred_output?: ChatCompletionRequestAssistantMessage[];
+  preferred_output?: ChatCompletionRequestAssistantMessage[]
   /**
    * The non-preferred completion message for the output.
    * @maxItems 1
    */
-  non_preferred_output?: ChatCompletionRequestAssistantMessage[];
+  non_preferred_output?: ChatCompletionRequestAssistantMessage[]
 }

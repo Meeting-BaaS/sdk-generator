@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StopRecordingActionType = typeof StopRecordingActionType[keyof typeof StopRecordingActionType];
-
+export type StopRecordingActionType =
+  (typeof StopRecordingActionType)[keyof typeof StopRecordingActionType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StopRecordingActionType = {
-  stop_recording: 'stop_recording',
-} as const;
+  stop_recording: "stop_recording"
+} as const

@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { Error } from './error';
+import type { Error } from "./error"
 
 /**
  * Error message if the addon failed
  * @nullable
  */
-export type TranslationMessageError = Error | null;
+export type TranslationMessageError = Error | null

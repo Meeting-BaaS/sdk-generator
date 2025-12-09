@@ -9,4 +9,4 @@
 /**
  * True while a request is throttled and false when a request is no longer throttled
  */
-export type TranscriptThrottled = boolean | null;
+export type TranscriptThrottled = boolean | null

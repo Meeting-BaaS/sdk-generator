@@ -5,11 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalCustomDataSourceConfig } from './evalCustomDataSourceConfig';
-import type { EvalLogsDataSourceConfig } from './evalLogsDataSourceConfig';
-import type { EvalStoredCompletionsDataSourceConfig } from './evalStoredCompletionsDataSourceConfig';
+import type { EvalCustomDataSourceConfig } from "./evalCustomDataSourceConfig"
+import type { EvalLogsDataSourceConfig } from "./evalLogsDataSourceConfig"
+import type { EvalStoredCompletionsDataSourceConfig } from "./evalStoredCompletionsDataSourceConfig"
 
 /**
  * Configuration of data sources used in runs of the evaluation.
  */
-export type EvalDataSourceConfig = EvalCustomDataSourceConfig | EvalLogsDataSourceConfig | EvalStoredCompletionsDataSourceConfig;
+export type EvalDataSourceConfig =
+  | EvalCustomDataSourceConfig
+  | EvalLogsDataSourceConfig
+  | EvalStoredCompletionsDataSourceConfig

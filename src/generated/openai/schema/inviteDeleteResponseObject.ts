@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `organization.invite.deleted`
  */
-export type InviteDeleteResponseObject = typeof InviteDeleteResponseObject[keyof typeof InviteDeleteResponseObject];
-
+export type InviteDeleteResponseObject =
+  (typeof InviteDeleteResponseObject)[keyof typeof InviteDeleteResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InviteDeleteResponseObject = {
-  organizationinvitedeleted: 'organization.invite.deleted',
-} as const;
+  organizationinvitedeleted: "organization.invite.deleted"
+} as const

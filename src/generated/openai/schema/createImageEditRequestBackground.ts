@@ -17,12 +17,13 @@ should be set to either `png` (default value) or `webp`.
 
  * @nullable
  */
-export type CreateImageEditRequestBackground = typeof CreateImageEditRequestBackground[keyof typeof CreateImageEditRequestBackground] | null;
-
+export type CreateImageEditRequestBackground =
+  | (typeof CreateImageEditRequestBackground)[keyof typeof CreateImageEditRequestBackground]
+  | null
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageEditRequestBackground = {
-  transparent: 'transparent',
-  opaque: 'opaque',
-  auto: 'auto',
-} as const;
+  transparent: "transparent",
+  opaque: "opaque",
+  auto: "auto"
+} as const

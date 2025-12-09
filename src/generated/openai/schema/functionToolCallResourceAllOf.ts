@@ -8,6 +8,6 @@
 
 export type FunctionToolCallResourceAllOf = {
   /** The unique ID of the function tool call.
- */
-  id: string;
-};
+   */
+  id: string
+}

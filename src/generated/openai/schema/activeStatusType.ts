@@ -9,10 +9,9 @@
 /**
  * Status discriminator that is always `active`.
  */
-export type ActiveStatusType = typeof ActiveStatusType[keyof typeof ActiveStatusType];
-
+export type ActiveStatusType = (typeof ActiveStatusType)[keyof typeof ActiveStatusType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ActiveStatusType = {
-  active: 'active',
-} as const;
+  active: "active"
+} as const

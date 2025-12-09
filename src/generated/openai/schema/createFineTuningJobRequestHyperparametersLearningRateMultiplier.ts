@@ -11,4 +11,4 @@
 overfitting.
 
  */
-export type CreateFineTuningJobRequestHyperparametersLearningRateMultiplier = 'auto' | number;
+export type CreateFineTuningJobRequestHyperparametersLearningRateMultiplier = "auto" | number

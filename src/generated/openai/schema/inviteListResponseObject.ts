@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `list`
  */
-export type InviteListResponseObject = typeof InviteListResponseObject[keyof typeof InviteListResponseObject];
-
+export type InviteListResponseObject =
+  (typeof InviteListResponseObject)[keyof typeof InviteListResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InviteListResponseObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

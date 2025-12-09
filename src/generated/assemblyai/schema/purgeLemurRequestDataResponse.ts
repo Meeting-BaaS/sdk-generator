@@ -8,9 +8,9 @@
 
 export interface PurgeLemurRequestDataResponse {
   /** The ID of the deletion request of the LeMUR request */
-  request_id: string;
+  request_id: string
   /** The ID of the LeMUR request to purge the data for */
-  request_id_to_purge: string;
+  request_id_to_purge: string
   /** Whether the request data was deleted */
-  deleted: boolean;
+  deleted: boolean
 }

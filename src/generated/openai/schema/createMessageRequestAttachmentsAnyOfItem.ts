@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateMessageRequestAttachmentsAnyOfItemToolsItem } from './createMessageRequestAttachmentsAnyOfItemToolsItem';
+import type { CreateMessageRequestAttachmentsAnyOfItemToolsItem } from "./createMessageRequestAttachmentsAnyOfItemToolsItem"
 
 export type CreateMessageRequestAttachmentsAnyOfItem = {
   /** The ID of the file to attach to the message. */
-  file_id?: string;
+  file_id?: string
   /** The tools to add this file to. */
-  tools?: CreateMessageRequestAttachmentsAnyOfItemToolsItem[];
-};
+  tools?: CreateMessageRequestAttachmentsAnyOfItemToolsItem[]
+}

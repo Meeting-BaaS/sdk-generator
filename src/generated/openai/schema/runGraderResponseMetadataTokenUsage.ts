@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunGraderResponseMetadataTokenUsage = number | null;
+export type RunGraderResponseMetadataTokenUsage = number | null

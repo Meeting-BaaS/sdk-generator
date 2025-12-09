@@ -5,8 +5,8 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptWordChannel } from './transcriptWordChannel';
-import type { TranscriptWordSpeaker } from './transcriptWordSpeaker';
+import type { TranscriptWordChannel } from "./transcriptWordChannel"
+import type { TranscriptWordSpeaker } from "./transcriptWordSpeaker"
 
 export interface TranscriptWord {
   /**
@@ -14,15 +14,15 @@ export interface TranscriptWord {
    * @minimum 0
    * @maximum 1
    */
-  confidence: number;
+  confidence: number
   /** The starting time, in milliseconds, for the word */
-  start: number;
+  start: number
   /** The ending time, in milliseconds, for the word */
-  end: number;
+  end: number
   /** The text of the word */
-  text: string;
+  text: string
   /** The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially. */
-  channel?: TranscriptWordChannel;
+  channel?: TranscriptWordChannel
   /** The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null */
-  speaker: TranscriptWordSpeaker;
+  speaker: TranscriptWordSpeaker
 }

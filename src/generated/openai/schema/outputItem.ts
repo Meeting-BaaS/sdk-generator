@@ -5,23 +5,41 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { OutputMessage } from './outputMessage';
-import type { FileSearchToolCall } from './fileSearchToolCall';
-import type { FunctionToolCall } from './functionToolCall';
-import type { WebSearchToolCall } from './webSearchToolCall';
-import type { ComputerToolCall } from './computerToolCall';
-import type { ReasoningItem } from './reasoningItem';
-import type { CompactionBody } from './compactionBody';
-import type { ImageGenToolCall } from './imageGenToolCall';
-import type { CodeInterpreterToolCall } from './codeInterpreterToolCall';
-import type { LocalShellToolCall } from './localShellToolCall';
-import type { FunctionShellCall } from './functionShellCall';
-import type { FunctionShellCallOutput } from './functionShellCallOutput';
-import type { ApplyPatchToolCall } from './applyPatchToolCall';
-import type { ApplyPatchToolCallOutput } from './applyPatchToolCallOutput';
-import type { MCPToolCall } from './mCPToolCall';
-import type { MCPListTools } from './mCPListTools';
-import type { MCPApprovalRequest } from './mCPApprovalRequest';
-import type { CustomToolCall } from './customToolCall';
+import type { OutputMessage } from "./outputMessage"
+import type { FileSearchToolCall } from "./fileSearchToolCall"
+import type { FunctionToolCall } from "./functionToolCall"
+import type { WebSearchToolCall } from "./webSearchToolCall"
+import type { ComputerToolCall } from "./computerToolCall"
+import type { ReasoningItem } from "./reasoningItem"
+import type { CompactionBody } from "./compactionBody"
+import type { ImageGenToolCall } from "./imageGenToolCall"
+import type { CodeInterpreterToolCall } from "./codeInterpreterToolCall"
+import type { LocalShellToolCall } from "./localShellToolCall"
+import type { FunctionShellCall } from "./functionShellCall"
+import type { FunctionShellCallOutput } from "./functionShellCallOutput"
+import type { ApplyPatchToolCall } from "./applyPatchToolCall"
+import type { ApplyPatchToolCallOutput } from "./applyPatchToolCallOutput"
+import type { MCPToolCall } from "./mCPToolCall"
+import type { MCPListTools } from "./mCPListTools"
+import type { MCPApprovalRequest } from "./mCPApprovalRequest"
+import type { CustomToolCall } from "./customToolCall"
 
-export type OutputItem = OutputMessage | FileSearchToolCall | FunctionToolCall | WebSearchToolCall | ComputerToolCall | ReasoningItem | CompactionBody | ImageGenToolCall | CodeInterpreterToolCall | LocalShellToolCall | FunctionShellCall | FunctionShellCallOutput | ApplyPatchToolCall | ApplyPatchToolCallOutput | MCPToolCall | MCPListTools | MCPApprovalRequest | CustomToolCall;
+export type OutputItem =
+  | OutputMessage
+  | FileSearchToolCall
+  | FunctionToolCall
+  | WebSearchToolCall
+  | ComputerToolCall
+  | ReasoningItem
+  | CompactionBody
+  | ImageGenToolCall
+  | CodeInterpreterToolCall
+  | LocalShellToolCall
+  | FunctionShellCall
+  | FunctionShellCallOutput
+  | ApplyPatchToolCall
+  | ApplyPatchToolCallOutput
+  | MCPToolCall
+  | MCPListTools
+  | MCPApprovalRequest
+  | CustomToolCall

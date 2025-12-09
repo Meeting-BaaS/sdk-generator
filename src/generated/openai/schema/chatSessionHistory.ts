@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatSessionHistoryRecentThreads } from './chatSessionHistoryRecentThreads';
+import type { ChatSessionHistoryRecentThreads } from "./chatSessionHistoryRecentThreads"
 
 /**
  * History retention preferences returned for the session.
  */
 export interface ChatSessionHistory {
   /** Indicates if chat history is persisted for the session. */
-  enabled: boolean;
-  recent_threads: ChatSessionHistoryRecentThreads;
+  enabled: boolean
+  recent_threads: ChatSessionHistoryRecentThreads
 }

@@ -9,12 +9,12 @@
 /**
  * The status of the vector store, which can be either `expired`, `in_progress`, or `completed`. A status of `completed` indicates that the vector store is ready for use.
  */
-export type VectorStoreObjectStatus = typeof VectorStoreObjectStatus[keyof typeof VectorStoreObjectStatus];
-
+export type VectorStoreObjectStatus =
+  (typeof VectorStoreObjectStatus)[keyof typeof VectorStoreObjectStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreObjectStatus = {
-  expired: 'expired',
-  in_progress: 'in_progress',
-  completed: 'completed',
-} as const;
+  expired: "expired",
+  in_progress: "in_progress",
+  completed: "completed"
+} as const

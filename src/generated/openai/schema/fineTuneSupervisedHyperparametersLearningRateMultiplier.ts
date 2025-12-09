@@ -10,4 +10,4 @@
  * Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
 
  */
-export type FineTuneSupervisedHyperparametersLearningRateMultiplier = 'auto' | number;
+export type FineTuneSupervisedHyperparametersLearningRateMultiplier = "auto" | number

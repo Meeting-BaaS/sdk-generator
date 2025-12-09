@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunOutputItemListObject } from './evalRunOutputItemListObject';
-import type { EvalRunOutputItem } from './evalRunOutputItem';
+import type { EvalRunOutputItemListObject } from "./evalRunOutputItemListObject"
+import type { EvalRunOutputItem } from "./evalRunOutputItem"
 
 /**
  * An object representing a list of output items for an evaluation run.
@@ -14,15 +14,15 @@ import type { EvalRunOutputItem } from './evalRunOutputItem';
  */
 export interface EvalRunOutputItemList {
   /** The type of this object. It is always set to "list".
- */
-  object: EvalRunOutputItemListObject;
+   */
+  object: EvalRunOutputItemListObject
   /** An array of eval run output item objects.
- */
-  data: EvalRunOutputItem[];
+   */
+  data: EvalRunOutputItem[]
   /** The identifier of the first eval run output item in the data array. */
-  first_id: string;
+  first_id: string
   /** The identifier of the last eval run output item in the data array. */
-  last_id: string;
+  last_id: string
   /** Indicates whether there are more eval run output items available. */
-  has_more: boolean;
+  has_more: boolean
 }

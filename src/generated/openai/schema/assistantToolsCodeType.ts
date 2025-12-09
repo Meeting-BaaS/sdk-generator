@@ -9,10 +9,10 @@
 /**
  * The type of tool being defined: `code_interpreter`
  */
-export type AssistantToolsCodeType = typeof AssistantToolsCodeType[keyof typeof AssistantToolsCodeType];
-
+export type AssistantToolsCodeType =
+  (typeof AssistantToolsCodeType)[keyof typeof AssistantToolsCodeType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AssistantToolsCodeType = {
-  code_interpreter: 'code_interpreter',
-} as const;
+  code_interpreter: "code_interpreter"
+} as const

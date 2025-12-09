@@ -10,12 +10,12 @@ export type ChatCompletionRequestMessageContentPartFileFile = {
   /** The name of the file, used when passing the file to the model as a 
 string.
  */
-  filename?: string;
+  filename?: string
   /** The base64 encoded file data, used when passing the file to the model 
 as a string.
  */
-  file_data?: string;
+  file_data?: string
   /** The ID of an uploaded file to use as input.
- */
-  file_id?: string;
-};
+   */
+  file_id?: string
+}

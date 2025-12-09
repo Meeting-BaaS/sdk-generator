@@ -11,17 +11,17 @@
  */
 export type AuditLogOrganizationUpdatedChangesRequested = {
   /** The organization title. */
-  title?: string;
+  title?: string
   /** The organization description. */
-  description?: string;
+  description?: string
   /** The organization name. */
-  name?: string;
+  name?: string
   /** Visibility of the threads page which shows messages created with the Assistants API and Playground. One of `ANY_ROLE`, `OWNERS`, or `NONE`. */
-  threads_ui_visibility?: string;
+  threads_ui_visibility?: string
   /** Visibility of the usage dashboard which shows activity and costs for your organization. One of `ANY_ROLE` or `OWNERS`. */
-  usage_dashboard_visibility?: string;
+  usage_dashboard_visibility?: string
   /** How your organization logs data from supported API calls. One of `disabled`, `enabled_per_call`, `enabled_for_all_projects`, or `enabled_for_selected_projects` */
-  api_call_logging?: string;
+  api_call_logging?: string
   /** The list of project ids if api_call_logging is set to `enabled_for_selected_projects` */
-  api_call_logging_project_ids?: string;
-};
+  api_call_logging_project_ids?: string
+}

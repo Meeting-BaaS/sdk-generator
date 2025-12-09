@@ -5,35 +5,35 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageCompletionsResultObject } from './usageCompletionsResultObject';
-import type { UsageCompletionsResultProjectId } from './usageCompletionsResultProjectId';
-import type { UsageCompletionsResultUserId } from './usageCompletionsResultUserId';
-import type { UsageCompletionsResultApiKeyId } from './usageCompletionsResultApiKeyId';
-import type { UsageCompletionsResultModel } from './usageCompletionsResultModel';
-import type { UsageCompletionsResultBatch } from './usageCompletionsResultBatch';
-import type { UsageCompletionsResultServiceTier } from './usageCompletionsResultServiceTier';
+import type { UsageCompletionsResultObject } from "./usageCompletionsResultObject"
+import type { UsageCompletionsResultProjectId } from "./usageCompletionsResultProjectId"
+import type { UsageCompletionsResultUserId } from "./usageCompletionsResultUserId"
+import type { UsageCompletionsResultApiKeyId } from "./usageCompletionsResultApiKeyId"
+import type { UsageCompletionsResultModel } from "./usageCompletionsResultModel"
+import type { UsageCompletionsResultBatch } from "./usageCompletionsResultBatch"
+import type { UsageCompletionsResultServiceTier } from "./usageCompletionsResultServiceTier"
 
 /**
  * The aggregated completions usage details of the specific time bucket.
  */
 export interface UsageCompletionsResult {
-  object: UsageCompletionsResultObject;
+  object: UsageCompletionsResultObject
   /** The aggregated number of text input tokens used, including cached tokens. For customers subscribe to scale tier, this includes scale tier tokens. */
-  input_tokens: number;
+  input_tokens: number
   /** The aggregated number of text input tokens that has been cached from previous requests. For customers subscribe to scale tier, this includes scale tier tokens. */
-  input_cached_tokens?: number;
+  input_cached_tokens?: number
   /** The aggregated number of text output tokens used. For customers subscribe to scale tier, this includes scale tier tokens. */
-  output_tokens: number;
+  output_tokens: number
   /** The aggregated number of audio input tokens used, including cached tokens. */
-  input_audio_tokens?: number;
+  input_audio_tokens?: number
   /** The aggregated number of audio output tokens used. */
-  output_audio_tokens?: number;
+  output_audio_tokens?: number
   /** The count of requests made to the model. */
-  num_model_requests: number;
-  project_id?: UsageCompletionsResultProjectId;
-  user_id?: UsageCompletionsResultUserId;
-  api_key_id?: UsageCompletionsResultApiKeyId;
-  model?: UsageCompletionsResultModel;
-  batch?: UsageCompletionsResultBatch;
-  service_tier?: UsageCompletionsResultServiceTier;
+  num_model_requests: number
+  project_id?: UsageCompletionsResultProjectId
+  user_id?: UsageCompletionsResultUserId
+  api_key_id?: UsageCompletionsResultApiKeyId
+  model?: UsageCompletionsResultModel
+  batch?: UsageCompletionsResultBatch
+  service_tier?: UsageCompletionsResultServiceTier
 }

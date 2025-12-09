@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { PredictionContent } from './predictionContent';
+import type { PredictionContent } from "./predictionContent"
 
 /**
  * Configuration for a [Predicted Output](https://platform.openai.com/docs/guides/predicted-outputs),
@@ -15,4 +15,4 @@ regenerating a file with only minor changes to most of the content.
 
  * @nullable
  */
-export type CreateChatCompletionRequestAllOfPrediction = PredictionContent | null;
+export type CreateChatCompletionRequestAllOfPrediction = PredictionContent | null

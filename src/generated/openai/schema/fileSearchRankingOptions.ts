@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileSearchRanker } from './fileSearchRanker';
+import type { FileSearchRanker } from "./fileSearchRanker"
 
 /**
  * The ranking options for the file search. If not specified, the file search tool will use the `auto` ranker and a score_threshold of 0.
@@ -14,11 +14,11 @@ See the [file search tool documentation](https://platform.openai.com/docs/assist
 
  */
 export interface FileSearchRankingOptions {
-  ranker?: FileSearchRanker;
+  ranker?: FileSearchRanker
   /**
    * The score threshold for the file search. All values must be a floating point number between 0 and 1.
    * @minimum 0
    * @maximum 1
    */
-  score_threshold: number;
+  score_threshold: number
 }

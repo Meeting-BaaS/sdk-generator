@@ -12,14 +12,10 @@
   "paths": {
     "/datasets/locales": {
       "get": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Gets a list of supported locales for datasets.",
         "operationId": "Datasets_ListSupportedLocales",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -43,14 +39,10 @@
     },
     "/datasets": {
       "get": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Gets a list of datasets for the authenticated subscription.",
         "operationId": "Datasets_List",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -100,17 +92,11 @@
         }
       },
       "post": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Uploads and creates a new dataset by getting the data from a specified URL or starts waiting for data blocks to be uploaded.",
         "operationId": "Datasets_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -155,14 +141,10 @@
     },
     "/datasets/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Gets the dataset identified by the given ID.",
         "operationId": "Datasets_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -201,18 +183,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Updates the mutable details of the dataset identified by its ID.",
         "operationId": "Datasets_Update",
-        "consumes": [
-          "application/json",
-          "application/merge-patch+json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json", "application/merge-patch+json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -260,14 +235,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Deletes the specified dataset.",
         "operationId": "Datasets_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -298,14 +269,10 @@
     },
     "/datasets/{id}/blocks": {
       "get": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Gets the list of uploaded blocks for this dataset.",
         "operationId": "Datasets_GetBlocks",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -344,17 +311,11 @@
         }
       },
       "put": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Upload a block of data for the dataset. The maximum size of the block is 8MiB.",
         "operationId": "Datasets_UploadBlock",
-        "consumes": [
-          "application/octet-stream"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/octet-stream"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -401,17 +362,11 @@
     },
     "/datasets/upload": {
       "post": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Uploads data and creates a new dataset.",
         "operationId": "Datasets_Upload",
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "formData",
@@ -496,17 +451,11 @@
     },
     "/datasets/{id}/blocks:commit": {
       "post": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Commit block list to complete the upload of the dataset.",
         "operationId": "Datasets_CommitBlocks",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -549,14 +498,10 @@
     },
     "/datasets/{id}/files": {
       "get": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Gets the files of the dataset identified by the given ID.",
         "operationId": "Datasets_ListFiles",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -619,14 +564,10 @@
     },
     "/datasets/{id}/files/{fileId}": {
       "get": {
-        "tags": [
-          "Custom Speech datasets for model adaptation:"
-        ],
+        "tags": ["Custom Speech datasets for model adaptation:"],
         "summary": "Gets one specific file (identified with fileId) from a dataset (identified with id).",
         "operationId": "Datasets_GetFile",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -671,14 +612,10 @@
     },
     "/endpoints/locales": {
       "get": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Gets a list of supported locales for endpoint creations.",
         "operationId": "Endpoints_ListSupportedLocales",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -705,14 +642,10 @@
     },
     "/endpoints": {
       "get": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Gets the list of endpoints for the authenticated subscription.",
         "operationId": "Endpoints_List",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -762,17 +695,11 @@
         }
       },
       "post": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Creates a new endpoint.",
         "operationId": "Endpoints_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -814,14 +741,10 @@
     },
     "/endpoints/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Gets the endpoint identified by the given ID.",
         "operationId": "Endpoints_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -860,14 +783,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Deletes the endpoint identified by the given ID.",
         "operationId": "Endpoints_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -896,18 +815,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Updates the metadata of the endpoint identified by the given ID.",
         "operationId": "Endpoints_Update",
-        "consumes": [
-          "application/json",
-          "application/merge-patch+json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json", "application/merge-patch+json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -957,14 +869,10 @@
     },
     "/endpoints/{id}/files/logs": {
       "get": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Gets the list of audio and transcription logs that have been stored for a given endpoint.",
         "operationId": "Endpoints_ListLogs",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1019,15 +927,11 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Deletes the specified audio and transcription logs that have been stored for a given endpoint. It deletes all logs before (and including) a specific day.",
         "description": "The deletion process is done asynchronously and can take up to one day depending on the amount of log files.",
         "operationId": "Endpoints_DeleteLogs",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1064,14 +968,10 @@
     },
     "/endpoints/{id}/files/logs/{logId}": {
       "get": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Gets a specific audio or transcription log for a given endpoint.",
         "operationId": "Endpoints_GetLog",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1113,14 +1013,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Deletes one audio or transcription log that have been stored for a given endpoint.",
         "operationId": "Endpoints_DeleteLog",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1158,14 +1054,10 @@
     },
     "/endpoints/base/{locale}/files/logs": {
       "get": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Gets the list of audio and transcription logs that have been stored when using the default base model of a given language.",
         "operationId": "Endpoints_ListBaseModelLogs",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1212,15 +1104,11 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Deletes the specified audio and transcription logs that have been stored when using the default base model of a given language. It deletes all logs before (and including) a specific day.",
         "description": "Deletion process is done asynchronously and can take up to one day depending on the amount of log files.",
         "operationId": "Endpoints_DeleteBaseModelLogs",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1256,14 +1144,10 @@
     },
     "/endpoints/base/{locale}/files/logs/{logId}": {
       "get": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Gets a specific audio or transcription log for the default base model in a given language.",
         "operationId": "Endpoints_GetBaseModelLog",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1304,14 +1188,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech endpoints:"
-        ],
+        "tags": ["Custom Speech endpoints:"],
         "summary": "Deletes one audio or transcription log that have been stored when using the default base model of a given language.",
         "operationId": "Endpoints_DeleteBaseModelLog",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1348,14 +1228,10 @@
     },
     "/evaluations/locales": {
       "get": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Gets a list of supported locales for evaluations.",
         "operationId": "Evaluations_ListSupportedLocales",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1382,14 +1258,10 @@
     },
     "/evaluations": {
       "get": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Gets the list of evaluations for the authenticated subscription.",
         "operationId": "Evaluations_List",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -1439,17 +1311,11 @@
         }
       },
       "post": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Creates a new evaluation.",
         "operationId": "Evaluations_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1491,14 +1357,10 @@
     },
     "/evaluations/{id}/files": {
       "get": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Gets the files of the evaluation identified by the given ID.",
         "operationId": "Evaluations_ListFiles",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1558,14 +1420,10 @@
     },
     "/evaluations/{id}/files/{fileId}": {
       "get": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Gets one specific file (identified with fileId) from an evaluation (identified with id).",
         "operationId": "Evaluations_GetFile",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1610,14 +1468,10 @@
     },
     "/evaluations/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Gets the evaluation identified by the given ID.",
         "operationId": "Evaluations_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1656,18 +1510,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Updates the mutable details of the evaluation identified by its id.",
         "operationId": "Evaluations_Update",
-        "consumes": [
-          "application/json",
-          "application/merge-patch+json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json", "application/merge-patch+json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1715,14 +1562,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech model evaluations:"
-        ],
+        "tags": ["Custom Speech model evaluations:"],
         "summary": "Deletes the evaluation identified by the given ID.",
         "operationId": "Evaluations_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1753,14 +1596,10 @@
     },
     "/models/locales": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Gets a list of supported locales for model adaptation.",
         "operationId": "Models_ListSupportedLocales",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -1787,14 +1626,10 @@
     },
     "/models": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Gets the list of custom models for the authenticated subscription.",
         "operationId": "Models_ListCustomModels",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -1841,17 +1676,11 @@
         }
       },
       "post": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Creates a new model.",
         "operationId": "Models_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -1896,14 +1725,10 @@
     },
     "/models/base": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Gets the list of base models for the authenticated subscription.",
         "operationId": "Models_ListBaseModels",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -1945,14 +1770,10 @@
     },
     "/models/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Gets the model identified by the given ID.",
         "operationId": "Models_GetCustomModel",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -1994,18 +1815,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Updates the metadata of the model identified by the given ID.",
         "operationId": "Models_Update",
-        "consumes": [
-          "application/json",
-          "application/merge-patch+json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json", "application/merge-patch+json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2053,14 +1867,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Deletes the model identified by the given ID.",
         "operationId": "Models_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2091,14 +1901,10 @@
     },
     "/models/base/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Gets the base model identified by the given ID.",
         "operationId": "Models_GetBaseModel",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2132,18 +1938,12 @@
     },
     "/models/{id}:copyto": {
       "post": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Copies a model from one subscription to another.",
         "description": "This method can be used to copy a model from one location to another. If the target subscription\r\nkey belongs to a subscription created for another location, the model will be copied to that location.\r\nOnly adapted models are allowed to copy to another subscription.",
         "operationId": "Models_CopyTo",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2193,14 +1993,10 @@
     },
     "/models/{id}/manifest": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Returns an manifest for this model which can be used in an on-premise container.",
         "operationId": "Models_GetCustomModelManifest",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2237,14 +2033,10 @@
     },
     "/models/base/{id}/manifest": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Returns an manifest for this base model which can be used in an on-premise container.",
         "operationId": "Models_GetBaseModelManifest",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2281,14 +2073,10 @@
     },
     "/models/{id}/files": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Gets the files of the model identified by the given ID.",
         "operationId": "Models_ListFiles",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2348,14 +2136,10 @@
     },
     "/models/{id}/files/{fileId}": {
       "get": {
-        "tags": [
-          "Custom Speech models:"
-        ],
+        "tags": ["Custom Speech models:"],
         "summary": "Gets one specific file (identified with fileId) from a model (identified with id).",
         "operationId": "Models_GetFile",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2400,14 +2184,10 @@
     },
     "/projects/locales": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the list of supported locales.",
         "operationId": "Projects_ListSupportedLocales",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -2434,14 +2214,10 @@
     },
     "/projects": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the list of projects for the authenticated subscription.",
         "operationId": "Projects_List",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -2484,17 +2260,11 @@
         }
       },
       "post": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Creates a new project.",
         "operationId": "Projects_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -2536,14 +2306,10 @@
     },
     "/projects/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the project identified by the given ID.",
         "operationId": "Projects_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2575,18 +2341,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Updates the project identified by the given ID.",
         "operationId": "Projects_Update",
-        "consumes": [
-          "application/json",
-          "application/merge-patch+json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json", "application/merge-patch+json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2627,14 +2386,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Deletes the project identified by the given ID.",
         "operationId": "Projects_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2665,14 +2420,10 @@
     },
     "/projects/{id}/evaluations": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the list of evaluations for specified project.",
         "operationId": "Projects_ListEvaluations",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2729,14 +2480,10 @@
     },
     "/projects/{id}/datasets": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the list of datasets for specified project.",
         "operationId": "Projects_ListDatasets",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2793,14 +2540,10 @@
     },
     "/projects/{id}/endpoints": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the list of endpoints for specified project.",
         "operationId": "Projects_ListEndpoints",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2857,14 +2600,10 @@
     },
     "/projects/{id}/models": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the list of models for specified project.",
         "operationId": "Projects_ListModels",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2921,14 +2660,10 @@
     },
     "/projects/{id}/transcriptions": {
       "get": {
-        "tags": [
-          "Custom Speech projects:"
-        ],
+        "tags": ["Custom Speech projects:"],
         "summary": "Gets the list of transcriptions for specified project.",
         "operationId": "Projects_ListTranscriptions",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -2985,14 +2720,10 @@
     },
     "/transcriptions/locales": {
       "get": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Gets a list of supported locales for offline transcriptions.",
         "operationId": "Transcriptions_ListSupportedLocales",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3019,14 +2750,10 @@
     },
     "/transcriptions": {
       "get": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Gets a list of transcriptions for the authenticated subscription.",
         "operationId": "Transcriptions_List",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -3076,17 +2803,11 @@
         }
       },
       "post": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Creates a new transcription.",
         "operationId": "Transcriptions_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -3140,14 +2861,10 @@
     },
     "/transcriptions/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Gets the transcription identified by the given ID.",
         "operationId": "Transcriptions_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3186,18 +2903,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Updates the mutable details of the transcription identified by its ID.",
         "operationId": "Transcriptions_Update",
-        "consumes": [
-          "application/json",
-          "application/merge-patch+json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json", "application/merge-patch+json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3245,14 +2955,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Deletes the specified transcription task.",
         "operationId": "Transcriptions_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3283,14 +2989,10 @@
     },
     "/transcriptions/{id}/files": {
       "get": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Gets the files of the transcription identified by the given ID.",
         "operationId": "Transcriptions_ListFiles",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3353,14 +3055,10 @@
     },
     "/transcriptions/{id}/files/{fileId}": {
       "get": {
-        "tags": [
-          "Custom Speech transcriptions:"
-        ],
+        "tags": ["Custom Speech transcriptions:"],
         "summary": "Gets one specific file (identified with fileId) from a transcription (identified with id).",
         "operationId": "Transcriptions_GetFile",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3405,14 +3103,10 @@
     },
     "/webhooks": {
       "get": {
-        "tags": [
-          "Custom Speech web hooks:"
-        ],
+        "tags": ["Custom Speech web hooks:"],
         "summary": "Gets the list of web hooks for the authenticated subscription.",
         "operationId": "WebHooks_List",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/skipQueryParameter"
@@ -3462,18 +3156,12 @@
         }
       },
       "post": {
-        "tags": [
-          "Custom Speech web hooks:"
-        ],
+        "tags": ["Custom Speech web hooks:"],
         "summary": "Creates a new web hook.",
         "description": "If the property secret in the configuration is present and contains a non-empty string, it will be used to create a SHA256 hash of the payload with\r\nthe secret as HMAC key. This hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL.\r\n            \r\nWhen calling back into the registered URL, the request will contain a X-MicrosoftSpeechServices-Event header containing one of the registered event\r\ntypes. There will be one request per registered event type.\r\n            \r\nAfter successfully registering the web hook, it will not be usable until a challenge/response is completed. To do this, a request with the event type\r\nchallenge will be made with a query parameter called validationToken. Respond to the challenge with a 200 OK containing the value of the validationToken\r\nquery parameter as the response body. When the challenge/response is successfully completed, the web hook will begin receiving events.",
         "operationId": "WebHooks_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -3515,14 +3203,10 @@
     },
     "/webhooks/{id}": {
       "get": {
-        "tags": [
-          "Custom Speech web hooks:"
-        ],
+        "tags": ["Custom Speech web hooks:"],
         "summary": "Gets the web hook identified by the given ID.",
         "operationId": "WebHooks_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3561,19 +3245,12 @@
         }
       },
       "patch": {
-        "tags": [
-          "Custom Speech web hooks:"
-        ],
+        "tags": ["Custom Speech web hooks:"],
         "summary": "Updates the web hook identified by the given ID.",
         "description": "If the property secret in the configuration is omitted or contains an empty string, future callbacks won't contain X-MicrosoftSpeechServices-Signature\r\nheaders. If the property contains a non-empty string, it will be used to create a SHA256 hash of the payload with the secret as HMAC key. This hash\r\nwill be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL.\r\n            \r\nIf the URL changes,  the web hook will stop receiving events until a\r\nchallenge/response is completed. To do this, a request with the event type challenge will be made with a query parameter called validationToken.\r\nRespond to the challenge with a 200 OK containing the value of the validationToken query parameter as the response body. When the challenge/response\r\nis successfully completed, the web hook will begin receiving events.",
         "operationId": "WebHooks_Update",
-        "consumes": [
-          "application/json",
-          "application/merge-patch+json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json", "application/merge-patch+json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3621,14 +3298,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Custom Speech web hooks:"
-        ],
+        "tags": ["Custom Speech web hooks:"],
         "summary": "Deletes the web hook identified by the given ID.",
         "operationId": "WebHooks_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3659,15 +3332,11 @@
     },
     "/webhooks/{id}:ping": {
       "post": {
-        "tags": [
-          "Custom Speech web hooks:"
-        ],
+        "tags": ["Custom Speech web hooks:"],
         "summary": "Sends a ping event to the registered URL.",
         "description": "The request body of the POST request sent to the registered web hook URL is of the same shape as in the GET request for a specific hook.\r\nThe Swagger Schema ID of the model is WebHookV3.\r\n            \r\nThe request will contain a X-MicrosoftSpeechServices-Event header with the value ping. If the web hook was registered with\r\na secret it will contain a X-MicrosoftSpeechServices-Signature header with an SHA256 hash of the payload with\r\nthe secret as HMAC key. The hash is base64 encoded.",
         "operationId": "WebHooks_Ping",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3705,15 +3374,11 @@
     },
     "/webhooks/{id}:test": {
       "post": {
-        "tags": [
-          "Custom Speech web hooks:"
-        ],
+        "tags": ["Custom Speech web hooks:"],
         "summary": "Sends a request for each registered event type to the registered URL.",
         "description": "The payload will be generated from the last entity that would have invoked the web hook. If no entity is present for none of the registered event types,\r\nthe POST will respond with 204. If a test request can be made, it will respond with 200.\r\nThe request will contain a X-MicrosoftSpeechServices-Event header with the respective registered event type.\r\nIf the web hook was registered with a secret it will contain a X-MicrosoftSpeechServices-Signature header with an SHA256 hash of the payload with\r\nthe secret as HMAC key. The hash is base64 encoded.",
         "operationId": "WebHooks_Test",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -3754,14 +3419,10 @@
     },
     "/healthstatus": {
       "get": {
-        "tags": [
-          "Service Health:"
-        ],
+        "tags": ["Service Health:"],
         "summary": "Returns the overall health of the service and optionally of the different subcomponents.",
         "operationId": "ServiceHealth_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3787,10 +3448,7 @@
   "definitions": {
     "BaseModel": {
       "title": "BaseModel",
-      "required": [
-        "displayName",
-        "locale"
-      ],
+      "required": ["displayName", "locale"],
       "type": "object",
       "allOf": [
         {
@@ -3871,11 +3529,7 @@
     "BlockKind": {
       "title": "BlockKind",
       "description": "Type of data block.",
-      "enum": [
-        "Committed",
-        "Uncommitted",
-        "Latest"
-      ],
+      "enum": ["Committed", "Uncommitted", "Latest"],
       "type": "string",
       "x-ms-enum": {
         "name": "BlockKind",
@@ -3935,10 +3589,7 @@
     },
     "CustomModel": {
       "title": "CustomModel",
-      "required": [
-        "displayName",
-        "locale"
-      ],
+      "required": ["displayName", "locale"],
       "type": "object",
       "allOf": [
         {
@@ -4052,11 +3703,7 @@
     },
     "Dataset": {
       "title": "Dataset",
-      "required": [
-        "displayName",
-        "kind",
-        "locale"
-      ],
+      "required": ["displayName", "kind", "locale"],
       "type": "object",
       "properties": {
         "links": {
@@ -4123,13 +3770,7 @@
     "DatasetKind": {
       "title": "DatasetKind",
       "description": "Type of data import.",
-      "enum": [
-        "Language",
-        "Acoustic",
-        "Pronunciation",
-        "AudioFiles",
-        "LanguageMarkdown"
-      ],
+      "enum": ["Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown"],
       "type": "string",
       "x-ms-enum": {
         "name": "DatasetKind",
@@ -4607,9 +4248,7 @@
     },
     "DiarizationProperties": {
       "title": "DiarizationProperties",
-      "required": [
-        "speakers"
-      ],
+      "required": ["speakers"],
       "type": "object",
       "properties": {
         "speakers": {
@@ -4637,10 +4276,7 @@
     },
     "Endpoint": {
       "title": "Endpoint",
-      "required": [
-        "displayName",
-        "locale"
-      ],
+      "required": ["displayName", "locale"],
       "type": "object",
       "properties": {
         "project": {
@@ -4830,9 +4466,7 @@
     },
     "EntityReference": {
       "title": "EntityReference",
-      "required": [
-        "self"
-      ],
+      "required": ["self"],
       "type": "object",
       "properties": {
         "self": {
@@ -4955,13 +4589,7 @@
     },
     "Evaluation": {
       "title": "Evaluation",
-      "required": [
-        "dataset",
-        "displayName",
-        "locale",
-        "model1",
-        "model2"
-      ],
+      "required": ["dataset", "displayName", "locale", "model1", "model2"],
       "type": "object",
       "properties": {
         "model1": {
@@ -5305,11 +4933,7 @@
     "HealthStatus": {
       "title": "HealthStatus",
       "description": "Health status of the service.",
-      "enum": [
-        "Unhealthy",
-        "Degraded",
-        "Healthy"
-      ],
+      "enum": ["Unhealthy", "Degraded", "Healthy"],
       "type": "string",
       "readOnly": true,
       "x-ms-enum": {
@@ -5361,9 +4985,7 @@
     },
     "LanguageIdentificationProperties": {
       "title": "LanguageIdentificationProperties",
-      "required": [
-        "candidateLocales"
-      ],
+      "required": ["candidateLocales"],
       "type": "object",
       "properties": {
         "candidateLocales": {
@@ -5384,9 +5006,7 @@
     },
     "ModelCopy": {
       "title": "ModelCopy",
-      "required": [
-        "targetSubscriptionKey"
-      ],
+      "required": ["targetSubscriptionKey"],
       "type": "object",
       "properties": {
         "targetSubscriptionKey": {
@@ -5415,11 +5035,7 @@
     },
     "ModelManifest": {
       "title": "ModelManifest",
-      "required": [
-        "model",
-        "modelFiles",
-        "properties"
-      ],
+      "required": ["model", "modelFiles", "properties"],
       "type": "object",
       "properties": {
         "model": {
@@ -5648,12 +5264,7 @@
     "ProfanityFilterMode": {
       "title": "ProfanityFilterMode",
       "description": "Mode of profanity filtering.",
-      "enum": [
-        "None",
-        "Removed",
-        "Tags",
-        "Masked"
-      ],
+      "enum": ["None", "Removed", "Tags", "Masked"],
       "type": "string",
       "x-ms-enum": {
         "name": "ProfanityFilterMode",
@@ -5680,10 +5291,7 @@
     },
     "Project": {
       "title": "Project",
-      "required": [
-        "displayName",
-        "locale"
-      ],
+      "required": ["displayName", "locale"],
       "type": "object",
       "properties": {
         "links": {
@@ -5823,12 +5431,7 @@
     "PunctuationMode": {
       "title": "PunctuationMode",
       "description": "The mode used for punctuation.",
-      "enum": [
-        "None",
-        "Dictated",
-        "Automatic",
-        "DictatedAndAutomatic"
-      ],
+      "enum": ["None", "Dictated", "Automatic", "DictatedAndAutomatic"],
       "type": "string",
       "x-ms-enum": {
         "name": "PunctuationMode",
@@ -5893,10 +5496,7 @@
     },
     "SharedModel": {
       "title": "SharedModel",
-      "required": [
-        "displayName",
-        "locale"
-      ],
+      "required": ["displayName", "locale"],
       "type": "object",
       "properties": {
         "self": {
@@ -5961,12 +5561,7 @@
     "Status": {
       "title": "Status",
       "description": "Describe the current state of the API",
-      "enum": [
-        "NotStarted",
-        "Running",
-        "Succeeded",
-        "Failed"
-      ],
+      "enum": ["NotStarted", "Running", "Succeeded", "Failed"],
       "type": "string",
       "readOnly": true,
       "x-ms-enum": {
@@ -5994,10 +5589,7 @@
     },
     "Transcription": {
       "title": "Transcription",
-      "required": [
-        "displayName",
-        "locale"
-      ],
+      "required": ["displayName", "locale"],
       "type": "object",
       "properties": {
         "links": {
@@ -6190,11 +5782,7 @@
     },
     "WebHook": {
       "title": "WebHook",
-      "required": [
-        "displayName",
-        "events",
-        "webUrl"
-      ],
+      "required": ["displayName", "events", "webUrl"],
       "type": "object",
       "properties": {
         "webUrl": {
@@ -6458,9 +6046,7 @@
       "token": []
     }
   ],
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["https"],
   "x-ms-parameterized-host": {
     "hostTemplate": "{endpoint}/speechtotext/v3.1",
     "useSchemePrefix": false,

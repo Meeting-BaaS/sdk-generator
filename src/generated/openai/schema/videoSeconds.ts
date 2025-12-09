@@ -6,12 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VideoSeconds = typeof VideoSeconds[keyof typeof VideoSeconds];
-
+export type VideoSeconds = (typeof VideoSeconds)[keyof typeof VideoSeconds]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoSeconds = {
-  NUMBER_4: '4',
-  NUMBER_8: '8',
-  NUMBER_12: '12',
-} as const;
+  NUMBER_4: "4",
+  NUMBER_8: "8",
+  NUMBER_12: "12"
+} as const

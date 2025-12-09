@@ -5,10 +5,10 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptReadyNotification } from './transcriptReadyNotification';
-import type { RedactedAudioNotification } from './redactedAudioNotification';
+import type { TranscriptReadyNotification } from "./transcriptReadyNotification"
+import type { RedactedAudioNotification } from "./redactedAudioNotification"
 
 /**
  * The notifications sent to the webhook URL.
  */
-export type TranscriptWebhookNotification = TranscriptReadyNotification | RedactedAudioNotification;
+export type TranscriptWebhookNotification = TranscriptReadyNotification | RedactedAudioNotification

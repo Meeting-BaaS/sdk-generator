@@ -9,10 +9,10 @@
 /**
  * For now, this is always `submit_tool_outputs`.
  */
-export type RunObjectRequiredActionType = typeof RunObjectRequiredActionType[keyof typeof RunObjectRequiredActionType];
-
+export type RunObjectRequiredActionType =
+  (typeof RunObjectRequiredActionType)[keyof typeof RunObjectRequiredActionType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunObjectRequiredActionType = {
-  submit_tool_outputs: 'submit_tool_outputs',
-} as const;
+  submit_tool_outputs: "submit_tool_outputs"
+} as const

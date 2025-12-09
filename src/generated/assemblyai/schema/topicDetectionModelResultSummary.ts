@@ -9,4 +9,4 @@
 /**
  * The overall relevance of topic to the entire audio file
  */
-export type TopicDetectionModelResultSummary = {[key: string]: number};
+export type TopicDetectionModelResultSummary = { [key: string]: number }

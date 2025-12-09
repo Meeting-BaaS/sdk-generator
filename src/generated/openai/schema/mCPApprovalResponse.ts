@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPApprovalResponseType } from './mCPApprovalResponseType';
-import type { MCPApprovalResponseId } from './mCPApprovalResponseId';
-import type { MCPApprovalResponseReason } from './mCPApprovalResponseReason';
+import type { MCPApprovalResponseType } from "./mCPApprovalResponseType"
+import type { MCPApprovalResponseId } from "./mCPApprovalResponseId"
+import type { MCPApprovalResponseReason } from "./mCPApprovalResponseReason"
 
 /**
  * A response to an MCP approval request.
@@ -15,14 +15,14 @@ import type { MCPApprovalResponseReason } from './mCPApprovalResponseReason';
  */
 export interface MCPApprovalResponse {
   /** The type of the item. Always `mcp_approval_response`.
- */
-  type: MCPApprovalResponseType;
-  id?: MCPApprovalResponseId;
+   */
+  type: MCPApprovalResponseType
+  id?: MCPApprovalResponseId
   /** The ID of the approval request being answered.
- */
-  approval_request_id: string;
+   */
+  approval_request_id: string
   /** Whether the request was approved.
- */
-  approve: boolean;
-  reason?: MCPApprovalResponseReason;
+   */
+  approve: boolean
+  reason?: MCPApprovalResponseReason
 }

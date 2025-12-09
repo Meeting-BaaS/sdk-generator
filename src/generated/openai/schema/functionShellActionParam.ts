@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellActionParamTimeoutMs } from './functionShellActionParamTimeoutMs';
-import type { FunctionShellActionParamMaxOutputLength } from './functionShellActionParamMaxOutputLength';
+import type { FunctionShellActionParamTimeoutMs } from "./functionShellActionParamTimeoutMs"
+import type { FunctionShellActionParamMaxOutputLength } from "./functionShellActionParamMaxOutputLength"
 
 /**
  * Commands and limits describing how to run the shell tool call.
  */
 export interface FunctionShellActionParam {
   /** Ordered shell commands for the execution environment to run. */
-  commands: string[];
-  timeout_ms?: FunctionShellActionParamTimeoutMs;
-  max_output_length?: FunctionShellActionParamMaxOutputLength;
+  commands: string[]
+  timeout_ms?: FunctionShellActionParamTimeoutMs
+  max_output_length?: FunctionShellActionParamMaxOutputLength
 }

@@ -9,4 +9,4 @@
 /**
  * Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false
  */
-export type TranscriptEntityDetection = boolean | null;
+export type TranscriptEntityDetection = boolean | null

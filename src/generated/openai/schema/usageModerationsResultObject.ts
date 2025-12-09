@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageModerationsResultObject = typeof UsageModerationsResultObject[keyof typeof UsageModerationsResultObject];
-
+export type UsageModerationsResultObject =
+  (typeof UsageModerationsResultObject)[keyof typeof UsageModerationsResultObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageModerationsResultObject = {
-  organizationusagemoderationsresult: 'organization.usage.moderations.result',
-} as const;
+  organizationusagemoderationsresult: "organization.usage.moderations.result"
+} as const

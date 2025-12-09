@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileSearchToolType } from './fileSearchToolType';
-import type { RankingOptions } from './rankingOptions';
-import type { FileSearchToolFilters } from './fileSearchToolFilters';
+import type { FileSearchToolType } from "./fileSearchToolType"
+import type { RankingOptions } from "./rankingOptions"
+import type { FileSearchToolFilters } from "./fileSearchToolFilters"
 
 /**
  * A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
  */
 export interface FileSearchTool {
   /** The type of the file search tool. Always `file_search`. */
-  type: FileSearchToolType;
+  type: FileSearchToolType
   /** The IDs of the vector stores to search. */
-  vector_store_ids: string[];
+  vector_store_ids: string[]
   /** The maximum number of results to return. This number should be between 1 and 50 inclusive. */
-  max_num_results?: number;
+  max_num_results?: number
   /** Ranking options for search. */
-  ranking_options?: RankingOptions;
-  filters?: FileSearchToolFilters;
+  ranking_options?: RankingOptions
+  filters?: FileSearchToolFilters
 }

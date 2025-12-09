@@ -5,26 +5,26 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WorkflowParam } from './workflowParam';
-import type { ExpiresAfterParam } from './expiresAfterParam';
-import type { RateLimitsParam } from './rateLimitsParam';
-import type { ChatkitConfigurationParam } from './chatkitConfigurationParam';
+import type { WorkflowParam } from "./workflowParam"
+import type { ExpiresAfterParam } from "./expiresAfterParam"
+import type { RateLimitsParam } from "./rateLimitsParam"
+import type { ChatkitConfigurationParam } from "./chatkitConfigurationParam"
 
 /**
  * Parameters for provisioning a new ChatKit session.
  */
 export interface CreateChatSessionBody {
   /** Workflow that powers the session. */
-  workflow: WorkflowParam;
+  workflow: WorkflowParam
   /**
    * A free-form string that identifies your end user; ensures this Session can access other objects that have the same `user` scope.
    * @minLength 1
    */
-  user: string;
+  user: string
   /** Optional override for session expiration timing in seconds from creation. Defaults to 10 minutes. */
-  expires_after?: ExpiresAfterParam;
+  expires_after?: ExpiresAfterParam
   /** Optional override for per-minute request limits. When omitted, defaults to 10. */
-  rate_limits?: RateLimitsParam;
+  rate_limits?: RateLimitsParam
   /** Optional overrides for ChatKit runtime configuration features */
-  chatkit_configuration?: ChatkitConfigurationParam;
+  chatkit_configuration?: ChatkitConfigurationParam
 }

@@ -11,7 +11,7 @@
  */
 export interface DeletedRoleAssignmentResource {
   /** Identifier for the deleted assignment, such as `group.role.deleted` or `user.role.deleted`. */
-  object: string;
+  object: string
   /** Whether the assignment was removed. */
-  deleted: boolean;
+  deleted: boolean
 }

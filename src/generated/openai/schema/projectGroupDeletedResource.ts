@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectGroupDeletedResourceObject } from './projectGroupDeletedResourceObject';
+import type { ProjectGroupDeletedResourceObject } from "./projectGroupDeletedResourceObject"
 
 /**
  * Confirmation payload returned after removing a group from a project.
  */
 export interface ProjectGroupDeletedResource {
   /** Always `project.group.deleted`. */
-  object: ProjectGroupDeletedResourceObject;
+  object: ProjectGroupDeletedResourceObject
   /** Whether the group membership in the project was removed. */
-  deleted: boolean;
+  deleted: boolean
 }

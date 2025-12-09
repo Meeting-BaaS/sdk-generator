@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaContentImageUrlObjectType } from './messageDeltaContentImageUrlObjectType';
-import type { MessageDeltaContentImageUrlObjectImageUrl } from './messageDeltaContentImageUrlObjectImageUrl';
+import type { MessageDeltaContentImageUrlObjectType } from "./messageDeltaContentImageUrlObjectType"
+import type { MessageDeltaContentImageUrlObjectImageUrl } from "./messageDeltaContentImageUrlObjectImageUrl"
 
 /**
  * References an image URL in the content of a message.
  */
 export interface MessageDeltaContentImageUrlObject {
   /** The index of the content part in the message. */
-  index: number;
+  index: number
   /** Always `image_url`. */
-  type: MessageDeltaContentImageUrlObjectType;
-  image_url?: MessageDeltaContentImageUrlObjectImageUrl;
+  type: MessageDeltaContentImageUrlObjectType
+  image_url?: MessageDeltaContentImageUrlObjectImageUrl
 }

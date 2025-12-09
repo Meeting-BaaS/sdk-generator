@@ -11,5 +11,5 @@
  */
 export type AuditLogServiceAccountDeleted = {
   /** The service account ID. */
-  id?: string;
-};
+  id?: string
+}

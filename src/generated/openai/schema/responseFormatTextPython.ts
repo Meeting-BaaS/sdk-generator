@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatTextPythonType } from './responseFormatTextPythonType';
+import type { ResponseFormatTextPythonType } from "./responseFormatTextPythonType"
 
 /**
  * Configure the model to generate valid Python code. See the
@@ -14,5 +14,5 @@ import type { ResponseFormatTextPythonType } from './responseFormatTextPythonTyp
  */
 export interface ResponseFormatTextPython {
   /** The type of response format being defined. Always `python`. */
-  type: ResponseFormatTextPythonType;
+  type: ResponseFormatTextPythonType
 }

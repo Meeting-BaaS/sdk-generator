@@ -9,12 +9,12 @@
 /**
  * Specifies the detail level of the image. Learn more in the [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
  */
-export type ChatCompletionRequestMessageContentPartImageImageUrlDetail = typeof ChatCompletionRequestMessageContentPartImageImageUrlDetail[keyof typeof ChatCompletionRequestMessageContentPartImageImageUrlDetail];
-
+export type ChatCompletionRequestMessageContentPartImageImageUrlDetail =
+  (typeof ChatCompletionRequestMessageContentPartImageImageUrlDetail)[keyof typeof ChatCompletionRequestMessageContentPartImageImageUrlDetail]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestMessageContentPartImageImageUrlDetail = {
-  auto: 'auto',
-  low: 'low',
-  high: 'high',
-} as const;
+  auto: "auto",
+  low: "low",
+  high: "high"
+} as const

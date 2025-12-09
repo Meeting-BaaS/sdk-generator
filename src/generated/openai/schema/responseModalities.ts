@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseModalitiesAnyOfItem } from './responseModalitiesAnyOfItem';
+import type { ResponseModalitiesAnyOfItem } from "./responseModalitiesAnyOfItem"
 
-export type ResponseModalities = ResponseModalitiesAnyOfItem[] | null;
+export type ResponseModalities = ResponseModalitiesAnyOfItem[] | null

@@ -8,7 +8,7 @@
  */
 
 export type ReadV1ResponseMetadataMetadataIntentsInfo = {
-  model_uuid?: string;
-  input_tokens?: number;
-  output_tokens?: number;
-};
+  model_uuid?: string
+  input_tokens?: number
+  output_tokens?: number
+}

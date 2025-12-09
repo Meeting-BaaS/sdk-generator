@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreSearchResultsPageObject } from './vectorStoreSearchResultsPageObject';
-import type { VectorStoreSearchResultItem } from './vectorStoreSearchResultItem';
-import type { VectorStoreSearchResultsPageNextPage } from './vectorStoreSearchResultsPageNextPage';
+import type { VectorStoreSearchResultsPageObject } from "./vectorStoreSearchResultsPageObject"
+import type { VectorStoreSearchResultItem } from "./vectorStoreSearchResultItem"
+import type { VectorStoreSearchResultsPageNextPage } from "./vectorStoreSearchResultsPageNextPage"
 
 export interface VectorStoreSearchResultsPage {
   /** The object type, which is always `vector_store.search_results.page` */
-  object: VectorStoreSearchResultsPageObject;
-  search_query: string[];
+  object: VectorStoreSearchResultsPageObject
+  search_query: string[]
   /** The list of search result items. */
-  data: VectorStoreSearchResultItem[];
+  data: VectorStoreSearchResultItem[]
   /** Indicates if there are more results to fetch. */
-  has_more: boolean;
-  next_page: VectorStoreSearchResultsPageNextPage;
+  has_more: boolean
+  next_page: VectorStoreSearchResultsPageNextPage
 }

@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaContentTextAnnotationsFilePathObjectType } from './messageDeltaContentTextAnnotationsFilePathObjectType';
-import type { MessageDeltaContentTextAnnotationsFilePathObjectFilePath } from './messageDeltaContentTextAnnotationsFilePathObjectFilePath';
+import type { MessageDeltaContentTextAnnotationsFilePathObjectType } from "./messageDeltaContentTextAnnotationsFilePathObjectType"
+import type { MessageDeltaContentTextAnnotationsFilePathObjectFilePath } from "./messageDeltaContentTextAnnotationsFilePathObjectFilePath"
 
 /**
  * A URL for the file that's generated when the assistant used the `code_interpreter` tool to generate a file.
  */
 export interface MessageDeltaContentTextAnnotationsFilePathObject {
   /** The index of the annotation in the text content part. */
-  index: number;
+  index: number
   /** Always `file_path`. */
-  type: MessageDeltaContentTextAnnotationsFilePathObjectType;
+  type: MessageDeltaContentTextAnnotationsFilePathObjectType
   /** The text in the message content that needs to be replaced. */
-  text?: string;
-  file_path?: MessageDeltaContentTextAnnotationsFilePathObjectFilePath;
+  text?: string
+  file_path?: MessageDeltaContentTextAnnotationsFilePathObjectFilePath
   /** @minimum 0 */
-  start_index?: number;
+  start_index?: number
   /** @minimum 0 */
-  end_index?: number;
+  end_index?: number
 }

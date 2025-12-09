@@ -9,10 +9,10 @@
 /**
  * The type of input messages. Always `item_reference`.
  */
-export type CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType = typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType[keyof typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType];
-
+export type CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType =
+  (typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType)[keyof typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType = {
-  item_reference: 'item_reference',
-} as const;
+  item_reference: "item_reference"
+} as const

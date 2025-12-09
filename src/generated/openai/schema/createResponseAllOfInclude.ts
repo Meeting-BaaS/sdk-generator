@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { IncludeEnum } from './includeEnum';
+import type { IncludeEnum } from "./includeEnum"
 
-export type CreateResponseAllOfInclude = IncludeEnum[] | null;
+export type CreateResponseAllOfInclude = IncludeEnum[] | null

@@ -6,16 +6,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { AgentThinkModelsV1ResponseModelsItemOneOfId } from './agentThinkModelsV1ResponseModelsItemOneOfId';
+import type { AgentThinkModelsV1ResponseModelsItemOneOfId } from "./agentThinkModelsV1ResponseModelsItemOneOfId"
 
 /**
  * OpenAI models
  */
 export type AgentThinkModelsV1ResponseModelsItemOneOf = {
   /** The unique identifier of the OpenAI model */
-  id: AgentThinkModelsV1ResponseModelsItemOneOfId;
+  id: AgentThinkModelsV1ResponseModelsItemOneOfId
   /** The display name of the model */
-  name: string;
+  name: string
   /** The provider of the model */
-  provider: 'open_ai';
-};
+  provider: "open_ai"
+}

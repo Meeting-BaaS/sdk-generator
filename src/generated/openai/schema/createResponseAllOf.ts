@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputParam } from './inputParam';
-import type { CreateResponseAllOfInclude } from './createResponseAllOfInclude';
-import type { CreateResponseAllOfParallelToolCalls } from './createResponseAllOfParallelToolCalls';
-import type { CreateResponseAllOfStore } from './createResponseAllOfStore';
-import type { CreateResponseAllOfInstructions } from './createResponseAllOfInstructions';
-import type { CreateResponseAllOfStream } from './createResponseAllOfStream';
-import type { ResponseStreamOptions } from './responseStreamOptions';
-import type { CreateResponseAllOfConversation } from './createResponseAllOfConversation';
+import type { InputParam } from "./inputParam"
+import type { CreateResponseAllOfInclude } from "./createResponseAllOfInclude"
+import type { CreateResponseAllOfParallelToolCalls } from "./createResponseAllOfParallelToolCalls"
+import type { CreateResponseAllOfStore } from "./createResponseAllOfStore"
+import type { CreateResponseAllOfInstructions } from "./createResponseAllOfInstructions"
+import type { CreateResponseAllOfStream } from "./createResponseAllOfStream"
+import type { ResponseStreamOptions } from "./responseStreamOptions"
+import type { CreateResponseAllOfConversation } from "./createResponseAllOfConversation"
 
 export type CreateResponseAllOf = {
-  input?: InputParam;
-  include?: CreateResponseAllOfInclude;
-  parallel_tool_calls?: CreateResponseAllOfParallelToolCalls;
-  store?: CreateResponseAllOfStore;
-  instructions?: CreateResponseAllOfInstructions;
-  stream?: CreateResponseAllOfStream;
-  stream_options?: ResponseStreamOptions;
-  conversation?: CreateResponseAllOfConversation;
-};
+  input?: InputParam
+  include?: CreateResponseAllOfInclude
+  parallel_tool_calls?: CreateResponseAllOfParallelToolCalls
+  store?: CreateResponseAllOfStore
+  instructions?: CreateResponseAllOfInstructions
+  stream?: CreateResponseAllOfStream
+  stream_options?: ResponseStreamOptions
+  conversation?: CreateResponseAllOfConversation
+}

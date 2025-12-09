@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequest } from './realtimeSessionCreateRequest';
+import type { RealtimeSessionCreateRequest } from "./realtimeSessionCreateRequest"
 
 /**
  * Send this event to update the session’s default configuration.
@@ -22,8 +22,8 @@ Only the fields that are present are updated. To clear a field like
  */
 export interface RealtimeBetaClientEventSessionUpdate {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `session.update`. */
-  type: 'session.update';
-  session: RealtimeSessionCreateRequest;
+  type: "session.update"
+  session: RealtimeSessionCreateRequest
 }

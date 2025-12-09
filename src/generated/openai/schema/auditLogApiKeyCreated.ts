@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogApiKeyCreatedData } from './auditLogApiKeyCreatedData';
+import type { AuditLogApiKeyCreatedData } from "./auditLogApiKeyCreatedData"
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogApiKeyCreated = {
   /** The tracking ID of the API key. */
-  id?: string;
+  id?: string
   /** The payload used to create the API key. */
-  data?: AuditLogApiKeyCreatedData;
-};
+  data?: AuditLogApiKeyCreatedData
+}

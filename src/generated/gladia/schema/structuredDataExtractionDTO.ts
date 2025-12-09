@@ -4,20 +4,20 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StructuredDataExtractionDTOError } from './structuredDataExtractionDTOError';
+import type { StructuredDataExtractionDTOError } from "./structuredDataExtractionDTOError"
 
 export interface StructuredDataExtractionDTO {
   /** The audio intelligence model succeeded to get a valid output */
-  success: boolean;
+  success: boolean
   /** The audio intelligence model returned an empty value */
-  is_empty: boolean;
+  is_empty: boolean
   /** Time audio intelligence model took to complete the task */
-  exec_time: number;
+  exec_time: number
   /**
    * `null` if `success` is `true`. Contains the error details of the failed model
    * @nullable
    */
-  error: StructuredDataExtractionDTOError;
+  error: StructuredDataExtractionDTOError
   /** If `structured_data_extraction` has been enabled, results of the AI structured data extraction for the defined classes. */
-  results: string;
+  results: string
 }

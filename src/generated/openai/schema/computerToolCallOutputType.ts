@@ -10,10 +10,10 @@
  * The type of the computer tool call output. Always `computer_call_output`.
 
  */
-export type ComputerToolCallOutputType = typeof ComputerToolCallOutputType[keyof typeof ComputerToolCallOutputType];
-
+export type ComputerToolCallOutputType =
+  (typeof ComputerToolCallOutputType)[keyof typeof ComputerToolCallOutputType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerToolCallOutputType = {
-  computer_call_output: 'computer_call_output',
-} as const;
+  computer_call_output: "computer_call_output"
+} as const

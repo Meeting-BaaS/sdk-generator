@@ -11,5 +11,5 @@
  */
 export interface WorkflowTracingParam {
   /** Whether tracing is enabled during the session. Defaults to true. */
-  enabled?: boolean;
+  enabled?: boolean
 }

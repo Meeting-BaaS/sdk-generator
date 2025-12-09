@@ -5,11 +5,11 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { ContentSafetyLabelsResult } from './contentSafetyLabelsResult';
+import type { ContentSafetyLabelsResult } from "./contentSafetyLabelsResult"
 
 /**
  * An array of results for the Content Moderation model, if it is enabled.
 See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
 
  */
-export type TranscriptContentSafetyLabels = ContentSafetyLabelsResult | null;
+export type TranscriptContentSafetyLabels = ContentSafetyLabelsResult | null

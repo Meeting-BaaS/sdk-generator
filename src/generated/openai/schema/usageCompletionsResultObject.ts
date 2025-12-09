@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageCompletionsResultObject = typeof UsageCompletionsResultObject[keyof typeof UsageCompletionsResultObject];
-
+export type UsageCompletionsResultObject =
+  (typeof UsageCompletionsResultObject)[keyof typeof UsageCompletionsResultObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageCompletionsResultObject = {
-  organizationusagecompletionsresult: 'organization.usage.completions.result',
-} as const;
+  organizationusagecompletionsresult: "organization.usage.completions.result"
+} as const

@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunObject } from './evalRunObject';
-import type { EvalRunResultCounts } from './evalRunResultCounts';
-import type { EvalRunPerModelUsageItem } from './evalRunPerModelUsageItem';
-import type { EvalRunPerTestingCriteriaResultsItem } from './evalRunPerTestingCriteriaResultsItem';
-import type { EvalRunDataSource } from './evalRunDataSource';
-import type { Metadata } from './metadata';
-import type { EvalApiError } from './evalApiError';
+import type { EvalRunObject } from "./evalRunObject"
+import type { EvalRunResultCounts } from "./evalRunResultCounts"
+import type { EvalRunPerModelUsageItem } from "./evalRunPerModelUsageItem"
+import type { EvalRunPerTestingCriteriaResultsItem } from "./evalRunPerTestingCriteriaResultsItem"
+import type { EvalRunDataSource } from "./evalRunDataSource"
+import type { Metadata } from "./metadata"
+import type { EvalApiError } from "./evalApiError"
 
 /**
  * A schema representing an evaluation run.
@@ -19,29 +19,29 @@ import type { EvalApiError } from './evalApiError';
  */
 export interface EvalRun {
   /** The type of the object. Always "eval.run". */
-  object: EvalRunObject;
+  object: EvalRunObject
   /** Unique identifier for the evaluation run. */
-  id: string;
+  id: string
   /** The identifier of the associated evaluation. */
-  eval_id: string;
+  eval_id: string
   /** The status of the evaluation run. */
-  status: string;
+  status: string
   /** The model that is evaluated, if applicable. */
-  model: string;
+  model: string
   /** The name of the evaluation run. */
-  name: string;
+  name: string
   /** Unix timestamp (in seconds) when the evaluation run was created. */
-  created_at: number;
+  created_at: number
   /** The URL to the rendered evaluation run report on the UI dashboard. */
-  report_url: string;
+  report_url: string
   /** Counters summarizing the outcomes of the evaluation run. */
-  result_counts: EvalRunResultCounts;
+  result_counts: EvalRunResultCounts
   /** Usage statistics for each model during the evaluation run. */
-  per_model_usage: EvalRunPerModelUsageItem[];
+  per_model_usage: EvalRunPerModelUsageItem[]
   /** Results per testing criteria applied during the evaluation run. */
-  per_testing_criteria_results: EvalRunPerTestingCriteriaResultsItem[];
+  per_testing_criteria_results: EvalRunPerTestingCriteriaResultsItem[]
   /** Information about the run's data source. */
-  data_source: EvalRunDataSource;
-  metadata: Metadata;
-  error: EvalApiError;
+  data_source: EvalRunDataSource
+  metadata: Metadata
+  error: EvalApiError
 }

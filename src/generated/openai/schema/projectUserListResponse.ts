@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectUser } from './projectUser';
+import type { ProjectUser } from "./projectUser"
 
 export interface ProjectUserListResponse {
-  object: string;
-  data: ProjectUser[];
-  first_id: string;
-  last_id: string;
-  has_more: boolean;
+  object: string
+  data: ProjectUser[]
+  first_id: string
+  last_id: string
+  has_more: boolean
 }

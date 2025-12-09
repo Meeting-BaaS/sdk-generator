@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreExpirationAfter } from './vectorStoreExpirationAfter';
-import type { ChunkingStrategyRequestParam } from './chunkingStrategyRequestParam';
-import type { Metadata } from './metadata';
+import type { VectorStoreExpirationAfter } from "./vectorStoreExpirationAfter"
+import type { ChunkingStrategyRequestParam } from "./chunkingStrategyRequestParam"
+import type { Metadata } from "./metadata"
 
 export interface CreateVectorStoreRequest {
   /**
    * A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that the vector store should use. Useful for tools like `file_search` that can access files.
    * @maxItems 500
    */
-  file_ids?: string[];
+  file_ids?: string[]
   /** The name of the vector store. */
-  name?: string;
+  name?: string
   /** A description for the vector store. Can be used to describe the vector store's purpose. */
-  description?: string;
-  expires_after?: VectorStoreExpirationAfter;
-  chunking_strategy?: ChunkingStrategyRequestParam;
-  metadata?: Metadata;
+  description?: string
+  expires_after?: VectorStoreExpirationAfter
+  chunking_strategy?: ChunkingStrategyRequestParam
+  metadata?: Metadata
 }

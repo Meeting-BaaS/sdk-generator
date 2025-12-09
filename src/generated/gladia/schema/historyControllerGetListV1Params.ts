@@ -4,39 +4,39 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { HistoryControllerGetListV1StatusItem } from './historyControllerGetListV1StatusItem';
-import type { HistoryControllerGetListV1KindItem } from './historyControllerGetListV1KindItem';
+import type { HistoryControllerGetListV1StatusItem } from "./historyControllerGetListV1StatusItem"
+import type { HistoryControllerGetListV1KindItem } from "./historyControllerGetListV1KindItem"
 
 export type HistoryControllerGetListV1Params = {
-/**
- * The starting point for pagination. A value of 0 starts from the first item.
- * @minimum 0
- */
-offset?: number;
-/**
- * The maximum number of items to return. Useful for pagination and controlling data payload size.
- * @minimum 1
- */
-limit?: number;
-/**
- * Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
- */
-date?: string;
-/**
- * Include items that occurred before the specified date in ISO format.
- */
-before_date?: string;
-/**
- * Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.
- */
-after_date?: string;
-/**
- * Filter the list based on item status. Accepts multiple values from the predefined list.
- */
-status?: HistoryControllerGetListV1StatusItem[];
-custom_metadata?: { [key: string]: unknown };
-/**
- * Filter the list based on the item type. Supports multiple values from the predefined list.
- */
-kind?: HistoryControllerGetListV1KindItem[];
-};
+  /**
+   * The starting point for pagination. A value of 0 starts from the first item.
+   * @minimum 0
+   */
+  offset?: number
+  /**
+   * The maximum number of items to return. Useful for pagination and controlling data payload size.
+   * @minimum 1
+   */
+  limit?: number
+  /**
+   * Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
+   */
+  date?: string
+  /**
+   * Include items that occurred before the specified date in ISO format.
+   */
+  before_date?: string
+  /**
+   * Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.
+   */
+  after_date?: string
+  /**
+   * Filter the list based on item status. Accepts multiple values from the predefined list.
+   */
+  status?: HistoryControllerGetListV1StatusItem[]
+  custom_metadata?: { [key: string]: unknown }
+  /**
+   * Filter the list based on the item type. Supports multiple values from the predefined list.
+   */
+  kind?: HistoryControllerGetListV1KindItem[]
+}

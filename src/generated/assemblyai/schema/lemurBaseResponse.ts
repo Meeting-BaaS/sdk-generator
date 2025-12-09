@@ -5,11 +5,11 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { LemurUsage } from './lemurUsage';
+import type { LemurUsage } from "./lemurUsage"
 
 export interface LemurBaseResponse {
   /** The ID of the LeMUR request */
-  request_id: string;
+  request_id: string
   /** The usage numbers for the LeMUR request */
-  usage: LemurUsage;
+  usage: LemurUsage
 }

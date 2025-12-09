@@ -11,9 +11,9 @@
  */
 export interface RealtimeServerEventMCPListToolsCompleted {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `mcp_list_tools.completed`. */
-  type: 'mcp_list_tools.completed';
+  type: "mcp_list_tools.completed"
   /** The ID of the MCP list tools item. */
-  item_id: string;
+  item_id: string
 }

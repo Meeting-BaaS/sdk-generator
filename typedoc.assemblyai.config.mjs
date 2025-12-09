@@ -1,9 +1,7 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // AssemblyAI Provider Documentation
-  entryPoints: [
-    "./src/adapters/assemblyai-adapter.ts"
-  ],
+  entryPoints: ["./src/adapters/assemblyai-adapter.ts"],
 
   out: "./docs/generated/assemblyai",
   plugin: ["typedoc-plugin-markdown"],
@@ -15,7 +13,7 @@ export default {
   // Source settings
   disableSources: true,
   excludeExternals: true,
-  excludePrivate: false,  // Show private methods for advanced users
+  excludePrivate: false, // Show private methods for advanced users
   excludeProtected: false,
   excludeInternal: true,
 
@@ -41,13 +39,7 @@ export default {
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
 
-  kindSortOrder: [
-    "Class",
-    "Interface",
-    "TypeAlias",
-    "Function",
-    "Enum"
-  ],
+  kindSortOrder: ["Class", "Interface", "TypeAlias", "Function", "Enum"],
 
   // Keep readable
   maxTypeConversionDepth: 5,
@@ -68,13 +60,7 @@ export default {
   // ],
 
   // Better categorization
-  groupOrder: [
-    "Adapter",
-    "Configuration",
-    "Methods",
-    "Types",
-    "*"
-  ],
+  groupOrder: ["Adapter", "Configuration", "Methods", "Types", "*"],
 
   // Enhanced navigation
   navigation: {
@@ -94,4 +80,4 @@ export default {
     inherited: true,
     external: false
   }
-};
+}

@@ -6,12 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type LocalShellCallStatus = typeof LocalShellCallStatus[keyof typeof LocalShellCallStatus];
-
+export type LocalShellCallStatus = (typeof LocalShellCallStatus)[keyof typeof LocalShellCallStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LocalShellCallStatus = {
-  in_progress: 'in_progress',
-  completed: 'completed',
-  incomplete: 'incomplete',
-} as const;
+  in_progress: "in_progress",
+  completed: "completed",
+  incomplete: "incomplete"
+} as const

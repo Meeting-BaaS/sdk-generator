@@ -6,14 +6,13 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type MCPToolCallStatus = typeof MCPToolCallStatus[keyof typeof MCPToolCallStatus];
-
+export type MCPToolCallStatus = (typeof MCPToolCallStatus)[keyof typeof MCPToolCallStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MCPToolCallStatus = {
-  in_progress: 'in_progress',
-  completed: 'completed',
-  incomplete: 'incomplete',
-  calling: 'calling',
-  failed: 'failed',
-} as const;
+  in_progress: "in_progress",
+  completed: "completed",
+  incomplete: "incomplete",
+  calling: "calling",
+  failed: "failed"
+} as const

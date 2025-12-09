@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type FunctionShellCallOutputMaxOutputLength = number | null;
+export type FunctionShellCallOutputMaxOutputLength = number | null

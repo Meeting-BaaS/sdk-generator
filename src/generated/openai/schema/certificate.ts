@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CertificateObject } from './certificateObject';
-import type { CertificateCertificateDetails } from './certificateCertificateDetails';
+import type { CertificateObject } from "./certificateObject"
+import type { CertificateCertificateDetails } from "./certificateCertificateDetails"
 
 /**
  * Represents an individual `certificate` uploaded to the organization.
@@ -18,14 +18,14 @@ export interface Certificate {
 - If listing, activating, or deactivating certificates for the organization, the object type is `organization.certificate`.
 - If listing, activating, or deactivating certificates for a project, the object type is `organization.project.certificate`.
  */
-  object: CertificateObject;
+  object: CertificateObject
   /** The identifier, which can be referenced in API endpoints */
-  id: string;
+  id: string
   /** The name of the certificate. */
-  name: string;
+  name: string
   /** The Unix timestamp (in seconds) of when the certificate was uploaded. */
-  created_at: number;
-  certificate_details: CertificateCertificateDetails;
+  created_at: number
+  certificate_details: CertificateCertificateDetails
   /** Whether the certificate is currently active at the specified scope. Not returned when getting details for a specific certificate. */
-  active?: boolean;
+  active?: boolean
 }

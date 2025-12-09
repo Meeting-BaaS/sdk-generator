@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputAudioType } from './inputAudioType';
-import type { InputAudioInputAudio } from './inputAudioInputAudio';
+import type { InputAudioType } from "./inputAudioType"
+import type { InputAudioInputAudio } from "./inputAudioInputAudio"
 
 /**
  * An audio input to the model.
@@ -14,7 +14,7 @@ import type { InputAudioInputAudio } from './inputAudioInputAudio';
  */
 export interface InputAudio {
   /** The type of the input item. Always `input_audio`.
- */
-  type: InputAudioType;
-  input_audio: InputAudioInputAudio;
+   */
+  type: InputAudioType
+  input_audio: InputAudioInputAudio
 }

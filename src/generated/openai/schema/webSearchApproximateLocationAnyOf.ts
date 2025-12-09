@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchApproximateLocationAnyOfType } from './webSearchApproximateLocationAnyOfType';
-import type { WebSearchApproximateLocationAnyOfCountry } from './webSearchApproximateLocationAnyOfCountry';
-import type { WebSearchApproximateLocationAnyOfRegion } from './webSearchApproximateLocationAnyOfRegion';
-import type { WebSearchApproximateLocationAnyOfCity } from './webSearchApproximateLocationAnyOfCity';
-import type { WebSearchApproximateLocationAnyOfTimezone } from './webSearchApproximateLocationAnyOfTimezone';
+import type { WebSearchApproximateLocationAnyOfType } from "./webSearchApproximateLocationAnyOfType"
+import type { WebSearchApproximateLocationAnyOfCountry } from "./webSearchApproximateLocationAnyOfCountry"
+import type { WebSearchApproximateLocationAnyOfRegion } from "./webSearchApproximateLocationAnyOfRegion"
+import type { WebSearchApproximateLocationAnyOfCity } from "./webSearchApproximateLocationAnyOfCity"
+import type { WebSearchApproximateLocationAnyOfTimezone } from "./webSearchApproximateLocationAnyOfTimezone"
 
 /**
  * The approximate location of the user.
@@ -17,9 +17,9 @@ import type { WebSearchApproximateLocationAnyOfTimezone } from './webSearchAppro
  */
 export type WebSearchApproximateLocationAnyOf = {
   /** The type of location approximation. Always `approximate`. */
-  type?: WebSearchApproximateLocationAnyOfType;
-  country?: WebSearchApproximateLocationAnyOfCountry;
-  region?: WebSearchApproximateLocationAnyOfRegion;
-  city?: WebSearchApproximateLocationAnyOfCity;
-  timezone?: WebSearchApproximateLocationAnyOfTimezone;
-};
+  type?: WebSearchApproximateLocationAnyOfType
+  country?: WebSearchApproximateLocationAnyOfCountry
+  region?: WebSearchApproximateLocationAnyOfRegion
+  city?: WebSearchApproximateLocationAnyOfCity
+  timezone?: WebSearchApproximateLocationAnyOfTimezone
+}

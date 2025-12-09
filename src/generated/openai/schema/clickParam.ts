@@ -5,19 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ClickParamType } from './clickParamType';
-import type { ClickButtonType } from './clickButtonType';
+import type { ClickParamType } from "./clickParamType"
+import type { ClickButtonType } from "./clickButtonType"
 
 /**
  * A click action.
  */
 export interface ClickParam {
   /** Specifies the event type. For a click action, this property is always `click`. */
-  type: ClickParamType;
+  type: ClickParamType
   /** Indicates which mouse button was pressed during the click. One of `left`, `right`, `wheel`, `back`, or `forward`. */
-  button: ClickButtonType;
+  button: ClickButtonType
   /** The x-coordinate where the click occurred. */
-  x: number;
+  x: number
   /** The y-coordinate where the click occurred. */
-  y: number;
+  y: number
 }

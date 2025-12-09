@@ -6,17 +6,16 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type MessageRole = typeof MessageRole[keyof typeof MessageRole];
-
+export type MessageRole = (typeof MessageRole)[keyof typeof MessageRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageRole = {
-  unknown: 'unknown',
-  user: 'user',
-  assistant: 'assistant',
-  system: 'system',
-  critic: 'critic',
-  discriminator: 'discriminator',
-  developer: 'developer',
-  tool: 'tool',
-} as const;
+  unknown: "unknown",
+  user: "user",
+  assistant: "assistant",
+  system: "system",
+  critic: "critic",
+  discriminator: "discriminator",
+  developer: "developer",
+  tool: "tool"
+} as const

@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GroupObject } from './groupObject';
+import type { GroupObject } from "./groupObject"
 
 /**
  * Summary information about a group returned in role assignment responses.
  */
 export interface Group {
   /** Always `group`. */
-  object: GroupObject;
+  object: GroupObject
   /** Identifier for the group. */
-  id: string;
+  id: string
   /** Display name of the group. */
-  name: string;
+  name: string
   /** Unix timestamp (in seconds) when the group was created. */
-  created_at: number;
+  created_at: number
   /** Whether the group is managed through SCIM. */
-  scim_managed: boolean;
+  scim_managed: boolean
 }

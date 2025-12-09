@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ClientToolCallStatus = typeof ClientToolCallStatus[keyof typeof ClientToolCallStatus];
-
+export type ClientToolCallStatus = (typeof ClientToolCallStatus)[keyof typeof ClientToolCallStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ClientToolCallStatus = {
-  in_progress: 'in_progress',
-  completed: 'completed',
-} as const;
+  in_progress: "in_progress",
+  completed: "completed"
+} as const

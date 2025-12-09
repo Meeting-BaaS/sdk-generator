@@ -10,10 +10,10 @@
  * The action type.
 
  */
-export type WebSearchActionOpenPageType = typeof WebSearchActionOpenPageType[keyof typeof WebSearchActionOpenPageType];
-
+export type WebSearchActionOpenPageType =
+  (typeof WebSearchActionOpenPageType)[keyof typeof WebSearchActionOpenPageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchActionOpenPageType = {
-  open_page: 'open_page',
-} as const;
+  open_page: "open_page"
+} as const

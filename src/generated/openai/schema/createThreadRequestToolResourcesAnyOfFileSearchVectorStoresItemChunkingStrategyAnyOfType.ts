@@ -9,10 +9,11 @@
 /**
  * Always `auto`.
  */
-export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType = typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType[keyof typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType];
-
+export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType =
+  (typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType)[keyof typeof CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType = {
-  auto: 'auto',
-} as const;
+export const CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType =
+  {
+    auto: "auto"
+  } as const

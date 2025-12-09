@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookResponseFailedData } from './webhookResponseFailedData';
-import type { WebhookResponseFailedObject } from './webhookResponseFailedObject';
-import type { WebhookResponseFailedType } from './webhookResponseFailedType';
+import type { WebhookResponseFailedData } from "./webhookResponseFailedData"
+import type { WebhookResponseFailedObject } from "./webhookResponseFailedObject"
+import type { WebhookResponseFailedType } from "./webhookResponseFailedType"
 
 /**
  * Sent when a background response has failed.
@@ -15,18 +15,18 @@ import type { WebhookResponseFailedType } from './webhookResponseFailedType';
  */
 export interface WebhookResponseFailed {
   /** The Unix timestamp (in seconds) of when the model response failed.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookResponseFailedData;
+   */
+  data: WebhookResponseFailedData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookResponseFailedObject;
+   */
+  object?: WebhookResponseFailedObject
   /** The type of the event. Always `response.failed`.
- */
-  type: WebhookResponseFailedType;
+   */
+  type: WebhookResponseFailedType
 }

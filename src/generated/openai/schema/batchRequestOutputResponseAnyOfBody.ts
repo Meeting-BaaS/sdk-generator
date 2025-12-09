@@ -9,4 +9,4 @@
 /**
  * The JSON body of the response
  */
-export type BatchRequestOutputResponseAnyOfBody = { [key: string]: unknown };
+export type BatchRequestOutputResponseAnyOfBody = { [key: string]: unknown }

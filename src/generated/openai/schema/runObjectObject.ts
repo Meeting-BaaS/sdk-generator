@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `thread.run`.
  */
-export type RunObjectObject = typeof RunObjectObject[keyof typeof RunObjectObject];
-
+export type RunObjectObject = (typeof RunObjectObject)[keyof typeof RunObjectObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunObjectObject = {
-  threadrun: 'thread.run',
-} as const;
+  threadrun: "thread.run"
+} as const

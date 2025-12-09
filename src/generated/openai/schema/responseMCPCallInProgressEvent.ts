@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseMCPCallInProgressEventType } from './responseMCPCallInProgressEventType';
+import type { ResponseMCPCallInProgressEventType } from "./responseMCPCallInProgressEventType"
 
 /**
  * Emitted when an MCP  tool call is in progress.
@@ -13,11 +13,11 @@ import type { ResponseMCPCallInProgressEventType } from './responseMCPCallInProg
  */
 export interface ResponseMCPCallInProgressEvent {
   /** The type of the event. Always 'response.mcp_call.in_progress'. */
-  type: ResponseMCPCallInProgressEventType;
+  type: ResponseMCPCallInProgressEventType
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
   /** The index of the output item in the response's output array. */
-  output_index: number;
+  output_index: number
   /** The unique identifier of the MCP tool call item being processed. */
-  item_id: string;
+  item_id: string
 }

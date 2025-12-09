@@ -11,4 +11,4 @@
 inclusive of tool calls, that was used in this response.
 
  */
-export type RealtimeResponseMaxOutputTokens = number | 'inf';
+export type RealtimeResponseMaxOutputTokens = number | "inf"

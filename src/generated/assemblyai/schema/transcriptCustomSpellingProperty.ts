@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptCustomSpelling } from './transcriptCustomSpelling';
+import type { TranscriptCustomSpelling } from "./transcriptCustomSpelling"
 
 /**
  * Customize how words are spelled and formatted using to and from values
  */
-export type TranscriptCustomSpellingProperty = TranscriptCustomSpelling[] | null;
+export type TranscriptCustomSpellingProperty = TranscriptCustomSpelling[] | null

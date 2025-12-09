@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType } from './createEvalResponsesRunDataSourceInputMessagesAnyOfFiveType';
+import type { CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType } from "./createEvalResponsesRunDataSourceInputMessagesAnyOfFiveType"
 
 export type CreateEvalResponsesRunDataSourceInputMessagesAnyOfFive = {
   /** The type of input messages. Always `item_reference`. */
-  type: CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType;
+  type: CreateEvalResponsesRunDataSourceInputMessagesAnyOfFiveType
   /** A reference to a variable in the `item` namespace. Ie, "item.name" */
-  item_reference: string;
-};
+  item_reference: string
+}

@@ -16,7 +16,7 @@ export interface RealtimeClientEventInputAudioBufferClear {
    * Optional client-generated ID used to identify this event.
    * @maxLength 512
    */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `input_audio_buffer.clear`. */
-  type: 'input_audio_buffer.clear';
+  type: "input_audio_buffer.clear"
 }

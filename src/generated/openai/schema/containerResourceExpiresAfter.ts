@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ContainerResourceExpiresAfterAnchor } from './containerResourceExpiresAfterAnchor';
+import type { ContainerResourceExpiresAfterAnchor } from "./containerResourceExpiresAfterAnchor"
 
 /**
  * The container will expire after this time period.
@@ -15,7 +15,7 @@ The minutes is the number of minutes after the anchor before the container expir
  */
 export type ContainerResourceExpiresAfter = {
   /** The reference point for the expiration. */
-  anchor?: ContainerResourceExpiresAfterAnchor;
+  anchor?: ContainerResourceExpiresAfterAnchor
   /** The number of minutes after the anchor before the container expires. */
-  minutes?: number;
-};
+  minutes?: number
+}

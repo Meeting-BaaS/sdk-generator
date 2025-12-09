@@ -9,10 +9,9 @@
 /**
  * Specifies the event type. For a click action, this property is always `click`.
  */
-export type ClickParamType = typeof ClickParamType[keyof typeof ClickParamType];
-
+export type ClickParamType = (typeof ClickParamType)[keyof typeof ClickParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ClickParamType = {
-  click: 'click',
-} as const;
+  click: "click"
+} as const

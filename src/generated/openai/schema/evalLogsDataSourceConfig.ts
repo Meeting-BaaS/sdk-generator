@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalLogsDataSourceConfigType } from './evalLogsDataSourceConfigType';
-import type { Metadata } from './metadata';
-import type { EvalLogsDataSourceConfigSchema } from './evalLogsDataSourceConfigSchema';
+import type { EvalLogsDataSourceConfigType } from "./evalLogsDataSourceConfigType"
+import type { Metadata } from "./metadata"
+import type { EvalLogsDataSourceConfigSchema } from "./evalLogsDataSourceConfigSchema"
 
 /**
  * A LogsDataSourceConfig which specifies the metadata property of your logs query.
@@ -18,10 +18,10 @@ The schema returned by this data source config is used to defined what variables
  */
 export interface EvalLogsDataSourceConfig {
   /** The type of data source. Always `logs`. */
-  type: EvalLogsDataSourceConfigType;
-  metadata?: Metadata;
+  type: EvalLogsDataSourceConfigType
+  metadata?: Metadata
   /** The json schema for the run data source items.
 Learn how to build JSON schemas [here](https://json-schema.org/).
  */
-  schema: EvalLogsDataSourceConfigSchema;
+  schema: EvalLogsDataSourceConfigSchema
 }

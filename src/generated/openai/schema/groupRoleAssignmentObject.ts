@@ -9,10 +9,10 @@
 /**
  * Always `group.role`.
  */
-export type GroupRoleAssignmentObject = typeof GroupRoleAssignmentObject[keyof typeof GroupRoleAssignmentObject];
-
+export type GroupRoleAssignmentObject =
+  (typeof GroupRoleAssignmentObject)[keyof typeof GroupRoleAssignmentObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupRoleAssignmentObject = {
-  grouprole: 'group.role',
-} as const;
+  grouprole: "group.role"
+} as const

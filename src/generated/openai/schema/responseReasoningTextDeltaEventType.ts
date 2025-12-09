@@ -10,10 +10,10 @@
  * The type of the event. Always `response.reasoning_text.delta`.
 
  */
-export type ResponseReasoningTextDeltaEventType = typeof ResponseReasoningTextDeltaEventType[keyof typeof ResponseReasoningTextDeltaEventType];
-
+export type ResponseReasoningTextDeltaEventType =
+  (typeof ResponseReasoningTextDeltaEventType)[keyof typeof ResponseReasoningTextDeltaEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseReasoningTextDeltaEventType = {
-  responsereasoning_textdelta: 'response.reasoning_text.delta',
-} as const;
+  responsereasoning_textdelta: "response.reasoning_text.delta"
+} as const

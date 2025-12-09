@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectApiKeyOwnerType } from './projectApiKeyOwnerType';
-import type { ProjectUser } from './projectUser';
-import type { ProjectServiceAccount } from './projectServiceAccount';
+import type { ProjectApiKeyOwnerType } from "./projectApiKeyOwnerType"
+import type { ProjectUser } from "./projectUser"
+import type { ProjectServiceAccount } from "./projectServiceAccount"
 
 export type ProjectApiKeyOwner = {
   /** `user` or `service_account` */
-  type?: ProjectApiKeyOwnerType;
-  user?: ProjectUser;
-  service_account?: ProjectServiceAccount;
-};
+  type?: ProjectApiKeyOwnerType
+  user?: ProjectUser
+  service_account?: ProjectServiceAccount
+}

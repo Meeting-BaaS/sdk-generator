@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `thread`.
  */
-export type ThreadObjectObject = typeof ThreadObjectObject[keyof typeof ThreadObjectObject];
-
+export type ThreadObjectObject = (typeof ThreadObjectObject)[keyof typeof ThreadObjectObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ThreadObjectObject = {
-  thread: 'thread',
-} as const;
+  thread: "thread"
+} as const

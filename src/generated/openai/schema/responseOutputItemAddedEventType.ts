@@ -10,10 +10,10 @@
  * The type of the event. Always `response.output_item.added`.
 
  */
-export type ResponseOutputItemAddedEventType = typeof ResponseOutputItemAddedEventType[keyof typeof ResponseOutputItemAddedEventType];
-
+export type ResponseOutputItemAddedEventType =
+  (typeof ResponseOutputItemAddedEventType)[keyof typeof ResponseOutputItemAddedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseOutputItemAddedEventType = {
-  responseoutput_itemadded: 'response.output_item.added',
-} as const;
+  responseoutput_itemadded: "response.output_item.added"
+} as const

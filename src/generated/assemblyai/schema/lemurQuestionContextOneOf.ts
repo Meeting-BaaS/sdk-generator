@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.3.4
  */
 
-export type LemurQuestionContextOneOf = { [key: string]: unknown };
+export type LemurQuestionContextOneOf = { [key: string]: unknown }

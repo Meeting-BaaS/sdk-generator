@@ -10,12 +10,12 @@
  * The background setting for the requested image.
 
  */
-export type ImageGenPartialImageEventBackground = typeof ImageGenPartialImageEventBackground[keyof typeof ImageGenPartialImageEventBackground];
-
+export type ImageGenPartialImageEventBackground =
+  (typeof ImageGenPartialImageEventBackground)[keyof typeof ImageGenPartialImageEventBackground]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenPartialImageEventBackground = {
-  transparent: 'transparent',
-  opaque: 'opaque',
-  auto: 'auto',
-} as const;
+  transparent: "transparent",
+  opaque: "opaque",
+  auto: "auto"
+} as const

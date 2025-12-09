@@ -9,4 +9,4 @@
 /**
  * The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
  */
-export type TranscriptWebhookStatusCode = number | null;
+export type TranscriptWebhookStatusCode = number | null

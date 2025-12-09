@@ -5,24 +5,24 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptionDiarizedSegmentType } from './transcriptionDiarizedSegmentType';
+import type { TranscriptionDiarizedSegmentType } from "./transcriptionDiarizedSegmentType"
 
 /**
  * A segment of diarized transcript text with speaker metadata.
  */
 export interface TranscriptionDiarizedSegment {
   /** The type of the segment. Always `transcript.text.segment`.
- */
-  type: TranscriptionDiarizedSegmentType;
+   */
+  type: TranscriptionDiarizedSegmentType
   /** Unique identifier for the segment. */
-  id: string;
+  id: string
   /** Start timestamp of the segment in seconds. */
-  start: number;
+  start: number
   /** End timestamp of the segment in seconds. */
-  end: number;
+  end: number
   /** Transcript text for this segment. */
-  text: string;
+  text: string
   /** Speaker label for this segment. When known speakers are provided, the label matches `known_speaker_names[]`. Otherwise speakers are labeled sequentially using capital letters (`A`, `B`, ...).
- */
-  speaker: string;
+   */
+  speaker: string
 }

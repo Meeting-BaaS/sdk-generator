@@ -10,10 +10,10 @@
  * The type of the web search tool call. Always `web_search_call`.
 
  */
-export type WebSearchToolCallType = typeof WebSearchToolCallType[keyof typeof WebSearchToolCallType];
-
+export type WebSearchToolCallType =
+  (typeof WebSearchToolCallType)[keyof typeof WebSearchToolCallType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchToolCallType = {
-  web_search_call: 'web_search_call',
-} as const;
+  web_search_call: "web_search_call"
+} as const

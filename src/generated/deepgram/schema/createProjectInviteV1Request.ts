@@ -12,7 +12,7 @@
  */
 export interface CreateProjectInviteV1Request {
   /** The email address of the invitee */
-  email: string;
+  email: string
   /** The scope of the invitee */
-  scope: string;
+  scope: string
 }

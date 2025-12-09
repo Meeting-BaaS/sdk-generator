@@ -10,10 +10,10 @@
  * The type of the event. Always `realtime.call.incoming`.
 
  */
-export type WebhookRealtimeCallIncomingType = typeof WebhookRealtimeCallIncomingType[keyof typeof WebhookRealtimeCallIncomingType];
-
+export type WebhookRealtimeCallIncomingType =
+  (typeof WebhookRealtimeCallIncomingType)[keyof typeof WebhookRealtimeCallIncomingType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookRealtimeCallIncomingType = {
-  realtimecallincoming: 'realtime.call.incoming',
-} as const;
+  realtimecallincoming: "realtime.call.incoming"
+} as const

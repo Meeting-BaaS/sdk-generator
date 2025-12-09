@@ -6,11 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItemSearchItem } from './listenV1ResponseResultsChannelsItemSearchItem';
-import type { ListenV1ResponseResultsChannelsItemAlternativesItem } from './listenV1ResponseResultsChannelsItemAlternativesItem';
+import type { ListenV1ResponseResultsChannelsItemSearchItem } from "./listenV1ResponseResultsChannelsItemSearchItem"
+import type { ListenV1ResponseResultsChannelsItemAlternativesItem } from "./listenV1ResponseResultsChannelsItemAlternativesItem"
 
 export type ListenV1ResponseResultsChannelsItem = {
-  search?: ListenV1ResponseResultsChannelsItemSearchItem[];
-  alternatives?: ListenV1ResponseResultsChannelsItemAlternativesItem[];
-  detected_language?: string;
-};
+  search?: ListenV1ResponseResultsChannelsItemSearchItem[]
+  alternatives?: ListenV1ResponseResultsChannelsItemAlternativesItem[]
+  detected_language?: string
+}

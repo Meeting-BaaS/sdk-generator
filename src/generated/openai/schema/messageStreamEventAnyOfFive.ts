@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageStreamEventAnyOfFiveEvent } from './messageStreamEventAnyOfFiveEvent';
-import type { MessageDeltaObject } from './messageDeltaObject';
+import type { MessageStreamEventAnyOfFiveEvent } from "./messageStreamEventAnyOfFiveEvent"
+import type { MessageDeltaObject } from "./messageDeltaObject"
 
 /**
  * Occurs when parts of a [Message](https://platform.openai.com/docs/api-reference/messages/object) are being streamed.
  */
 export type MessageStreamEventAnyOfFive = {
-  event: MessageStreamEventAnyOfFiveEvent;
-  data: MessageDeltaObject;
-};
+  event: MessageStreamEventAnyOfFiveEvent
+  data: MessageDeltaObject
+}

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ActiveStatusType } from './activeStatusType';
+import type { ActiveStatusType } from "./activeStatusType"
 
 /**
  * Indicates that a thread is active.
  */
 export interface ActiveStatus {
   /** Status discriminator that is always `active`. */
-  type: ActiveStatusType;
+  type: ActiveStatusType
 }

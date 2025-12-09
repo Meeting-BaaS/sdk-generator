@@ -5,10 +5,10 @@
 
 import axios, { type AxiosInstance } from "axios"
 import type {
-	AudioInput,
-	ProviderCapabilities,
-	TranscribeOptions,
-	UnifiedTranscriptResponse,
+  AudioInput,
+  ProviderCapabilities,
+  TranscribeOptions,
+  UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
@@ -103,311 +103,302 @@ import type { AudioTranscriptionModel } from "../generated/openai/schema/audioTr
  * ```
  */
 export class OpenAIWhisperAdapter extends BaseAdapter {
-	readonly name = "openai-whisper" as const
-	readonly capabilities: ProviderCapabilities = {
-		streaming: false, // Synchronous only (no streaming API for transcription)
-		diarization: true, // Available with gpt-4o-transcribe-diarize model
-		wordTimestamps: true,
-		languageDetection: false, // Language should be provided for best accuracy
-		customVocabulary: false, // Uses prompt instead
-		summarization: false,
-		sentimentAnalysis: false,
-		entityDetection: false,
-		piiRedaction: false,
-	}
+  readonly name = "openai-whisper" as const
+  readonly capabilities: ProviderCapabilities = {
+    streaming: false, // Synchronous only (no streaming API for transcription)
+    diarization: true, // Available with gpt-4o-transcribe-diarize model
+    wordTimestamps: true,
+    languageDetection: false, // Language should be provided for best accuracy
+    customVocabulary: false, // Uses prompt instead
+    summarization: false,
+    sentimentAnalysis: false,
+    entityDetection: false,
+    piiRedaction: false
+  }
 
-	private client?: AxiosInstance
-	private baseUrl = "https://api.openai.com/v1"
+  private client?: AxiosInstance
+  private baseUrl = "https://api.openai.com/v1"
 
-	initialize(config: ProviderConfig): void {
-		super.initialize(config)
+  initialize(config: ProviderConfig): void {
+    super.initialize(config)
 
-		this.baseUrl = config.baseUrl || this.baseUrl
+    this.baseUrl = config.baseUrl || this.baseUrl
 
-		this.client = axios.create({
-			baseURL: this.baseUrl,
-			timeout: config.timeout || 120000, // 2 minutes default (audio processing can take time)
-			headers: {
-				Authorization: `Bearer ${config.apiKey}`,
-				"Content-Type": "multipart/form-data",
-				...config.headers,
-			},
-		})
-	}
+    this.client = axios.create({
+      baseURL: this.baseUrl,
+      timeout: config.timeout || 120000, // 2 minutes default (audio processing can take time)
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+        "Content-Type": "multipart/form-data",
+        ...config.headers
+      }
+    })
+  }
 
-	/**
-	 * Submit audio for transcription
-	 *
-	 * OpenAI Whisper API processes audio synchronously and returns results immediately.
-	 * Supports multiple models with different capabilities:
-	 * - whisper-1: Open source Whisper V2 model
-	 * - gpt-4o-transcribe: More accurate GPT-4o based transcription
-	 * - gpt-4o-mini-transcribe: Faster, cost-effective GPT-4o mini
-	 * - gpt-4o-transcribe-diarize: GPT-4o with speaker diarization
-	 *
-	 * @param audio - Audio input (URL or Buffer)
-	 * @param options - Transcription options
-	 * @returns Transcription response with full results
-	 */
-	async transcribe(
-		audio: AudioInput,
-		options?: TranscribeOptions,
-	): Promise<UnifiedTranscriptResponse> {
-		this.validateConfig()
+  /**
+   * Submit audio for transcription
+   *
+   * OpenAI Whisper API processes audio synchronously and returns results immediately.
+   * Supports multiple models with different capabilities:
+   * - whisper-1: Open source Whisper V2 model
+   * - gpt-4o-transcribe: More accurate GPT-4o based transcription
+   * - gpt-4o-mini-transcribe: Faster, cost-effective GPT-4o mini
+   * - gpt-4o-transcribe-diarize: GPT-4o with speaker diarization
+   *
+   * @param audio - Audio input (URL or Buffer)
+   * @param options - Transcription options
+   * @returns Transcription response with full results
+   */
+  async transcribe(
+    audio: AudioInput,
+    options?: TranscribeOptions
+  ): Promise<UnifiedTranscriptResponse> {
+    this.validateConfig()
 
-		try {
-			// Fetch audio if URL provided
-			let audioData: Buffer | Blob
-			let fileName = "audio.mp3"
+    try {
+      // Fetch audio if URL provided
+      let audioData: Buffer | Blob
+      let fileName = "audio.mp3"
 
-			if (audio.type === "url") {
-				const response = await axios.get(audio.url, {
-					responseType: "arraybuffer",
-				})
-				audioData = Buffer.from(response.data)
+      if (audio.type === "url") {
+        const response = await axios.get(audio.url, {
+          responseType: "arraybuffer"
+        })
+        audioData = Buffer.from(response.data)
 
-				// Extract filename from URL if possible
-				const urlPath = new URL(audio.url).pathname
-				const extractedName = urlPath.split("/").pop()
-				if (extractedName) {
-					fileName = extractedName
-				}
-			} else if (audio.type === "file") {
-				audioData = audio.file
-				fileName = audio.filename || fileName
-			} else {
-				return {
-					success: false,
-					provider: this.name,
-					error: {
-						code: "INVALID_INPUT",
-						message: "OpenAI Whisper only supports URL and File audio input (not stream)",
-					},
-				}
-			}
+        // Extract filename from URL if possible
+        const urlPath = new URL(audio.url).pathname
+        const extractedName = urlPath.split("/").pop()
+        if (extractedName) {
+          fileName = extractedName
+        }
+      } else if (audio.type === "file") {
+        audioData = audio.file
+        fileName = audio.filename || fileName
+      } else {
+        return {
+          success: false,
+          provider: this.name,
+          error: {
+            code: "INVALID_INPUT",
+            message: "OpenAI Whisper only supports URL and File audio input (not stream)"
+          }
+        }
+      }
 
-			// Determine model based on options
-			const model = this.selectModel(options)
+      // Determine model based on options
+      const model = this.selectModel(options)
 
-			// Set response format based on requirements
-			const isDiarization = model === "gpt-4o-transcribe-diarize"
-			const needsWords = options?.wordTimestamps === true
+      // Set response format based on requirements
+      const isDiarization = model === "gpt-4o-transcribe-diarize"
+      const needsWords = options?.wordTimestamps === true
 
-			// Build request body as plain object for axios
-			const requestBody: Record<string, any> = {
-				file: audioData,
-				model,
-			}
+      // Build request body as plain object for axios
+      const requestBody: Record<string, any> = {
+        file: audioData,
+        model
+      }
 
-			// Add optional parameters
-			if (options?.language) {
-				requestBody.language = options.language
-			}
+      // Add optional parameters
+      if (options?.language) {
+        requestBody.language = options.language
+      }
 
-			if (options?.metadata?.prompt) {
-				requestBody.prompt = options.metadata.prompt
-			}
+      if (options?.metadata?.prompt) {
+        requestBody.prompt = options.metadata.prompt
+      }
 
-			if (options?.metadata?.temperature !== undefined) {
-				requestBody.temperature = options.metadata.temperature
-			}
+      if (options?.metadata?.temperature !== undefined) {
+        requestBody.temperature = options.metadata.temperature
+      }
 
-			if (isDiarization) {
-				// Diarization model returns diarized_json format
-				requestBody.response_format = "diarized_json"
+      if (isDiarization) {
+        // Diarization model returns diarized_json format
+        requestBody.response_format = "diarized_json"
 
-				// Add known speakers if provided
-				if (options?.metadata?.knownSpeakerNames) {
-					requestBody["known_speaker_names"] = options.metadata
-						.knownSpeakerNames as string[]
-				}
+        // Add known speakers if provided
+        if (options?.metadata?.knownSpeakerNames) {
+          requestBody["known_speaker_names"] = options.metadata.knownSpeakerNames as string[]
+        }
 
-				if (options?.metadata?.knownSpeakerReferences) {
-					requestBody["known_speaker_references"] = options.metadata
-						.knownSpeakerReferences as string[]
-				}
-			} else if (needsWords || options?.diarization) {
-				// Use verbose_json for word timestamps
-				requestBody.response_format = "verbose_json"
+        if (options?.metadata?.knownSpeakerReferences) {
+          requestBody["known_speaker_references"] = options.metadata
+            .knownSpeakerReferences as string[]
+        }
+      } else if (needsWords || options?.diarization) {
+        // Use verbose_json for word timestamps
+        requestBody.response_format = "verbose_json"
 
-				// Add timestamp granularities
-				if (needsWords) {
-					requestBody.timestamp_granularities = ["word", "segment"]
-				}
-			} else {
-				// Simple json format for basic transcription
-				requestBody.response_format = "json"
-			}
+        // Add timestamp granularities
+        if (needsWords) {
+          requestBody.timestamp_granularities = ["word", "segment"]
+        }
+      } else {
+        // Simple json format for basic transcription
+        requestBody.response_format = "json"
+      }
 
-			// Make API request
-			// Note: axios automatically handles multipart/form-data when body contains File/Blob
-			const response = await this.client!.post<
-				| CreateTranscriptionResponseVerboseJson
-				| CreateTranscriptionResponseDiarizedJson
-				| { text: string }
-			>("/audio/transcriptions", requestBody, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			})
+      // Make API request
+      // Note: axios automatically handles multipart/form-data when body contains File/Blob
+      const response = await this.client!.post<
+        | CreateTranscriptionResponseVerboseJson
+        | CreateTranscriptionResponseDiarizedJson
+        | { text: string }
+      >("/audio/transcriptions", requestBody, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
 
-			return this.normalizeResponse(response.data, model, isDiarization)
-		} catch (error) {
-			return this.createErrorResponse(error)
-		}
-	}
+      return this.normalizeResponse(response.data, model, isDiarization)
+    } catch (error) {
+      return this.createErrorResponse(error)
+    }
+  }
 
-	/**
-	 * OpenAI Whisper returns results synchronously, so getTranscript is not needed.
-	 * This method exists for interface compatibility but will return an error.
-	 */
-	async getTranscript(
-		transcriptId: string,
-	): Promise<UnifiedTranscriptResponse> {
-		return {
-			success: false,
-			provider: this.name,
-			error: {
-				code: "NOT_SUPPORTED",
-				message:
-					"OpenAI Whisper processes transcriptions synchronously. Use transcribe() method directly.",
-			},
-		}
-	}
+  /**
+   * OpenAI Whisper returns results synchronously, so getTranscript is not needed.
+   * This method exists for interface compatibility but will return an error.
+   */
+  async getTranscript(transcriptId: string): Promise<UnifiedTranscriptResponse> {
+    return {
+      success: false,
+      provider: this.name,
+      error: {
+        code: "NOT_SUPPORTED",
+        message:
+          "OpenAI Whisper processes transcriptions synchronously. Use transcribe() method directly."
+      }
+    }
+  }
 
-	/**
-	 * Select appropriate model based on transcription options
-	 */
-	private selectModel(options?: TranscribeOptions): AudioTranscriptionModel {
-		// Use model from metadata if provided
-		if (options?.metadata?.model) {
-			return options.metadata.model as AudioTranscriptionModel
-		}
+  /**
+   * Select appropriate model based on transcription options
+   */
+  private selectModel(options?: TranscribeOptions): AudioTranscriptionModel {
+    // Use model from metadata if provided
+    if (options?.metadata?.model) {
+      return options.metadata.model as AudioTranscriptionModel
+    }
 
-		// Auto-select based on diarization requirement
-		if (options?.diarization) {
-			return "gpt-4o-transcribe-diarize"
-		}
+    // Auto-select based on diarization requirement
+    if (options?.diarization) {
+      return "gpt-4o-transcribe-diarize"
+    }
 
-		// Default to gpt-4o-transcribe (better accuracy than whisper-1)
-		return "gpt-4o-transcribe"
-	}
+    // Default to gpt-4o-transcribe (better accuracy than whisper-1)
+    return "gpt-4o-transcribe"
+  }
 
-	/**
-	 * Normalize OpenAI response to unified format
-	 */
-	private normalizeResponse(
-		response:
-			| CreateTranscriptionResponseVerboseJson
-			| CreateTranscriptionResponseDiarizedJson
-			| { text: string },
-		model: AudioTranscriptionModel,
-		isDiarization: boolean,
-	): UnifiedTranscriptResponse {
-		// Handle simple json format
-		if ("text" in response && Object.keys(response).length === 1) {
-			return {
-				success: true,
-				provider: this.name,
-				data: {
-					id: `openai-${Date.now()}`,
-					text: response.text,
-					status: "completed",
-					language: undefined,
-					confidence: undefined,
-				},
-				raw: response,
-			}
-		}
+  /**
+   * Normalize OpenAI response to unified format
+   */
+  private normalizeResponse(
+    response:
+      | CreateTranscriptionResponseVerboseJson
+      | CreateTranscriptionResponseDiarizedJson
+      | { text: string },
+    model: AudioTranscriptionModel,
+    isDiarization: boolean
+  ): UnifiedTranscriptResponse {
+    // Handle simple json format
+    if ("text" in response && Object.keys(response).length === 1) {
+      return {
+        success: true,
+        provider: this.name,
+        data: {
+          id: `openai-${Date.now()}`,
+          text: response.text,
+          status: "completed",
+          language: undefined,
+          confidence: undefined
+        },
+        raw: response
+      }
+    }
 
-		// Handle diarized format
-		if (isDiarization && "segments" in response) {
-			const diarizedResponse =
-				response as CreateTranscriptionResponseDiarizedJson
+    // Handle diarized format
+    if (isDiarization && "segments" in response) {
+      const diarizedResponse = response as CreateTranscriptionResponseDiarizedJson
 
-			// Extract unique speakers
-			const speakerSet = new Set(
-				diarizedResponse.segments.map((seg) => seg.speaker),
-			)
-			const speakers = Array.from(speakerSet).map((speaker) => ({
-				id: speaker,
-				label: speaker, // Already labeled by OpenAI (A, B, C or custom names)
-			}))
+      // Extract unique speakers
+      const speakerSet = new Set(diarizedResponse.segments.map((seg) => seg.speaker))
+      const speakers = Array.from(speakerSet).map((speaker) => ({
+        id: speaker,
+        label: speaker // Already labeled by OpenAI (A, B, C or custom names)
+      }))
 
-			// Build utterances from segments
-			const utterances = diarizedResponse.segments.map((segment) => ({
-				speaker: segment.speaker,
-				text: segment.text,
-				start: segment.start,
-				end: segment.end,
-				confidence: undefined,
-			}))
+      // Build utterances from segments
+      const utterances = diarizedResponse.segments.map((segment) => ({
+        speaker: segment.speaker,
+        text: segment.text,
+        start: segment.start,
+        end: segment.end,
+        confidence: undefined
+      }))
 
-			return {
-				success: true,
-				provider: this.name,
-				data: {
-					id: `openai-${Date.now()}`,
-					text: diarizedResponse.text,
-					status: "completed",
-					language: undefined,
-					duration: diarizedResponse.duration,
-					speakers,
-					utterances,
-				},
-				raw: response,
-			}
-		}
+      return {
+        success: true,
+        provider: this.name,
+        data: {
+          id: `openai-${Date.now()}`,
+          text: diarizedResponse.text,
+          status: "completed",
+          language: undefined,
+          duration: diarizedResponse.duration,
+          speakers,
+          utterances
+        },
+        raw: response
+      }
+    }
 
-		// Handle verbose format
-		if ("duration" in response && "language" in response) {
-			const verboseResponse =
-				response as CreateTranscriptionResponseVerboseJson
+    // Handle verbose format
+    if ("duration" in response && "language" in response) {
+      const verboseResponse = response as CreateTranscriptionResponseVerboseJson
 
-			// Extract words if available
-			const words = verboseResponse.words?.map((word) => ({
-				text: word.word,
-				start: word.start,
-				end: word.end,
-				confidence: undefined,
-			}))
+      // Extract words if available
+      const words = verboseResponse.words?.map((word) => ({
+        text: word.word,
+        start: word.start,
+        end: word.end,
+        confidence: undefined
+      }))
 
-			return {
-				success: true,
-				provider: this.name,
-				data: {
-					id: `openai-${Date.now()}`,
-					text: verboseResponse.text,
-					status: "completed",
-					language: verboseResponse.language,
-					duration: verboseResponse.duration,
-					words,
-				},
-				raw: response,
-			}
-		}
+      return {
+        success: true,
+        provider: this.name,
+        data: {
+          id: `openai-${Date.now()}`,
+          text: verboseResponse.text,
+          status: "completed",
+          language: verboseResponse.language,
+          duration: verboseResponse.duration,
+          words
+        },
+        raw: response
+      }
+    }
 
-		// Fallback (shouldn't reach here)
-		return {
-			success: true,
-			provider: this.name,
-			data: {
-				id: `openai-${Date.now()}`,
-				text: "text" in response ? response.text : "",
-				status: "completed",
-			},
-			raw: response,
-		}
-	}
+    // Fallback (shouldn't reach here)
+    return {
+      success: true,
+      provider: this.name,
+      data: {
+        id: `openai-${Date.now()}`,
+        text: "text" in response ? response.text : "",
+        status: "completed"
+      },
+      raw: response
+    }
+  }
 }
 
 /**
  * Factory function to create an OpenAI Whisper adapter
  */
-export function createOpenAIWhisperAdapter(
-	config: ProviderConfig,
-): OpenAIWhisperAdapter {
-	const adapter = new OpenAIWhisperAdapter()
-	adapter.initialize(config)
-	return adapter
+export function createOpenAIWhisperAdapter(config: ProviderConfig): OpenAIWhisperAdapter {
+  const adapter = new OpenAIWhisperAdapter()
+  adapter.initialize(config)
+  return adapter
 }

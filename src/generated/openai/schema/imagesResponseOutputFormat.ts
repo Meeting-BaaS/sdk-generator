@@ -9,12 +9,12 @@
 /**
  * The output format of the image generation. Either `png`, `webp`, or `jpeg`.
  */
-export type ImagesResponseOutputFormat = typeof ImagesResponseOutputFormat[keyof typeof ImagesResponseOutputFormat];
-
+export type ImagesResponseOutputFormat =
+  (typeof ImagesResponseOutputFormat)[keyof typeof ImagesResponseOutputFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImagesResponseOutputFormat = {
-  png: 'png',
-  webp: 'webp',
-  jpeg: 'jpeg',
-} as const;
+  png: "png",
+  webp: "webp",
+  jpeg: "jpeg"
+} as const

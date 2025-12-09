@@ -10,12 +10,11 @@
  * The model that is used for the final prompt after compression is performed.
 
  */
-export type LemurModel = typeof LemurModel[keyof typeof LemurModel];
-
+export type LemurModel = (typeof LemurModel)[keyof typeof LemurModel]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LemurModel = {
-  'anthropic/claude-3-5-sonnet': 'anthropic/claude-3-5-sonnet',
-  'anthropic/claude-3-opus': 'anthropic/claude-3-opus',
-  'anthropic/claude-3-haiku': 'anthropic/claude-3-haiku',
-} as const;
+  "anthropic/claude-3-5-sonnet": "anthropic/claude-3-5-sonnet",
+  "anthropic/claude-3-opus": "anthropic/claude-3-opus",
+  "anthropic/claude-3-haiku": "anthropic/claude-3-haiku"
+} as const

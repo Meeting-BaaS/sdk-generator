@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchUpdateFileOperationParamType } from './applyPatchUpdateFileOperationParamType';
+import type { ApplyPatchUpdateFileOperationParamType } from "./applyPatchUpdateFileOperationParamType"
 
 /**
  * Instruction for updating an existing file via the apply_patch tool.
  */
 export interface ApplyPatchUpdateFileOperationParam {
   /** The operation type. Always `update_file`. */
-  type: ApplyPatchUpdateFileOperationParamType;
+  type: ApplyPatchUpdateFileOperationParamType
   /**
    * Path of the file to update relative to the workspace root.
    * @minLength 1
    */
-  path: string;
+  path: string
   /**
    * Unified diff content to apply to the existing file.
    * @maxLength 10485760
    */
-  diff: string;
+  diff: string
 }

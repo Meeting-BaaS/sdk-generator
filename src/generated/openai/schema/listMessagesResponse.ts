@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageObject } from './messageObject';
+import type { MessageObject } from "./messageObject"
 
 export interface ListMessagesResponse {
-  object: string;
-  data: MessageObject[];
-  first_id: string;
-  last_id: string;
-  has_more: boolean;
+  object: string
+  data: MessageObject[]
+  first_id: string
+  last_id: string
+  has_more: boolean
 }

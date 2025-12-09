@@ -13,12 +13,13 @@ The default value is `png`.
 
  * @nullable
  */
-export type CreateImageEditRequestOutputFormat = typeof CreateImageEditRequestOutputFormat[keyof typeof CreateImageEditRequestOutputFormat] | null;
-
+export type CreateImageEditRequestOutputFormat =
+  | (typeof CreateImageEditRequestOutputFormat)[keyof typeof CreateImageEditRequestOutputFormat]
+  | null
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageEditRequestOutputFormat = {
-  png: 'png',
-  jpeg: 'jpeg',
-  webp: 'webp',
-} as const;
+  png: "png",
+  jpeg: "jpeg",
+  webp: "webp"
+} as const

@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TopLogProb } from './topLogProb';
+import type { TopLogProb } from "./topLogProb"
 
 /**
  * The log probability of a token.
  */
 export interface LogProb {
-  token: string;
-  logprob: number;
-  bytes: number[];
-  top_logprobs: TopLogProb[];
+  token: string
+  logprob: number
+  bytes: number[]
+  top_logprobs: TopLogProb[]
 }

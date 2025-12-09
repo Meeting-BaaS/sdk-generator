@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ReasoningItemEncryptedContent = string | null;
+export type ReasoningItemEncryptedContent = string | null

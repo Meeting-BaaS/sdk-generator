@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageObjectIncompleteDetailsAnyOfReason } from './messageObjectIncompleteDetailsAnyOfReason';
+import type { MessageObjectIncompleteDetailsAnyOfReason } from "./messageObjectIncompleteDetailsAnyOfReason"
 
 /**
  * On an incomplete message, details about why the message is incomplete.
  */
 export type MessageObjectIncompleteDetailsAnyOf = {
   /** The reason the message is incomplete. */
-  reason: MessageObjectIncompleteDetailsAnyOfReason;
-};
+  reason: MessageObjectIncompleteDetailsAnyOfReason
+}

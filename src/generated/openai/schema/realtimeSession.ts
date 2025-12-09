@@ -5,37 +5,37 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionObject } from './realtimeSessionObject';
-import type { RealtimeSessionModalitiesItem } from './realtimeSessionModalitiesItem';
-import type { RealtimeSessionModel } from './realtimeSessionModel';
-import type { VoiceIdsShared } from './voiceIdsShared';
-import type { RealtimeSessionInputAudioFormat } from './realtimeSessionInputAudioFormat';
-import type { RealtimeSessionOutputAudioFormat } from './realtimeSessionOutputAudioFormat';
-import type { RealtimeSessionInputAudioTranscription } from './realtimeSessionInputAudioTranscription';
-import type { RealtimeTurnDetection } from './realtimeTurnDetection';
-import type { RealtimeSessionInputAudioNoiseReduction } from './realtimeSessionInputAudioNoiseReduction';
-import type { RealtimeSessionTracing } from './realtimeSessionTracing';
-import type { RealtimeFunctionTool } from './realtimeFunctionTool';
-import type { RealtimeSessionMaxResponseOutputTokens } from './realtimeSessionMaxResponseOutputTokens';
-import type { RealtimeSessionPrompt } from './realtimeSessionPrompt';
-import type { RealtimeSessionInclude } from './realtimeSessionInclude';
+import type { RealtimeSessionObject } from "./realtimeSessionObject"
+import type { RealtimeSessionModalitiesItem } from "./realtimeSessionModalitiesItem"
+import type { RealtimeSessionModel } from "./realtimeSessionModel"
+import type { VoiceIdsShared } from "./voiceIdsShared"
+import type { RealtimeSessionInputAudioFormat } from "./realtimeSessionInputAudioFormat"
+import type { RealtimeSessionOutputAudioFormat } from "./realtimeSessionOutputAudioFormat"
+import type { RealtimeSessionInputAudioTranscription } from "./realtimeSessionInputAudioTranscription"
+import type { RealtimeTurnDetection } from "./realtimeTurnDetection"
+import type { RealtimeSessionInputAudioNoiseReduction } from "./realtimeSessionInputAudioNoiseReduction"
+import type { RealtimeSessionTracing } from "./realtimeSessionTracing"
+import type { RealtimeFunctionTool } from "./realtimeFunctionTool"
+import type { RealtimeSessionMaxResponseOutputTokens } from "./realtimeSessionMaxResponseOutputTokens"
+import type { RealtimeSessionPrompt } from "./realtimeSessionPrompt"
+import type { RealtimeSessionInclude } from "./realtimeSessionInclude"
 
 /**
  * Realtime session object for the beta interface.
  */
 export interface RealtimeSession {
   /** Unique identifier for the session that looks like `sess_1234567890abcdef`.
- */
-  id?: string;
+   */
+  id?: string
   /** The object type. Always `realtime.session`. */
-  object?: RealtimeSessionObject;
+  object?: RealtimeSessionObject
   /** The set of modalities the model can respond with. To disable audio,
 set this to ["text"].
  */
-  modalities?: RealtimeSessionModalitiesItem[];
+  modalities?: RealtimeSessionModalitiesItem[]
   /** The Realtime model used for this session.
- */
-  model?: RealtimeSessionModel;
+   */
+  model?: RealtimeSessionModel
   /** The default system instructions (i.e. system message) prepended to model
 calls. This field allows the client to guide the model on desired
 responses. The model can be instructed on response content and format,
@@ -50,29 +50,29 @@ Note that the server sets default instructions which will be used if this
 field is not set and are visible in the `session.created` event at the
 start of the session.
  */
-  instructions?: string;
+  instructions?: string
   /** The voice the model uses to respond. Voice cannot be changed during the
 session once the model has responded with audio at least once. Current
 voice options are `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`,
 `shimmer`, and `verse`.
  */
-  voice?: VoiceIdsShared;
+  voice?: VoiceIdsShared
   /** The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
 For `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate,
 single channel (mono), and little-endian byte order.
  */
-  input_audio_format?: RealtimeSessionInputAudioFormat;
+  input_audio_format?: RealtimeSessionInputAudioFormat
   /** The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
 For `pcm16`, output audio is sampled at a rate of 24kHz.
  */
-  output_audio_format?: RealtimeSessionOutputAudioFormat;
-  input_audio_transcription?: RealtimeSessionInputAudioTranscription;
-  turn_detection?: RealtimeTurnDetection;
+  output_audio_format?: RealtimeSessionOutputAudioFormat
+  input_audio_transcription?: RealtimeSessionInputAudioTranscription
+  turn_detection?: RealtimeTurnDetection
   /** Configuration for input audio noise reduction. This can be set to `null` to turn off.
 Noise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.
 Filtering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.
  */
-  input_audio_noise_reduction?: RealtimeSessionInputAudioNoiseReduction;
+  input_audio_noise_reduction?: RealtimeSessionInputAudioNoiseReduction
   /**
    * The speed of the model's spoken response. 1.0 is the default speed. 0.25 is
 the minimum speed. 1.5 is the maximum speed. This value can only be changed
@@ -81,25 +81,25 @@ in between model turns, not while a response is in progress.
    * @minimum 0.25
    * @maximum 1.5
    */
-  speed?: number;
-  tracing?: RealtimeSessionTracing;
+  speed?: number
+  tracing?: RealtimeSessionTracing
   /** Tools (functions) available to the model. */
-  tools?: RealtimeFunctionTool[];
+  tools?: RealtimeFunctionTool[]
   /** How the model chooses tools. Options are `auto`, `none`, `required`, or
 specify a function.
  */
-  tool_choice?: string;
+  tool_choice?: string
   /** Sampling temperature for the model, limited to [0.6, 1.2]. For audio models a temperature of 0.8 is highly recommended for best performance.
- */
-  temperature?: number;
+   */
+  temperature?: number
   /** Maximum number of output tokens for a single assistant response,
 inclusive of tool calls. Provide an integer between 1 and 4096 to
 limit output tokens, or `inf` for the maximum available tokens for a
 given model. Defaults to `inf`.
  */
-  max_response_output_tokens?: RealtimeSessionMaxResponseOutputTokens;
+  max_response_output_tokens?: RealtimeSessionMaxResponseOutputTokens
   /** Expiration timestamp for the session, in seconds since epoch. */
-  expires_at?: number;
-  prompt?: RealtimeSessionPrompt;
-  include?: RealtimeSessionInclude;
+  expires_at?: number
+  prompt?: RealtimeSessionPrompt
+  include?: RealtimeSessionInclude
 }

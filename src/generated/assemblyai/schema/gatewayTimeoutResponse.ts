@@ -9,4 +9,4 @@
 /**
  * Gateway timeout
  */
-export type GatewayTimeoutResponse = void;
+export type GatewayTimeoutResponse = void

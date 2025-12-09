@@ -11,10 +11,9 @@
 always set to `drag`.
 
  */
-export type DragType = typeof DragType[keyof typeof DragType];
-
+export type DragType = (typeof DragType)[keyof typeof DragType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DragType = {
-  drag: 'drag',
-} as const;
+  drag: "drag"
+} as const

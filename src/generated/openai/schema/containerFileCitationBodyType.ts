@@ -9,10 +9,10 @@
 /**
  * The type of the container file citation. Always `container_file_citation`.
  */
-export type ContainerFileCitationBodyType = typeof ContainerFileCitationBodyType[keyof typeof ContainerFileCitationBodyType];
-
+export type ContainerFileCitationBodyType =
+  (typeof ContainerFileCitationBodyType)[keyof typeof ContainerFileCitationBodyType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ContainerFileCitationBodyType = {
-  container_file_citation: 'container_file_citation',
-} as const;
+  container_file_citation: "container_file_citation"
+} as const

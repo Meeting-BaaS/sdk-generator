@@ -16,7 +16,7 @@ generation of the current response.
  */
 export interface RealtimeBetaClientEventOutputAudioBufferClear {
   /** The unique ID of the client event used for error handling. */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `output_audio_buffer.clear`. */
-  type: 'output_audio_buffer.clear';
+  type: "output_audio_buffer.clear"
 }

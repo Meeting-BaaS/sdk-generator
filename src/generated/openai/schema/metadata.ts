@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MetadataAnyOf } from './metadataAnyOf';
+import type { MetadataAnyOf } from "./metadataAnyOf"
 
-export type Metadata = MetadataAnyOf | null;
+export type Metadata = MetadataAnyOf | null

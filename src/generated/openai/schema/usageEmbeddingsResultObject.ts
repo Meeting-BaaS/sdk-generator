@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageEmbeddingsResultObject = typeof UsageEmbeddingsResultObject[keyof typeof UsageEmbeddingsResultObject];
-
+export type UsageEmbeddingsResultObject =
+  (typeof UsageEmbeddingsResultObject)[keyof typeof UsageEmbeddingsResultObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageEmbeddingsResultObject = {
-  organizationusageembeddingsresult: 'organization.usage.embeddings.result',
-} as const;
+  organizationusageembeddingsresult: "organization.usage.embeddings.result"
+} as const

@@ -9,10 +9,10 @@
 /**
  * The type of the computer tool call output. Always `computer_call_output`.
  */
-export type ComputerCallOutputItemParamType = typeof ComputerCallOutputItemParamType[keyof typeof ComputerCallOutputItemParamType];
-
+export type ComputerCallOutputItemParamType =
+  (typeof ComputerCallOutputItemParamType)[keyof typeof ComputerCallOutputItemParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerCallOutputItemParamType = {
-  computer_call_output: 'computer_call_output',
-} as const;
+  computer_call_output: "computer_call_output"
+} as const

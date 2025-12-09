@@ -10,4 +10,4 @@
 /**
  * Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3
  */
-export type ListenV1KeytermParameter = string[];
+export type ListenV1KeytermParameter = string[]

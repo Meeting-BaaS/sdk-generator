@@ -19,11 +19,11 @@ export interface RealtimeClientEventResponseCancel {
    * Optional client-generated ID used to identify this event.
    * @maxLength 512
    */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `response.cancel`. */
-  type: 'response.cancel';
+  type: "response.cancel"
   /** A specific response ID to cancel - if not provided, will cancel an 
 in-progress response in the default conversation.
  */
-  response_id?: string;
+  response_id?: string
 }

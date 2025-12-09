@@ -5,16 +5,16 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TopicDetectionResultLabelsItem } from './topicDetectionResultLabelsItem';
-import type { Timestamp } from './timestamp';
+import type { TopicDetectionResultLabelsItem } from "./topicDetectionResultLabelsItem"
+import type { Timestamp } from "./timestamp"
 
 /**
  * The result of the topic detection model
  */
 export interface TopicDetectionResult {
   /** The text in the transcript in which a detected topic occurs */
-  text: string;
+  text: string
   /** An array of detected topics in the text */
-  labels?: TopicDetectionResultLabelsItem[];
-  timestamp?: Timestamp;
+  labels?: TopicDetectionResultLabelsItem[]
+  timestamp?: Timestamp
 }

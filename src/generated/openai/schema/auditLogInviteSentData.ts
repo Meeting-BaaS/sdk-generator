@@ -11,7 +11,7 @@
  */
 export type AuditLogInviteSentData = {
   /** The email invited to the organization. */
-  email?: string;
+  email?: string
   /** The role the email was invited to be. Is either `owner` or `member`. */
-  role?: string;
-};
+  role?: string
+}

@@ -4,24 +4,24 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PostChapterizationMessageError } from './postChapterizationMessageError';
-import type { PostChapterizationMessageType } from './postChapterizationMessageType';
-import type { PostChapterizationMessageDataProperty } from './postChapterizationMessageDataProperty';
+import type { PostChapterizationMessageError } from "./postChapterizationMessageError"
+import type { PostChapterizationMessageType } from "./postChapterizationMessageType"
+import type { PostChapterizationMessageDataProperty } from "./postChapterizationMessageDataProperty"
 
 export interface PostChapterizationMessage {
   /** Id of the live session */
-  session_id: string;
+  session_id: string
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string;
+  created_at: string
   /**
    * Error message if the addon failed
    * @nullable
    */
-  error: PostChapterizationMessageError;
-  type: PostChapterizationMessageType;
+  error: PostChapterizationMessageError
+  type: PostChapterizationMessageType
   /**
    * The message data. "null" if the addon failed
    * @nullable
    */
-  data: PostChapterizationMessageDataProperty;
+  data: PostChapterizationMessageDataProperty
 }

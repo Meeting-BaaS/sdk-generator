@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookFineTuningJobCancelledData } from './webhookFineTuningJobCancelledData';
-import type { WebhookFineTuningJobCancelledObject } from './webhookFineTuningJobCancelledObject';
-import type { WebhookFineTuningJobCancelledType } from './webhookFineTuningJobCancelledType';
+import type { WebhookFineTuningJobCancelledData } from "./webhookFineTuningJobCancelledData"
+import type { WebhookFineTuningJobCancelledObject } from "./webhookFineTuningJobCancelledObject"
+import type { WebhookFineTuningJobCancelledType } from "./webhookFineTuningJobCancelledType"
 
 /**
  * Sent when a fine-tuning job has been cancelled.
@@ -15,18 +15,18 @@ import type { WebhookFineTuningJobCancelledType } from './webhookFineTuningJobCa
  */
 export interface WebhookFineTuningJobCancelled {
   /** The Unix timestamp (in seconds) of when the fine-tuning job was cancelled.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookFineTuningJobCancelledData;
+   */
+  data: WebhookFineTuningJobCancelledData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookFineTuningJobCancelledObject;
+   */
+  object?: WebhookFineTuningJobCancelledObject
   /** The type of the event. Always `fine_tuning.job.cancelled`.
- */
-  type: WebhookFineTuningJobCancelledType;
+   */
+  type: WebhookFineTuningJobCancelledType
 }

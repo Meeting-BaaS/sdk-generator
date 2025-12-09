@@ -6,6 +6,6 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItem } from './listenV1ResponseResultsChannelsItem';
+import type { ListenV1ResponseResultsChannelsItem } from "./listenV1ResponseResultsChannelsItem"
 
-export type ListenV1ResponseResultsChannels = ListenV1ResponseResultsChannelsItem[];
+export type ListenV1ResponseResultsChannels = ListenV1ResponseResultsChannelsItem[]

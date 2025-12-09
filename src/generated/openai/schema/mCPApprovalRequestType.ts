@@ -10,10 +10,10 @@
  * The type of the item. Always `mcp_approval_request`.
 
  */
-export type MCPApprovalRequestType = typeof MCPApprovalRequestType[keyof typeof MCPApprovalRequestType];
-
+export type MCPApprovalRequestType =
+  (typeof MCPApprovalRequestType)[keyof typeof MCPApprovalRequestType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MCPApprovalRequestType = {
-  mcp_approval_request: 'mcp_approval_request',
-} as const;
+  mcp_approval_request: "mcp_approval_request"
+} as const

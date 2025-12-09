@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuneDPOHyperparameters } from './fineTuneDPOHyperparameters';
+import type { FineTuneDPOHyperparameters } from "./fineTuneDPOHyperparameters"
 
 /**
  * Configuration for the DPO fine-tuning method.
  */
 export interface FineTuneDPOMethod {
-  hyperparameters?: FineTuneDPOHyperparameters;
+  hyperparameters?: FineTuneDPOHyperparameters
 }

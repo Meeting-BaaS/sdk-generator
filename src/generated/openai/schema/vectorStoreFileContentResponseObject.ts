@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `vector_store.file_content.page`
  */
-export type VectorStoreFileContentResponseObject = typeof VectorStoreFileContentResponseObject[keyof typeof VectorStoreFileContentResponseObject];
-
+export type VectorStoreFileContentResponseObject =
+  (typeof VectorStoreFileContentResponseObject)[keyof typeof VectorStoreFileContentResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreFileContentResponseObject = {
-  vector_storefile_contentpage: 'vector_store.file_content.page',
-} as const;
+  vector_storefile_contentpage: "vector_store.file_content.page"
+} as const

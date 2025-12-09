@@ -12,7 +12,7 @@ export type TopicDetectionResultLabelsItem = {
    * @minimum 0
    * @maximum 1
    */
-  relevance: number;
+  relevance: number
   /** The IAB taxonomical label for the label of the detected topic, where > denotes supertopic/subtopic relationship */
-  label: string;
-};
+  label: string
+}

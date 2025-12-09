@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeMCPHTTPErrorType = typeof RealtimeMCPHTTPErrorType[keyof typeof RealtimeMCPHTTPErrorType];
-
+export type RealtimeMCPHTTPErrorType =
+  (typeof RealtimeMCPHTTPErrorType)[keyof typeof RealtimeMCPHTTPErrorType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeMCPHTTPErrorType = {
-  http_error: 'http_error',
-} as const;
+  http_error: "http_error"
+} as const

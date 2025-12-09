@@ -9,4 +9,4 @@
 /**
  * Identifier of the actor who created the role.
  */
-export type AssignedRoleDetailsCreatedBy = string | null;
+export type AssignedRoleDetailsCreatedBy = string | null

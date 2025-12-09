@@ -21,7 +21,7 @@ export default {
   // Source settings
   disableSources: true,
   excludeExternals: true,
-  excludePrivate: false,  // Include private methods for adapter developers
+  excludePrivate: false, // Include private methods for adapter developers
   excludeProtected: false,
   excludeInternal: true,
 
@@ -47,13 +47,7 @@ export default {
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
 
-  kindSortOrder: [
-    "Class",
-    "Interface",
-    "TypeAlias",
-    "Function",
-    "Enum"
-  ],
+  kindSortOrder: ["Class", "Interface", "TypeAlias", "Function", "Enum"],
 
   // Keep readable - don't expand too deeply
   maxTypeConversionDepth: 5,
@@ -75,15 +69,7 @@ export default {
   // ],
 
   // Better categorization
-  groupOrder: [
-    "Router",
-    "Webhooks",
-    "Configuration",
-    "Types",
-    "Adapters",
-    "Responses",
-    "*"
-  ],
+  groupOrder: ["Router", "Webhooks", "Configuration", "Types", "Adapters", "Responses", "*"],
 
   // Enhanced navigation
   navigation: {
@@ -103,4 +89,4 @@ export default {
     inherited: true,
     external: false
   }
-};
+}

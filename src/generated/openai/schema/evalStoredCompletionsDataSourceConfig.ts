@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalStoredCompletionsDataSourceConfigType } from './evalStoredCompletionsDataSourceConfigType';
-import type { Metadata } from './metadata';
-import type { EvalStoredCompletionsDataSourceConfigSchema } from './evalStoredCompletionsDataSourceConfigSchema';
+import type { EvalStoredCompletionsDataSourceConfigType } from "./evalStoredCompletionsDataSourceConfigType"
+import type { Metadata } from "./metadata"
+import type { EvalStoredCompletionsDataSourceConfigSchema } from "./evalStoredCompletionsDataSourceConfigSchema"
 
 /**
  * Deprecated in favor of LogsDataSourceConfig.
@@ -16,10 +16,10 @@ import type { EvalStoredCompletionsDataSourceConfigSchema } from './evalStoredCo
  */
 export interface EvalStoredCompletionsDataSourceConfig {
   /** The type of data source. Always `stored_completions`. */
-  type: EvalStoredCompletionsDataSourceConfigType;
-  metadata?: Metadata;
+  type: EvalStoredCompletionsDataSourceConfigType
+  metadata?: Metadata
   /** The json schema for the run data source items.
 Learn how to build JSON schemas [here](https://json-schema.org/).
  */
-  schema: EvalStoredCompletionsDataSourceConfigSchema;
+  schema: EvalStoredCompletionsDataSourceConfigSchema
 }

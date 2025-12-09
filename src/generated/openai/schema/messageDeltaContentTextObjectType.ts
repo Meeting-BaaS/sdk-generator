@@ -9,10 +9,10 @@
 /**
  * Always `text`.
  */
-export type MessageDeltaContentTextObjectType = typeof MessageDeltaContentTextObjectType[keyof typeof MessageDeltaContentTextObjectType];
-
+export type MessageDeltaContentTextObjectType =
+  (typeof MessageDeltaContentTextObjectType)[keyof typeof MessageDeltaContentTextObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageDeltaContentTextObjectType = {
-  text: 'text',
-} as const;
+  text: "text"
+} as const

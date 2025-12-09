@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookBatchCancelledData } from './webhookBatchCancelledData';
-import type { WebhookBatchCancelledObject } from './webhookBatchCancelledObject';
-import type { WebhookBatchCancelledType } from './webhookBatchCancelledType';
+import type { WebhookBatchCancelledData } from "./webhookBatchCancelledData"
+import type { WebhookBatchCancelledObject } from "./webhookBatchCancelledObject"
+import type { WebhookBatchCancelledType } from "./webhookBatchCancelledType"
 
 /**
  * Sent when a batch API request has been cancelled.
@@ -15,18 +15,18 @@ import type { WebhookBatchCancelledType } from './webhookBatchCancelledType';
  */
 export interface WebhookBatchCancelled {
   /** The Unix timestamp (in seconds) of when the batch API request was cancelled.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookBatchCancelledData;
+   */
+  data: WebhookBatchCancelledData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookBatchCancelledObject;
+   */
+  object?: WebhookBatchCancelledObject
   /** The type of the event. Always `batch.cancelled`.
- */
-  type: WebhookBatchCancelledType;
+   */
+  type: WebhookBatchCancelledType
 }

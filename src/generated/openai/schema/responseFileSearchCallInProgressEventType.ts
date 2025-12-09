@@ -10,10 +10,10 @@
  * The type of the event. Always `response.file_search_call.in_progress`.
 
  */
-export type ResponseFileSearchCallInProgressEventType = typeof ResponseFileSearchCallInProgressEventType[keyof typeof ResponseFileSearchCallInProgressEventType];
-
+export type ResponseFileSearchCallInProgressEventType =
+  (typeof ResponseFileSearchCallInProgressEventType)[keyof typeof ResponseFileSearchCallInProgressEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFileSearchCallInProgressEventType = {
-  responsefile_search_callin_progress: 'response.file_search_call.in_progress',
-} as const;
+  responsefile_search_callin_progress: "response.file_search_call.in_progress"
+} as const

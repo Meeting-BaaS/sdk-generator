@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Tool } from './tool';
+import type { Tool } from "./tool"
 
 /**
  * An array of tools the model may call while generating a response. You
@@ -26,4 +26,4 @@ We support the following categories of tools:
   custom tools to call your own code.
 
  */
-export type ToolsArray = Tool[];
+export type ToolsArray = Tool[]

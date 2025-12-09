@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { SubmitToolOutputsRunRequestWithoutStreamToolOutputsItem } from './submitToolOutputsRunRequestWithoutStreamToolOutputsItem';
+import type { SubmitToolOutputsRunRequestWithoutStreamToolOutputsItem } from "./submitToolOutputsRunRequestWithoutStreamToolOutputsItem"
 
 export interface SubmitToolOutputsRunRequestWithoutStream {
   /** A list of tools for which the outputs are being submitted. */
-  tool_outputs: SubmitToolOutputsRunRequestWithoutStreamToolOutputsItem[];
+  tool_outputs: SubmitToolOutputsRunRequestWithoutStreamToolOutputsItem[]
 }

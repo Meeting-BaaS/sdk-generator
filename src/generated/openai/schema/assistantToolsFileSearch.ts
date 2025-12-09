@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantToolsFileSearchType } from './assistantToolsFileSearchType';
-import type { AssistantToolsFileSearchFileSearch } from './assistantToolsFileSearchFileSearch';
+import type { AssistantToolsFileSearchType } from "./assistantToolsFileSearchType"
+import type { AssistantToolsFileSearchFileSearch } from "./assistantToolsFileSearchFileSearch"
 
 export interface AssistantToolsFileSearch {
   /** The type of tool being defined: `file_search` */
-  type: AssistantToolsFileSearchType;
+  type: AssistantToolsFileSearchType
   /** Overrides for the file search tool. */
-  file_search?: AssistantToolsFileSearchFileSearch;
+  file_search?: AssistantToolsFileSearchFileSearch
 }

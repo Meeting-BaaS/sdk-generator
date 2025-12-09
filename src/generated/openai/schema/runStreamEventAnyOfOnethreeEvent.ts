@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunStreamEventAnyOfOnethreeEvent = typeof RunStreamEventAnyOfOnethreeEvent[keyof typeof RunStreamEventAnyOfOnethreeEvent];
-
+export type RunStreamEventAnyOfOnethreeEvent =
+  (typeof RunStreamEventAnyOfOnethreeEvent)[keyof typeof RunStreamEventAnyOfOnethreeEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStreamEventAnyOfOnethreeEvent = {
-  threadrunfailed: 'thread.run.failed',
-} as const;
+  threadrunfailed: "thread.run.failed"
+} as const

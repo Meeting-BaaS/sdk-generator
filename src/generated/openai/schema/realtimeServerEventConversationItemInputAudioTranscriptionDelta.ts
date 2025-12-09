@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionDeltaLogprobs } from './realtimeServerEventConversationItemInputAudioTranscriptionDeltaLogprobs';
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionDeltaLogprobs } from "./realtimeServerEventConversationItemInputAudioTranscriptionDeltaLogprobs"
 
 /**
  * Returned when the text value of an input audio transcription content part is updated with incremental transcription results.
@@ -13,14 +13,14 @@ import type { RealtimeServerEventConversationItemInputAudioTranscriptionDeltaLog
  */
 export interface RealtimeServerEventConversationItemInputAudioTranscriptionDelta {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `conversation.item.input_audio_transcription.delta`. */
-  type: 'conversation.item.input_audio_transcription.delta';
+  type: "conversation.item.input_audio_transcription.delta"
   /** The ID of the item containing the audio that is being transcribed. */
-  item_id: string;
+  item_id: string
   /** The index of the content part in the item's content array. */
-  content_index?: number;
+  content_index?: number
   /** The text delta. */
-  delta?: string;
-  logprobs?: RealtimeServerEventConversationItemInputAudioTranscriptionDeltaLogprobs;
+  delta?: string
+  logprobs?: RealtimeServerEventConversationItemInputAudioTranscriptionDeltaLogprobs
 }

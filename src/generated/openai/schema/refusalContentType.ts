@@ -9,10 +9,9 @@
 /**
  * The type of the refusal. Always `refusal`.
  */
-export type RefusalContentType = typeof RefusalContentType[keyof typeof RefusalContentType];
-
+export type RefusalContentType = (typeof RefusalContentType)[keyof typeof RefusalContentType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RefusalContentType = {
-  refusal: 'refusal',
-} as const;
+  refusal: "refusal"
+} as const

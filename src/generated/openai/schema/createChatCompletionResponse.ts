@@ -5,24 +5,24 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateChatCompletionResponseChoicesItem } from './createChatCompletionResponseChoicesItem';
-import type { ServiceTier } from './serviceTier';
-import type { CreateChatCompletionResponseObject } from './createChatCompletionResponseObject';
-import type { CompletionUsage } from './completionUsage';
+import type { CreateChatCompletionResponseChoicesItem } from "./createChatCompletionResponseChoicesItem"
+import type { ServiceTier } from "./serviceTier"
+import type { CreateChatCompletionResponseObject } from "./createChatCompletionResponseObject"
+import type { CompletionUsage } from "./completionUsage"
 
 /**
  * Represents a chat completion response returned by model, based on the provided input.
  */
 export interface CreateChatCompletionResponse {
   /** A unique identifier for the chat completion. */
-  id: string;
+  id: string
   /** A list of chat completion choices. Can be more than one if `n` is greater than 1. */
-  choices: CreateChatCompletionResponseChoicesItem[];
+  choices: CreateChatCompletionResponseChoicesItem[]
   /** The Unix timestamp (in seconds) of when the chat completion was created. */
-  created: number;
+  created: number
   /** The model used for the chat completion. */
-  model: string;
-  service_tier?: ServiceTier;
+  model: string
+  service_tier?: ServiceTier
   /**
    * This fingerprint represents the backend configuration that the model runs with.
 
@@ -30,8 +30,8 @@ Can be used in conjunction with the `seed` request parameter to understand when 
 
    * @deprecated
    */
-  system_fingerprint?: string;
+  system_fingerprint?: string
   /** The object type, which is always `chat.completion`. */
-  object: CreateChatCompletionResponseObject;
-  usage?: CompletionUsage;
+  object: CreateChatCompletionResponseObject
+  usage?: CompletionUsage
 }

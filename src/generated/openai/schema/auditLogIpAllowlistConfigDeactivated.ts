@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogIpAllowlistConfigDeactivatedConfigsItem } from './auditLogIpAllowlistConfigDeactivatedConfigsItem';
+import type { AuditLogIpAllowlistConfigDeactivatedConfigsItem } from "./auditLogIpAllowlistConfigDeactivatedConfigsItem"
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogIpAllowlistConfigDeactivated = {
   /** The configurations that were deactivated. */
-  configs?: AuditLogIpAllowlistConfigDeactivatedConfigsItem[];
-};
+  configs?: AuditLogIpAllowlistConfigDeactivatedConfigsItem[]
+}

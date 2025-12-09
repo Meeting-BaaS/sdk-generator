@@ -10,12 +10,12 @@
  * The output format for the requested edited image.
 
  */
-export type ImageEditPartialImageEventOutputFormat = typeof ImageEditPartialImageEventOutputFormat[keyof typeof ImageEditPartialImageEventOutputFormat];
-
+export type ImageEditPartialImageEventOutputFormat =
+  (typeof ImageEditPartialImageEventOutputFormat)[keyof typeof ImageEditPartialImageEventOutputFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditPartialImageEventOutputFormat = {
-  png: 'png',
-  webp: 'webp',
-  jpeg: 'jpeg',
-} as const;
+  png: "png",
+  webp: "webp",
+  jpeg: "jpeg"
+} as const

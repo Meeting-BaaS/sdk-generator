@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateResponse } from './realtimeTranscriptionSessionCreateResponse';
+import type { RealtimeTranscriptionSessionCreateResponse } from "./realtimeTranscriptionSessionCreateResponse"
 
 /**
  * Returned when a transcription session is updated with a `transcription_session.update` event, unless 
@@ -14,8 +14,8 @@ there is an error.
  */
 export interface RealtimeBetaServerEventTranscriptionSessionUpdated {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `transcription_session.updated`. */
-  type: 'transcription_session.updated';
-  session: RealtimeTranscriptionSessionCreateResponse;
+  type: "transcription_session.updated"
+  session: RealtimeTranscriptionSessionCreateResponse
 }

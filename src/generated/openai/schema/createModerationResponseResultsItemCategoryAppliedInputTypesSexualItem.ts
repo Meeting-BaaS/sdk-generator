@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem = typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem[keyof typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem];
-
+export type CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem =
+  (typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem)[keyof typeof CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem = {
-  text: 'text',
-  image: 'image',
-} as const;
+  text: "text",
+  image: "image"
+} as const

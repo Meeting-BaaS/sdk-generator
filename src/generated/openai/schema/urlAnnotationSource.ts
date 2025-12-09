@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UrlAnnotationSourceType } from './urlAnnotationSourceType';
+import type { UrlAnnotationSourceType } from "./urlAnnotationSourceType"
 
 /**
  * URL backing an annotation entry.
  */
 export interface UrlAnnotationSource {
   /** Type discriminator that is always `url`. */
-  type: UrlAnnotationSourceType;
+  type: UrlAnnotationSourceType
   /** URL referenced by the annotation. */
-  url: string;
+  url: string
 }

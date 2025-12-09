@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeMCPToolCallType } from './realtimeMCPToolCallType';
-import type { RealtimeMCPToolCallApprovalRequestId } from './realtimeMCPToolCallApprovalRequestId';
-import type { RealtimeMCPToolCallOutput } from './realtimeMCPToolCallOutput';
-import type { RealtimeMCPToolCallError } from './realtimeMCPToolCallError';
+import type { RealtimeMCPToolCallType } from "./realtimeMCPToolCallType"
+import type { RealtimeMCPToolCallApprovalRequestId } from "./realtimeMCPToolCallApprovalRequestId"
+import type { RealtimeMCPToolCallOutput } from "./realtimeMCPToolCallOutput"
+import type { RealtimeMCPToolCallError } from "./realtimeMCPToolCallError"
 
 /**
  * A Realtime item representing an invocation of a tool on an MCP server.
@@ -16,16 +16,16 @@ import type { RealtimeMCPToolCallError } from './realtimeMCPToolCallError';
  */
 export interface RealtimeMCPToolCall {
   /** The type of the item. Always `mcp_call`. */
-  type: RealtimeMCPToolCallType;
+  type: RealtimeMCPToolCallType
   /** The unique ID of the tool call. */
-  id: string;
+  id: string
   /** The label of the MCP server running the tool. */
-  server_label: string;
+  server_label: string
   /** The name of the tool that was run. */
-  name: string;
+  name: string
   /** A JSON string of the arguments passed to the tool. */
-  arguments: string;
-  approval_request_id?: RealtimeMCPToolCallApprovalRequestId;
-  output?: RealtimeMCPToolCallOutput;
-  error?: RealtimeMCPToolCallError;
+  arguments: string
+  approval_request_id?: RealtimeMCPToolCallApprovalRequestId
+  output?: RealtimeMCPToolCallOutput
+  error?: RealtimeMCPToolCallError
 }

@@ -7,4 +7,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SpeakV1BitRateParameter = 32000 | 48000 | null | number | null | number | null;
+export type SpeakV1BitRateParameter = 32000 | 48000 | null | number | null | number | null

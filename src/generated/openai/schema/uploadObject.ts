@@ -9,10 +9,9 @@
 /**
  * The object type, which is always "upload".
  */
-export type UploadObject = typeof UploadObject[keyof typeof UploadObject];
-
+export type UploadObject = (typeof UploadObject)[keyof typeof UploadObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UploadObject = {
-  upload: 'upload',
-} as const;
+  upload: "upload"
+} as const

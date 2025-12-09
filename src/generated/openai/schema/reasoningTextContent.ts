@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ReasoningTextContentType } from './reasoningTextContentType';
+import type { ReasoningTextContentType } from "./reasoningTextContentType"
 
 /**
  * Reasoning text from the model.
  */
 export interface ReasoningTextContent {
   /** The type of the reasoning text. Always `reasoning_text`. */
-  type: ReasoningTextContentType;
+  type: ReasoningTextContentType
   /** The reasoning text from the model. */
-  text: string;
+  text: string
 }

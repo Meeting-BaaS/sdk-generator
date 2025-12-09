@@ -10,10 +10,10 @@
  * The type of the event. Always `batch.completed`.
 
  */
-export type WebhookBatchCompletedType = typeof WebhookBatchCompletedType[keyof typeof WebhookBatchCompletedType];
-
+export type WebhookBatchCompletedType =
+  (typeof WebhookBatchCompletedType)[keyof typeof WebhookBatchCompletedType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookBatchCompletedType = {
-  batchcompleted: 'batch.completed',
-} as const;
+  batchcompleted: "batch.completed"
+} as const

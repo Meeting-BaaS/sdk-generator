@@ -9,10 +9,10 @@
 /**
  * The type of the object. Always "eval.run.output_item".
  */
-export type EvalRunOutputItemObject = typeof EvalRunOutputItemObject[keyof typeof EvalRunOutputItemObject];
-
+export type EvalRunOutputItemObject =
+  (typeof EvalRunOutputItemObject)[keyof typeof EvalRunOutputItemObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalRunOutputItemObject = {
-  evalrunoutput_item: 'eval.run.output_item',
-} as const;
+  evalrunoutput_item: "eval.run.output_item"
+} as const

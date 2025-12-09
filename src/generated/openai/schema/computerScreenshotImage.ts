@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComputerScreenshotImageType } from './computerScreenshotImageType';
+import type { ComputerScreenshotImageType } from "./computerScreenshotImageType"
 
 /**
  * A computer screenshot image used with the computer use tool.
@@ -15,9 +15,9 @@ export interface ComputerScreenshotImage {
   /** Specifies the event type. For a computer screenshot, this property is 
 always set to `computer_screenshot`.
  */
-  type: ComputerScreenshotImageType;
+  type: ComputerScreenshotImageType
   /** The URL of the screenshot image. */
-  image_url?: string;
+  image_url?: string
   /** The identifier of an uploaded file that contains the screenshot. */
-  file_id?: string;
+  file_id?: string
 }

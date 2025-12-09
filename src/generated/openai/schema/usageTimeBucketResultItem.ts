@@ -5,14 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageCompletionsResult } from './usageCompletionsResult';
-import type { UsageEmbeddingsResult } from './usageEmbeddingsResult';
-import type { UsageModerationsResult } from './usageModerationsResult';
-import type { UsageImagesResult } from './usageImagesResult';
-import type { UsageAudioSpeechesResult } from './usageAudioSpeechesResult';
-import type { UsageAudioTranscriptionsResult } from './usageAudioTranscriptionsResult';
-import type { UsageVectorStoresResult } from './usageVectorStoresResult';
-import type { UsageCodeInterpreterSessionsResult } from './usageCodeInterpreterSessionsResult';
-import type { CostsResult } from './costsResult';
+import type { UsageCompletionsResult } from "./usageCompletionsResult"
+import type { UsageEmbeddingsResult } from "./usageEmbeddingsResult"
+import type { UsageModerationsResult } from "./usageModerationsResult"
+import type { UsageImagesResult } from "./usageImagesResult"
+import type { UsageAudioSpeechesResult } from "./usageAudioSpeechesResult"
+import type { UsageAudioTranscriptionsResult } from "./usageAudioTranscriptionsResult"
+import type { UsageVectorStoresResult } from "./usageVectorStoresResult"
+import type { UsageCodeInterpreterSessionsResult } from "./usageCodeInterpreterSessionsResult"
+import type { CostsResult } from "./costsResult"
 
-export type UsageTimeBucketResultItem = UsageCompletionsResult | UsageEmbeddingsResult | UsageModerationsResult | UsageImagesResult | UsageAudioSpeechesResult | UsageAudioTranscriptionsResult | UsageVectorStoresResult | UsageCodeInterpreterSessionsResult | CostsResult;
+export type UsageTimeBucketResultItem =
+  | UsageCompletionsResult
+  | UsageEmbeddingsResult
+  | UsageModerationsResult
+  | UsageImagesResult
+  | UsageAudioSpeechesResult
+  | UsageAudioTranscriptionsResult
+  | UsageVectorStoresResult
+  | UsageCodeInterpreterSessionsResult
+  | CostsResult

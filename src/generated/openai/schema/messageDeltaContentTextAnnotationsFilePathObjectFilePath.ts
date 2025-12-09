@@ -8,5 +8,5 @@
 
 export type MessageDeltaContentTextAnnotationsFilePathObjectFilePath = {
   /** The ID of the file that was generated. */
-  file_id?: string;
-};
+  file_id?: string
+}

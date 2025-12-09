@@ -7,11 +7,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SharedCustomTopicModeParameter = typeof SharedCustomTopicModeParameter[keyof typeof SharedCustomTopicModeParameter];
-
+export type SharedCustomTopicModeParameter =
+  (typeof SharedCustomTopicModeParameter)[keyof typeof SharedCustomTopicModeParameter]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SharedCustomTopicModeParameter = {
-  extended: 'extended',
-  strict: 'strict',
-} as const;
+  extended: "extended",
+  strict: "strict"
+} as const

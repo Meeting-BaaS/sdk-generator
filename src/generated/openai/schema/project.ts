@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectObject } from './projectObject';
-import type { ProjectArchivedAt } from './projectArchivedAt';
-import type { ProjectStatus } from './projectStatus';
+import type { ProjectObject } from "./projectObject"
+import type { ProjectArchivedAt } from "./projectArchivedAt"
+import type { ProjectStatus } from "./projectStatus"
 
 /**
  * Represents an individual project.
  */
 export interface Project {
   /** The identifier, which can be referenced in API endpoints */
-  id: string;
+  id: string
   /** The object type, which is always `organization.project` */
-  object: ProjectObject;
+  object: ProjectObject
   /** The name of the project. This appears in reporting. */
-  name: string;
+  name: string
   /** The Unix timestamp (in seconds) of when the project was created. */
-  created_at: number;
-  archived_at?: ProjectArchivedAt;
+  created_at: number
+  archived_at?: ProjectArchivedAt
   /** `active` or `archived` */
-  status: ProjectStatus;
+  status: ProjectStatus
 }

@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionAllowedToolsMode } from './chatCompletionAllowedToolsMode';
-import type { ChatCompletionAllowedToolsToolsItem } from './chatCompletionAllowedToolsToolsItem';
+import type { ChatCompletionAllowedToolsMode } from "./chatCompletionAllowedToolsMode"
+import type { ChatCompletionAllowedToolsToolsItem } from "./chatCompletionAllowedToolsToolsItem"
 
 /**
  * Constrains the tools available to the model to a pre-defined set.
@@ -20,7 +20,7 @@ message.
 
 `required` requires the model to call one or more of the allowed tools.
  */
-  mode: ChatCompletionAllowedToolsMode;
+  mode: ChatCompletionAllowedToolsMode
   /** A list of tool definitions that the model should be allowed to call.
 
 For the Chat Completions API, the list of tool definitions might look like:
@@ -31,5 +31,5 @@ For the Chat Completions API, the list of tool definitions might look like:
 ]
 ```
  */
-  tools: ChatCompletionAllowedToolsToolsItem[];
+  tools: ChatCompletionAllowedToolsToolsItem[]
 }

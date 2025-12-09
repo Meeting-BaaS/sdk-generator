@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailedType } from './realtimeServerEventConversationItemInputAudioTranscriptionFailedType';
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailedError } from './realtimeServerEventConversationItemInputAudioTranscriptionFailedError';
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailedType } from "./realtimeServerEventConversationItemInputAudioTranscriptionFailedType"
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailedError } from "./realtimeServerEventConversationItemInputAudioTranscriptionFailedError"
 
 /**
  * Returned when input audio transcription is configured, and a transcription 
@@ -16,15 +16,15 @@ request for a user message failed. These events are separate from other
  */
 export interface RealtimeServerEventConversationItemInputAudioTranscriptionFailed {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be
 `conversation.item.input_audio_transcription.failed`.
  */
-  type: RealtimeServerEventConversationItemInputAudioTranscriptionFailedType;
+  type: RealtimeServerEventConversationItemInputAudioTranscriptionFailedType
   /** The ID of the user message item. */
-  item_id: string;
+  item_id: string
   /** The index of the content part containing the audio. */
-  content_index: number;
+  content_index: number
   /** Details of the transcription error. */
-  error: RealtimeServerEventConversationItemInputAudioTranscriptionFailedError;
+  error: RealtimeServerEventConversationItemInputAudioTranscriptionFailedError
 }

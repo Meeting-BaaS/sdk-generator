@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileObjectLastErrorAnyOf } from './vectorStoreFileObjectLastErrorAnyOf';
+import type { VectorStoreFileObjectLastErrorAnyOf } from "./vectorStoreFileObjectLastErrorAnyOf"
 
-export type VectorStoreFileObjectLastError = VectorStoreFileObjectLastErrorAnyOf | null;
+export type VectorStoreFileObjectLastError = VectorStoreFileObjectLastErrorAnyOf | null

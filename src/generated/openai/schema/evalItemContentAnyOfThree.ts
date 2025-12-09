@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalItemContentAnyOfThreeType } from './evalItemContentAnyOfThreeType';
+import type { EvalItemContentAnyOfThreeType } from "./evalItemContentAnyOfThreeType"
 
 /**
  * An image input to the model.
@@ -13,12 +13,12 @@ import type { EvalItemContentAnyOfThreeType } from './evalItemContentAnyOfThreeT
  */
 export type EvalItemContentAnyOfThree = {
   /** The type of the image input. Always `input_image`.
- */
-  type: EvalItemContentAnyOfThreeType;
+   */
+  type: EvalItemContentAnyOfThreeType
   /** The URL of the image input.
- */
-  image_url: string;
+   */
+  image_url: string
   /** The detail level of the image to be sent to the model. One of `high`, `low`, or `auto`. Defaults to `auto`.
- */
-  detail?: string;
-};
+   */
+  detail?: string
+}

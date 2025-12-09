@@ -9,10 +9,10 @@
 /**
  * The type of source. Always `stored_completions`.
  */
-export type EvalStoredCompletionsSourceType = typeof EvalStoredCompletionsSourceType[keyof typeof EvalStoredCompletionsSourceType];
-
+export type EvalStoredCompletionsSourceType =
+  (typeof EvalStoredCompletionsSourceType)[keyof typeof EvalStoredCompletionsSourceType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalStoredCompletionsSourceType = {
-  stored_completions: 'stored_completions',
-} as const;
+  stored_completions: "stored_completions"
+} as const

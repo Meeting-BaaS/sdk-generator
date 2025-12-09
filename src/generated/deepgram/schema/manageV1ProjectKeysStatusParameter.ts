@@ -7,11 +7,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ManageV1ProjectKeysStatusParameter = typeof ManageV1ProjectKeysStatusParameter[keyof typeof ManageV1ProjectKeysStatusParameter];
-
+export type ManageV1ProjectKeysStatusParameter =
+  (typeof ManageV1ProjectKeysStatusParameter)[keyof typeof ManageV1ProjectKeysStatusParameter]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ManageV1ProjectKeysStatusParameter = {
-  active: 'active',
-  expired: 'expired',
-} as const;
+  active: "active",
+  expired: "expired"
+} as const

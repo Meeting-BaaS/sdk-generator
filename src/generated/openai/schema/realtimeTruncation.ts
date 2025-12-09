@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTruncationAnyOf } from './realtimeTruncationAnyOf';
+import type { RealtimeTruncationAnyOf } from "./realtimeTruncationAnyOf"
 
 /**
  * When the number of tokens in a conversation exceeds the model's input token limit, the conversation be truncated, meaning messages (starting from the oldest) will not be included in the model's context. A 32k context model with 4,096 max output tokens can only include 28,224 tokens in the context before truncation occurs.
@@ -17,4 +17,4 @@ Truncation will reduce the number of cached tokens on the next turn (busting the
 Truncation can be disabled entirely, which means the server will never truncate but would instead return an error if the conversation exceeds the model's input token limit.
 
  */
-export type RealtimeTruncation = 'auto' | 'disabled' | RealtimeTruncationAnyOf;
+export type RealtimeTruncation = "auto" | "disabled" | RealtimeTruncationAnyOf

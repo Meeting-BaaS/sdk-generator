@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseAllOfIncompleteDetailsAnyOfReason } from './responseAllOfIncompleteDetailsAnyOfReason';
+import type { ResponseAllOfIncompleteDetailsAnyOfReason } from "./responseAllOfIncompleteDetailsAnyOfReason"
 
 /**
  * Details about why the response is incomplete.
@@ -13,5 +13,5 @@ import type { ResponseAllOfIncompleteDetailsAnyOfReason } from './responseAllOfI
  */
 export type ResponseAllOfIncompleteDetailsAnyOf = {
   /** The reason why the response is incomplete. */
-  reason?: ResponseAllOfIncompleteDetailsAnyOfReason;
-};
+  reason?: ResponseAllOfIncompleteDetailsAnyOfReason
+}

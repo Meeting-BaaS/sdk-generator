@@ -10,12 +10,13 @@
  * The format in which the generated images are returned. This parameter is only supported for `gpt-image-1`. Must be one of `png`, `jpeg`, or `webp`.
  * @nullable
  */
-export type CreateImageRequestOutputFormat = typeof CreateImageRequestOutputFormat[keyof typeof CreateImageRequestOutputFormat] | null;
-
+export type CreateImageRequestOutputFormat =
+  | (typeof CreateImageRequestOutputFormat)[keyof typeof CreateImageRequestOutputFormat]
+  | null
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageRequestOutputFormat = {
-  png: 'png',
-  jpeg: 'jpeg',
-  webp: 'webp',
-} as const;
+  png: "png",
+  jpeg: "jpeg",
+  webp: "webp"
+} as const

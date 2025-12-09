@@ -7,5 +7,5 @@
 
 export type FileControllerUploadV2BodyOne = {
   /** The file to be uploaded. This should be an audio or video file. */
-  audio?: Blob;
-};
+  audio?: Blob
+}

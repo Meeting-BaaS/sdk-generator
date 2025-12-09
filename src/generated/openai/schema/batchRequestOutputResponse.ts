@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { BatchRequestOutputResponseAnyOf } from './batchRequestOutputResponseAnyOf';
+import type { BatchRequestOutputResponseAnyOf } from "./batchRequestOutputResponseAnyOf"
 
-export type BatchRequestOutputResponse = BatchRequestOutputResponseAnyOf | null;
+export type BatchRequestOutputResponse = BatchRequestOutputResponseAnyOf | null

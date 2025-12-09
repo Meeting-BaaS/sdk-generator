@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ProjectApiKeyDeleteResponseObject = typeof ProjectApiKeyDeleteResponseObject[keyof typeof ProjectApiKeyDeleteResponseObject];
-
+export type ProjectApiKeyDeleteResponseObject =
+  (typeof ProjectApiKeyDeleteResponseObject)[keyof typeof ProjectApiKeyDeleteResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectApiKeyDeleteResponseObject = {
-  organizationprojectapi_keydeleted: 'organization.project.api_key.deleted',
-} as const;
+  organizationprojectapi_keydeleted: "organization.project.api_key.deleted"
+} as const

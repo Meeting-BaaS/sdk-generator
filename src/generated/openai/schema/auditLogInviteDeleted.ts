@@ -11,5 +11,5 @@
  */
 export type AuditLogInviteDeleted = {
   /** The ID of the invite. */
-  id?: string;
-};
+  id?: string
+}

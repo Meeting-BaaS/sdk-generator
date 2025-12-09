@@ -9,10 +9,9 @@
 /**
  * Type discriminator that is always `chatkit.task`.
  */
-export type TaskItemType = typeof TaskItemType[keyof typeof TaskItemType];
-
+export type TaskItemType = (typeof TaskItemType)[keyof typeof TaskItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TaskItemType = {
-  chatkittask: 'chatkit.task',
-} as const;
+  chatkittask: "chatkit.task"
+} as const

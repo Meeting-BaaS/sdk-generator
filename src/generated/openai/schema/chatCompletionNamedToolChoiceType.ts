@@ -9,10 +9,10 @@
 /**
  * For function calling, the type is always `function`.
  */
-export type ChatCompletionNamedToolChoiceType = typeof ChatCompletionNamedToolChoiceType[keyof typeof ChatCompletionNamedToolChoiceType];
-
+export type ChatCompletionNamedToolChoiceType =
+  (typeof ChatCompletionNamedToolChoiceType)[keyof typeof ChatCompletionNamedToolChoiceType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionNamedToolChoiceType = {
-  function: 'function',
-} as const;
+  function: "function"
+} as const

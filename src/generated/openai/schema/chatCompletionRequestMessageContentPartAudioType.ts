@@ -9,10 +9,10 @@
 /**
  * The type of the content part. Always `input_audio`.
  */
-export type ChatCompletionRequestMessageContentPartAudioType = typeof ChatCompletionRequestMessageContentPartAudioType[keyof typeof ChatCompletionRequestMessageContentPartAudioType];
-
+export type ChatCompletionRequestMessageContentPartAudioType =
+  (typeof ChatCompletionRequestMessageContentPartAudioType)[keyof typeof ChatCompletionRequestMessageContentPartAudioType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestMessageContentPartAudioType = {
-  input_audio: 'input_audio',
-} as const;
+  input_audio: "input_audio"
+} as const

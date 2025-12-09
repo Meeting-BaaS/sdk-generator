@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeResponseCreateParams } from './realtimeResponseCreateParams';
+import type { RealtimeResponseCreateParams } from "./realtimeResponseCreateParams"
 
 /**
  * This event instructs the server to create a Response, which means triggering 
@@ -40,8 +40,8 @@ export interface RealtimeClientEventResponseCreate {
    * Optional client-generated ID used to identify this event.
    * @maxLength 512
    */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `response.create`. */
-  type: 'response.create';
-  response?: RealtimeResponseCreateParams;
+  type: "response.create"
+  response?: RealtimeResponseCreateParams
 }

@@ -9,74 +9,70 @@ import { AssemblyAIWebhookHandler } from "./assemblyai-webhook"
 import { DeepgramWebhookHandler } from "./deepgram-webhook"
 import { AzureWebhookHandler } from "./azure-webhook"
 import { SpeechmaticsWebhookHandler } from "./speechmatics-webhook"
-import type {
-	UnifiedWebhookEvent,
-	WebhookValidation,
-	WebhookVerificationOptions,
-} from "./types"
+import type { UnifiedWebhookEvent, WebhookValidation, WebhookVerificationOptions } from "./types"
 import type { TranscriptionProvider } from "../router/types"
 
 /**
  * Webhook router options
  */
 export interface WebhookRouterOptions {
-	/**
-	 * Specific provider to use (skips auto-detection)
-	 */
-	provider?: TranscriptionProvider
+  /**
+   * Specific provider to use (skips auto-detection)
+   */
+  provider?: TranscriptionProvider
 
-	/**
-	 * Webhook verification options (signature, secret, etc.)
-	 */
-	verification?: WebhookVerificationOptions
+  /**
+   * Webhook verification options (signature, secret, etc.)
+   */
+  verification?: WebhookVerificationOptions
 
-	/**
-	 * Whether to verify webhook signatures
-	 * @default true
-	 */
-	verifySignature?: boolean
+  /**
+   * Whether to verify webhook signatures
+   * @default true
+   */
+  verifySignature?: boolean
 
-	/**
-	 * Query parameters from the webhook request
-	 * (e.g., for Speechmatics: ?id=<job_id>&status=success)
-	 */
-	queryParams?: Record<string, string>
+  /**
+   * Query parameters from the webhook request
+   * (e.g., for Speechmatics: ?id=<job_id>&status=success)
+   */
+  queryParams?: Record<string, string>
 
-	/**
-	 * User agent from the webhook request headers
-	 * (e.g., for Speechmatics: "Speechmatics-API/2.0")
-	 */
-	userAgent?: string
+  /**
+   * User agent from the webhook request headers
+   * (e.g., for Speechmatics: "Speechmatics-API/2.0")
+   */
+  userAgent?: string
 }
 
 /**
  * Webhook router result
  */
 export interface WebhookRouterResult {
-	/**
-	 * Whether routing was successful
-	 */
-	success: boolean
+  /**
+   * Whether routing was successful
+   */
+  success: boolean
 
-	/**
-	 * Detected or specified provider
-	 */
-	provider?: TranscriptionProvider
+  /**
+   * Detected or specified provider
+   */
+  provider?: TranscriptionProvider
 
-	/**
-	 * Parsed unified webhook event
-	 */
-	event?: UnifiedWebhookEvent
+  /**
+   * Parsed unified webhook event
+   */
+  event?: UnifiedWebhookEvent
 
-	/**
-	 * Error message if routing failed
-	 */
-	error?: string
+  /**
+   * Error message if routing failed
+   */
+  error?: string
 
-	/**
-	 * Whether signature verification was performed and passed
-	 */
-	verified?: boolean
+  /**
+   * Whether signature verification was performed and passed
+   */
+  verified?: boolean
 }
 
 /**
@@ -163,241 +159,231 @@ export interface WebhookRouterResult {
  * ```
  */
 export class WebhookRouter {
-	private handlers: Map<TranscriptionProvider, BaseWebhookHandler>
+  private handlers: Map<TranscriptionProvider, BaseWebhookHandler>
 
-	constructor() {
-		// Initialize all provider handlers
-		this.handlers = new Map([
-			["gladia", new GladiaWebhookHandler()],
-			["assemblyai", new AssemblyAIWebhookHandler()],
-			["deepgram", new DeepgramWebhookHandler()],
-			["azure-stt", new AzureWebhookHandler()],
-			["speechmatics", new SpeechmaticsWebhookHandler()],
-		])
-	}
+  constructor() {
+    // Initialize all provider handlers
+    this.handlers = new Map([
+      ["gladia", new GladiaWebhookHandler()],
+      ["assemblyai", new AssemblyAIWebhookHandler()],
+      ["deepgram", new DeepgramWebhookHandler()],
+      ["azure-stt", new AzureWebhookHandler()],
+      ["speechmatics", new SpeechmaticsWebhookHandler()]
+    ])
+  }
 
-	/**
-	 * Route webhook payload to the correct handler
-	 *
-	 * @param payload - Raw webhook payload
-	 * @param options - Routing options (provider, verification, etc.)
-	 * @returns Routing result with parsed event
-	 */
-	route(
-		payload: unknown,
-		options?: WebhookRouterOptions,
-	): WebhookRouterResult {
-		// If provider is specified, use that handler directly
-		if (options?.provider) {
-			return this.routeToProvider(payload, options.provider, options)
-		}
+  /**
+   * Route webhook payload to the correct handler
+   *
+   * @param payload - Raw webhook payload
+   * @param options - Routing options (provider, verification, etc.)
+   * @returns Routing result with parsed event
+   */
+  route(payload: unknown, options?: WebhookRouterOptions): WebhookRouterResult {
+    // If provider is specified, use that handler directly
+    if (options?.provider) {
+      return this.routeToProvider(payload, options.provider, options)
+    }
 
-		// Auto-detect provider
-		const detectedProvider = this.detectProvider(payload, {
-			queryParams: options?.queryParams,
-			userAgent: options?.userAgent,
-		})
+    // Auto-detect provider
+    const detectedProvider = this.detectProvider(payload, {
+      queryParams: options?.queryParams,
+      userAgent: options?.userAgent
+    })
 
-		if (!detectedProvider) {
-			return {
-				success: false,
-				error: "Could not detect webhook provider from payload structure",
-			}
-		}
+    if (!detectedProvider) {
+      return {
+        success: false,
+        error: "Could not detect webhook provider from payload structure"
+      }
+    }
 
-		return this.routeToProvider(payload, detectedProvider, options)
-	}
+    return this.routeToProvider(payload, detectedProvider, options)
+  }
 
-	/**
-	 * Detect provider from webhook payload structure
-	 *
-	 * @param payload - Raw webhook payload
-	 * @param options - Detection options (query params, user agent, etc.)
-	 * @returns Detected provider or undefined
-	 */
-	detectProvider(
-		payload: unknown,
-		options?: { queryParams?: Record<string, string>; userAgent?: string },
-	): TranscriptionProvider | undefined {
-		// Try each handler's matches() method
-		for (const [provider, handler] of this.handlers) {
-			if (handler.matches(payload, options)) {
-				return provider
-			}
-		}
+  /**
+   * Detect provider from webhook payload structure
+   *
+   * @param payload - Raw webhook payload
+   * @param options - Detection options (query params, user agent, etc.)
+   * @returns Detected provider or undefined
+   */
+  detectProvider(
+    payload: unknown,
+    options?: { queryParams?: Record<string, string>; userAgent?: string }
+  ): TranscriptionProvider | undefined {
+    // Try each handler's matches() method
+    for (const [provider, handler] of this.handlers) {
+      if (handler.matches(payload, options)) {
+        return provider
+      }
+    }
 
-		return undefined
-	}
+    return undefined
+  }
 
-	/**
-	 * Validate webhook payload
-	 *
-	 * @param payload - Raw webhook payload
-	 * @param options - Routing options
-	 * @returns Validation result
-	 */
-	validate(
-		payload: unknown,
-		options?: WebhookRouterOptions,
-	): WebhookValidation {
-		// If provider is specified, use that handler directly
-		if (options?.provider) {
-			const handler = this.handlers.get(options.provider)
-			if (!handler) {
-				return {
-					valid: false,
-					error: `Unknown provider: ${options.provider}`,
-				}
-			}
-			return handler.validate(payload, {
-				queryParams: options.queryParams,
-				userAgent: options.userAgent,
-			})
-		}
+  /**
+   * Validate webhook payload
+   *
+   * @param payload - Raw webhook payload
+   * @param options - Routing options
+   * @returns Validation result
+   */
+  validate(payload: unknown, options?: WebhookRouterOptions): WebhookValidation {
+    // If provider is specified, use that handler directly
+    if (options?.provider) {
+      const handler = this.handlers.get(options.provider)
+      if (!handler) {
+        return {
+          valid: false,
+          error: `Unknown provider: ${options.provider}`
+        }
+      }
+      return handler.validate(payload, {
+        queryParams: options.queryParams,
+        userAgent: options.userAgent
+      })
+    }
 
-		// Auto-detect provider
-		const detectedProvider = this.detectProvider(payload, {
-			queryParams: options?.queryParams,
-			userAgent: options?.userAgent,
-		})
+    // Auto-detect provider
+    const detectedProvider = this.detectProvider(payload, {
+      queryParams: options?.queryParams,
+      userAgent: options?.userAgent
+    })
 
-		if (!detectedProvider) {
-			return {
-				valid: false,
-				error: "Could not detect webhook provider from payload structure",
-			}
-		}
+    if (!detectedProvider) {
+      return {
+        valid: false,
+        error: "Could not detect webhook provider from payload structure"
+      }
+    }
 
-		const handler = this.handlers.get(detectedProvider)
-		if (!handler) {
-			return {
-				valid: false,
-				error: `Handler not found for provider: ${detectedProvider}`,
-			}
-		}
+    const handler = this.handlers.get(detectedProvider)
+    if (!handler) {
+      return {
+        valid: false,
+        error: `Handler not found for provider: ${detectedProvider}`
+      }
+    }
 
-		return handler.validate(payload, {
-			queryParams: options?.queryParams,
-			userAgent: options?.userAgent,
-		})
-	}
+    return handler.validate(payload, {
+      queryParams: options?.queryParams,
+      userAgent: options?.userAgent
+    })
+  }
 
-	/**
-	 * Verify webhook signature
-	 *
-	 * @param payload - Raw webhook payload
-	 * @param provider - Provider name
-	 * @param options - Verification options
-	 * @returns true if signature is valid
-	 */
-	verify(
-		payload: unknown,
-		provider: TranscriptionProvider,
-		options: WebhookVerificationOptions,
-	): boolean {
-		const handler = this.handlers.get(provider)
-		if (!handler || !handler.verify) {
-			// No verification available for this provider
-			return true
-		}
+  /**
+   * Verify webhook signature
+   *
+   * @param payload - Raw webhook payload
+   * @param provider - Provider name
+   * @param options - Verification options
+   * @returns true if signature is valid
+   */
+  verify(
+    payload: unknown,
+    provider: TranscriptionProvider,
+    options: WebhookVerificationOptions
+  ): boolean {
+    const handler = this.handlers.get(provider)
+    if (!handler || !handler.verify) {
+      // No verification available for this provider
+      return true
+    }
 
-		return handler.verify(payload, options)
-	}
+    return handler.verify(payload, options)
+  }
 
-	/**
-	 * Route to a specific provider handler
-	 */
-	private routeToProvider(
-		payload: unknown,
-		provider: TranscriptionProvider,
-		options?: WebhookRouterOptions,
-	): WebhookRouterResult {
-		const handler = this.handlers.get(provider)
+  /**
+   * Route to a specific provider handler
+   */
+  private routeToProvider(
+    payload: unknown,
+    provider: TranscriptionProvider,
+    options?: WebhookRouterOptions
+  ): WebhookRouterResult {
+    const handler = this.handlers.get(provider)
 
-		if (!handler) {
-			return {
-				success: false,
-				error: `Handler not found for provider: ${provider}`,
-			}
-		}
+    if (!handler) {
+      return {
+        success: false,
+        error: `Handler not found for provider: ${provider}`
+      }
+    }
 
-		// Verify signature if requested
-		let verified = true
-		if (
-			options?.verifySignature !== false &&
-			options?.verification &&
-			handler.verify
-		) {
-			verified = handler.verify(payload, options.verification)
-			if (!verified) {
-				return {
-					success: false,
-					provider,
-					error: "Webhook signature verification failed",
-					verified: false,
-				}
-			}
-		}
+    // Verify signature if requested
+    let verified = true
+    if (options?.verifySignature !== false && options?.verification && handler.verify) {
+      verified = handler.verify(payload, options.verification)
+      if (!verified) {
+        return {
+          success: false,
+          provider,
+          error: "Webhook signature verification failed",
+          verified: false
+        }
+      }
+    }
 
-		// Validate payload
-		const validation = handler.validate(payload, {
-			queryParams: options?.queryParams,
-			userAgent: options?.userAgent,
-		})
-		if (!validation.valid) {
-			return {
-				success: false,
-				provider,
-				error: validation.error,
-				verified,
-			}
-		}
+    // Validate payload
+    const validation = handler.validate(payload, {
+      queryParams: options?.queryParams,
+      userAgent: options?.userAgent
+    })
+    if (!validation.valid) {
+      return {
+        success: false,
+        provider,
+        error: validation.error,
+        verified
+      }
+    }
 
-		// Parse payload
-		try {
-			const event = handler.parse(payload, {
-				queryParams: options?.queryParams,
-			})
+    // Parse payload
+    try {
+      const event = handler.parse(payload, {
+        queryParams: options?.queryParams
+      })
 
-			return {
-				success: true,
-				provider,
-				event,
-				verified,
-			}
-		} catch (error) {
-			return {
-				success: false,
-				provider,
-				error: `Failed to parse webhook: ${error instanceof Error ? error.message : "Unknown error"}`,
-				verified,
-			}
-		}
-	}
+      return {
+        success: true,
+        provider,
+        event,
+        verified
+      }
+    } catch (error) {
+      return {
+        success: false,
+        provider,
+        error: `Failed to parse webhook: ${error instanceof Error ? error.message : "Unknown error"}`,
+        verified
+      }
+    }
+  }
 
-	/**
-	 * Get handler for a specific provider
-	 *
-	 * @param provider - Provider name
-	 * @returns Handler instance or undefined
-	 */
-	getHandler(provider: TranscriptionProvider): BaseWebhookHandler | undefined {
-		return this.handlers.get(provider)
-	}
+  /**
+   * Get handler for a specific provider
+   *
+   * @param provider - Provider name
+   * @returns Handler instance or undefined
+   */
+  getHandler(provider: TranscriptionProvider): BaseWebhookHandler | undefined {
+    return this.handlers.get(provider)
+  }
 
-	/**
-	 * Get all registered providers
-	 *
-	 * @returns Array of provider names
-	 */
-	getProviders(): TranscriptionProvider[] {
-		return Array.from(this.handlers.keys())
-	}
+  /**
+   * Get all registered providers
+   *
+   * @returns Array of provider names
+   */
+  getProviders(): TranscriptionProvider[] {
+    return Array.from(this.handlers.keys())
+  }
 }
 
 /**
  * Factory function to create a webhook router
  */
 export function createWebhookRouter(): WebhookRouter {
-	return new WebhookRouter()
+  return new WebhookRouter()
 }

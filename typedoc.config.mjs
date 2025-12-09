@@ -1,10 +1,7 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // Entry points - Client abstraction/bridge
-  entryPoints: [
-    "./src/node/client.ts",
-    "./src/node/types.d.ts"
-  ],
+  entryPoints: ["./src/node/client.ts", "./src/node/types.d.ts"],
 
   out: "./docs/generated/client",
   plugin: ["typedoc-plugin-markdown"],
@@ -21,12 +18,7 @@ export default {
   excludeInternal: true,
 
   // Exclude test files only
-  exclude: [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/test/**/*",
-    "**/examples/**/*"
-  ],
+  exclude: ["**/*.test.ts", "**/*.spec.ts", "**/test/**/*", "**/examples/**/*"],
 
   includeVersion: true,
   tsconfig: "./tsconfig.json",
@@ -38,12 +30,7 @@ export default {
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
 
-  kindSortOrder: [
-    "Function",
-    "Interface",
-    "TypeAlias",
-    "Enum"
-  ],
+  kindSortOrder: ["Function", "Interface", "TypeAlias", "Enum"],
 
   // Keep readable - don't expand too deeply
   maxTypeConversionDepth: 4,
@@ -64,12 +51,7 @@ export default {
   ],
 
   // Better categorization
-  groupOrder: [
-    "Client Factory",
-    "Configuration",
-    "Type Guards",
-    "*"
-  ],
+  groupOrder: ["Client Factory", "Configuration", "Type Guards", "*"],
 
   // Enhanced navigation
   navigation: {
@@ -89,4 +71,4 @@ export default {
     inherited: true,
     external: false
   }
-};
+}

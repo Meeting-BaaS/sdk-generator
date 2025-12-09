@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolType } from './mCPToolType';
-import type { MCPToolConnectorId } from './mCPToolConnectorId';
-import type { MCPToolHeaders } from './mCPToolHeaders';
-import type { MCPToolAllowedTools } from './mCPToolAllowedTools';
-import type { MCPToolRequireApproval } from './mCPToolRequireApproval';
+import type { MCPToolType } from "./mCPToolType"
+import type { MCPToolConnectorId } from "./mCPToolConnectorId"
+import type { MCPToolHeaders } from "./mCPToolHeaders"
+import type { MCPToolAllowedTools } from "./mCPToolAllowedTools"
+import type { MCPToolRequireApproval } from "./mCPToolRequireApproval"
 
 /**
  * Give the model access to additional tools via remote Model Context Protocol
@@ -18,14 +18,14 @@ import type { MCPToolRequireApproval } from './mCPToolRequireApproval';
  */
 export interface MCPTool {
   /** The type of the MCP tool. Always `mcp`. */
-  type: MCPToolType;
+  type: MCPToolType
   /** A label for this MCP server, used to identify it in tool calls.
- */
-  server_label: string;
+   */
+  server_label: string
   /** The URL for the MCP server. One of `server_url` or `connector_id` must be
 provided.
  */
-  server_url?: string;
+  server_url?: string
   /** Identifier for service connectors, like those available in ChatGPT. One of
 `server_url` or `connector_id` must be provided. Learn more about service
 connectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
@@ -41,16 +41,16 @@ Currently supported `connector_id` values are:
 - Outlook Email: `connector_outlookemail`
 - SharePoint: `connector_sharepoint`
  */
-  connector_id?: MCPToolConnectorId;
+  connector_id?: MCPToolConnectorId
   /** An OAuth access token that can be used with a remote MCP server, either
 with a custom MCP server URL or a service connector. Your application
 must handle the OAuth authorization flow and provide the token here.
  */
-  authorization?: string;
+  authorization?: string
   /** Optional description of the MCP server, used to provide more context.
- */
-  server_description?: string;
-  headers?: MCPToolHeaders;
-  allowed_tools?: MCPToolAllowedTools;
-  require_approval?: MCPToolRequireApproval;
+   */
+  server_description?: string
+  headers?: MCPToolHeaders
+  allowed_tools?: MCPToolAllowedTools
+  require_approval?: MCPToolRequireApproval
 }

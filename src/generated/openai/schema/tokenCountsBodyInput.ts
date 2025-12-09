@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TokenCountsBodyInputAnyOf } from './tokenCountsBodyInputAnyOf';
+import type { TokenCountsBodyInputAnyOf } from "./tokenCountsBodyInputAnyOf"
 
-export type TokenCountsBodyInput = TokenCountsBodyInputAnyOf | null;
+export type TokenCountsBodyInput = TokenCountsBodyInputAnyOf | null

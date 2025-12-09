@@ -10,10 +10,9 @@
  * The type of the output message. Always `message`.
 
  */
-export type OutputMessageType = typeof OutputMessageType[keyof typeof OutputMessageType];
-
+export type OutputMessageType = (typeof OutputMessageType)[keyof typeof OutputMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OutputMessageType = {
-  message: 'message',
-} as const;
+  message: "message"
+} as const

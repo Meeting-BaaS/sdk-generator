@@ -10,4 +10,4 @@
 /**
  * Recognizes speaker intent throughout a transcript or text
  */
-export type SharedIntentsParameter = boolean;
+export type SharedIntentsParameter = boolean

@@ -18,15 +18,14 @@
 - `nin`: not in
 
  */
-export type ComparisonFilterType = typeof ComparisonFilterType[keyof typeof ComparisonFilterType];
-
+export type ComparisonFilterType = (typeof ComparisonFilterType)[keyof typeof ComparisonFilterType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComparisonFilterType = {
-  eq: 'eq',
-  ne: 'ne',
-  gt: 'gt',
-  gte: 'gte',
-  lt: 'lt',
-  lte: 'lte',
-} as const;
+  eq: "eq",
+  ne: "ne",
+  gt: "gt",
+  gte: "gte",
+  lt: "lt",
+  lte: "lte"
+} as const

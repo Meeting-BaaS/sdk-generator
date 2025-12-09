@@ -10,10 +10,9 @@
  * The type of the output audio. Always `output_audio`.
 
  */
-export type OutputAudioType = typeof OutputAudioType[keyof typeof OutputAudioType];
-
+export type OutputAudioType = (typeof OutputAudioType)[keyof typeof OutputAudioType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OutputAudioType = {
-  output_audio: 'output_audio',
-} as const;
+  output_audio: "output_audio"
+} as const

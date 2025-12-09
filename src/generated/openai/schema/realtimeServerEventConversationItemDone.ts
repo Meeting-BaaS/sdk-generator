@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationItemDonePreviousItemId } from './realtimeServerEventConversationItemDonePreviousItemId';
-import type { RealtimeConversationItem } from './realtimeConversationItem';
+import type { RealtimeServerEventConversationItemDonePreviousItemId } from "./realtimeServerEventConversationItemDonePreviousItemId"
+import type { RealtimeConversationItem } from "./realtimeConversationItem"
 
 /**
  * Returned when a conversation item is finalized.
@@ -16,9 +16,9 @@ The event will include the full content of the Item except for audio data, which
  */
 export interface RealtimeServerEventConversationItemDone {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `conversation.item.done`. */
-  type: 'conversation.item.done';
-  previous_item_id?: RealtimeServerEventConversationItemDonePreviousItemId;
-  item: RealtimeConversationItem;
+  type: "conversation.item.done"
+  previous_item_id?: RealtimeServerEventConversationItemDonePreviousItemId
+  item: RealtimeConversationItem
 }

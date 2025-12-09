@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ListPaginatedFineTuningJobsResponseObject = typeof ListPaginatedFineTuningJobsResponseObject[keyof typeof ListPaginatedFineTuningJobsResponseObject];
-
+export type ListPaginatedFineTuningJobsResponseObject =
+  (typeof ListPaginatedFineTuningJobsResponseObject)[keyof typeof ListPaginatedFineTuningJobsResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListPaginatedFineTuningJobsResponseObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

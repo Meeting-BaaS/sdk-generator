@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { NamedEntityRecognitionData } from './namedEntityRecognitionData';
+import type { NamedEntityRecognitionData } from "./namedEntityRecognitionData"
 
 /**
  * The message data. "null" if the addon failed
  * @nullable
  */
-export type NamedEntityRecognitionMessageData = NamedEntityRecognitionData | null;
+export type NamedEntityRecognitionMessageData = NamedEntityRecognitionData | null

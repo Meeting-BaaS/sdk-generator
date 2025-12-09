@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CompoundFilterType } from './compoundFilterType';
-import type { CompoundFilterFiltersItem } from './compoundFilterFiltersItem';
+import type { CompoundFilterType } from "./compoundFilterType"
+import type { CompoundFilterFiltersItem } from "./compoundFilterFiltersItem"
 
 /**
  * Combine multiple filters using `and` or `or`.
  */
 export interface CompoundFilter {
   /** Type of operation: `and` or `or`. */
-  type: CompoundFilterType;
+  type: CompoundFilterType
   /** Array of filters to combine. Items can be `ComparisonFilter` or `CompoundFilter`. */
-  filters: CompoundFilterFiltersItem[];
+  filters: CompoundFilterFiltersItem[]
 }

@@ -9,4 +9,4 @@
 /**
  * The point in time, in milliseconds, in the file at which the transcription was terminated
  */
-export type TranscriptAudioEndAt = number | null;
+export type TranscriptAudioEndAt = number | null

@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { LemurBaseParamsContextOneOf } from './lemurBaseParamsContextOneOf';
+import type { LemurBaseParamsContextOneOf } from "./lemurBaseParamsContextOneOf"
 
 /**
  * Context to provide the model. This can be a string or a free-form JSON value.
  */
-export type LemurBaseParamsContext = string | LemurBaseParamsContextOneOf;
+export type LemurBaseParamsContext = string | LemurBaseParamsContextOneOf

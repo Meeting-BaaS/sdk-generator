@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageAudioTranscriptionsResultObject } from './usageAudioTranscriptionsResultObject';
-import type { UsageAudioTranscriptionsResultProjectId } from './usageAudioTranscriptionsResultProjectId';
-import type { UsageAudioTranscriptionsResultUserId } from './usageAudioTranscriptionsResultUserId';
-import type { UsageAudioTranscriptionsResultApiKeyId } from './usageAudioTranscriptionsResultApiKeyId';
-import type { UsageAudioTranscriptionsResultModel } from './usageAudioTranscriptionsResultModel';
+import type { UsageAudioTranscriptionsResultObject } from "./usageAudioTranscriptionsResultObject"
+import type { UsageAudioTranscriptionsResultProjectId } from "./usageAudioTranscriptionsResultProjectId"
+import type { UsageAudioTranscriptionsResultUserId } from "./usageAudioTranscriptionsResultUserId"
+import type { UsageAudioTranscriptionsResultApiKeyId } from "./usageAudioTranscriptionsResultApiKeyId"
+import type { UsageAudioTranscriptionsResultModel } from "./usageAudioTranscriptionsResultModel"
 
 /**
  * The aggregated audio transcriptions usage details of the specific time bucket.
  */
 export interface UsageAudioTranscriptionsResult {
-  object: UsageAudioTranscriptionsResultObject;
+  object: UsageAudioTranscriptionsResultObject
   /** The number of seconds processed. */
-  seconds: number;
+  seconds: number
   /** The count of requests made to the model. */
-  num_model_requests: number;
-  project_id?: UsageAudioTranscriptionsResultProjectId;
-  user_id?: UsageAudioTranscriptionsResultUserId;
-  api_key_id?: UsageAudioTranscriptionsResultApiKeyId;
-  model?: UsageAudioTranscriptionsResultModel;
+  num_model_requests: number
+  project_id?: UsageAudioTranscriptionsResultProjectId
+  user_id?: UsageAudioTranscriptionsResultUserId
+  api_key_id?: UsageAudioTranscriptionsResultApiKeyId
+  model?: UsageAudioTranscriptionsResultModel
 }

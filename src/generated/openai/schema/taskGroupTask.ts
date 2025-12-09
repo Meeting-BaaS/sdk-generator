@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TaskType } from './taskType';
-import type { TaskGroupTaskHeading } from './taskGroupTaskHeading';
-import type { TaskGroupTaskSummary } from './taskGroupTaskSummary';
+import type { TaskType } from "./taskType"
+import type { TaskGroupTaskHeading } from "./taskGroupTaskHeading"
+import type { TaskGroupTaskSummary } from "./taskGroupTaskSummary"
 
 /**
  * Task entry that appears within a TaskGroup.
  */
 export interface TaskGroupTask {
   /** Subtype for the grouped task. */
-  type: TaskType;
-  heading: TaskGroupTaskHeading;
-  summary: TaskGroupTaskSummary;
+  type: TaskType
+  heading: TaskGroupTaskHeading
+  summary: TaskGroupTaskSummary
 }

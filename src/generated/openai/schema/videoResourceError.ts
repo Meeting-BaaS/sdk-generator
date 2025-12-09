@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Error2 } from './error2';
+import type { Error2 } from "./error2"
 
-export type VideoResourceError = Error2 | null;
+export type VideoResourceError = Error2 | null

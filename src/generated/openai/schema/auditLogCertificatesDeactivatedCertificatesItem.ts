@@ -8,7 +8,7 @@
 
 export type AuditLogCertificatesDeactivatedCertificatesItem = {
   /** The certificate ID. */
-  id?: string;
+  id?: string
   /** The name of the certificate. */
-  name?: string;
-};
+  name?: string
+}

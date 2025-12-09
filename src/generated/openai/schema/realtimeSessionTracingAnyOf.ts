@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionTracingAnyOfAnyOf } from './realtimeSessionTracingAnyOfAnyOf';
+import type { RealtimeSessionTracingAnyOfAnyOf } from "./realtimeSessionTracingAnyOfAnyOf"
 
 /**
  * Configuration options for tracing. Set to null to disable tracing. Once
@@ -15,4 +15,4 @@ tracing is enabled for a session, the configuration cannot be modified.
 workflow name, group id, and metadata.
 
  */
-export type RealtimeSessionTracingAnyOf = 'auto' | RealtimeSessionTracingAnyOfAnyOf;
+export type RealtimeSessionTracingAnyOf = "auto" | RealtimeSessionTracingAnyOfAnyOf

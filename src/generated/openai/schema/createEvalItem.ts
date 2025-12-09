@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalItemAnyOf } from './createEvalItemAnyOf';
-import type { EvalItem } from './evalItem';
+import type { CreateEvalItemAnyOf } from "./createEvalItemAnyOf"
+import type { EvalItem } from "./evalItem"
 
 /**
  * A chat message that makes up the prompt or context. May include variable references to the `item` namespace, ie {{item.name}}.
  */
-export type CreateEvalItem = CreateEvalItemAnyOf | EvalItem;
+export type CreateEvalItem = CreateEvalItemAnyOf | EvalItem

@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalResponsesSourceType } from './evalResponsesSourceType';
-import type { EvalResponsesSourceMetadata } from './evalResponsesSourceMetadata';
-import type { EvalResponsesSourceModel } from './evalResponsesSourceModel';
-import type { EvalResponsesSourceInstructionsSearch } from './evalResponsesSourceInstructionsSearch';
-import type { EvalResponsesSourceCreatedAfter } from './evalResponsesSourceCreatedAfter';
-import type { EvalResponsesSourceCreatedBefore } from './evalResponsesSourceCreatedBefore';
-import type { EvalResponsesSourceReasoningEffort } from './evalResponsesSourceReasoningEffort';
-import type { EvalResponsesSourceTemperature } from './evalResponsesSourceTemperature';
-import type { EvalResponsesSourceTopP } from './evalResponsesSourceTopP';
-import type { EvalResponsesSourceUsers } from './evalResponsesSourceUsers';
-import type { EvalResponsesSourceTools } from './evalResponsesSourceTools';
+import type { EvalResponsesSourceType } from "./evalResponsesSourceType"
+import type { EvalResponsesSourceMetadata } from "./evalResponsesSourceMetadata"
+import type { EvalResponsesSourceModel } from "./evalResponsesSourceModel"
+import type { EvalResponsesSourceInstructionsSearch } from "./evalResponsesSourceInstructionsSearch"
+import type { EvalResponsesSourceCreatedAfter } from "./evalResponsesSourceCreatedAfter"
+import type { EvalResponsesSourceCreatedBefore } from "./evalResponsesSourceCreatedBefore"
+import type { EvalResponsesSourceReasoningEffort } from "./evalResponsesSourceReasoningEffort"
+import type { EvalResponsesSourceTemperature } from "./evalResponsesSourceTemperature"
+import type { EvalResponsesSourceTopP } from "./evalResponsesSourceTopP"
+import type { EvalResponsesSourceUsers } from "./evalResponsesSourceUsers"
+import type { EvalResponsesSourceTools } from "./evalResponsesSourceTools"
 
 /**
  * A EvalResponsesSource object describing a run data source configuration.
@@ -23,15 +23,15 @@ import type { EvalResponsesSourceTools } from './evalResponsesSourceTools';
  */
 export interface EvalResponsesSource {
   /** The type of run data source. Always `responses`. */
-  type: EvalResponsesSourceType;
-  metadata?: EvalResponsesSourceMetadata;
-  model?: EvalResponsesSourceModel;
-  instructions_search?: EvalResponsesSourceInstructionsSearch;
-  created_after?: EvalResponsesSourceCreatedAfter;
-  created_before?: EvalResponsesSourceCreatedBefore;
-  reasoning_effort?: EvalResponsesSourceReasoningEffort;
-  temperature?: EvalResponsesSourceTemperature;
-  top_p?: EvalResponsesSourceTopP;
-  users?: EvalResponsesSourceUsers;
-  tools?: EvalResponsesSourceTools;
+  type: EvalResponsesSourceType
+  metadata?: EvalResponsesSourceMetadata
+  model?: EvalResponsesSourceModel
+  instructions_search?: EvalResponsesSourceInstructionsSearch
+  created_after?: EvalResponsesSourceCreatedAfter
+  created_before?: EvalResponsesSourceCreatedBefore
+  reasoning_effort?: EvalResponsesSourceReasoningEffort
+  temperature?: EvalResponsesSourceTemperature
+  top_p?: EvalResponsesSourceTopP
+  users?: EvalResponsesSourceUsers
+  tools?: EvalResponsesSourceTools
 }

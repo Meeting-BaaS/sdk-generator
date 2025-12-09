@@ -5,19 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequestToolsItemType } from './realtimeSessionCreateRequestToolsItemType';
-import type { RealtimeSessionCreateRequestToolsItemParameters } from './realtimeSessionCreateRequestToolsItemParameters';
+import type { RealtimeSessionCreateRequestToolsItemType } from "./realtimeSessionCreateRequestToolsItemType"
+import type { RealtimeSessionCreateRequestToolsItemParameters } from "./realtimeSessionCreateRequestToolsItemParameters"
 
 export type RealtimeSessionCreateRequestToolsItem = {
   /** The type of the tool, i.e. `function`. */
-  type?: RealtimeSessionCreateRequestToolsItemType;
+  type?: RealtimeSessionCreateRequestToolsItemType
   /** The name of the function. */
-  name?: string;
+  name?: string
   /** The description of the function, including guidance on when and how
 to call it, and guidance about what to tell the user when calling
 (if anything).
  */
-  description?: string;
+  description?: string
   /** Parameters of the function in JSON Schema. */
-  parameters?: RealtimeSessionCreateRequestToolsItemParameters;
-};
+  parameters?: RealtimeSessionCreateRequestToolsItemParameters
+}

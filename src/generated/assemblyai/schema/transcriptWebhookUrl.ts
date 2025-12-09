@@ -12,4 +12,4 @@ We sends two different types of webhook requests.
 One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
 
  */
-export type TranscriptWebhookUrl = string | null;
+export type TranscriptWebhookUrl = string | null

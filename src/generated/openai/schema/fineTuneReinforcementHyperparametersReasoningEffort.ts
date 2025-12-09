@@ -10,13 +10,13 @@
  * Level of reasoning effort.
 
  */
-export type FineTuneReinforcementHyperparametersReasoningEffort = typeof FineTuneReinforcementHyperparametersReasoningEffort[keyof typeof FineTuneReinforcementHyperparametersReasoningEffort];
-
+export type FineTuneReinforcementHyperparametersReasoningEffort =
+  (typeof FineTuneReinforcementHyperparametersReasoningEffort)[keyof typeof FineTuneReinforcementHyperparametersReasoningEffort]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuneReinforcementHyperparametersReasoningEffort = {
-  default: 'default',
-  low: 'low',
-  medium: 'medium',
-  high: 'high',
-} as const;
+  default: "default",
+  low: "low",
+  medium: "medium",
+  high: "high"
+} as const

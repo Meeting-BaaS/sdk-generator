@@ -10,10 +10,10 @@
  * The type of this object. It is always set to "list".
 
  */
-export type ChatCompletionMessageListObject = typeof ChatCompletionMessageListObject[keyof typeof ChatCompletionMessageListObject];
-
+export type ChatCompletionMessageListObject =
+  (typeof ChatCompletionMessageListObject)[keyof typeof ChatCompletionMessageListObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionMessageListObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

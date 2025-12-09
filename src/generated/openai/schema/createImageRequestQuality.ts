@@ -16,15 +16,16 @@
 
  * @nullable
  */
-export type CreateImageRequestQuality = typeof CreateImageRequestQuality[keyof typeof CreateImageRequestQuality] | null;
-
+export type CreateImageRequestQuality =
+  | (typeof CreateImageRequestQuality)[keyof typeof CreateImageRequestQuality]
+  | null
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageRequestQuality = {
-  standard: 'standard',
-  hd: 'hd',
-  low: 'low',
-  medium: 'medium',
-  high: 'high',
-  auto: 'auto',
-} as const;
+  standard: "standard",
+  hd: "hd",
+  low: "low",
+  medium: "medium",
+  high: "high",
+  auto: "auto"
+} as const
