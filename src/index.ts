@@ -7,6 +7,9 @@
 export * from "./router"
 export * from "./adapters"
 
+// Webhook normalization exports
+export * from "./webhooks"
+
 // Provider-specific generated types (for advanced usage)
 export * as GladiaTypes from "./generated/gladia/schema"
 export * as AssemblyAITypes from "./generated/assemblyai/schema"
