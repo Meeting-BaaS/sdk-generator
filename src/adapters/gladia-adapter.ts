@@ -545,7 +545,7 @@ export class GladiaAdapter extends BaseAdapter {
     }
 
     const initResponse = await this.client!.post<InitStreamingResponse>(
-      "/streaming/init",
+      "/v2/live",
       streamingRequest
     )
 
