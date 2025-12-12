@@ -58,7 +58,8 @@
     "docs:generate:openai": "typedoc --options typedoc.openai.config.mjs",
     "docs:generate:speechmatics": "typedoc --options typedoc.speechmatics.config.mjs",
     "prepublishOnly": "pnpm lint:fix && pnpm build",
-    "openapi:fix": "node scripts/fix-generated.js"
+    "openapi:fix": "node scripts/fix-generated.js",
+    "prebuild": "pnpm openapi:fix"
   },
   "publishConfig": {
     "access": "public"
