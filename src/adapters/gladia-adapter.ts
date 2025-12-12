@@ -267,7 +267,9 @@ export class GladiaAdapter extends BaseAdapter {
       // Language configuration
       if (options.language || options.languageDetection) {
         request.language_config = {
-          languages: options.language ? [options.language as TranscriptionLanguageCodeEnum] : undefined,
+          languages: options.language
+            ? [options.language as TranscriptionLanguageCodeEnum]
+            : undefined,
           code_switching: options.languageDetection
         }
       }
@@ -555,11 +557,11 @@ export class GladiaAdapter extends BaseAdapter {
     let validatedSampleRate: StreamingSupportedSampleRateEnum | undefined
     if (options?.sampleRate) {
       const validRates = Object.values(StreamingSupportedSampleRateEnum)
-      const isValidRate = validRates.some(rate => rate === options.sampleRate)
+      const isValidRate = validRates.some((rate) => rate === options.sampleRate)
       if (!isValidRate) {
         throw new Error(
           `Gladia does not support sample rate ${options.sampleRate} Hz. ` +
-          `Supported rates (from OpenAPI spec): ${validRates.join(", ")} Hz`
+            `Supported rates (from OpenAPI spec): ${validRates.join(", ")} Hz`
         )
       }
       validatedSampleRate = options.sampleRate as StreamingSupportedSampleRateEnum
