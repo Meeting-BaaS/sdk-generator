@@ -1,7 +1,11 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // OpenAI Whisper Provider Documentation
-  entryPoints: ["./src/adapters/openai-whisper-adapter.ts"],
+  entryPoints: [
+    "./src/adapters/openai-whisper-adapter.ts",
+    "./src/adapters/base-adapter.ts",  // Include shared base types
+    "./src/router/types.ts"             // Include shared router types
+  ],
 
   out: "./docs/generated/openai",
   plugin: ["typedoc-plugin-markdown"],

@@ -1,7 +1,11 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // Azure STT Provider Documentation
-  entryPoints: ["./src/adapters/azure-stt-adapter.ts"],
+  entryPoints: [
+    "./src/adapters/azure-stt-adapter.ts",
+    "./src/adapters/base-adapter.ts",  // Include shared base types
+    "./src/router/types.ts"             // Include shared router types
+  ],
 
   out: "./docs/generated/azure",
   plugin: ["typedoc-plugin-markdown"],

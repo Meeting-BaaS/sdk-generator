@@ -1,7 +1,11 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // Deepgram Provider Documentation
-  entryPoints: ["./src/adapters/deepgram-adapter.ts"],
+  entryPoints: [
+    "./src/adapters/deepgram-adapter.ts",
+    "./src/adapters/base-adapter.ts",  // Include shared base types
+    "./src/router/types.ts"             // Include shared router types
+  ],
 
   out: "./docs/generated/deepgram",
   plugin: ["typedoc-plugin-markdown"],

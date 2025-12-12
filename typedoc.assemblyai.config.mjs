@@ -1,7 +1,11 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // AssemblyAI Provider Documentation
-  entryPoints: ["./src/adapters/assemblyai-adapter.ts"],
+  entryPoints: [
+    "./src/adapters/assemblyai-adapter.ts",
+    "./src/adapters/base-adapter.ts",  // Include shared base types
+    "./src/router/types.ts"             // Include shared router types
+  ],
 
   out: "./docs/generated/assemblyai",
   plugin: ["typedoc-plugin-markdown"],

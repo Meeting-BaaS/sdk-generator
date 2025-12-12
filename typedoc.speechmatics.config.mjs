@@ -1,7 +1,11 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
   // Speechmatics Provider Documentation
-  entryPoints: ["./src/adapters/speechmatics-adapter.ts"],
+  entryPoints: [
+    "./src/adapters/speechmatics-adapter.ts",
+    "./src/adapters/base-adapter.ts",  // Include shared base types
+    "./src/router/types.ts"             // Include shared router types
+  ],
 
   out: "./docs/generated/speechmatics",
   plugin: ["typedoc-plugin-markdown"],
