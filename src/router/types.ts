@@ -32,6 +32,11 @@ export type StreamingProvider = "gladia" | "deepgram" | "assemblyai"
 export type BatchOnlyProvider = "azure-stt" | "openai-whisper" | "speechmatics"
 
 /**
+ * WebSocket session status for streaming transcription
+ */
+export type SessionStatus = "connecting" | "open" | "closing" | "closed"
+
+/**
  * Provider capabilities - indicates which features each provider supports
  */
 export interface ProviderCapabilities {

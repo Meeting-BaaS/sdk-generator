@@ -116,7 +116,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
   }
 
   private client?: AxiosInstance
-  private baseUrl = "https://asr.api.speechmatics.com/v2"
+  protected baseUrl = "https://asr.api.speechmatics.com/v2"
 
   initialize(config: ProviderConfig): void {
     super.initialize(config)

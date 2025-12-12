@@ -117,7 +117,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
   }
 
   private client?: AxiosInstance
-  private baseUrl = "https://api.openai.com/v1"
+  protected baseUrl = "https://api.openai.com/v1"
 
   initialize(config: ProviderConfig): void {
     super.initialize(config)

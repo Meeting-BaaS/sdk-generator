@@ -18,6 +18,22 @@ import type {
 import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
+// Import utilities
+import { ERROR_CODES } from "../utils/errors"
+import {
+  waitForWebSocketOpen,
+  closeWebSocket,
+  setupWebSocketHandlers,
+  validateSessionForAudio
+} from "../utils/websocket-helpers"
+import { validateEnumValue } from "../utils/validation"
+import {
+  extractSpeakersFromUtterances,
+  extractWords as extractWordsUtil,
+  normalizeStatus
+} from "../utils/transcription-helpers"
+import type { SessionStatus } from "../router/types"
+
 // Import generated API client functions - FULL TYPE SAFETY!
 import {
   preRecordedControllerInitPreRecordedJobV2,
@@ -98,26 +114,14 @@ export class GladiaAdapter extends BaseAdapter {
     piiRedaction: false // Gladia doesn't have PII redaction in their API
   }
 
-  private baseUrl = "https://api.gladia.io"
+  protected baseUrl = "https://api.gladia.io"
 
   /**
    * Get axios config for generated API client functions
-   * Configures headers and base URL
+   * Configures headers and base URL using Gladia's x-gladia-key header
    */
-  private getAxiosConfig() {
-    if (!this.config) {
-      throw new Error("Adapter not initialized. Call initialize() first.")
-    }
-
-    return {
-      baseURL: this.config.baseUrl || this.baseUrl,
-      timeout: this.config.timeout || 60000,
-      headers: {
-        "x-gladia-key": this.config.apiKey,
-        "Content-Type": "application/json",
-        ...this.config.headers
-      }
-    }
+  protected getAxiosConfig() {
+    return super.getAxiosConfig("x-gladia-key")
   }
 
   /**
@@ -328,24 +332,8 @@ export class GladiaAdapter extends BaseAdapter {
    * Normalize Gladia response to unified format
    */
   private normalizeResponse(response: PreRecordedResponse): UnifiedTranscriptResponse {
-    // Map Gladia status to unified status
-    let status: "queued" | "processing" | "completed" | "error"
-    switch (response.status) {
-      case "queued":
-        status = "queued"
-        break
-      case "processing":
-        status = "processing"
-        break
-      case "done":
-        status = "completed"
-        break
-      case "error":
-        status = "error"
-        break
-      default:
-        status = "queued"
-    }
+    // Use utility to normalize status
+    const status = normalizeStatus(response.status, "gladia")
 
     // Handle error state
     if (response.status === "error") {
@@ -353,7 +341,7 @@ export class GladiaAdapter extends BaseAdapter {
         success: false,
         provider: this.name,
         error: {
-          code: response.error_code?.toString() || "TRANSCRIPTION_ERROR",
+          code: response.error_code?.toString() || ERROR_CODES.TRANSCRIPTION_ERROR,
           message: "Transcription failed",
           statusCode: response.error_code || undefined
         },
@@ -394,26 +382,11 @@ export class GladiaAdapter extends BaseAdapter {
    * Extract speaker information from Gladia response
    */
   private extractSpeakers(transcription: TranscriptionDTO | undefined) {
-    if (!transcription?.utterances) {
-      return undefined
-    }
-
-    // Gladia stores speakers in utterances - extract unique speakers
-    const speakerSet = new Set<number>()
-    transcription.utterances.forEach((utterance: UtteranceDTO) => {
-      if (utterance.speaker !== undefined) {
-        speakerSet.add(utterance.speaker)
-      }
-    })
-
-    if (speakerSet.size === 0) {
-      return undefined
-    }
-
-    return Array.from(speakerSet).map((speakerId) => ({
-      id: speakerId.toString(),
-      label: `Speaker ${speakerId}`
-    }))
+    return extractSpeakersFromUtterances(
+      transcription?.utterances,
+      (utterance: UtteranceDTO) => utterance.speaker,
+      (id) => `Speaker ${id}`
+    )
   }
 
   /**
@@ -427,15 +400,18 @@ export class GladiaAdapter extends BaseAdapter {
     // Flatten all words from all utterances
     const allWords = transcription.utterances.flatMap((utterance: UtteranceDTO) =>
       utterance.words.map((word: WordDTO) => ({
-        text: word.word,
-        start: word.start,
-        end: word.end,
-        confidence: word.confidence,
-        speaker: utterance.speaker?.toString()
+        word,
+        speaker: utterance.speaker
       }))
     )
 
-    return allWords.length > 0 ? allWords : undefined
+    return extractWordsUtil(allWords, (item) => ({
+      text: item.word.word,
+      start: item.word.start,
+      end: item.word.end,
+      confidence: item.word.confidence,
+      speaker: item.speaker?.toString()
+    }))
   }
 
   /**
@@ -464,49 +440,6 @@ export class GladiaAdapter extends BaseAdapter {
   /**
    * Poll for transcription completion
    */
-  private async pollForCompletion(
-    jobId: string,
-    maxAttempts = 60,
-    intervalMs = 2000
-  ): Promise<UnifiedTranscriptResponse> {
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const result = await this.getTranscript(jobId)
-
-      if (!result.success) {
-        return result
-      }
-
-      const status = result.data?.status
-      if (status === "completed") {
-        return result
-      }
-
-      if (status === "error") {
-        return {
-          success: false,
-          provider: this.name,
-          error: {
-            code: "TRANSCRIPTION_ERROR",
-            message: "Transcription failed"
-          },
-          raw: result.raw
-        }
-      }
-
-      // Wait before next poll
-      await new Promise((resolve) => setTimeout(resolve, intervalMs))
-    }
-
-    // Timeout
-    return {
-      success: false,
-      provider: this.name,
-      error: {
-        code: "POLLING_TIMEOUT",
-        message: `Transcription did not complete after ${maxAttempts} attempts`
-      }
-    }
-  }
 
   /**
    * Stream audio for real-time transcription
@@ -556,15 +489,12 @@ export class GladiaAdapter extends BaseAdapter {
     // Validate sample rate against OpenAPI-generated enum
     let validatedSampleRate: StreamingSupportedSampleRateEnum | undefined
     if (options?.sampleRate) {
-      const validRates = Object.values(StreamingSupportedSampleRateEnum)
-      const isValidRate = validRates.some((rate) => rate === options.sampleRate)
-      if (!isValidRate) {
-        throw new Error(
-          `Gladia does not support sample rate ${options.sampleRate} Hz. ` +
-            `Supported rates (from OpenAPI spec): ${validRates.join(", ")} Hz`
-        )
-      }
-      validatedSampleRate = options.sampleRate as StreamingSupportedSampleRateEnum
+      validatedSampleRate = validateEnumValue(
+        options.sampleRate,
+        StreamingSupportedSampleRateEnum,
+        "sample rate",
+        "Gladia"
+      )
     }
 
     // Build typed streaming request using OpenAPI-generated types
@@ -595,12 +525,11 @@ export class GladiaAdapter extends BaseAdapter {
     // Step 2: Connect to WebSocket
     const ws = new WebSocket(wsUrl)
 
-    let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
+    let sessionStatus: SessionStatus = "connecting"
 
-    // Handle WebSocket events
-    ws.on("open", () => {
-      sessionStatus = "open"
-      callbacks?.onOpen?.()
+    // Setup standard WebSocket event handlers
+    setupWebSocketHandlers(ws, callbacks, (status) => {
+      sessionStatus = status
     })
 
     ws.on("message", (data: Buffer) => {
@@ -652,42 +581,15 @@ export class GladiaAdapter extends BaseAdapter {
         }
       } catch (error) {
         callbacks?.onError?.({
-          code: "PARSE_ERROR",
+          code: ERROR_CODES.PARSE_ERROR,
           message: "Failed to parse WebSocket message",
           details: error
         })
       }
     })
 
-    ws.on("error", (error: Error) => {
-      callbacks?.onError?.({
-        code: "WEBSOCKET_ERROR",
-        message: error.message,
-        details: error
-      })
-    })
-
-    ws.on("close", (code: number, reason: Buffer) => {
-      sessionStatus = "closed"
-      callbacks?.onClose?.(code, reason.toString())
-    })
-
-    // Wait for connection to open
-    await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error("WebSocket connection timeout"))
-      }, 10000)
-
-      ws.once("open", () => {
-        clearTimeout(timeout)
-        resolve()
-      })
-
-      ws.once("error", (error) => {
-        clearTimeout(timeout)
-        reject(error)
-      })
-    })
+    // Wait for WebSocket connection to open
+    await waitForWebSocketOpen(ws)
 
     // Return StreamingSession interface
     return {
@@ -696,13 +598,8 @@ export class GladiaAdapter extends BaseAdapter {
       createdAt: new Date(),
       getStatus: () => sessionStatus,
       sendAudio: async (chunk: AudioChunk) => {
-        if (sessionStatus !== "open") {
-          throw new Error(`Cannot send audio: session is ${sessionStatus}`)
-        }
-
-        if (ws.readyState !== WebSocket.OPEN) {
-          throw new Error("WebSocket is not open")
-        }
+        // Validate session is ready
+        validateSessionForAudio(sessionStatus, ws.readyState, WebSocket.OPEN)
 
         // Send raw audio data
         ws.send(chunk.data)
@@ -732,21 +629,9 @@ export class GladiaAdapter extends BaseAdapter {
           )
         }
 
-        // Close WebSocket
-        return new Promise<void>((resolve) => {
-          const timeout = setTimeout(() => {
-            ws.terminate()
-            resolve()
-          }, 5000)
-
-          ws.close()
-
-          ws.once("close", () => {
-            clearTimeout(timeout)
-            sessionStatus = "closed"
-            resolve()
-          })
-        })
+        // Close WebSocket with utility
+        await closeWebSocket(ws)
+        sessionStatus = "closed"
       }
     }
   }

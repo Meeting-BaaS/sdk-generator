@@ -143,27 +143,15 @@ export class AssemblyAIAdapter extends BaseAdapter {
     piiRedaction: true
   }
 
-  private baseUrl = "https://api.assemblyai.com/v2"
+  protected baseUrl = "https://api.assemblyai.com/v2"
   private wsBaseUrl = "wss://api.assemblyai.com/v2/realtime/ws"
 
   /**
    * Get axios config for generated API client functions
-   * Configures headers and base URL
+   * Configures headers and base URL using authorization header
    */
-  private getAxiosConfig() {
-    if (!this.config) {
-      throw new Error("Adapter not initialized. Call initialize() first.")
-    }
-
-    return {
-      baseURL: this.config.baseUrl || this.baseUrl,
-      timeout: this.config.timeout || 60000,
-      headers: {
-        authorization: this.config.apiKey,
-        "Content-Type": "application/json",
-        ...this.config.headers
-      }
-    }
+  protected getAxiosConfig() {
+    return super.getAxiosConfig("authorization")
   }
 
   /**
@@ -498,52 +486,6 @@ export class AssemblyAIAdapter extends BaseAdapter {
     }))
   }
 
-  /**
-   * Poll for transcription completion
-   */
-  private async pollForCompletion(
-    transcriptId: string,
-    maxAttempts = 60,
-    intervalMs = 3000
-  ): Promise<UnifiedTranscriptResponse> {
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const result = await this.getTranscript(transcriptId)
-
-      if (!result.success) {
-        return result
-      }
-
-      const status = result.data?.status
-      if (status === "completed") {
-        return result
-      }
-
-      if (status === "error") {
-        return {
-          success: false,
-          provider: this.name,
-          error: {
-            code: "TRANSCRIPTION_ERROR",
-            message: "Transcription failed"
-          },
-          raw: result.raw
-        }
-      }
-
-      // Wait before next poll
-      await new Promise((resolve) => setTimeout(resolve, intervalMs))
-    }
-
-    // Timeout
-    return {
-      success: false,
-      provider: this.name,
-      error: {
-        code: "POLLING_TIMEOUT",
-        message: `Transcription did not complete after ${maxAttempts} attempts`
-      }
-    }
-  }
 
   /**
    * Stream audio for real-time transcription

@@ -124,7 +124,7 @@ export class DeepgramAdapter extends BaseAdapter {
   }
 
   private client?: AxiosInstance
-  private baseUrl = "https://api.deepgram.com/v1"
+  protected baseUrl = "https://api.deepgram.com/v1"
   private wsBaseUrl = "wss://api.deepgram.com/v1/listen"
 
   initialize(config: ProviderConfig): void {

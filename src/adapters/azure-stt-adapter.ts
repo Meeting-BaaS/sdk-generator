@@ -105,7 +105,7 @@ export class AzureSTTAdapter extends BaseAdapter {
 
   private client?: AxiosInstance
   private region?: string
-  private baseUrl?: string
+  protected baseUrl = "https://eastus.api.cognitive.microsoft.com/speechtotext/v3.1" // Default, overridden in initialize()
 
   initialize(config: ProviderConfig & { region?: string }): void {
     super.initialize(config)

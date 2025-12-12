@@ -14,6 +14,8 @@ import type {
   TranscriptionProvider,
   UnifiedTranscriptResponse
 } from "../router/types"
+import { DEFAULT_TIMEOUTS, DEFAULT_POLLING } from "../constants/defaults"
+import { ERROR_CODES, type ErrorCode } from "../utils/errors"
 
 /**
  * Provider configuration
@@ -139,6 +141,11 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
   abstract readonly name: TranscriptionProvider
   abstract readonly capabilities: ProviderCapabilities
 
+  /**
+   * Base URL for provider API (must be defined by subclass)
+   */
+  protected abstract baseUrl: string
+
   protected config?: ProviderConfig
 
   initialize(config: ProviderConfig): void {
@@ -154,17 +161,22 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
 
   /**
    * Helper method to create error responses
+   *
+   * @param error - Error object or unknown error
+   * @param statusCode - Optional HTTP status code
+   * @param code - Optional error code (defaults to extracted or UNKNOWN_ERROR)
    */
   protected createErrorResponse(
     error: Error | unknown,
-    statusCode?: number
+    statusCode?: number,
+    code?: ErrorCode
   ): UnifiedTranscriptResponse {
     const err = error as Error & { statusCode?: number; code?: string }
     return {
       success: false,
       provider: this.name,
       error: {
-        code: err.code || "UNKNOWN_ERROR",
+        code: code || err.code || ERROR_CODES.UNKNOWN_ERROR,
         message: err.message || "An unknown error occurred",
         statusCode: statusCode || err.statusCode,
         details: error
@@ -181,6 +193,90 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
     }
     if (!this.config.apiKey) {
       throw new Error(`API key is required for ${this.name} provider`)
+    }
+  }
+
+  /**
+   * Build axios config for generated API client functions
+   *
+   * @param authHeaderName - Header name for API key (e.g., "Authorization", "x-gladia-key")
+   * @param authHeaderValue - Optional function to format auth header value (defaults to raw API key)
+   * @returns Axios config object
+   */
+  protected getAxiosConfig(
+    authHeaderName: string = "Authorization",
+    authHeaderValue?: (apiKey: string) => string
+  ): {
+    baseURL: string
+    timeout: number
+    headers: Record<string, string>
+  } {
+    this.validateConfig()
+
+    const authValue = authHeaderValue
+      ? authHeaderValue(this.config!.apiKey)
+      : this.config!.apiKey
+
+    return {
+      baseURL: this.config!.baseUrl || this.baseUrl,
+      timeout: this.config!.timeout || DEFAULT_TIMEOUTS.HTTP_REQUEST,
+      headers: {
+        [authHeaderName]: authValue,
+        "Content-Type": "application/json",
+        ...this.config!.headers
+      }
+    }
+  }
+
+  /**
+   * Generic polling helper for async transcription jobs
+   *
+   * Polls getTranscript() until job completes or times out.
+   *
+   * @param transcriptId - Job/transcript ID to poll
+   * @param options - Polling configuration
+   * @returns Final transcription result
+   */
+  protected async pollForCompletion(
+    transcriptId: string,
+    options?: {
+      maxAttempts?: number
+      intervalMs?: number
+    }
+  ): Promise<UnifiedTranscriptResponse> {
+    const { maxAttempts = DEFAULT_POLLING.MAX_ATTEMPTS, intervalMs = DEFAULT_POLLING.INTERVAL_MS } =
+      options || {}
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const result = await this.getTranscript(transcriptId)
+
+      if (!result.success) {
+        return result
+      }
+
+      const status = result.data?.status
+      if (status === "completed") {
+        return result
+      }
+
+      if (status === "error") {
+        return this.createErrorResponse(
+          new Error("Transcription failed"),
+          undefined,
+          ERROR_CODES.TRANSCRIPTION_ERROR
+        )
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, intervalMs))
+    }
+
+    return {
+      success: false,
+      provider: this.name,
+      error: {
+        code: ERROR_CODES.POLLING_TIMEOUT,
+        message: `Transcription did not complete after ${maxAttempts} attempts`
+      }
     }
   }
 }
