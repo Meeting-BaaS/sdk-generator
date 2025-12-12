@@ -94,7 +94,7 @@ export class GladiaAdapter extends BaseAdapter {
     piiRedaction: false // Gladia doesn't have PII redaction in their API
   }
 
-  private baseUrl = "https://api.gladia.io/v2"
+  private baseUrl = "https://api.gladia.io"
 
   /**
    * Get axios config for generated API client functions
