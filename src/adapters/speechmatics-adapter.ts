@@ -409,7 +409,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         speakers,
         words: words.length > 0 ? words : undefined,
         utterances: utterances.length > 0 ? utterances : undefined,
-        summary: (response as any).summary?.content,
+        summary: response.summary?.content,
         createdAt: response.job.created_at
       },
       raw: response

@@ -262,7 +262,7 @@ export class DeepgramAdapter extends BaseAdapter {
 
     // Language configuration
     if (options.language) {
-      params.language = options.language as any
+      params.language = options.language
     }
 
     if (options.languageDetection) {
@@ -276,12 +276,12 @@ export class DeepgramAdapter extends BaseAdapter {
 
     // Custom vocabulary (keywords in Deepgram)
     if (options.customVocabulary && options.customVocabulary.length > 0) {
-      params.keywords = options.customVocabulary as any
+      params.keywords = options.customVocabulary
     }
 
     // Summarization
     if (options.summarization) {
-      params.summarize = true as any
+      params.summarize = true
     }
 
     // Sentiment analysis
@@ -296,7 +296,7 @@ export class DeepgramAdapter extends BaseAdapter {
 
     // PII redaction
     if (options.piiRedaction) {
-      params.redact = true as any
+      params.redact = ["pci", "pii"]
     }
 
     // Webhook callback
@@ -305,9 +305,9 @@ export class DeepgramAdapter extends BaseAdapter {
     }
 
     // Enable features for better results
-    params.punctuate = true // Add punctuation
-    params.utterances = true // Enable utterances for speaker diarization
-    params.smart_format = true as any // Smart formatting
+    params.punctuate = true
+    params.utterances = true
+    params.smart_format = true
 
     return params
   }

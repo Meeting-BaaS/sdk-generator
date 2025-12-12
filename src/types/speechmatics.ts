@@ -74,5 +74,9 @@ export interface TranscriptionResponse {
     }>
     [key: string]: unknown
   }>
+  summary?: {
+    content?: string
+    [key: string]: unknown
+  }
   [key: string]: unknown
 }

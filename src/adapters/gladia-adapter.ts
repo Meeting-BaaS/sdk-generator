@@ -34,6 +34,10 @@ import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
 import type { WordDTO } from "../generated/gladia/schema/wordDTO"
 // WebSocket message types for type-safe parsing
 import type { TranscriptMessage } from "../generated/gladia/schema/transcriptMessage"
+// Import Gladia's supported values from OpenAPI-generated schema (type safety!)
+import { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
+import type { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
+import type { TranscriptionLanguageCodeEnum } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
 
 /**
  * Gladia transcription provider adapter
@@ -263,7 +267,7 @@ export class GladiaAdapter extends BaseAdapter {
       // Language configuration
       if (options.language || options.languageDetection) {
         request.language_config = {
-          languages: options.language ? ([options.language] as any) : undefined,
+          languages: options.language ? [options.language as TranscriptionLanguageCodeEnum] : undefined,
           code_switching: options.languageDetection
         }
       }
@@ -282,7 +286,7 @@ export class GladiaAdapter extends BaseAdapter {
       if (options.customVocabulary && options.customVocabulary.length > 0) {
         request.custom_vocabulary = true
         request.custom_vocabulary_config = {
-          vocabulary: options.customVocabulary as any
+          vocabulary: options.customVocabulary
         }
       }
 
@@ -547,21 +551,33 @@ export class GladiaAdapter extends BaseAdapter {
   ): Promise<StreamingSession> {
     this.validateConfig()
 
-    // Step 1: Build typed streaming request
+    // Validate sample rate against OpenAPI-generated enum
+    let validatedSampleRate: StreamingSupportedSampleRateEnum | undefined
+    if (options?.sampleRate) {
+      const validRates = Object.values(StreamingSupportedSampleRateEnum)
+      const isValidRate = validRates.some(rate => rate === options.sampleRate)
+      if (!isValidRate) {
+        throw new Error(
+          `Gladia does not support sample rate ${options.sampleRate} Hz. ` +
+          `Supported rates (from OpenAPI spec): ${validRates.join(", ")} Hz`
+        )
+      }
+      validatedSampleRate = options.sampleRate as StreamingSupportedSampleRateEnum
+    }
+
+    // Build typed streaming request using OpenAPI-generated types
     const streamingRequest: Partial<StreamingRequest> = {
-      // Map unified encoding format to Gladia's provider-specific format
-      // e.g., 'linear16' → 'wav/pcm'
       encoding: options?.encoding
-        ? (mapEncodingToProvider(options.encoding, "gladia") as any)
+        ? (mapEncodingToProvider(options.encoding, "gladia") as StreamingSupportedEncodingEnum)
         : undefined,
-      sample_rate: options?.sampleRate as any,
+      sample_rate: validatedSampleRate,
       channels: options?.channels,
       endpointing: options?.endpointing
     }
 
     if (options?.language) {
       streamingRequest.language_config = {
-        languages: [options.language as any]
+        languages: [options.language as TranscriptionLanguageCodeEnum]
       }
     }
 

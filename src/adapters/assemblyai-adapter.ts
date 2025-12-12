@@ -314,7 +314,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
         const languageCode = options.language.includes("_")
           ? options.language
           : `${options.language}_us`
-        request.language_code = languageCode as any
+        request.language_code = languageCode
       }
 
       if (options.languageDetection) {
