@@ -18,7 +18,7 @@ import type { ListenV1EncodingParameter } from "../generated/deepgram/schema/lis
 import type { ListenV1LanguageParameter } from "../generated/deepgram/schema/listenV1LanguageParameter"
 
 // Common callback types
-import type { StreamingCallbacks } from "./types"
+import type { StreamingCallbacks, StreamingProvider } from "./types"
 
 /**
  * Gladia streaming options (from OpenAPI spec)
@@ -98,7 +98,7 @@ export type ProviderStreamingOptions =
 /**
  * Type-safe streaming options for a specific provider
  */
-export type StreamingOptionsForProvider<P extends "gladia" | "deepgram" | "assemblyai"> =
+export type StreamingOptionsForProvider<P extends StreamingProvider> =
   P extends "gladia"
     ? GladiaStreamingOptions
     : P extends "deepgram"
@@ -110,7 +110,7 @@ export type StreamingOptionsForProvider<P extends "gladia" | "deepgram" | "assem
 /**
  * Type-safe transcribeStream parameters for a specific provider
  */
-export interface TranscribeStreamParams<P extends "gladia" | "deepgram" | "assemblyai"> {
+export interface TranscribeStreamParams<P extends StreamingProvider> {
   /** Streaming options specific to this provider */
   options?: StreamingOptionsForProvider<P> & { provider: P }
   /** Event callbacks */

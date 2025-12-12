@@ -22,6 +22,16 @@ export type TranscriptionProvider =
   | "speechmatics"
 
 /**
+ * Providers that support real-time streaming transcription
+ */
+export type StreamingProvider = "gladia" | "deepgram" | "assemblyai"
+
+/**
+ * Providers that only support batch/async transcription
+ */
+export type BatchOnlyProvider = "azure-stt" | "openai-whisper" | "speechmatics"
+
+/**
  * Provider capabilities - indicates which features each provider supports
  */
 export interface ProviderCapabilities {
