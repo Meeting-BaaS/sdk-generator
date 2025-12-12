@@ -10,4 +10,4 @@
 /**
  * Segments speech into meaningful semantic units
  */
-export type ListenV1UtterancesParameter = boolean
+export type ListenV1UtterancesParameter = boolean;

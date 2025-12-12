@@ -7,8 +7,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
+
 /**
  * Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
  */
-export type SpeakV1ContainerParameter =
-  (typeof SpeakV1ContainerParameter)[keyof typeof SpeakV1ContainerParameter]
+export type SpeakV1ContainerParameter = typeof SpeakV1ContainerParameter[keyof typeof SpeakV1ContainerParameter] ;

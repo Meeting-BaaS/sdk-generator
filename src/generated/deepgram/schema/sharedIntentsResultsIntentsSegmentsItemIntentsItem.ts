@@ -8,6 +8,6 @@
  */
 
 export type SharedIntentsResultsIntentsSegmentsItemIntentsItem = {
-  intent?: string
-  confidence_score?: number
-}
+  intent?: string;
+  confidence_score?: number;
+};

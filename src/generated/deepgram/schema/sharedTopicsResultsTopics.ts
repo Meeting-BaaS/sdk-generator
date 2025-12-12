@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedTopicsResultsTopicsSegmentsItem } from "./sharedTopicsResultsTopicsSegmentsItem"
+import type { SharedTopicsResultsTopicsSegmentsItem } from './sharedTopicsResultsTopicsSegmentsItem';
 
 export type SharedTopicsResultsTopics = {
-  segments?: SharedTopicsResultsTopicsSegmentsItem[]
-}
+  segments?: SharedTopicsResultsTopicsSegmentsItem[];
+};

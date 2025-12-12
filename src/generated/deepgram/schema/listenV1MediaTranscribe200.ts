@@ -6,7 +6,7 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1Response } from "./listenV1Response"
-import type { ListenV1AcceptedResponse } from "./listenV1AcceptedResponse"
+import type { ListenV1Response } from './listenV1Response';
+import type { ListenV1AcceptedResponse } from './listenV1AcceptedResponse';
 
-export type ListenV1MediaTranscribe200 = ListenV1Response | ListenV1AcceptedResponse
+export type ListenV1MediaTranscribe200 = ListenV1Response | ListenV1AcceptedResponse;

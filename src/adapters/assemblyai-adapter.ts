@@ -244,10 +244,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
       const request = this.buildTranscriptionRequest(audio, options)
 
       // Use generated API client function - FULLY TYPED!
-      const response = await createTranscript(
-        request,
-        this.getAxiosConfig()
-      )
+      const response = await createTranscript(request, this.getAxiosConfig())
 
       const transcriptId = response.data.id
 
@@ -280,10 +277,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     try {
       // Use generated API client function - FULLY TYPED!
-      const response = await getTranscriptAPI(
-        transcriptId,
-        this.getAxiosConfig()
-      )
+      const response = await getTranscriptAPI(transcriptId, this.getAxiosConfig())
 
       return this.normalizeResponse(response.data)
     } catch (error) {

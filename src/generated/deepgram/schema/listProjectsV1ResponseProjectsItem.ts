@@ -9,7 +9,7 @@
 
 export type ListProjectsV1ResponseProjectsItem = {
   /** The unique identifier of the project */
-  project_id?: string
+  project_id?: string;
   /** The name of the project */
-  name?: string
-}
+  name?: string;
+};

@@ -6,7 +6,7 @@
 import { BaseWebhookHandler } from "./base-webhook"
 import type { UnifiedWebhookEvent } from "./types"
 import type { TranscriptionProvider } from "../router/types"
-import type { TranscriptionResponse } from "../generated/speechmatics/schema"
+import type { TranscriptionResponse } from "../types/speechmatics"
 
 /**
  * Speechmatics webhook handler
@@ -157,15 +157,17 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
       if (transcript.results && transcript.job) {
         // Extract full text
         const text = transcript.results
-          .filter((r) => r.type === "word")
-          .map((r) => r.alternatives[0]?.content || "")
+          .filter((r) => r.type === "word" && r.alternatives)
+          .map((r) => r.alternatives![0]?.content || "")
           .join(" ")
 
         // Extract speakers if present
         const speakerSet = new Set<string>()
         transcript.results.forEach((r) => {
-          const speaker = r.alternatives[0]?.speaker
-          if (speaker) speakerSet.add(speaker)
+          if (r.alternatives) {
+            const speaker = r.alternatives[0]?.speaker
+            if (speaker) speakerSet.add(speaker)
+          }
         })
 
         const speakers =
@@ -185,7 +187,7 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
             id: jobId,
             text,
             status: "completed",
-            language: transcript.metadata.transcription_config.language,
+            language: transcript.metadata.transcription_config?.language,
             duration: transcript.job.duration,
             speakers,
             createdAt: transcript.job.created_at

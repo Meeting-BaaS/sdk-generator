@@ -13,5 +13,5 @@
  */
 export type SpeakV1EncodingParameter = typeof SpeakV1EncodingParameter[keyof typeof SpeakV1EncodingParameter] ;
 'opus',
-  aac: ''aac',
+  aac: 'aac',
 } as const

@@ -6,16 +6,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { AgentThinkModelsV1ResponseModelsItemOneOfThreeId } from "./agentThinkModelsV1ResponseModelsItemOneOfThreeId"
+import type { AgentThinkModelsV1ResponseModelsItemOneOfThreeId } from './agentThinkModelsV1ResponseModelsItemOneOfThreeId';
 
 /**
  * Anthropic models
  */
 export type AgentThinkModelsV1ResponseModelsItemOneOfThree = {
   /** The unique identifier of the Anthropic model */
-  id: AgentThinkModelsV1ResponseModelsItemOneOfThreeId
+  id: AgentThinkModelsV1ResponseModelsItemOneOfThreeId;
   /** The display name of the model */
-  name: string
+  name: string;
   /** The provider of the model */
-  provider: "anthropic"
-}
+  provider: 'anthropic';
+};

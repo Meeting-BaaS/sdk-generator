@@ -6,28 +6,28 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ProjectRequestResponseResponse } from "./projectRequestResponseResponse"
+import type { ProjectRequestResponseResponse } from './projectRequestResponseResponse';
 
 /**
  * A single request
  */
 export interface ProjectRequestResponse {
   /** The unique identifier of the request */
-  request_id?: string
+  request_id?: string;
   /** The unique identifier of the project */
-  project_uuid?: string
+  project_uuid?: string;
   /** The date and time the request was created */
-  created?: string
+  created?: string;
   /** The API path of the request */
-  path?: string
+  path?: string;
   /** The unique identifier of the API key */
-  api_key_id?: string
+  api_key_id?: string;
   /** The response of the request */
-  response?: ProjectRequestResponseResponse
+  response?: ProjectRequestResponseResponse;
   /** The response code of the request */
-  code?: number
+  code?: number;
   /** The deployment type */
-  deployment?: string
+  deployment?: string;
   /** The callback URL for the request */
-  callback?: string
+  callback?: string;
 }

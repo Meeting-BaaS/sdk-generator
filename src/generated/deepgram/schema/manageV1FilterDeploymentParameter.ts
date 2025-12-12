@@ -10,12 +10,12 @@
 /**
  * Deployment type for the requests
  */
-export type ManageV1FilterDeploymentParameter =
-  (typeof ManageV1FilterDeploymentParameter)[keyof typeof ManageV1FilterDeploymentParameter]
+export type ManageV1FilterDeploymentParameter = typeof ManageV1FilterDeploymentParameter[keyof typeof ManageV1FilterDeploymentParameter];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ManageV1FilterDeploymentParameter = {
-  hosted: "hosted",
-  beta: "beta",
-  "self-hosted": "self-hosted"
-} as const
+  hosted: 'hosted',
+  beta: 'beta',
+  'self-hosted': 'self-hosted',
+} as const;

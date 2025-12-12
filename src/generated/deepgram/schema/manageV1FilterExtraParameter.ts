@@ -10,4 +10,4 @@
 /**
  * Filter for requests where extra was used
  */
-export type ManageV1FilterExtraParameter = boolean
+export type ManageV1FilterExtraParameter = boolean;

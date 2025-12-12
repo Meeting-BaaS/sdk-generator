@@ -12,5 +12,5 @@
  */
 export interface ListenV1AcceptedResponse {
   /** Unique identifier for tracking the asynchronous request */
-  request_id: string
+  request_id: string;
 }

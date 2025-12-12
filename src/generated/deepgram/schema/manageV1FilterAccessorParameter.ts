@@ -10,4 +10,4 @@
 /**
  * Filter for requests where a specific accessor was used
  */
-export type ManageV1FilterAccessorParameter = string
+export type ManageV1FilterAccessorParameter = string;

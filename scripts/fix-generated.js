@@ -117,16 +117,62 @@ function fixDeepgramParameters(content, filePath) {
 
 /**
  * Fix unterminated string literals in generated files
- * Example: opus', should be 'opus',
+ * Handles cases where Orval generates unquoted strings that end with quotes
+ *
+ * Examples:
+ *   opus', → 'opus',
+ *   'key': value', → 'key': 'value',
+ *   'key': multi-word-value', → 'key': 'multi-word-value',
+ *
+ * NOTE: This fix is only needed for some providers (Deepgram/Speechmatics),
+ * not AssemblyAI which already has properly quoted strings
  */
 function fixUnterminatedStrings(content, filePath) {
+  // Skip AssemblyAI files - they don't have this issue
+  if (filePath.includes('/assemblyai/')) {
+    return content
+  }
+
   const before = content
 
-  // Look for patterns like: word', instead of 'word',
-  content = content.replace(/(\w+)'\s*,/g, "'$1',")
+  // Pattern 1: Fix object property values that are unquoted at the start
+  // Match: : unquoted-value', and replace with: : 'unquoted-value',
+  // Use negative lookahead (?!') to ensure value doesn't start with a quote
+  // This handles multi-word values with hyphens, dots, underscores
+  content = content.replace(/:\s*(?!')([a-zA-Z0-9\-_.]+)'\s*,/g, ": '$1',")
+
+  // Pattern 2: Fix array/standalone values (enum-like)
+  // Match: word', (not after a colon) and replace with: 'word',
+  // Only apply if not already preceded by a quote, colon, word char, or hyphen
+  // This ensures we don't match parts of hyphenated identifiers like 'foo-bar'
+  content = content.replace(/(?<![':\w-])\b(\w+)'\s*,/g, "'$1',")
 
   if (content !== before) {
     fixes.push(`Fixed unterminated strings in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
+ * Fix shadowing of global Error type in OpenAI generated files
+ * Example: import type { Error } from './error'
+ * Should be: import type { Error as ErrorType } from './error'
+ */
+function fixErrorTypeShadowing(content, filePath) {
+  const before = content
+
+  // Rename Error imports to ErrorType to avoid shadowing global Error
+  content = content.replace(
+    /import type \{ Error \} from '\.\/error'/g,
+    "import type { Error as ErrorType } from './error'"
+  )
+
+  // Update references from Error to ErrorType
+  if (content !== before) {
+    content = content.replace(/:\s*Error([;\s])/g, ": ErrorType$1")
+    content = content.replace(/Error\[\]/g, "ErrorType[]")
+    fixes.push(`Fixed Error type shadowing in ${filePath}`)
   }
 
   return content
@@ -143,6 +189,7 @@ function processFile(filePath) {
   content = fixExtraCommas(content, filePath)
   content = fixDeepgramParameters(content, filePath)
   content = fixUnterminatedStrings(content, filePath)
+  content = fixErrorTypeShadowing(content, filePath)
 
   // Only write if changed
   if (content !== original) {
@@ -156,7 +203,7 @@ function processFile(filePath) {
 function main() {
   console.log("🔧 Fixing generated TypeScript files...")
 
-  const patterns = [".zod.ts", "Parameter.ts"]
+  const patterns = [".zod.ts", "Parameter.ts", "/schema/"]
 
   const generatedDir = path.join(__dirname, "..", "src", "generated")
   const files = findFiles(generatedDir, patterns)

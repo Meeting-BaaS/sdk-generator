@@ -38,11 +38,12 @@
     "test:unit": "vitest run test/unit/",
     "test:integration": "vitest run test/integration/",
     "test:error-handling": "vitest run test/error-handling.test.ts",
+    "openapi:fix-specs": "node scripts/fix-openai-spec.js && node scripts/fix-speechmatics-spec.js",
     "openapi:clean": "rm -rf src/generated",
     "openapi:clean:gladia": "rm -rf src/generated/gladia",
     "openapi:clean:assemblyai": "rm -rf src/generated/assemblyai",
     "openapi:clean:deepgram": "rm -rf src/generated/deepgram",
-    "openapi:generate": "pnpm openapi:clean && orval && pnpm openapi:fix",
+    "openapi:generate": "pnpm openapi:fix-specs && pnpm openapi:clean && orval && pnpm openapi:fix",
     "openapi:generate:gladia": "pnpm openapi:clean:gladia && orval --config orval.config.ts --project gladiaApi && orval --config orval.config.ts --project gladiaZod && pnpm openapi:fix",
     "openapi:generate:assemblyai": "pnpm openapi:clean:assemblyai && orval --config orval.config.ts --project assemblyaiApi && orval --config orval.config.ts --project assemblyaiZod && pnpm openapi:fix",
     "openapi:generate:deepgram": "pnpm openapi:clean:deepgram && orval --config orval.config.ts --project deepgramApi && orval --config orval.config.ts --project deepgramZod && pnpm openapi:fix",
@@ -58,8 +59,8 @@
     "docs:generate:openai": "typedoc --options typedoc.openai.config.mjs",
     "docs:generate:speechmatics": "typedoc --options typedoc.speechmatics.config.mjs",
     "prepublishOnly": "pnpm lint:fix && pnpm build",
-    "openapi:fix": "node scripts/fix-generated.js",
-    "prebuild": "pnpm openapi:fix"
+    "openapi:fix": "node scripts/fix-generated.js && node scripts/fix-assemblyai-missing-schemas.js",
+    "prebuild": "pnpm openapi:fix-specs && pnpm openapi:fix"
   },
   "publishConfig": {
     "access": "public"
@@ -101,6 +102,7 @@
     "@types/ws": "^8.18.1",
     "@vitest/coverage-v8": "^2.1.8",
     "@vitest/ui": "^2.1.8",
+    "js-yaml": "^4.1.1",
     "msw": "^2.3.3",
     "orval": "^7.9.0",
     "ts-node": "10.9.2",

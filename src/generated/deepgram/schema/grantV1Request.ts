@@ -13,5 +13,5 @@ export interface GrantV1Request {
    * @minimum 1
    * @maximum 3600
    */
-  ttl_seconds?: number
+  ttl_seconds?: number;
 }

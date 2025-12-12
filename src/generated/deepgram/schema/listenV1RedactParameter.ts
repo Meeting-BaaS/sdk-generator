@@ -6,6 +6,6 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1RedactParameterOneOfItem } from "./listenV1RedactParameterOneOfItem"
+import type { ListenV1RedactParameterOneOfItem } from './listenV1RedactParameterOneOfItem';
 
-export type ListenV1RedactParameter = string | ListenV1RedactParameterOneOfItem[]
+export type ListenV1RedactParameter = string | ListenV1RedactParameterOneOfItem[];

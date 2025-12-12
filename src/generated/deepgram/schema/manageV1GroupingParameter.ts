@@ -7,16 +7,16 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ManageV1GroupingParameter =
-  (typeof ManageV1GroupingParameter)[keyof typeof ManageV1GroupingParameter]
+export type ManageV1GroupingParameter = typeof ManageV1GroupingParameter[keyof typeof ManageV1GroupingParameter];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ManageV1GroupingParameter = {
-  accessor: "accessor",
-  endpoint: "endpoint",
-  feature_set: "feature_set",
-  models: "models",
-  method: "method",
-  tags: "tags",
-  deployment: "deployment"
-} as const
+  accessor: 'accessor',
+  endpoint: 'endpoint',
+  feature_set: 'feature_set',
+  models: 'models',
+  method: 'method',
+  tags: 'tags',
+  deployment: 'deployment',
+} as const;

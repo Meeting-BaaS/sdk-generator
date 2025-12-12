@@ -10,4 +10,4 @@
 /**
  * Number of results to return per page. Default 10. Range [1,1000]
  */
-export type ManageV1LimitParameter = number
+export type ManageV1LimitParameter = number;

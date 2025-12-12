@@ -6,15 +6,15 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { UsageFieldsV1ResponseModelsItem } from "./usageFieldsV1ResponseModelsItem"
+import type { UsageFieldsV1ResponseModelsItem } from './usageFieldsV1ResponseModelsItem';
 
 export interface UsageFieldsV1Response {
   /** List of tags associated with the project */
-  tags?: string[]
+  tags?: string[];
   /** List of models available for the project. */
-  models?: UsageFieldsV1ResponseModelsItem[]
+  models?: UsageFieldsV1ResponseModelsItem[];
   /** Processing methods supported by the API */
-  processing_methods?: string[]
+  processing_methods?: string[];
   /** API features available to the project */
-  features?: string[]
+  features?: string[];
 }

@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedIntentsResultsIntentsSegmentsItem } from "./sharedIntentsResultsIntentsSegmentsItem"
+import type { SharedIntentsResultsIntentsSegmentsItem } from './sharedIntentsResultsIntentsSegmentsItem';
 
 export type SharedIntentsResultsIntents = {
-  segments?: SharedIntentsResultsIntentsSegmentsItem[]
-}
+  segments?: SharedIntentsResultsIntentsSegmentsItem[];
+};

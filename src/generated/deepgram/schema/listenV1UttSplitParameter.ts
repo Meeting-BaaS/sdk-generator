@@ -10,4 +10,4 @@
 /**
  * Seconds to wait before detecting a pause between words in submitted audio
  */
-export type ListenV1UttSplitParameter = number
+export type ListenV1UttSplitParameter = number;

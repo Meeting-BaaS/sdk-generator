@@ -7,11 +7,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ManageV1FilterStatusParameter =
-  (typeof ManageV1FilterStatusParameter)[keyof typeof ManageV1FilterStatusParameter]
+export type ManageV1FilterStatusParameter = typeof ManageV1FilterStatusParameter[keyof typeof ManageV1FilterStatusParameter];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ManageV1FilterStatusParameter = {
-  succeeded: "succeeded",
-  failed: "failed"
-} as const
+  succeeded: 'succeeded',
+  failed: 'failed',
+} as const;

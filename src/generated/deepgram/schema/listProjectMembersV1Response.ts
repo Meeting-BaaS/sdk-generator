@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListProjectMembersV1ResponseMembersItem } from "./listProjectMembersV1ResponseMembersItem"
+import type { ListProjectMembersV1ResponseMembersItem } from './listProjectMembersV1ResponseMembersItem';
 
 export interface ListProjectMembersV1Response {
-  members?: ListProjectMembersV1ResponseMembersItem[]
+  members?: ListProjectMembersV1ResponseMembersItem[];
 }

@@ -10,4 +10,4 @@
 /**
  * Filter for requests where numerals were used
  */
-export type ManageV1FilterNumeralsParameter = boolean
+export type ManageV1FilterNumeralsParameter = boolean;

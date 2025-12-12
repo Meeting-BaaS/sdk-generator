@@ -12,13 +12,13 @@ import type {
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
-// Import Speechmatics types (manually defined due to spec validation issues)
+// Import Speechmatics types (manual definitions - OpenAPI spec doesn't match actual API)
 import type {
   JobConfig,
   JobSubmitResponse,
   JobDetailsResponse,
   TranscriptionResponse
-} from "../generated/speechmatics/schema"
+} from "../types/speechmatics"
 
 /**
  * Speechmatics transcription provider adapter
@@ -162,6 +162,9 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
       // Add diarization if requested
       if (options?.diarization) {
+        if (!jobConfig.transcription_config) {
+          jobConfig.transcription_config = {}
+        }
         jobConfig.transcription_config.diarization = "speaker"
         if (options.speakersExpected) {
           jobConfig.transcription_config.speaker_diarization_config = {
@@ -172,11 +175,17 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
       // Add sentiment analysis
       if (options?.sentimentAnalysis) {
+        if (!jobConfig.transcription_config) {
+          jobConfig.transcription_config = {}
+        }
         jobConfig.transcription_config.enable_sentiment_analysis = true
       }
 
       // Add summarization
       if (options?.summarization && options?.metadata?.summary_type) {
+        if (!jobConfig.transcription_config) {
+          jobConfig.transcription_config = {}
+        }
         jobConfig.transcription_config.summarization_config = {
           type: options.metadata.summary_type as "bullets" | "brief" | "paragraph",
           length: (options.metadata.summary_length as "short" | "medium" | "long") || "medium"
@@ -185,6 +194,9 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
       // Add custom vocabulary
       if (options?.customVocabulary && options.customVocabulary.length > 0) {
+        if (!jobConfig.transcription_config) {
+          jobConfig.transcription_config = {}
+        }
         jobConfig.transcription_config.additional_vocab = options.customVocabulary
       }
 
@@ -301,26 +313,28 @@ export class SpeechmaticsAdapter extends BaseAdapter {
   private normalizeResponse(response: TranscriptionResponse): UnifiedTranscriptResponse {
     // Extract full text from results
     const text = response.results
-      .filter((r) => r.type === "word")
-      .map((r) => r.alternatives[0]?.content || "")
+      .filter((r) => r.type === "word" && r.alternatives)
+      .map((r) => r.alternatives![0]?.content || "")
       .join(" ")
 
-    // Extract words with timestamps
+    // Extract words with timestamps (filter out items without required timestamps)
     const words = response.results
-      .filter((r) => r.type === "word")
+      .filter((r) => r.type === "word" && r.start_time !== undefined && r.end_time !== undefined)
       .map((result) => ({
-        text: result.alternatives[0]?.content || "",
-        start: result.start_time,
-        end: result.end_time,
-        confidence: result.alternatives[0]?.confidence,
-        speaker: result.alternatives[0]?.speaker
+        text: result.alternatives?.[0]?.content || "",
+        start: result.start_time!,
+        end: result.end_time!,
+        confidence: result.alternatives?.[0]?.confidence,
+        speaker: result.alternatives?.[0]?.speaker
       }))
 
     // Extract speakers if diarization was enabled
     const speakerSet = new Set<string>()
     response.results.forEach((r) => {
-      const speaker = r.alternatives[0]?.speaker
-      if (speaker) speakerSet.add(speaker)
+      if (r.alternatives) {
+        const speaker = r.alternatives[0]?.speaker
+        if (speaker) speakerSet.add(speaker)
+      }
     })
 
     const speakers =
@@ -345,10 +359,10 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       let utteranceStart = 0
 
       response.results
-        .filter((r) => r.type === "word")
+        .filter((r) => r.type === "word" && r.alternatives)
         .forEach((result, idx) => {
-          const speaker = result.alternatives[0]?.speaker
-          const word = result.alternatives[0]?.content || ""
+          const speaker = result.alternatives![0]?.speaker
+          const word = result.alternatives![0]?.content || ""
 
           if (speaker !== currentSpeaker) {
             // Speaker changed - save previous utterance
@@ -357,15 +371,15 @@ export class SpeechmaticsAdapter extends BaseAdapter {
               utterances.push({
                 speaker: currentSpeaker,
                 text: currentUtterance.join(" "),
-                start: utteranceStart,
-                end: prevResult?.end_time || result.start_time
+                start: utteranceStart || 0,
+                end: prevResult?.end_time || result.start_time || 0
               })
             }
 
             // Start new utterance
             currentSpeaker = speaker
             currentUtterance = [word]
-            utteranceStart = result.start_time
+            utteranceStart = result.start_time || 0
           } else {
             currentUtterance.push(word)
           }
@@ -390,12 +404,12 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         id: response.job.id,
         text,
         status: "completed",
-        language: response.metadata.transcription_config.language,
+        language: response.metadata.transcription_config?.language,
         duration: response.job.duration,
         speakers,
         words: words.length > 0 ? words : undefined,
         utterances: utterances.length > 0 ? utterances : undefined,
-        summary: response.summary?.content,
+        summary: (response as any).summary?.content,
         createdAt: response.job.created_at
       },
       raw: response

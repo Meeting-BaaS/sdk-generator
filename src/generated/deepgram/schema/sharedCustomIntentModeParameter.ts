@@ -7,11 +7,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SharedCustomIntentModeParameter =
-  (typeof SharedCustomIntentModeParameter)[keyof typeof SharedCustomIntentModeParameter]
+export type SharedCustomIntentModeParameter = typeof SharedCustomIntentModeParameter[keyof typeof SharedCustomIntentModeParameter];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SharedCustomIntentModeParameter = {
-  extended: "extended",
-  strict: "strict"
-} as const
+  extended: 'extended',
+  strict: 'strict',
+} as const;
