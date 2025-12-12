@@ -5,7 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2025-12-12
+
+### 🐛 CRITICAL BUG FIX
+
+#### Fixed Gladia API 404 Error - Doubled `/v2/v2/live` Path
+- **Issue**: All Gladia API requests returned 404 error: "Cannot POST /v2/v2/live"
+- **Root Cause**: `baseURL` was `https://api.gladia.io/v2`, but generated API paths already include `/v2`
+- **Impact**: Complete failure of Gladia streaming and pre-recorded transcription
+
+**Fix**:
+- ✅ Changed `baseURL` from `https://api.gladia.io/v2` → `https://api.gladia.io`
+- ✅ Correctly constructs `https://api.gladia.io/v2/live` instead of `/v2/v2/live`
+- ✅ All Gladia API endpoints now work correctly
+
+### 🔧 BUILD & DEVELOPMENT
+
+#### Fixed Documentation Generation (108 → 0 TypeScript Errors)
+- **Issue**: TypeDoc documentation generation blocked by 108 TypeScript errors in Orval-generated code
+- **Root Cause**: Multiple Orval code generation issues across different provider specs
+
+**Fixes Implemented**:
+- ✅ Array default type inference - Inlined defaults with `as any` to satisfy Zod enum types
+- ✅ Missing AssemblyAI scalar schemas - Auto-generate after each build via `fix-assemblyai-missing-schemas.js`
+- ✅ FormData object serialization - JSON.stringify objects before FormData.append
+- ✅ Discriminated unions - Convert to regular unions when discriminator field missing
+- ✅ Empty zod.array() calls - Replace with `zod.array(zod.unknown())`
+- ✅ TypeDoc cross-reference warnings - Include shared types in all adapter docs
+
+**New Files**:
+- `scripts/fix-generated.js` - Post-generation fixer with 8 automated fixes
+- `scripts/fix-assemblyai-missing-schemas.js` - Auto-generate missing scalar types
+- `scripts/test-fixer.js` - Test suite for generation fixes
+- `ORVAL_KNOWN_ISSUES.md` - Comprehensive documentation of Orval bugs and workarounds
+
+**TypeDoc Improvements**:
+- All adapter configs now include `base-adapter.ts` and `router/types.ts`
+- Eliminated warnings about `ProviderConfig`, `ProviderCapabilities` not being documented
+- All 8 documentation modules generate successfully with 0 errors
+
+---
+
 ## [0.1.4] - 2025-12-12
+
+### ⚠️ KNOWN ISSUE
+**This version has a critical bug with Gladia API requests** - All requests fail with "Cannot POST /v2/v2/live". Fixed in 0.1.5.
 
 ### 🐛 CRITICAL BUG FIXES
 
