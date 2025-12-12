@@ -14,7 +14,8 @@ export const SpeakV1SampleRateParameter = {
   NUMBER_22050: 22050,
   NUMBER_24000: 24000,
   NUMBER_32000: 32000,
-  NUMBER_48000: 48000,
-} as const;
+  NUMBER_48000: 48000
+} as const
 
-export type SpeakV1SampleRateParameter = typeof SpeakV1SampleRateParameter[keyof typeof SpeakV1SampleRateParameter];
+export type SpeakV1SampleRateParameter =
+  (typeof SpeakV1SampleRateParameter)[keyof typeof SpeakV1SampleRateParameter]

@@ -205,7 +205,8 @@ export const createTranscriptionBody = zod.object({
 })
 
 export const createTranscriptionResponse = zod.union([
-  zod.object({
+  zod
+    .object({
       text: zod.string().describe("The transcribed text."),
       logprobs: zod
         .array(

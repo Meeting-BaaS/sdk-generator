@@ -46,13 +46,13 @@ function removeAnchorsAndMerges(obj, path = "") {
   if (typeof obj !== "object" || obj === null) return
 
   // If this is an array that looks like it's using YAML anchors, fix it
-  if (Array.isArray(obj) && obj.some(item => typeof item === "string" && item.startsWith("*"))) {
+  if (Array.isArray(obj) && obj.some((item) => typeof item === "string" && item.startsWith("*"))) {
     console.log(`   Found YAML anchor reference in array at: ${path}`)
     // Remove anchor references - these cause validation errors
-    const filtered = obj.filter(item => !(typeof item === "string" && item.startsWith("*")))
+    const filtered = obj.filter((item) => !(typeof item === "string" && item.startsWith("*")))
     // Clear and repopulate array
     obj.length = 0
-    filtered.forEach(item => obj.push(item))
+    filtered.forEach((item) => obj.push(item))
     fixCount++
   }
 
@@ -104,7 +104,7 @@ function fixSchemas(obj, path = "") {
   // Fix confidence property - ensure it's a valid schema
   if (obj.confidence && typeof obj.confidence === "object") {
     const validKeys = ["type", "format", "description", "minimum", "maximum", "default", "example"]
-    const hasInvalidKeys = Object.keys(obj.confidence).some(k => !validKeys.includes(k))
+    const hasInvalidKeys = Object.keys(obj.confidence).some((k) => !validKeys.includes(k))
 
     if (!obj.confidence.type && !obj.confidence.$ref) {
       console.log(`   Fixed confidence property without type at: ${path}`)
@@ -151,8 +151,12 @@ function fixSchemas(obj, path = "") {
   if (path.includes("sentiment_analysis") && obj.properties && obj.properties.sentiment_analysis) {
     console.log(`   Fixed nested sentiment_analysis duplication at: ${path}`)
     // Remove the duplicate nesting
-    if (obj.properties.sentiment_analysis.properties && obj.properties.sentiment_analysis.properties.sentiment_analysis) {
-      obj.properties.sentiment_analysis = obj.properties.sentiment_analysis.properties.sentiment_analysis
+    if (
+      obj.properties.sentiment_analysis.properties &&
+      obj.properties.sentiment_analysis.properties.sentiment_analysis
+    ) {
+      obj.properties.sentiment_analysis =
+        obj.properties.sentiment_analysis.properties.sentiment_analysis
       fixCount++
     }
   }
@@ -201,7 +205,9 @@ if (spec.paths) {
             response.schema = { $ref: `#/definitions/${defName}` }
           } else if (!response.schema.type && Object.keys(response.schema).length > 0) {
             // Schema has properties but no type - might be malformed
-            console.log(`   Fixed schema without type at ${method.toUpperCase()} ${pathKey} ${statusCode}`)
+            console.log(
+              `   Fixed schema without type at ${method.toUpperCase()} ${pathKey} ${statusCode}`
+            )
             response.schema.type = "object"
             fixCount++
           }
@@ -223,7 +229,7 @@ if (!fs.existsSync(BACKUP_PATH)) {
 // Use noRefs to prevent YAML from creating anchor references
 const fixedYaml = yaml.dump(spec, {
   lineWidth: -1,
-  noRefs: true  // Prevent automatic anchor/alias creation
+  noRefs: true // Prevent automatic anchor/alias creation
 })
 fs.writeFileSync(SPEC_PATH, fixedYaml)
 

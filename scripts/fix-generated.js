@@ -75,7 +75,8 @@ function fixDeepgramParameters(content, filePath) {
 
   // Pattern: export type Foo = ... ;\n,\n  prop: value,
   // This indicates the object definition got separated from the type
-  const pattern = /(export type \w+Parameter = typeof \w+Parameter\[keyof typeof \w+Parameter\] ;\s*),\s*\n/g
+  const pattern =
+    /(export type \w+Parameter = typeof \w+Parameter\[keyof typeof \w+Parameter\] ;\s*),\s*\n/g
 
   if (pattern.test(content)) {
     // This file is malformed - likely the object definition is missing
@@ -128,7 +129,7 @@ function fixDeepgramParameters(content, filePath) {
  */
 function fixUnterminatedStrings(content, filePath) {
   // Only apply to Speechmatics zod files - other providers are mostly correct
-  if (!filePath.includes('/speechmatics/') || !filePath.includes('.zod.ts')) {
+  if (!filePath.includes("/speechmatics/") || !filePath.includes(".zod.ts")) {
     return content
   }
 
@@ -198,11 +199,11 @@ function fixArrayDefaults(content, filePath) {
   // Handle both single-line and multi-line .default() calls
   for (const [constName, arrayValue] of Object.entries(defaults)) {
     // Single-line: .default(constantName)
-    const singleLinePattern = new RegExp(`\\.default\\(${constName}\\)`, 'g')
+    const singleLinePattern = new RegExp(`\\.default\\(${constName}\\)`, "g")
     content = content.replace(singleLinePattern, `.default(() => ${arrayValue} as any)`)
 
     // Multi-line: .default(\n      constantName\n    )
-    const multiLinePattern = new RegExp(`\\.default\\(\\s*\\n\\s*${constName}\\s*\\n\\s*\\)`, 'g')
+    const multiLinePattern = new RegExp(`\\.default\\(\\s*\\n\\s*${constName}\\s*\\n\\s*\\)`, "g")
     content = content.replace(multiLinePattern, `.default(() => ${arrayValue} as any)`)
   }
 
@@ -226,7 +227,7 @@ function fixFormDataObjectAppend(content, filePath) {
   // With: formData.append("chunking_strategy", typeof value === 'object' ? JSON.stringify(value) : value)
   content = content.replace(
     /formData\.append\("chunking_strategy",\s+(?!typeof\s)([a-zA-Z._\[\]]+)\)/g,
-    'formData.append("chunking_strategy", typeof $1 === \'object\' ? JSON.stringify($1) : $1)'
+    "formData.append(\"chunking_strategy\", typeof $1 === 'object' ? JSON.stringify($1) : $1)"
   )
 
   if (content !== before) {
@@ -269,10 +270,7 @@ function fixEmptyZodArrayCalls(content, filePath) {
   const before = content
 
   // Replace .array(zod.array()) with .array(zod.array(zod.unknown()))
-  content = content.replace(
-    /\.array\(zod\.array\(\)\)/g,
-    ".array(zod.array(zod.unknown()))"
-  )
+  content = content.replace(/\.array\(zod\.array\(\)\)/g, ".array(zod.array(zod.unknown()))")
 
   if (content !== before) {
     fixes.push(`Fixed empty zod.array() calls in ${filePath}`)

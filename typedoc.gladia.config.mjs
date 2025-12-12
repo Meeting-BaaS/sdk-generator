@@ -3,8 +3,8 @@ export default {
   // Gladia Provider Documentation
   entryPoints: [
     "./src/adapters/gladia-adapter.ts",
-    "./src/adapters/base-adapter.ts",  // Include shared base types
-    "./src/router/types.ts"             // Include shared router types
+    "./src/adapters/base-adapter.ts", // Include shared base types
+    "./src/router/types.ts" // Include shared router types
   ],
 
   out: "./docs/generated/gladia",

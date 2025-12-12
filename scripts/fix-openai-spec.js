@@ -41,12 +41,12 @@ if (spec.paths) {
 
       // Check each path parameter is defined
       for (const paramName of pathParams) {
-        const isDefined = operation.parameters.some(
-          (p) => p.name === paramName && p.in === "path"
-        )
+        const isDefined = operation.parameters.some((p) => p.name === paramName && p.in === "path")
 
         if (!isDefined) {
-          console.log(`   Found missing path parameter: ${paramName} in ${method.toUpperCase()} ${pathKey}`)
+          console.log(
+            `   Found missing path parameter: ${paramName} in ${method.toUpperCase()} ${pathKey}`
+          )
 
           // Add the missing parameter
           operation.parameters.push({
@@ -109,7 +109,9 @@ if (spec.paths) {
       for (const [statusCode, response] of Object.entries(operation.responses)) {
         // Ensure response has content or schema
         if (!response.content && !response.schema && !response.$ref) {
-          console.log(`   Found response without content: ${method.toUpperCase()} ${pathKey} ${statusCode}`)
+          console.log(
+            `   Found response without content: ${method.toUpperCase()} ${pathKey} ${statusCode}`
+          )
 
           // Add default empty response
           response.description = response.description || "Successful response"
