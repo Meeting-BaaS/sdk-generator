@@ -14,6 +14,11 @@ import type {
   TranscriptionProvider,
   UnifiedTranscriptResponse
 } from "./types"
+import type {
+  GladiaStreamingOptions,
+  DeepgramStreamingOptions,
+  AssemblyAIStreamingOptions
+} from "./provider-streaming-types"
 
 /**
  * Configuration for VoiceRouter
@@ -255,40 +260,96 @@ export class VoiceRouter {
   }
 
   /**
-   * Stream audio for real-time transcription
-   * Only works with providers that support streaming
+   * Stream audio for real-time transcription with Gladia
    *
-   * @param options - Streaming options including provider selection
+   * @param options - Gladia-specific streaming options (type-safe from OpenAPI spec)
    * @param callbacks - Event callbacks for transcription results
    * @returns Promise that resolves with a StreamingSession
    *
-   * @example
+   * @example Gladia streaming (type-safe!)
    * ```typescript
-   * import { VoiceRouter } from '@meeting-baas/sdk';
-   *
-   * const router = new VoiceRouter();
-   * router.initialize({
-   *   gladia: { apiKey: process.env.GLADIA_KEY },
-   *   deepgram: { apiKey: process.env.DEEPGRAM_KEY }
-   * });
-   *
    * const session = await router.transcribeStream({
-   *   provider: 'deepgram',
-   *   encoding: 'linear16',
-   *   sampleRate: 16000,
-   *   language: 'en'
+   *   provider: 'gladia',
+   *   encoding: 'wav/pcm',  // ✅ Only Gladia encodings allowed
+   *   sampleRate: 16000,    // ✅ Only 8000, 16000, 32000, 44100, 48000
+   *   channels: 1
    * }, {
    *   onTranscript: (event) => console.log(event.text),
    *   onError: (error) => console.error(error)
    * });
-   *
-   * // Send audio chunks
-   * await session.sendAudio({ data: audioBuffer });
-   * await session.close();
    * ```
    */
+  transcribeStream(
+    options: GladiaStreamingOptions & { provider: "gladia" },
+    callbacks?: StreamingCallbacks
+  ): Promise<StreamingSession>
+
+  /**
+   * Stream audio for real-time transcription with Deepgram
+   *
+   * @param options - Deepgram-specific streaming options (type-safe from OpenAPI spec)
+   * @param callbacks - Event callbacks for transcription results
+   * @returns Promise that resolves with a StreamingSession
+   *
+   * @example Deepgram streaming (type-safe!)
+   * ```typescript
+   * const session = await router.transcribeStream({
+   *   provider: 'deepgram',
+   *   encoding: 'linear16',  // ✅ Only Deepgram encodings allowed
+   *   sampleRate: 16000,
+   *   language: 'en',
+   *   diarization: true
+   * }, {
+   *   onTranscript: (event) => console.log(event.text)
+   * });
+   * ```
+   */
+  transcribeStream(
+    options: DeepgramStreamingOptions & { provider: "deepgram" },
+    callbacks?: StreamingCallbacks
+  ): Promise<StreamingSession>
+
+  /**
+   * Stream audio for real-time transcription with AssemblyAI
+   *
+   * @param options - AssemblyAI-specific streaming options (type-safe from OpenAPI spec)
+   * @param callbacks - Event callbacks for transcription results
+   * @returns Promise that resolves with a StreamingSession
+   *
+   * @example AssemblyAI streaming (type-safe!)
+   * ```typescript
+   * const session = await router.transcribeStream({
+   *   provider: 'assemblyai',
+   *   sampleRate: 16000  // ✅ Only supported sample rates
+   * }, {
+   *   onTranscript: (event) => console.log(event.text)
+   * });
+   * ```
+   */
+  transcribeStream(
+    options: AssemblyAIStreamingOptions & { provider: "assemblyai" },
+    callbacks?: StreamingCallbacks
+  ): Promise<StreamingSession>
+
+  /**
+   * Stream audio for real-time transcription (uses default provider)
+   *
+   * @param options - Generic streaming options
+   * @param callbacks - Event callbacks for transcription results
+   * @returns Promise that resolves with a StreamingSession
+   */
+  transcribeStream(
+    options?: StreamingOptions,
+    callbacks?: StreamingCallbacks
+  ): Promise<StreamingSession>
+
+  // Implementation
   async transcribeStream(
-    options?: StreamingOptions & { provider?: TranscriptionProvider },
+    options?:
+      | (GladiaStreamingOptions & { provider: "gladia" })
+      | (DeepgramStreamingOptions & { provider: "deepgram" })
+      | (AssemblyAIStreamingOptions & { provider: "assemblyai" })
+      | (StreamingOptions & { provider?: TranscriptionProvider }),
     callbacks?: StreamingCallbacks
   ): Promise<StreamingSession> {
     const provider = this.selectProvider(options?.provider)
@@ -300,9 +361,10 @@ export class VoiceRouter {
     }
 
     // Remove provider from options before passing to adapter
+    // Cast to StreamingOptions since adapter will handle provider-specific conversions
     const { provider: _, ...adapterOptions } = options || {}
 
-    return adapter.transcribeStream(adapterOptions, callbacks)
+    return adapter.transcribeStream(adapterOptions as StreamingOptions, callbacks)
   }
 
   /**

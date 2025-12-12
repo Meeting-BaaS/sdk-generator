@@ -4,3 +4,4 @@
 
 export * from "./types"
 export * from "./voice-router"
+export * from "./provider-streaming-types"
