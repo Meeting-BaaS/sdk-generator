@@ -81,7 +81,7 @@ export const createTranscription = <
     createTranscriptionRequest.chunking_strategy !== undefined &&
     createTranscriptionRequest.chunking_strategy !== null
   ) {
-    formData.append("chunking_strategy", createTranscriptionRequest.chunking_strategy)
+    formData.append("chunking_strategy", typeof createTranscriptionRequest.chunking_strategy === 'object' ? JSON.stringify(createTranscriptionRequest.chunking_strategy) : createTranscriptionRequest.chunking_strategy)
   }
   if (createTranscriptionRequest.known_speaker_names !== undefined) {
     createTranscriptionRequest.known_speaker_names.forEach((value) =>

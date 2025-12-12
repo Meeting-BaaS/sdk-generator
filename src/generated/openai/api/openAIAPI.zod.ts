@@ -82,7 +82,7 @@ export const createSpeechBody = zod.object({
  */
 export const createTranscriptionBodyResponseFormatDefault = "json"
 export const createTranscriptionBodyTemperatureDefault = 0
-export const createTranscriptionBodyTimestampGranularitiesDefault = ["segment"]
+export const createTranscriptionBodyTimestampGranularitiesDefault: string[] = ["segment"]
 export const createTranscriptionBodyStreamDefaultOne = false
 export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto"
 export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault = 300
@@ -204,9 +204,8 @@ export const createTranscriptionBody = zod.object({
     )
 })
 
-export const createTranscriptionResponse = zod.discriminatedUnion("task", [
-  zod
-    .object({
+export const createTranscriptionResponse = zod.union([
+  zod.object({
       text: zod.string().describe("The transcribed text."),
       logprobs: zod
         .array(

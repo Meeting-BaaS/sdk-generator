@@ -179,6 +179,113 @@ function fixErrorTypeShadowing(content, filePath) {
 }
 
 /**
+ * Fix array default values to be properly typed
+ * Handles both single-line and multi-line array definitions
+ * Example: export const foo = ["bar"] → export const foo: string[] = ["bar"]
+ */
+function fixArrayDefaults(content, filePath) {
+  const before = content
+
+  // Pattern 1: Single-line arrays
+  content = content.replace(
+    /^export const (\w+Default) = (\[[^\]]+\])(?!\s+as\s+(?:const|readonly))/gm,
+    (match, varName, arrayContent) => {
+      if (match.includes(':')) return match
+      if (arrayContent.includes('"') || arrayContent.includes("'")) {
+        return `export const ${varName}: string[] = ${arrayContent}`
+      }
+      return match
+    }
+  )
+
+  // Pattern 2: Multi-line arrays (const name =\n  [content])
+  content = content.replace(
+    /^export const (\w+Default) =\s*\n\s*(\[[^\]]+\])/gm,
+    (match, varName, arrayContent) => {
+      if (match.includes(':')) return match
+      if (arrayContent.includes('"') || arrayContent.includes("'")) {
+        return `export const ${varName}: string[] =\n  ${arrayContent}`
+      }
+      return match
+    }
+  )
+
+  if (content !== before) {
+    fixes.push(`Added type annotations to array defaults in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
+ * Fix FormData.append calls that try to append objects
+ * Objects need to be serialized to JSON strings for FormData
+ */
+function fixFormDataObjectAppend(content, filePath) {
+  const before = content
+
+  // Find FormData.append calls with chunking_strategy (which can be an object)
+  // Only match if not already wrapped with typeof check
+  // Replace: formData.append("chunking_strategy", value)
+  // With: formData.append("chunking_strategy", typeof value === 'object' ? JSON.stringify(value) : value)
+  content = content.replace(
+    /formData\.append\("chunking_strategy",\s+(?!typeof\s)([a-zA-Z._\[\]]+)\)/g,
+    'formData.append("chunking_strategy", typeof $1 === \'object\' ? JSON.stringify($1) : $1)'
+  )
+
+  if (content !== before) {
+    fixes.push(`Fixed FormData object append in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
+ * Fix discriminated unions where first variant is missing the discriminator field
+ * This is an Orval bug - we'll convert discriminatedUnion to regular union
+ */
+function fixDiscriminatedUnionMissingField(content, filePath) {
+  const before = content
+
+  // Find problematic discriminated unions where the discriminator appears after some objects
+  // Pattern: zod.discriminatedUnion("task", [
+  //   zod.object({ no task field }),
+  //   zod.object({ task: ... })
+  // Replace discriminatedUnion with union for these cases
+  content = content.replace(
+    /zod\.discriminatedUnion\("task",\s*\[\s*zod\s*\.object\(\{\s*text:/g,
+    "zod.union([\n  zod.object({\n      text:"
+  )
+
+  if (content !== before) {
+    fixes.push(`Fixed discriminated union to regular union in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
+ * Fix empty zod.array() calls that are missing schema parameter
+ * Orval bug: generates .array(zod.array()) instead of .array(zod.array(zod.string()))
+ * Replace with zod.array(zod.unknown()) as a safe default
+ */
+function fixEmptyZodArrayCalls(content, filePath) {
+  const before = content
+
+  // Replace .array(zod.array()) with .array(zod.array(zod.unknown()))
+  content = content.replace(
+    /\.array\(zod\.array\(\)\)/g,
+    ".array(zod.array(zod.unknown()))"
+  )
+
+  if (content !== before) {
+    fixes.push(`Fixed empty zod.array() calls in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
  * Process a single file
  */
 function processFile(filePath) {
@@ -190,6 +297,10 @@ function processFile(filePath) {
   content = fixDeepgramParameters(content, filePath)
   content = fixUnterminatedStrings(content, filePath)
   content = fixErrorTypeShadowing(content, filePath)
+  content = fixArrayDefaults(content, filePath)
+  content = fixFormDataObjectAppend(content, filePath)
+  content = fixDiscriminatedUnionMissingField(content, filePath)
+  content = fixEmptyZodArrayCalls(content, filePath)
 
   // Only write if changed
   if (content !== original) {
@@ -203,7 +314,7 @@ function processFile(filePath) {
 function main() {
   console.log("🔧 Fixing generated TypeScript files...")
 
-  const patterns = [".zod.ts", "Parameter.ts", "/schema/"]
+  const patterns = [".zod.ts", "Parameter.ts", "/schema/", "/api/"]
 
   const generatedDir = path.join(__dirname, "..", "src", "generated")
   const files = findFiles(generatedDir, patterns)

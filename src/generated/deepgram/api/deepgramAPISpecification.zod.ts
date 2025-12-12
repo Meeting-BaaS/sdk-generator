@@ -1332,7 +1332,7 @@ export const selfHostedV1DistributionCredentialsListResponse = zod.object({
  * Creates a set of distribution credentials for the specified project
  * @summary Create a Project Self-Hosted Distribution Credential
  */
-export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault = ["self-hosted:products"]
+export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: string[] = ["self-hosted:products"]
 export const selfHostedV1DistributionCredentialsCreateQueryProviderDefault = "quay"
 
 export const selfHostedV1DistributionCredentialsCreateQueryParams = zod.object({
