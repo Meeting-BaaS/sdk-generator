@@ -42,10 +42,10 @@
     "openapi:clean:gladia": "rm -rf src/generated/gladia",
     "openapi:clean:assemblyai": "rm -rf src/generated/assemblyai",
     "openapi:clean:deepgram": "rm -rf src/generated/deepgram",
-    "openapi:generate": "pnpm openapi:clean && orval",
-    "openapi:generate:gladia": "pnpm openapi:clean:gladia && orval --config orval.config.ts --project gladiaApi && orval --config orval.config.ts --project gladiaZod",
-    "openapi:generate:assemblyai": "pnpm openapi:clean:assemblyai && orval --config orval.config.ts --project assemblyaiApi && orval --config orval.config.ts --project assemblyaiZod",
-    "openapi:generate:deepgram": "pnpm openapi:clean:deepgram && orval --config orval.config.ts --project deepgramApi && orval --config orval.config.ts --project deepgramZod",
+    "openapi:generate": "pnpm openapi:clean && orval && pnpm openapi:fix",
+    "openapi:generate:gladia": "pnpm openapi:clean:gladia && orval --config orval.config.ts --project gladiaApi && orval --config orval.config.ts --project gladiaZod && pnpm openapi:fix",
+    "openapi:generate:assemblyai": "pnpm openapi:clean:assemblyai && orval --config orval.config.ts --project assemblyaiApi && orval --config orval.config.ts --project assemblyaiZod && pnpm openapi:fix",
+    "openapi:generate:deepgram": "pnpm openapi:clean:deepgram && orval --config orval.config.ts --project deepgramApi && orval --config orval.config.ts --project deepgramZod && pnpm openapi:fix",
     "openapi:rebuild": "pnpm openapi:generate && pnpm build",
     "docs:clean": "rm -rf docs/generated",
     "docs:generate": "pnpm docs:clean && pnpm docs:generate:router && pnpm docs:generate:webhooks && pnpm docs:generate:gladia && pnpm docs:generate:assemblyai && pnpm docs:generate:deepgram && pnpm docs:generate:azure && pnpm docs:generate:openai && pnpm docs:generate:speechmatics",
@@ -57,7 +57,8 @@
     "docs:generate:azure": "typedoc --options typedoc.azure.config.mjs",
     "docs:generate:openai": "typedoc --options typedoc.openai.config.mjs",
     "docs:generate:speechmatics": "typedoc --options typedoc.speechmatics.config.mjs",
-    "prepublishOnly": "pnpm lint:fix && pnpm build"
+    "prepublishOnly": "pnpm lint:fix && pnpm build",
+    "openapi:fix": "node scripts/fix-generated.js"
   },
   "publishConfig": {
     "access": "public"

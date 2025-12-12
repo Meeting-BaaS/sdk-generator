@@ -6,9 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItem } from './listProjectDistributionCredentialsV1ResponseDistributionCredentialsItem';
+import type { ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItem } from "./listProjectDistributionCredentialsV1ResponseDistributionCredentialsItem"
 
 export interface ListProjectDistributionCredentialsV1Response {
   /** Array of distribution credentials with associated member information */
-  distribution_credentials?: ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItem[];
+  distribution_credentials?: ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItem[]
 }

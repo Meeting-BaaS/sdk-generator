@@ -8,8 +8,8 @@
  */
 
 export type ListenV1ResponseResultsChannelsItemSearchItemHitsItem = {
-  confidence?: number;
-  start?: number;
-  end?: number;
-  snippet?: string;
-};
+  confidence?: number
+  start?: number
+  end?: number
+  snippet?: string
+}

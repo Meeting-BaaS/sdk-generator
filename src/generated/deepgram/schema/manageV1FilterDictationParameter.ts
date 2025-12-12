@@ -10,4 +10,4 @@
 /**
  * Filter for requests where dictation was used
  */
-export type ManageV1FilterDictationParameter = boolean;
+export type ManageV1FilterDictationParameter = boolean

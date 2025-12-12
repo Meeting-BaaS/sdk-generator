@@ -10,4 +10,4 @@
 /**
  * Filter for requests where version was used
  */
-export type ManageV1FilterVersionParameter = boolean;
+export type ManageV1FilterVersionParameter = boolean

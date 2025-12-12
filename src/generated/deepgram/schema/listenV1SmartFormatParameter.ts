@@ -10,4 +10,4 @@
 /**
  * Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability
  */
-export type ListenV1SmartFormatParameter = boolean;
+export type ListenV1SmartFormatParameter = boolean
