@@ -38,6 +38,7 @@
     "test:unit": "vitest run test/unit/",
     "test:integration": "vitest run test/integration/",
     "test:error-handling": "vitest run test/error-handling.test.ts",
+    "test:fixer": "node scripts/test-fixer.js",
     "openapi:fix-specs": "node scripts/fix-openai-spec.js && node scripts/fix-speechmatics-spec.js",
     "openapi:clean": "rm -rf src/generated",
     "openapi:clean:gladia": "rm -rf src/generated/gladia",
