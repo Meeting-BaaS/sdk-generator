@@ -3,6 +3,13 @@
  * These types provide a provider-agnostic interface for transcription services
  */
 
+import type {
+  AudioEncoding,
+  AudioSampleRate,
+  AudioChannels,
+  AudioBitDepth
+} from "./audio-encoding-types"
+
 /**
  * Supported transcription providers
  */
@@ -231,14 +238,40 @@ export interface AudioChunk {
  * Options for streaming transcription
  */
 export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> {
-  /** Audio encoding format (e.g., 'linear16', 'mulaw') */
-  encoding?: string
-  /** Sample rate in Hz (e.g., 16000, 48000) */
-  sampleRate?: number
-  /** Number of audio channels (1 for mono, 2 for stereo) */
-  channels?: number
-  /** Bit depth (e.g., 16, 24) */
-  bitDepth?: number
+  /**
+   * Audio encoding format
+   *
+   * Common formats:
+   * - `linear16`: PCM 16-bit (universal, recommended)
+   * - `mulaw`: μ-law telephony codec
+   * - `alaw`: A-law telephony codec
+   * - `flac`, `opus`, `speex`: Advanced codecs (Deepgram only)
+   *
+   * @see AudioEncoding for full list of supported formats
+   */
+  encoding?: AudioEncoding
+  /**
+   * Sample rate in Hz
+   *
+   * Common rates: 8000, 16000, 32000, 44100, 48000
+   * Most providers recommend 16000 Hz for optimal quality/performance
+   */
+  sampleRate?: AudioSampleRate | number
+  /**
+   * Number of audio channels
+   *
+   * - 1: Mono (recommended for transcription)
+   * - 2: Stereo
+   * - 3-8: Multi-channel (provider-specific support)
+   */
+  channels?: AudioChannels | number
+  /**
+   * Bit depth for PCM audio
+   *
+   * Common depths: 8, 16, 24, 32
+   * 16-bit is standard for most applications
+   */
+  bitDepth?: AudioBitDepth | number
   /** Enable interim results (partial transcripts) */
   interimResults?: boolean
   /** Utterance end silence threshold in milliseconds */

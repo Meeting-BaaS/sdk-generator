@@ -15,6 +15,7 @@ import type {
   TranscribeOptions,
   UnifiedTranscriptResponse
 } from "../router/types"
+import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 // Import Gladia generated types
@@ -532,7 +533,11 @@ export class GladiaAdapter extends BaseAdapter {
 
     // Step 1: Initialize streaming session via REST API
     const streamingRequest: Partial<StreamingRequest> = {
-      encoding: options?.encoding as any,
+      // Map unified encoding format to Gladia's provider-specific format
+      // e.g., 'linear16' → 'wav/pcm'
+      encoding: options?.encoding
+        ? (mapEncodingToProvider(options.encoding, "gladia") as any)
+        : undefined,
       sample_rate: options?.sampleRate as any,
       channels: options?.channels,
       endpointing: options?.endpointing
