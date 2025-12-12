@@ -24,6 +24,39 @@ import type { ListenV1ResponseResultsChannelsItemAlternativesItem } from "../gen
 import type { ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemAlternativesItemWordsItem"
 import type { ListenV1ResponseResultsUtterancesItem } from "../generated/deepgram/schema/listenV1ResponseResultsUtterancesItem"
 
+// WebSocket message types (not in OpenAPI spec, manually defined from Deepgram docs)
+interface DeepgramResultsMessage {
+  type: "Results"
+  is_final: boolean
+  channel: {
+    alternatives: Array<{
+      transcript: string
+      confidence: number
+      words?: Array<{
+        word: string
+        start: number
+        end: number
+        confidence: number
+      }>
+    }>
+  }
+}
+
+interface DeepgramUtteranceEndMessage {
+  type: "UtteranceEnd"
+  [key: string]: unknown
+}
+
+interface DeepgramMetadataMessage {
+  type: "Metadata"
+  [key: string]: unknown
+}
+
+type DeepgramRealtimeMessage =
+  | DeepgramResultsMessage
+  | DeepgramUtteranceEndMessage
+  | DeepgramMetadataMessage
+
 /**
  * Deepgram transcription provider adapter
  *
@@ -498,20 +531,20 @@ export class DeepgramAdapter extends BaseAdapter {
 
     ws.on("message", (data: Buffer) => {
       try {
-        const message = JSON.parse(data.toString())
+        const message = JSON.parse(data.toString()) as DeepgramRealtimeMessage
 
-        // Handle different message types from Deepgram
+        // Handle different message types from Deepgram - TYPE SAFE!
         if (message.type === "Results") {
-          const result = message
-          const channel = result.channel?.alternatives?.[0]
+          // Type narrowed to DeepgramResultsMessage
+          const channel = message.channel.alternatives[0]
 
           if (channel) {
-            const transcript = channel.transcript || ""
-            const isFinal = message.is_final === true
-            const words = channel.words?.map((word: any) => ({
-              text: word.word || "",
-              start: word.start || 0,
-              end: word.end || 0,
+            const transcript = channel.transcript
+            const isFinal = message.is_final
+            const words = channel.words?.map((word) => ({
+              text: word.word,
+              start: word.start,
+              end: word.end,
               confidence: word.confidence
             }))
 
@@ -521,13 +554,14 @@ export class DeepgramAdapter extends BaseAdapter {
               isFinal,
               words,
               confidence: channel.confidence,
-              data: result
+              data: message
             })
           }
         } else if (message.type === "UtteranceEnd") {
-          // Utterance completed
+          // Type narrowed to DeepgramUtteranceEndMessage
           callbacks?.onMetadata?.(message)
         } else if (message.type === "Metadata") {
+          // Type narrowed to DeepgramMetadataMessage
           callbacks?.onMetadata?.(message)
         }
       } catch (error) {

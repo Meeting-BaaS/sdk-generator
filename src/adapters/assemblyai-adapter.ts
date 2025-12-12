@@ -3,7 +3,7 @@
  * Documentation: https://www.assemblyai.com/docs
  */
 
-import axios, { type AxiosInstance } from "axios"
+import axios from "axios"
 import WebSocket from "ws"
 import type {
   AudioChunk,
@@ -17,12 +17,66 @@ import type {
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
+// Import generated API client functions - FULL TYPE SAFETY!
+import {
+  createTranscript,
+  getTranscript as getTranscriptAPI,
+  createTemporaryToken
+} from "../generated/assemblyai/api/assemblyAIAPI"
+
 // Import AssemblyAI generated types
 import type { Transcript } from "../generated/assemblyai/schema/transcript"
 import type { TranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
 import type { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
 import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
 import type { TranscriptUtterance } from "../generated/assemblyai/schema/transcriptUtterance"
+
+// WebSocket message types (not in OpenAPI spec, manually defined)
+interface RealtimeBaseMessage {
+  message_type: string
+}
+
+interface SessionBeginsMessage extends RealtimeBaseMessage {
+  message_type: "SessionBegins"
+  session_id: string
+  expires_at: string
+}
+
+interface PartialTranscriptMessage extends RealtimeBaseMessage {
+  message_type: "PartialTranscript"
+  text: string
+  confidence: number
+  words: Array<{
+    text: string
+    start: number
+    end: number
+    confidence: number
+  }>
+}
+
+interface FinalTranscriptMessage extends RealtimeBaseMessage {
+  message_type: "FinalTranscript"
+  text: string
+  confidence: number
+  words: Array<{
+    text: string
+    start: number
+    end: number
+    confidence: number
+  }>
+  punctuated: boolean
+  text_formatted: boolean
+}
+
+interface SessionTerminatedMessage extends RealtimeBaseMessage {
+  message_type: "SessionTerminated"
+}
+
+type RealtimeMessage =
+  | SessionBeginsMessage
+  | PartialTranscriptMessage
+  | FinalTranscriptMessage
+  | SessionTerminatedMessage
 
 /**
  * AssemblyAI transcription provider adapter
@@ -89,22 +143,27 @@ export class AssemblyAIAdapter extends BaseAdapter {
     piiRedaction: true
   }
 
-  private client?: AxiosInstance
   private baseUrl = "https://api.assemblyai.com/v2"
   private wsBaseUrl = "wss://api.assemblyai.com/v2/realtime/ws"
 
-  initialize(config: ProviderConfig): void {
-    super.initialize(config)
+  /**
+   * Get axios config for generated API client functions
+   * Configures headers and base URL
+   */
+  private getAxiosConfig() {
+    if (!this.config) {
+      throw new Error("Adapter not initialized. Call initialize() first.")
+    }
 
-    this.client = axios.create({
-      baseURL: config.baseUrl || this.baseUrl,
-      timeout: config.timeout || 60000,
+    return {
+      baseURL: this.config.baseUrl || this.baseUrl,
+      timeout: this.config.timeout || 60000,
       headers: {
-        authorization: config.apiKey,
+        authorization: this.config.apiKey,
         "Content-Type": "application/json",
-        ...config.headers
+        ...this.config.headers
       }
-    })
+    }
   }
 
   /**
@@ -181,11 +240,14 @@ export class AssemblyAIAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      // Prepare the request payload
-      const payload = this.buildTranscriptionRequest(audio, options)
+      // Build typed request using generated types
+      const request = this.buildTranscriptionRequest(audio, options)
 
-      // Submit transcription job
-      const response = await this.client!.post<Transcript>("/transcript", payload)
+      // Use generated API client function - FULLY TYPED!
+      const response = await createTranscript(
+        request,
+        this.getAxiosConfig()
+      )
 
       const transcriptId = response.data.id
 
@@ -217,7 +279,11 @@ export class AssemblyAIAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      const response = await this.client!.get<Transcript>(`/transcript/${transcriptId}`)
+      // Use generated API client function - FULLY TYPED!
+      const response = await getTranscriptAPI(
+        transcriptId,
+        this.getAxiosConfig()
+      )
 
       return this.normalizeResponse(response.data)
     } catch (error) {
@@ -529,10 +595,11 @@ export class AssemblyAIAdapter extends BaseAdapter {
   ): Promise<StreamingSession> {
     this.validateConfig()
 
-    // Step 1: Get temporary token for real-time API
-    const tokenResponse = await this.client!.post("/realtime/token", {
-      expires_in: 3600 // Token expires in 1 hour
-    })
+    // Step 1: Get temporary token for real-time API using generated function
+    const tokenResponse = await createTemporaryToken(
+      { expires_in: 3600 }, // Token expires in 1 hour
+      this.getAxiosConfig()
+    )
 
     const token = tokenResponse.data.token
 
@@ -553,23 +620,23 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     ws.on("message", (data: Buffer) => {
       try {
-        const message = JSON.parse(data.toString())
+        const message = JSON.parse(data.toString()) as RealtimeMessage
 
-        // Handle different message types from AssemblyAI
+        // Handle different message types from AssemblyAI - TYPE SAFE!
         if (message.message_type === "SessionBegins") {
-          // Session started
+          // Type narrowed to SessionBeginsMessage
           callbacks?.onMetadata?.({
             sessionId: message.session_id,
             expiresAt: message.expires_at
           })
         } else if (message.message_type === "PartialTranscript") {
-          // Interim result
+          // Type narrowed to PartialTranscriptMessage
           callbacks?.onTranscript?.({
             type: "transcript",
-            text: message.text || "",
+            text: message.text,
             isFinal: false,
             confidence: message.confidence,
-            words: message.words?.map((word: any) => ({
+            words: message.words.map((word) => ({
               text: word.text,
               start: word.start / 1000,
               end: word.end / 1000,
@@ -578,13 +645,13 @@ export class AssemblyAIAdapter extends BaseAdapter {
             data: message
           })
         } else if (message.message_type === "FinalTranscript") {
-          // Final result
+          // Type narrowed to FinalTranscriptMessage
           callbacks?.onTranscript?.({
             type: "transcript",
-            text: message.text || "",
+            text: message.text,
             isFinal: true,
             confidence: message.confidence,
-            words: message.words?.map((word: any) => ({
+            words: message.words.map((word) => ({
               text: word.text,
               start: word.start / 1000,
               end: word.end / 1000,

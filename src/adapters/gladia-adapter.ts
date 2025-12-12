@@ -3,7 +3,7 @@
  * Documentation: https://docs.gladia.io/
  */
 
-import axios, { type AxiosInstance } from "axios"
+import axios from "axios"
 import WebSocket from "ws"
 import type {
   AudioChunk,
@@ -18,15 +18,22 @@ import type {
 import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
+// Import generated API client functions - FULL TYPE SAFETY!
+import {
+  preRecordedControllerInitPreRecordedJobV2,
+  preRecordedControllerGetPreRecordedJobV2,
+  streamingControllerInitStreamingSessionV2
+} from "../generated/gladia/api/gladiaControlAPI"
+
 // Import Gladia generated types
-import type { InitPreRecordedTranscriptionResponse } from "../generated/gladia/schema/initPreRecordedTranscriptionResponse"
-import type { InitStreamingResponse } from "../generated/gladia/schema/initStreamingResponse"
 import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
 import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
 import type { StreamingRequest } from "../generated/gladia/schema/streamingRequest"
 import type { TranscriptionDTO } from "../generated/gladia/schema/transcriptionDTO"
 import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
 import type { WordDTO } from "../generated/gladia/schema/wordDTO"
+// WebSocket message types for type-safe parsing
+import type { TranscriptMessage } from "../generated/gladia/schema/transcriptMessage"
 
 /**
  * Gladia transcription provider adapter
@@ -87,21 +94,26 @@ export class GladiaAdapter extends BaseAdapter {
     piiRedaction: false // Gladia doesn't have PII redaction in their API
   }
 
-  private client?: AxiosInstance
   private baseUrl = "https://api.gladia.io/v2"
 
-  initialize(config: ProviderConfig): void {
-    super.initialize(config)
+  /**
+   * Get axios config for generated API client functions
+   * Configures headers and base URL
+   */
+  private getAxiosConfig() {
+    if (!this.config) {
+      throw new Error("Adapter not initialized. Call initialize() first.")
+    }
 
-    this.client = axios.create({
-      baseURL: config.baseUrl || this.baseUrl,
-      timeout: config.timeout || 60000,
+    return {
+      baseURL: this.config.baseUrl || this.baseUrl,
+      timeout: this.config.timeout || 60000,
       headers: {
-        "x-gladia-key": config.apiKey,
+        "x-gladia-key": this.config.apiKey,
         "Content-Type": "application/json",
-        ...config.headers
+        ...this.config.headers
       }
-    })
+    }
   }
 
   /**
@@ -174,13 +186,13 @@ export class GladiaAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      // Prepare the request payload
-      const payload = this.buildTranscriptionRequest(audio, options)
+      // Build typed request using generated types
+      const request = this.buildTranscriptionRequest(audio, options)
 
-      // Submit transcription job
-      const response = await this.client!.post<InitPreRecordedTranscriptionResponse>(
-        "/transcription",
-        payload
+      // Use generated API client function - FULLY TYPED!
+      const response = await preRecordedControllerInitPreRecordedJobV2(
+        request,
+        this.getAxiosConfig()
       )
 
       const jobId = response.data.id
@@ -213,7 +225,11 @@ export class GladiaAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      const response = await this.client!.get<PreRecordedResponse>(`/transcription/${transcriptId}`)
+      // Use generated API client function - FULLY TYPED!
+      const response = await preRecordedControllerGetPreRecordedJobV2(
+        transcriptId,
+        this.getAxiosConfig()
+      )
 
       return this.normalizeResponse(response.data)
     } catch (error) {
@@ -531,7 +547,7 @@ export class GladiaAdapter extends BaseAdapter {
   ): Promise<StreamingSession> {
     this.validateConfig()
 
-    // Step 1: Initialize streaming session via REST API
+    // Step 1: Build typed streaming request
     const streamingRequest: Partial<StreamingRequest> = {
       // Map unified encoding format to Gladia's provider-specific format
       // e.g., 'linear16' → 'wav/pcm'
@@ -549,7 +565,12 @@ export class GladiaAdapter extends BaseAdapter {
       }
     }
 
-    const initResponse = await this.client!.post<InitStreamingResponse>("/live", streamingRequest)
+    // Use generated API client function - FULLY TYPED!
+    const initResponse = await streamingControllerInitStreamingSessionV2(
+      streamingRequest as StreamingRequest,
+      undefined, // no params
+      this.getAxiosConfig()
+    )
 
     const { id, url: wsUrl } = initResponse.data
 
@@ -570,14 +591,18 @@ export class GladiaAdapter extends BaseAdapter {
 
         // Handle different message types from Gladia
         if (message.type === "transcript") {
-          // Transcript event
+          // Type-safe: cast to TranscriptMessage after checking type
+          const transcriptMessage = message as TranscriptMessage
+          const messageData = transcriptMessage.data
+          const utterance = messageData.utterance
+
           callbacks?.onTranscript?.({
             type: "transcript",
-            text: message.text || "",
-            isFinal: message.is_final === true,
-            confidence: message.confidence,
-            words: message.words?.map((word: any) => ({
-              text: word.word || word.text,
+            text: utterance.text,
+            isFinal: messageData.is_final,
+            confidence: utterance.confidence,
+            words: utterance.words.map((word) => ({
+              text: word.word,
               start: word.start,
               end: word.end,
               confidence: word.confidence
@@ -585,21 +610,25 @@ export class GladiaAdapter extends BaseAdapter {
             data: message
           })
         } else if (message.type === "utterance") {
-          // Utterance completed
-          const utterance = {
-            text: message.text || "",
-            start: message.start || 0,
-            end: message.end || 0,
-            speaker: message.speaker?.toString(),
-            confidence: message.confidence,
-            words: message.words?.map((word: any) => ({
-              text: word.word || word.text,
+          // Utterance completed - extract from nested data.utterance structure
+          const transcriptMessage = message as TranscriptMessage
+          const messageData = transcriptMessage.data
+          const utterance = messageData.utterance
+
+          const utteranceData = {
+            text: utterance.text,
+            start: utterance.start,
+            end: utterance.end,
+            speaker: utterance.speaker?.toString(),
+            confidence: utterance.confidence,
+            words: utterance.words.map((word) => ({
+              text: word.word,
               start: word.start,
               end: word.end,
               confidence: word.confidence
             }))
           }
-          callbacks?.onUtterance?.(utterance)
+          callbacks?.onUtterance?.(utteranceData)
         } else if (message.type === "metadata") {
           callbacks?.onMetadata?.(message)
         }
