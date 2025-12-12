@@ -44,7 +44,7 @@ export const preRecordedControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLan
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: string[] = ["srt"]
+export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault = ["srt"]
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -511,7 +511,7 @@ export const preRecordedControllerInitPreRecordedJobV2Body = zod.object({
             .describe("Subtitles formats you want your transcription to be formatted to")
         )
         .min(1)
-        .default(preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault)
+        .default(() => ["srt"] as any)
         .describe("Subtitles formats you want your transcription to be formatted to"),
       minimum_duration: zod
         .number()
@@ -998,7 +998,7 @@ export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestPa
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: string[] =
+export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault =
   ["srt"]
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
@@ -1548,9 +1548,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
                       .describe("Subtitles formats you want your transcription to be formatted to")
                   )
                   .min(1)
-                  .default(
-                    preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault
-                  )
+                  .default(() => ["srt"] as any)
                   .describe("Subtitles formats you want your transcription to be formatted to"),
                 minimum_duration: zod
                   .number()
@@ -3282,7 +3280,7 @@ export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallba
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault: string[] =
+export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault =
   ["srt"]
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
@@ -3818,9 +3816,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
                 .describe("Subtitles formats you want your transcription to be formatted to")
             )
             .min(1)
-            .default(
-              preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault
-            )
+            .default(() => ["srt"] as any)
             .describe("Subtitles formats you want your transcription to be formatted to"),
           minimum_duration: zod
             .number()
@@ -5481,7 +5477,7 @@ export const transcriptionControllerInitPreRecordedJobV2BodyCodeSwitchingConfigL
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: string[] = ["srt"]
+export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault = ["srt"]
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -5953,7 +5949,7 @@ export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
             .describe("Subtitles formats you want your transcription to be formatted to")
         )
         .min(1)
-        .default(transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault)
+        .default(() => ["srt"] as any)
         .describe("Subtitles formats you want your transcription to be formatted to"),
       minimum_duration: zod
         .number()
@@ -6446,7 +6442,7 @@ export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallback
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: string[] =
+export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault =
   ["srt"]
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
@@ -7069,9 +7065,7 @@ export const transcriptionControllerListV2Response = zod.object({
                         )
                     )
                     .min(1)
-                    .default(
-                      transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault
-                    )
+                    .default(() => ["srt"] as any)
                     .describe("Subtitles formats you want your transcription to be formatted to"),
                   minimum_duration: zod
                     .number()
@@ -10441,7 +10435,7 @@ export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallback
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesDefault = false
-export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault: string[] =
+export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault =
   ["srt"]
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
@@ -11050,9 +11044,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
                   .describe("Subtitles formats you want your transcription to be formatted to")
               )
               .min(1)
-              .default(
-                transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault
-              )
+              .default(() => ["srt"] as any)
               .describe("Subtitles formats you want your transcription to be formatted to"),
             minimum_duration: zod
               .number()
@@ -14832,7 +14824,7 @@ export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackDef
 export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: string[] =
+export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault =
   ["srt"]
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
@@ -15455,9 +15447,7 @@ export const historyControllerGetListV1Response = zod.object({
                         )
                     )
                     .min(1)
-                    .default(
-                      historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault
-                    )
+                    .default(() => ["srt"] as any)
                     .describe("Subtitles formats you want your transcription to be formatted to"),
                   minimum_duration: zod
                     .number()

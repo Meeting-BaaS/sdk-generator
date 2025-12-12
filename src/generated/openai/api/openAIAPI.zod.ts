@@ -82,7 +82,7 @@ export const createSpeechBody = zod.object({
  */
 export const createTranscriptionBodyResponseFormatDefault = "json"
 export const createTranscriptionBodyTemperatureDefault = 0
-export const createTranscriptionBodyTimestampGranularitiesDefault: string[] = ["segment"]
+export const createTranscriptionBodyTimestampGranularitiesDefault = ["segment"]
 export const createTranscriptionBodyStreamDefaultOne = false
 export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto"
 export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault = 300
@@ -142,7 +142,7 @@ export const createTranscriptionBody = zod.object({
     ),
   timestamp_granularities: zod
     .array(zod.enum(["word", "segment"]))
-    .default(createTranscriptionBodyTimestampGranularitiesDefault)
+    .default(() => ["segment"] as any)
     .describe(
       "The timestamp granularities to populate for this transcription. `response_format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`. Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.\nThis option is not available for `gpt-4o-transcribe-diarize`.\n"
     ),

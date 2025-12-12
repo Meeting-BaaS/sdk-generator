@@ -122,29 +122,20 @@ function fixDeepgramParameters(content, filePath) {
  * Examples:
  *   opus', → 'opus',
  *   'key': value', → 'key': 'value',
- *   'key': multi-word-value', → 'key': 'multi-word-value',
  *
- * NOTE: This fix is only needed for some providers (Deepgram/Speechmatics),
- * not AssemblyAI which already has properly quoted strings
+ * NOTE: This fix is only needed for specific Speechmatics files
+ * Most Deepgram and AssemblyAI files have properly quoted strings
  */
 function fixUnterminatedStrings(content, filePath) {
-  // Skip AssemblyAI files - they don't have this issue
-  if (filePath.includes('/assemblyai/')) {
+  // Only apply to Speechmatics zod files - other providers are mostly correct
+  if (!filePath.includes('/speechmatics/') || !filePath.includes('.zod.ts')) {
     return content
   }
 
   const before = content
 
-  // Pattern 1: Fix object property values that are unquoted at the start
-  // Match: : unquoted-value', and replace with: : 'unquoted-value',
-  // Use negative lookahead (?!') to ensure value doesn't start with a quote
-  // This handles multi-word values with hyphens, dots, underscores
-  content = content.replace(/:\s*(?!')([a-zA-Z0-9\-_.]+)'\s*,/g, ": '$1',")
-
-  // Pattern 2: Fix array/standalone values (enum-like)
-  // Match: word', (not after a colon) and replace with: 'word',
-  // Only apply if not already preceded by a quote, colon, word char, or hyphen
-  // This ensures we don't match parts of hyphenated identifiers like 'foo-bar'
+  // Only fix simple standalone enum values
+  // Match: word', (not after a colon or quote) and replace with: 'word',
   content = content.replace(/(?<![':\w-])\b(\w+)'\s*,/g, "'$1',")
 
   if (content !== before) {
@@ -179,39 +170,44 @@ function fixErrorTypeShadowing(content, filePath) {
 }
 
 /**
- * Fix array default values to be properly typed
- * Handles both single-line and multi-line array definitions
- * Example: export const foo = ["bar"] → export const foo: string[] = ["bar"]
+ * Fix array default values by inlining them in .default() calls
+ * Zod enums need specific tuple types, but default constants are inferred as string[]
+ * Solution: Replace .default(constantName) with .default(() => [...])
  */
 function fixArrayDefaults(content, filePath) {
   const before = content
 
+  // Find all array default constant definitions and store them
+  const defaults = {}
+
   // Pattern 1: Single-line arrays
-  content = content.replace(
-    /^export const (\w+Default) = (\[[^\]]+\])(?!\s+as\s+(?:const|readonly))/gm,
-    (match, varName, arrayContent) => {
-      if (match.includes(':')) return match
-      if (arrayContent.includes('"') || arrayContent.includes("'")) {
-        return `export const ${varName}: string[] = ${arrayContent}`
-      }
-      return match
-    }
-  )
+  const singleLineRegex = /^export const (\w+Default) = (\[[^\]]+\])/gm
+  let match
+  while ((match = singleLineRegex.exec(content)) !== null) {
+    defaults[match[1]] = match[2]
+  }
 
   // Pattern 2: Multi-line arrays (const name =\n  [content])
-  content = content.replace(
-    /^export const (\w+Default) =\s*\n\s*(\[[^\]]+\])/gm,
-    (match, varName, arrayContent) => {
-      if (match.includes(':')) return match
-      if (arrayContent.includes('"') || arrayContent.includes("'")) {
-        return `export const ${varName}: string[] =\n  ${arrayContent}`
-      }
-      return match
-    }
-  )
+  const multiLineRegex = /^export const (\w+Default) =\s*\n\s*(\[[^\]]+\])/gm
+  while ((match = multiLineRegex.exec(content)) !== null) {
+    defaults[match[1]] = match[2]
+  }
+
+  // Replace .default(constantName) with .default(() => [...] as any)
+  // The 'as any' is needed because TypeScript can't infer the exact enum type
+  // Handle both single-line and multi-line .default() calls
+  for (const [constName, arrayValue] of Object.entries(defaults)) {
+    // Single-line: .default(constantName)
+    const singleLinePattern = new RegExp(`\\.default\\(${constName}\\)`, 'g')
+    content = content.replace(singleLinePattern, `.default(() => ${arrayValue} as any)`)
+
+    // Multi-line: .default(\n      constantName\n    )
+    const multiLinePattern = new RegExp(`\\.default\\(\\s*\\n\\s*${constName}\\s*\\n\\s*\\)`, 'g')
+    content = content.replace(multiLinePattern, `.default(() => ${arrayValue} as any)`)
+  }
 
   if (content !== before) {
-    fixes.push(`Added type annotations to array defaults in ${filePath}`)
+    fixes.push(`Inlined array defaults in .default() calls in ${filePath}`)
   }
 
   return content
