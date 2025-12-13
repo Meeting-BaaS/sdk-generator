@@ -3,7 +3,7 @@
  * Documentation: https://learn.microsoft.com/azure/cognitive-services/speech-service/
  */
 
-import axios, { type AxiosInstance } from "axios"
+import axios from "axios"
 import type {
   AudioInput,
   ProviderCapabilities,
@@ -11,6 +11,13 @@ import type {
   UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+
+// Import generated API client functions - FULL TYPE SAFETY!
+import {
+  transcriptionsCreate,
+  transcriptionsGet,
+  transcriptionsListFiles
+} from "../generated/azure/api/speechServicesAPIV31"
 
 // Import Azure generated types
 import type { Transcription } from "../generated/azure/schema/transcription"
@@ -103,7 +110,6 @@ export class AzureSTTAdapter extends BaseAdapter {
     piiRedaction: false
   }
 
-  private client?: AxiosInstance
   private region?: string
   protected baseUrl = "https://eastus.api.cognitive.microsoft.com/speechtotext/v3.1" // Default, overridden in initialize()
 
@@ -113,16 +119,14 @@ export class AzureSTTAdapter extends BaseAdapter {
     this.region = config.region || "eastus"
     this.baseUrl =
       config.baseUrl || `https://${this.region}.api.cognitive.microsoft.com/speechtotext/v3.1`
+  }
 
-    this.client = axios.create({
-      baseURL: this.baseUrl,
-      timeout: config.timeout || 60000,
-      headers: {
-        "Ocp-Apim-Subscription-Key": config.apiKey,
-        "Content-Type": "application/json",
-        ...config.headers
-      }
-    })
+  /**
+   * Get axios config for generated API client functions
+   * Configures headers and base URL using Azure subscription key
+   */
+  protected getAxiosConfig() {
+    return super.getAxiosConfig("Ocp-Apim-Subscription-Key")
   }
 
   /**
@@ -161,9 +165,10 @@ export class AzureSTTAdapter extends BaseAdapter {
         properties: this.buildTranscriptionProperties(options)
       }
 
-      const response = await this.client!.post<Transcription>(
-        "/transcriptions",
-        transcriptionRequest
+      // Use generated API client function - FULLY TYPED!
+      const response = await transcriptionsCreate(
+        transcriptionRequest as Transcription,
+        this.getAxiosConfig()
       )
 
       const transcription = response.data
@@ -197,10 +202,8 @@ export class AzureSTTAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      // Get transcription status
-      const statusResponse = await this.client!.get<Transcription>(
-        `/transcriptions/${transcriptId}`
-      )
+      // Get transcription status using generated API
+      const statusResponse = await transcriptionsGet(transcriptId, this.getAxiosConfig())
 
       const transcription = statusResponse.data
       const status = this.normalizeStatus(transcription.status)
@@ -220,7 +223,7 @@ export class AzureSTTAdapter extends BaseAdapter {
         }
       }
 
-      // Get transcription files (results)
+      // Get transcription files (results) using generated API
       if (!transcription.links?.files) {
         return {
           success: false,
@@ -233,7 +236,7 @@ export class AzureSTTAdapter extends BaseAdapter {
         }
       }
 
-      const filesResponse = await this.client!.get(transcription.links.files)
+      const filesResponse = await transcriptionsListFiles(transcriptId, undefined, this.getAxiosConfig())
       const files = filesResponse.data?.values || []
 
       // Find the transcription result file
@@ -251,7 +254,7 @@ export class AzureSTTAdapter extends BaseAdapter {
         }
       }
 
-      // Fetch the actual transcription content
+      // Fetch the actual transcription content (contentUrl is an external link, not part of API)
       const contentResponse = await axios.get(resultFile.links.contentUrl)
       const transcriptionData = contentResponse.data
 
