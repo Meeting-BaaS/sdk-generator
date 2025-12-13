@@ -764,6 +764,152 @@ The result is a **fully automated, reliable build pipeline** that transforms imp
 
 ---
 
+## Phase 2.6: Router Type Safety Enhancements
+
+### Overview
+
+With all generated types properly fixed and reliable, we can now **leverage them directly** in the router layer to provide enhanced type safety for SDK users.
+
+### Enhancement 1: Provider-Specific Type Discrimination
+
+**File**: `src/router/types.ts`
+
+Added generic parameter to `UnifiedTranscriptResponse` for provider-specific type safety:
+
+```typescript
+/**
+ * Map of provider names to their raw response types
+ */
+export type ProviderRawResponseMap = {
+  gladia: PreRecordedResponse
+  deepgram: ListenV1Response
+  "openai-whisper": CreateTranscription200One
+  assemblyai: AssemblyAITranscript
+  "azure-stt": AzureTranscription
+  speechmatics: unknown
+}
+
+/**
+ * Unified response with provider discrimination
+ */
+export interface UnifiedTranscriptResponse<P extends TranscriptionProvider = TranscriptionProvider> {
+  success: boolean
+  provider: P
+  data?: { /* ... */ }
+  error?: { /* ... */ }
+
+  /** Raw provider response - typed based on provider! */
+  raw?: P extends keyof ProviderRawResponseMap ? ProviderRawResponseMap[P] : unknown
+}
+```
+
+**Usage**:
+```typescript
+// Generic - raw is unknown
+const result: UnifiedTranscriptResponse = await router.transcribe(audio)
+
+// Provider-specific - raw is typed!
+const deepgramResult: UnifiedTranscriptResponse<'deepgram'> = await adapter.transcribe(audio)
+deepgramResult.raw?.metadata  // ✅ Typed as ListenV1Response
+```
+
+### Enhancement 2: Leveraging Fixed Parameter Types
+
+**File**: `src/router/provider-streaming-types.ts`
+
+Updated `DeepgramStreamingOptions` to use properly fixed parameter enums:
+
+```typescript
+export interface DeepgramStreamingOptions {
+  /** Audio encoding - type-safe enum from fixed OpenAPI spec */
+  encoding?: typeof ListenV1EncodingParameter[keyof typeof ListenV1EncodingParameter]
+
+  /** Language code - type-safe from fixed spec */
+  language?: ListenV1LanguageParameter  // string type (BCP-47)
+
+  /** Model to use - type-safe union from fixed spec */
+  model?: ListenV1ModelParameter  // 'nova-3' | 'enhanced' | 'base' | ...
+
+  /** Model version - type-safe from fixed spec */
+  version?: ListenV1VersionParameter  // 'latest' | string
+
+  // ... other options
+}
+```
+
+**Key Points**:
+- `ListenV1EncodingParameter` uses `typeof X[keyof typeof X]` pattern (const enum)
+- `ListenV1LanguageParameter`, `ListenV1ModelParameter` use direct types (union types)
+- All properly typed thanks to Phase 2.5 fixes!
+
+### Enhancement 3: Exported Parameter Enums
+
+**File**: `src/router/index.ts`
+
+Export parameter enums for direct user access:
+
+```typescript
+/**
+ * Deepgram Parameter Enums (now properly fixed!)
+ */
+export { ListenV1EncodingParameter } from "../generated/deepgram/schema/listenV1EncodingParameter"
+export { ListenV1LanguageParameter } from "../generated/deepgram/schema/listenV1LanguageParameter"
+export { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
+export { SpeakV1EncodingParameter } from "../generated/deepgram/schema/speakV1EncodingParameter"
+// ... 7 total Deepgram exports
+
+/**
+ * Gladia Parameter Enums
+ */
+export { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
+export { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
+// ... 3 total Gladia exports
+
+/**
+ * OpenAI Whisper Types
+ */
+export type { AudioTranscriptionModel } from "../generated/openai/schema/audioTranscriptionModel"
+export type { AudioResponseFormat } from "../generated/openai/schema/audioResponseFormat"
+```
+
+**Usage**:
+```typescript
+import { ListenV1EncodingParameter } from '@meeting-baas/sdk'
+
+const options = {
+  encoding: ListenV1EncodingParameter.linear16,  // ✅ Type-safe!
+  sampleRate: 16000
+}
+```
+
+### Benefits of These Enhancements
+
+✅ **Full IntelliSense Support** - Users get autocomplete for all provider-specific options
+✅ **Compile-Time Safety** - Invalid options caught before runtime
+✅ **Provider Discrimination** - Type system knows which provider you're using
+✅ **Direct Enum Access** - No need to dig through generated types
+✅ **OpenAPI-Generated** - Types come directly from provider specifications
+✅ **Maintained by Fixes** - Phase 2.5 ensures these stay reliable
+
+### Connection to Phase 2.5
+
+These enhancements are **only possible** because Phase 2.5 fixes ensure:
+- ✅ All 14 Deepgram parameter files have proper type declarations
+- ✅ No duplicate properties in const enums
+- ✅ No incomplete type declarations
+- ✅ All enums use consistent `export type` + `export const` pattern
+
+Without Phase 2.5 fixes, these types would be unreliable or cause compilation errors.
+
+### Documentation
+
+The typing enhancements are documented in:
+- **README.md** - "TypeScript Support" section with code examples
+- **API Documentation** - Generated TypeDoc with proper type signatures
+- **This Document** - Phase 2.6 describing the implementation
+
+---
+
 ## Phase 3: Adapter Implementation
 
 ### Adapter Architecture

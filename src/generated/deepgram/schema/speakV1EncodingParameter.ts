@@ -30,6 +30,10 @@
 /**
  * SpeakV1EncodingParameter type definition
  */
+
+/**
+ * SpeakV1EncodingParameter type definition
+ */
 export type SpeakV1EncodingParameter = typeof SpeakV1EncodingParameter[keyof typeof SpeakV1EncodingParameter];
 
 export const SpeakV1EncodingParameter = {

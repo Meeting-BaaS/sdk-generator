@@ -330,7 +330,7 @@ Provider-specific implementations:
 
 ## TypeScript Support
 
-Full type definitions included:
+Full type definitions included with **provider-specific type safety**:
 
 ```typescript
 import type {
@@ -345,6 +345,108 @@ import type {
   TranscriptionProvider
 } from 'voice-router-dev';
 ```
+
+### Provider-Specific Type Safety
+
+**🎯 New: Type-safe responses with provider discrimination**
+
+The SDK now provides full type safety for provider-specific responses:
+
+```typescript
+// Generic response - raw field is unknown
+const result: UnifiedTranscriptResponse = await router.transcribe(audio);
+
+// Provider-specific response - raw field is properly typed!
+const deepgramResult: UnifiedTranscriptResponse<'deepgram'> = await router.transcribe(audio, {
+  provider: 'deepgram'
+});
+
+// ✅ TypeScript knows raw is ListenV1Response
+const metadata = deepgramResult.raw?.metadata;
+const model = deepgramResult.raw?.results?.channels?.[0]?.alternatives?.[0]?.model;
+```
+
+**Provider-specific raw response types:**
+- `gladia` → `PreRecordedResponse`
+- `deepgram` → `ListenV1Response`
+- `openai-whisper` → `CreateTranscription200One`
+- `assemblyai` → `AssemblyAITranscript`
+- `azure-stt` → `AzureTranscription`
+
+### Exported Parameter Enums
+
+**🎯 New: Direct access to provider parameter enums**
+
+Import and use provider-specific enums for type-safe configuration:
+
+```typescript
+import {
+  // Deepgram enums
+  ListenV1EncodingParameter,
+  ListenV1ModelParameter,
+  SpeakV1EncodingParameter,
+
+  // Gladia enums
+  StreamingSupportedEncodingEnum,
+  StreamingSupportedSampleRateEnum,
+
+  // OpenAI types
+  AudioResponseFormat
+} from 'voice-router-dev';
+
+// ✅ Type-safe Deepgram encoding
+const session = await router.transcribeStream({
+  provider: 'deepgram',
+  encoding: ListenV1EncodingParameter.linear16,  // Autocomplete works!
+  model: ListenV1ModelParameter['nova-2'],
+  sampleRate: 16000
+});
+
+// ✅ Type-safe Gladia encoding
+const gladiaSession = await router.transcribeStream({
+  provider: 'gladia',
+  encoding: StreamingSupportedEncodingEnum['wav/pcm'],
+  sampleRate: StreamingSupportedSampleRateEnum['16000']
+});
+```
+
+### Type-Safe Streaming Options
+
+Streaming options are now fully typed based on provider OpenAPI specifications:
+
+```typescript
+// Deepgram streaming - all options are type-safe
+const deepgramSession = await router.transcribeStream({
+  provider: 'deepgram',
+  encoding: 'linear16',           // ✅ Only Deepgram encodings
+  model: 'nova-3',                // ✅ Validated model names
+  language: 'en-US',              // ✅ BCP-47 language codes
+  diarization: true,
+  smartFormat: true
+}, callbacks);
+
+// Gladia streaming - different options
+const gladiaSession = await router.transcribeStream({
+  provider: 'gladia',
+  encoding: 'wav/pcm',            // ✅ Only Gladia encodings
+  sampleRate: 16000,              // ✅ Only supported rates
+  bitDepth: 16,                   // ✅ Only supported depths
+  languageConfig: { languages: ['en'] }
+}, callbacks);
+
+// AssemblyAI streaming - simpler options
+const assemblySession = await router.transcribeStream({
+  provider: 'assemblyai',
+  sampleRate: 16000,              // ✅ Only 8000, 16000, 22050, 44100, 48000
+  wordTimestamps: true
+}, callbacks);
+```
+
+**Benefits:**
+- ✅ **Full IntelliSense** - Autocomplete for all provider-specific options
+- ✅ **Compile-time Safety** - Invalid options caught before runtime
+- ✅ **Provider Discrimination** - Type system knows which provider you're using
+- ✅ **OpenAPI-Generated** - Types come directly from provider specifications
 
 ## Requirements
 
