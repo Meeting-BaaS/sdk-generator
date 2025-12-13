@@ -7,6 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
+/**
+ * ManageV1FilterEndpointParameter type definition
+ */
+
+/**
+ * ManageV1FilterEndpointParameter type definition
+ */
 
 /**
  * ManageV1FilterEndpointParameter type definition

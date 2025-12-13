@@ -10,6 +10,13 @@ import type {
   AudioBitDepth
 } from "./audio-encoding-types"
 
+// Provider-specific response types for type-safe raw responses
+import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
+import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
+import type { CreateTranscription200One } from "../generated/openai/schema/createTranscription200One"
+import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai/schema/transcript"
+import type { Transcription as AzureTranscription } from "../generated/azure/schema/transcription"
+
 /**
  * Supported transcription providers
  */
@@ -150,13 +157,44 @@ export interface Utterance {
 export type TranscriptionStatus = "queued" | "processing" | "completed" | "error"
 
 /**
- * Unified transcription response
+ * Map of provider names to their raw response types
+ * Enables type-safe access to provider-specific raw responses
  */
-export interface UnifiedTranscriptResponse {
+export type ProviderRawResponseMap = {
+  gladia: PreRecordedResponse
+  deepgram: ListenV1Response
+  "openai-whisper": CreateTranscription200One
+  assemblyai: AssemblyAITranscript
+  "azure-stt": AzureTranscription
+  speechmatics: unknown // No generated type available yet
+}
+
+/**
+ * Unified transcription response with provider-specific type safety
+ *
+ * When a specific provider is known at compile time, the `raw` field
+ * will be typed with that provider's actual response type.
+ *
+ * @template P - The transcription provider (defaults to all providers)
+ *
+ * @example Type narrowing with specific provider
+ * ```typescript
+ * const result: UnifiedTranscriptResponse<'deepgram'> = await adapter.transcribe(audio);
+ * // result.raw is typed as ListenV1Response
+ * const deepgramMetadata = result.raw?.metadata;
+ * ```
+ *
+ * @example Generic usage (all providers)
+ * ```typescript
+ * const result: UnifiedTranscriptResponse = await router.transcribe(audio);
+ * // result.raw is typed as unknown (could be any provider)
+ * ```
+ */
+export interface UnifiedTranscriptResponse<P extends TranscriptionProvider = TranscriptionProvider> {
   /** Operation success status */
   success: boolean
   /** Provider that performed the transcription */
-  provider: TranscriptionProvider
+  provider: P
   /** Transcription data (only present on success) */
   data?: {
     /** Unique transcription ID */
@@ -197,8 +235,17 @@ export interface UnifiedTranscriptResponse {
     /** HTTP status code if applicable */
     statusCode?: number
   }
-  /** Raw provider response (for advanced usage) */
-  raw?: unknown
+  /**
+   * Raw provider response (for advanced usage)
+   *
+   * Type-safe based on the provider:
+   * - `gladia`: PreRecordedResponse
+   * - `deepgram`: ListenV1Response
+   * - `openai-whisper`: CreateTranscription200One
+   * - `assemblyai`: AssemblyAITranscript
+   * - `azure-stt`: AzureTranscription
+   */
+  raw?: P extends keyof ProviderRawResponseMap ? ProviderRawResponseMap[P] : unknown
 }
 
 /**

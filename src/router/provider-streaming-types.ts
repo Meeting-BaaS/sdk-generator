@@ -12,10 +12,12 @@ import type { StreamingSupportedSampleRateEnum } from "../generated/gladia/schem
 import type { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
 import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
 
-// Deepgram types - from OpenAPI-generated schema
+// Deepgram types - from OpenAPI-generated schema (now properly fixed!)
 import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
 import type { ListenV1EncodingParameter } from "../generated/deepgram/schema/listenV1EncodingParameter"
 import type { ListenV1LanguageParameter } from "../generated/deepgram/schema/listenV1LanguageParameter"
+import type { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
+import type { ListenV1VersionParameter } from "../generated/deepgram/schema/listenV1VersionParameter"
 
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
@@ -27,11 +29,11 @@ import type { StreamingCallbacks, StreamingProvider } from "./types"
  * All supported encodings, sample rates, and bit depths are from the spec.
  */
 export interface GladiaStreamingOptions {
-  /** Audio encoding format - only Gladia-supported formats */
+  /** Audio encoding format - only Gladia-supported formats (type-safe enum) */
   encoding?: StreamingSupportedEncodingEnum
-  /** Sample rate - only Gladia-supported rates */
+  /** Sample rate - only Gladia-supported rates (type-safe enum) */
   sampleRate?: StreamingSupportedSampleRateEnum
-  /** Bit depth - only Gladia-supported depths */
+  /** Bit depth - only Gladia-supported depths (type-safe enum) */
   bitDepth?: StreamingSupportedBitDepthEnum
   /** Number of audio channels (1-8) */
   channels?: number
@@ -47,29 +49,45 @@ export interface GladiaStreamingOptions {
  * Deepgram streaming options (from OpenAPI spec)
  *
  * Based on the generated `ListenV1MediaTranscribeParams` type from Deepgram's OpenAPI spec.
- * All supported options come directly from the spec.
+ * All supported options come directly from the spec. Now using properly typed parameter enums!
  */
 export interface DeepgramStreamingOptions {
-  /** Audio encoding format - only Deepgram-supported formats */
-  encoding?: ListenV1EncodingParameter
+  /** Audio encoding format - type-safe enum from OpenAPI spec */
+  encoding?: typeof ListenV1EncodingParameter[keyof typeof ListenV1EncodingParameter]
+
   /** Sample rate in Hz */
   sampleRate?: number
-  /** Language code (BCP-47 format) */
+
+  /** Language code - type-safe from OpenAPI spec (BCP-47 format, e.g., 'en', 'en-US', 'es') */
   language?: ListenV1LanguageParameter
+
+  /** Model to use - type-safe union from OpenAPI spec */
+  model?: ListenV1ModelParameter
+
+  /** Model version - type-safe from OpenAPI spec (e.g., 'latest') */
+  version?: ListenV1VersionParameter
+
   /** Enable speaker diarization */
   diarization?: boolean
+
   /** Enable language detection */
   languageDetection?: boolean
+
   /** Enable punctuation */
   punctuate?: boolean
+
   /** Enable smart formatting */
   smartFormat?: boolean
+
   /** Enable interim results */
   interimResults?: boolean
+
   /** Callback URL for webhooks */
   webhookUrl?: string
+
   /** Custom vocabulary/keywords */
   keywords?: string | string[]
+
   /** Number of audio channels */
   channels?: number
 }
