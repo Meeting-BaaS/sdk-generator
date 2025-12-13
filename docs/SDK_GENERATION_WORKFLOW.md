@@ -317,17 +317,23 @@ docs/generated/
 
 ## Phase 5: Documentation Generation
 
-### TypeDoc Configuration
+### TypeDoc Overview
 
-**Configs**: `typedoc.*.config.mjs` (9 configs for different components)
+**TypeDoc** extracts documentation from TypeScript source code (JSDoc comments) and generates markdown files.
+
+**Plugin**: `typedoc-plugin-markdown` - Generates markdown instead of HTML.
+
+### Configuration
+
+**Configs**: `typedoc.*.config.mjs` (9 separate configs)
 
 ```javascript
-// typedoc.router.config.mjs
+// typedoc.router.config.mjs - Core SDK API
 export default {
   entryPoints: [
-    "./src/router/voice-router.ts",
-    "./src/router/types.ts",
-    "./src/adapters/base-adapter.ts"
+    "./src/router/voice-router.ts",    // VoiceRouter class
+    "./src/router/types.ts",           // Core types
+    "./src/adapters/base-adapter.ts"   // BaseAdapter interface
   ],
   out: "./docs/generated/router",
   plugin: ["typedoc-plugin-markdown"],
@@ -335,19 +341,108 @@ export default {
 }
 ```
 
-### Generation
+### Generation Process
 
 ```bash
+pnpm build:docs
+  ↓
 pnpm docs:generate
   ↓
-docs:generate:router      # Core API
+docs:clean                # Remove old docs
+  ↓
+docs:generate:router      # Core SDK API
 docs:generate:webhooks    # Webhook handlers
 docs:generate:gladia      # Gladia adapter
 docs:generate:deepgram    # Deepgram adapter
-... (8 total)
+docs:generate:assemblyai  # AssemblyAI adapter
+docs:generate:azure       # Azure adapter
+docs:generate:openai      # OpenAI adapter
+docs:generate:speechmatics # Speechmatics adapter
 ```
 
-**Output**: Markdown documentation for all 8 providers + core API.
+### Output Structure
+
+```
+docs/generated/
+├── router/                           # Core SDK API
+│   ├── README.md
+│   ├── router/
+│   │   ├── voice-router.md           # ⭐ VoiceRouter class (main API)
+│   │   └── types.md                  # ⭐ Core types (UnifiedTranscriptResponse, etc.)
+│   ├── adapters/
+│   │   └── base-adapter.md           # ⭐ BaseAdapter interface
+│   └── webhooks/
+├── webhooks/                         # Webhook handlers
+│   ├── webhook-router.md             # ⭐ WebhookRouter class
+│   ├── gladia-webhook.md
+│   ├── deepgram-webhook.md
+│   └── ... (6 provider webhooks)
+├── gladia/                           # Gladia adapter API
+│   └── adapters/gladia-adapter.md
+├── deepgram/                         # Deepgram adapter API
+│   └── adapters/deepgram-adapter.md
+└── ... (6 more providers)
+```
+
+**Total Output**: ~50+ markdown files across 8 documentation sets.
+
+### Most Important Generated Files
+
+| File | Content | Audience |
+|------|---------|----------|
+| `router/router/voice-router.md` | VoiceRouter class methods | SDK users |
+| `router/router/types.md` | UnifiedTranscriptResponse, StreamingOptions | SDK users & developers |
+| `router/adapters/base-adapter.md` | BaseAdapter interface | Provider implementers |
+| `webhooks/webhook-router.md` | WebhookRouter class | Webhook users |
+| `{provider}/adapters/*.md` | Provider-specific adapters | Power users |
+
+### What Gets Documented
+
+TypeDoc extracts from JSDoc comments:
+
+```typescript
+/**
+ * Transcribe audio using a specific provider
+ *
+ * Submit audio for transcription. The provider will be selected based on
+ * your configuration strategy (explicit, default, or round-robin).
+ *
+ * @param audio - Audio input (URL, file buffer, or stream)
+ * @param options - Transcription options (language, diarization, etc.)
+ * @param options.provider - Specific provider to use (overrides selection)
+ * @returns Unified transcription response with normalized format
+ *
+ * @example URL audio
+ * ```typescript
+ * const result = await router.transcribe({
+ *   type: 'url',
+ *   url: 'https://example.com/audio.mp3'
+ * }, {
+ *   language: 'en',
+ *   diarization: true
+ * });
+ * ```
+ */
+async transcribe(audio: AudioInput, options?: TranscribeOptions)
+```
+
+**Generates**:
+- Method signature with full type information
+- Description and detailed explanation
+- Parameter documentation
+- Return type documentation
+- Usage examples with syntax highlighting
+
+### Viewing Documentation
+
+**Local**: Open `docs/generated/router/README.md` in any markdown viewer
+
+**GitHub**: Navigate to `/docs/generated/` in repository
+
+**Links**:
+- Main API: `docs/generated/router/router/voice-router.md`
+- Types: `docs/generated/router/router/types.md`
+- Webhooks: `docs/generated/webhooks/webhook-router.md`
 
 ---
 

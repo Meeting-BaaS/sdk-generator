@@ -181,10 +181,139 @@ npm publish
 
 ## Documentation
 
-- **User Guide**: README.md
-- **Technical Workflow**: docs/SDK_GENERATION_WORKFLOW.md
-- **This Guide**: docs/DEVELOPMENT.md
-- **API Reference**: docs/generated/ (auto-generated)
+### Documentation Structure
+
+```
+docs/
+├── README.md                        # This file
+├── DEVELOPMENT.md                   # Developer quick reference
+├── SDK_GENERATION_WORKFLOW.md       # Technical workflow
+└── generated/                       # Auto-generated TypeDoc
+    ├── router/                      # Core SDK API
+    │   ├── README.md
+    │   ├── router/
+    │   │   ├── voice-router.md      # ⭐ Main router class
+    │   │   └── types.md             # ⭐ Core types
+    │   ├── adapters/
+    │   │   └── base-adapter.md      # ⭐ Base adapter interface
+    │   └── webhooks/
+    ├── webhooks/                    # Webhook handlers
+    │   ├── README.md
+    │   ├── webhook-router.md        # ⭐ WebhookRouter class
+    │   ├── gladia-webhook.md
+    │   ├── deepgram-webhook.md
+    │   └── ...
+    ├── gladia/                      # Gladia adapter API
+    ├── deepgram/                    # Deepgram adapter API
+    ├── assemblyai/                  # AssemblyAI adapter API
+    ├── openai/                      # OpenAI adapter API
+    ├── azure/                       # Azure adapter API
+    └── speechmatics/                # Speechmatics adapter API
+```
+
+### TypeDoc Generation
+
+**How It Works**:
+
+TypeDoc extracts documentation from TypeScript source code comments and generates markdown files.
+
+**Configuration**: `typedoc.*.config.mjs` (9 separate configs)
+
+```javascript
+// typedoc.router.config.mjs
+export default {
+  entryPoints: [
+    "./src/router/voice-router.ts",
+    "./src/router/types.ts",
+    "./src/adapters/base-adapter.ts"
+  ],
+  out: "./docs/generated/router",
+  plugin: ["typedoc-plugin-markdown"],
+  readme: "none"
+}
+```
+
+**Generation Command**:
+
+```bash
+pnpm build:docs              # Generate all documentation
+pnpm docs:generate:router    # Generate router docs only
+pnpm docs:generate:gladia    # Generate Gladia docs only
+# ... etc for each provider
+```
+
+**What Gets Generated**:
+
+1. **Class Documentation** - Methods, properties, examples from JSDoc comments
+2. **Interface Documentation** - Type definitions, parameters, return types
+3. **Type Aliases** - Union types, mapped types, generic types
+4. **Enum Documentation** - Available values and descriptions
+
+**Most Important Generated Files**:
+
+| File | Description | Use Case |
+|------|-------------|----------|
+| `router/router/voice-router.md` | VoiceRouter class API | Main entry point, all router methods |
+| `router/router/types.md` | Core types | UnifiedTranscriptResponse, StreamingOptions, etc. |
+| `router/adapters/base-adapter.md` | BaseAdapter interface | Implementing new providers |
+| `webhooks/webhook-router.md` | WebhookRouter class | Webhook handling, auto-detection |
+| `{provider}/adapters/*.md` | Provider adapters | Provider-specific features |
+
+### Example: Reading Generated Docs
+
+**To implement a new provider**, read:
+1. `router/adapters/base-adapter.md` - Interface to implement
+2. `gladia/adapters/gladia-adapter.md` - Example implementation
+3. `router/router/types.md` - Response types to return
+
+**To use webhooks**, read:
+1. `webhooks/webhook-router.md` - WebhookRouter API
+2. `webhooks/{provider}-webhook.md` - Provider-specific handlers
+3. `webhooks/types.md` - Event types
+
+**To use streaming**, read:
+1. `router/router/voice-router.md` - `transcribeStream()` method
+2. `router/router/types.md` - StreamingOptions and StreamingSession
+3. Provider adapter docs for provider-specific options
+
+### Updating Documentation
+
+Documentation is regenerated on every build:
+
+```bash
+pnpm build        # Regenerates docs/generated/
+```
+
+**To update docs**:
+1. Update JSDoc comments in source code
+2. Run `pnpm build:docs`
+3. Check generated markdown in `docs/generated/`
+
+**JSDoc Example**:
+
+```typescript
+/**
+ * Transcribe audio using a specific provider
+ *
+ * @param audio - Audio input (URL, file, or stream)
+ * @param options - Transcription options
+ * @returns Unified transcription response
+ *
+ * @example
+ * ```typescript
+ * const result = await router.transcribe({
+ *   type: 'url',
+ *   url: 'https://example.com/audio.mp3'
+ * }, {
+ *   language: 'en',
+ *   diarization: true
+ * });
+ * ```
+ */
+async transcribe(audio: AudioInput, options?: TranscribeOptions): Promise<UnifiedTranscriptResponse>
+```
+
+This generates comprehensive markdown documentation automatically.
 
 ## Troubleshooting
 

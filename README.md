@@ -456,9 +456,41 @@ const assemblySession = await router.transcribeStream({
 
 ## Documentation
 
-- **Full API Docs**: [Generated TypeDoc](https://github.com/Meeting-Baas/sdk-generator/tree/main/docs/generated)
-- **Provider Integration Guide**: See `PROVIDER_INTEGRATION_PLAN.md`
-- **Examples**: See `examples/` directory
+### API Reference (Auto-Generated)
+
+Comprehensive API documentation is auto-generated with [TypeDoc](https://typedoc.org/) from TypeScript source code:
+
+📁 **[docs/generated/](./docs/generated/)** - Complete API reference
+
+**Main Documentation Sets**:
+
+1. **[router/](./docs/generated/router/)** - Core SDK API
+   - `voice-router.md` - VoiceRouter class (main entry point)
+   - `types.md` - Unified types (UnifiedTranscriptResponse, StreamingOptions, etc.)
+   - `adapters/base-adapter.md` - BaseAdapter interface
+
+2. **[webhooks/](./docs/generated/webhooks/)** - Webhook handling
+   - `webhook-router.md` - WebhookRouter class (auto-detect providers)
+   - `types.md` - Webhook event types
+   - `{provider}-webhook.md` - Provider-specific webhook handlers
+
+3. **Provider-Specific Adapters**:
+   - [gladia/](./docs/generated/gladia/) - Gladia adapter API
+   - [deepgram/](./docs/generated/deepgram/) - Deepgram adapter API
+   - [assemblyai/](./docs/generated/assemblyai/) - AssemblyAI adapter API
+   - [openai/](./docs/generated/openai/) - OpenAI Whisper adapter API
+   - [azure/](./docs/generated/azure/) - Azure STT adapter API
+   - [speechmatics/](./docs/generated/speechmatics/) - Speechmatics adapter API
+
+**Most Important Files**:
+- `docs/generated/router/router/voice-router.md` - Main router class
+- `docs/generated/router/router/types.md` - Core types
+- `docs/generated/webhooks/webhook-router.md` - Webhook handling
+
+### Developer Documentation
+
+- **[docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md)** - Quick reference for developers
+- **[docs/SDK_GENERATION_WORKFLOW.md](./docs/SDK_GENERATION_WORKFLOW.md)** - Technical workflow
 
 ## Provider Setup Guides
 
