@@ -95,7 +95,9 @@ function fixDeepgramParameters(content, filePath) {
 
   // Case 1: Has const but might have duplicate properties or malformed syntax
   if (hasConstDeclaration) {
-    const constLineIndex = lines.findIndex(line => line.includes(`export const ${capitalizedParamName} = {`))
+    const constLineIndex = lines.findIndex((line) =>
+      line.includes(`export const ${capitalizedParamName} = {`)
+    )
 
     if (constLineIndex >= 0) {
       // Find the closing brace
@@ -133,20 +135,22 @@ function fixDeepgramParameters(content, filePath) {
         if (uniqueProps.length > 0) {
           // Reconstruct the file
           let header = ""
-          let hasTypeDecl = false
+          let typeLineIndex = -1
 
           // Find type declaration if it exists
           for (let i = 0; i < constLineIndex; i++) {
             if (lines[i].includes(`export type ${capitalizedParamName}`)) {
-              header = lines.slice(0, i + 1).join("\n")
-              hasTypeDecl = true
+              typeLineIndex = i
               break
             }
           }
 
-          if (!hasTypeDecl) {
-            // No type declaration found - need to add it
-            // Use header up to const (comments, etc.)
+          // Build header - everything before the type declaration (or before const if no type)
+          if (typeLineIndex >= 0) {
+            // Header is everything before the type declaration
+            header = lines.slice(0, typeLineIndex).join("\n")
+          } else {
+            // No type declaration - use header up to const (comments, etc.)
             const headerLines = []
             for (let i = 0; i < constLineIndex; i++) {
               // Skip eslint-disable and empty lines right before const
@@ -157,9 +161,10 @@ function fixDeepgramParameters(content, filePath) {
               headerLines.push(line)
             }
             header = headerLines.join("\n")
+          }
 
-            // Add type declaration
-            const reconstructed = `${header}
+          // Always add a complete type declaration
+          const reconstructed = `${header}
 
 /**
  * ${capitalizedParamName} type definition
@@ -170,17 +175,11 @@ export const ${capitalizedParamName} = {
 ${uniqueProps.join(",\n")}
 } as const
 `
+          if (typeLineIndex >= 0) {
+            fixes.push(`Fixed duplicate properties in Deepgram parameter file ${filePath}`)
+          } else {
             fixes.push(`Fixed duplicate properties and added missing type in ${filePath}`)
-            return reconstructed
           }
-
-          const reconstructed = `${header}
-
-export const ${capitalizedParamName} = {
-${uniqueProps.join(",\n")}
-} as const
-`
-          fixes.push(`Fixed duplicate properties in Deepgram parameter file ${filePath}`)
           return reconstructed
         }
       }
@@ -202,7 +201,9 @@ ${uniqueProps.join(",\n")}
     const matchedParamName = typeMatch[1]
 
     // Find where properties start and reconstruct
-    const typeLineIndex = lines.findIndex(line => line.includes(`export type ${matchedParamName}`))
+    const typeLineIndex = lines.findIndex((line) =>
+      line.includes(`export type ${matchedParamName}`)
+    )
 
     if (typeLineIndex >= 0) {
       // Collect all orphaned properties
@@ -230,34 +231,36 @@ ${uniqueProps.join(",\n")}
 
         // Normalize properties and remove duplicates
         const seenKeys = new Set()
-        const normalizedProps = properties.map(prop => {
-          // Handle malformed patterns like "opus',"
-          const malformedMatch = prop.match(/^(\w+)'\s*,?$/)
-          if (malformedMatch) {
-            const key = malformedMatch[1]
-            if (seenKeys.has(key)) return null
-            seenKeys.add(key)
-            return `  ${key}: '${key}'`
-          }
+        const normalizedProps = properties
+          .map((prop) => {
+            // Handle malformed patterns like "opus',"
+            const malformedMatch = prop.match(/^(\w+)'\s*,?$/)
+            if (malformedMatch) {
+              const key = malformedMatch[1]
+              if (seenKeys.has(key)) return null
+              seenKeys.add(key)
+              return `  ${key}: '${key}'`
+            }
 
-          // Handle normal properties, ensure proper formatting
-          if (!prop.includes(":")) return null
+            // Handle normal properties, ensure proper formatting
+            if (!prop.includes(":")) return null
 
-          // Extract key
-          const keyMatch = prop.match(/^(\w+):/)
-          if (keyMatch) {
-            const key = keyMatch[1]
-            if (seenKeys.has(key)) return null
-            seenKeys.add(key)
-          }
+            // Extract key
+            const keyMatch = prop.match(/^(\w+):/)
+            if (keyMatch) {
+              const key = keyMatch[1]
+              if (seenKeys.has(key)) return null
+              seenKeys.add(key)
+            }
 
-          // Clean up and ensure consistent format
-          let cleaned = prop.replace(/,\s*$/, "")  // Remove trailing comma
-          if (!cleaned.startsWith("  ")) {
-            cleaned = "  " + cleaned.trim()
-          }
-          return cleaned
-        }).filter(Boolean)
+            // Clean up and ensure consistent format
+            let cleaned = prop.replace(/,\s*$/, "") // Remove trailing comma
+            if (!cleaned.startsWith("  ")) {
+              cleaned = "  " + cleaned.trim()
+            }
+            return cleaned
+          })
+          .filter(Boolean)
 
         const reconstructed = `${header}
 
@@ -371,7 +374,7 @@ function fixArrayDefaults(content, filePath) {
           const unionType = values.join(" | ")
 
           constantTypes.set(constantName, `(${unionType})[]`)
-          break  // Found the default for this enum
+          break // Found the default for this enum
         }
       }
     }
@@ -419,20 +422,19 @@ function fixArrayDefaults(content, filePath) {
   let fallbackCount = 0
 
   // Single-line: .default(constantName)
-  content = content.replace(
-    /\.default\(([a-zA-Z]\w*Default)\)/g,
-    (match, constantName) => {
-      // Check if this constant is an array that doesn't have a type annotation yet
-      const hasTypeAnnotation = new RegExp(`export const ${constantName}:[^=]+=`).test(content)
-      const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(content)
+  content = content.replace(/\.default\(([a-zA-Z]\w*Default)\)/g, (match, constantName) => {
+    // Check if this constant is an array that doesn't have a type annotation yet
+    const hasTypeAnnotation = new RegExp(`export const ${constantName}:[^=]+=`).test(content)
+    const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(
+      content
+    )
 
-      if (!hasTypeAnnotation && isArrayConstant) {
-        fallbackCount++
-        return `.default(${constantName} as any)`
-      }
-      return match
+    if (!hasTypeAnnotation && isArrayConstant) {
+      fallbackCount++
+      return `.default(${constantName} as any)`
     }
-  )
+    return match
+  })
 
   // Multi-line: .default(\n      constantName\n    )
   content = content.replace(
@@ -440,7 +442,9 @@ function fixArrayDefaults(content, filePath) {
     (match, constantName) => {
       // Check if this constant is an array that doesn't have a type annotation yet
       const hasTypeAnnotation = new RegExp(`export const ${constantName}:[^=]+=`).test(content)
-      const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(content)
+      const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(
+        content
+      )
 
       if (!hasTypeAnnotation && isArrayConstant) {
         fallbackCount++

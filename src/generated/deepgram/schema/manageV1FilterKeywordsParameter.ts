@@ -10,4 +10,4 @@
 /**
  * Filter for requests where keywords was used
  */
-export type ManageV1FilterKeywordsParameter = boolean;
+export type ManageV1FilterKeywordsParameter = boolean

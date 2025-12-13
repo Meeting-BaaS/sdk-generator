@@ -236,7 +236,11 @@ export class AzureSTTAdapter extends BaseAdapter {
         }
       }
 
-      const filesResponse = await transcriptionsListFiles(transcriptId, undefined, this.getAxiosConfig())
+      const filesResponse = await transcriptionsListFiles(
+        transcriptId,
+        undefined,
+        this.getAxiosConfig()
+      )
       const files = filesResponse.data?.values || []
 
       // Find the transcription result file

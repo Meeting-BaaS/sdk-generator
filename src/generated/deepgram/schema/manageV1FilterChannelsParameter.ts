@@ -10,4 +10,4 @@
 /**
  * Filter for requests where channels were used
  */
-export type ManageV1FilterChannelsParameter = boolean;
+export type ManageV1FilterChannelsParameter = boolean
