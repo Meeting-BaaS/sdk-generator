@@ -143,7 +143,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
     piiRedaction: true
   }
 
-  protected baseUrl = "https://api.assemblyai.com/v2"
+  protected baseUrl = "https://api.assemblyai.com" // Generated functions already include /v2 path
   private wsBaseUrl = "wss://api.assemblyai.com/v2/realtime/ws"
 
   /**
@@ -485,7 +485,6 @@ export class AssemblyAIAdapter extends BaseAdapter {
       }))
     }))
   }
-
 
   /**
    * Stream audio for real-time transcription

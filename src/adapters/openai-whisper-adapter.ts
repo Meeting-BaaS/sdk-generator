@@ -3,7 +3,7 @@
  * Documentation: https://platform.openai.com/docs/guides/speech-to-text
  */
 
-import axios, { type AxiosInstance } from "axios"
+import axios from "axios"
 import type {
   AudioInput,
   ProviderCapabilities,
@@ -12,7 +12,11 @@ import type {
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
+// Import generated API client function - FULL TYPE SAFETY!
+import { createTranscription } from "../generated/openai/api/openAIAPI"
+
 // Import OpenAI generated types
+import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
 import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
 import type { AudioTranscriptionModel } from "../generated/openai/schema/audioTranscriptionModel"
@@ -116,23 +120,14 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
     piiRedaction: false
   }
 
-  private client?: AxiosInstance
   protected baseUrl = "https://api.openai.com/v1"
 
-  initialize(config: ProviderConfig): void {
-    super.initialize(config)
-
-    this.baseUrl = config.baseUrl || this.baseUrl
-
-    this.client = axios.create({
-      baseURL: this.baseUrl,
-      timeout: config.timeout || 120000, // 2 minutes default (audio processing can take time)
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-        "Content-Type": "multipart/form-data",
-        ...config.headers
-      }
-    })
+  /**
+   * Get axios config for generated API client functions
+   * Configures headers and base URL using Bearer token authorization
+   */
+  protected getAxiosConfig() {
+    return super.getAxiosConfig("Authorization", (apiKey) => `Bearer ${apiKey}`)
   }
 
   /**
@@ -193,64 +188,54 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       const isDiarization = model === "gpt-4o-transcribe-diarize"
       const needsWords = options?.wordTimestamps === true
 
-      // Build request body as plain object for axios
-      const requestBody: Record<string, any> = {
-        file: audioData,
-        model
+      // Build typed request using generated types
+      const request: CreateTranscriptionRequest = {
+        file: audioData as any, // Generated type expects Blob
+        model: model as AudioTranscriptionModel
       }
 
       // Add optional parameters
       if (options?.language) {
-        requestBody.language = options.language
+        request.language = options.language
       }
 
       if (options?.metadata?.prompt) {
-        requestBody.prompt = options.metadata.prompt
+        request.prompt = options.metadata.prompt as string
       }
 
       if (options?.metadata?.temperature !== undefined) {
-        requestBody.temperature = options.metadata.temperature
+        request.temperature = options.metadata.temperature as number
       }
 
       if (isDiarization) {
         // Diarization model returns diarized_json format
-        requestBody.response_format = "diarized_json"
+        request.response_format = "diarized_json"
 
         // Add known speakers if provided
         if (options?.metadata?.knownSpeakerNames) {
-          requestBody["known_speaker_names"] = options.metadata.knownSpeakerNames as string[]
+          request.known_speaker_names = options.metadata.knownSpeakerNames as string[]
         }
 
         if (options?.metadata?.knownSpeakerReferences) {
-          requestBody["known_speaker_references"] = options.metadata
-            .knownSpeakerReferences as string[]
+          request.known_speaker_references = options.metadata.knownSpeakerReferences as string[]
         }
       } else if (needsWords || options?.diarization) {
         // Use verbose_json for word timestamps
-        requestBody.response_format = "verbose_json"
+        request.response_format = "verbose_json"
 
         // Add timestamp granularities
         if (needsWords) {
-          requestBody.timestamp_granularities = ["word", "segment"]
+          request.timestamp_granularities = ["word", "segment"]
         }
       } else {
         // Simple json format for basic transcription
-        requestBody.response_format = "json"
+        request.response_format = "json"
       }
 
-      // Make API request
-      // Note: axios automatically handles multipart/form-data when body contains File/Blob
-      const response = await this.client!.post<
-        | CreateTranscriptionResponseVerboseJson
-        | CreateTranscriptionResponseDiarizedJson
-        | { text: string }
-      >("/audio/transcriptions", requestBody, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      })
+      // Use generated API client function - FULLY TYPED!
+      const response = await createTranscription(request, this.getAxiosConfig())
 
-      return this.normalizeResponse(response.data, model, isDiarization)
+      return this.normalizeResponse(response.data as any, model, isDiarization)
     } catch (error) {
       return this.createErrorResponse(error)
     }

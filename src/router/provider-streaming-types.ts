@@ -98,14 +98,13 @@ export type ProviderStreamingOptions =
 /**
  * Type-safe streaming options for a specific provider
  */
-export type StreamingOptionsForProvider<P extends StreamingProvider> =
-  P extends "gladia"
-    ? GladiaStreamingOptions
-    : P extends "deepgram"
-      ? DeepgramStreamingOptions
-      : P extends "assemblyai"
-        ? AssemblyAIStreamingOptions
-        : never
+export type StreamingOptionsForProvider<P extends StreamingProvider> = P extends "gladia"
+  ? GladiaStreamingOptions
+  : P extends "deepgram"
+    ? DeepgramStreamingOptions
+    : P extends "assemblyai"
+      ? AssemblyAIStreamingOptions
+      : never
 
 /**
  * Type-safe transcribeStream parameters for a specific provider

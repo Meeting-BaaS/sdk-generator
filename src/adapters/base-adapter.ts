@@ -160,7 +160,7 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
   abstract getTranscript(transcriptId: string): Promise<UnifiedTranscriptResponse>
 
   /**
-   * Helper method to create error responses
+   * Helper method to create error responses with stack traces
    *
    * @param error - Error object or unknown error
    * @param statusCode - Optional HTTP status code
@@ -171,15 +171,36 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
     statusCode?: number,
     code?: ErrorCode
   ): UnifiedTranscriptResponse {
-    const err = error as Error & { statusCode?: number; code?: string }
+    const err = error as Error & {
+      statusCode?: number
+      code?: string
+      response?: { data?: any; status?: number; statusText?: string }
+    }
+
+    // Extract HTTP error details if present (axios errors)
+    const httpStatus = statusCode || err.statusCode || err.response?.status
+    const httpStatusText = err.response?.statusText
+    const responseData = err.response?.data
+
     return {
       success: false,
       provider: this.name,
       error: {
         code: code || err.code || ERROR_CODES.UNKNOWN_ERROR,
         message: err.message || "An unknown error occurred",
-        statusCode: statusCode || err.statusCode,
-        details: error
+        statusCode: httpStatus,
+        details: {
+          // Include full error object
+          error: error,
+          // Include stack trace if available
+          stack: err.stack,
+          // Include HTTP response details
+          httpStatus,
+          httpStatusText,
+          responseData,
+          // Include provider name for debugging
+          provider: this.name
+        }
       }
     }
   }
@@ -213,9 +234,7 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
   } {
     this.validateConfig()
 
-    const authValue = authHeaderValue
-      ? authHeaderValue(this.config!.apiKey)
-      : this.config!.apiKey
+    const authValue = authHeaderValue ? authHeaderValue(this.config!.apiKey) : this.config!.apiKey
 
     return {
       baseURL: this.config!.baseUrl || this.baseUrl,
