@@ -10,4 +10,4 @@
 /**
  * Identifies and extracts key entities from content in submitted audio
  */
-export type ListenV1DetectEntitiesParameter = boolean
+export type ListenV1DetectEntitiesParameter = boolean;

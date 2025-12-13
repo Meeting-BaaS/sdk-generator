@@ -10,4 +10,4 @@
 /**
  * Filter for requests where encoding was used
  */
-export type ManageV1FilterEncodingParameter = boolean
+export type ManageV1FilterEncodingParameter = boolean;

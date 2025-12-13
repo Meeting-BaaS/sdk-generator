@@ -10,4 +10,4 @@
 /**
  * Transcribe each audio channel independently
  */
-export type ListenV1MultichannelParameter = boolean
+export type ListenV1MultichannelParameter = boolean;

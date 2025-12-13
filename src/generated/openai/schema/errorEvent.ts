@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.3.0
  */
 
-import type { Error as ErrorType } from "./error"
+import type { Error } from "./error"
 import type { ErrorEventEvent } from "./errorEventEvent"
 
 /**
@@ -14,5 +14,5 @@ import type { ErrorEventEvent } from "./errorEventEvent"
  */
 export interface ErrorEvent {
   event: ErrorEventEvent
-  data: ErrorType
+  data: Error
 }

@@ -10,4 +10,4 @@
 /**
  * Dictation mode for controlling formatting with dictated speech
  */
-export type ListenV1DictationParameter = boolean
+export type ListenV1DictationParameter = boolean;

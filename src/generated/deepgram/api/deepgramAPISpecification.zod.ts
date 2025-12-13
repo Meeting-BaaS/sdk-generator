@@ -1349,7 +1349,7 @@ export const selfHostedV1DistributionCredentialsCreateQueryParams = zod.object({
         "self-hosted:product:metrics-server"
       ])
     )
-    .default(() => ["self-hosted:products"] as any)
+    .default(selfHostedV1DistributionCredentialsCreateQueryScopesDefault as any)
     .describe("List of permission scopes for the credentials"),
   provider: zod
     .enum(["quay"])

@@ -7,10 +7,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SelfHostedV1ParamsDistributionProviderParameter =
-  (typeof SelfHostedV1ParamsDistributionProviderParameter)[keyof typeof SelfHostedV1ParamsDistributionProviderParameter]
+export type SelfHostedV1ParamsDistributionProviderParameter = typeof SelfHostedV1ParamsDistributionProviderParameter[keyof typeof SelfHostedV1ParamsDistributionProviderParameter];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SelfHostedV1ParamsDistributionProviderParameter = {
-  quay: "quay"
+  quay: 'quay'
 } as const

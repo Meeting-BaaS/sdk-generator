@@ -10,4 +10,4 @@
 /**
  * Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely
  */
-export type ListenV1ProfanityFilterParameter = boolean
+export type ListenV1ProfanityFilterParameter = boolean;

@@ -10,12 +10,10 @@
 /**
  * Method type for the request
  */
-export type ManageV1FilterMethodParameter =
-  (typeof ManageV1FilterMethodParameter)[keyof typeof ManageV1FilterMethodParameter]
+export type ManageV1FilterMethodParameter = typeof ManageV1FilterMethodParameter[keyof typeof ManageV1FilterMethodParameter];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ManageV1FilterMethodParameter = {
-  sync: "sync",
-  async: "async",
-  streaming: "streaming"
+  sync: 'sync',
+  async: 'async',
+  streaming: 'streaming'
 } as const

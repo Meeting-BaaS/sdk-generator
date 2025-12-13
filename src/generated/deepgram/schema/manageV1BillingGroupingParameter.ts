@@ -6,9 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ManageV1BillingGroupingParameterItem } from "./manageV1BillingGroupingParameterItem"
+import type { ManageV1BillingGroupingParameterItem } from './manageV1BillingGroupingParameterItem';
 
 /**
  * Group billing breakdown by one or more dimensions (accessor, deployment, line_item, tags)
  */
-export type ManageV1BillingGroupingParameter = ManageV1BillingGroupingParameterItem[]
+export type ManageV1BillingGroupingParameter = ManageV1BillingGroupingParameterItem[];

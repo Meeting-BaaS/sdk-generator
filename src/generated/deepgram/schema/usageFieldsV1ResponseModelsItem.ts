@@ -9,11 +9,11 @@
 
 export type UsageFieldsV1ResponseModelsItem = {
   /** Name of the model. */
-  name?: string
+  name?: string;
   /** The language supported by the model (IETF language tag). */
-  language?: string
+  language?: string;
   /** Version identifier of the model, typically with a date and a revision number. */
-  version?: string
+  version?: string;
   /** Unique identifier for the model. */
-  model_id?: string
-}
+  model_id?: string;
+};

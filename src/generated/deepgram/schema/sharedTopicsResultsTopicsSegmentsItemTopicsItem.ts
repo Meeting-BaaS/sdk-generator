@@ -8,6 +8,6 @@
  */
 
 export type SharedTopicsResultsTopicsSegmentsItemTopicsItem = {
-  topic?: string
-  confidence_score?: number
-}
+  topic?: string;
+  confidence_score?: number;
+};

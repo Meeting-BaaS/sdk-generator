@@ -60,57 +60,220 @@ function fixExtraCommas(content, filePath) {
 }
 
 /**
- * Fix malformed Deepgram parameter files
- * Example:
+ * Fix malformed Deepgram parameter files where the const object declaration is missing
+ * Example malformed input:
  *   export type Foo = typeof Foo[keyof typeof Foo] ;
- *   ,
- *   NUMBER_16000: 16000,
+ *   prop1',
+ *     prop2: 'value',
+ *   } as const
  *
  * Should be:
+ *   export type Foo = typeof Foo[keyof typeof Foo];
  *   export const Foo = {
- *   NUMBER_16000: 16000,
+ *     prop1: 'prop1',
+ *     prop2: 'value',
+ *   } as const;
  */
 function fixDeepgramParameters(content, filePath) {
-  const before = content
-
-  // Pattern: export type Foo = ... ;\n,\n  prop: value,
-  // This indicates the object definition got separated from the type
-  const pattern =
-    /(export type \w+Parameter = typeof \w+Parameter\[keyof typeof \w+Parameter\] ;\s*),\s*\n/g
-
-  if (pattern.test(content)) {
-    // This file is malformed - likely the object definition is missing
-    // Try to reconstruct by finding the orphaned object
-    const lines = content.split("\n")
-    let fixed = []
-    let skipNext = false
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i]
-
-      // Skip lone commas
-      if (line.trim() === ",") {
-        skipNext = true
-        continue
-      }
-
-      // If we just skipped a comma and this looks like an object property
-      if (skipNext && /^\s+\w+:/.test(line)) {
-        // This is part of an orphaned object - skip this file for now
-        // These need manual fixing or spec correction
-        fixes.push(`⚠️  SKIPPED malformed file ${filePath} - needs manual fix or spec correction`)
-        return before // Return original, don't try to auto-fix
-      }
-
-      fixed.push(line)
-      skipNext = false
-    }
-
-    content = fixed.join("\n")
+  if (!filePath.includes("/deepgram/schema/") || !filePath.includes("Parameter.ts")) {
+    return content
   }
 
-  if (content !== before) {
-    fixes.push(`Fixed Deepgram parameter syntax in ${filePath}`)
+  const before = content
+  const lines = content.split("\n")
+
+  // Extract parameter name from filename
+  const paramNameMatch = filePath.match(/\/(\w+Parameter)\.ts$/)
+  if (!paramNameMatch) return content
+
+  const paramName = paramNameMatch[1]
+  const capitalizedParamName = paramName.charAt(0).toUpperCase() + paramName.slice(1)
+
+  // Check if file has export const declaration
+  const hasConstDeclaration = content.includes(`export const ${capitalizedParamName} = {`)
+  const hasTypeDeclaration = content.includes(`export type ${capitalizedParamName}`)
+
+  // Case 1: Has const but might have duplicate properties or malformed syntax
+  if (hasConstDeclaration) {
+    const constLineIndex = lines.findIndex(line => line.includes(`export const ${capitalizedParamName} = {`))
+
+    if (constLineIndex >= 0) {
+      // Find the closing brace
+      let endIndex = -1
+      for (let i = constLineIndex + 1; i < lines.length; i++) {
+        if (lines[i].includes("} as const")) {
+          endIndex = i
+          break
+        }
+      }
+
+      if (endIndex > constLineIndex) {
+        // Extract properties and remove duplicates
+        const propertiesSection = lines.slice(constLineIndex + 1, endIndex)
+        const seenKeys = new Set()
+        const uniqueProps = []
+
+        for (const line of propertiesSection) {
+          const trimmed = line.trim()
+          if (trimmed === "") continue
+
+          // Extract key from property
+          const keyMatch = trimmed.match(/^(\w+):/)
+          if (keyMatch) {
+            const key = keyMatch[1]
+            if (!seenKeys.has(key)) {
+              seenKeys.add(key)
+              // Clean up the property line
+              let cleaned = trimmed.replace(/,\s*$/, "")
+              uniqueProps.push(`  ${cleaned}`)
+            }
+          }
+        }
+
+        if (uniqueProps.length > 0) {
+          // Reconstruct the file
+          let header = ""
+          let hasTypeDecl = false
+
+          // Find type declaration if it exists
+          for (let i = 0; i < constLineIndex; i++) {
+            if (lines[i].includes(`export type ${capitalizedParamName}`)) {
+              header = lines.slice(0, i + 1).join("\n")
+              hasTypeDecl = true
+              break
+            }
+          }
+
+          if (!hasTypeDecl) {
+            // No type declaration found - need to add it
+            // Use header up to const (comments, etc.)
+            const headerLines = []
+            for (let i = 0; i < constLineIndex; i++) {
+              // Skip eslint-disable and empty lines right before const
+              const line = lines[i]
+              if (line.includes("eslint-disable") && i === constLineIndex - 1) {
+                continue
+              }
+              headerLines.push(line)
+            }
+            header = headerLines.join("\n")
+
+            // Add type declaration
+            const reconstructed = `${header}
+
+/**
+ * ${capitalizedParamName} type definition
+ */
+export type ${capitalizedParamName} = typeof ${capitalizedParamName}[keyof typeof ${capitalizedParamName}];
+
+export const ${capitalizedParamName} = {
+${uniqueProps.join(",\n")}
+} as const
+`
+            fixes.push(`Fixed duplicate properties and added missing type in ${filePath}`)
+            return reconstructed
+          }
+
+          const reconstructed = `${header}
+
+export const ${capitalizedParamName} = {
+${uniqueProps.join(",\n")}
+} as const
+`
+          fixes.push(`Fixed duplicate properties in Deepgram parameter file ${filePath}`)
+          return reconstructed
+        }
+      }
+    }
+
+    // Fix malformed closing syntax like `} as const] ;`
+    if (content.includes("} as const]")) {
+      content = content.replace(/\} as const\]\s*;/g, "} as const")
+      fixes.push(`Fixed malformed closing syntax in ${filePath}`)
+    }
+
+    return content
+  }
+
+  // Case 2: Missing const declaration - reconstruct from orphaned properties
+  const typeMatch = content.match(/export type (\w+Parameter) = typeof \1\[keyof typeof \1\]\s*;/)
+
+  if (typeMatch && !hasConstDeclaration) {
+    const matchedParamName = typeMatch[1]
+
+    // Find where properties start and reconstruct
+    const typeLineIndex = lines.findIndex(line => line.includes(`export type ${matchedParamName}`))
+
+    if (typeLineIndex >= 0) {
+      // Collect all orphaned properties
+      const properties = []
+      let foundAsConst = false
+
+      for (let i = typeLineIndex + 1; i < lines.length; i++) {
+        const line = lines[i].trim()
+
+        if (line === "") continue
+        if (line.includes("} as const")) {
+          foundAsConst = true
+          break
+        }
+
+        // Match property patterns: "prop:" or "prop',"
+        if (line.match(/^(\w+)['"]?\s*[:,]/) || line.match(/^(\w+):/)) {
+          properties.push(line)
+        }
+      }
+
+      if (foundAsConst && properties.length > 0) {
+        // Reconstruct the file properly
+        const header = lines.slice(0, typeLineIndex + 1).join("\n")
+
+        // Normalize properties and remove duplicates
+        const seenKeys = new Set()
+        const normalizedProps = properties.map(prop => {
+          // Handle malformed patterns like "opus',"
+          const malformedMatch = prop.match(/^(\w+)'\s*,?$/)
+          if (malformedMatch) {
+            const key = malformedMatch[1]
+            if (seenKeys.has(key)) return null
+            seenKeys.add(key)
+            return `  ${key}: '${key}'`
+          }
+
+          // Handle normal properties, ensure proper formatting
+          if (!prop.includes(":")) return null
+
+          // Extract key
+          const keyMatch = prop.match(/^(\w+):/)
+          if (keyMatch) {
+            const key = keyMatch[1]
+            if (seenKeys.has(key)) return null
+            seenKeys.add(key)
+          }
+
+          // Clean up and ensure consistent format
+          let cleaned = prop.replace(/,\s*$/, "")  // Remove trailing comma
+          if (!cleaned.startsWith("  ")) {
+            cleaned = "  " + cleaned.trim()
+          }
+          return cleaned
+        }).filter(Boolean)
+
+        const reconstructed = `${header}
+
+export const ${matchedParamName} = {
+${normalizedProps.join(",\n")}
+} as const
+`
+
+        fixes.push(`Reconstructed malformed Deepgram parameter file ${filePath}`)
+        return reconstructed
+      }
+    }
+
+    // If we couldn't reconstruct, warn and return original
+    fixes.push(`⚠️  SKIPPED malformed file ${filePath} - could not reconstruct`)
+    return before
   }
 
   return content
@@ -171,44 +334,124 @@ function fixErrorTypeShadowing(content, filePath) {
 }
 
 /**
- * Fix array default values by inlining them in .default() calls
+ * Fix array default values by adding proper type annotations
  * Zod enums need specific tuple types, but default constants are inferred as string[]
- * Solution: Replace .default(constantName) with .default(() => [...])
+ * Solution: Add union type annotation to the array constant (e.g., ("word" | "segment")[])
  */
 function fixArrayDefaults(content, filePath) {
   const before = content
 
-  // Find all array default constant definitions and store them
-  const defaults = {}
+  // Strategy: Find all enum definitions and their associated default constants
+  // Look for patterns like:
+  // .enum([values]) ... .default(constantName)
+  // Can be across multiple lines with various method calls in between
 
-  // Pattern 1: Single-line arrays
-  const singleLineRegex = /^export const (\w+Default) = (\[[^\]]+\])/gm
-  let match
-  while ((match = singleLineRegex.exec(content)) !== null) {
-    defaults[match[1]] = match[2]
+  const constantTypes = new Map()
+
+  // Split content into lines for easier processing
+  const lines = content.split("\n")
+
+  // Track when we see an enum and look ahead for a matching .default()
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+
+    // Find enum definitions: .enum(["value1", "value2"])
+    const enumMatch = line.match(/\.enum\((\[[^\]]+\])\)/)
+    if (enumMatch) {
+      const enumArray = enumMatch[1]
+
+      // Look ahead for .default() calls (within next 20 lines to handle deeply nested structures)
+      for (let j = i; j < Math.min(i + 20, lines.length); j++) {
+        const defaultMatch = lines[j].match(/\.default\(([a-zA-Z]\w*Default)\)/)
+        if (defaultMatch) {
+          const constantName = defaultMatch[1]
+
+          // Parse enum values to create a union type
+          const values = enumArray.match(/"([^"]+)"|'([^']+)'/g) || []
+          const unionType = values.join(" | ")
+
+          constantTypes.set(constantName, `(${unionType})[]`)
+          break  // Found the default for this enum
+        }
+      }
+    }
   }
 
-  // Pattern 2: Multi-line arrays (const name =\n  [content])
-  const multiLineRegex = /^export const (\w+Default) =\s*\n\s*(\[[^\]]+\])/gm
-  while ((match = multiLineRegex.exec(content)) !== null) {
-    defaults[match[1]] = match[2]
+  // Add type annotations to the array constants
+  // Handle both single-line and multi-line definitions manually
+  let fixCount = 0
+  const contentLines = content.split("\n")
+
+  for (const [constantName, typeAnnotation] of constantTypes.entries()) {
+    // Find the line with the constant declaration
+    for (let i = 0; i < contentLines.length; i++) {
+      if (contentLines[i].includes(`export const ${constantName} =`)) {
+        // Check if array is on same line
+        if (contentLines[i].includes("[") && contentLines[i].includes("]")) {
+          // Single line: export const Foo = [...]
+          contentLines[i] = contentLines[i].replace(
+            `export const ${constantName} =`,
+            `export const ${constantName}: ${typeAnnotation} =`
+          )
+          fixCount++
+        } else if (i + 1 < contentLines.length && contentLines[i + 1].trim().startsWith("[")) {
+          // Multi-line: export const Foo =\n  [...]
+          contentLines[i] = contentLines[i].replace(
+            `export const ${constantName} =`,
+            `export const ${constantName}: ${typeAnnotation} =`
+          )
+          fixCount++
+        }
+        break
+      }
+    }
   }
 
-  // Replace .default(constantName) with .default(() => [...] as any)
-  // The 'as any' is needed because TypeScript can't infer the exact enum type
+  content = contentLines.join("\n")
+
+  if (fixCount > 0) {
+    fixes.push(`Added type annotations to array defaults in ${filePath} (${fixCount} constants)`)
+  }
+
+  // Fallback: For any remaining .default(arrayConstant) without type annotation, use 'as any'
+  // This catches constants that are too far from their enum definition
   // Handle both single-line and multi-line .default() calls
-  for (const [constName, arrayValue] of Object.entries(defaults)) {
-    // Single-line: .default(constantName)
-    const singleLinePattern = new RegExp(`\\.default\\(${constName}\\)`, "g")
-    content = content.replace(singleLinePattern, `.default(() => ${arrayValue} as any)`)
+  let fallbackCount = 0
 
-    // Multi-line: .default(\n      constantName\n    )
-    const multiLinePattern = new RegExp(`\\.default\\(\\s*\\n\\s*${constName}\\s*\\n\\s*\\)`, "g")
-    content = content.replace(multiLinePattern, `.default(() => ${arrayValue} as any)`)
-  }
+  // Single-line: .default(constantName)
+  content = content.replace(
+    /\.default\(([a-zA-Z]\w*Default)\)/g,
+    (match, constantName) => {
+      // Check if this constant is an array that doesn't have a type annotation yet
+      const hasTypeAnnotation = new RegExp(`export const ${constantName}:[^=]+=`).test(content)
+      const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(content)
 
-  if (content !== before) {
-    fixes.push(`Inlined array defaults in .default() calls in ${filePath}`)
+      if (!hasTypeAnnotation && isArrayConstant) {
+        fallbackCount++
+        return `.default(${constantName} as any)`
+      }
+      return match
+    }
+  )
+
+  // Multi-line: .default(\n      constantName\n    )
+  content = content.replace(
+    /\.default\(\s*\n\s*([a-zA-Z]\w*Default)\s*\n\s*\)/g,
+    (match, constantName) => {
+      // Check if this constant is an array that doesn't have a type annotation yet
+      const hasTypeAnnotation = new RegExp(`export const ${constantName}:[^=]+=`).test(content)
+      const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(content)
+
+      if (!hasTypeAnnotation && isArrayConstant) {
+        fallbackCount++
+        return `.default(${constantName} as any)`
+      }
+      return match
+    }
+  )
+
+  if (fallbackCount > 0) {
+    fixes.push(`Added 'as any' fallback for ${fallbackCount} array defaults in ${filePath}`)
   }
 
   return content

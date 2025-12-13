@@ -10,4 +10,4 @@
 /**
  * Filter for requests where alternatives were used
  */
-export type ManageV1FilterAlternativesParameter = boolean
+export type ManageV1FilterAlternativesParameter = boolean;

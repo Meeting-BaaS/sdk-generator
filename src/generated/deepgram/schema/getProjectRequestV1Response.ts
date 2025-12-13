@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ProjectRequestResponse } from "./projectRequestResponse"
+import type { ProjectRequestResponse } from './projectRequestResponse';
 
 export interface GetProjectRequestV1Response {
-  request?: ProjectRequestResponse
+  request?: ProjectRequestResponse;
 }

@@ -10,4 +10,4 @@
 /**
  * Filter for requests where a specific model uuid was used
  */
-export type ManageV1FilterModelParameter = string
+export type ManageV1FilterModelParameter = string;

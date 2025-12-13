@@ -6,11 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedTopicsResults } from "./sharedTopicsResults"
+import type { SharedTopicsResults } from './sharedTopicsResults';
 
 /**
  * Output whenever `topics=true` is used
  */
 export interface SharedTopics {
-  results?: SharedTopicsResults
+  results?: SharedTopicsResults;
 }

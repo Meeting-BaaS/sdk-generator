@@ -10,4 +10,4 @@
 /**
  * Filler Words can help transcribe interruptions in your audio, like "uh" and "um"
  */
-export type ListenV1FillerWordsParameter = boolean
+export type ListenV1FillerWordsParameter = boolean;

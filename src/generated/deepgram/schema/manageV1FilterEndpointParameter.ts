@@ -7,13 +7,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ManageV1FilterEndpointParameter =
-  (typeof ManageV1FilterEndpointParameter)[keyof typeof ManageV1FilterEndpointParameter]
+export type ManageV1FilterEndpointParameter = typeof ManageV1FilterEndpointParameter[keyof typeof ManageV1FilterEndpointParameter];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ManageV1FilterEndpointParameter = {
-  listen: "listen",
-  read: "read",
-  speak: "speak",
-  agent: "agent"
+  listen: 'listen',
+  read: 'read',
+  speak: 'speak',
+  agent: 'agent'
 } as const

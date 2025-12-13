@@ -10,4 +10,4 @@
 /**
  * Filter for requests where diarize was used
  */
-export type ManageV1FilterDiarizeParameter = boolean
+export type ManageV1FilterDiarizeParameter = boolean;

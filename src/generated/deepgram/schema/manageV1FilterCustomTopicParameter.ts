@@ -10,4 +10,4 @@
 /**
  * Filter for requests where custom topic was used
  */
-export type ManageV1FilterCustomTopicParameter = boolean
+export type ManageV1FilterCustomTopicParameter = boolean;

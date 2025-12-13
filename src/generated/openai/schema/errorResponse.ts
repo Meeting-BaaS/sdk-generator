@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Error as ErrorType } from "./error"
+import type { Error } from "./error"
 
 export interface ErrorResponse {
-  error: ErrorType
+  error: Error
 }

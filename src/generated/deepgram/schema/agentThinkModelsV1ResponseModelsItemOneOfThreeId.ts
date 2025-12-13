@@ -10,11 +10,11 @@
 /**
  * The unique identifier of the Anthropic model
  */
-export type AgentThinkModelsV1ResponseModelsItemOneOfThreeId =
-  (typeof AgentThinkModelsV1ResponseModelsItemOneOfThreeId)[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfThreeId]
+export type AgentThinkModelsV1ResponseModelsItemOneOfThreeId = typeof AgentThinkModelsV1ResponseModelsItemOneOfThreeId[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfThreeId];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AgentThinkModelsV1ResponseModelsItemOneOfThreeId = {
-  "claude-3-5-haiku-latest": "claude-3-5-haiku-latest",
-  "claude-sonnet-4-20250514": "claude-sonnet-4-20250514"
-} as const
+  'claude-3-5-haiku-latest': 'claude-3-5-haiku-latest',
+  'claude-sonnet-4-20250514': 'claude-sonnet-4-20250514',
+} as const;
