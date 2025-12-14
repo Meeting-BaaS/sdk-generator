@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { GetProjectKeyV1ResponseItem } from "./getProjectKeyV1ResponseItem"
+import type { GetProjectKeyV1ResponseItem } from './getProjectKeyV1ResponseItem';
 
 export interface GetProjectKeyV1Response {
-  item?: GetProjectKeyV1ResponseItem
+  item?: GetProjectKeyV1ResponseItem;
 }

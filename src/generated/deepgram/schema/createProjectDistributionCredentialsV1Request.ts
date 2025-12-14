@@ -12,5 +12,5 @@
  */
 export interface CreateProjectDistributionCredentialsV1Request {
   /** Optional comment about the credentials */
-  comment?: string
+  comment?: string;
 }

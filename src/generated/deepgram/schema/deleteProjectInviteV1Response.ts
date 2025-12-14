@@ -9,5 +9,5 @@
 
 export interface DeleteProjectInviteV1Response {
   /** confirmation message */
-  message?: string
+  message?: string;
 }

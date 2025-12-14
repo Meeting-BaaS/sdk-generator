@@ -9,5 +9,5 @@
 
 export interface UpdateProjectMemberScopesV1Request {
   /** A scope to update */
-  scope: string
+  scope: string;
 }

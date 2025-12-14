@@ -6,12 +6,12 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem"
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem } from './listenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem';
 
 export type ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItem = {
-  sentences?: ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem[]
-  speaker?: number
-  num_words?: number
-  start?: number
-  end?: number
-}
+  sentences?: ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem[];
+  speaker?: number;
+  num_words?: number;
+  start?: number;
+  end?: number;
+};

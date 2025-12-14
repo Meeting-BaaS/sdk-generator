@@ -7,17 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * ManageV1FilterEndpointParameter type definition
- */
-
-/**
- * ManageV1FilterEndpointParameter type definition
- */
-
-/**
- * ManageV1FilterEndpointParameter type definition
- */
 
 /**
  * ManageV1FilterEndpointParameter type definition
@@ -33,8 +22,8 @@
 export type ManageV1FilterEndpointParameter = typeof ManageV1FilterEndpointParameter[keyof typeof ManageV1FilterEndpointParameter];
 
 export const ManageV1FilterEndpointParameter = {
-  listen: "listen",
-  read: "read",
-  speak: "speak",
-  agent: "agent"
+  listen: 'listen',
+  read: 'read',
+  speak: 'speak',
+  agent: 'agent'
 } as const

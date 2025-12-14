@@ -6,7 +6,7 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ReadV1RequestUrl } from "./readV1RequestUrl"
-import type { ReadV1RequestText } from "./readV1RequestText"
+import type { ReadV1RequestUrl } from './readV1RequestUrl';
+import type { ReadV1RequestText } from './readV1RequestText';
 
-export type ReadV1Request = ReadV1RequestUrl | ReadV1RequestText
+export type ReadV1Request = ReadV1RequestUrl | ReadV1RequestText;

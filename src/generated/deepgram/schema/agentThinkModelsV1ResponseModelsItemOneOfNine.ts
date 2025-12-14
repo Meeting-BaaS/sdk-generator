@@ -12,9 +12,9 @@
  */
 export type AgentThinkModelsV1ResponseModelsItemOneOfNine = {
   /** The unique identifier of the AWS Bedrock model (any model string accepted for BYO LLMs) */
-  id: string
+  id: string;
   /** The display name of the model */
-  name: string
+  name: string;
   /** The provider of the model */
-  provider: "aws_bedrock"
-}
+  provider: 'aws_bedrock';
+};

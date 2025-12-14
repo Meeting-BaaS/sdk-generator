@@ -6,16 +6,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { AgentThinkModelsV1ResponseModelsItemOneOfSevenId } from "./agentThinkModelsV1ResponseModelsItemOneOfSevenId"
+import type { AgentThinkModelsV1ResponseModelsItemOneOfSevenId } from './agentThinkModelsV1ResponseModelsItemOneOfSevenId';
 
 /**
  * Groq models
  */
 export type AgentThinkModelsV1ResponseModelsItemOneOfSeven = {
   /** The unique identifier of the Groq model */
-  id: AgentThinkModelsV1ResponseModelsItemOneOfSevenId
+  id: AgentThinkModelsV1ResponseModelsItemOneOfSevenId;
   /** The display name of the model */
-  name: string
+  name: string;
   /** The provider of the model */
-  provider: "groq"
-}
+  provider: 'groq';
+};

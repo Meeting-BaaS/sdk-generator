@@ -7,21 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
 
 /**
  * SpeakV1SampleRateParameter type definition
@@ -38,7 +23,10 @@ export type SpeakV1SampleRateParameter = typeof SpeakV1SampleRateParameter[keyof
 
 export const SpeakV1SampleRateParameter = {
   NUMBER_16000: 16000,
+  NUMBER_24000: 24000,
+  NUMBER_32000: 32000,
+  NUMBER_48000: 48000,
   null: null,
-  NUMBER_22050: 22050,
-  NUMBER_48000: 48000
+  NUMBER_8000: 8000,
+  NUMBER_22050: 22050
 } as const

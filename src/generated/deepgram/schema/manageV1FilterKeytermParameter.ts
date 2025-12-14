@@ -10,4 +10,4 @@
 /**
  * Filter for requests where keyterm was used
  */
-export type ManageV1FilterKeytermParameter = boolean
+export type ManageV1FilterKeytermParameter = boolean;

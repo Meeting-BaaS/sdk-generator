@@ -10,4 +10,4 @@
 /**
  * The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
  */
-export type ListenV1LanguageParameter = string
+export type ListenV1LanguageParameter = string;

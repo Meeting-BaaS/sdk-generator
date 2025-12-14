@@ -6,10 +6,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { GetProjectDistributionCredentialsV1ResponseMember } from "./getProjectDistributionCredentialsV1ResponseMember"
-import type { GetProjectDistributionCredentialsV1ResponseDistributionCredentials } from "./getProjectDistributionCredentialsV1ResponseDistributionCredentials"
+import type { GetProjectDistributionCredentialsV1ResponseMember } from './getProjectDistributionCredentialsV1ResponseMember';
+import type { GetProjectDistributionCredentialsV1ResponseDistributionCredentials } from './getProjectDistributionCredentialsV1ResponseDistributionCredentials';
 
 export interface GetProjectDistributionCredentialsV1Response {
-  member: GetProjectDistributionCredentialsV1ResponseMember
-  distribution_credentials: GetProjectDistributionCredentialsV1ResponseDistributionCredentials
+  member: GetProjectDistributionCredentialsV1ResponseMember;
+  distribution_credentials: GetProjectDistributionCredentialsV1ResponseDistributionCredentials;
 }

@@ -7,25 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * Encoding allows you to specify the expected encoding of your audio output
- */
-
-/**
- * SpeakV1EncodingParameter type definition
- */
-
-/**
- * SpeakV1EncodingParameter type definition
- */
-
-/**
- * SpeakV1EncodingParameter type definition
- */
-
-/**
- * SpeakV1EncodingParameter type definition
- */
 
 /**
  * SpeakV1EncodingParameter type definition
@@ -37,6 +18,11 @@
 export type SpeakV1EncodingParameter = typeof SpeakV1EncodingParameter[keyof typeof SpeakV1EncodingParameter];
 
 export const SpeakV1EncodingParameter = {
-  opus: "opus",
-  aac: "aac"
+  linear16: 'linear16',
+  aac: 'aac',
+  opus: 'opus',
+  mp3: 'mp3',
+  flac: 'flac',
+  mulaw: 'mulaw',
+  alaw: 'alaw'
 } as const

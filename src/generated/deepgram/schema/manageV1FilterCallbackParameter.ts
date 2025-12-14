@@ -10,4 +10,4 @@
 /**
  * Filter for requests where callback was used
  */
-export type ManageV1FilterCallbackParameter = boolean
+export type ManageV1FilterCallbackParameter = boolean;

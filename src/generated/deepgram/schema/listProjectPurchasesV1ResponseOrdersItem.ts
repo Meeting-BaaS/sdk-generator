@@ -8,10 +8,10 @@
  */
 
 export type ListProjectPurchasesV1ResponseOrdersItem = {
-  order_id?: string
-  expiration?: string
-  created?: string
-  amount?: number
-  units?: string
-  order_type?: string
-}
+  order_id?: string;
+  expiration?: string;
+  created?: string;
+  amount?: number;
+  units?: string;
+  order_type?: string;
+};

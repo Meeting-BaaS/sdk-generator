@@ -9,11 +9,11 @@
 
 export interface ErrorResponseModernError {
   /** The category of the error */
-  category?: string
+  category?: string;
   /** A message about the error */
-  message?: string
+  message?: string;
   /** A description of the error */
-  details?: string
+  details?: string;
   /** The unique identifier of the request */
-  request_id?: string
+  request_id?: string;
 }

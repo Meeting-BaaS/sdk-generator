@@ -10,4 +10,4 @@
 /**
  * Filter for requests where measurements were used
  */
-export type ManageV1FilterMeasurementsParameter = boolean
+export type ManageV1FilterMeasurementsParameter = boolean;

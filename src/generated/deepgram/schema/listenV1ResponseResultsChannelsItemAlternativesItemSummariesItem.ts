@@ -8,7 +8,7 @@
  */
 
 export type ListenV1ResponseResultsChannelsItemAlternativesItemSummariesItem = {
-  summary?: string
-  start_word?: number
-  end_word?: number
-}
+  summary?: string;
+  start_word?: number;
+  end_word?: number;
+};

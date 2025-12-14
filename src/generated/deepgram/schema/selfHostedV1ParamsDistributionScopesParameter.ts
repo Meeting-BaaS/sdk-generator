@@ -6,10 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SelfHostedV1ParamsDistributionScopesParameterItem } from "./selfHostedV1ParamsDistributionScopesParameterItem"
+import type { SelfHostedV1ParamsDistributionScopesParameterItem } from './selfHostedV1ParamsDistributionScopesParameterItem';
 
 /**
  * List of permission scopes for the credentials
  */
-export type SelfHostedV1ParamsDistributionScopesParameter =
-  SelfHostedV1ParamsDistributionScopesParameterItem[]
+export type SelfHostedV1ParamsDistributionScopesParameter = SelfHostedV1ParamsDistributionScopesParameterItem[];

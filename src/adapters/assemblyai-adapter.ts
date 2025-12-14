@@ -31,52 +31,15 @@ import type { TranscriptStatus } from "../generated/assemblyai/schema/transcript
 import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
 import type { TranscriptUtterance } from "../generated/assemblyai/schema/transcriptUtterance"
 
-// WebSocket message types (not in OpenAPI spec, manually defined)
-interface RealtimeBaseMessage {
-  message_type: string
-}
-
-interface SessionBeginsMessage extends RealtimeBaseMessage {
-  message_type: "SessionBegins"
-  session_id: string
-  expires_at: string
-}
-
-interface PartialTranscriptMessage extends RealtimeBaseMessage {
-  message_type: "PartialTranscript"
-  text: string
-  confidence: number
-  words: Array<{
-    text: string
-    start: number
-    end: number
-    confidence: number
-  }>
-}
-
-interface FinalTranscriptMessage extends RealtimeBaseMessage {
-  message_type: "FinalTranscript"
-  text: string
-  confidence: number
-  words: Array<{
-    text: string
-    start: number
-    end: number
-    confidence: number
-  }>
-  punctuated: boolean
-  text_formatted: boolean
-}
-
-interface SessionTerminatedMessage extends RealtimeBaseMessage {
-  message_type: "SessionTerminated"
-}
-
-type RealtimeMessage =
-  | SessionBeginsMessage
-  | PartialTranscriptMessage
-  | FinalTranscriptMessage
-  | SessionTerminatedMessage
+// Import AssemblyAI v3 Streaming types (auto-synced from SDK)
+import type {
+  BeginEvent,
+  TurnEvent,
+  TerminationEvent,
+  ErrorEvent,
+  StreamingEventMessage,
+  StreamingWord
+} from "../generated/assemblyai/streaming-types"
 
 /**
  * AssemblyAI transcription provider adapter
@@ -144,7 +107,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
   }
 
   protected baseUrl = "https://api.assemblyai.com" // Generated functions already include /v2 path
-  private wsBaseUrl = "wss://api.assemblyai.com/v2/realtime/ws"
+  private wsBaseUrl = "wss://streaming.assemblyai.com/v3/ws" // v3 Universal Streaming endpoint
 
   /**
    * Get axios config for generated API client functions
@@ -530,19 +493,22 @@ export class AssemblyAIAdapter extends BaseAdapter {
   ): Promise<StreamingSession> {
     this.validateConfig()
 
-    // Step 1: Get temporary token for real-time API using generated function
-    const tokenResponse = await createTemporaryToken(
-      { expires_in: 3600 }, // Token expires in 1 hour
-      this.getAxiosConfig()
-    )
+    if (!this.config?.apiKey) {
+      throw new Error("API key is required for streaming")
+    }
 
-    const token = tokenResponse.data.token
+    // Step 1: Build WebSocket URL with parameters
+    // v3 supports authentication via API key header (no token needed)
+    const sampleRate = options?.sampleRate || 16000
+    const encoding = options?.encoding || "pcm_s16le"
+    const wsUrl = `${this.wsBaseUrl}?sample_rate=${sampleRate}&encoding=${encoding}`
 
-    // Step 2: Build WebSocket URL with token
-    const wsUrl = `${this.wsBaseUrl}?sample_rate=${options?.sampleRate || 16000}&token=${token}`
-
-    // Step 3: Create WebSocket connection
-    const ws = new WebSocket(wsUrl)
+    // Step 2: Create WebSocket connection with API key in headers
+    const ws = new WebSocket(wsUrl, {
+      headers: {
+        Authorization: this.config.apiKey
+      }
+    })
 
     let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
     const sessionId = `assemblyai-${Date.now()}-${Math.random().toString(36).substring(7)}`
@@ -555,48 +521,52 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     ws.on("message", (data: Buffer) => {
       try {
-        const message = JSON.parse(data.toString()) as RealtimeMessage
+        const message = JSON.parse(data.toString()) as StreamingEventMessage
 
-        // Handle different message types from AssemblyAI - TYPE SAFE!
-        if (message.message_type === "SessionBegins") {
-          // Type narrowed to SessionBeginsMessage
+        // Handle different message types from AssemblyAI v3 - TYPE SAFE!
+        // Check for error first (it doesn't have a 'type' field)
+        if ("error" in message) {
+          // Type narrowed to ErrorEvent
+          callbacks?.onError?.({
+            code: "API_ERROR",
+            message: (message as ErrorEvent).error
+          })
+          return
+        }
+
+        // Now we know it has a 'type' field
+        if ((message as BeginEvent | TurnEvent | TerminationEvent).type === "Begin") {
+          // Type narrowed to BeginEvent
+          const beginMsg = message as BeginEvent
           callbacks?.onMetadata?.({
-            sessionId: message.session_id,
-            expiresAt: message.expires_at
+            sessionId: beginMsg.id,
+            expiresAt: new Date(beginMsg.expires_at).toISOString()
           })
-        } else if (message.message_type === "PartialTranscript") {
-          // Type narrowed to PartialTranscriptMessage
+        } else if ((message as BeginEvent | TurnEvent | TerminationEvent).type === "Turn") {
+          // Type narrowed to TurnEvent
+          const turnMsg = message as TurnEvent
+          // v3 uses a single "Turn" event with end_of_turn flag instead of PartialTranscript/FinalTranscript
           callbacks?.onTranscript?.({
             type: "transcript",
-            text: message.text,
-            isFinal: false,
-            confidence: message.confidence,
-            words: message.words.map((word) => ({
+            text: turnMsg.transcript,
+            isFinal: turnMsg.end_of_turn,
+            confidence: turnMsg.end_of_turn_confidence,
+            words: turnMsg.words.map((word: StreamingWord) => ({
               text: word.text,
-              start: word.start / 1000,
+              start: word.start / 1000, // Convert ms to seconds
               end: word.end / 1000,
               confidence: word.confidence
             })),
-            data: message
+            data: turnMsg
           })
-        } else if (message.message_type === "FinalTranscript") {
-          // Type narrowed to FinalTranscriptMessage
-          callbacks?.onTranscript?.({
-            type: "transcript",
-            text: message.text,
-            isFinal: true,
-            confidence: message.confidence,
-            words: message.words.map((word) => ({
-              text: word.text,
-              start: word.start / 1000,
-              end: word.end / 1000,
-              confidence: word.confidence
-            })),
-            data: message
+        } else if ((message as BeginEvent | TurnEvent | TerminationEvent).type === "Termination") {
+          // Type narrowed to TerminationEvent
+          const termMsg = message as TerminationEvent
+          callbacks?.onMetadata?.({
+            terminated: true,
+            audioDurationSeconds: termMsg.audio_duration_seconds,
+            sessionDurationSeconds: termMsg.session_duration_seconds
           })
-        } else if (message.message_type === "SessionTerminated") {
-          // Session ended by server
-          callbacks?.onMetadata?.({ terminated: true })
         }
       } catch (error) {
         callbacks?.onError?.({

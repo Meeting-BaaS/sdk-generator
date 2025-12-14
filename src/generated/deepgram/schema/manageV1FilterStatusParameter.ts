@@ -7,17 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * ManageV1FilterStatusParameter type definition
- */
-
-/**
- * ManageV1FilterStatusParameter type definition
- */
-
-/**
- * ManageV1FilterStatusParameter type definition
- */
 
 /**
  * ManageV1FilterStatusParameter type definition
@@ -33,6 +22,6 @@
 export type ManageV1FilterStatusParameter = typeof ManageV1FilterStatusParameter[keyof typeof ManageV1FilterStatusParameter];
 
 export const ManageV1FilterStatusParameter = {
-  succeeded: "succeeded",
-  failed: "failed"
+  succeeded: 'succeeded',
+  failed: 'failed'
 } as const

@@ -10,4 +10,4 @@
 /**
  * Filter for requests where smart format was used
  */
-export type ManageV1FilterSmartFormatParameter = boolean
+export type ManageV1FilterSmartFormatParameter = boolean;

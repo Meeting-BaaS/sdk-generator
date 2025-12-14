@@ -6,11 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedTopicsResultsTopicsSegmentsItemTopicsItem } from "./sharedTopicsResultsTopicsSegmentsItemTopicsItem"
+import type { SharedTopicsResultsTopicsSegmentsItemTopicsItem } from './sharedTopicsResultsTopicsSegmentsItemTopicsItem';
 
 export type SharedTopicsResultsTopicsSegmentsItem = {
-  text?: string
-  start_word?: number
-  end_word?: number
-  topics?: SharedTopicsResultsTopicsSegmentsItemTopicsItem[]
-}
+  text?: string;
+  start_word?: number;
+  end_word?: number;
+  topics?: SharedTopicsResultsTopicsSegmentsItemTopicsItem[];
+};

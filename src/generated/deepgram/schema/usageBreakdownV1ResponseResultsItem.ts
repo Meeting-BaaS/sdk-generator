@@ -6,22 +6,22 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { UsageBreakdownV1ResponseResultsItemGrouping } from "./usageBreakdownV1ResponseResultsItemGrouping"
+import type { UsageBreakdownV1ResponseResultsItemGrouping } from './usageBreakdownV1ResponseResultsItemGrouping';
 
 export type UsageBreakdownV1ResponseResultsItem = {
   /** Audio hours processed */
-  hours: number
+  hours: number;
   /** Total hours including all processing */
-  total_hours: number
+  total_hours: number;
   /** Agent hours used */
-  agent_hours: number
+  agent_hours: number;
   /** Number of input tokens */
-  tokens_in: number
+  tokens_in: number;
   /** Number of output tokens */
-  tokens_out: number
+  tokens_out: number;
   /** Number of text-to-speech characters processed */
-  tts_characters: number
+  tts_characters: number;
   /** Number of requests */
-  requests: number
-  grouping: UsageBreakdownV1ResponseResultsItemGrouping
-}
+  requests: number;
+  grouping: UsageBreakdownV1ResponseResultsItemGrouping;
+};

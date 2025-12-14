@@ -10,4 +10,4 @@
 /**
  * Filter for requests where detect entities was used
  */
-export type ManageV1FilterDetectEntitiesParameter = boolean
+export type ManageV1FilterDetectEntitiesParameter = boolean;
