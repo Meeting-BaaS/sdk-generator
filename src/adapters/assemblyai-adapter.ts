@@ -626,15 +626,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
           throw new Error("WebSocket is not open")
         }
 
-        // AssemblyAI expects base64-encoded audio data
-        const base64Audio = chunk.data.toString("base64")
-
-        // Send audio data as JSON message
-        ws.send(
-          JSON.stringify({
-            audio_data: base64Audio
-          })
-        )
+        // AssemblyAI v3 Universal Streaming expects raw binary audio data
+        // (not base64-encoded JSON like v2)
+        ws.send(chunk.data)
 
         // Send termination message if this is the last chunk
         if (chunk.isLast) {
