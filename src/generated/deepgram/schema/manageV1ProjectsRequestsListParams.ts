@@ -6,56 +6,56 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ManageV1StartDateTimeParameter } from './manageV1StartDateTimeParameter';
-import type { ManageV1EndDateTimeParameter } from './manageV1EndDateTimeParameter';
-import type { ManageV1LimitParameter } from './manageV1LimitParameter';
-import type { ManageV1PageParameter } from './manageV1PageParameter';
-import type { ManageV1FilterAccessorParameter } from './manageV1FilterAccessorParameter';
-import type { ManageV1FilterRequestIdParameter } from './manageV1FilterRequestIdParameter';
-import type { ManageV1FilterDeploymentParameter } from './manageV1FilterDeploymentParameter';
-import type { ManageV1FilterEndpointParameter } from './manageV1FilterEndpointParameter';
-import type { ManageV1FilterMethodParameter } from './manageV1FilterMethodParameter';
-import type { ManageV1FilterStatusParameter } from './manageV1FilterStatusParameter';
+import type { ManageV1StartDateTimeParameter } from "./manageV1StartDateTimeParameter"
+import type { ManageV1EndDateTimeParameter } from "./manageV1EndDateTimeParameter"
+import type { ManageV1LimitParameter } from "./manageV1LimitParameter"
+import type { ManageV1PageParameter } from "./manageV1PageParameter"
+import type { ManageV1FilterAccessorParameter } from "./manageV1FilterAccessorParameter"
+import type { ManageV1FilterRequestIdParameter } from "./manageV1FilterRequestIdParameter"
+import type { ManageV1FilterDeploymentParameter } from "./manageV1FilterDeploymentParameter"
+import type { ManageV1FilterEndpointParameter } from "./manageV1FilterEndpointParameter"
+import type { ManageV1FilterMethodParameter } from "./manageV1FilterMethodParameter"
+import type { ManageV1FilterStatusParameter } from "./manageV1FilterStatusParameter"
 
 export type ManageV1ProjectsRequestsListParams = {
-/**
- * Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM
- */
-start?: ManageV1StartDateTimeParameter;
-/**
- * End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM
- */
-end?: ManageV1EndDateTimeParameter;
-/**
- * Number of results to return per page. Default 10. Range [1,1000]
- */
-limit?: ManageV1LimitParameter;
-/**
- * Navigate and return the results to retrieve specific portions of information of the response
- */
-page?: ManageV1PageParameter;
-/**
- * Filter for requests where a specific accessor was used
- */
-accessor?: ManageV1FilterAccessorParameter;
-/**
- * Filter for a specific request id
- */
-request_id?: ManageV1FilterRequestIdParameter;
-/**
- * Filter for requests where a specific deployment was used
- */
-deployment?: ManageV1FilterDeploymentParameter;
-/**
- * Filter for requests where a specific endpoint was used
- */
-endpoint?: ManageV1FilterEndpointParameter;
-/**
- * Filter for requests where a specific method was used
- */
-method?: ManageV1FilterMethodParameter;
-/**
- * Filter for requests that succeeded (status code < 300) or failed (status code >=400)
- */
-status?: ManageV1FilterStatusParameter;
-};
+  /**
+   * Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM
+   */
+  start?: ManageV1StartDateTimeParameter
+  /**
+   * End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM
+   */
+  end?: ManageV1EndDateTimeParameter
+  /**
+   * Number of results to return per page. Default 10. Range [1,1000]
+   */
+  limit?: ManageV1LimitParameter
+  /**
+   * Navigate and return the results to retrieve specific portions of information of the response
+   */
+  page?: ManageV1PageParameter
+  /**
+   * Filter for requests where a specific accessor was used
+   */
+  accessor?: ManageV1FilterAccessorParameter
+  /**
+   * Filter for a specific request id
+   */
+  request_id?: ManageV1FilterRequestIdParameter
+  /**
+   * Filter for requests where a specific deployment was used
+   */
+  deployment?: ManageV1FilterDeploymentParameter
+  /**
+   * Filter for requests where a specific endpoint was used
+   */
+  endpoint?: ManageV1FilterEndpointParameter
+  /**
+   * Filter for requests where a specific method was used
+   */
+  method?: ManageV1FilterMethodParameter
+  /**
+   * Filter for requests that succeeded (status code < 300) or failed (status code >=400)
+   */
+  status?: ManageV1FilterStatusParameter
+}

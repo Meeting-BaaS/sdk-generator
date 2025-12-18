@@ -10,4 +10,4 @@
 /**
  * Filter for requests where sample rate was used
  */
-export type ManageV1FilterSampleRateParameter = boolean;
+export type ManageV1FilterSampleRateParameter = boolean

@@ -190,7 +190,9 @@ export type ProviderRawResponseMap = {
  * // result.raw is typed as unknown (could be any provider)
  * ```
  */
-export interface UnifiedTranscriptResponse<P extends TranscriptionProvider = TranscriptionProvider> {
+export interface UnifiedTranscriptResponse<
+  P extends TranscriptionProvider = TranscriptionProvider
+> {
   /** Operation success status */
   success: boolean
   /** Provider that performed the transcription */

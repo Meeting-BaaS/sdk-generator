@@ -53,7 +53,7 @@ export interface GladiaStreamingOptions {
  */
 export interface DeepgramStreamingOptions {
   /** Audio encoding format - type-safe enum from OpenAPI spec */
-  encoding?: typeof ListenV1EncodingParameter[keyof typeof ListenV1EncodingParameter]
+  encoding?: (typeof ListenV1EncodingParameter)[keyof typeof ListenV1EncodingParameter]
 
   /** Sample rate in Hz */
   sampleRate?: number

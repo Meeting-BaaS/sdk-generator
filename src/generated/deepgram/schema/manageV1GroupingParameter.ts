@@ -7,6 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
+/**
+ * ManageV1GroupingParameter type definition
+ */
+
+/**
+ * ManageV1GroupingParameter type definition
+ */
 
 /**
  * ManageV1GroupingParameter type definition
@@ -22,11 +29,11 @@
 export type ManageV1GroupingParameter = typeof ManageV1GroupingParameter[keyof typeof ManageV1GroupingParameter];
 
 export const ManageV1GroupingParameter = {
-  accessor: 'accessor',
-  endpoint: 'endpoint',
-  feature_set: 'feature_set',
-  models: 'models',
-  method: 'method',
-  tags: 'tags',
-  deployment: 'deployment'
+  accessor: "accessor",
+  endpoint: "endpoint",
+  feature_set: "feature_set",
+  models: "models",
+  method: "method",
+  tags: "tags",
+  deployment: "deployment"
 } as const

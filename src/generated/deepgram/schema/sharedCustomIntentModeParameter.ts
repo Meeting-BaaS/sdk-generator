@@ -7,6 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
+/**
+ * SharedCustomIntentModeParameter type definition
+ */
+
+/**
+ * SharedCustomIntentModeParameter type definition
+ */
 
 /**
  * SharedCustomIntentModeParameter type definition
@@ -22,6 +29,6 @@
 export type SharedCustomIntentModeParameter = typeof SharedCustomIntentModeParameter[keyof typeof SharedCustomIntentModeParameter];
 
 export const SharedCustomIntentModeParameter = {
-  extended: 'extended',
-  strict: 'strict'
+  extended: "extended",
+  strict: "strict"
 } as const

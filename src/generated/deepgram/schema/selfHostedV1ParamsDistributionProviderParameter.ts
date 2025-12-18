@@ -7,6 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
+/**
+ * SelfHostedV1ParamsDistributionProviderParameter type definition
+ */
+
+/**
+ * SelfHostedV1ParamsDistributionProviderParameter type definition
+ */
 
 /**
  * SelfHostedV1ParamsDistributionProviderParameter type definition
@@ -22,5 +29,5 @@
 export type SelfHostedV1ParamsDistributionProviderParameter = typeof SelfHostedV1ParamsDistributionProviderParameter[keyof typeof SelfHostedV1ParamsDistributionProviderParameter];
 
 export const SelfHostedV1ParamsDistributionProviderParameter = {
-  quay: 'quay'
+  quay: "quay"
 } as const

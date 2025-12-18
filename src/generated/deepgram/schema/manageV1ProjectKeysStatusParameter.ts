@@ -7,6 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
+/**
+ * ManageV1ProjectKeysStatusParameter type definition
+ */
+
+/**
+ * ManageV1ProjectKeysStatusParameter type definition
+ */
 
 /**
  * ManageV1ProjectKeysStatusParameter type definition
@@ -22,6 +29,6 @@
 export type ManageV1ProjectKeysStatusParameter = typeof ManageV1ProjectKeysStatusParameter[keyof typeof ManageV1ProjectKeysStatusParameter];
 
 export const ManageV1ProjectKeysStatusParameter = {
-  active: 'active',
-  expired: 'expired'
+  active: "active",
+  expired: "expired"
 } as const

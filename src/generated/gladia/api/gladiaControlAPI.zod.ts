@@ -44,7 +44,10 @@ export const preRecordedControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLan
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
+export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
+  | "srt"
+  | "vtt"
+)[] = ["srt"]
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -354,7 +357,9 @@ export const preRecordedControllerInitPreRecordedJobV2Body = zod.object({
               "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
             )
         )
-        .default(preRecordedControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault as any)
+        .default(
+          preRecordedControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault as any
+        )
         .describe("Specify the languages you want to use when detecting multiple languages")
     })
     .optional()
@@ -1382,7 +1387,9 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
                         "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                       )
                   )
-                  .default(preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault as any)
+                  .default(
+                    preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault as any
+                  )
                   .describe(
                     "Specify the languages you want to use when detecting multiple languages"
                   )
@@ -1546,7 +1553,9 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
                       .describe("Subtitles formats you want your transcription to be formatted to")
                   )
                   .min(1)
-                  .default(preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault as any)
+                  .default(
+                    preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault as any
+                  )
                   .describe("Subtitles formats you want your transcription to be formatted to"),
                 minimum_duration: zod
                   .number()
@@ -1976,7 +1985,9 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
                         "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                       )
                   )
-                  .default(preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any)
+                  .default(
+                    preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any
+                  )
                   .describe(
                     "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
                   ),
@@ -3648,7 +3659,9 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
                   "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                 )
             )
-            .default(preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault as any)
+            .default(
+              preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault as any
+            )
             .describe("Specify the languages you want to use when detecting multiple languages")
         })
         .optional()
@@ -3810,7 +3823,9 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
                 .describe("Subtitles formats you want your transcription to be formatted to")
             )
             .min(1)
-            .default(preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault as any)
+            .default(
+              preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault as any
+            )
             .describe("Subtitles formats you want your transcription to be formatted to"),
           minimum_duration: zod
             .number()
@@ -4235,7 +4250,9 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
                   "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                 )
             )
-            .default(preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsLanguageConfigLanguagesDefault as any)
+            .default(
+              preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsLanguageConfigLanguagesDefault as any
+            )
             .describe(
               "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
             ),
@@ -5469,7 +5486,10 @@ export const transcriptionControllerInitPreRecordedJobV2BodyCodeSwitchingConfigL
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
+export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
+  | "srt"
+  | "vtt"
+)[] = ["srt"]
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -5784,7 +5804,9 @@ export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
               "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
             )
         )
-        .default(transcriptionControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault as any)
+        .default(
+          transcriptionControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault as any
+        )
         .describe("Specify the languages you want to use when detecting multiple languages")
     })
     .optional()
@@ -6344,7 +6366,9 @@ export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
               "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
             )
         )
-        .default(transcriptionControllerInitPreRecordedJobV2BodyLanguageConfigLanguagesDefault as any)
+        .default(
+          transcriptionControllerInitPreRecordedJobV2BodyLanguageConfigLanguagesDefault as any
+        )
         .describe(
           "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
         ),
@@ -6889,7 +6913,9 @@ export const transcriptionControllerListV2Response = zod.object({
                           "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                         )
                     )
-                    .default(transcriptionControllerListV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault as any)
+                    .default(
+                      transcriptionControllerListV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault as any
+                    )
                     .describe(
                       "Specify the languages you want to use when detecting multiple languages"
                     )
@@ -7055,7 +7081,9 @@ export const transcriptionControllerListV2Response = zod.object({
                         )
                     )
                     .min(1)
-                    .default(transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault as any)
+                    .default(
+                      transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault as any
+                    )
                     .describe("Subtitles formats you want your transcription to be formatted to"),
                   minimum_duration: zod
                     .number()
@@ -7485,7 +7513,9 @@ export const transcriptionControllerListV2Response = zod.object({
                           "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                         )
                     )
-                    .default(transcriptionControllerListV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any)
+                    .default(
+                      transcriptionControllerListV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any
+                    )
                     .describe(
                       "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
                     ),
@@ -10868,7 +10898,9 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
                     "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                   )
               )
-              .default(transcriptionControllerGetTranscriptV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault as any)
+              .default(
+                transcriptionControllerGetTranscriptV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault as any
+              )
               .describe("Specify the languages you want to use when detecting multiple languages")
           })
           .optional()
@@ -11030,7 +11062,9 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
                   .describe("Subtitles formats you want your transcription to be formatted to")
               )
               .min(1)
-              .default(transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault as any)
+              .default(
+                transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault as any
+              )
               .describe("Subtitles formats you want your transcription to be formatted to"),
             minimum_duration: zod
               .number()
@@ -11458,7 +11492,9 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
                     "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                   )
               )
-              .default(transcriptionControllerGetTranscriptV2ResponseRequestParamsLanguageConfigLanguagesDefault as any)
+              .default(
+                transcriptionControllerGetTranscriptV2ResponseRequestParamsLanguageConfigLanguagesDefault as any
+              )
               .describe(
                 "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
               ),
@@ -15263,7 +15299,9 @@ export const historyControllerGetListV1Response = zod.object({
                           "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                         )
                     )
-                    .default(historyControllerGetListV1ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault as any)
+                    .default(
+                      historyControllerGetListV1ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault as any
+                    )
                     .describe(
                       "Specify the languages you want to use when detecting multiple languages"
                     )
@@ -15429,7 +15467,9 @@ export const historyControllerGetListV1Response = zod.object({
                         )
                     )
                     .min(1)
-                    .default(historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault as any)
+                    .default(
+                      historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault as any
+                    )
                     .describe("Subtitles formats you want your transcription to be formatted to"),
                   minimum_duration: zod
                     .number()
@@ -15859,7 +15899,9 @@ export const historyControllerGetListV1Response = zod.object({
                           "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                         )
                     )
-                    .default(historyControllerGetListV1ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any)
+                    .default(
+                      historyControllerGetListV1ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any
+                    )
                     .describe(
                       "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
                     ),
@@ -19867,7 +19909,9 @@ export const streamingControllerGetStreamingJobsV2Response = zod.object({
                         "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                       )
                   )
-                  .default(streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any)
+                  .default(
+                    streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault as any
+                  )
                   .describe(
                     "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
                   ),
@@ -21525,7 +21569,9 @@ export const streamingControllerGetStreamingJobV2Response = zod.object({
                   "Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language."
                 )
             )
-            .default(streamingControllerGetStreamingJobV2ResponseRequestParamsLanguageConfigLanguagesDefault as any)
+            .default(
+              streamingControllerGetStreamingJobV2ResponseRequestParamsLanguageConfigLanguagesDefault as any
+            )
             .describe(
               "If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model."
             ),

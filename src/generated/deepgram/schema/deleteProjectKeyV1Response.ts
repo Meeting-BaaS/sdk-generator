@@ -8,5 +8,5 @@
  */
 
 export interface DeleteProjectKeyV1Response {
-  message?: string;
+  message?: string
 }

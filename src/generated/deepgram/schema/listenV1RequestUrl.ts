@@ -11,5 +11,5 @@
  * Audio file URL to transcribe
  */
 export interface ListenV1RequestUrl {
-  url: string;
+  url: string
 }

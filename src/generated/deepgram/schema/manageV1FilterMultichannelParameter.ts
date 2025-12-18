@@ -10,4 +10,4 @@
 /**
  * Filter for requests where multichannel was used
  */
-export type ManageV1FilterMultichannelParameter = boolean;
+export type ManageV1FilterMultichannelParameter = boolean

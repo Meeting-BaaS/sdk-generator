@@ -7,6 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
+/**
+ * SpeakV1SampleRateParameter type definition
+ */
+
+/**
+ * SpeakV1SampleRateParameter type definition
+ */
 
 /**
  * SpeakV1SampleRateParameter type definition
