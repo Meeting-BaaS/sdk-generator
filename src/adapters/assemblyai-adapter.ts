@@ -16,6 +16,7 @@ import type {
   UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+import { mapEncodingToProvider } from "../router/audio-encoding-types"
 
 // Import generated API client functions - FULL TYPE SAFETY!
 import {
@@ -500,7 +501,10 @@ export class AssemblyAIAdapter extends BaseAdapter {
     // Step 1: Build WebSocket URL with parameters
     // v3 supports authentication via API key header (no token needed)
     const sampleRate = options?.sampleRate || 16000
-    const encoding = options?.encoding || "pcm_s16le"
+    // Map unified encoding format to AssemblyAI-specific format
+    const encoding = options?.encoding
+      ? mapEncodingToProvider(options.encoding, "assemblyai")
+      : "pcm_s16le"
     const wsUrl = `${this.wsBaseUrl}?sample_rate=${sampleRate}&encoding=${encoding}`
 
     // Step 2: Create WebSocket connection with API key in headers

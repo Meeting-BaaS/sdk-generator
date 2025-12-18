@@ -26,6 +26,14 @@
 /**
  * SpeakV1SampleRateParameter type definition
  */
+
+/**
+ * SpeakV1SampleRateParameter type definition
+ */
+
+/**
+ * SpeakV1SampleRateParameter type definition
+ */
 export type SpeakV1SampleRateParameter = typeof SpeakV1SampleRateParameter[keyof typeof SpeakV1SampleRateParameter];
 
 export const SpeakV1SampleRateParameter = {

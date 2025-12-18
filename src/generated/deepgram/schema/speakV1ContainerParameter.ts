@@ -22,6 +22,14 @@
 /**
  * SpeakV1ContainerParameter type definition
  */
+
+/**
+ * SpeakV1ContainerParameter type definition
+ */
+
+/**
+ * SpeakV1ContainerParameter type definition
+ */
 export type SpeakV1ContainerParameter = typeof SpeakV1ContainerParameter[keyof typeof SpeakV1ContainerParameter];
 
 export const SpeakV1ContainerParameter = {
