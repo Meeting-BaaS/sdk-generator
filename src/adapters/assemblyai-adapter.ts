@@ -517,6 +517,20 @@ export class AssemblyAIAdapter extends BaseAdapter {
     let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
     const sessionId = `assemblyai-${Date.now()}-${Math.random().toString(36).substring(7)}`
 
+    // Audio buffering for AssemblyAI's 50-1000ms chunk requirement
+    // At 16kHz, 16-bit mono: 32,000 bytes/sec
+    // Minimum: 1,600 bytes (50ms), Maximum: 32,000 bytes (1000ms)
+    let audioBuffer = Buffer.alloc(0)
+    const MIN_CHUNK_SIZE = 1600 // 50ms at 16kHz 16-bit mono
+    const MAX_CHUNK_SIZE = 32000 // 1000ms at 16kHz 16-bit mono
+
+    const flushAudioBuffer = () => {
+      if (audioBuffer.length > 0 && ws.readyState === WebSocket.OPEN) {
+        ws.send(audioBuffer)
+        audioBuffer = Buffer.alloc(0)
+      }
+    }
+
     // Handle WebSocket events
     ws.on("open", () => {
       sessionStatus = "open"
@@ -626,12 +640,19 @@ export class AssemblyAIAdapter extends BaseAdapter {
           throw new Error("WebSocket is not open")
         }
 
-        // AssemblyAI v3 Universal Streaming expects raw binary audio data
-        // (not base64-encoded JSON like v2)
-        ws.send(chunk.data)
+        // AssemblyAI v3 requires chunks between 50-1000ms
+        // Buffer audio until we have enough to send
+        audioBuffer = Buffer.concat([audioBuffer, chunk.data])
 
-        // Send termination message if this is the last chunk
+        // Send buffer if it meets minimum size or exceeds maximum
+        if (audioBuffer.length >= MIN_CHUNK_SIZE || audioBuffer.length >= MAX_CHUNK_SIZE) {
+          ws.send(audioBuffer)
+          audioBuffer = Buffer.alloc(0)
+        }
+
+        // Flush remaining buffer and send termination message if this is the last chunk
         if (chunk.isLast) {
+          flushAudioBuffer()
           ws.send(
             JSON.stringify({
               terminate_session: true
@@ -645,6 +666,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
         }
 
         sessionStatus = "closing"
+
+        // Flush any remaining buffered audio before closing
+        flushAudioBuffer()
 
         // Send termination message before closing
         if (ws.readyState === WebSocket.OPEN) {
