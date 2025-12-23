@@ -3,19 +3,19 @@
  * Parses and normalizes Gladia webhook callbacks
  */
 
-import type { WebhookTranscriptionSuccessPayload } from "../generated/gladia/schema/webhookTranscriptionSuccessPayload"
-import type { WebhookTranscriptionErrorPayload } from "../generated/gladia/schema/webhookTranscriptionErrorPayload"
-import type { WebhookTranscriptionCreatedPayload } from "../generated/gladia/schema/webhookTranscriptionCreatedPayload"
+import type { CallbackTranscriptionSuccessPayload } from "../generated/gladia/schema/callbackTranscriptionSuccessPayload"
+import type { CallbackTranscriptionErrorPayload } from "../generated/gladia/schema/callbackTranscriptionErrorPayload"
+import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
+import type { WordDTO } from "../generated/gladia/schema/wordDTO"
 import { BaseWebhookHandler } from "./base-webhook"
 import type { UnifiedWebhookEvent } from "./types"
-import type { TranscriptionProvider } from "../router/types"
+import type { TranscriptionProvider, Utterance, Word } from "../router/types"
 
 /**
  * Gladia webhook handler
  *
  * Handles webhook callbacks from Gladia API:
- * - transcription.created - Job created and queued
- * - transcription.success - Job completed successfully
+ * - transcription.success - Job completed successfully (includes full transcript)
  * - transcription.error - Job failed with error
  *
  * @example
@@ -37,6 +37,7 @@ import type { TranscriptionProvider } from "../router/types"
  *
  * if (event.eventType === 'transcription.completed') {
  *   console.log('Transcript:', event.data?.text);
+ *   console.log('Utterances:', event.data?.utterances);
  * }
  * ```
  */
@@ -44,7 +45,37 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
   readonly provider: TranscriptionProvider = "gladia"
 
   /**
+   * Convert Gladia WordDTO to unified Word type
+   */
+  private mapWord(word: WordDTO): Word {
+    return {
+      text: word.word,
+      start: word.start,
+      end: word.end,
+      confidence: word.confidence
+    }
+  }
+
+  /**
+   * Convert Gladia UtteranceDTO to unified Utterance type
+   */
+  private mapUtterance(utterance: UtteranceDTO): Utterance {
+    return {
+      text: utterance.text,
+      start: utterance.start,
+      end: utterance.end,
+      confidence: utterance.confidence,
+      speaker: utterance.speaker !== undefined ? String(utterance.speaker) : undefined,
+      words: utterance.words?.map((w) => this.mapWord(w))
+    }
+  }
+
+  /**
    * Check if payload matches Gladia webhook format
+   *
+   * Gladia callbacks have the structure:
+   * - { id, event: "transcription.success", payload: TranscriptionResultDTO, custom_metadata? }
+   * - { id, event: "transcription.error", error: ErrorDTO, custom_metadata? }
    */
   matches(
     payload: unknown,
@@ -56,8 +87,13 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
 
     const obj = payload as Record<string, unknown>
 
-    // Gladia webhooks have "event" and "payload" fields
-    if (!("event" in obj) || !("payload" in obj)) {
+    // Gladia webhooks have "id" and "event" fields at the top level
+    if (!("id" in obj) || !("event" in obj)) {
+      return false
+    }
+
+    // ID should be a string (UUID)
+    if (typeof obj.id !== "string") {
       return false
     }
 
@@ -70,13 +106,16 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
       return false
     }
 
-    // Payload should be an object with "id" field
-    if (!obj.payload || typeof obj.payload !== "object") {
+    // Success events have "payload", error events have "error"
+    if (obj.event === "transcription.success" && !("payload" in obj)) {
       return false
     }
 
-    const payloadObj = obj.payload as Record<string, unknown>
-    return typeof payloadObj.id === "string"
+    if (obj.event === "transcription.error" && !("error" in obj)) {
+      return false
+    }
+
+    return true
   }
 
   /**
@@ -90,48 +129,79 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
       return this.createErrorEvent(payload, "Invalid Gladia webhook payload")
     }
 
-    const webhookPayload = payload as
-      | WebhookTranscriptionSuccessPayload
-      | WebhookTranscriptionErrorPayload
-      | WebhookTranscriptionCreatedPayload
+    const obj = payload as Record<string, unknown>
+    const jobId = obj.id as string
+    const event = obj.event as string
 
-    const jobId = webhookPayload.payload.id
-    const event = webhookPayload.event
-
-    // Handle different event types
-    if (event === "transcription.created") {
-      return {
-        success: true,
-        provider: this.provider,
-        eventType: "transcription.created",
-        data: {
-          id: jobId,
-          status: "queued"
-        },
-        timestamp: new Date().toISOString(),
-        raw: payload
-      }
-    }
-
+    // Handle success event
     if (event === "transcription.success") {
-      // For success events, we need to fetch the full result
-      // The webhook only contains the job ID, not the transcript
+      const successPayload = payload as CallbackTranscriptionSuccessPayload
+      const result = successPayload.payload
+
+      // Extract transcription data
+      const transcription = result.transcription
+      const metadata = result.metadata
+
+      // Map utterances to unified format
+      const utterances: Utterance[] | undefined = transcription?.utterances?.map((u) =>
+        this.mapUtterance(u)
+      )
+
+      // Flatten all words from utterances
+      const words: Word[] | undefined = transcription?.utterances?.flatMap(
+        (u) => u.words?.map((w) => this.mapWord(w)) ?? []
+      )
+
+      // Extract unique speakers from utterances
+      const speakerIds = new Set<number>()
+      transcription?.utterances?.forEach((u) => {
+        if (u.speaker !== undefined) {
+          speakerIds.add(u.speaker)
+        }
+      })
+      const speakers =
+        speakerIds.size > 0
+          ? Array.from(speakerIds).map((id) => ({ id: String(id) }))
+          : undefined
+
+      // Build the summary field only if summarization succeeded
+      const summary =
+        result.summarization?.success && result.summarization.results
+          ? result.summarization.results
+          : undefined
+
       return {
         success: true,
         provider: this.provider,
         eventType: "transcription.completed",
         data: {
           id: jobId,
-          status: "completed"
-          // Note: Full transcript data needs to be fetched via API
-          // using GladiaAdapter.getTranscript(jobId)
+          status: "completed",
+          text: transcription?.full_transcript,
+          duration: metadata?.audio_duration,
+          language: transcription?.languages?.[0],
+          speakers,
+          words,
+          utterances,
+          summary,
+          metadata: {
+            transcription_time: metadata?.transcription_time,
+            billing_time: metadata?.billing_time,
+            number_of_distinct_channels: metadata?.number_of_distinct_channels,
+            custom_metadata: successPayload.custom_metadata
+          },
+          completedAt: new Date().toISOString()
         },
         timestamp: new Date().toISOString(),
         raw: payload
       }
     }
 
+    // Handle error event
     if (event === "transcription.error") {
+      const errorPayload = payload as CallbackTranscriptionErrorPayload
+      const error = errorPayload.error
+
       return {
         success: false,
         provider: this.provider,
@@ -139,7 +209,11 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
         data: {
           id: jobId,
           status: "error",
-          error: "Transcription failed"
+          error: error?.message || "Transcription failed",
+          metadata: {
+            error_code: error?.code,
+            custom_metadata: errorPayload.custom_metadata
+          }
         },
         timestamp: new Date().toISOString(),
         raw: payload
