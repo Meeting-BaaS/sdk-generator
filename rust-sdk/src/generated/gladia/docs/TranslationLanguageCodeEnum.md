@@ -1,0 +1,111 @@
+# TranslationLanguageCodeEnum
+
+## Enum Variants
+
+| Name | Value |
+|---- | -----|
+| Af | af |
+| Am | am |
+| Ar | ar |
+| As | as |
+| Az | az |
+| Ba | ba |
+| Be | be |
+| Bg | bg |
+| Bn | bn |
+| Bo | bo |
+| Br | br |
+| Bs | bs |
+| Ca | ca |
+| Cs | cs |
+| Cy | cy |
+| Da | da |
+| De | de |
+| El | el |
+| En | en |
+| Es | es |
+| Et | et |
+| Eu | eu |
+| Fa | fa |
+| Fi | fi |
+| Fo | fo |
+| Fr | fr |
+| Gl | gl |
+| Gu | gu |
+| Ha | ha |
+| Haw | haw |
+| He | he |
+| Hi | hi |
+| Hr | hr |
+| Ht | ht |
+| Hu | hu |
+| Hy | hy |
+| Id | id |
+| Is | is |
+| It | it |
+| Ja | ja |
+| Jw | jw |
+| Ka | ka |
+| Kk | kk |
+| Km | km |
+| Kn | kn |
+| Ko | ko |
+| La | la |
+| Lb | lb |
+| Ln | ln |
+| Lo | lo |
+| Lt | lt |
+| Lv | lv |
+| Mg | mg |
+| Mi | mi |
+| Mk | mk |
+| Ml | ml |
+| Mn | mn |
+| Mr | mr |
+| Ms | ms |
+| Mt | mt |
+| My | my |
+| Ne | ne |
+| Nl | nl |
+| Nn | nn |
+| No | no |
+| Oc | oc |
+| Pa | pa |
+| Pl | pl |
+| Ps | ps |
+| Pt | pt |
+| Ro | ro |
+| Ru | ru |
+| Sa | sa |
+| Sd | sd |
+| Si | si |
+| Sk | sk |
+| Sl | sl |
+| Sn | sn |
+| So | so |
+| Sq | sq |
+| Sr | sr |
+| Su | su |
+| Sv | sv |
+| Sw | sw |
+| Ta | ta |
+| Te | te |
+| Tg | tg |
+| Th | th |
+| Tk | tk |
+| Tl | tl |
+| Tr | tr |
+| Tt | tt |
+| Uk | uk |
+| Ur | ur |
+| Uz | uz |
+| Vi | vi |
+| Wo | wo |
+| Yi | yi |
+| Yo | yo |
+| Zh | zh |
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

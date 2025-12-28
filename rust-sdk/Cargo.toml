@@ -1,0 +1,61 @@
+[package]
+name = "voice-router"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, and OpenAI Whisper"
+repository = "https://github.com/Meeting-BaaS/voice-router-rs"
+keywords = ["speech-to-text", "transcription", "gladia", "assemblyai", "deepgram"]
+categories = ["api-bindings", "multimedia::audio"]
+
+[workspace]
+members = [
+    ".",
+    "src/generated/gladia",
+    "src/generated/deepgram",
+    "src/generated/assemblyai",
+]
+
+[dependencies]
+# Generated API clients
+gladia_client = { path = "src/generated/gladia" }
+deepgram_client = { path = "src/generated/deepgram" }
+assemblyai_client = { path = "src/generated/assemblyai" }
+# HTTP client
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "multipart"] }
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# WebSocket for streaming
+tokio-tungstenite = { version = "0.24", features = ["rustls-tls-native-roots"] }
+futures = "0.3"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Error handling
+thiserror = "1"
+
+# Async traits
+async-trait = "0.1"
+
+# Generated client support
+progenitor-client = "0.11"
+
+# URL handling
+url = "2"
+
+# Logging
+tracing = "0.1"
+
+# Time/Date
+chrono = { version = "0.4", features = ["serde"] }
+
+[build-dependencies]
+# Generation done via scripts, not at build time
+
+[dev-dependencies]
+tokio-test = "0.4"
+wiremock = "0.6"
