@@ -17,6 +17,21 @@ import type { CreateTranscription200One } from "../generated/openai/schema/creat
 import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai/schema/transcript"
 import type { Transcription as AzureTranscription } from "../generated/azure/schema/transcription"
 
+// Provider-specific model types for type-safe model selection
+import type { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
+import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
+
+/**
+ * Unified transcription model type with autocomplete for all providers
+ *
+ * Includes all known models from:
+ * - Deepgram: nova-3, nova-2, enhanced, base, whisper, etc.
+ * - Gladia: solaria-1
+ *
+ * Also accepts any string for future/custom models.
+ */
+export type TranscriptionModel = ListenV1ModelParameter | StreamingSupportedModels
+
 /**
  * Supported transcription providers
  */
@@ -342,6 +357,19 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
   endpointing?: number
   /** Maximum duration without endpointing in seconds */
   maxSilence?: number
+  /**
+   * Model to use for transcription (provider-specific)
+   *
+   * Type-safe with autocomplete for all known models:
+   * - Deepgram: 'nova-2', 'nova-3', 'base', 'enhanced', 'whisper-large', etc.
+   * - Gladia: 'solaria-1' (default)
+   * - AssemblyAI: Not applicable (uses Universal-2 automatically)
+   *
+   * @example
+   * // Use Nova-2 for better multilingual support
+   * { model: 'nova-2', language: 'fr' }
+   */
+  model?: TranscriptionModel
 }
 
 /**

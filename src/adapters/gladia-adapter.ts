@@ -53,6 +53,7 @@ import type { TranscriptMessage } from "../generated/gladia/schema/transcriptMes
 // Import Gladia's supported values from OpenAPI-generated schema (type safety!)
 import { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
 import type { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
+import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { TranscriptionLanguageCodeEnum } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
 
 /**
@@ -504,7 +505,8 @@ export class GladiaAdapter extends BaseAdapter {
         : undefined,
       sample_rate: validatedSampleRate,
       channels: options?.channels,
-      endpointing: options?.endpointing
+      endpointing: options?.endpointing,
+      model: options?.model as StreamingSupportedModels
     }
 
     if (options?.language) {

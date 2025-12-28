@@ -500,6 +500,7 @@ export class DeepgramAdapter extends BaseAdapter {
     if (options?.sampleRate) params.append("sample_rate", options.sampleRate.toString())
     if (options?.channels) params.append("channels", options.channels.toString())
     if (options?.language) params.append("language", options.language)
+    if (options?.model) params.append("model", options.model)
     if (options?.languageDetection) params.append("detect_language", "true")
     if (options?.diarization) params.append("diarize", "true")
     if (options?.interimResults) params.append("interim_results", "true")
