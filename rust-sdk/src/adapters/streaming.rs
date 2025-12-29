@@ -84,27 +84,51 @@ pub struct WebSocketConnection {
 
 impl WebSocketConnection {
     /// Connect to a WebSocket endpoint with optional headers
+    ///
+    /// When no custom headers are needed, uses direct URL connection (tungstenite adds
+    /// WebSocket upgrade headers automatically). When custom headers are provided,
+    /// manually adds required WebSocket upgrade headers to the request.
     pub async fn connect(
         url: &str,
         headers: Vec<(&str, &str)>,
     ) -> Result<Self, AdapterError> {
-        let mut request = Request::builder().uri(url);
+        let (stream, _response) = if headers.is_empty() {
+            // Simple connection without custom headers - use URL directly
+            // tungstenite automatically adds WebSocket upgrade headers
+            tokio::time::timeout(
+                std::time::Duration::from_secs(10),
+                connect_async(url),
+            )
+            .await
+            .map_err(|_| AdapterError::WebSocketError("Connection timeout".into()))?
+            .map_err(|e| AdapterError::WebSocketError(format!("Connection failed: {}", e)))?
+        } else {
+            // Build request with custom headers and proper WebSocket upgrade headers
+            // When building a custom Request, tungstenite doesn't auto-add WebSocket headers
+            let ws_key = tokio_tungstenite::tungstenite::handshake::client::generate_key();
+            let mut request = Request::builder()
+                .uri(url)
+                .header("Upgrade", "websocket")
+                .header("Connection", "Upgrade")
+                .header("Sec-WebSocket-Key", &ws_key)
+                .header("Sec-WebSocket-Version", "13");
 
-        for (key, value) in headers {
-            request = request.header(key, value);
-        }
+            for (key, value) in headers {
+                request = request.header(key, value);
+            }
 
-        let request = request
-            .body(())
-            .map_err(|e| AdapterError::WebSocketError(format!("Failed to build request: {}", e)))?;
+            let request = request
+                .body(())
+                .map_err(|e| AdapterError::WebSocketError(format!("Failed to build request: {}", e)))?;
 
-        let (stream, _response) = tokio::time::timeout(
-            std::time::Duration::from_secs(10),
-            connect_async(request),
-        )
-        .await
-        .map_err(|_| AdapterError::WebSocketError("Connection timeout".into()))?
-        .map_err(|e| AdapterError::WebSocketError(format!("Connection failed: {}", e)))?;
+            tokio::time::timeout(
+                std::time::Duration::from_secs(10),
+                connect_async(request),
+            )
+            .await
+            .map_err(|_| AdapterError::WebSocketError("Connection timeout".into()))?
+            .map_err(|e| AdapterError::WebSocketError(format!("Connection failed: {}", e)))?
+        };
 
         Ok(Self {
             stream,
@@ -120,7 +144,7 @@ impl WebSocketConnection {
     /// Send a text message
     pub async fn send_text(&mut self, text: &str) -> Result<(), AdapterError> {
         self.stream
-            .send(Message::Text(text.to_string()))
+            .send(Message::Text(text.to_string().into()))
             .await
             .map_err(|e| AdapterError::WebSocketError(format!("Send failed: {}", e)))
     }
@@ -128,7 +152,7 @@ impl WebSocketConnection {
     /// Send binary data (audio)
     pub async fn send_binary(&mut self, data: Vec<u8>) -> Result<(), AdapterError> {
         self.stream
-            .send(Message::Binary(data))
+            .send(Message::Binary(data.into()))
             .await
             .map_err(|e| AdapterError::WebSocketError(format!("Send failed: {}", e)))
     }

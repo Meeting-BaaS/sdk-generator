@@ -56,6 +56,11 @@ enum AssemblyAIStreamMessage {
         #[serde(default)]
         session_duration_seconds: f64,
     },
+    /// Session information event
+    SessionInformation {
+        #[serde(flatten)]
+        _data: serde_json::Value,
+    },
 }
 
 /// AssemblyAI error message (different structure)
@@ -314,6 +319,8 @@ impl AssemblyAIAdapter {
                 error: None,
                 data: None,
             }),
+            // Session information - informational, don't forward
+            AssemblyAIStreamMessage::SessionInformation { .. } => None,
         }
     }
 

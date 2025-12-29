@@ -12,8 +12,8 @@ use super::streaming::{self, AudioEncoding, WebSocketConnection};
 use super::{AdapterError, ProviderConfig, StreamingSession, TranscriptionAdapter};
 use crate::types::{
     AudioInput, ProviderCapabilities, Speaker, StreamEvent, StreamEventType, StreamingOptions,
-    TranscribeOptions, TranscriptionData, TranscriptionProvider, TranscriptionStatus,
-    UnifiedTranscriptResponse, Utterance, Word,
+    TranscribeOptions, TranscriptionData, TranscriptionError, TranscriptionProvider,
+    TranscriptionStatus, UnifiedTranscriptResponse, Utterance, Word,
 };
 
 // Import generated Deepgram client types
@@ -44,6 +44,20 @@ enum DeepgramStreamMessage {
         #[serde(flatten)]
         data: serde_json::Value,
     },
+    /// Speech started event (voice activity detection)
+    SpeechStarted {
+        #[serde(flatten)]
+        _data: serde_json::Value,
+    },
+    /// Error message
+    Error {
+        #[serde(default)]
+        message: Option<String>,
+        #[serde(default)]
+        description: Option<String>,
+    },
+    /// Close stream acknowledgement
+    CloseStream,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -234,6 +248,32 @@ impl DeepgramAdapter {
                 error: None,
                 data: None,
             }),
+            // Speech started - informational, don't forward
+            DeepgramStreamMessage::SpeechStarted { .. } => None,
+            // Close stream acknowledgement - informational
+            DeepgramStreamMessage::CloseStream => None,
+            // Error message
+            DeepgramStreamMessage::Error { message, description } => {
+                let error_msg = message
+                    .or(description)
+                    .unwrap_or_else(|| "Unknown error".to_string());
+                Some(StreamEvent {
+                    event_type: StreamEventType::Error,
+                    text: None,
+                    is_final: None,
+                    utterance: None,
+                    words: None,
+                    speaker: None,
+                    confidence: None,
+                    error: Some(TranscriptionError {
+                        code: "PROVIDER_ERROR".to_string(),
+                        message: error_msg,
+                        details: None,
+                        status_code: None,
+                    }),
+                    data: None,
+                })
+            }
         }
     }
 

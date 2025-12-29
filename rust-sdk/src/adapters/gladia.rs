@@ -57,6 +57,21 @@ enum GladiaStreamMessage {
     Error {
         message: String,
     },
+    /// Audio chunk acknowledgement (informational, can be ignored)
+    AudioChunk {
+        #[serde(flatten)]
+        _data: serde_json::Value,
+    },
+    /// Speech started event (voice activity detection)
+    SpeechStart {
+        #[serde(flatten)]
+        _data: serde_json::Value,
+    },
+    /// Speech ended event (voice activity detection)
+    SpeechEnd {
+        #[serde(flatten)]
+        _data: serde_json::Value,
+    },
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -417,6 +432,10 @@ impl GladiaAdapter {
                 }),
                 data: None,
             }),
+            // Informational messages - acknowledge but don't forward as events
+            GladiaStreamMessage::AudioChunk { .. } => None,
+            GladiaStreamMessage::SpeechStart { .. } => None,
+            GladiaStreamMessage::SpeechEnd { .. } => None,
         }
     }
 

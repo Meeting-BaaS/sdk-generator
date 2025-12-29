@@ -8,6 +8,11 @@ repository = "https://github.com/Meeting-BaaS/voice-router-rs"
 keywords = ["speech-to-text", "transcription", "gladia", "assemblyai", "deepgram"]
 categories = ["api-bindings", "multimedia::audio"]
 
+[features]
+default = ["native-tls"]
+native-tls = ["reqwest/native-tls", "tokio-tungstenite/native-tls"]
+rustls = ["reqwest/rustls-tls", "tokio-tungstenite/rustls-tls-native-roots"]
+
 [workspace]
 members = [
     ".",
@@ -22,13 +27,13 @@ gladia_client = { path = "src/generated/gladia" }
 deepgram_client = { path = "src/generated/deepgram" }
 assemblyai_client = { path = "src/generated/assemblyai" }
 # HTTP client
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "multipart"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "multipart"] }
 
 # Async runtime
 tokio = { version = "1", features = ["full"] }
 
 # WebSocket for streaming
-tokio-tungstenite = { version = "0.24", features = ["rustls-tls-native-roots"] }
+tokio-tungstenite = { version = "0.26" }
 futures = "0.3"
 
 # Serialization

@@ -64,8 +64,8 @@ pub struct StreamingSession {
     pub audio_tx: tokio::sync::mpsc::Sender<Vec<u8>>,
     /// Channel to receive events
     pub event_rx: tokio::sync::mpsc::Receiver<StreamEvent>,
-    /// Close signal
-    close_tx: tokio::sync::oneshot::Sender<()>,
+    /// Close signal (public to allow destructuring when needed)
+    pub close_tx: tokio::sync::oneshot::Sender<()>,
 }
 
 impl StreamingSession {
@@ -82,6 +82,20 @@ impl StreamingSession {
         self.close_tx
             .send(())
             .map_err(|_| AdapterError::WebSocketError("Failed to send close signal".into()))
+    }
+
+    /// Consume the session and return individual parts for custom handling
+    ///
+    /// Useful when you need to forward audio/events through channels while
+    /// keeping close capability separate.
+    pub fn into_parts(
+        self,
+    ) -> (
+        tokio::sync::mpsc::Sender<Vec<u8>>,
+        tokio::sync::mpsc::Receiver<StreamEvent>,
+        tokio::sync::oneshot::Sender<()>,
+    ) {
+        (self.audio_tx, self.event_rx, self.close_tx)
     }
 }
 
