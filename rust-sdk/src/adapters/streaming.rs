@@ -105,9 +105,22 @@ impl WebSocketConnection {
         } else {
             // Build request with custom headers and proper WebSocket upgrade headers
             // When building a custom Request, tungstenite doesn't auto-add WebSocket headers
+
+            // Extract host from URL for the required Host header
+            let parsed_url = url::Url::parse(url)
+                .map_err(|e| AdapterError::WebSocketError(format!("Invalid URL: {}", e)))?;
+            let host = parsed_url.host_str()
+                .ok_or_else(|| AdapterError::WebSocketError("URL missing host".into()))?;
+            let host_header = if let Some(port) = parsed_url.port() {
+                format!("{}:{}", host, port)
+            } else {
+                host.to_string()
+            };
+
             let ws_key = tokio_tungstenite::tungstenite::handshake::client::generate_key();
             let mut request = Request::builder()
                 .uri(url)
+                .header("Host", &host_header)
                 .header("Upgrade", "websocket")
                 .header("Connection", "Upgrade")
                 .header("Sec-WebSocket-Key", &ws_key)
