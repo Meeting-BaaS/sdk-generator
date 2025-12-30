@@ -1,183 +1,97 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to the Voice Router SDK will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [0.1.5] - 2025-12-12
-
-### 🐛 CRITICAL BUG FIX
-
-#### Fixed Gladia API 404 Error - Doubled `/v2/v2/live` Path
-- **Issue**: All Gladia API requests returned 404 error: "Cannot POST /v2/v2/live"
-- **Root Cause**: `baseURL` was `https://api.gladia.io/v2`, but generated API paths already include `/v2`
-- **Impact**: Complete failure of Gladia streaming and pre-recorded transcription
-
-**Fix**:
-- ✅ Changed `baseURL` from `https://api.gladia.io/v2` → `https://api.gladia.io`
-- ✅ Correctly constructs `https://api.gladia.io/v2/live` instead of `/v2/v2/live`
-- ✅ All Gladia API endpoints now work correctly
-
-### 🔧 BUILD & DEVELOPMENT
-
-#### Fixed Documentation Generation (108 → 0 TypeScript Errors)
-- **Issue**: TypeDoc documentation generation blocked by 108 TypeScript errors in Orval-generated code
-- **Root Cause**: Multiple Orval code generation issues across different provider specs
-
-**Fixes Implemented**:
-- ✅ Array default type inference - Inlined defaults with `as any` to satisfy Zod enum types
-- ✅ Missing AssemblyAI scalar schemas - Auto-generate after each build via `fix-assemblyai-missing-schemas.js`
-- ✅ FormData object serialization - JSON.stringify objects before FormData.append
-- ✅ Discriminated unions - Convert to regular unions when discriminator field missing
-- ✅ Empty zod.array() calls - Replace with `zod.array(zod.unknown())`
-- ✅ TypeDoc cross-reference warnings - Include shared types in all adapter docs
-
-**New Files**:
-- `scripts/fix-generated.js` - Post-generation fixer with 8 automated fixes
-- `scripts/fix-assemblyai-missing-schemas.js` - Auto-generate missing scalar types
-- `scripts/test-fixer.js` - Test suite for generation fixes
-- `ORVAL_KNOWN_ISSUES.md` - Comprehensive documentation of Orval bugs and workarounds
-
-**TypeDoc Improvements**:
-- All adapter configs now include `base-adapter.ts` and `router/types.ts`
-- Eliminated warnings about `ProviderConfig`, `ProviderCapabilities` not being documented
-- All 8 documentation modules generate successfully with 0 errors
-
----
-
-## [0.1.4] - 2025-12-12
-
-### ⚠️ KNOWN ISSUE
-**This version has a critical bug with Gladia API requests** - All requests fail with "Cannot POST /v2/v2/live". Fixed in 0.1.5.
-
-### 🐛 CRITICAL BUG FIXES
-
-#### Fixed WebSocket Message Parsing (Gladia, AssemblyAI, Deepgram)
-- **Issue**: WebSocket streaming returned empty transcripts due to incorrect field access
-- **Root Cause**: Using `JSON.parse()` without applying generated TypeScript types, accessing wrong nested fields
-- **Impact**: All streaming transcriptions failed silently with empty text
-
-**Gladia Fix**:
-- ✅ Fixed `message.text` → `message.data.utterance.text` (correct nested structure)
-- ✅ Fixed `message.is_final` → `message.data.is_final`
-- ✅ Added proper TypeScript type `TranscriptMessage` from generated schema
-- ✅ WebSocket messages now type-safe with compile-time validation
-
-**AssemblyAI Fix**:
-- ✅ Added manual WebSocket message types (`SessionBeginsMessage`, `PartialTranscriptMessage`, `FinalTranscriptMessage`)
-- ✅ Applied discriminated union `RealtimeMessage` for type-safe message handling
-- ✅ Removed unsafe `any` types and optional chaining (`?.`)
-
-**Deepgram Fix**:
-- ✅ Added manual WebSocket message types (`DeepgramResultsMessage`, etc.)
-- ✅ Applied proper type narrowing with discriminated unions
-- ✅ Removed unsafe fallbacks (`|| ""`, `|| 0`)
-
-### ⚡ PERFORMANCE & CODE QUALITY
-
-#### Refactored to Use Generated API Clients
-**Problem**: Adapters manually created axios clients and made HTTP calls, bypassing Orval-generated API client functions with full type safety.
-
-**Gladia Adapter**:
-- ✅ Replaced manual `this.client.post<Type>("/url", payload)` with `preRecordedControllerInitPreRecordedJobV2(request, config)`
-- ✅ Replaced manual `this.client.get<Type>("/url")` with `preRecordedControllerGetPreRecordedJobV2(id, config)`
-- ✅ Replaced manual streaming init with `streamingControllerInitStreamingSessionV2(request, config)`
-- ✅ Removed `AxiosInstance` and manual `axios.create()` initialization
-
-**AssemblyAI Adapter**:
-- ✅ Replaced manual transcription calls with `createTranscript(request, config)`
-- ✅ Replaced manual get calls with `getTranscriptAPI(id, config)`
-- ✅ Replaced manual token creation with `createTemporaryToken(params, config)`
-- ✅ Removed `AxiosInstance` and manual initialization
-
-**Benefits**:
-- 🎯 **Full compile-time type safety** - TypeScript validates request/response structures
-- 🎯 **Correct URLs** - Hardcoded in generated functions, can't be typo'd
-- 🎯 **Auto-updates** - Regenerating from OpenAPI specs updates adapters automatically
-- 🎯 **Less code** - No manual axios client management
-- 🎯 **This class of bugs is now IMPOSSIBLE** - Types enforce correct structure
-
-### 📚 DOCUMENTATION
-
-- ✅ Added `BUG_ANALYSIS_TYPE_SAFETY.md` - Comprehensive root cause analysis
-- ✅ Documented why manual axios approach was dangerous
-- ✅ Explained the difference between type generation vs actually using types
-- ✅ Created guidelines for future adapter development
-
-### 🔧 TECHNICAL DETAILS
-
-**Files Changed**:
-- `src/adapters/gladia-adapter.ts` - HTTP + WebSocket refactored
-- `src/adapters/assemblyai-adapter.ts` - HTTP + WebSocket refactored
-- `src/adapters/deepgram-adapter.ts` - WebSocket refactored
-- `BUG_ANALYSIS_TYPE_SAFETY.md` - New documentation
-- `CHANGELOG.md` - Created
-
-**Type Safety Improvements**:
-- Removed all `JSON.parse()` returning `any` without type application
-- Added discriminated union types for WebSocket messages
-- Removed unsafe type assertions and optional chaining where fields are guaranteed
-- Applied generated API client functions with full type checking
-
-**Build Status**:
-- ✅ CJS Bundle: Success
-- ✅ ESM Bundle: Success
-- ⚠️ DTS Build: Fails due to pre-existing AssemblyAI schema generation issues (unrelated to this fix)
-
-### 🚧 KNOWN ISSUES
-
-**AssemblyAI Schema Generation**:
-- Missing generated schema files (`afterId`, `beforeId`, `createdOn`, etc.)
-- Affects DTS (type declaration) build only
-- Does NOT affect runtime (CJS/ESM bundles work perfectly)
-- **Workaround**: Use CJS or ESM bundles directly
-- **Fix**: Regenerate AssemblyAI OpenAPI client from updated spec
-
-**Deepgram OpenAPI Generation**:
-- Cannot generate API client due to duplicate schema names in OpenAPI spec
-- Deepgram adapter uses manual HTTP calls (still needs refactoring)
-- WebSocket parsing is type-safe
-
----
-
-## [0.1.3] - 2025-12-12
+## [0.2.5] - 2024-12-30
 
 ### Added
-- Strict TypeScript types for audio encoding with automatic provider mapping
-- `AudioEncoding` union type with all supported formats
-- `mapEncodingToProvider()` function for automatic format conversion
-- Runtime validation with clear error messages
+
+#### Type-Safe Provider Options
+- **Provider-specific typed options**: Each adapter now accepts fully typed options from OpenAPI specs
+  - `deepgram?: Partial<DeepgramOptions>` - Full Deepgram API parameters
+  - `assemblyai?: Partial<AssemblyAIOptions>` - Full AssemblyAI API parameters
+  - `gladia?: Partial<GladiaOptions>` - Full Gladia API parameters
+  - `openai?: Partial<OpenAIWhisperOptions>` - Full OpenAI Whisper API parameters
+
+- **TranscriptionLanguage type**: Union type with autocomplete from AssemblyAI and Gladia OpenAPI specs
+
+- **Code switching support** (Gladia):
+  - `codeSwitching?: boolean` - Enable multilingual audio detection
+  - `codeSwitchingConfig?: GladiaCodeSwitchingConfig` - Fine-tune code switching behavior
+  - Note: This is now correctly separate from `languageDetection`
+
+- **Audio-to-LLM support** (Gladia):
+  - `audioToLlm?: GladiaAudioToLlmConfig` - Run custom LLM prompts on transcriptions
+
+#### Model Selection for Pre-recorded Transcription
+- **TranscriptionModel type**: Derived from OpenAPI specs with autocomplete for all providers
+  - Deepgram: `nova-3`, `nova-2`, `enhanced`, `base`, `whisper-large`, etc.
+  - AssemblyAI: `best`, `slam-1`, `universal`
+  - Gladia: `solaria-1`
+  - Speechmatics: `standard`, `enhanced`
+
+- **model field in TranscribeOptions**: Select transcription model for pre-recorded audio (previously only available for streaming)
+
+#### Transcript Deletion
+- **deleteTranscript()**: Delete transcription data from provider servers
+  - AssemblyAI: Marks transcript as deleted
+  - Gladia: Supports both pre-recorded and streaming jobs
+  - Azure STT: Full deletion via generated API
+  - Speechmatics: Supports force deletion option
 
 ### Changed
-- Updated `StreamingOptions` to use strict `AudioEncoding` instead of `string`
-- Fixed Gladia streaming endpoint from `/v2/live` to `/live` (base URL already has `/v2`)
-- Improved type safety for sample rates, bit depths, and channel configurations
 
-### Fixed
-- Corrected Gladia baseURL to match OpenAPI spec: `https://api.gladia.io/v2`
-- Fixed "Cannot POST /v2/v2/live" error caused by duplicate `/v2` in path
+- **Removed untyped metadata field**: The generic `metadata?: Record<string, unknown>` has been replaced with typed provider-specific options
+- **Spread operator pattern**: All adapters now use `...options.provider` for type-safe option merging
 
----
+### Developer Experience
 
-## [0.1.2] - 2025-12-08
+- **NixOS support**: Added `flake.nix` for reproducible development environment with Node.js 20, pnpm, biome, and Rust toolchain
 
-### Added
-- Initial AssemblyAI adapter implementation
-- Comprehensive documentation generation
+## Usage Examples
 
----
+### Type-Safe Provider Options
 
-## [0.1.1] - 2025-12-08
+```typescript
+// Use Deepgram-specific options with full autocomplete
+const result = await router.transcribe(audio, {
+  language: 'en',
+  diarization: true,
+  deepgram: {
+    smart_format: true,
+    paragraphs: true,
+    detect_topics: true
+  }
+});
 
-### Fixed
-- Corrected Gladia streaming endpoint path
+// Use AssemblyAI-specific options
+const result = await router.transcribe(audio, {
+  model: 'best',
+  assemblyai: {
+    auto_chapters: true,
+    content_safety: true,
+    iab_categories: true
+  }
+});
 
----
+// Use Gladia code switching for multilingual audio
+const result = await router.transcribe(audio, {
+  codeSwitching: true,
+  gladia: {
+    custom_metadata: { session_id: 'abc123' }
+  }
+});
+```
 
-## [0.1.0] - 2025-12-08
+### Delete Transcription Data
 
-### Added
-- Initial release with Gladia adapter
-- Voice Router SDK foundation
-- Generated types from OpenAPI specs
+```typescript
+// Delete transcript from provider
+await adapter.deleteTranscript('transcript-id');
+
+// Gladia: delete streaming job
+await gladiaAdapter.deleteTranscript('job-id', 'streaming');
+
+// Speechmatics: force delete running job
+await speechmaticsAdapter.deleteTranscript('job-id', true);
+```
