@@ -16,6 +16,7 @@ import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 import {
   transcriptionsCreate,
   transcriptionsGet,
+  transcriptionsDelete,
   transcriptionsListFiles
 } from "../generated/azure/api/speechServicesAPIV31"
 
@@ -265,6 +266,42 @@ export class AzureSTTAdapter extends BaseAdapter {
       return this.normalizeResponse(transcription, transcriptionData)
     } catch (error) {
       return this.createErrorResponse(error)
+    }
+  }
+
+  /**
+   * Delete a transcription and its associated data
+   *
+   * Removes the transcription from Azure's servers. This action is irreversible.
+   *
+   * @param transcriptId - The ID of the transcription to delete
+   * @returns Promise with success status
+   *
+   * @example Delete a transcription
+   * ```typescript
+   * const result = await adapter.deleteTranscript('abc123-def456');
+   * if (result.success) {
+   *   console.log('Transcription deleted successfully');
+   * }
+   * ```
+   *
+   * @see https://learn.microsoft.com/azure/cognitive-services/speech-service/batch-transcription
+   */
+  async deleteTranscript(transcriptId: string): Promise<{ success: boolean }> {
+    this.validateConfig()
+
+    try {
+      // Use generated API client function - FULLY TYPED!
+      await transcriptionsDelete(transcriptId, this.getAxiosConfig())
+
+      return { success: true }
+    } catch (error) {
+      // If transcription not found, consider it already deleted
+      const err = error as { response?: { status?: number } }
+      if (err.response?.status === 404) {
+        return { success: true }
+      }
+      throw error
     }
   }
 

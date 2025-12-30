@@ -1,7 +1,7 @@
 {
   "name": "voice-router-dev",
-  "version": "0.2.4",
-  "description": "[DEV] Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, and Speechmatics",
+  "version": "0.2.5",
+  "description": "Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, and Speechmatics",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

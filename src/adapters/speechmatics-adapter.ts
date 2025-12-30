@@ -151,12 +151,18 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
     try {
       // Build job config
+      // Model maps to operating_point: 'standard' or 'enhanced'
+      // SpeechmaticsOperatingPoint is part of TranscriptionModel union
+      const operatingPoint: "standard" | "enhanced" =
+        (options?.model as "standard" | "enhanced") ||
+        (options?.metadata?.operating_point as "standard" | "enhanced") ||
+        "standard"
+
       const jobConfig: JobConfig = {
         type: "transcription",
         transcription_config: {
           language: options?.language || "en",
-          operating_point:
-            (options?.metadata?.operating_point as "standard" | "enhanced") || "standard"
+          operating_point: operatingPoint
         }
       }
 
@@ -287,6 +293,51 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       return this.normalizeResponse(transcriptResponse.data)
     } catch (error) {
       return this.createErrorResponse(error)
+    }
+  }
+
+  /**
+   * Delete a transcription job and its associated data
+   *
+   * Removes the job and all associated resources from Speechmatics' servers.
+   * This action is irreversible.
+   *
+   * @param transcriptId - The job ID to delete
+   * @param force - Force delete even if job is still running (default: false)
+   * @returns Promise with success status
+   *
+   * @example Delete a completed job
+   * ```typescript
+   * const result = await adapter.deleteTranscript('job-abc123');
+   * if (result.success) {
+   *   console.log('Job deleted successfully');
+   * }
+   * ```
+   *
+   * @example Force delete a running job
+   * ```typescript
+   * const result = await adapter.deleteTranscript('job-abc123', true);
+   * ```
+   *
+   * @see https://docs.speechmatics.com/
+   */
+  async deleteTranscript(transcriptId: string, force: boolean = false): Promise<{ success: boolean }> {
+    this.validateConfig()
+
+    try {
+      // Speechmatics DELETE /jobs/{jobid} with optional force parameter
+      await this.client!.delete(`/jobs/${transcriptId}`, {
+        params: force ? { force: true } : undefined
+      })
+
+      return { success: true }
+    } catch (error) {
+      // If job not found, consider it already deleted
+      const err = error as { response?: { status?: number } }
+      if (err.response?.status === 404) {
+        return { success: true }
+      }
+      throw error
     }
   }
 

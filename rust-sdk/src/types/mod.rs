@@ -82,6 +82,13 @@ pub enum AudioInput {
 /// Common transcription options across all providers
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct TranscribeOptions {
+    /// Model to use for transcription (provider-specific)
+    /// - Deepgram: 'nova-3', 'nova-2', 'enhanced', 'base', etc.
+    /// - AssemblyAI: 'best', 'slam-1', 'universal'
+    /// - Speechmatics: 'standard', 'enhanced' (operating point)
+    /// - Gladia: Not configurable for pre-recorded (uses default)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub model: Option<String>,
     /// Language code (e.g., 'en', 'en-US', 'es')
     #[serde(skip_serializing_if = "Option::is_none")]
     pub language: Option<String>,

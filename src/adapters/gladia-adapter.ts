@@ -38,7 +38,9 @@ import type { SessionStatus } from "../router/types"
 import {
   preRecordedControllerInitPreRecordedJobV2,
   preRecordedControllerGetPreRecordedJobV2,
-  streamingControllerInitStreamingSessionV2
+  preRecordedControllerDeletePreRecordedJobV2,
+  streamingControllerInitStreamingSessionV2,
+  streamingControllerDeleteStreamingJobV2
 } from "../generated/gladia/api/gladiaControlAPI"
 
 // Import Gladia generated types
@@ -439,8 +441,55 @@ export class GladiaAdapter extends BaseAdapter {
   }
 
   /**
-   * Poll for transcription completion
+   * Delete a transcription job and its associated data
+   *
+   * Removes the transcription data from Gladia's servers. This action is
+   * irreversible. Supports both pre-recorded and streaming job IDs.
+   *
+   * @param transcriptId - The ID of the transcript/job to delete
+   * @param jobType - Type of job: 'pre-recorded' or 'streaming' (defaults to 'pre-recorded')
+   * @returns Promise with success status
+   *
+   * @example Delete a pre-recorded transcript
+   * ```typescript
+   * const result = await adapter.deleteTranscript('abc123');
+   * if (result.success) {
+   *   console.log('Transcript deleted successfully');
+   * }
+   * ```
+   *
+   * @example Delete a streaming job
+   * ```typescript
+   * const result = await adapter.deleteTranscript('stream-456', 'streaming');
+   * ```
+   *
+   * @see https://docs.gladia.io/
    */
+  async deleteTranscript(
+    transcriptId: string,
+    jobType: "pre-recorded" | "streaming" = "pre-recorded"
+  ): Promise<{ success: boolean }> {
+    this.validateConfig()
+
+    try {
+      if (jobType === "streaming") {
+        // Use generated API client function for streaming jobs - FULLY TYPED!
+        await streamingControllerDeleteStreamingJobV2(transcriptId, this.getAxiosConfig())
+      } else {
+        // Use generated API client function for pre-recorded jobs - FULLY TYPED!
+        await preRecordedControllerDeletePreRecordedJobV2(transcriptId, this.getAxiosConfig())
+      }
+
+      return { success: true }
+    } catch (error) {
+      // If job not found, consider it already deleted
+      const err = error as { response?: { status?: number } }
+      if (err.response?.status === 404) {
+        return { success: true }
+      }
+      throw error
+    }
+  }
 
   /**
    * Stream audio for real-time transcription

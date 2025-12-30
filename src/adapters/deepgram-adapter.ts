@@ -260,6 +260,11 @@ export class DeepgramAdapter extends BaseAdapter {
       return params
     }
 
+    // Model selection (nova-3, nova-2, enhanced, base, etc.)
+    if (options.model) {
+      params.model = options.model
+    }
+
     // Language configuration
     if (options.language) {
       params.language = options.language

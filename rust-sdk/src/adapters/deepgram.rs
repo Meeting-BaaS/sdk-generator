@@ -456,6 +456,11 @@ impl TranscriptionAdapter for DeepgramAdapter {
         let callback = opts.and_then(|o| o.webhook_url.as_deref());
         let utterances = diarize; // Enable utterances when diarization is enabled
         let keyterm = opts.and_then(|o| o.custom_vocabulary.clone());
+        let model = opts.and_then(|o| {
+            o.model.as_ref().map(|m| {
+                deepgram_client::models::ListenV1MediaTranscribeModelParameter::Model(m.clone())
+            })
+        });
 
         // Use generated API client function - FULLY TYPED!
         let response = listen_v1_media_transcribe(
@@ -483,7 +488,7 @@ impl TranscriptionAdapter for DeepgramAdapter {
             None,                          // keywords
             language,                      // language
             None,                          // measurements
-            None,                          // model
+            model,                         // model
             None,                          // multichannel
             None,                          // numerals
             None,                          // paragraphs

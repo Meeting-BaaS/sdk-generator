@@ -20,17 +20,30 @@ import type { Transcription as AzureTranscription } from "../generated/azure/sch
 // Provider-specific model types for type-safe model selection
 import type { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
+import type { SpeechModel as AssemblyAISpeechModel } from "../generated/assemblyai/schema/speechModel"
+
+/**
+ * Speechmatics operating point (model) type
+ * Manually defined as Speechmatics OpenAPI spec doesn't export this cleanly
+ */
+export type SpeechmaticsOperatingPoint = "standard" | "enhanced"
 
 /**
  * Unified transcription model type with autocomplete for all providers
  *
  * Includes all known models from:
  * - Deepgram: nova-3, nova-2, enhanced, base, whisper, etc.
+ * - AssemblyAI: best, slam-1, universal
  * - Gladia: solaria-1
+ * - Speechmatics: standard, enhanced
  *
  * Also accepts any string for future/custom models.
  */
-export type TranscriptionModel = ListenV1ModelParameter | StreamingSupportedModels
+export type TranscriptionModel =
+  | ListenV1ModelParameter
+  | StreamingSupportedModels
+  | AssemblyAISpeechModel
+  | SpeechmaticsOperatingPoint
 
 /**
  * Supported transcription providers
@@ -94,6 +107,18 @@ export type AudioInput =
  * Common transcription options across all providers
  */
 export interface TranscribeOptions {
+  /**
+   * Model to use for transcription (provider-specific)
+   *
+   * Type-safe model selection derived from OpenAPI specs:
+   * - Deepgram: 'nova-3', 'nova-2', 'enhanced', 'base', etc.
+   * - AssemblyAI: 'best', 'slam-1', 'universal'
+   * - Speechmatics: 'standard', 'enhanced' (operating point)
+   * - Gladia: 'solaria-1' (streaming only)
+   *
+   * @see TranscriptionModel for full list of available models
+   */
+  model?: TranscriptionModel
   /** Language code (e.g., 'en', 'en-US', 'es') */
   language?: string
   /** Enable automatic language detection */

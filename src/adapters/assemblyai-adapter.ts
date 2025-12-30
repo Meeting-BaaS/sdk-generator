@@ -22,6 +22,7 @@ import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import {
   createTranscript,
   getTranscript as getTranscriptAPI,
+  deleteTranscript as deleteTranscriptAPI,
   createTemporaryToken
 } from "../generated/assemblyai/api/assemblyAIAPI"
 
@@ -31,6 +32,7 @@ import type { TranscriptParams } from "../generated/assemblyai/schema/transcript
 import type { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
 import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
 import type { TranscriptUtterance } from "../generated/assemblyai/schema/transcriptUtterance"
+import type { TranscriptOptionalParamsSpeechModel } from "../generated/assemblyai/schema/transcriptOptionalParamsSpeechModel"
 
 // Import AssemblyAI v3 Streaming types (auto-synced from SDK)
 import type {
@@ -238,6 +240,49 @@ export class AssemblyAIAdapter extends BaseAdapter {
   }
 
   /**
+   * Delete a transcription and its associated data
+   *
+   * Removes the transcription data from AssemblyAI's servers. This action
+   * is irreversible. The transcript will be marked as deleted and its
+   * content will no longer be accessible.
+   *
+   * @param transcriptId - The ID of the transcript to delete
+   * @returns Promise with success status
+   *
+   * @example Delete a transcript
+   * ```typescript
+   * const result = await adapter.deleteTranscript('abc123');
+   * if (result.success) {
+   *   console.log('Transcript deleted successfully');
+   * }
+   * ```
+   *
+   * @see https://www.assemblyai.com/docs/api-reference/transcripts/delete
+   */
+  async deleteTranscript(transcriptId: string): Promise<{ success: boolean }> {
+    this.validateConfig()
+
+    try {
+      // Use generated API client function - FULLY TYPED!
+      // AssemblyAI returns the transcript with status marked as deleted
+      const response = await deleteTranscriptAPI(transcriptId, this.getAxiosConfig())
+
+      // AssemblyAI marks the transcript as deleted rather than truly removing it
+      // Check if the response indicates successful deletion
+      return {
+        success: response.data.status === "completed" || response.status === 200
+      }
+    } catch (error) {
+      // If transcript not found, consider it already deleted
+      const err = error as { response?: { status?: number } }
+      if (err.response?.status === 404) {
+        return { success: true }
+      }
+      throw error
+    }
+  }
+
+  /**
    * Build AssemblyAI transcription request from unified options
    */
   private buildTranscriptionRequest(
@@ -260,6 +305,12 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     // Map options to AssemblyAI format
     if (options) {
+      // Model selection (best, slam-1, universal)
+      // TranscriptionModel includes AssemblyAI's SpeechModel type
+      if (options.model) {
+        request.speech_model = options.model as TranscriptOptionalParamsSpeechModel
+      }
+
       // Language configuration
       if (options.language) {
         // Convert ISO codes to AssemblyAI format (e.g., 'en' -> 'en_us')

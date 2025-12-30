@@ -116,6 +116,16 @@ impl AssemblyAIAdapter {
         let mut params = TranscriptParams::new(audio_url);
 
         if let Some(opts) = options {
+            // Model selection (best, slam-1, universal)
+            if let Some(ref model) = opts.model {
+                // Map to AssemblyAI SpeechModel enum
+                params.speech_model = Some(match model.as_str() {
+                    "slam-1" => assemblyai_client::models::SpeechModel::Slam1,
+                    "universal" => assemblyai_client::models::SpeechModel::Universal,
+                    _ => assemblyai_client::models::SpeechModel::Best,
+                });
+            }
+
             // Language detection
             if opts.language_detection == Some(true) {
                 params.language_detection = Some(true);
