@@ -338,10 +338,10 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       const verboseResponse = response as CreateTranscriptionResponseVerboseJson
 
       // Extract words if available
-      const words = verboseResponse.words?.map((word) => ({
-        text: word.word,
-        start: word.start,
-        end: word.end,
+      const words = verboseResponse.words?.map((w) => ({
+        word: w.word,
+        start: w.start,
+        end: w.end,
         confidence: undefined
       }))
 

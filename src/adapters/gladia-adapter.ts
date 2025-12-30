@@ -434,7 +434,7 @@ export class GladiaAdapter extends BaseAdapter {
     )
 
     return extractWordsUtil(allWords, (item) => ({
-      text: item.word.word,
+      word: item.word.word,
       start: item.word.start,
       end: item.word.end,
       confidence: item.word.confidence,
@@ -456,11 +456,11 @@ export class GladiaAdapter extends BaseAdapter {
       end: utterance.end,
       speaker: utterance.speaker?.toString(),
       confidence: utterance.confidence,
-      words: utterance.words.map((word: WordDTO) => ({
-        text: word.word,
-        start: word.start,
-        end: word.end,
-        confidence: word.confidence
+      words: utterance.words.map((w: WordDTO) => ({
+        word: w.word,
+        start: w.start,
+        end: w.end,
+        confidence: w.confidence
       }))
     }))
   }
@@ -624,11 +624,11 @@ export class GladiaAdapter extends BaseAdapter {
             text: utterance.text,
             isFinal: messageData.is_final,
             confidence: utterance.confidence,
-            words: utterance.words.map((word) => ({
-              text: word.word,
-              start: word.start,
-              end: word.end,
-              confidence: word.confidence
+            words: utterance.words.map((w) => ({
+              word: w.word,
+              start: w.start,
+              end: w.end,
+              confidence: w.confidence
             })),
             data: message
           })
@@ -644,11 +644,11 @@ export class GladiaAdapter extends BaseAdapter {
             end: utterance.end,
             speaker: utterance.speaker?.toString(),
             confidence: utterance.confidence,
-            words: utterance.words.map((word) => ({
-              text: word.word,
-              start: word.start,
-              end: word.end,
-              confidence: word.confidence
+            words: utterance.words.map((w) => ({
+              word: w.word,
+              start: w.start,
+              end: w.end,
+              confidence: w.confidence
             }))
           }
           callbacks?.onUtterance?.(utteranceData)

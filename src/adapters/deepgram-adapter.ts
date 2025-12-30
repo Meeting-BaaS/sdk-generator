@@ -405,11 +405,11 @@ export class DeepgramAdapter extends BaseAdapter {
     }
 
     return alternative.words.map(
-      (word: ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem) => ({
-        text: word.word || "",
-        start: word.start || 0,
-        end: word.end || 0,
-        confidence: word.confidence,
+      (w: ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem) => ({
+        word: w.word || "",
+        start: w.start || 0,
+        end: w.end || 0,
+        confidence: w.confidence,
         speaker: undefined // Speaker info is at utterance level, not word level
       })
     )
@@ -431,11 +431,11 @@ export class DeepgramAdapter extends BaseAdapter {
       end: utterance.end || 0,
       speaker: utterance.speaker?.toString(),
       confidence: utterance.confidence,
-      words: utterance.words?.map((word) => ({
-        text: word.word || "",
-        start: word.start || 0,
-        end: word.end || 0,
-        confidence: word.confidence
+      words: utterance.words?.map((w) => ({
+        word: w.word || "",
+        start: w.start || 0,
+        end: w.end || 0,
+        confidence: w.confidence
       }))
     }))
   }
@@ -552,11 +552,11 @@ export class DeepgramAdapter extends BaseAdapter {
           if (channel) {
             const transcript = channel.transcript
             const isFinal = message.is_final
-            const words = channel.words?.map((word) => ({
-              text: word.word,
-              start: word.start,
-              end: word.end,
-              confidence: word.confidence
+            const words = channel.words?.map((w) => ({
+              word: w.word,
+              start: w.start,
+              end: w.end,
+              confidence: w.confidence
             }))
 
             callbacks?.onTranscript?.({

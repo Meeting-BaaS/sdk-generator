@@ -388,7 +388,7 @@ export interface Speaker {
  */
 export interface Word {
   /** The transcribed word */
-  text: string
+  word: string
   /** Start time in seconds */
   start: number
   /** End time in seconds */

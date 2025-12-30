@@ -174,11 +174,11 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
       // Extract words (if available)
       const words =
         alternative.words && alternative.words.length > 0
-          ? alternative.words.map((word) => ({
-              text: word.word || "",
-              start: word.start || 0,
-              end: word.end || 0,
-              confidence: word.confidence
+          ? alternative.words.map((w) => ({
+              word: w.word || "",
+              start: w.start || 0,
+              end: w.end || 0,
+              confidence: w.confidence
             }))
           : undefined
 
@@ -204,11 +204,11 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
               confidence: utterance.confidence,
               words:
                 utterance.words && utterance.words.length > 0
-                  ? utterance.words.map((word) => ({
-                      text: word.word || "",
-                      start: word.start || 0,
-                      end: word.end || 0,
-                      confidence: word.confidence
+                  ? utterance.words.map((w) => ({
+                      word: w.word || "",
+                      start: w.start || 0,
+                      end: w.end || 0,
+                      confidence: w.confidence
                     }))
                   : undefined
             }))

@@ -481,12 +481,12 @@ export class AssemblyAIAdapter extends BaseAdapter {
       return undefined
     }
 
-    return transcript.words.map((word: TranscriptWord) => ({
-      text: word.text,
-      start: word.start / 1000, // Convert ms to seconds
-      end: word.end / 1000, // Convert ms to seconds
-      confidence: word.confidence,
-      speaker: word.speaker || undefined
+    return transcript.words.map((w: TranscriptWord) => ({
+      word: w.text,
+      start: w.start / 1000, // Convert ms to seconds
+      end: w.end / 1000, // Convert ms to seconds
+      confidence: w.confidence,
+      speaker: w.speaker || undefined
     }))
   }
 
@@ -504,11 +504,11 @@ export class AssemblyAIAdapter extends BaseAdapter {
       end: utterance.end / 1000, // Convert ms to seconds
       speaker: utterance.speaker || undefined,
       confidence: utterance.confidence,
-      words: utterance.words.map((word: TranscriptWord) => ({
-        text: word.text,
-        start: word.start / 1000,
-        end: word.end / 1000,
-        confidence: word.confidence
+      words: utterance.words.map((w: TranscriptWord) => ({
+        word: w.text,
+        start: w.start / 1000,
+        end: w.end / 1000,
+        confidence: w.confidence
       }))
     }))
   }
@@ -632,11 +632,11 @@ export class AssemblyAIAdapter extends BaseAdapter {
             text: turnMsg.transcript,
             isFinal: turnMsg.end_of_turn,
             confidence: turnMsg.end_of_turn_confidence,
-            words: turnMsg.words.map((word: StreamingWord) => ({
-              text: word.text,
-              start: word.start / 1000, // Convert ms to seconds
-              end: word.end / 1000,
-              confidence: word.confidence
+            words: turnMsg.words.map((w: StreamingWord) => ({
+              word: w.text,
+              start: w.start / 1000, // Convert ms to seconds
+              end: w.end / 1000,
+              confidence: w.confidence
             })),
             data: turnMsg
           })

@@ -366,11 +366,11 @@ export class AzureSTTAdapter extends BaseAdapter {
 
     // Extract words with timestamps
     const words = recognizedPhrases.flatMap((phrase: any) =>
-      (phrase.nBest?.[0]?.words || []).map((word: any) => ({
-        text: word.word,
-        start: word.offsetInTicks / 10000000, // Convert ticks to seconds
-        end: (word.offsetInTicks + word.durationInTicks) / 10000000,
-        confidence: word.confidence,
+      (phrase.nBest?.[0]?.words || []).map((w: any) => ({
+        word: w.word,
+        start: w.offsetInTicks / 10000000, // Convert ticks to seconds
+        end: (w.offsetInTicks + w.durationInTicks) / 10000000,
+        confidence: w.confidence,
         speaker: phrase.speaker !== undefined ? phrase.speaker.toString() : undefined
       }))
     )

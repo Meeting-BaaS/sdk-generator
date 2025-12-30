@@ -373,7 +373,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
     const words = response.results
       .filter((r) => r.type === "word" && r.start_time !== undefined && r.end_time !== undefined)
       .map((result) => ({
-        text: result.alternatives?.[0]?.content || "",
+        word: result.alternatives?.[0]?.content || "",
         start: result.start_time!,
         end: result.end_time!,
         confidence: result.alternatives?.[0]?.confidence,

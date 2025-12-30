@@ -47,12 +47,12 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
   /**
    * Convert Gladia WordDTO to unified Word type
    */
-  private mapWord(word: WordDTO): Word {
+  private mapWord(w: WordDTO): Word {
     return {
-      text: word.word,
-      start: word.start,
-      end: word.end,
-      confidence: word.confidence
+      word: w.word,
+      start: w.start,
+      end: w.end,
+      confidence: w.confidence
     }
   }
 
