@@ -32,3 +32,4 @@ tmp/
 
 # Generated documentation
 docs/generated/
+.direnv
