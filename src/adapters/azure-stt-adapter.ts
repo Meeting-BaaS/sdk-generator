@@ -159,8 +159,8 @@ export class AzureSTTAdapter extends BaseAdapter {
 
     try {
       const transcriptionRequest: Partial<Transcription> = {
-        displayName: (options?.metadata?.displayName as string) || "SDK Transcription",
-        description: (options?.metadata?.description as string) || "",
+        displayName: "SDK Transcription",
+        description: "",
         locale: options?.language || "en-US",
         contentUrls: [audio.url],
         properties: this.buildTranscriptionProperties(options)

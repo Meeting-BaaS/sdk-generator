@@ -254,18 +254,29 @@ export class DeepgramAdapter extends BaseAdapter {
    * Build Deepgram transcription parameters from unified options
    */
   private buildTranscriptionParams(options?: TranscribeOptions): ListenV1MediaTranscribeParams {
-    const params: ListenV1MediaTranscribeParams = {}
-
     if (!options) {
-      return params
+      return {
+        punctuate: true,
+        utterances: true,
+        smart_format: true
+      }
     }
 
-    // Model selection (nova-3, nova-2, enhanced, base, etc.)
+    // Start with provider-specific options (fully typed from OpenAPI)
+    const params: ListenV1MediaTranscribeParams = {
+      ...options.deepgram,
+      // Enable features for better results (can be overridden by deepgram options)
+      punctuate: options.deepgram?.punctuate ?? true,
+      utterances: options.deepgram?.utterances ?? true,
+      smart_format: options.deepgram?.smart_format ?? true
+    }
+
+    // Map normalized options to Deepgram params
+    // These take precedence over deepgram-specific options if both are set
     if (options.model) {
       params.model = options.model
     }
 
-    // Language configuration
     if (options.language) {
       params.language = options.language
     }
@@ -274,45 +285,33 @@ export class DeepgramAdapter extends BaseAdapter {
       params.detect_language = true
     }
 
-    // Speaker diarization
     if (options.diarization) {
       params.diarize = true
     }
 
-    // Custom vocabulary (keywords in Deepgram)
     if (options.customVocabulary && options.customVocabulary.length > 0) {
       params.keywords = options.customVocabulary
     }
 
-    // Summarization
     if (options.summarization) {
       params.summarize = true
     }
 
-    // Sentiment analysis
     if (options.sentimentAnalysis) {
       params.sentiment = true
     }
 
-    // Entity detection
     if (options.entityDetection) {
       params.detect_entities = true
     }
 
-    // PII redaction
     if (options.piiRedaction) {
       params.redact = ["pci", "pii"]
     }
 
-    // Webhook callback
     if (options.webhookUrl) {
       params.callback = options.webhookUrl
     }
-
-    // Enable features for better results
-    params.punctuate = true
-    params.utterances = true
-    params.smart_format = true
 
     return params
   }

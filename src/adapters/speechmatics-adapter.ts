@@ -154,9 +154,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       // Model maps to operating_point: 'standard' or 'enhanced'
       // SpeechmaticsOperatingPoint is part of TranscriptionModel union
       const operatingPoint: "standard" | "enhanced" =
-        (options?.model as "standard" | "enhanced") ||
-        (options?.metadata?.operating_point as "standard" | "enhanced") ||
-        "standard"
+        (options?.model as "standard" | "enhanced") || "standard"
 
       const jobConfig: JobConfig = {
         type: "transcription",
@@ -187,14 +185,14 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         jobConfig.transcription_config.enable_sentiment_analysis = true
       }
 
-      // Add summarization
-      if (options?.summarization && options?.metadata?.summary_type) {
+      // Add summarization (defaults to bullets/medium when enabled)
+      if (options?.summarization) {
         if (!jobConfig.transcription_config) {
           jobConfig.transcription_config = {}
         }
         jobConfig.transcription_config.summarization_config = {
-          type: options.metadata.summary_type as "bullets" | "brief" | "paragraph",
-          length: (options.metadata.summary_length as "short" | "medium" | "long") || "medium"
+          type: "bullets",
+          length: "medium"
         }
       }
 
@@ -321,7 +319,10 @@ export class SpeechmaticsAdapter extends BaseAdapter {
    *
    * @see https://docs.speechmatics.com/
    */
-  async deleteTranscript(transcriptId: string, force: boolean = false): Promise<{ success: boolean }> {
+  async deleteTranscript(
+    transcriptId: string,
+    force: boolean = false
+  ): Promise<{ success: boolean }> {
     this.validateConfig()
 
     try {

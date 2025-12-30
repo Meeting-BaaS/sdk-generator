@@ -189,36 +189,21 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       const needsWords = options?.wordTimestamps === true
 
       // Build typed request using generated types
+      // Start with provider-specific options (fully typed from OpenAPI)
       const request: CreateTranscriptionRequest = {
+        ...options?.openai,
         file: audioData as any, // Generated type expects Blob
         model: model as AudioTranscriptionModel
       }
 
-      // Add optional parameters
+      // Map normalized options (take precedence over openai-specific)
       if (options?.language) {
         request.language = options.language
-      }
-
-      if (options?.metadata?.prompt) {
-        request.prompt = options.metadata.prompt as string
-      }
-
-      if (options?.metadata?.temperature !== undefined) {
-        request.temperature = options.metadata.temperature as number
       }
 
       if (isDiarization) {
         // Diarization model returns diarized_json format
         request.response_format = "diarized_json"
-
-        // Add known speakers if provided
-        if (options?.metadata?.knownSpeakerNames) {
-          request.known_speaker_names = options.metadata.knownSpeakerNames as string[]
-        }
-
-        if (options?.metadata?.knownSpeakerReferences) {
-          request.known_speaker_references = options.metadata.knownSpeakerReferences as string[]
-        }
       } else if (needsWords || options?.diarization) {
         // Use verbose_json for word timestamps
         request.response_format = "verbose_json"
@@ -261,9 +246,9 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
    * Select appropriate model based on transcription options
    */
   private selectModel(options?: TranscribeOptions): AudioTranscriptionModel {
-    // Use model from metadata if provided
-    if (options?.metadata?.model) {
-      return options.metadata.model as AudioTranscriptionModel
+    // Use model from normalized options if provided
+    if (options?.model) {
+      return options.model as AudioTranscriptionModel
     }
 
     // Auto-select based on diarization requirement

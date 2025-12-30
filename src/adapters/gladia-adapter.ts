@@ -265,19 +265,25 @@ export class GladiaAdapter extends BaseAdapter {
       )
     }
 
+    // Start with provider-specific options (fully typed from OpenAPI)
     const request: InitTranscriptionRequest = {
+      ...options?.gladia,
       audio_url: audioUrl
     }
 
-    // Map options to Gladia format
+    // Map normalized options (take precedence over gladia-specific)
     if (options) {
       // Language configuration
-      if (options.language || options.languageDetection) {
+      // Note: codeSwitching is DIFFERENT from languageDetection
+      // - codeSwitching: detect multiple languages in same audio (Gladia feature)
+      // - languageDetection: auto-detect the primary language
+      if (options.language || options.codeSwitching || options.codeSwitchingConfig) {
         request.language_config = {
+          ...options.codeSwitchingConfig,
           languages: options.language
             ? [options.language as TranscriptionLanguageCodeEnum]
-            : undefined,
-          code_switching: options.languageDetection
+            : request.language_config?.languages,
+          code_switching: options.codeSwitching ?? request.language_config?.code_switching
         }
       }
 
@@ -286,6 +292,7 @@ export class GladiaAdapter extends BaseAdapter {
         request.diarization = true
         if (options.speakersExpected) {
           request.diarization_config = {
+            ...request.diarization_config,
             number_of_speakers: options.speakersExpected
           }
         }
@@ -295,6 +302,7 @@ export class GladiaAdapter extends BaseAdapter {
       if (options.customVocabulary && options.customVocabulary.length > 0) {
         request.custom_vocabulary = true
         request.custom_vocabulary_config = {
+          ...request.custom_vocabulary_config,
           vocabulary: options.customVocabulary
         }
       }
@@ -318,13 +326,15 @@ export class GladiaAdapter extends BaseAdapter {
       if (options.webhookUrl) {
         request.callback = true
         request.callback_config = {
+          ...request.callback_config,
           url: options.webhookUrl
         }
       }
 
-      // Custom metadata
-      if (options.metadata) {
-        request.custom_metadata = options.metadata
+      // Audio-to-LLM configuration (Gladia-specific feature)
+      if (options.audioToLlm) {
+        request.audio_to_llm = true
+        request.audio_to_llm_config = options.audioToLlm
       }
     }
 

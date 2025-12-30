@@ -299,11 +299,16 @@ export class AssemblyAIAdapter extends BaseAdapter {
       )
     }
 
+    // Start with provider-specific options (fully typed from OpenAPI)
     const request: TranscriptParams = {
-      audio_url: audioUrl
+      ...options?.assemblyai,
+      audio_url: audioUrl,
+      // Enable punctuation and formatting by default
+      punctuate: options?.assemblyai?.punctuate ?? true,
+      format_text: options?.assemblyai?.format_text ?? true
     }
 
-    // Map options to AssemblyAI format
+    // Map normalized options (take precedence over assemblyai-specific)
     if (options) {
       // Model selection (best, slam-1, universal)
       // TranscriptionModel includes AssemblyAI's SpeechModel type
@@ -335,14 +340,14 @@ export class AssemblyAIAdapter extends BaseAdapter {
       // Custom vocabulary (word boost)
       if (options.customVocabulary && options.customVocabulary.length > 0) {
         request.word_boost = options.customVocabulary
-        request.boost_param = "high" // default to high boost
+        request.boost_param = request.boost_param ?? "high" // default to high boost
       }
 
       // Summarization
       if (options.summarization) {
         request.summarization = true
-        request.summary_model = "informative"
-        request.summary_type = "bullets"
+        request.summary_model = request.summary_model ?? "informative"
+        request.summary_type = request.summary_type ?? "bullets"
       }
 
       // Sentiment analysis
@@ -364,11 +369,6 @@ export class AssemblyAIAdapter extends BaseAdapter {
       if (options.webhookUrl) {
         request.webhook_url = options.webhookUrl
       }
-
-      // Enable word timestamps by default (AssemblyAI includes them automatically)
-      // Enable punctuation and formatting for better results
-      request.punctuate = true
-      request.format_text = true
     }
 
     return request

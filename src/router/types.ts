@@ -22,6 +22,18 @@ import type { ListenV1ModelParameter } from "../generated/deepgram/schema/listen
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { SpeechModel as AssemblyAISpeechModel } from "../generated/assemblyai/schema/speechModel"
 
+// Provider-specific language types for type-safe language selection
+import type { TranscriptLanguageCode as AssemblyAILanguageCode } from "../generated/assemblyai/schema/transcriptLanguageCode"
+import type { TranscriptionLanguageCodeEnum as GladiaLanguageCode } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
+
+// Provider-specific request types for full type safety
+import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
+import type { TranscriptOptionalParams } from "../generated/assemblyai/schema/transcriptOptionalParams"
+import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
+import type { CodeSwitchingConfigDTO } from "../generated/gladia/schema/codeSwitchingConfigDTO"
+import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
+import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
+
 /**
  * Speechmatics operating point (model) type
  * Manually defined as Speechmatics OpenAPI spec doesn't export this cleanly
@@ -44,6 +56,25 @@ export type TranscriptionModel =
   | StreamingSupportedModels
   | AssemblyAISpeechModel
   | SpeechmaticsOperatingPoint
+
+/**
+ * Unified transcription language type with autocomplete for all providers
+ *
+ * Includes language codes from AssemblyAI and Gladia OpenAPI specs.
+ * Deepgram uses string for flexibility.
+ */
+export type TranscriptionLanguage =
+  | AssemblyAILanguageCode
+  | GladiaLanguageCode
+  | string
+
+// Re-export provider-specific types for direct access
+export type { ListenV1MediaTranscribeParams as DeepgramOptions }
+export type { TranscriptOptionalParams as AssemblyAIOptions }
+export type { InitTranscriptionRequest as GladiaOptions }
+export type { CodeSwitchingConfigDTO as GladiaCodeSwitchingConfig }
+export type { AudioToLlmListConfigDTO as GladiaAudioToLlmConfig }
+export type { CreateTranscriptionRequest as OpenAIWhisperOptions }
 
 /**
  * Supported transcription providers
@@ -105,6 +136,11 @@ export type AudioInput =
 
 /**
  * Common transcription options across all providers
+ *
+ * For provider-specific options, use the typed provider options:
+ * - `deepgram`: Full Deepgram API options
+ * - `assemblyai`: Full AssemblyAI API options
+ * - `gladia`: Full Gladia API options
  */
 export interface TranscribeOptions {
   /**
@@ -119,30 +155,92 @@ export interface TranscribeOptions {
    * @see TranscriptionModel for full list of available models
    */
   model?: TranscriptionModel
-  /** Language code (e.g., 'en', 'en-US', 'es') */
-  language?: string
+
+  /**
+   * Language code with autocomplete from OpenAPI specs
+   *
+   * @example 'en', 'en_us', 'fr', 'de', 'es'
+   * @see TranscriptionLanguage for full list
+   */
+  language?: TranscriptionLanguage
+
   /** Enable automatic language detection */
   languageDetection?: boolean
+
+  /**
+   * Enable code switching (multilingual audio detection)
+   * Supported by: Gladia
+   */
+  codeSwitching?: boolean
+
+  /**
+   * Code switching configuration (Gladia-specific)
+   * @see GladiaCodeSwitchingConfig
+   */
+  codeSwitchingConfig?: CodeSwitchingConfigDTO
+
   /** Enable speaker diarization */
   diarization?: boolean
+
   /** Expected number of speakers (for diarization) */
   speakersExpected?: number
+
   /** Enable word-level timestamps */
   wordTimestamps?: boolean
+
   /** Custom vocabulary to boost (provider-specific format) */
   customVocabulary?: string[]
+
   /** Enable summarization */
   summarization?: boolean
+
   /** Enable sentiment analysis */
   sentimentAnalysis?: boolean
+
   /** Enable entity detection */
   entityDetection?: boolean
+
   /** Enable PII redaction */
   piiRedaction?: boolean
+
   /** Webhook URL for async results */
   webhookUrl?: string
-  /** Custom metadata to attach to the transcription */
-  metadata?: Record<string, unknown>
+
+  /**
+   * Audio-to-LLM configuration (Gladia-specific)
+   * Run custom LLM prompts on the transcription
+   * @see GladiaAudioToLlmConfig
+   */
+  audioToLlm?: AudioToLlmListConfigDTO
+
+  // ─────────────────────────────────────────────────────────────────
+  // Provider-specific options with FULL type safety from OpenAPI specs
+  // These are passed directly to the provider API
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Deepgram-specific options (passed directly to API)
+   * @see https://developers.deepgram.com/reference/listen-file
+   */
+  deepgram?: Partial<ListenV1MediaTranscribeParams>
+
+  /**
+   * AssemblyAI-specific options (passed directly to API)
+   * @see https://www.assemblyai.com/docs/api-reference/transcripts/submit
+   */
+  assemblyai?: Partial<TranscriptOptionalParams>
+
+  /**
+   * Gladia-specific options (passed directly to API)
+   * @see https://docs.gladia.io/
+   */
+  gladia?: Partial<InitTranscriptionRequest>
+
+  /**
+   * OpenAI Whisper-specific options (passed directly to API)
+   * @see https://platform.openai.com/docs/api-reference/audio/createTranscription
+   */
+  openai?: Partial<Omit<CreateTranscriptionRequest, "file" | "model">>
 }
 
 /**
