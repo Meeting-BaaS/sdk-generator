@@ -377,7 +377,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
   /**
    * Normalize AssemblyAI response to unified format
    */
-  private normalizeResponse(response: Transcript): UnifiedTranscriptResponse {
+  private normalizeResponse(response: Transcript): UnifiedTranscriptResponse<"assemblyai"> {
     // Map AssemblyAI status to unified status
     let status: "queued" | "processing" | "completed" | "error"
     switch (response.status) {
@@ -419,17 +419,29 @@ export class AssemblyAIAdapter extends BaseAdapter {
         confidence: response.confidence !== null ? response.confidence : undefined,
         status,
         language: response.language_code,
-        duration: response.audio_duration ? response.audio_duration / 1000 : undefined, // Convert ms to seconds
+        duration: response.audio_duration ? response.audio_duration / 1000 : undefined,
         speakers: this.extractSpeakers(response),
         words: this.extractWords(response),
         utterances: this.extractUtterances(response),
         summary: response.summary || undefined,
         metadata: {
-          audioUrl: response.audio_url,
-          entities: response.entities,
-          sentimentAnalysis: response.sentiment_analysis_results,
-          contentModeration: response.content_safety_labels
+          audioUrl: response.audio_url
         }
+      },
+      // Extended data - fully typed from OpenAPI specs
+      extended: {
+        chapters: response.chapters || undefined,
+        entities: response.entities || undefined,
+        sentimentResults: response.sentiment_analysis_results || undefined,
+        highlights: response.auto_highlights_result || undefined,
+        contentSafety: response.content_safety_labels || undefined,
+        topics: response.iab_categories_result || undefined,
+        languageConfidence: response.language_confidence ?? undefined,
+        throttled: response.throttled ?? undefined
+      },
+      // Request tracking
+      tracking: {
+        requestId: response.id
       },
       raw: response
     }

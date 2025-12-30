@@ -388,11 +388,13 @@ export class AzureSTTAdapter extends BaseAdapter {
           }))
         : undefined
 
+    const transcriptionId = transcription.self?.split("/").pop() || ""
+
     return {
       success: true,
       provider: this.name,
       data: {
-        id: transcription.self?.split("/").pop() || "",
+        id: transcriptionId,
         text: fullText,
         confidence: recognizedPhrases[0]?.nBest?.[0]?.confidence,
         status: "completed",
@@ -402,6 +404,10 @@ export class AzureSTTAdapter extends BaseAdapter {
         words: words.length > 0 ? words : undefined,
         createdAt: transcription.createdDateTime,
         completedAt: transcription.lastActionDateTime
+      },
+      extended: {},
+      tracking: {
+        requestId: transcriptionId
       },
       raw: {
         transcription,

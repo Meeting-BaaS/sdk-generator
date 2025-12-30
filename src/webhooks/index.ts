@@ -55,7 +55,14 @@ export type {
   WebhookEventType,
   UnifiedWebhookEvent,
   WebhookValidation,
-  WebhookVerificationOptions
+  WebhookVerificationOptions,
+  // Provider-specific webhook payload types
+  GladiaWebhookPayload,
+  GladiaWebhookSuccessPayload,
+  GladiaWebhookErrorPayload,
+  AssemblyAIWebhookPayload,
+  DeepgramWebhookPayload,
+  ProviderWebhookPayloadMap
 } from "./types"
 
 // Export base handler

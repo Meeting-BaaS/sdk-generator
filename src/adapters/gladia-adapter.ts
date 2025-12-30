@@ -344,7 +344,7 @@ export class GladiaAdapter extends BaseAdapter {
   /**
    * Normalize Gladia response to unified format
    */
-  private normalizeResponse(response: PreRecordedResponse): UnifiedTranscriptResponse {
+  private normalizeResponse(response: PreRecordedResponse): UnifiedTranscriptResponse<"gladia"> {
     // Use utility to normalize status
     const status = normalizeStatus(response.status, "gladia")
 
@@ -381,11 +381,26 @@ export class GladiaAdapter extends BaseAdapter {
         utterances: this.extractUtterances(transcription),
         summary: result?.summarization?.results || undefined,
         metadata: {
-          requestParams: response.request_params,
-          customMetadata: response.custom_metadata
+          requestParams: response.request_params
         },
         createdAt: response.created_at,
         completedAt: response.completed_at || undefined
+      },
+      // Extended data - fully typed from OpenAPI specs
+      extended: {
+        translation: result?.translation || undefined,
+        moderation: result?.moderation || undefined,
+        entities: result?.named_entity_recognition || undefined,
+        sentiment: result?.sentiment_analysis || undefined,
+        audioToLlm: result?.audio_to_llm || undefined,
+        chapters: result?.chapterization || undefined,
+        speakerReidentification: result?.speaker_reidentification || undefined,
+        structuredData: result?.structured_data_extraction || undefined,
+        customMetadata: response.custom_metadata || undefined
+      },
+      // Request tracking
+      tracking: {
+        requestId: response.request_id
       },
       raw: response
     }

@@ -464,6 +464,10 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         summary: response.summary?.content,
         createdAt: response.job.created_at
       },
+      extended: {},
+      tracking: {
+        requestId: response.job.id
+      },
       raw: response
     }
   }

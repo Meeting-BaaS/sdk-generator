@@ -273,15 +273,20 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
   ): UnifiedTranscriptResponse {
     // Handle simple json format
     if ("text" in response && Object.keys(response).length === 1) {
+      const requestId = `openai-${Date.now()}`
       return {
         success: true,
         provider: this.name,
         data: {
-          id: `openai-${Date.now()}`,
+          id: requestId,
           text: response.text,
           status: "completed",
           language: undefined,
           confidence: undefined
+        },
+        extended: {},
+        tracking: {
+          requestId
         },
         raw: response
       }
@@ -307,17 +312,22 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         confidence: undefined
       }))
 
+      const requestId = `openai-${Date.now()}`
       return {
         success: true,
         provider: this.name,
         data: {
-          id: `openai-${Date.now()}`,
+          id: requestId,
           text: diarizedResponse.text,
           status: "completed",
           language: undefined,
           duration: diarizedResponse.duration,
           speakers,
           utterances
+        },
+        extended: {},
+        tracking: {
+          requestId
         },
         raw: response
       }
@@ -335,29 +345,39 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         confidence: undefined
       }))
 
+      const requestId = `openai-${Date.now()}`
       return {
         success: true,
         provider: this.name,
         data: {
-          id: `openai-${Date.now()}`,
+          id: requestId,
           text: verboseResponse.text,
           status: "completed",
           language: verboseResponse.language,
           duration: verboseResponse.duration,
           words
         },
+        extended: {},
+        tracking: {
+          requestId
+        },
         raw: response
       }
     }
 
     // Fallback (shouldn't reach here)
+    const requestId = `openai-${Date.now()}`
     return {
       success: true,
       provider: this.name,
       data: {
-        id: `openai-${Date.now()}`,
+        id: requestId,
         text: "text" in response ? response.text : "",
         status: "completed"
+      },
+      extended: {},
+      tracking: {
+        requestId
       },
       raw: response
     }

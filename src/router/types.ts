@@ -34,6 +34,34 @@ import type { CodeSwitchingConfigDTO } from "../generated/gladia/schema/codeSwit
 import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 
+// Streaming request types for type-safe streaming options
+import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Extended response types - rich data from each provider (fully typed from OpenAPI)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// AssemblyAI extended types
+import type { Chapter as AssemblyAIChapter } from "../generated/assemblyai/schema/chapter"
+import type { Entity as AssemblyAIEntity } from "../generated/assemblyai/schema/entity"
+import type { SentimentAnalysisResult as AssemblyAISentimentResult } from "../generated/assemblyai/schema/sentimentAnalysisResult"
+import type { AutoHighlightsResult as AssemblyAIHighlightsResult } from "../generated/assemblyai/schema/autoHighlightsResult"
+import type { ContentSafetyLabelsResult as AssemblyAIContentSafetyResult } from "../generated/assemblyai/schema/contentSafetyLabelsResult"
+import type { TopicDetectionModelResult as AssemblyAITopicsResult } from "../generated/assemblyai/schema/topicDetectionModelResult"
+
+// Gladia extended types
+import type { TranslationDTO as GladiaTranslation } from "../generated/gladia/schema/translationDTO"
+import type { ModerationDTO as GladiaModeration } from "../generated/gladia/schema/moderationDTO"
+import type { NamedEntityRecognitionDTO as GladiaEntities } from "../generated/gladia/schema/namedEntityRecognitionDTO"
+import type { SentimentAnalysisDTO as GladiaSentiment } from "../generated/gladia/schema/sentimentAnalysisDTO"
+import type { AudioToLlmListDTO as GladiaAudioToLlmResult } from "../generated/gladia/schema/audioToLlmListDTO"
+import type { ChapterizationDTO as GladiaChapters } from "../generated/gladia/schema/chapterizationDTO"
+import type { SpeakerReidentificationDTO as GladiaSpeakerReidentification } from "../generated/gladia/schema/speakerReidentificationDTO"
+import type { StructuredDataExtractionDTO as GladiaStructuredData } from "../generated/gladia/schema/structuredDataExtractionDTO"
+
+// Deepgram extended types
+import type { ListenV1ResponseMetadata as DeepgramMetadata } from "../generated/deepgram/schema/listenV1ResponseMetadata"
+
 /**
  * Speechmatics operating point (model) type
  * Manually defined as Speechmatics OpenAPI spec doesn't export this cleanly
@@ -63,10 +91,7 @@ export type TranscriptionModel =
  * Includes language codes from AssemblyAI and Gladia OpenAPI specs.
  * Deepgram uses string for flexibility.
  */
-export type TranscriptionLanguage =
-  | AssemblyAILanguageCode
-  | GladiaLanguageCode
-  | string
+export type TranscriptionLanguage = AssemblyAILanguageCode | GladiaLanguageCode | string
 
 // Re-export provider-specific types for direct access
 export type { ListenV1MediaTranscribeParams as DeepgramOptions }
@@ -75,6 +100,109 @@ export type { InitTranscriptionRequest as GladiaOptions }
 export type { CodeSwitchingConfigDTO as GladiaCodeSwitchingConfig }
 export type { AudioToLlmListConfigDTO as GladiaAudioToLlmConfig }
 export type { CreateTranscriptionRequest as OpenAIWhisperOptions }
+// Note: GladiaStreamingOptions is defined in provider-streaming-types.ts
+// This exports the raw request type for advanced usage
+export type { GladiaStreamingRequest }
+
+// Re-export extended response types for direct access
+export type {
+  AssemblyAIChapter,
+  AssemblyAIEntity,
+  AssemblyAISentimentResult,
+  AssemblyAIHighlightsResult,
+  AssemblyAIContentSafetyResult,
+  AssemblyAITopicsResult,
+  GladiaTranslation,
+  GladiaModeration,
+  GladiaEntities,
+  GladiaSentiment,
+  GladiaAudioToLlmResult,
+  GladiaChapters,
+  GladiaSpeakerReidentification,
+  GladiaStructuredData,
+  DeepgramMetadata
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Provider Extended Data Types - typed rich data beyond basic transcription
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Extended data from AssemblyAI transcription
+ * Includes chapters, entities, sentiment, content safety, and more
+ */
+export interface AssemblyAIExtendedData {
+  /** Auto-generated chapters with summaries */
+  chapters?: AssemblyAIChapter[]
+  /** Detected named entities (people, organizations, locations) */
+  entities?: AssemblyAIEntity[]
+  /** Per-utterance sentiment analysis results */
+  sentimentResults?: AssemblyAISentimentResult[]
+  /** Key phrases and highlights */
+  highlights?: AssemblyAIHighlightsResult
+  /** Content safety/moderation labels */
+  contentSafety?: AssemblyAIContentSafetyResult
+  /** IAB topic categories */
+  topics?: AssemblyAITopicsResult
+  /** Language detection confidence (0-1) */
+  languageConfidence?: number
+  /** Whether the request was throttled */
+  throttled?: boolean
+}
+
+/**
+ * Extended data from Gladia transcription
+ * Includes translation, moderation, entities, LLM outputs, and more
+ */
+export interface GladiaExtendedData {
+  /** Translation results (if translation enabled) */
+  translation?: GladiaTranslation
+  /** Content moderation results */
+  moderation?: GladiaModeration
+  /** Named entity recognition results */
+  entities?: GladiaEntities
+  /** Sentiment analysis results */
+  sentiment?: GladiaSentiment
+  /** Audio-to-LLM custom prompt results */
+  audioToLlm?: GladiaAudioToLlmResult
+  /** Auto-generated chapters */
+  chapters?: GladiaChapters
+  /** AI speaker reidentification results */
+  speakerReidentification?: GladiaSpeakerReidentification
+  /** Structured data extraction results */
+  structuredData?: GladiaStructuredData
+  /** Custom metadata echoed back */
+  customMetadata?: Record<string, unknown>
+}
+
+/**
+ * Extended data from Deepgram transcription
+ * Includes detailed metadata, model info, and feature-specific data
+ */
+export interface DeepgramExtendedData {
+  /** Full response metadata */
+  metadata?: DeepgramMetadata
+  /** Request ID for debugging/tracking */
+  requestId?: string
+  /** SHA256 hash of the audio */
+  sha256?: string
+  /** Model versions used */
+  modelInfo?: Record<string, unknown>
+  /** Tags echoed back from request */
+  tags?: string[]
+}
+
+/**
+ * Map of provider names to their extended data types
+ */
+export type ProviderExtendedDataMap = {
+  assemblyai: AssemblyAIExtendedData
+  gladia: GladiaExtendedData
+  deepgram: DeepgramExtendedData
+  "openai-whisper": Record<string, never> // No extended data
+  "azure-stt": Record<string, never> // No extended data
+  speechmatics: Record<string, never> // No extended data
+}
 
 /**
  * Supported transcription providers
@@ -310,22 +438,32 @@ export type ProviderRawResponseMap = {
 /**
  * Unified transcription response with provider-specific type safety
  *
- * When a specific provider is known at compile time, the `raw` field
- * will be typed with that provider's actual response type.
+ * When a specific provider is known at compile time, both `raw` and `extended`
+ * fields will be typed with that provider's actual types.
  *
  * @template P - The transcription provider (defaults to all providers)
  *
  * @example Type narrowing with specific provider
  * ```typescript
- * const result: UnifiedTranscriptResponse<'deepgram'> = await adapter.transcribe(audio);
- * // result.raw is typed as ListenV1Response
- * const deepgramMetadata = result.raw?.metadata;
+ * const result: UnifiedTranscriptResponse<'assemblyai'> = await adapter.transcribe(audio);
+ * // result.raw is typed as AssemblyAITranscript
+ * // result.extended is typed as AssemblyAIExtendedData
+ * const chapters = result.extended?.chapters; // AssemblyAIChapter[] | undefined
+ * const entities = result.extended?.entities; // AssemblyAIEntity[] | undefined
+ * ```
+ *
+ * @example Accessing Gladia extended data
+ * ```typescript
+ * const result: UnifiedTranscriptResponse<'gladia'> = await gladiaAdapter.transcribe(audio);
+ * const translation = result.extended?.translation; // GladiaTranslation | undefined
+ * const llmResults = result.extended?.audioToLlm; // GladiaAudioToLlmResult | undefined
  * ```
  *
  * @example Generic usage (all providers)
  * ```typescript
  * const result: UnifiedTranscriptResponse = await router.transcribe(audio);
  * // result.raw is typed as unknown (could be any provider)
+ * // result.extended is typed as union of all extended types
  * ```
  */
 export interface UnifiedTranscriptResponse<
@@ -363,6 +501,34 @@ export interface UnifiedTranscriptResponse<
     createdAt?: string
     /** Completion timestamp */
     completedAt?: string
+  }
+  /**
+   * Extended provider-specific data (fully typed from OpenAPI specs)
+   *
+   * Contains rich data beyond basic transcription:
+   * - AssemblyAI: chapters, entities, sentiment, content safety, topics
+   * - Gladia: translation, moderation, entities, audio-to-llm, chapters
+   * - Deepgram: detailed metadata, request tracking, model info
+   *
+   * @example Access AssemblyAI chapters
+   * ```typescript
+   * const result = await assemblyaiAdapter.transcribe(audio, { summarization: true });
+   * result.extended?.chapters?.forEach(chapter => {
+   *   console.log(`${chapter.headline}: ${chapter.summary}`);
+   * });
+   * ```
+   */
+  extended?: P extends keyof ProviderExtendedDataMap ? ProviderExtendedDataMap[P] : unknown
+  /**
+   * Request tracking information for debugging
+   */
+  tracking?: {
+    /** Provider's request/job ID */
+    requestId?: string
+    /** Audio fingerprint (SHA256) if available */
+    audioHash?: string
+    /** Processing duration in milliseconds */
+    processingTimeMs?: number
   }
   /** Error information (only present on failure) */
   error?: {
@@ -493,6 +659,36 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    * { model: 'nova-2', language: 'fr' }
    */
   model?: TranscriptionModel
+
+  // ─────────────────────────────────────────────────────────────────
+  // Provider-specific streaming options with FULL type safety
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Gladia-specific streaming options (passed directly to API)
+   *
+   * Includes pre_processing, realtime_processing, post_processing,
+   * messages_config, and callback configuration.
+   *
+   * @see https://docs.gladia.io/api-reference/v2/live
+   *
+   * @example
+   * ```typescript
+   * await adapter.transcribeStream({
+   *   gladiaStreaming: {
+   *     realtime_processing: {
+   *       words_accurate_timestamps: true
+   *     },
+   *     messages_config: {
+   *       receive_partial_transcripts: true
+   *     }
+   *   }
+   * });
+   * ```
+   */
+  gladiaStreaming?: Partial<
+    Omit<GladiaStreamingRequest, "encoding" | "sample_rate" | "bit_depth" | "channels">
+  >
 }
 
 /**

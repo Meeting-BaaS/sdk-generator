@@ -28,25 +28,26 @@ const result = await router.transcribe(audio, {
 
 ## Features
 
-- 🔄 **Provider-Agnostic** - Switch providers with one line
-- 🎯 **Unified API** - Same interface for all providers
-- 📦 **Webhook Normalization** - Auto-detect and parse webhooks
-- 🔊 **Real-time Streaming** - WebSocket support (Gladia, AssemblyAI, Deepgram)
-- 📊 **Advanced Features** - Diarization, sentiment, summarization
-- 🔒 **Type-Safe** - Full TypeScript support
-- ⚡ **Provider Fallback** - Automatic failover strategies
-- 🎨 **Zero Config** - Works out of the box
+- **Provider-Agnostic** - Switch providers with one line
+- **Unified API** - Same interface for all providers
+- **Webhook Normalization** - Auto-detect and parse webhooks
+- **Real-time Streaming** - WebSocket support (Gladia, AssemblyAI, Deepgram)
+- **Advanced Features** - Diarization, sentiment, summarization, chapters, entities
+- **Type-Safe** - Full TypeScript support with OpenAPI-generated types
+- **Typed Extended Data** - Access provider-specific features with full autocomplete
+- **Provider Fallback** - Automatic failover strategies
+- **Zero Config** - Works out of the box
 
 ## Supported Providers
 
 | Provider | Batch | Streaming | Webhooks | Special Features |
 |----------|-------|-----------|----------|------------------|
-| **Gladia** | ✅ | ✅ WebSocket | ✅ | Multi-language, code-switching |
-| **AssemblyAI** | ✅ | ✅ Real-time | ✅ HMAC | Auto chapters, content moderation |
-| **Deepgram** | ✅ Sync | ✅ WebSocket | ✅ | PII redaction, keyword boosting |
-| **Azure STT** | ✅ Async | ❌ | ✅ HMAC | Custom models, language ID |
-| **OpenAI Whisper** | ✅ Sync | ❌ | ❌ | gpt-4o, multi-model support |
-| **Speechmatics** | ✅ Async | ❌ | ✅ Query params | High accuracy, enhanced mode |
+| **Gladia** | Yes | WebSocket | Yes | Multi-language, code-switching, translation |
+| **AssemblyAI** | Yes | Real-time | HMAC | Chapters, entities, content moderation |
+| **Deepgram** | Sync | WebSocket | Yes | PII redaction, keyword boosting |
+| **Azure STT** | Async | No | HMAC | Custom models, language ID |
+| **OpenAI Whisper** | Sync | No | No | gpt-4o, diarization |
+| **Speechmatics** | Async | No | Query params | High accuracy, summarization |
 
 ## Installation
 
@@ -198,51 +199,96 @@ app.post('/webhooks/transcription', express.json(), (req, res) => {
 
 ## Advanced Usage
 
-### Provider-Specific Features
+### Provider-Specific Features with Type Safety
+
+Use typed provider options for full autocomplete and compile-time safety:
 
 ```typescript
-// Gladia - Multi-language detection
+// Gladia - Full type-safe options
 const result = await router.transcribe(audio, {
   provider: 'gladia',
-  languageDetection: true,
-  summarization: true,
-  sentimentAnalysis: true
+  gladia: {
+    translation: true,
+    translation_config: { target_languages: ['fr', 'es'] },
+    moderation: true,
+    named_entity_recognition: true,
+    sentiment_analysis: true,
+    chapterization: true,
+    audio_to_llm: true,
+    audio_to_llm_config: [{ prompt: 'Summarize key points' }],
+    custom_metadata: { session_id: 'abc123' }
+  }
 });
 
-// AssemblyAI - Content moderation
-const result = await router.transcribe(audio, {
+// Access typed extended data
+if (result.extended) {
+  const translations = result.extended.translation?.results;
+  const chapters = result.extended.chapters?.results;
+  const entities = result.extended.entities?.results;
+  console.log('Custom metadata:', result.extended.customMetadata);
+}
+
+// AssemblyAI - Typed options with extended data
+const assemblyResult = await router.transcribe(audio, {
   provider: 'assemblyai',
-  entityDetection: true,
-  metadata: {
+  assemblyai: {
+    auto_chapters: true,
+    entity_detection: true,
+    sentiment_analysis: true,
+    auto_highlights: true,
     content_safety: true,
-    auto_chapters: true
+    iab_categories: true
   }
 });
 
-// Deepgram - PII redaction
-const result = await router.transcribe(audio, {
+if (assemblyResult.extended) {
+  assemblyResult.extended.chapters?.forEach(ch => {
+    console.log(`${ch.headline}: ${ch.summary}`);
+  });
+  assemblyResult.extended.entities?.forEach(e => {
+    console.log(`${e.entity_type}: ${e.text}`);
+  });
+}
+
+// Deepgram - Typed options with metadata tracking
+const deepgramResult = await router.transcribe(audio, {
   provider: 'deepgram',
-  piiRedaction: true,
-  customVocabulary: ['technical', 'terms']
+  deepgram: {
+    model: 'nova-3',
+    smart_format: true,
+    paragraphs: true,
+    detect_topics: true,
+    tag: ['meeting', 'sales'],
+    extra: { user_id: '12345' }
+  }
 });
 
-// OpenAI Whisper - Model selection
-const result = await router.transcribe(audio, {
+if (deepgramResult.extended) {
+  console.log('Request ID:', deepgramResult.extended.requestId);
+  console.log('Audio SHA256:', deepgramResult.extended.sha256);
+  console.log('Tags:', deepgramResult.extended.tags);
+}
+
+// OpenAI Whisper - Typed options
+const whisperResult = await router.transcribe(audio, {
   provider: 'openai-whisper',
-  metadata: {
-    model: 'gpt-4o-transcribe',  // or 'whisper-1'
-    temperature: 0.2
+  diarization: true,
+  openai: {
+    temperature: 0.2,
+    prompt: 'Technical discussion about APIs'
   }
 });
 
-// Speechmatics - Enhanced accuracy
-const result = await router.transcribe(audio, {
+// Speechmatics - Enhanced accuracy with summarization
+const speechmaticsResult = await router.transcribe(audio, {
   provider: 'speechmatics',
-  metadata: {
-    operating_point: 'enhanced',  // Higher accuracy
-    enable_sentiment_analysis: true
-  }
+  model: 'enhanced',
+  summarization: true,
+  diarization: true
 });
+
+// All providers include request tracking
+console.log('Request ID:', result.tracking?.requestId);
 ```
 
 ### Error Handling
@@ -348,34 +394,67 @@ import type {
 
 ### Provider-Specific Type Safety
 
-**🎯 New: Type-safe responses with provider discrimination**
-
-The SDK now provides full type safety for provider-specific responses:
+The SDK provides full type safety for provider-specific responses:
 
 ```typescript
-// Generic response - raw field is unknown
+// Generic response - raw and extended fields are unknown
 const result: UnifiedTranscriptResponse = await router.transcribe(audio);
 
-// Provider-specific response - raw field is properly typed!
+// Provider-specific response - raw and extended are properly typed!
 const deepgramResult: UnifiedTranscriptResponse<'deepgram'> = await router.transcribe(audio, {
   provider: 'deepgram'
 });
 
-// ✅ TypeScript knows raw is ListenV1Response
+// TypeScript knows raw is ListenV1Response
 const metadata = deepgramResult.raw?.metadata;
-const model = deepgramResult.raw?.results?.channels?.[0]?.alternatives?.[0]?.model;
+
+// TypeScript knows extended is DeepgramExtendedData
+const requestId = deepgramResult.extended?.requestId;
+const sha256 = deepgramResult.extended?.sha256;
 ```
 
 **Provider-specific raw response types:**
-- `gladia` → `PreRecordedResponse`
-- `deepgram` → `ListenV1Response`
-- `openai-whisper` → `CreateTranscription200One`
-- `assemblyai` → `AssemblyAITranscript`
-- `azure-stt` → `AzureTranscription`
+- `gladia` - `PreRecordedResponse`
+- `deepgram` - `ListenV1Response`
+- `openai-whisper` - `CreateTranscription200One`
+- `assemblyai` - `AssemblyAITranscript`
+- `azure-stt` - `AzureTranscription`
+
+**Provider-specific extended data types:**
+- `gladia` - `GladiaExtendedData` (translation, moderation, entities, sentiment, chapters, audioToLlm, customMetadata)
+- `assemblyai` - `AssemblyAIExtendedData` (chapters, entities, sentimentResults, highlights, contentSafety, topics)
+- `deepgram` - `DeepgramExtendedData` (metadata, requestId, sha256, modelInfo, tags)
+
+### Typed Extended Data
+
+Access rich provider-specific data beyond basic transcription:
+
+```typescript
+import type {
+  GladiaExtendedData,
+  AssemblyAIExtendedData,
+  DeepgramExtendedData,
+  // Individual types for fine-grained access
+  GladiaTranslation,
+  GladiaChapters,
+  AssemblyAIChapter,
+  AssemblyAIEntity,
+  DeepgramMetadata
+} from 'voice-router-dev';
+
+// Gladia extended data
+const gladiaResult = await router.transcribe(audio, { provider: 'gladia', gladia: { translation: true } });
+const translation: GladiaTranslation | undefined = gladiaResult.extended?.translation;
+
+// AssemblyAI extended data
+const assemblyResult = await router.transcribe(audio, { provider: 'assemblyai', assemblyai: { auto_chapters: true } });
+const chapters: AssemblyAIChapter[] | undefined = assemblyResult.extended?.chapters;
+
+// All responses include tracking info
+console.log('Request ID:', gladiaResult.tracking?.requestId);
+```
 
 ### Exported Parameter Enums
-
-**🎯 New: Direct access to provider parameter enums**
 
 Import and use provider-specific enums for type-safe configuration:
 
@@ -394,15 +473,15 @@ import {
   AudioResponseFormat
 } from 'voice-router-dev';
 
-// ✅ Type-safe Deepgram encoding
+// Type-safe Deepgram encoding
 const session = await router.transcribeStream({
   provider: 'deepgram',
-  encoding: ListenV1EncodingParameter.linear16,  // Autocomplete works!
+  encoding: ListenV1EncodingParameter.linear16,
   model: ListenV1ModelParameter['nova-2'],
   sampleRate: 16000
 });
 
-// ✅ Type-safe Gladia encoding
+// Type-safe Gladia encoding
 const gladiaSession = await router.transcribeStream({
   provider: 'gladia',
   encoding: StreamingSupportedEncodingEnum['wav/pcm'],
@@ -412,41 +491,42 @@ const gladiaSession = await router.transcribeStream({
 
 ### Type-Safe Streaming Options
 
-Streaming options are now fully typed based on provider OpenAPI specifications:
+Streaming options are fully typed based on provider OpenAPI specifications:
 
 ```typescript
 // Deepgram streaming - all options are type-safe
 const deepgramSession = await router.transcribeStream({
   provider: 'deepgram',
-  encoding: 'linear16',           // ✅ Only Deepgram encodings
-  model: 'nova-3',                // ✅ Validated model names
-  language: 'en-US',              // ✅ BCP-47 language codes
-  diarization: true,
-  smartFormat: true
+  encoding: 'linear16',
+  model: 'nova-3',
+  language: 'en-US',
+  diarization: true
 }, callbacks);
 
-// Gladia streaming - different options
+// Gladia streaming - with typed gladiaStreaming options
 const gladiaSession = await router.transcribeStream({
   provider: 'gladia',
-  encoding: 'wav/pcm',            // ✅ Only Gladia encodings
-  sampleRate: 16000,              // ✅ Only supported rates
-  bitDepth: 16,                   // ✅ Only supported depths
-  languageConfig: { languages: ['en'] }
+  encoding: 'wav/pcm',
+  sampleRate: 16000,
+  gladiaStreaming: {
+    realtime_processing: { words_accurate_timestamps: true },
+    messages_config: { receive_partial_transcripts: true }
+  }
 }, callbacks);
 
-// AssemblyAI streaming - simpler options
+// AssemblyAI streaming
 const assemblySession = await router.transcribeStream({
   provider: 'assemblyai',
-  sampleRate: 16000,              // ✅ Only 8000, 16000, 22050, 44100, 48000
+  sampleRate: 16000,
   wordTimestamps: true
 }, callbacks);
 ```
 
 **Benefits:**
-- ✅ **Full IntelliSense** - Autocomplete for all provider-specific options
-- ✅ **Compile-time Safety** - Invalid options caught before runtime
-- ✅ **Provider Discrimination** - Type system knows which provider you're using
-- ✅ **OpenAPI-Generated** - Types come directly from provider specifications
+- **Full IntelliSense** - Autocomplete for all provider-specific options
+- **Compile-time Safety** - Invalid options caught before runtime
+- **Provider Discrimination** - Type system knows which provider you're using
+- **OpenAPI-Generated** - Types come directly from provider specifications
 
 ## Requirements
 
@@ -460,7 +540,7 @@ const assemblySession = await router.transcribeStream({
 
 Comprehensive API documentation is auto-generated with [TypeDoc](https://typedoc.org/) from TypeScript source code:
 
-📁 **[docs/generated/](./docs/generated/)** - Complete API reference
+**[docs/generated/](./docs/generated/)** - Complete API reference
 
 **Main Documentation Sets**:
 

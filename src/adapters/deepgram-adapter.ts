@@ -319,7 +319,7 @@ export class DeepgramAdapter extends BaseAdapter {
   /**
    * Normalize Deepgram response to unified format
    */
-  private normalizeResponse(response: ListenV1Response): UnifiedTranscriptResponse {
+  private normalizeResponse(response: ListenV1Response): UnifiedTranscriptResponse<"deepgram"> {
     // Deepgram returns results immediately
     const channel = response.results.channels?.[0]
     const alternative = channel?.alternatives?.[0]
@@ -349,14 +349,20 @@ export class DeepgramAdapter extends BaseAdapter {
         speakers: this.extractSpeakers(response),
         words: this.extractWords(alternative),
         utterances: this.extractUtterances(response),
-        summary: this.extractSummary(alternative),
-        metadata: {
-          modelInfo: response.metadata?.model_info,
-          channels: response.metadata?.channels,
-          sentiment: response.results.sentiments,
-          intents: response.results.intents,
-          topics: response.results.topics
-        }
+        summary: this.extractSummary(alternative)
+      },
+      // Extended data - fully typed from OpenAPI specs
+      extended: {
+        metadata: response.metadata,
+        requestId: response.metadata?.request_id,
+        sha256: response.metadata?.sha256,
+        modelInfo: response.metadata?.model_info,
+        tags: response.metadata?.tags
+      },
+      // Request tracking
+      tracking: {
+        requestId: response.metadata?.request_id,
+        audioHash: response.metadata?.sha256
       },
       raw: response
     }
