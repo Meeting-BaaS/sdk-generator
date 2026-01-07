@@ -267,6 +267,57 @@ export interface ProviderCapabilities {
   deleteTranscript: boolean
 }
 
+// Provider-specific list params for type-safe passthrough
+import type { ListTranscriptsParams as AssemblyAIListParams } from "../generated/assemblyai/schema/listTranscriptsParams"
+import type { TranscriptionControllerListV2Params as GladiaListParams } from "../generated/gladia/schema/transcriptionControllerListV2Params"
+
+/**
+ * Options for listing transcripts with date/time filtering
+ *
+ * Providers support different filtering capabilities:
+ * - AssemblyAI: status, created_on, before_id, after_id, throttled_only
+ * - Gladia: status, date, before_date, after_date, custom_metadata
+ * - Azure: status, skip, top, filter (OData)
+ *
+ * @example Filter by date
+ * ```typescript
+ * await adapter.listTranscripts({
+ *   date: '2026-01-07',           // Exact date (ISO format)
+ *   status: 'completed',
+ *   limit: 50
+ * })
+ * ```
+ *
+ * @example Filter by date range
+ * ```typescript
+ * await adapter.listTranscripts({
+ *   afterDate: '2026-01-01',
+ *   beforeDate: '2026-01-31',
+ *   limit: 100
+ * })
+ * ```
+ */
+export interface ListTranscriptsOptions {
+  /** Maximum number of transcripts to retrieve */
+  limit?: number
+  /** Pagination offset (skip N results) */
+  offset?: number
+  /** Filter by transcript status */
+  status?: "queued" | "processing" | "completed" | "error" | string
+  /** Filter by exact date (ISO format: YYYY-MM-DD) */
+  date?: string
+  /** Filter for transcripts created before this date (ISO format) */
+  beforeDate?: string
+  /** Filter for transcripts created after this date (ISO format) */
+  afterDate?: string
+
+  // Provider-specific passthrough options
+  /** AssemblyAI-specific list options */
+  assemblyai?: Partial<AssemblyAIListParams>
+  /** Gladia-specific list options */
+  gladia?: Partial<GladiaListParams>
+}
+
 /**
  * Audio input for transcription
  */

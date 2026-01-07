@@ -5,6 +5,7 @@
 
 import type {
   AudioInput,
+  ListTranscriptsOptions,
   ProviderCapabilities,
   StreamEvent,
   StreamingCallbacks,
@@ -117,10 +118,22 @@ export interface TranscriptionAdapter {
   deleteTranscript?(transcriptId: string): Promise<{ success: boolean }>
 
   /**
-   * List recent transcriptions
-   * Not all providers support listing
+   * List recent transcriptions with filtering
+   *
+   * Supports date/time filtering, status filtering, and pagination.
+   * Not all providers support all options - use provider-specific passthrough for full control.
+   *
+   * @example Filter by date range
+   * ```typescript
+   * const { transcripts } = await adapter.listTranscripts({
+   *   afterDate: '2026-01-01',
+   *   beforeDate: '2026-01-31',
+   *   status: 'completed',
+   *   limit: 50
+   * })
+   * ```
    */
-  listTranscripts?(options?: { limit?: number; offset?: number; status?: string }): Promise<{
+  listTranscripts?(options?: ListTranscriptsOptions): Promise<{
     transcripts: UnifiedTranscriptResponse[]
     total?: number
     hasMore?: boolean

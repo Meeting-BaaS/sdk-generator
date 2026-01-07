@@ -6,6 +6,7 @@
 import type { TranscriptionAdapter, ProviderConfig } from "../adapters/base-adapter"
 import type {
   AudioInput,
+  ListTranscriptsOptions,
   StreamEvent,
   StreamingCallbacks,
   StreamingOptions,
@@ -385,16 +386,24 @@ export class VoiceRouter {
   }
 
   /**
-   * List recent transcriptions
-   * Not all providers support this operation
+   * List recent transcriptions with filtering
+   *
+   * Supports date/time filtering, status filtering, and pagination.
+   * Not all providers support this operation.
+   *
+   * @example Filter by date range
+   * ```typescript
+   * const { transcripts } = await router.listTranscripts('assemblyai', {
+   *   afterDate: '2026-01-01',
+   *   beforeDate: '2026-01-31',
+   *   status: 'completed',
+   *   limit: 50
+   * })
+   * ```
    */
   async listTranscripts(
     provider: TranscriptionProvider,
-    options?: {
-      limit?: number
-      offset?: number
-      status?: string
-    }
+    options?: ListTranscriptsOptions
   ): Promise<{
     transcripts: UnifiedTranscriptResponse[]
     total?: number
