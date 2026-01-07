@@ -891,10 +891,7 @@ export class GladiaAdapter extends BaseAdapter {
    * results (translation, sentiment, NER), post-processing results
    * (summarization, chapterization), acknowledgments, and lifecycle events.
    */
-  private handleWebSocketMessage(
-    message: unknown,
-    callbacks?: StreamingCallbacks
-  ): void {
+  private handleWebSocketMessage(message: unknown, callbacks?: StreamingCallbacks): void {
     const msg = message as Record<string, unknown>
     const messageType = msg.type as string
 
@@ -1094,8 +1091,7 @@ export class GladiaAdapter extends BaseAdapter {
         if (chapterMsg.error) {
           callbacks?.onChapterization?.({
             chapters: [],
-            error:
-              typeof chapterMsg.error === "string" ? chapterMsg.error : "Chapterization failed"
+            error: typeof chapterMsg.error === "string" ? chapterMsg.error : "Chapterization failed"
           })
         } else if (chapterMsg.data) {
           callbacks?.onChapterization?.({

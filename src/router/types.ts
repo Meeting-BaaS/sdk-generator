@@ -36,7 +36,10 @@ import type { CreateTranscriptionRequest } from "../generated/openai/schema/crea
 
 // Streaming request types for type-safe streaming options
 import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
-import type { DeepgramStreamingOptions, AssemblyAIStreamingOptions } from "./provider-streaming-types"
+import type {
+  DeepgramStreamingOptions,
+  AssemblyAIStreamingOptions
+} from "./provider-streaming-types"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Extended response types - rich data from each provider (fully typed from OpenAPI)
@@ -711,7 +714,12 @@ export interface AudioAckEvent {
  */
 export interface LifecycleEvent {
   /** Lifecycle event type */
-  eventType: "start_session" | "start_recording" | "stop_recording" | "end_recording" | "end_session"
+  eventType:
+    | "start_session"
+    | "start_recording"
+    | "stop_recording"
+    | "end_recording"
+    | "end_session"
   /** Event timestamp */
   timestamp?: string
   /** Session ID */

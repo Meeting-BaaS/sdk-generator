@@ -608,10 +608,12 @@ export class AssemblyAIAdapter extends BaseAdapter {
   async transcribeStream(
     options?: StreamingOptions,
     callbacks?: StreamingCallbacks
-  ): Promise<StreamingSession & {
-    updateConfiguration?: (config: Partial<Omit<StreamingUpdateConfiguration, "type">>) => void
-    forceEndpoint?: () => void
-  }> {
+  ): Promise<
+    StreamingSession & {
+      updateConfiguration?: (config: Partial<Omit<StreamingUpdateConfiguration, "type">>) => void
+      forceEndpoint?: () => void
+    }
+  > {
     this.validateConfig()
 
     if (!this.config?.apiKey) {
