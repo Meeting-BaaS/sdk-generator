@@ -3,6 +3,12 @@
  *
  * These types provide compile-time safety by restricting options to what
  * each provider actually supports according to their OpenAPI specifications.
+ *
+ * For autocomplete-friendly const objects, import from './streaming-enums':
+ * @example
+ * ```typescript
+ * import { DeepgramEncoding, DeepgramModel, GladiaEncoding } from './streaming-enums'
+ * ```
  */
 
 // Gladia types - from OpenAPI-generated schema
@@ -12,12 +18,21 @@ import type { StreamingSupportedSampleRateEnum } from "../generated/gladia/schem
 import type { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
 import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
 
-// Deepgram types - from OpenAPI-generated schema (now properly fixed!)
-import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
+// Deepgram types - from OpenAPI-generated schema
 import type { ListenV1EncodingParameter } from "../generated/deepgram/schema/listenV1EncodingParameter"
 import type { ListenV1LanguageParameter } from "../generated/deepgram/schema/listenV1LanguageParameter"
 import type { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
 import type { ListenV1VersionParameter } from "../generated/deepgram/schema/listenV1VersionParameter"
+
+// New typed enums for better autocomplete
+import type {
+  DeepgramModelType,
+  DeepgramRedactType,
+  DeepgramTopicModeType,
+  AssemblyAIEncodingType,
+  AssemblyAISpeechModelType,
+  AssemblyAISampleRateType
+} from "./streaming-enums"
 
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
@@ -50,60 +65,335 @@ export interface GladiaStreamingOptions {
  *
  * Based on the generated `ListenV1MediaTranscribeParams` type from Deepgram's OpenAPI spec.
  * All supported options come directly from the spec. Now using properly typed parameter enums!
+ *
+ * @see https://developers.deepgram.com/docs/streaming
  */
 export interface DeepgramStreamingOptions {
-  /** Audio encoding format - type-safe enum from OpenAPI spec */
+  // ─────────────────────────────────────────────────────────────────
+  // Audio Format Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Audio encoding format
+   * Use `DeepgramEncoding` const for autocomplete:
+   * @example
+   * ```typescript
+   * import { DeepgramEncoding } from '@meeting-baas/sdk'
+   * { encoding: DeepgramEncoding.linear16 }
+   * ```
+   */
   encoding?: (typeof ListenV1EncodingParameter)[keyof typeof ListenV1EncodingParameter]
 
   /** Sample rate in Hz */
   sampleRate?: number
 
-  /** Language code - type-safe from OpenAPI spec (BCP-47 format, e.g., 'en', 'en-US', 'es') */
+  /** Number of audio channels */
+  channels?: number
+
+  // ─────────────────────────────────────────────────────────────────
+  // Model & Language Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /** Language code (BCP-47 format, e.g., 'en', 'en-US', 'es') */
   language?: ListenV1LanguageParameter
 
-  /** Model to use - type-safe union from OpenAPI spec */
-  model?: ListenV1ModelParameter
+  /**
+   * Model to use for transcription
+   * Use `DeepgramModel` const for autocomplete:
+   * @example
+   * ```typescript
+   * import { DeepgramModel } from '@meeting-baas/sdk'
+   * { model: DeepgramModel.nova3 }
+   * { model: DeepgramModel.nova2Medical }
+   * ```
+   */
+  model?: ListenV1ModelParameter | DeepgramModelType
 
-  /** Model version - type-safe from OpenAPI spec (e.g., 'latest') */
+  /** Model version (e.g., 'latest') */
   version?: ListenV1VersionParameter
-
-  /** Enable speaker diarization */
-  diarization?: boolean
 
   /** Enable language detection */
   languageDetection?: boolean
 
+  // ─────────────────────────────────────────────────────────────────
+  // Transcription Processing Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /** Enable speaker diarization */
+  diarization?: boolean
+
   /** Enable punctuation */
   punctuate?: boolean
 
-  /** Enable smart formatting */
+  /** Enable smart formatting (dates, numbers, etc.) */
   smartFormat?: boolean
 
-  /** Enable interim results */
+  /** Enable interim results (partial transcripts) */
   interimResults?: boolean
 
-  /** Callback URL for webhooks */
-  webhookUrl?: string
+  /** Enable filler words detection ("uh", "um") */
+  fillerWords?: boolean
 
-  /** Custom vocabulary/keywords */
+  /** Convert written numbers to digits ("twenty" -> "20") */
+  numerals?: boolean
+
+  /** Convert measurements to abbreviations ("five meters" -> "5m") */
+  measurements?: boolean
+
+  /** Enable paragraph formatting */
+  paragraphs?: boolean
+
+  /** Enable profanity filtering */
+  profanityFilter?: boolean
+
+  /** Enable dictation mode (optimized for dictation) */
+  dictation?: boolean
+
+  /** Utterance split duration threshold in milliseconds */
+  utteranceSplit?: number
+
+  // ─────────────────────────────────────────────────────────────────
+  // Advanced Analysis Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /** Enable real-time sentiment analysis */
+  sentiment?: boolean
+
+  /** Enable entity detection */
+  detectEntities?: boolean
+
+  /** Enable topic detection */
+  topics?: boolean
+
+  /** Custom topic definitions */
+  customTopic?: string[]
+
+  /**
+   * Custom topic detection mode
+   * Use `DeepgramTopicMode` const for autocomplete
+   */
+  customTopicMode?: DeepgramTopicModeType
+
+  /** Enable intent recognition */
+  intents?: boolean
+
+  /** Custom intent definitions */
+  customIntent?: string[]
+
+  /**
+   * Custom intent detection mode
+   * Use `DeepgramTopicMode` const for autocomplete
+   */
+  customIntentMode?: DeepgramTopicModeType
+
+  /** Enable summarization */
+  summarize?: boolean
+
+  // ─────────────────────────────────────────────────────────────────
+  // Vocabulary & Redaction Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /** Custom vocabulary/keywords for boosting */
   keywords?: string | string[]
 
-  /** Number of audio channels */
-  channels?: number
+  /**
+   * Key term prompting (Nova-3 only)
+   * More powerful than keywords - provides context about terms
+   */
+  keyterm?: string[]
+
+  /**
+   * Enable PII redaction
+   * Use `DeepgramRedact` const for autocomplete:
+   * @example
+   * ```typescript
+   * import { DeepgramRedact } from '@meeting-baas/sdk'
+   * { redact: [DeepgramRedact.pii, DeepgramRedact.pci] }
+   * ```
+   */
+  redact?: boolean | DeepgramRedactType[]
+
+  // ─────────────────────────────────────────────────────────────────
+  // Callback & Metadata Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /** Callback URL for webhooks */
+  callback?: string
+
+  /** Extra metadata to include in response */
+  extra?: Record<string, unknown>
+
+  /** Tags to include in response */
+  tag?: string[]
+
+  // ─────────────────────────────────────────────────────────────────
+  // Endpoint Configuration
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Endpointing mode for VAD
+   * - number: silence duration in ms to trigger endpoint
+   * - false: disable VAD endpointing
+   */
+  endpointing?: number | false
+
+  /** Voice activity detection threshold (0-1) */
+  vadThreshold?: number
 }
+
+// AssemblyAI streaming types - from auto-synced SDK types
+import type {
+  StreamingSpeechModel,
+  StreamingUpdateConfiguration
+} from "../generated/assemblyai/streaming-types"
 
 /**
  * AssemblyAI streaming options
  *
- * AssemblyAI's streaming API is simpler - it only requires sample_rate.
- * Note: AssemblyAI only supports PCM16 encoding for streaming.
+ * Based on the v3 Universal Streaming API parameters from the AssemblyAI SDK.
+ * Supports advanced features like VAD tuning, end-of-turn detection, and profanity filtering.
+ *
+ * @see https://www.assemblyai.com/docs/speech-to-text/streaming
  */
 export interface AssemblyAIStreamingOptions {
-  /** Sample rate in Hz (8000 or 16000 recommended) */
-  sampleRate?: 8000 | 16000 | 22050 | 44100 | 48000
-  /** Enable word-level timestamps */
-  wordTimestamps?: boolean
+  // ─────────────────────────────────────────────────────────────────
+  // Audio Format Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Sample rate in Hz
+   * Use `AssemblyAISampleRate` const for autocomplete:
+   * @example
+   * ```typescript
+   * import { AssemblyAISampleRate } from '@meeting-baas/sdk'
+   * { sampleRate: AssemblyAISampleRate.rate16000 }
+   * ```
+   */
+  sampleRate?: AssemblyAISampleRateType
+
+  /**
+   * Audio encoding format
+   * Use `AssemblyAIEncoding` const for autocomplete:
+   * @example
+   * ```typescript
+   * import { AssemblyAIEncoding } from '@meeting-baas/sdk'
+   * { encoding: AssemblyAIEncoding.pcmS16le }
+   * ```
+   */
+  encoding?: AssemblyAIEncodingType
+
+  // ─────────────────────────────────────────────────────────────────
+  // Model & Language Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Speech model to use
+   * Use `AssemblyAISpeechModel` const for autocomplete:
+   * @example
+   * ```typescript
+   * import { AssemblyAISpeechModel } from '@meeting-baas/sdk'
+   * { speechModel: AssemblyAISpeechModel.english }
+   * { speechModel: AssemblyAISpeechModel.multilingual }
+   * ```
+   */
+  speechModel?: AssemblyAISpeechModelType | StreamingSpeechModel
+
+  /** Enable automatic language detection */
+  languageDetection?: boolean
+
+  // ─────────────────────────────────────────────────────────────────
+  // End-of-Turn Detection Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Confidence threshold for end-of-turn detection (0-1)
+   * Higher values require more confidence before ending a turn
+   * @default 0.5
+   */
+  endOfTurnConfidenceThreshold?: number
+
+  /**
+   * Minimum silence duration (ms) to trigger end-of-turn when confident
+   * Only applies when confidence is above threshold
+   * @default 1000
+   */
+  minEndOfTurnSilenceWhenConfident?: number
+
+  /**
+   * Maximum silence duration (ms) before forcing end-of-turn
+   * Regardless of confidence level
+   * @default 20000
+   */
+  maxTurnSilence?: number
+
+  // ─────────────────────────────────────────────────────────────────
+  // Voice Activity Detection Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * VAD sensitivity threshold (0-1)
+   * Lower values are more sensitive to quiet speech
+   */
+  vadThreshold?: number
+
+  // ─────────────────────────────────────────────────────────────────
+  // Transcription Processing Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Enable real-time text formatting of turns
+   * Applies punctuation, capitalization, and formatting
+   */
+  formatTurns?: boolean
+
+  /** Filter profanity in real-time transcription */
+  filterProfanity?: boolean
+
+  // ─────────────────────────────────────────────────────────────────
+  // Custom Vocabulary Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Key terms to boost in recognition
+   * Increases recognition accuracy for specific words/phrases
+   */
+  keyterms?: string[]
+
+  /**
+   * Key term prompting for context
+   * Provides additional context about the terms to improve recognition
+   */
+  keytermsPrompt?: string[]
+
+  // ─────────────────────────────────────────────────────────────────
+  // Session Configuration
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Inactivity timeout in milliseconds
+   * Session will close if no audio is received for this duration
+   */
+  inactivityTimeout?: number
+
+  /**
+   * Use token-based authentication
+   * If true, will create a temporary token before connecting
+   */
+  useToken?: boolean
+
+  /**
+   * Token expiration time in seconds (minimum 60)
+   * Only used if useToken is true
+   * @default 3600
+   */
+  tokenExpiresIn?: number
 }
+
+/**
+ * AssemblyAI dynamic configuration update
+ * Can be sent mid-stream to adjust parameters
+ */
+export type AssemblyAIUpdateConfiguration = Omit<StreamingUpdateConfiguration, "type">
 
 /**
  * Union of all provider-specific streaming options
@@ -133,3 +423,36 @@ export interface TranscribeStreamParams<P extends StreamingProvider> {
   /** Event callbacks */
   callbacks?: StreamingCallbacks
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Re-export streaming enums for convenience
+// ─────────────────────────────────────────────────────────────────────────────
+
+export {
+  // Deepgram
+  DeepgramEncoding,
+  DeepgramModel,
+  DeepgramRedact,
+  DeepgramTopicMode,
+  // Gladia
+  GladiaEncoding,
+  GladiaSampleRate,
+  GladiaBitDepth,
+  GladiaModel,
+  GladiaLanguage,
+  GladiaTranslationLanguage,
+  // AssemblyAI
+  AssemblyAIEncoding,
+  AssemblyAISpeechModel,
+  AssemblyAISampleRate
+} from "./streaming-enums"
+
+// Re-export types
+export type {
+  DeepgramModelType,
+  DeepgramRedactType,
+  DeepgramTopicModeType,
+  AssemblyAIEncodingType,
+  AssemblyAISpeechModelType,
+  AssemblyAISampleRateType
+} from "./streaming-enums"

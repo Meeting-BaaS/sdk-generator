@@ -41,8 +41,13 @@ import type {
   TerminationEvent,
   ErrorEvent,
   StreamingEventMessage,
-  StreamingWord
+  StreamingWord,
+  StreamingUpdateConfiguration,
+  StreamingForceEndpoint
 } from "../generated/assemblyai/streaming-types"
+
+// Import provider-specific streaming options
+import type { AssemblyAIStreamingOptions } from "../router/provider-streaming-types"
 
 /**
  * AssemblyAI transcription provider adapter
@@ -517,19 +522,37 @@ export class AssemblyAIAdapter extends BaseAdapter {
    * Stream audio for real-time transcription
    *
    * Creates a WebSocket connection to AssemblyAI for streaming transcription.
-   * First obtains a temporary token, then connects and streams audio chunks.
+   * Uses the v3 Universal Streaming API with full support for all parameters.
+   *
+   * Supports all AssemblyAI streaming features:
+   * - Real-time transcription with interim/final results (Turn events)
+   * - End-of-turn detection tuning (confidence threshold, silence duration)
+   * - Voice Activity Detection (VAD) threshold tuning
+   * - Real-time text formatting
+   * - Profanity filtering
+   * - Custom vocabulary (keyterms)
+   * - Language detection
+   * - Model selection (English or Multilingual)
+   * - Dynamic configuration updates mid-stream
+   * - Force endpoint command
    *
    * @param options - Streaming configuration options
+   * @param options.sampleRate - Sample rate (8000, 16000, 22050, 44100, 48000)
+   * @param options.encoding - Audio encoding (pcm_s16le, pcm_mulaw)
+   * @param options.assemblyaiStreaming - All AssemblyAI-specific streaming options
    * @param callbacks - Event callbacks for transcription results
-   * @returns Promise that resolves with a StreamingSession
+   * @param callbacks.onTranscript - Interim/final transcript received (Turn event)
+   * @param callbacks.onUtterance - Complete utterance (Turn with end_of_turn=true)
+   * @param callbacks.onMetadata - Session metadata (Begin, Termination events)
+   * @param callbacks.onError - Error occurred
+   * @param callbacks.onClose - Connection closed
+   * @returns Promise that resolves with an extended StreamingSession
    *
-   * @example Real-time streaming
+   * @example Basic real-time streaming
    * ```typescript
    * const session = await adapter.transcribeStream({
-   *   encoding: 'pcm_s16le',
    *   sampleRate: 16000,
-   *   language: 'en',
-   *   interimResults: true
+   *   encoding: 'pcm_s16le'
    * }, {
    *   onOpen: () => console.log('Connected'),
    *   onTranscript: (event) => {
@@ -544,33 +567,61 @@ export class AssemblyAIAdapter extends BaseAdapter {
    * });
    *
    * // Send audio chunks
-   * const audioChunk = getAudioChunk(); // Your audio source
+   * const audioChunk = getAudioChunk();
    * await session.sendAudio({ data: audioChunk });
    *
    * // Close when done
    * await session.close();
    * ```
+   *
+   * @example Advanced streaming with all features
+   * ```typescript
+   * const session = await adapter.transcribeStream({
+   *   sampleRate: 16000,
+   *   assemblyaiStreaming: {
+   *     speechModel: 'universal-streaming-multilingual',
+   *     languageDetection: true,
+   *     endOfTurnConfidenceThreshold: 0.7,
+   *     minEndOfTurnSilenceWhenConfident: 500,
+   *     maxTurnSilence: 15000,
+   *     vadThreshold: 0.3,
+   *     formatTurns: true,
+   *     filterProfanity: true,
+   *     keyterms: ['TypeScript', 'JavaScript', 'API'],
+   *     inactivityTimeout: 60000
+   *   }
+   * }, {
+   *   onTranscript: (e) => console.log('Transcript:', e.text),
+   *   onMetadata: (m) => console.log('Metadata:', m)
+   * });
+   *
+   * // Update configuration mid-stream
+   * session.updateConfiguration?.({
+   *   end_of_turn_confidence_threshold: 0.5,
+   *   vad_threshold: 0.2
+   * });
+   *
+   * // Force endpoint detection
+   * session.forceEndpoint?.();
+   * ```
    */
   async transcribeStream(
     options?: StreamingOptions,
     callbacks?: StreamingCallbacks
-  ): Promise<StreamingSession> {
+  ): Promise<StreamingSession & {
+    updateConfiguration?: (config: Partial<Omit<StreamingUpdateConfiguration, "type">>) => void
+    forceEndpoint?: () => void
+  }> {
     this.validateConfig()
 
     if (!this.config?.apiKey) {
       throw new Error("API key is required for streaming")
     }
 
-    // Step 1: Build WebSocket URL with parameters
-    // v3 supports authentication via API key header (no token needed)
-    const sampleRate = options?.sampleRate || 16000
-    // Map unified encoding format to AssemblyAI-specific format
-    const encoding = options?.encoding
-      ? mapEncodingToProvider(options.encoding, "assemblyai")
-      : "pcm_s16le"
-    const wsUrl = `${this.wsBaseUrl}?sample_rate=${sampleRate}&encoding=${encoding}`
+    // Build WebSocket URL with all parameters
+    const wsUrl = this.buildStreamingUrl(options)
 
-    // Step 2: Create WebSocket connection with API key in headers
+    // Create WebSocket connection with API key in headers
     const ws = new WebSocket(wsUrl, {
       headers: {
         Authorization: this.config.apiKey
@@ -603,52 +654,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
     ws.on("message", (data: Buffer) => {
       try {
         const message = JSON.parse(data.toString()) as StreamingEventMessage
-
-        // Handle different message types from AssemblyAI v3 - TYPE SAFE!
-        // Check for error first (it doesn't have a 'type' field)
-        if ("error" in message) {
-          // Type narrowed to ErrorEvent
-          callbacks?.onError?.({
-            code: "API_ERROR",
-            message: (message as ErrorEvent).error
-          })
-          return
-        }
-
-        // Now we know it has a 'type' field
-        if ((message as BeginEvent | TurnEvent | TerminationEvent).type === "Begin") {
-          // Type narrowed to BeginEvent
-          const beginMsg = message as BeginEvent
-          callbacks?.onMetadata?.({
-            sessionId: beginMsg.id,
-            expiresAt: new Date(beginMsg.expires_at).toISOString()
-          })
-        } else if ((message as BeginEvent | TurnEvent | TerminationEvent).type === "Turn") {
-          // Type narrowed to TurnEvent
-          const turnMsg = message as TurnEvent
-          // v3 uses a single "Turn" event with end_of_turn flag instead of PartialTranscript/FinalTranscript
-          callbacks?.onTranscript?.({
-            type: "transcript",
-            text: turnMsg.transcript,
-            isFinal: turnMsg.end_of_turn,
-            confidence: turnMsg.end_of_turn_confidence,
-            words: turnMsg.words.map((w: StreamingWord) => ({
-              word: w.text,
-              start: w.start / 1000, // Convert ms to seconds
-              end: w.end / 1000,
-              confidence: w.confidence
-            })),
-            data: turnMsg
-          })
-        } else if ((message as BeginEvent | TurnEvent | TerminationEvent).type === "Termination") {
-          // Type narrowed to TerminationEvent
-          const termMsg = message as TerminationEvent
-          callbacks?.onMetadata?.({
-            terminated: true,
-            audioDurationSeconds: termMsg.audio_duration_seconds,
-            sessionDurationSeconds: termMsg.session_duration_seconds
-          })
-        }
+        this.handleWebSocketMessage(message, callbacks)
       } catch (error) {
         callbacks?.onError?.({
           code: "PARSE_ERROR",
@@ -688,12 +694,13 @@ export class AssemblyAIAdapter extends BaseAdapter {
       })
     })
 
-    // Return StreamingSession interface
+    // Return extended StreamingSession interface with AssemblyAI-specific methods
     return {
       id: sessionId,
       provider: this.name,
       createdAt: new Date(),
       getStatus: () => sessionStatus,
+
       sendAudio: async (chunk: AudioChunk) => {
         if (sessionStatus !== "open") {
           throw new Error(`Cannot send audio: session is ${sessionStatus}`)
@@ -716,13 +723,10 @@ export class AssemblyAIAdapter extends BaseAdapter {
         // Flush remaining buffer and send termination message if this is the last chunk
         if (chunk.isLast) {
           flushAudioBuffer()
-          ws.send(
-            JSON.stringify({
-              terminate_session: true
-            })
-          )
+          ws.send(JSON.stringify({ type: "Terminate" }))
         }
       },
+
       close: async () => {
         if (sessionStatus === "closed" || sessionStatus === "closing") {
           return
@@ -735,11 +739,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
         // Send termination message before closing
         if (ws.readyState === WebSocket.OPEN) {
-          ws.send(
-            JSON.stringify({
-              terminate_session: true
-            })
-          )
+          ws.send(JSON.stringify({ type: "Terminate" }))
         }
 
         // Close WebSocket
@@ -757,7 +757,217 @@ export class AssemblyAIAdapter extends BaseAdapter {
             resolve()
           })
         })
+      },
+
+      /**
+       * Update streaming configuration mid-session
+       *
+       * Allows changing VAD, end-of-turn, and formatting settings
+       * without restarting the stream.
+       *
+       * @param config - Configuration parameters to update
+       */
+      updateConfiguration: (config: Partial<Omit<StreamingUpdateConfiguration, "type">>) => {
+        if (ws.readyState !== WebSocket.OPEN) {
+          throw new Error("Cannot update configuration: WebSocket is not open")
+        }
+
+        const updateMsg: StreamingUpdateConfiguration = {
+          type: "UpdateConfiguration",
+          ...config
+        }
+        ws.send(JSON.stringify(updateMsg))
+      },
+
+      /**
+       * Force endpoint detection
+       *
+       * Immediately triggers end-of-turn, useful for manual control
+       * of turn boundaries (e.g., when user presses a button).
+       */
+      forceEndpoint: () => {
+        if (ws.readyState !== WebSocket.OPEN) {
+          throw new Error("Cannot force endpoint: WebSocket is not open")
+        }
+
+        const forceMsg: StreamingForceEndpoint = {
+          type: "ForceEndpoint"
+        }
+        ws.send(JSON.stringify(forceMsg))
       }
+    }
+  }
+
+  /**
+   * Build WebSocket URL with all streaming parameters
+   */
+  private buildStreamingUrl(options?: StreamingOptions): string {
+    const params = new URLSearchParams()
+    const aaiOpts = options?.assemblyaiStreaming || {}
+
+    // ─────────────────────────────────────────────────────────────────
+    // Audio format parameters (required)
+    // ─────────────────────────────────────────────────────────────────
+    const sampleRate = options?.sampleRate || aaiOpts.sampleRate || 16000
+    params.append("sample_rate", String(sampleRate))
+
+    const encoding = options?.encoding
+      ? mapEncodingToProvider(options.encoding, "assemblyai")
+      : aaiOpts.encoding || "pcm_s16le"
+    params.append("encoding", encoding)
+
+    // ─────────────────────────────────────────────────────────────────
+    // Model and language parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (aaiOpts.speechModel) {
+      params.append("speech_model", aaiOpts.speechModel)
+    }
+    if (aaiOpts.languageDetection) {
+      params.append("language_detection", "true")
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // End-of-turn detection parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (aaiOpts.endOfTurnConfidenceThreshold !== undefined) {
+      params.append(
+        "end_of_turn_confidence_threshold",
+        String(aaiOpts.endOfTurnConfidenceThreshold)
+      )
+    }
+    if (aaiOpts.minEndOfTurnSilenceWhenConfident !== undefined) {
+      params.append(
+        "min_end_of_turn_silence_when_confident",
+        String(aaiOpts.minEndOfTurnSilenceWhenConfident)
+      )
+    }
+    if (aaiOpts.maxTurnSilence !== undefined) {
+      params.append("max_turn_silence", String(aaiOpts.maxTurnSilence))
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // VAD parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (aaiOpts.vadThreshold !== undefined) {
+      params.append("vad_threshold", String(aaiOpts.vadThreshold))
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Transcription processing parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (aaiOpts.formatTurns !== undefined) {
+      params.append("format_turns", String(aaiOpts.formatTurns))
+    }
+    if (aaiOpts.filterProfanity) {
+      params.append("filter_profanity", "true")
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Custom vocabulary parameters
+    // ─────────────────────────────────────────────────────────────────
+    const keyterms = options?.customVocabulary || aaiOpts.keyterms
+    if (keyterms && keyterms.length > 0) {
+      keyterms.forEach((term) => params.append("keyterms", term))
+    }
+    if (aaiOpts.keytermsPrompt && aaiOpts.keytermsPrompt.length > 0) {
+      aaiOpts.keytermsPrompt.forEach((prompt) => params.append("keyterms_prompt", prompt))
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Session configuration
+    // ─────────────────────────────────────────────────────────────────
+    if (aaiOpts.inactivityTimeout !== undefined) {
+      params.append("inactivity_timeout", String(aaiOpts.inactivityTimeout))
+    }
+
+    return `${this.wsBaseUrl}?${params.toString()}`
+  }
+
+  /**
+   * Handle all WebSocket message types from AssemblyAI streaming
+   */
+  private handleWebSocketMessage(
+    message: StreamingEventMessage,
+    callbacks?: StreamingCallbacks
+  ): void {
+    // Check for error first (it doesn't have a 'type' field)
+    if ("error" in message) {
+      callbacks?.onError?.({
+        code: "API_ERROR",
+        message: (message as ErrorEvent).error
+      })
+      return
+    }
+
+    // Handle typed messages
+    const typedMessage = message as BeginEvent | TurnEvent | TerminationEvent
+
+    switch (typedMessage.type) {
+      case "Begin": {
+        const beginMsg = typedMessage as BeginEvent
+        callbacks?.onMetadata?.({
+          type: "begin",
+          sessionId: beginMsg.id,
+          expiresAt: new Date(beginMsg.expires_at).toISOString()
+        })
+        break
+      }
+
+      case "Turn": {
+        const turnMsg = typedMessage as TurnEvent
+
+        // Always send transcript event
+        callbacks?.onTranscript?.({
+          type: "transcript",
+          text: turnMsg.transcript,
+          isFinal: turnMsg.end_of_turn,
+          confidence: turnMsg.end_of_turn_confidence,
+          language: turnMsg.language_code,
+          words: turnMsg.words.map((w: StreamingWord) => ({
+            word: w.text,
+            start: w.start / 1000, // Convert ms to seconds
+            end: w.end / 1000,
+            confidence: w.confidence
+          })),
+          data: turnMsg
+        })
+
+        // If end_of_turn, also send utterance event
+        if (turnMsg.end_of_turn) {
+          const words = turnMsg.words
+          const start = words.length > 0 ? words[0].start / 1000 : 0
+          const end = words.length > 0 ? words[words.length - 1].end / 1000 : 0
+
+          callbacks?.onUtterance?.({
+            text: turnMsg.transcript,
+            start,
+            end,
+            confidence: turnMsg.end_of_turn_confidence,
+            words: turnMsg.words.map((w: StreamingWord) => ({
+              word: w.text,
+              start: w.start / 1000,
+              end: w.end / 1000,
+              confidence: w.confidence
+            }))
+          })
+        }
+        break
+      }
+
+      case "Termination": {
+        const termMsg = typedMessage as TerminationEvent
+        callbacks?.onMetadata?.({
+          type: "termination",
+          audioDurationSeconds: termMsg.audio_duration_seconds,
+          sessionDurationSeconds: termMsg.session_duration_seconds
+        })
+        break
+      }
+
+      default:
+        // Unknown message type
+        callbacks?.onMetadata?.(message as unknown as Record<string, unknown>)
+        break
     }
   }
 }

@@ -36,6 +36,7 @@ import type { CreateTranscriptionRequest } from "../generated/openai/schema/crea
 
 // Streaming request types for type-safe streaming options
 import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
+import type { DeepgramStreamingOptions, AssemblyAIStreamingOptions } from "./provider-streaming-types"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Extended response types - rich data from each provider (fully typed from OpenAPI)
@@ -564,6 +565,16 @@ export type StreamEventType =
   | "metadata" // Metadata about the stream
   | "error" // Error event
   | "close" // Stream ended/closed
+  // Gladia-specific event types
+  | "speech_start" // Speech detected start
+  | "speech_end" // Speech detected end
+  | "translation" // Real-time translation result
+  | "sentiment" // Sentiment analysis result
+  | "entity" // Named entity recognition result
+  | "summarization" // Post-processing summarization
+  | "chapterization" // Post-processing chapterization
+  | "audio_ack" // Audio chunk acknowledgment
+  | "lifecycle" // Session lifecycle events (start_session, end_recording, etc.)
 
 /**
  * Streaming transcription event
@@ -582,6 +593,10 @@ export interface StreamEvent {
   speaker?: string
   /** Confidence score for this event */
   confidence?: number
+  /** Language of the transcript/utterance */
+  language?: string
+  /** Channel number for multi-channel audio */
+  channel?: number
   /** Error information (for type: "error") */
   error?: {
     code: string
@@ -590,6 +605,117 @@ export interface StreamEvent {
   }
   /** Additional event data */
   data?: unknown
+}
+
+/**
+ * Speech event data (for speech_start/speech_end events)
+ */
+export interface SpeechEvent {
+  /** Event type: speech_start or speech_end */
+  type: "speech_start" | "speech_end"
+  /** Timestamp in seconds */
+  timestamp: number
+  /** Channel number */
+  channel?: number
+  /** Session ID */
+  sessionId?: string
+}
+
+/**
+ * Translation event data (for real-time translation)
+ */
+export interface TranslationEvent {
+  /** Utterance ID this translation belongs to */
+  utteranceId?: string
+  /** Original text */
+  original?: string
+  /** Target language */
+  targetLanguage: string
+  /** Translated text */
+  translatedText: string
+  /** Whether this is a final translation */
+  isFinal?: boolean
+}
+
+/**
+ * Sentiment analysis result (for real-time sentiment)
+ */
+export interface SentimentEvent {
+  /** Utterance ID this sentiment belongs to */
+  utteranceId?: string
+  /** Sentiment label (positive, negative, neutral) */
+  sentiment: string
+  /** Confidence score 0-1 */
+  confidence?: number
+}
+
+/**
+ * Named entity recognition result
+ */
+export interface EntityEvent {
+  /** Utterance ID this entity belongs to */
+  utteranceId?: string
+  /** Entity text */
+  text: string
+  /** Entity type (PERSON, ORGANIZATION, LOCATION, etc.) */
+  type: string
+  /** Start position */
+  start?: number
+  /** End position */
+  end?: number
+}
+
+/**
+ * Post-processing summarization event
+ */
+export interface SummarizationEvent {
+  /** Full summarization text */
+  summary: string
+  /** Error if summarization failed */
+  error?: string
+}
+
+/**
+ * Post-processing chapterization event
+ */
+export interface ChapterizationEvent {
+  /** Generated chapters */
+  chapters: Array<{
+    /** Chapter title/headline */
+    headline: string
+    /** Chapter summary */
+    summary: string
+    /** Start time in seconds */
+    start: number
+    /** End time in seconds */
+    end: number
+  }>
+  /** Error if chapterization failed */
+  error?: string
+}
+
+/**
+ * Audio chunk acknowledgment event
+ */
+export interface AudioAckEvent {
+  /** Byte range of the acknowledged audio chunk [start, end] */
+  byteRange?: [number, number]
+  /** Time range in seconds of the acknowledged audio chunk [start, end] */
+  timeRange?: [number, number]
+  /** Acknowledgment timestamp */
+  timestamp?: string
+}
+
+/**
+ * Lifecycle event (session start, recording end, etc.)
+ */
+export interface LifecycleEvent {
+  /** Lifecycle event type */
+  eventType: "start_session" | "start_recording" | "stop_recording" | "end_recording" | "end_session"
+  /** Event timestamp */
+  timestamp?: string
+  /** Session ID */
+  sessionId?: string
 }
 
 /**
@@ -689,6 +815,58 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
   gladiaStreaming?: Partial<
     Omit<GladiaStreamingRequest, "encoding" | "sample_rate" | "bit_depth" | "channels">
   >
+
+  /**
+   * Deepgram-specific streaming options (passed to WebSocket URL)
+   *
+   * Includes filler_words, numerals, measurements, paragraphs,
+   * profanity_filter, topics, intents, custom_topic, custom_intent,
+   * keyterm, dictation, utt_split, and more.
+   *
+   * @see https://developers.deepgram.com/docs/streaming
+   *
+   * @example
+   * ```typescript
+   * await adapter.transcribeStream({
+   *   deepgramStreaming: {
+   *     fillerWords: true,
+   *     profanityFilter: true,
+   *     topics: true,
+   *     intents: true,
+   *     customTopic: ['sales', 'support'],
+   *     customIntent: ['purchase', 'complaint'],
+   *     numerals: true
+   *   }
+   * });
+   * ```
+   */
+  deepgramStreaming?: DeepgramStreamingOptions
+
+  /**
+   * AssemblyAI-specific streaming options (passed to WebSocket URL & configuration)
+   *
+   * Includes end-of-turn detection tuning, VAD threshold, profanity filter,
+   * keyterms, speech model selection, and language detection.
+   *
+   * @see https://www.assemblyai.com/docs/speech-to-text/streaming
+   *
+   * @example
+   * ```typescript
+   * await adapter.transcribeStream({
+   *   assemblyaiStreaming: {
+   *     speechModel: 'universal-streaming-multilingual',
+   *     languageDetection: true,
+   *     endOfTurnConfidenceThreshold: 0.7,
+   *     minEndOfTurnSilenceWhenConfident: 500,
+   *     vadThreshold: 0.3,
+   *     formatTurns: true,
+   *     filterProfanity: true,
+   *     keyterms: ['TypeScript', 'JavaScript', 'API']
+   *   }
+   * });
+   * ```
+   */
+  assemblyaiStreaming?: AssemblyAIStreamingOptions
 }
 
 /**
@@ -707,6 +885,29 @@ export interface StreamingCallbacks {
   onError?: (error: { code: string; message: string; details?: unknown }) => void
   /** Called when the stream is closed */
   onClose?: (code?: number, reason?: string) => void
+
+  // ─────────────────────────────────────────────────────────────────
+  // Gladia-specific streaming callbacks
+  // ─────────────────────────────────────────────────────────────────
+
+  /** Called when speech starts (Gladia: requires receive_speech_events) */
+  onSpeechStart?: (event: SpeechEvent) => void
+  /** Called when speech ends (Gladia: requires receive_speech_events) */
+  onSpeechEnd?: (event: SpeechEvent) => void
+  /** Called for real-time translation (Gladia: requires translation enabled) */
+  onTranslation?: (event: TranslationEvent) => void
+  /** Called for real-time sentiment analysis (Gladia: requires sentiment_analysis enabled) */
+  onSentiment?: (event: SentimentEvent) => void
+  /** Called for named entity recognition (Gladia: requires named_entity_recognition enabled) */
+  onEntity?: (event: EntityEvent) => void
+  /** Called when post-processing summarization completes (Gladia: requires summarization enabled) */
+  onSummarization?: (event: SummarizationEvent) => void
+  /** Called when post-processing chapterization completes (Gladia: requires chapterization enabled) */
+  onChapterization?: (event: ChapterizationEvent) => void
+  /** Called for audio chunk acknowledgments (Gladia: requires receive_acknowledgments) */
+  onAudioAck?: (event: AudioAckEvent) => void
+  /** Called for session lifecycle events (Gladia: requires receive_lifecycle_events) */
+  onLifecycle?: (event: LifecycleEvent) => void
 }
 
 /**

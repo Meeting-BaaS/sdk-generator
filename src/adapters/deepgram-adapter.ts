@@ -13,7 +13,8 @@ import type {
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse
+  UnifiedTranscriptResponse,
+  SpeechEvent
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
@@ -27,7 +28,12 @@ import type { ListenV1ResponseResultsUtterancesItem } from "../generated/deepgra
 // WebSocket message types (not in OpenAPI spec, manually defined from Deepgram docs)
 interface DeepgramResultsMessage {
   type: "Results"
+  channel_index: [number, number]
+  duration: number
+  start: number
   is_final: boolean
+  speech_final: boolean
+  from_finalize?: boolean
   channel: {
     alternatives: Array<{
       transcript: string
@@ -37,25 +43,64 @@ interface DeepgramResultsMessage {
         start: number
         end: number
         confidence: number
+        punctuated_word?: string
+        speaker?: number
       }>
     }>
+    detected_language?: string
+  }
+  metadata?: {
+    request_id?: string
+    model_info?: {
+      name?: string
+      version?: string
+      arch?: string
+    }
   }
 }
 
 interface DeepgramUtteranceEndMessage {
   type: "UtteranceEnd"
-  [key: string]: unknown
+  channel: [number, number]
+  last_word_end: number
+}
+
+interface DeepgramSpeechStartedMessage {
+  type: "SpeechStarted"
+  channel: [number, number]
+  timestamp: number
 }
 
 interface DeepgramMetadataMessage {
   type: "Metadata"
-  [key: string]: unknown
+  transaction_key?: string
+  request_id?: string
+  sha256?: string
+  created?: string
+  duration?: number
+  channels?: number
+  models?: string[]
+  model_info?: Record<string, { name: string; version: string; arch: string }>
+}
+
+interface DeepgramCloseStreamMessage {
+  type: "CloseStream"
+}
+
+interface DeepgramErrorMessage {
+  type: "Error"
+  description?: string
+  message?: string
+  variant?: string
 }
 
 type DeepgramRealtimeMessage =
   | DeepgramResultsMessage
   | DeepgramUtteranceEndMessage
+  | DeepgramSpeechStartedMessage
   | DeepgramMetadataMessage
+  | DeepgramCloseStreamMessage
+  | DeepgramErrorMessage
 
 /**
  * Deepgram transcription provider adapter
@@ -463,11 +508,44 @@ export class DeepgramAdapter extends BaseAdapter {
    * Creates a WebSocket connection to Deepgram for streaming transcription.
    * Send audio chunks via session.sendAudio() and receive results via callbacks.
    *
+   * Supports all Deepgram streaming features:
+   * - Real-time transcription with interim/final results
+   * - Speech detection events (SpeechStarted, UtteranceEnd)
+   * - Speaker diarization
+   * - Language detection
+   * - Real-time sentiment, entity detection, topics, intents
+   * - Custom vocabulary (keywords, keyterms)
+   * - PII redaction
+   * - Filler words, numerals, measurements, paragraphs
+   * - Profanity filtering
+   * - Dictation mode
+   *
    * @param options - Streaming configuration options
+   * @param options.encoding - Audio encoding (linear16, flac, mulaw, opus, speex, g729)
+   * @param options.sampleRate - Sample rate in Hz
+   * @param options.channels - Number of audio channels
+   * @param options.language - Language code for transcription
+   * @param options.model - Model to use (nova-2, nova-3, base, enhanced, etc.)
+   * @param options.diarization - Enable speaker identification
+   * @param options.languageDetection - Auto-detect language
+   * @param options.interimResults - Enable partial transcripts
+   * @param options.summarization - Enable summarization
+   * @param options.sentimentAnalysis - Enable sentiment analysis
+   * @param options.entityDetection - Enable entity detection
+   * @param options.piiRedaction - Enable PII redaction
+   * @param options.customVocabulary - Keywords to boost recognition
+   * @param options.deepgramStreaming - All Deepgram-specific streaming options
    * @param callbacks - Event callbacks for transcription results
+   * @param callbacks.onTranscript - Interim/final transcript received
+   * @param callbacks.onUtterance - Complete utterance detected
+   * @param callbacks.onSpeechStart - Speech detected (Deepgram SpeechStarted)
+   * @param callbacks.onSpeechEnd - Speech ended (Deepgram UtteranceEnd)
+   * @param callbacks.onMetadata - Metadata received
+   * @param callbacks.onError - Error occurred
+   * @param callbacks.onClose - Connection closed
    * @returns Promise that resolves with a StreamingSession
    *
-   * @example Real-time streaming
+   * @example Basic real-time streaming
    * ```typescript
    * const session = await adapter.transcribeStream({
    *   encoding: 'linear16',
@@ -490,11 +568,42 @@ export class DeepgramAdapter extends BaseAdapter {
    * });
    *
    * // Send audio chunks
-   * const audioChunk = getAudioChunk(); // Your audio source
+   * const audioChunk = getAudioChunk();
    * await session.sendAudio({ data: audioChunk });
    *
    * // Close when done
    * await session.close();
+   * ```
+   *
+   * @example Advanced streaming with all features
+   * ```typescript
+   * const session = await adapter.transcribeStream({
+   *   encoding: 'linear16',
+   *   sampleRate: 16000,
+   *   language: 'en',
+   *   model: 'nova-3',
+   *   diarization: true,
+   *   sentimentAnalysis: true,
+   *   entityDetection: true,
+   *   deepgramStreaming: {
+   *     fillerWords: true,
+   *     numerals: true,
+   *     profanityFilter: true,
+   *     topics: true,
+   *     intents: true,
+   *     customTopic: ['sales', 'support'],
+   *     customIntent: ['purchase', 'complaint'],
+   *     keyterm: ['TypeScript', 'JavaScript'],
+   *     utteranceSplit: 800,
+   *     punctuate: true,
+   *     smartFormat: true
+   *   }
+   * }, {
+   *   onTranscript: (e) => console.log('Transcript:', e.text),
+   *   onSpeechStart: (e) => console.log('Speech started at:', e.timestamp),
+   *   onSpeechEnd: (e) => console.log('Utterance ended'),
+   *   onMetadata: (m) => console.log('Metadata:', m)
+   * });
    * ```
    */
   async transcribeStream(
@@ -503,26 +612,8 @@ export class DeepgramAdapter extends BaseAdapter {
   ): Promise<StreamingSession> {
     this.validateConfig()
 
-    // Build query parameters for WebSocket URL
-    const params = new URLSearchParams()
-
-    if (options?.encoding) params.append("encoding", options.encoding)
-    if (options?.sampleRate) params.append("sample_rate", options.sampleRate.toString())
-    if (options?.channels) params.append("channels", options.channels.toString())
-    if (options?.language) params.append("language", options.language)
-    if (options?.model) params.append("model", options.model)
-    if (options?.languageDetection) params.append("detect_language", "true")
-    if (options?.diarization) params.append("diarize", "true")
-    if (options?.interimResults) params.append("interim_results", "true")
-    if (options?.summarization) params.append("summarize", "true")
-    if (options?.sentimentAnalysis) params.append("sentiment", "true")
-    if (options?.entityDetection) params.append("detect_entities", "true")
-    if (options?.piiRedaction) params.append("redact", "pii")
-    if (options?.customVocabulary && options.customVocabulary.length > 0) {
-      params.append("keywords", options.customVocabulary.join(","))
-    }
-
-    const wsUrl = `${this.wsBaseUrl}?${params.toString()}`
+    // Build WebSocket URL with all streaming parameters
+    const wsUrl = this.buildStreamingUrl(options)
 
     // Create WebSocket connection
     const ws = new WebSocket(wsUrl, {
@@ -543,38 +634,7 @@ export class DeepgramAdapter extends BaseAdapter {
     ws.on("message", (data: Buffer) => {
       try {
         const message = JSON.parse(data.toString()) as DeepgramRealtimeMessage
-
-        // Handle different message types from Deepgram - TYPE SAFE!
-        if (message.type === "Results") {
-          // Type narrowed to DeepgramResultsMessage
-          const channel = message.channel.alternatives[0]
-
-          if (channel) {
-            const transcript = channel.transcript
-            const isFinal = message.is_final
-            const words = channel.words?.map((w) => ({
-              word: w.word,
-              start: w.start,
-              end: w.end,
-              confidence: w.confidence
-            }))
-
-            callbacks?.onTranscript?.({
-              type: "transcript",
-              text: transcript,
-              isFinal,
-              words,
-              confidence: channel.confidence,
-              data: message
-            })
-          }
-        } else if (message.type === "UtteranceEnd") {
-          // Type narrowed to DeepgramUtteranceEndMessage
-          callbacks?.onMetadata?.(message)
-        } else if (message.type === "Metadata") {
-          // Type narrowed to DeepgramMetadataMessage
-          callbacks?.onMetadata?.(message)
-        }
+        this.handleWebSocketMessage(message, callbacks)
       } catch (error) {
         callbacks?.onError?.({
           code: "PARSE_ERROR",
@@ -664,6 +724,257 @@ export class DeepgramAdapter extends BaseAdapter {
             resolve()
           })
         })
+      }
+    }
+  }
+
+  /**
+   * Build WebSocket URL with all streaming parameters
+   */
+  private buildStreamingUrl(options?: StreamingOptions): string {
+    const params = new URLSearchParams()
+    const dgOpts = options?.deepgramStreaming || {}
+
+    // ─────────────────────────────────────────────────────────────────
+    // Audio format parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (options?.encoding || dgOpts.encoding) {
+      params.append("encoding", (options?.encoding || dgOpts.encoding) as string)
+    }
+    if (options?.sampleRate || dgOpts.sampleRate) {
+      params.append("sample_rate", String(options?.sampleRate || dgOpts.sampleRate))
+    }
+    if (options?.channels || dgOpts.channels) {
+      params.append("channels", String(options?.channels || dgOpts.channels))
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Model and language parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (options?.language || dgOpts.language) {
+      params.append("language", (options?.language || dgOpts.language) as string)
+    }
+    if (options?.model || dgOpts.model) {
+      params.append("model", (options?.model || dgOpts.model) as string)
+    }
+    if (dgOpts.version) {
+      params.append("version", dgOpts.version as string)
+    }
+    if (options?.languageDetection || dgOpts.languageDetection) {
+      params.append("detect_language", "true")
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Transcription processing parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (options?.diarization || dgOpts.diarization) {
+      params.append("diarize", "true")
+    }
+    if (options?.interimResults || dgOpts.interimResults) {
+      params.append("interim_results", "true")
+    }
+    if (dgOpts.punctuate !== undefined) {
+      params.append("punctuate", String(dgOpts.punctuate))
+    }
+    if (dgOpts.smartFormat !== undefined) {
+      params.append("smart_format", String(dgOpts.smartFormat))
+    }
+    if (dgOpts.fillerWords) {
+      params.append("filler_words", "true")
+    }
+    if (dgOpts.numerals) {
+      params.append("numerals", "true")
+    }
+    if (dgOpts.measurements) {
+      params.append("measurements", "true")
+    }
+    if (dgOpts.paragraphs) {
+      params.append("paragraphs", "true")
+    }
+    if (dgOpts.profanityFilter) {
+      params.append("profanity_filter", "true")
+    }
+    if (dgOpts.dictation) {
+      params.append("dictation", "true")
+    }
+    if (dgOpts.utteranceSplit) {
+      params.append("utt_split", String(dgOpts.utteranceSplit))
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Advanced analysis parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (options?.summarization || dgOpts.summarize) {
+      params.append("summarize", "true")
+    }
+    if (options?.sentimentAnalysis || dgOpts.sentiment) {
+      params.append("sentiment", "true")
+    }
+    if (options?.entityDetection || dgOpts.detectEntities) {
+      params.append("detect_entities", "true")
+    }
+    if (dgOpts.topics) {
+      params.append("topics", "true")
+    }
+    if (dgOpts.customTopic && dgOpts.customTopic.length > 0) {
+      dgOpts.customTopic.forEach((topic) => params.append("custom_topic", topic))
+    }
+    if (dgOpts.customTopicMode) {
+      params.append("custom_topic_mode", dgOpts.customTopicMode)
+    }
+    if (dgOpts.intents) {
+      params.append("intents", "true")
+    }
+    if (dgOpts.customIntent && dgOpts.customIntent.length > 0) {
+      dgOpts.customIntent.forEach((intent) => params.append("custom_intent", intent))
+    }
+    if (dgOpts.customIntentMode) {
+      params.append("custom_intent_mode", dgOpts.customIntentMode)
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Vocabulary and redaction parameters
+    // ─────────────────────────────────────────────────────────────────
+    const keywords = options?.customVocabulary || dgOpts.keywords
+    if (keywords) {
+      const keywordList = Array.isArray(keywords) ? keywords : [keywords]
+      keywordList.forEach((kw) => params.append("keywords", kw))
+    }
+    if (dgOpts.keyterm && dgOpts.keyterm.length > 0) {
+      dgOpts.keyterm.forEach((term) => params.append("keyterm", term))
+    }
+
+    // Handle redaction
+    if (options?.piiRedaction || dgOpts.redact) {
+      if (Array.isArray(dgOpts.redact)) {
+        dgOpts.redact.forEach((r) => params.append("redact", r))
+      } else if (dgOpts.redact === true || options?.piiRedaction) {
+        params.append("redact", "pii")
+        params.append("redact", "pci")
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Callback and metadata parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (dgOpts.callback) {
+      params.append("callback", dgOpts.callback)
+    }
+    if (dgOpts.tag && dgOpts.tag.length > 0) {
+      dgOpts.tag.forEach((t) => params.append("tag", t))
+    }
+    if (dgOpts.extra) {
+      params.append("extra", JSON.stringify(dgOpts.extra))
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Endpointing and VAD parameters
+    // ─────────────────────────────────────────────────────────────────
+    if (options?.endpointing !== undefined || dgOpts.endpointing !== undefined) {
+      const ep = options?.endpointing ?? dgOpts.endpointing
+      if (ep === false) {
+        params.append("endpointing", "false")
+      } else if (typeof ep === "number") {
+        params.append("endpointing", String(ep))
+      }
+    }
+    if (dgOpts.vadThreshold !== undefined) {
+      params.append("vad_events", "true")
+    }
+
+    return `${this.wsBaseUrl}?${params.toString()}`
+  }
+
+  /**
+   * Handle all WebSocket message types from Deepgram streaming
+   */
+  private handleWebSocketMessage(
+    message: DeepgramRealtimeMessage,
+    callbacks?: StreamingCallbacks
+  ): void {
+    switch (message.type) {
+      case "Results": {
+        const channel = message.channel.alternatives[0]
+
+        if (channel && channel.transcript) {
+          callbacks?.onTranscript?.({
+            type: "transcript",
+            text: channel.transcript,
+            isFinal: message.is_final,
+            confidence: channel.confidence,
+            language: message.channel.detected_language,
+            words: channel.words?.map((w) => ({
+              word: w.punctuated_word || w.word,
+              start: w.start,
+              end: w.end,
+              confidence: w.confidence,
+              speaker: w.speaker?.toString()
+            })),
+            data: message
+          })
+        }
+
+        // If speech_final is true, this is an utterance boundary
+        if (message.speech_final && channel && channel.transcript) {
+          callbacks?.onUtterance?.({
+            text: channel.transcript,
+            start: message.start,
+            end: message.start + message.duration,
+            confidence: channel.confidence,
+            words: channel.words?.map((w) => ({
+              word: w.punctuated_word || w.word,
+              start: w.start,
+              end: w.end,
+              confidence: w.confidence
+            }))
+          })
+        }
+        break
+      }
+
+      case "SpeechStarted": {
+        const event: SpeechEvent = {
+          type: "speech_start",
+          timestamp: message.timestamp,
+          channel: message.channel[0]
+        }
+        callbacks?.onSpeechStart?.(event)
+        break
+      }
+
+      case "UtteranceEnd": {
+        const event: SpeechEvent = {
+          type: "speech_end",
+          timestamp: message.last_word_end,
+          channel: message.channel[0]
+        }
+        callbacks?.onSpeechEnd?.(event)
+        break
+      }
+
+      case "Metadata": {
+        callbacks?.onMetadata?.(message as unknown as Record<string, unknown>)
+        break
+      }
+
+      case "Error": {
+        callbacks?.onError?.({
+          code: message.variant || "DEEPGRAM_ERROR",
+          message: message.message || message.description || "Unknown error",
+          details: message
+        })
+        break
+      }
+
+      case "CloseStream": {
+        // Server acknowledged close - no action needed
+        break
+      }
+
+      default: {
+        // Unknown message type - pass to metadata handler
+        callbacks?.onMetadata?.(message as unknown as Record<string, unknown>)
+        break
       }
     }
   }

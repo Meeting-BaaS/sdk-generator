@@ -13,7 +13,15 @@ import type {
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse
+  UnifiedTranscriptResponse,
+  SpeechEvent,
+  TranslationEvent,
+  SentimentEvent,
+  EntityEvent,
+  SummarizationEvent,
+  ChapterizationEvent,
+  AudioAckEvent,
+  LifecycleEvent
 } from "../router/types"
 import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
@@ -54,9 +62,27 @@ import type { WordDTO } from "../generated/gladia/schema/wordDTO"
 import type { TranscriptMessage } from "../generated/gladia/schema/transcriptMessage"
 // Import Gladia's supported values from OpenAPI-generated schema (type safety!)
 import { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
+import { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
 import type { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { TranscriptionLanguageCodeEnum } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
+
+// Import all streaming WebSocket message types for comprehensive handling
+import type { SpeechStartMessage } from "../generated/gladia/schema/speechStartMessage"
+import type { SpeechEndMessage } from "../generated/gladia/schema/speechEndMessage"
+import type { TranslationMessage } from "../generated/gladia/schema/translationMessage"
+import type { SentimentAnalysisMessage } from "../generated/gladia/schema/sentimentAnalysisMessage"
+import type { NamedEntityRecognitionMessage } from "../generated/gladia/schema/namedEntityRecognitionMessage"
+import type { PostSummarizationMessage } from "../generated/gladia/schema/postSummarizationMessage"
+import type { PostChapterizationMessage } from "../generated/gladia/schema/postChapterizationMessage"
+import type { AudioChunkAckMessage } from "../generated/gladia/schema/audioChunkAckMessage"
+import type { StartSessionMessage } from "../generated/gladia/schema/startSessionMessage"
+import type { StartRecordingMessage } from "../generated/gladia/schema/startRecordingMessage"
+import type { StopRecordingAckMessage } from "../generated/gladia/schema/stopRecordingAckMessage"
+import type { EndRecordingMessage } from "../generated/gladia/schema/endRecordingMessage"
+import type { EndSessionMessage } from "../generated/gladia/schema/endSessionMessage"
+import type { PostTranscriptMessage } from "../generated/gladia/schema/postTranscriptMessage"
+import type { PostFinalTranscriptMessage } from "../generated/gladia/schema/postFinalTranscriptMessage"
 
 /**
  * Gladia transcription provider adapter
@@ -522,11 +548,46 @@ export class GladiaAdapter extends BaseAdapter {
    * Creates a WebSocket connection to Gladia for streaming transcription.
    * First initializes a session via REST API, then connects to WebSocket.
    *
+   * Supports all Gladia streaming features:
+   * - Real-time transcription with interim/final results
+   * - Speech detection events (speech_start, speech_end)
+   * - Real-time translation to other languages
+   * - Real-time sentiment analysis
+   * - Real-time named entity recognition
+   * - Post-processing summarization and chapterization
+   * - Audio preprocessing (audio enhancement, speech threshold)
+   * - Custom vocabulary and spelling
+   * - Multi-language code switching
+   *
    * @param options - Streaming configuration options
+   * @param options.encoding - Audio encoding (wav/pcm, wav/alaw, wav/ulaw)
+   * @param options.sampleRate - Sample rate (8000, 16000, 32000, 44100, 48000)
+   * @param options.bitDepth - Bit depth (8, 16, 24, 32)
+   * @param options.channels - Number of channels (1-8)
+   * @param options.language - Language code for transcription
+   * @param options.interimResults - Enable partial/interim transcripts
+   * @param options.endpointing - Silence duration to end utterance (0.01-10 seconds)
+   * @param options.maxSilence - Max duration without endpointing (5-60 seconds)
+   * @param options.customVocabulary - Words to boost in recognition
+   * @param options.sentimentAnalysis - Enable real-time sentiment analysis
+   * @param options.entityDetection - Enable named entity recognition
+   * @param options.summarization - Enable post-processing summarization
+   * @param options.gladiaStreaming - Full Gladia streaming options (pre_processing, realtime_processing, post_processing, messages_config)
    * @param callbacks - Event callbacks for transcription results
+   * @param callbacks.onTranscript - Interim/final transcript received
+   * @param callbacks.onUtterance - Complete utterance detected
+   * @param callbacks.onSpeechStart - Speech detected (requires messages_config.receive_speech_events)
+   * @param callbacks.onSpeechEnd - Speech ended (requires messages_config.receive_speech_events)
+   * @param callbacks.onTranslation - Translation result (requires translation enabled)
+   * @param callbacks.onSentiment - Sentiment analysis result
+   * @param callbacks.onEntity - Named entity detected
+   * @param callbacks.onSummarization - Summarization completed
+   * @param callbacks.onChapterization - Chapterization completed
+   * @param callbacks.onAudioAck - Audio chunk acknowledged
+   * @param callbacks.onLifecycle - Session lifecycle events
    * @returns Promise that resolves with a StreamingSession
    *
-   * @example Real-time streaming
+   * @example Basic real-time streaming
    * ```typescript
    * const session = await adapter.transcribeStream({
    *   encoding: 'wav/pcm',
@@ -548,11 +609,52 @@ export class GladiaAdapter extends BaseAdapter {
    * });
    *
    * // Send audio chunks
-   * const audioChunk = getAudioChunk(); // Your audio source
+   * const audioChunk = getAudioChunk();
    * await session.sendAudio({ data: audioChunk });
    *
    * // Close when done
    * await session.close();
+   * ```
+   *
+   * @example Advanced streaming with all features
+   * ```typescript
+   * const session = await adapter.transcribeStream({
+   *   encoding: 'wav/pcm',
+   *   sampleRate: 16000,
+   *   language: 'en',
+   *   sentimentAnalysis: true,
+   *   entityDetection: true,
+   *   summarization: true,
+   *   gladiaStreaming: {
+   *     pre_processing: {
+   *       audio_enhancer: true,
+   *       speech_threshold: 0.5
+   *     },
+   *     realtime_processing: {
+   *       translation: true,
+   *       translation_config: { target_languages: ['fr', 'es'] }
+   *     },
+   *     post_processing: {
+   *       chapterization: true
+   *     },
+   *     messages_config: {
+   *       receive_speech_events: true,
+   *       receive_acknowledgments: true,
+   *       receive_lifecycle_events: true
+   *     }
+   *   }
+   * }, {
+   *   onTranscript: (e) => console.log('Transcript:', e.text),
+   *   onSpeechStart: (e) => console.log('Speech started at:', e.timestamp),
+   *   onSpeechEnd: (e) => console.log('Speech ended at:', e.timestamp),
+   *   onTranslation: (e) => console.log(`${e.targetLanguage}: ${e.translatedText}`),
+   *   onSentiment: (e) => console.log('Sentiment:', e.sentiment),
+   *   onEntity: (e) => console.log(`Entity: ${e.type} - ${e.text}`),
+   *   onSummarization: (e) => console.log('Summary:', e.summary),
+   *   onChapterization: (e) => console.log('Chapters:', e.chapters),
+   *   onAudioAck: (e) => console.log('Audio ack:', e.byteRange),
+   *   onLifecycle: (e) => console.log('Lifecycle:', e.eventType)
+   * });
    * ```
    */
   async transcribeStream(
@@ -561,37 +663,12 @@ export class GladiaAdapter extends BaseAdapter {
   ): Promise<StreamingSession> {
     this.validateConfig()
 
-    // Validate sample rate against OpenAPI-generated enum
-    let validatedSampleRate: StreamingSupportedSampleRateEnum | undefined
-    if (options?.sampleRate) {
-      validatedSampleRate = validateEnumValue(
-        options.sampleRate,
-        StreamingSupportedSampleRateEnum,
-        "sample rate",
-        "Gladia"
-      )
-    }
-
-    // Build typed streaming request using OpenAPI-generated types
-    const streamingRequest: Partial<StreamingRequest> = {
-      encoding: options?.encoding
-        ? (mapEncodingToProvider(options.encoding, "gladia") as StreamingSupportedEncodingEnum)
-        : undefined,
-      sample_rate: validatedSampleRate,
-      channels: options?.channels,
-      endpointing: options?.endpointing,
-      model: options?.model as StreamingSupportedModels
-    }
-
-    if (options?.language) {
-      streamingRequest.language_config = {
-        languages: [options.language as TranscriptionLanguageCodeEnum]
-      }
-    }
+    // Build streaming request with full type safety
+    const streamingRequest = this.buildStreamingRequest(options)
 
     // Use generated API client function - FULLY TYPED!
     const initResponse = await streamingControllerInitStreamingSessionV2(
-      streamingRequest as StreamingRequest,
+      streamingRequest,
       undefined, // no params
       this.getAxiosConfig()
     )
@@ -608,53 +685,11 @@ export class GladiaAdapter extends BaseAdapter {
       sessionStatus = status
     })
 
+    // Handle all WebSocket message types from Gladia
     ws.on("message", (data: Buffer) => {
       try {
         const message = JSON.parse(data.toString())
-
-        // Handle different message types from Gladia
-        if (message.type === "transcript") {
-          // Type-safe: cast to TranscriptMessage after checking type
-          const transcriptMessage = message as TranscriptMessage
-          const messageData = transcriptMessage.data
-          const utterance = messageData.utterance
-
-          callbacks?.onTranscript?.({
-            type: "transcript",
-            text: utterance.text,
-            isFinal: messageData.is_final,
-            confidence: utterance.confidence,
-            words: utterance.words.map((w) => ({
-              word: w.word,
-              start: w.start,
-              end: w.end,
-              confidence: w.confidence
-            })),
-            data: message
-          })
-        } else if (message.type === "utterance") {
-          // Utterance completed - extract from nested data.utterance structure
-          const transcriptMessage = message as TranscriptMessage
-          const messageData = transcriptMessage.data
-          const utterance = messageData.utterance
-
-          const utteranceData = {
-            text: utterance.text,
-            start: utterance.start,
-            end: utterance.end,
-            speaker: utterance.speaker?.toString(),
-            confidence: utterance.confidence,
-            words: utterance.words.map((w) => ({
-              word: w.word,
-              start: w.start,
-              end: w.end,
-              confidence: w.confidence
-            }))
-          }
-          callbacks?.onUtterance?.(utteranceData)
-        } else if (message.type === "metadata") {
-          callbacks?.onMetadata?.(message)
-        }
+        this.handleWebSocketMessage(message, callbacks)
       } catch (error) {
         callbacks?.onError?.({
           code: ERROR_CODES.PARSE_ERROR,
@@ -709,6 +744,478 @@ export class GladiaAdapter extends BaseAdapter {
         await closeWebSocket(ws)
         sessionStatus = "closed"
       }
+    }
+  }
+
+  /**
+   * Build streaming request with full type safety from OpenAPI specs
+   *
+   * Maps normalized options to Gladia streaming request format,
+   * including all advanced features like pre-processing, real-time
+   * processing, post-processing, and message configuration.
+   */
+  private buildStreamingRequest(options?: StreamingOptions): StreamingRequest {
+    // Start with provider-specific options (fully typed from OpenAPI)
+    const gladiaOpts = options?.gladiaStreaming || {}
+
+    // Validate sample rate against OpenAPI-generated enum
+    let validatedSampleRate: StreamingSupportedSampleRateEnum | undefined
+    if (options?.sampleRate) {
+      validatedSampleRate = validateEnumValue(
+        options.sampleRate,
+        StreamingSupportedSampleRateEnum,
+        "sample rate",
+        "Gladia"
+      )
+    }
+
+    // Validate bit depth against OpenAPI-generated enum
+    let validatedBitDepth: StreamingSupportedBitDepthEnum | undefined
+    if (options?.bitDepth) {
+      validatedBitDepth = validateEnumValue(
+        options.bitDepth,
+        StreamingSupportedBitDepthEnum,
+        "bit depth",
+        "Gladia"
+      )
+    }
+
+    // Build the base request
+    const streamingRequest: StreamingRequest = {
+      // Spread any direct Gladia streaming options first
+      ...gladiaOpts,
+
+      // Audio format configuration (these are excluded from gladiaStreaming to avoid conflicts)
+      encoding: options?.encoding
+        ? (mapEncodingToProvider(options.encoding, "gladia") as StreamingSupportedEncodingEnum)
+        : undefined,
+      sample_rate: validatedSampleRate,
+      bit_depth: validatedBitDepth,
+      channels: options?.channels,
+
+      // Model and processing
+      model: (options?.model as StreamingSupportedModels) ?? gladiaOpts.model,
+      endpointing: options?.endpointing ?? gladiaOpts.endpointing,
+      maximum_duration_without_endpointing:
+        options?.maxSilence ?? gladiaOpts.maximum_duration_without_endpointing
+    }
+
+    // Language configuration
+    if (options?.language || options?.codeSwitching || gladiaOpts.language_config) {
+      streamingRequest.language_config = {
+        ...gladiaOpts.language_config,
+        languages: options?.language
+          ? [options.language as TranscriptionLanguageCodeEnum]
+          : gladiaOpts.language_config?.languages,
+        code_switching: options?.codeSwitching ?? gladiaOpts.language_config?.code_switching
+      }
+    }
+
+    // Pre-processing configuration (audio enhancement, speech threshold)
+    if (gladiaOpts.pre_processing) {
+      streamingRequest.pre_processing = gladiaOpts.pre_processing
+    }
+
+    // Real-time processing configuration
+    const realtimeProcessing = gladiaOpts.realtime_processing || {}
+    const hasRealtimeOptions =
+      options?.customVocabulary ||
+      options?.sentimentAnalysis ||
+      options?.entityDetection ||
+      realtimeProcessing.translation ||
+      realtimeProcessing.custom_vocabulary ||
+      realtimeProcessing.custom_spelling ||
+      realtimeProcessing.named_entity_recognition ||
+      realtimeProcessing.sentiment_analysis
+
+    if (hasRealtimeOptions) {
+      streamingRequest.realtime_processing = {
+        ...realtimeProcessing,
+        // Custom vocabulary
+        custom_vocabulary:
+          (options?.customVocabulary && options.customVocabulary.length > 0) ||
+          realtimeProcessing.custom_vocabulary,
+        custom_vocabulary_config:
+          options?.customVocabulary && options.customVocabulary.length > 0
+            ? {
+                ...realtimeProcessing.custom_vocabulary_config,
+                vocabulary: options.customVocabulary
+              }
+            : realtimeProcessing.custom_vocabulary_config,
+        // Sentiment analysis
+        sentiment_analysis: options?.sentimentAnalysis ?? realtimeProcessing.sentiment_analysis,
+        // Named entity recognition
+        named_entity_recognition:
+          options?.entityDetection ?? realtimeProcessing.named_entity_recognition
+      }
+    }
+
+    // Post-processing configuration (summarization, chapterization)
+    const postProcessing = gladiaOpts.post_processing || {}
+    if (options?.summarization || postProcessing.summarization || postProcessing.chapterization) {
+      streamingRequest.post_processing = {
+        ...postProcessing,
+        summarization: options?.summarization ?? postProcessing.summarization
+      }
+    }
+
+    // Messages configuration (controls which WebSocket events to receive)
+    if (gladiaOpts.messages_config) {
+      streamingRequest.messages_config = gladiaOpts.messages_config
+    } else if (options?.interimResults !== undefined) {
+      // If interimResults specified, configure message types accordingly
+      streamingRequest.messages_config = {
+        receive_partial_transcripts: options.interimResults,
+        receive_final_transcripts: true
+      }
+    }
+
+    // Callback configuration (for HTTP callbacks alongside WebSocket)
+    if (gladiaOpts.callback || gladiaOpts.callback_config) {
+      streamingRequest.callback = gladiaOpts.callback
+      streamingRequest.callback_config = gladiaOpts.callback_config
+    }
+
+    // Custom metadata
+    if (gladiaOpts.custom_metadata) {
+      streamingRequest.custom_metadata = gladiaOpts.custom_metadata
+    }
+
+    return streamingRequest
+  }
+
+  /**
+   * Handle all WebSocket message types from Gladia streaming
+   *
+   * Processes transcript, utterance, speech events, real-time processing
+   * results (translation, sentiment, NER), post-processing results
+   * (summarization, chapterization), acknowledgments, and lifecycle events.
+   */
+  private handleWebSocketMessage(
+    message: unknown,
+    callbacks?: StreamingCallbacks
+  ): void {
+    const msg = message as Record<string, unknown>
+    const messageType = msg.type as string
+
+    switch (messageType) {
+      // ─────────────────────────────────────────────────────────────────
+      // Transcript events
+      // ─────────────────────────────────────────────────────────────────
+
+      case "transcript": {
+        const transcriptMessage = message as TranscriptMessage
+        const messageData = transcriptMessage.data
+        const utterance = messageData.utterance
+
+        callbacks?.onTranscript?.({
+          type: "transcript",
+          text: utterance.text,
+          isFinal: messageData.is_final,
+          confidence: utterance.confidence,
+          language: utterance.language,
+          channel: utterance.channel,
+          speaker: utterance.speaker?.toString(),
+          words: utterance.words.map((w) => ({
+            word: w.word,
+            start: w.start,
+            end: w.end,
+            confidence: w.confidence
+          })),
+          data: message
+        })
+        break
+      }
+
+      case "utterance": {
+        const transcriptMessage = message as TranscriptMessage
+        const messageData = transcriptMessage.data
+        const utterance = messageData.utterance
+
+        callbacks?.onUtterance?.({
+          text: utterance.text,
+          start: utterance.start,
+          end: utterance.end,
+          speaker: utterance.speaker?.toString(),
+          confidence: utterance.confidence,
+          words: utterance.words.map((w) => ({
+            word: w.word,
+            start: w.start,
+            end: w.end,
+            confidence: w.confidence
+          }))
+        })
+        break
+      }
+
+      // Post-processing transcripts (final accumulated transcript)
+      case "post_transcript": {
+        const postTranscript = message as PostTranscriptMessage
+        callbacks?.onTranscript?.({
+          type: "transcript",
+          text: postTranscript.data?.full_transcript || "",
+          isFinal: true,
+          data: message
+        })
+        break
+      }
+
+      case "post_final_transcript": {
+        const postFinal = message as PostFinalTranscriptMessage
+        callbacks?.onTranscript?.({
+          type: "transcript",
+          text: postFinal.data?.transcription?.full_transcript || "",
+          isFinal: true,
+          data: message
+        })
+        break
+      }
+
+      // ─────────────────────────────────────────────────────────────────
+      // Speech detection events
+      // ─────────────────────────────────────────────────────────────────
+
+      case "speech_start": {
+        const speechStart = message as SpeechStartMessage
+        const event: SpeechEvent = {
+          type: "speech_start",
+          timestamp: speechStart.data.time,
+          channel: speechStart.data.channel,
+          sessionId: speechStart.session_id
+        }
+        callbacks?.onSpeechStart?.(event)
+        break
+      }
+
+      case "speech_end": {
+        const speechEnd = message as SpeechEndMessage
+        const event: SpeechEvent = {
+          type: "speech_end",
+          timestamp: speechEnd.data.time,
+          channel: speechEnd.data.channel,
+          sessionId: speechEnd.session_id
+        }
+        callbacks?.onSpeechEnd?.(event)
+        break
+      }
+
+      // ─────────────────────────────────────────────────────────────────
+      // Real-time processing events
+      // ─────────────────────────────────────────────────────────────────
+
+      case "translation": {
+        const translationMsg = message as TranslationMessage
+        if (translationMsg.error) {
+          callbacks?.onError?.({
+            code: ERROR_CODES.TRANSCRIPTION_ERROR,
+            message: "Translation failed",
+            details: translationMsg.error
+          })
+        } else if (translationMsg.data) {
+          const event: TranslationEvent = {
+            utteranceId: translationMsg.data.utterance_id,
+            original: translationMsg.data.utterance.text,
+            targetLanguage: translationMsg.data.target_language,
+            translatedText: translationMsg.data.translated_utterance.text,
+            isFinal: true
+          }
+          callbacks?.onTranslation?.(event)
+        }
+        break
+      }
+
+      case "sentiment_analysis": {
+        const sentimentMsg = message as SentimentAnalysisMessage
+        if (sentimentMsg.error) {
+          callbacks?.onError?.({
+            code: ERROR_CODES.TRANSCRIPTION_ERROR,
+            message: "Sentiment analysis failed",
+            details: sentimentMsg.error
+          })
+        } else if (sentimentMsg.data) {
+          // Send one event per sentiment result
+          for (const result of sentimentMsg.data.results) {
+            const event: SentimentEvent = {
+              utteranceId: sentimentMsg.data.utterance_id,
+              sentiment: result.sentiment,
+              confidence: undefined // Gladia doesn't provide confidence for sentiment
+            }
+            callbacks?.onSentiment?.(event)
+          }
+        }
+        break
+      }
+
+      case "named_entity_recognition": {
+        const nerMsg = message as NamedEntityRecognitionMessage
+        if (nerMsg.error) {
+          callbacks?.onError?.({
+            code: ERROR_CODES.TRANSCRIPTION_ERROR,
+            message: "Named entity recognition failed",
+            details: nerMsg.error
+          })
+        } else if (nerMsg.data) {
+          // Send one event per entity
+          for (const entity of nerMsg.data.results) {
+            const event: EntityEvent = {
+              utteranceId: nerMsg.data.utterance_id,
+              text: entity.text,
+              type: entity.entity_type,
+              start: entity.start,
+              end: entity.end
+            }
+            callbacks?.onEntity?.(event)
+          }
+        }
+        break
+      }
+
+      // ─────────────────────────────────────────────────────────────────
+      // Post-processing events
+      // ─────────────────────────────────────────────────────────────────
+
+      case "post_summarization": {
+        const summaryMsg = message as PostSummarizationMessage
+        if (summaryMsg.error) {
+          callbacks?.onSummarization?.({
+            summary: "",
+            error: typeof summaryMsg.error === "string" ? summaryMsg.error : "Summarization failed"
+          })
+        } else if (summaryMsg.data) {
+          callbacks?.onSummarization?.({
+            summary: summaryMsg.data.results
+          })
+        }
+        break
+      }
+
+      case "post_chapterization": {
+        const chapterMsg = message as PostChapterizationMessage
+        if (chapterMsg.error) {
+          callbacks?.onChapterization?.({
+            chapters: [],
+            error:
+              typeof chapterMsg.error === "string" ? chapterMsg.error : "Chapterization failed"
+          })
+        } else if (chapterMsg.data) {
+          callbacks?.onChapterization?.({
+            chapters: chapterMsg.data.results.map((ch) => ({
+              headline: ch.headline,
+              summary: ch.summary || ch.abstractive_summary || ch.extractive_summary || "",
+              start: ch.start,
+              end: ch.end
+            }))
+          })
+        }
+        break
+      }
+
+      // ─────────────────────────────────────────────────────────────────
+      // Acknowledgment events
+      // ─────────────────────────────────────────────────────────────────
+
+      case "audio_chunk_ack": {
+        const ackMsg = message as AudioChunkAckMessage
+        if (ackMsg.error) {
+          callbacks?.onError?.({
+            code: ERROR_CODES.TRANSCRIPTION_ERROR,
+            message: "Audio chunk not acknowledged",
+            details: ackMsg.error
+          })
+        } else if (ackMsg.data) {
+          const event: AudioAckEvent = {
+            byteRange: ackMsg.data.byte_range as [number, number],
+            timeRange: ackMsg.data.time_range as [number, number],
+            timestamp: ackMsg.created_at
+          }
+          callbacks?.onAudioAck?.(event)
+        }
+        break
+      }
+
+      case "stop_recording_ack": {
+        const stopAck = message as StopRecordingAckMessage
+        if (stopAck.error) {
+          callbacks?.onError?.({
+            code: ERROR_CODES.TRANSCRIPTION_ERROR,
+            message: "Stop recording not acknowledged",
+            details: stopAck.error
+          })
+        }
+        // No specific callback for stop_recording_ack, handled as lifecycle
+        break
+      }
+
+      // ─────────────────────────────────────────────────────────────────
+      // Lifecycle events
+      // ─────────────────────────────────────────────────────────────────
+
+      case "start_session": {
+        const startSession = message as StartSessionMessage
+        const event: LifecycleEvent = {
+          eventType: "start_session",
+          timestamp: startSession.created_at,
+          sessionId: startSession.session_id
+        }
+        callbacks?.onLifecycle?.(event)
+        break
+      }
+
+      case "start_recording": {
+        const startRecording = message as StartRecordingMessage
+        const event: LifecycleEvent = {
+          eventType: "start_recording",
+          timestamp: startRecording.created_at,
+          sessionId: startRecording.session_id
+        }
+        callbacks?.onLifecycle?.(event)
+        break
+      }
+
+      case "end_recording": {
+        const endRecording = message as EndRecordingMessage
+        const event: LifecycleEvent = {
+          eventType: "end_recording",
+          timestamp: endRecording.created_at,
+          sessionId: endRecording.session_id
+        }
+        callbacks?.onLifecycle?.(event)
+        break
+      }
+
+      case "end_session": {
+        const endSession = message as EndSessionMessage
+        const event: LifecycleEvent = {
+          eventType: "end_session",
+          timestamp: endSession.created_at,
+          sessionId: endSession.session_id
+        }
+        callbacks?.onLifecycle?.(event)
+        break
+      }
+
+      // ─────────────────────────────────────────────────────────────────
+      // Metadata and other events
+      // ─────────────────────────────────────────────────────────────────
+
+      case "metadata":
+        callbacks?.onMetadata?.(msg)
+        break
+
+      case "error": {
+        const errorMsg = msg as { error?: { code?: string; message?: string } }
+        callbacks?.onError?.({
+          code: errorMsg.error?.code || ERROR_CODES.TRANSCRIPTION_ERROR,
+          message: errorMsg.error?.message || "Unknown streaming error",
+          details: msg
+        })
+        break
+      }
+
+      default:
+        // Unknown message type - pass to metadata handler for extensibility
+        callbacks?.onMetadata?.(msg)
+        break
     }
   }
 }
