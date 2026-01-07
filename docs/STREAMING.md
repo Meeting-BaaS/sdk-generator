@@ -5,6 +5,7 @@ This guide shows how to use the SDK's type-safe streaming enums for compile-time
 ## Quick Start
 
 ```typescript
+// Node.js - full SDK with adapters
 import {
   // Deepgram
   DeepgramEncoding,
@@ -23,6 +24,14 @@ import {
   AssemblyAISpeechModel,
   AssemblyAISampleRate,
 } from 'voice-router-dev'
+
+// Browser/Edge - constants only (no Node.js deps)
+import {
+  DeepgramEncoding,
+  DeepgramModel,
+  GladiaEncoding,
+  AssemblyAIEncoding,
+} from 'voice-router-dev/constants'
 ```
 
 All enums provide:

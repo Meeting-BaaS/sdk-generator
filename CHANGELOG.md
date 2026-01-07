@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Browser-Safe Constants Export
+
+New `/constants` subpath export for browser, Cloudflare Workers, and edge environments:
+
+```typescript
+// Browser-safe import (no node:crypto, ws, or axios)
+import { DeepgramModel, GladiaEncoding, AssemblyAIEncoding } from 'voice-router-dev/constants'
+
+const model = DeepgramModel["nova-3"]
+const encoding = GladiaEncoding["wav/pcm"]
+```
+
+The main entry point (`voice-router-dev`) still works but bundles Node.js dependencies.
+Use `/constants` when you only need the enum values without the adapter classes.
+
 #### Type-Safe Streaming Enums with Autocomplete
 
 New const objects provide IDE autocomplete and compile-time validation for all streaming options.
