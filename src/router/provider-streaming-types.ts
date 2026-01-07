@@ -21,7 +21,6 @@ import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
 // Deepgram types - from OpenAPI-generated schema
 import type { ListenV1EncodingParameter } from "../generated/deepgram/schema/listenV1EncodingParameter"
 import type { ListenV1LanguageParameter } from "../generated/deepgram/schema/listenV1LanguageParameter"
-import type { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
 import type { ListenV1VersionParameter } from "../generated/deepgram/schema/listenV1VersionParameter"
 
 // New typed enums for better autocomplete
@@ -99,15 +98,19 @@ export interface DeepgramStreamingOptions {
 
   /**
    * Model to use for transcription
+   *
+   * Strict union type - only accepts valid Deepgram models.
    * Use `DeepgramModel` const for autocomplete:
    * @example
    * ```typescript
-   * import { DeepgramModel } from '@meeting-baas/sdk'
-   * { model: DeepgramModel.nova3 }
-   * { model: DeepgramModel.nova2Medical }
+   * import { DeepgramModel } from 'voice-router-dev'
+   * { model: DeepgramModel["nova-3"] }
+   * { model: DeepgramModel["nova-2-medical"] }
+   * // Or use string literals directly:
+   * { model: "nova-3" }
    * ```
    */
-  model?: ListenV1ModelParameter | DeepgramModelType
+  model?: DeepgramModelType
 
   /** Model version (e.g., 'latest') */
   version?: ListenV1VersionParameter
@@ -242,10 +245,7 @@ export interface DeepgramStreamingOptions {
 }
 
 // AssemblyAI streaming types - from auto-synced SDK types
-import type {
-  StreamingSpeechModel,
-  StreamingUpdateConfiguration
-} from "../generated/assemblyai/streaming-types"
+import type { StreamingUpdateConfiguration } from "../generated/assemblyai/streaming-types"
 
 /**
  * AssemblyAI streaming options
@@ -288,15 +288,19 @@ export interface AssemblyAIStreamingOptions {
 
   /**
    * Speech model to use
+   *
+   * Strict union type - only accepts valid AssemblyAI streaming models.
    * Use `AssemblyAISpeechModel` const for autocomplete:
    * @example
    * ```typescript
-   * import { AssemblyAISpeechModel } from '@meeting-baas/sdk'
+   * import { AssemblyAISpeechModel } from 'voice-router-dev'
    * { speechModel: AssemblyAISpeechModel.english }
    * { speechModel: AssemblyAISpeechModel.multilingual }
+   * // Or use string literals directly:
+   * { speechModel: "universal-streaming-english" }
    * ```
    */
-  speechModel?: AssemblyAISpeechModelType | StreamingSpeechModel
+  speechModel?: AssemblyAISpeechModelType
 
   /** Enable automatic language detection */
   languageDetection?: boolean

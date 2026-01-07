@@ -108,7 +108,9 @@ export class AzureSTTAdapter extends BaseAdapter {
     summarization: false,
     sentimentAnalysis: false,
     entityDetection: false,
-    piiRedaction: false
+    piiRedaction: false,
+    listTranscripts: true,
+    deleteTranscript: true
   }
 
   private region?: string

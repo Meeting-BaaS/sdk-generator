@@ -117,7 +117,9 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
     summarization: false,
     sentimentAnalysis: false,
     entityDetection: false,
-    piiRedaction: false
+    piiRedaction: false,
+    listTranscripts: false, // Synchronous API, no stored transcripts
+    deleteTranscript: false
   }
 
   protected baseUrl = "https://api.openai.com/v1"

@@ -111,7 +111,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
     summarization: true,
     sentimentAnalysis: true,
     entityDetection: true,
-    piiRedaction: true
+    piiRedaction: true,
+    listTranscripts: true,
+    deleteTranscript: true
   }
 
   protected baseUrl = "https://api.assemblyai.com" // Generated functions already include /v2 path

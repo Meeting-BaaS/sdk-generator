@@ -18,7 +18,7 @@ import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai
 import type { Transcription as AzureTranscription } from "../generated/azure/schema/transcription"
 
 // Provider-specific model types for type-safe model selection
-import type { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
+import type { DeepgramModelType } from "./streaming-enums"
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { SpeechModel as AssemblyAISpeechModel } from "../generated/assemblyai/schema/speechModel"
 
@@ -75,16 +75,21 @@ export type SpeechmaticsOperatingPoint = "standard" | "enhanced"
 /**
  * Unified transcription model type with autocomplete for all providers
  *
- * Includes all known models from:
- * - Deepgram: nova-3, nova-2, enhanced, base, whisper, etc.
+ * Strict union type - only accepts valid models from each provider:
+ * - Deepgram: nova-3, nova-2, enhanced, base, etc.
  * - AssemblyAI: best, slam-1, universal
  * - Gladia: solaria-1
  * - Speechmatics: standard, enhanced
  *
- * Also accepts any string for future/custom models.
+ * Use provider const objects for autocomplete:
+ * @example
+ * ```typescript
+ * import { DeepgramModel } from 'voice-router-dev'
+ * { model: DeepgramModel["nova-3"] }
+ * ```
  */
 export type TranscriptionModel =
-  | ListenV1ModelParameter
+  | DeepgramModelType
   | StreamingSupportedModels
   | AssemblyAISpeechModel
   | SpeechmaticsOperatingPoint
@@ -256,6 +261,10 @@ export interface ProviderCapabilities {
   entityDetection: boolean
   /** PII redaction */
   piiRedaction: boolean
+  /** List/fetch previous transcriptions */
+  listTranscripts: boolean
+  /** Delete existing transcriptions */
+  deleteTranscript: boolean
 }
 
 /**

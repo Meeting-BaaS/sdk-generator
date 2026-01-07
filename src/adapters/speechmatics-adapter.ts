@@ -112,7 +112,9 @@ export class SpeechmaticsAdapter extends BaseAdapter {
     summarization: true,
     sentimentAnalysis: true,
     entityDetection: true,
-    piiRedaction: false
+    piiRedaction: false,
+    listTranscripts: true,
+    deleteTranscript: true
   }
 
   private client?: AxiosInstance

@@ -165,7 +165,9 @@ export class DeepgramAdapter extends BaseAdapter {
     summarization: true,
     sentimentAnalysis: true,
     entityDetection: true,
-    piiRedaction: true
+    piiRedaction: true,
+    listTranscripts: false, // Deepgram doesn't store transcripts
+    deleteTranscript: false
   }
 
   private client?: AxiosInstance

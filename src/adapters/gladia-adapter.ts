@@ -140,7 +140,9 @@ export class GladiaAdapter extends BaseAdapter {
     summarization: true,
     sentimentAnalysis: true,
     entityDetection: true,
-    piiRedaction: false // Gladia doesn't have PII redaction in their API
+    piiRedaction: false, // Gladia doesn't have PII redaction in their API
+    listTranscripts: true,
+    deleteTranscript: true
   }
 
   protected baseUrl = "https://api.gladia.io"

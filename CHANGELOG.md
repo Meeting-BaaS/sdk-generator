@@ -135,6 +135,10 @@ session.forceEndpoint?.()
 
 ### Changed
 
+- `TranscriptionModel` (batch) now uses strict union type (no `| string` fallback)
+- `DeepgramStreamingOptions.model` now uses strict union type (no `| string` fallback)
+- `AssemblyAIStreamingOptions.speechModel` now uses strict union type
+- `ProviderCapabilities` now includes `listTranscripts` and `deleteTranscript` flags
 - `DeepgramStreamingOptions` now includes 30+ typed parameters from OpenAPI spec
 - `AssemblyAIStreamingOptions` now includes all v3 streaming parameters
 - `GladiaStreamingOptions` now includes full pre/realtime/post processing options
