@@ -68,6 +68,30 @@ export const DeepgramRedact = ListenV1RedactParameterOneOfItem
 export const DeepgramTopicMode = SharedCustomTopicModeParameter
 
 /**
+ * Deepgram supported sample rates (Hz)
+ *
+ * **Note:** This const is NOT type-checked against a generated type.
+ * Deepgram's OpenAPI spec accepts any `number` for sampleRate.
+ * These values are from Deepgram documentation for convenience.
+ *
+ * Values: `8000`, `16000`, `32000`, `44100`, `48000`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramSampleRate } from 'voice-router-dev/constants'
+ *
+ * { sampleRate: DeepgramSampleRate.NUMBER_16000 }
+ * ```
+ */
+export const DeepgramSampleRate = {
+  NUMBER_8000: 8000,
+  NUMBER_16000: 16000,
+  NUMBER_32000: 32000,
+  NUMBER_44100: 44100,
+  NUMBER_48000: 48000
+} as const
+
+/**
  * Deepgram transcription models
  *
  * @example
@@ -353,6 +377,9 @@ export type DeepgramRedactType = (typeof DeepgramRedact)[keyof typeof DeepgramRe
 
 /** Deepgram topic mode type derived from const object */
 export type DeepgramTopicModeType = (typeof DeepgramTopicMode)[keyof typeof DeepgramTopicMode]
+
+/** Deepgram sample rate type derived from const object */
+export type DeepgramSampleRateType = (typeof DeepgramSampleRate)[keyof typeof DeepgramSampleRate]
 
 /** Deepgram model type derived from const object */
 export type DeepgramModelType = (typeof DeepgramModel)[keyof typeof DeepgramModel]
