@@ -154,6 +154,56 @@ export const AssemblyAISampleRate = {
 } as const
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Transcript Status Constants (for listTranscripts filtering)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * AssemblyAI transcript status values
+ *
+ * @example
+ * ```typescript
+ * import { AssemblyAIStatus } from 'voice-router-dev/constants'
+ *
+ * await router.listTranscripts('assemblyai', {
+ *   status: AssemblyAIStatus.completed
+ * })
+ * ```
+ */
+export { TranscriptStatus as AssemblyAIStatus } from "./generated/assemblyai/schema/transcriptStatus"
+
+/**
+ * Gladia job status values
+ *
+ * Note: Gladia uses "done" instead of "completed"
+ *
+ * @example
+ * ```typescript
+ * import { GladiaStatus } from 'voice-router-dev/constants'
+ *
+ * await router.listTranscripts('gladia', {
+ *   status: GladiaStatus.done
+ * })
+ * ```
+ */
+export { TranscriptionControllerListV2StatusItem as GladiaStatus } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
+
+/**
+ * Azure Speech-to-Text transcription status values
+ *
+ * Note: Azure uses different names (NotStarted, Running, Succeeded, Failed)
+ *
+ * @example
+ * ```typescript
+ * import { AzureStatus } from 'voice-router-dev/constants'
+ *
+ * await router.listTranscripts('azure-stt', {
+ *   status: AzureStatus.Succeeded
+ * })
+ * ```
+ */
+export { Status as AzureStatus } from "./generated/azure/schema/status"
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Type exports
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -176,3 +226,12 @@ export type AssemblyAISpeechModelType =
 /** AssemblyAI sample rate type derived from const object */
 export type AssemblyAISampleRateType =
   (typeof AssemblyAISampleRate)[keyof typeof AssemblyAISampleRate]
+
+/** AssemblyAI status type - re-exported from OpenAPI generated types */
+export type { TranscriptStatus as AssemblyAIStatusType } from "./generated/assemblyai/schema/transcriptStatus"
+
+/** Gladia status type - re-exported from OpenAPI generated types */
+export type { TranscriptionControllerListV2StatusItem as GladiaStatusType } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
+
+/** Azure status type - re-exported from OpenAPI generated types */
+export type { Status as AzureStatusType } from "./generated/azure/schema/status"
