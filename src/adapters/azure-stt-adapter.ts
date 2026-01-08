@@ -420,8 +420,12 @@ export class AzureSTTAdapter extends BaseAdapter {
         text: "", // List items don't include full text
         status,
         language: item.locale,
+        // Note: contentUrls is write-only per Azure API docs (not returned in list response)
+        // Note: duration is not available in Transcription list item
         metadata: {
+          audioFileAvailable: this.capabilities.getAudioFile ?? false,
           displayName: item.displayName,
+          description: item.description || undefined,
           createdAt: item.createdDateTime,
           lastActionAt: item.lastActionDateTime,
           filesUrl: item.links?.files
@@ -433,7 +437,8 @@ export class AzureSTTAdapter extends BaseAdapter {
               code: "TRANSCRIPTION_ERROR",
               message: item.properties?.error?.message || "Transcription failed"
             }
-          : undefined
+          : undefined,
+      raw: item
     }
   }
 

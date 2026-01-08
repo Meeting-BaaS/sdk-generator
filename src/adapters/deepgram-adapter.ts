@@ -25,6 +25,17 @@ import type { ListenV1ResponseResultsChannelsItemAlternativesItem } from "../gen
 import type { ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemAlternativesItemWordsItem"
 import type { ListenV1ResponseResultsUtterancesItem } from "../generated/deepgram/schema/listenV1ResponseResultsUtterancesItem"
 
+// Import Deepgram request history types for listTranscripts
+import type { ListProjectRequestsV1Response } from "../generated/deepgram/schema/listProjectRequestsV1Response"
+import type { ManageV1ProjectsRequestsListParams } from "../generated/deepgram/schema/manageV1ProjectsRequestsListParams"
+import type { ProjectRequestResponse } from "../generated/deepgram/schema/projectRequestResponse"
+import type { GetProjectRequestV1Response } from "../generated/deepgram/schema/getProjectRequestV1Response"
+import { ManageV1FilterStatusParameter } from "../generated/deepgram/schema/manageV1FilterStatusParameter"
+import { ManageV1FilterEndpointParameter } from "../generated/deepgram/schema/manageV1FilterEndpointParameter"
+
+// Import ListTranscriptsOptions for Deepgram-specific params
+import type { ListTranscriptsOptions } from "../router/types"
+
 // WebSocket message types (not in OpenAPI spec, manually defined from Deepgram docs)
 interface DeepgramResultsMessage {
   type: "Results"
@@ -166,16 +177,18 @@ export class DeepgramAdapter extends BaseAdapter {
     sentimentAnalysis: true,
     entityDetection: true,
     piiRedaction: true,
-    listTranscripts: false, // Deepgram doesn't store transcripts
+    listTranscripts: true, // Via request history API (requires projectId)
     deleteTranscript: false
   }
 
   private client?: AxiosInstance
   protected baseUrl = "https://api.deepgram.com/v1"
   private wsBaseUrl = "wss://api.deepgram.com/v1/listen"
+  private projectId?: string
 
-  initialize(config: ProviderConfig): void {
+  initialize(config: ProviderConfig & { projectId?: string }): void {
     super.initialize(config)
+    this.projectId = config.projectId
 
     this.client = axios.create({
       baseURL: config.baseUrl || this.baseUrl,
@@ -274,26 +287,75 @@ export class DeepgramAdapter extends BaseAdapter {
   /**
    * Get transcription result by ID
    *
-   * Note: Deepgram processes synchronously, so this method is primarily
-   * for retrieving cached results if you've stored the request ID.
-   * The initial transcribe() call already returns complete results.
+   * Retrieves a previous transcription from Deepgram's request history.
    *
-   * @param transcriptId - Request ID from Deepgram
-   * @returns Normalized transcription response
+   * Unlike the list endpoint, getting a single request DOES include the full
+   * transcript response. Requires `projectId` to be set during initialization.
+   *
+   * @param transcriptId - Request ID from a previous transcription
+   * @returns Full transcript response including text, words, and metadata
+   *
+   * @example Get a transcript by request ID
+   * ```typescript
+   * const adapter = new DeepgramAdapter()
+   * adapter.initialize({
+   *   apiKey: process.env.DEEPGRAM_API_KEY,
+   *   projectId: process.env.DEEPGRAM_PROJECT_ID
+   * })
+   *
+   * const result = await adapter.getTranscript('abc123-request-id')
+   * if (result.success) {
+   *   console.log(result.data?.text)
+   *   console.log(result.data?.words)
+   * }
+   * ```
+   *
+   * @see https://developers.deepgram.com/reference/get-request
    */
   async getTranscript(transcriptId: string): Promise<UnifiedTranscriptResponse> {
     this.validateConfig()
 
-    // Deepgram doesn't have a "get by ID" endpoint for pre-recorded audio
-    // Results are returned immediately on transcription
-    return {
-      success: false,
-      provider: this.name,
-      error: {
-        code: "NOT_SUPPORTED",
-        message:
-          "Deepgram returns transcription results immediately. Store the response from transcribe() instead of using getTranscript()."
+    if (!this.projectId) {
+      return {
+        success: false,
+        provider: this.name,
+        error: {
+          code: "MISSING_PROJECT_ID",
+          message:
+            "Deepgram getTranscript requires projectId. Initialize with: { apiKey, projectId }"
+        }
       }
+    }
+
+    try {
+      // Fetch specific request with full response data
+      const response = await this.client!.get<GetProjectRequestV1Response>(
+        `/projects/${this.projectId}/requests/${transcriptId}`
+      )
+
+      const request = response.data.request
+      if (!request) {
+        return {
+          success: false,
+          provider: this.name,
+          error: {
+            code: "NOT_FOUND",
+            message: `Request ${transcriptId} not found`
+          }
+        }
+      }
+
+      // The response field contains the full transcription response
+      const transcriptResponse = request.response as ListenV1Response | undefined
+
+      if (!transcriptResponse) {
+        return this.normalizeRequestItem(request)
+      }
+
+      // Use existing normalizeResponse to get full transcript data
+      return this.normalizeResponse(transcriptResponse)
+    } catch (error) {
+      return this.createErrorResponse(error)
     }
   }
 
@@ -978,6 +1040,154 @@ export class DeepgramAdapter extends BaseAdapter {
         callbacks?.onMetadata?.(message as unknown as Record<string, unknown>)
         break
       }
+    }
+  }
+
+  /**
+   * List recent transcription requests from Deepgram's request history
+   *
+   * **Important:** Deepgram processes synchronously and doesn't store transcript content.
+   * This method returns request metadata (IDs, timestamps, status) but NOT the actual
+   * transcript text. Use this for auditing, billing analysis, or request tracking.
+   *
+   * Requires `projectId` to be set during initialization.
+   *
+   * @param options - Filtering and pagination options
+   * @param options.limit - Maximum number of requests (default 10, max 1000)
+   * @param options.status - Filter by status: 'succeeded' or 'failed'
+   * @param options.afterDate - Start date (YYYY-MM-DD or ISO 8601)
+   * @param options.beforeDate - End date (YYYY-MM-DD or ISO 8601)
+   * @param options.deepgram - Provider-specific params (page, request_id, etc.)
+   * @returns List of transcription request metadata
+   *
+   * @example List recent transcription requests
+   * ```typescript
+   * const adapter = new DeepgramAdapter()
+   * adapter.initialize({
+   *   apiKey: process.env.DEEPGRAM_API_KEY,
+   *   projectId: process.env.DEEPGRAM_PROJECT_ID
+   * })
+   *
+   * const { transcripts, hasMore } = await adapter.listTranscripts({
+   *   limit: 50,
+   *   status: 'succeeded'
+   * })
+   *
+   * transcripts.forEach(t => {
+   *   console.log(t.data?.id, t.data?.metadata?.createdAt)
+   * })
+   * ```
+   *
+   * @see https://developers.deepgram.com/reference/get-all-requests
+   */
+  async listTranscripts(options?: ListTranscriptsOptions): Promise<{
+    transcripts: UnifiedTranscriptResponse[]
+    total?: number
+    hasMore?: boolean
+  }> {
+    this.validateConfig()
+
+    if (!this.projectId) {
+      return {
+        transcripts: [
+          {
+            success: false,
+            provider: this.name,
+            error: {
+              code: "MISSING_PROJECT_ID",
+              message:
+                "Deepgram listTranscripts requires projectId. Initialize with: { apiKey, projectId }"
+            }
+          }
+        ],
+        hasMore: false
+      }
+    }
+
+    try {
+      // Build params from unified options using generated types
+      const params: ManageV1ProjectsRequestsListParams = {
+        // Filter to only transcription requests (listen endpoint)
+        endpoint: ManageV1FilterEndpointParameter.listen,
+        ...options?.deepgram
+      }
+
+      // Map unified options
+      if (options?.limit) {
+        params.limit = options.limit
+      }
+      if (options?.afterDate) {
+        params.start = options.afterDate
+      }
+      if (options?.beforeDate) {
+        params.end = options.beforeDate
+      }
+      if (options?.status) {
+        // Map unified status to Deepgram status
+        const statusMap: Record<string, ManageV1FilterStatusParameter> = {
+          completed: ManageV1FilterStatusParameter.succeeded,
+          succeeded: ManageV1FilterStatusParameter.succeeded,
+          error: ManageV1FilterStatusParameter.failed,
+          failed: ManageV1FilterStatusParameter.failed
+        }
+        params.status = statusMap[options.status.toLowerCase()]
+      }
+
+      // Call Deepgram request history API
+      const response = await this.client!.get<ListProjectRequestsV1Response>(
+        `/projects/${this.projectId}/requests`,
+        { params }
+      )
+
+      const data = response.data
+
+      // Map request items to unified response format
+      const transcripts: UnifiedTranscriptResponse[] = (data.requests || []).map(
+        (item: ProjectRequestResponse) => this.normalizeRequestItem(item)
+      )
+
+      return {
+        transcripts,
+        hasMore: (data.page || 1) * (data.limit || 10) < (data.requests?.length || 0)
+      }
+    } catch (error) {
+      return {
+        transcripts: [this.createErrorResponse(error)],
+        hasMore: false
+      }
+    }
+  }
+
+  /**
+   * Normalize a Deepgram request history item to unified format
+   */
+  private normalizeRequestItem(item: ProjectRequestResponse): UnifiedTranscriptResponse {
+    const isSuccess = (item.code || 0) < 400
+
+    return {
+      success: isSuccess,
+      provider: this.name,
+      data: {
+        id: item.request_id || "",
+        text: "", // Deepgram doesn't store transcript content in request history
+        status: isSuccess ? "completed" : "error",
+        metadata: {
+          audioFileAvailable: this.capabilities.getAudioFile ?? false,
+          createdAt: item.created,
+          apiPath: item.path,
+          apiKeyId: item.api_key_id,
+          deployment: item.deployment,
+          callbackUrl: item.callback,
+          responseCode: item.code
+        }
+      },
+      error: !isSuccess
+        ? {
+            code: "REQUEST_FAILED",
+            message: `Request failed with status code ${item.code}`
+          }
+        : undefined,
+      raw: item
     }
   }
 }

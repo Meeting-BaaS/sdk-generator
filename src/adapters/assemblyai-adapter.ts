@@ -390,8 +390,10 @@ export class AssemblyAIAdapter extends BaseAdapter {
         id: item.id,
         text: "", // List items don't include full text
         status: item.status as "queued" | "processing" | "completed" | "error",
+        // Note: audio_duration is NOT available in TranscriptListItem (only in full Transcript)
         metadata: {
-          audioUrl: item.audio_url,
+          sourceAudioUrl: item.audio_url,
+          audioFileAvailable: this.capabilities.getAudioFile ?? false,
           createdAt: item.created,
           completedAt: item.completed || undefined,
           resourceUrl: item.resource_url
@@ -402,7 +404,8 @@ export class AssemblyAIAdapter extends BaseAdapter {
             code: "TRANSCRIPTION_ERROR",
             message: item.error
           }
-        : undefined
+        : undefined,
+      raw: item
     }
   }
 
@@ -549,7 +552,8 @@ export class AssemblyAIAdapter extends BaseAdapter {
         utterances: this.extractUtterances(response),
         summary: response.summary || undefined,
         metadata: {
-          audioUrl: response.audio_url
+          sourceAudioUrl: response.audio_url,
+          audioFileAvailable: this.capabilities.getAudioFile ?? false
         }
       },
       // Extended data - fully typed from OpenAPI specs

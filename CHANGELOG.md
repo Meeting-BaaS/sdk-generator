@@ -9,9 +9,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### Gladia Audio File Download
+
+New `getAudioFile()` method for Gladia adapter - download the original audio used for transcription:
+
+```typescript
+// Download audio from a pre-recorded transcription
+const result = await gladiaAdapter.getAudioFile('transcript-123')
+if (result.success && result.data) {
+  // Save to file (Node.js)
+  const buffer = Buffer.from(await result.data.arrayBuffer())
+  fs.writeFileSync('audio.mp3', buffer)
+
+  // Or create download URL (browser)
+  const url = URL.createObjectURL(result.data)
+}
+
+// Download audio from a live/streaming session
+const liveResult = await gladiaAdapter.getAudioFile('stream-456', 'streaming')
+```
+
+**Note:** This is a Gladia-specific feature. Other providers (Deepgram, AssemblyAI, Azure) do not store audio files after transcription.
+
+New capability flag: `capabilities.getAudioFile` indicates provider support for audio retrieval.
+
+#### Improved Metadata Clarity
+
+New metadata fields for better discoverability:
+
+```typescript
+interface TranscriptMetadata {
+  /** Original audio URL you provided (echoed back) - renamed from audioUrl */
+  sourceAudioUrl?: string
+
+  /** True if getAudioFile() can retrieve the audio (Gladia only) */
+  audioFileAvailable?: boolean
+  // ...
+}
+```
+
+Usage pattern:
+```typescript
+const { transcripts } = await router.listTranscripts('gladia')
+
+transcripts.forEach(item => {
+  // What you sent
+  console.log(item.data?.metadata?.sourceAudioUrl)  // "https://your-bucket.s3.amazonaws.com/audio.mp3"
+
+  // Can we download from provider?
+  if (item.data?.metadata?.audioFileAvailable) {
+    const audio = await gladiaAdapter.getAudioFile(item.data.id)
+    // audio.data is a Blob - actual file stored by Gladia
+  }
+})
+```
+
+### Changed
+
+- **BREAKING:** `metadata.audioUrl` renamed to `metadata.sourceAudioUrl` for clarity
+  - This field contains the URL you originally provided, not a provider-hosted URL
+- `audioFileAvailable` is now set on all provider responses (derived from `capabilities.getAudioFile`)
+
 #### listTranscripts Implementation
 
-Full `listTranscripts()` support for AssemblyAI, Gladia, and Azure using only generated types:
+Full `listTranscripts()` support for AssemblyAI, Gladia, Azure, and Deepgram using only generated types:
 
 ```typescript
 // List recent transcripts with filtering
@@ -31,6 +92,23 @@ const { transcripts } = await router.listTranscripts('gladia', {
 const { transcripts } = await router.listTranscripts('assemblyai', {
   assemblyai: { after_id: 'cursor-123' }
 })
+
+// Deepgram request history (requires projectId)
+const adapter = new DeepgramAdapter()
+adapter.initialize({
+  apiKey: process.env.DEEPGRAM_API_KEY,
+  projectId: process.env.DEEPGRAM_PROJECT_ID
+})
+
+// List requests (metadata only)
+const { transcripts } = await adapter.listTranscripts({
+  status: 'succeeded',
+  afterDate: '2026-01-01'
+})
+
+// Get full transcript by request ID
+const fullTranscript = await adapter.getTranscript(transcripts[0].data?.id)
+console.log(fullTranscript.data?.text)  // Full transcript!
 ```
 
 #### Status Enums for Filtering
@@ -38,7 +116,7 @@ const { transcripts } = await router.listTranscripts('assemblyai', {
 New status constants with IDE autocomplete:
 
 ```typescript
-import { AssemblyAIStatus, GladiaStatus, AzureStatus } from 'voice-router-dev/constants'
+import { AssemblyAIStatus, GladiaStatus, AzureStatus, DeepgramStatus } from 'voice-router-dev/constants'
 
 await router.listTranscripts('assemblyai', {
   status: AssemblyAIStatus.completed  // queued | processing | completed | error
@@ -50,6 +128,11 @@ await router.listTranscripts('gladia', {
 
 await router.listTranscripts('azure-stt', {
   status: AzureStatus.Succeeded  // NotStarted | Running | Succeeded | Failed
+})
+
+// Deepgram (request history - requires projectId)
+await adapter.listTranscripts({
+  status: DeepgramStatus.succeeded  // succeeded | failed
 })
 ```
 
@@ -100,10 +183,44 @@ import { DeepgramSampleRate } from 'voice-router-dev/constants'
 { sampleRate: DeepgramSampleRate.NUMBER_16000 }
 ```
 
+#### Additional Deepgram OpenAPI Re-exports
+
+New constants directly re-exported from OpenAPI-generated types:
+
+```typescript
+import { DeepgramIntentMode, DeepgramCallbackMethod } from 'voice-router-dev/constants'
+
+// Intent detection mode
+{ customIntentMode: DeepgramIntentMode.extended }  // extended | strict
+
+// Async callback method
+{ callbackMethod: DeepgramCallbackMethod.POST }  // POST | PUT
+```
+
 ### Changed
 
 - All adapter `listTranscripts()` implementations use generated API functions and types only
-- Status mappings use generated enums (`TranscriptStatus`, `TranscriptionControllerListV2StatusItem`, `Status`)
+- Status mappings use generated enums (`TranscriptStatus`, `TranscriptionControllerListV2StatusItem`, `Status`, `ManageV1FilterStatusParameter`)
+- Deepgram adapter now supports `listTranscripts()` via request history API (metadata only)
+- Deepgram `getTranscript()` now returns full transcript data from request history
+
+### Fixed
+
+- Gladia `listTranscripts()` now includes file metadata:
+  - `data.duration` - audio duration in seconds
+  - `metadata.audioUrl` - source URL (if audio_url was used)
+  - `metadata.filename` - original filename
+  - `metadata.audioDuration` - audio duration (also in metadata)
+  - `metadata.numberOfChannels` - number of audio channels
+
+- All adapters now include `raw: item` in `listTranscripts()` responses for consistency:
+  - AssemblyAI: now includes `raw` field with original `TranscriptListItem`
+  - Azure: now includes `raw` field with original `Transcription` item
+  - Added `metadata.description` to Azure list responses
+
+- Added clarifying comments in adapters about provider limitations:
+  - AssemblyAI: `audio_duration` only available in full `Transcript`, not `TranscriptListItem`
+  - Azure: `contentUrls` is write-only (not returned in list responses per API docs)
 
 ---
 

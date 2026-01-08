@@ -6,12 +6,12 @@ This document tracks gaps in provider OpenAPI specifications that require manual
 
 The SDK aims to use **only generated types** from provider OpenAPI specs. However, some providers have incomplete specs that require manual const definitions.
 
-| Provider | OpenAPI Completeness | Manual Workarounds |
-|----------|---------------------|-------------------|
-| **Gladia** | Excellent | None |
-| **Deepgram** | Good | Sample rate, Model enum |
-| **AssemblyAI** | Moderate | Sample rate, Encoding, Speech model |
-| **Azure** | Good | None |
+| Provider | OpenAPI Completeness | Manual Workarounds | listTranscripts | getTranscript | getAudioFile |
+|----------|---------------------|-------------------|-----------------|---------------|--------------|
+| **Gladia** | Excellent | None | ✅ Full | ✅ Full | ✅ Yes |
+| **Deepgram** | Good | Sample rate, Model enum, Language | ⚠️ Metadata | ✅ Full (requires projectId) | ❌ No |
+| **AssemblyAI** | Moderate | Sample rate, Encoding, Speech model | ✅ Full | ✅ Full | ❌ No |
+| **Azure** | Good | None | ✅ Full | ✅ Full | ❌ No |
 
 ---
 
@@ -51,6 +51,60 @@ export const DeepgramModel = {
 ```
 
 **Type Safety:** Compile-time error if values drift from generated type.
+
+### Language (Plain string, no enum)
+
+**Issue:** OpenAPI generates `ListenV1LanguageParameter` as plain `string` type.
+
+**Decision:** Not exported as a const - users pass BCP-47 language codes directly.
+
+### Fully Generated Deepgram Constants
+
+These constants are direct re-exports from OpenAPI-generated types:
+
+| Const | Generated Type | Values |
+|-------|---------------|--------|
+| `DeepgramEncoding` | `ListenV1EncodingParameter` | `linear16`, `flac`, `mulaw`, `opus`, `speex`, `g729` |
+| `DeepgramRedact` | `ListenV1RedactParameterOneOfItem` | `pci`, `pii`, `numbers` |
+| `DeepgramTopicMode` | `SharedCustomTopicModeParameter` | `extended`, `strict` |
+| `DeepgramIntentMode` | `SharedCustomIntentModeParameter` | `extended`, `strict` |
+| `DeepgramCallbackMethod` | `SharedCallbackMethodParameter` | `POST`, `PUT` |
+| `DeepgramStatus` | `ManageV1FilterStatusParameter` | `succeeded`, `failed` |
+
+### listTranscripts vs getTranscript
+
+**`listTranscripts()`** - Returns metadata only (for listing/filtering):
+- `request_id` - Unique request identifier
+- `created` - Timestamp
+- `path` - API endpoint used
+- `code` - HTTP status code (success/failure)
+- `api_key_id` - Which API key was used
+
+**`getTranscript(requestId)`** - Returns FULL transcript data:
+- Complete transcript text
+- Words with timestamps
+- Speaker diarization results
+- All metadata from original response
+
+**Workflow:**
+```typescript
+// 1. Initialize with projectId
+adapter.initialize({
+  apiKey: process.env.DEEPGRAM_API_KEY,
+  projectId: process.env.DEEPGRAM_PROJECT_ID
+})
+
+// 2. List requests (metadata only)
+const { transcripts } = await adapter.listTranscripts({
+  status: 'succeeded',
+  limit: 50
+})
+
+// 3. Get full transcript for specific request
+const fullTranscript = await adapter.getTranscript(transcripts[0].data?.id)
+console.log(fullTranscript.data?.text)  // Full transcript text!
+console.log(fullTranscript.data?.words) // Words with timestamps!
+```
 
 ---
 
@@ -239,8 +293,12 @@ const result: UnifiedTranscriptResponse<'assemblyai'> = await adapter.transcribe
 | `DeepgramEncoding` | Deepgram | ✅ OpenAPI | `ListenV1EncodingParameter` |
 | `DeepgramRedact` | Deepgram | ✅ OpenAPI | `ListenV1RedactParameterOneOfItem` |
 | `DeepgramTopicMode` | Deepgram | ✅ OpenAPI | `SharedCustomTopicModeParameter` |
+| `DeepgramIntentMode` | Deepgram | ✅ OpenAPI | `SharedCustomIntentModeParameter` |
+| `DeepgramCallbackMethod` | Deepgram | ✅ OpenAPI | `SharedCallbackMethodParameter` |
+| `DeepgramStatus` | Deepgram | ✅ OpenAPI | `ManageV1FilterStatusParameter` |
 | `DeepgramSampleRate` | Deepgram | ❌ Unchecked | Spec uses `number` |
 | `DeepgramModel` | Deepgram | ⚠️ Type-checked | Spec has `\| string` fallback |
+| `DeepgramLanguage` | Deepgram | N/A (not exported) | Spec uses plain `string` |
 | `GladiaEncoding` | Gladia | ✅ OpenAPI | `StreamingSupportedEncodingEnum` |
 | `GladiaSampleRate` | Gladia | ✅ OpenAPI | `StreamingSupportedSampleRateEnum` |
 | `GladiaBitDepth` | Gladia | ✅ OpenAPI | `StreamingSupportedBitDepthEnum` |

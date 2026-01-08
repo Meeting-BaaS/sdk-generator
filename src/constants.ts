@@ -23,6 +23,8 @@
 import { ListenV1EncodingParameter } from "./generated/deepgram/schema/listenV1EncodingParameter"
 import { ListenV1RedactParameterOneOfItem } from "./generated/deepgram/schema/listenV1RedactParameterOneOfItem"
 import { SharedCustomTopicModeParameter } from "./generated/deepgram/schema/sharedCustomTopicModeParameter"
+import { SharedCustomIntentModeParameter } from "./generated/deepgram/schema/sharedCustomIntentModeParameter"
+import { SharedCallbackMethodParameter } from "./generated/deepgram/schema/sharedCallbackMethodParameter"
 
 /**
  * Deepgram audio encoding formats
@@ -66,6 +68,34 @@ export const DeepgramRedact = ListenV1RedactParameterOneOfItem
  * ```
  */
 export const DeepgramTopicMode = SharedCustomTopicModeParameter
+
+/**
+ * Deepgram intent detection modes
+ *
+ * Values: `extended`, `strict`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramIntentMode } from 'voice-router-dev/constants'
+ *
+ * { customIntentMode: DeepgramIntentMode.extended }
+ * ```
+ */
+export const DeepgramIntentMode = SharedCustomIntentModeParameter
+
+/**
+ * Deepgram callback HTTP methods for async transcription
+ *
+ * Values: `POST`, `PUT`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramCallbackMethod } from 'voice-router-dev/constants'
+ *
+ * { callbackMethod: DeepgramCallbackMethod.POST }
+ * ```
+ */
+export const DeepgramCallbackMethod = SharedCallbackMethodParameter
 
 /**
  * Deepgram supported sample rates (Hz)
@@ -312,6 +342,7 @@ export const AssemblyAISampleRate = {
 import { TranscriptStatus } from "./generated/assemblyai/schema/transcriptStatus"
 import { TranscriptionControllerListV2StatusItem } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
 import { Status } from "./generated/azure/schema/status"
+import { ManageV1FilterStatusParameter } from "./generated/deepgram/schema/manageV1FilterStatusParameter"
 
 /**
  * AssemblyAI transcript status values for filtering
@@ -365,6 +396,25 @@ export const GladiaStatus = TranscriptionControllerListV2StatusItem
  */
 export const AzureStatus = Status
 
+/**
+ * Deepgram request history status values for filtering
+ *
+ * Values: `succeeded`, `failed`
+ *
+ * Note: Deepgram only stores request metadata, not transcript content.
+ * Requires `projectId` to be set during adapter initialization.
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramStatus } from 'voice-router-dev/constants'
+ *
+ * await router.listTranscripts('deepgram', {
+ *   status: DeepgramStatus.succeeded
+ * })
+ * ```
+ */
+export const DeepgramStatus = ManageV1FilterStatusParameter
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Type exports
 // ─────────────────────────────────────────────────────────────────────────────
@@ -377,6 +427,13 @@ export type DeepgramRedactType = (typeof DeepgramRedact)[keyof typeof DeepgramRe
 
 /** Deepgram topic mode type derived from const object */
 export type DeepgramTopicModeType = (typeof DeepgramTopicMode)[keyof typeof DeepgramTopicMode]
+
+/** Deepgram intent mode type derived from const object */
+export type DeepgramIntentModeType = (typeof DeepgramIntentMode)[keyof typeof DeepgramIntentMode]
+
+/** Deepgram callback method type derived from const object */
+export type DeepgramCallbackMethodType =
+  (typeof DeepgramCallbackMethod)[keyof typeof DeepgramCallbackMethod]
 
 /** Deepgram sample rate type derived from const object */
 export type DeepgramSampleRateType = (typeof DeepgramSampleRate)[keyof typeof DeepgramSampleRate]
@@ -422,3 +479,6 @@ export type GladiaStatusType = (typeof GladiaStatus)[keyof typeof GladiaStatus]
 
 /** Azure status type derived from const object */
 export type AzureStatusType = (typeof AzureStatus)[keyof typeof AzureStatus]
+
+/** Deepgram status type derived from const object */
+export type DeepgramStatusType = (typeof DeepgramStatus)[keyof typeof DeepgramStatus]

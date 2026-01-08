@@ -48,9 +48,11 @@ import {
   preRecordedControllerInitPreRecordedJobV2,
   preRecordedControllerGetPreRecordedJobV2,
   preRecordedControllerDeletePreRecordedJobV2,
+  preRecordedControllerGetAudioV2,
   transcriptionControllerListV2,
   streamingControllerInitStreamingSessionV2,
-  streamingControllerDeleteStreamingJobV2
+  streamingControllerDeleteStreamingJobV2,
+  streamingControllerGetAudioV2
 } from "../generated/gladia/api/gladiaControlAPI"
 
 // Import Gladia generated types
@@ -148,7 +150,8 @@ export class GladiaAdapter extends BaseAdapter {
     entityDetection: true,
     piiRedaction: false, // Gladia doesn't have PII redaction in their API
     listTranscripts: true,
-    deleteTranscript: true
+    deleteTranscript: true,
+    getAudioFile: true // Gladia stores and allows downloading original audio files
   }
 
   protected baseUrl = "https://api.gladia.io"
@@ -415,6 +418,10 @@ export class GladiaAdapter extends BaseAdapter {
         utterances: this.extractUtterances(transcription),
         summary: result?.summarization?.results || undefined,
         metadata: {
+          sourceAudioUrl: response.file?.source ?? undefined,
+          audioFileAvailable: this.capabilities.getAudioFile ?? false,
+          filename: response.file?.filename ?? undefined,
+          audioDuration: response.file?.audio_duration ?? undefined,
           requestParams: response.request_params
         },
         createdAt: response.created_at,
@@ -551,6 +558,87 @@ export class GladiaAdapter extends BaseAdapter {
   }
 
   /**
+   * Download the original audio file from a transcription
+   *
+   * Gladia stores the audio files used for transcription and allows downloading them.
+   * This works for both pre-recorded and streaming (live) transcriptions.
+   *
+   * @param transcriptId - The ID of the transcript/job
+   * @param jobType - Type of job: 'pre-recorded' or 'streaming' (defaults to 'pre-recorded')
+   * @returns Promise with the audio file as a Blob, or error
+   *
+   * @example Download audio from a pre-recorded transcription
+   * ```typescript
+   * const result = await adapter.getAudioFile('abc123');
+   * if (result.success && result.data) {
+   *   // Save to file (Node.js)
+   *   const buffer = Buffer.from(await result.data.arrayBuffer());
+   *   fs.writeFileSync('audio.mp3', buffer);
+   *
+   *   // Or create download URL (browser)
+   *   const url = URL.createObjectURL(result.data);
+   * }
+   * ```
+   *
+   * @example Download audio from a live/streaming session
+   * ```typescript
+   * const result = await adapter.getAudioFile('stream-456', 'streaming');
+   * if (result.success) {
+   *   console.log('Audio file size:', result.data?.size);
+   * }
+   * ```
+   *
+   * @see https://docs.gladia.io/
+   */
+  async getAudioFile(
+    transcriptId: string,
+    jobType: "pre-recorded" | "streaming" = "pre-recorded"
+  ): Promise<{
+    success: boolean
+    data?: Blob
+    error?: { code: string; message: string }
+  }> {
+    this.validateConfig()
+
+    try {
+      let response: { data: Blob }
+
+      if (jobType === "streaming") {
+        // Download audio from live/streaming job
+        response = await streamingControllerGetAudioV2(transcriptId, this.getAxiosConfig())
+      } else {
+        // Download audio from pre-recorded job
+        response = await preRecordedControllerGetAudioV2(transcriptId, this.getAxiosConfig())
+      }
+
+      return {
+        success: true,
+        data: response.data
+      }
+    } catch (error) {
+      const err = error as { response?: { status?: number }; message?: string }
+
+      if (err.response?.status === 404) {
+        return {
+          success: false,
+          error: {
+            code: "NOT_FOUND",
+            message: `Audio file not found for transcript ${transcriptId}`
+          }
+        }
+      }
+
+      return {
+        success: false,
+        error: {
+          code: "DOWNLOAD_ERROR",
+          message: err.message || "Failed to download audio file"
+        }
+      }
+    }
+  }
+
+  /**
    * List recent transcriptions with filtering
    *
    * Retrieves a list of transcription jobs (both pre-recorded and streaming)
@@ -675,6 +763,9 @@ export class GladiaAdapter extends BaseAdapter {
     // Extract text if available (pre-recorded has full result)
     const text = preRecorded.result?.transcription?.full_transcript || ""
 
+    // Extract file data (source URL, duration) from pre-recorded responses
+    const file = preRecorded.file
+
     return {
       success: status !== "error",
       provider: this.name,
@@ -682,7 +773,13 @@ export class GladiaAdapter extends BaseAdapter {
         id,
         text,
         status,
+        duration: file?.audio_duration ?? undefined,
         metadata: {
+          sourceAudioUrl: file?.source ?? undefined,
+          audioFileAvailable: this.capabilities.getAudioFile ?? false,
+          filename: file?.filename ?? undefined,
+          audioDuration: file?.audio_duration ?? undefined,
+          numberOfChannels: file?.number_of_channels ?? undefined,
           createdAt: preRecorded.created_at || streaming.created_at,
           completedAt: preRecorded.completed_at || streaming.completed_at || undefined,
           kind: isLive ? "live" : "pre-recorded",
@@ -695,7 +792,8 @@ export class GladiaAdapter extends BaseAdapter {
               code: (preRecorded.error_code || streaming.error_code)?.toString() || "ERROR",
               message: "Transcription failed"
             }
-          : undefined
+          : undefined,
+      raw: item
     }
   }
 

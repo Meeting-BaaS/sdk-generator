@@ -265,11 +265,14 @@ export interface ProviderCapabilities {
   listTranscripts: boolean
   /** Delete existing transcriptions */
   deleteTranscript: boolean
+  /** Download original audio file from transcription (only Gladia supports this) */
+  getAudioFile?: boolean
 }
 
 // Provider-specific list params for type-safe passthrough
 import type { ListTranscriptsParams as AssemblyAIListParams } from "../generated/assemblyai/schema/listTranscriptsParams"
 import type { TranscriptionControllerListV2Params as GladiaListParams } from "../generated/gladia/schema/transcriptionControllerListV2Params"
+import type { ManageV1ProjectsRequestsListParams as DeepgramListParams } from "../generated/deepgram/schema/manageV1ProjectsRequestsListParams"
 
 /**
  * Options for listing transcripts with date/time filtering
@@ -278,6 +281,7 @@ import type { TranscriptionControllerListV2Params as GladiaListParams } from "..
  * - AssemblyAI: status, created_on, before_id, after_id, throttled_only
  * - Gladia: status, date, before_date, after_date, custom_metadata
  * - Azure: status, skip, top, filter (OData)
+ * - Deepgram: start, end, status, page, request_id, endpoint (requires projectId)
  *
  * @example Filter by date
  * ```typescript
@@ -316,6 +320,8 @@ export interface ListTranscriptsOptions {
   assemblyai?: Partial<AssemblyAIListParams>
   /** Gladia-specific list options */
   gladia?: Partial<GladiaListParams>
+  /** Deepgram-specific list options (request history) */
+  deepgram?: Partial<DeepgramListParams>
 }
 
 /**
@@ -507,8 +513,26 @@ export type TranscriptionStatus = "queued" | "processing" | "completed" | "error
  * ```
  */
 export interface TranscriptMetadata {
-  /** Original audio URL (if available) */
-  audioUrl?: string
+  /**
+   * Original audio URL/source you provided to the API (echoed back).
+   * This is NOT a provider-hosted URL - it's what you sent when creating the transcription.
+   */
+  sourceAudioUrl?: string
+
+  /**
+   * True if the provider stored the audio and it can be downloaded via adapter.getAudioFile().
+   * Currently only Gladia supports this - other providers discard audio after processing.
+   *
+   * @example
+   * ```typescript
+   * if (item.data?.metadata?.audioFileAvailable) {
+   *   const audio = await gladiaAdapter.getAudioFile(item.data.id)
+   *   // audio.data is a Blob
+   * }
+   * ```
+   */
+  audioFileAvailable?: boolean
+
   /** Resource URL for the transcript */
   resourceUrl?: string
   /** Creation timestamp (ISO 8601) */
