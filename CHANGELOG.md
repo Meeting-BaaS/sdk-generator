@@ -60,6 +60,46 @@ All constants now have JSDoc with:
 - Usage examples
 - Provider-specific notes
 
+#### Typed Response Interfaces
+
+New exported types for full autocomplete on transcript responses:
+
+```typescript
+import type {
+  TranscriptData,
+  TranscriptMetadata,
+  ListTranscriptsResponse
+} from 'voice-router-dev';
+
+const response: ListTranscriptsResponse = await router.listTranscripts('assemblyai', { limit: 20 });
+
+response.transcripts.forEach(item => {
+  // Full autocomplete - no `as any` casts needed!
+  console.log(item.data?.id);                    // string
+  console.log(item.data?.status);                // TranscriptionStatus
+  console.log(item.data?.metadata?.audioUrl);    // string | undefined
+  console.log(item.data?.metadata?.createdAt);   // string | undefined
+});
+```
+
+**Note:** These are manual normalization types that unify different provider schemas.
+For raw provider types, use `result.raw` with the generic parameter:
+
+```typescript
+const result: UnifiedTranscriptResponse<'assemblyai'> = await adapter.transcribe(audio);
+// result.raw is typed as AssemblyAITranscript
+```
+
+#### DeepgramSampleRate Const
+
+New convenience const for Deepgram sample rates (not in OpenAPI spec):
+
+```typescript
+import { DeepgramSampleRate } from 'voice-router-dev/constants'
+
+{ sampleRate: DeepgramSampleRate.NUMBER_16000 }
+```
+
 ### Changed
 
 - All adapter `listTranscripts()` implementations use generated API functions and types only
