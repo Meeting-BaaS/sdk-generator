@@ -20,9 +20,52 @@
 // Deepgram Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { ListenV1EncodingParameter as DeepgramEncoding } from "./generated/deepgram/schema/listenV1EncodingParameter"
-export { ListenV1RedactParameterOneOfItem as DeepgramRedact } from "./generated/deepgram/schema/listenV1RedactParameterOneOfItem"
-export { SharedCustomTopicModeParameter as DeepgramTopicMode } from "./generated/deepgram/schema/sharedCustomTopicModeParameter"
+import { ListenV1EncodingParameter } from "./generated/deepgram/schema/listenV1EncodingParameter"
+import { ListenV1RedactParameterOneOfItem } from "./generated/deepgram/schema/listenV1RedactParameterOneOfItem"
+import { SharedCustomTopicModeParameter } from "./generated/deepgram/schema/sharedCustomTopicModeParameter"
+
+/**
+ * Deepgram audio encoding formats
+ *
+ * Values: `linear16`, `flac`, `mulaw`, `amr-nb`, `amr-wb`, `opus`, `speex`, `g729`, `mp3`, `vorbis`, `webm`, `mp4`, `m4a`, `aac`, `wav`, `aiff`, `mpeg`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramEncoding } from 'voice-router-dev/constants'
+ *
+ * { encoding: DeepgramEncoding.linear16 }
+ * { encoding: DeepgramEncoding.opus }
+ * ```
+ */
+export const DeepgramEncoding = ListenV1EncodingParameter
+
+/**
+ * Deepgram redaction options for PII removal
+ *
+ * Values: `pci`, `numbers`, `ssn`, `pii`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramRedact } from 'voice-router-dev/constants'
+ *
+ * { redact: [DeepgramRedact.pii, DeepgramRedact.ssn] }
+ * ```
+ */
+export const DeepgramRedact = ListenV1RedactParameterOneOfItem
+
+/**
+ * Deepgram topic detection modes
+ *
+ * Values: `extended`, `strict`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramTopicMode } from 'voice-router-dev/constants'
+ *
+ * { customTopicMode: DeepgramTopicMode.extended }
+ * ```
+ */
+export const DeepgramTopicMode = SharedCustomTopicModeParameter
 
 /**
  * Deepgram transcription models
@@ -83,12 +126,97 @@ export const DeepgramModel = {
 // Gladia Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { StreamingSupportedEncodingEnum as GladiaEncoding } from "./generated/gladia/schema/streamingSupportedEncodingEnum"
-export { StreamingSupportedSampleRateEnum as GladiaSampleRate } from "./generated/gladia/schema/streamingSupportedSampleRateEnum"
-export { StreamingSupportedBitDepthEnum as GladiaBitDepth } from "./generated/gladia/schema/streamingSupportedBitDepthEnum"
-export { StreamingSupportedModels as GladiaModel } from "./generated/gladia/schema/streamingSupportedModels"
-export { TranscriptionLanguageCodeEnum as GladiaLanguage } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"
-export { TranslationLanguageCodeEnum as GladiaTranslationLanguage } from "./generated/gladia/schema/translationLanguageCodeEnum"
+import { StreamingSupportedEncodingEnum } from "./generated/gladia/schema/streamingSupportedEncodingEnum"
+import { StreamingSupportedSampleRateEnum } from "./generated/gladia/schema/streamingSupportedSampleRateEnum"
+import { StreamingSupportedBitDepthEnum } from "./generated/gladia/schema/streamingSupportedBitDepthEnum"
+import { StreamingSupportedModels } from "./generated/gladia/schema/streamingSupportedModels"
+import { TranscriptionLanguageCodeEnum } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"
+import { TranslationLanguageCodeEnum } from "./generated/gladia/schema/translationLanguageCodeEnum"
+
+/**
+ * Gladia audio encoding formats for streaming
+ *
+ * Values: `wav/pcm`, `wav/alaw`, `wav/ulaw`
+ *
+ * @example
+ * ```typescript
+ * import { GladiaEncoding } from 'voice-router-dev/constants'
+ *
+ * { encoding: GladiaEncoding["wav/pcm"] }
+ * ```
+ */
+export const GladiaEncoding = StreamingSupportedEncodingEnum
+
+/**
+ * Gladia supported sample rates (Hz)
+ *
+ * Values: `8000`, `16000`, `32000`, `44100`, `48000`
+ *
+ * @example
+ * ```typescript
+ * import { GladiaSampleRate } from 'voice-router-dev/constants'
+ *
+ * { sampleRate: GladiaSampleRate.NUMBER_16000 }
+ * ```
+ */
+export const GladiaSampleRate = StreamingSupportedSampleRateEnum
+
+/**
+ * Gladia supported bit depths
+ *
+ * Values: `8`, `16`, `24`, `32`
+ *
+ * @example
+ * ```typescript
+ * import { GladiaBitDepth } from 'voice-router-dev/constants'
+ *
+ * { bitDepth: GladiaBitDepth.NUMBER_16 }
+ * ```
+ */
+export const GladiaBitDepth = StreamingSupportedBitDepthEnum
+
+/**
+ * Gladia transcription models
+ *
+ * Values: `fast`, `accurate`
+ *
+ * @example
+ * ```typescript
+ * import { GladiaModel } from 'voice-router-dev/constants'
+ *
+ * { model: GladiaModel.accurate }
+ * ```
+ */
+export const GladiaModel = StreamingSupportedModels
+
+/**
+ * Gladia transcription language codes (100+ languages)
+ *
+ * Common values: `en`, `es`, `fr`, `de`, `it`, `pt`, `nl`, `ja`, `ko`, `zh`, `ar`, `hi`, `ru`
+ *
+ * @example
+ * ```typescript
+ * import { GladiaLanguage } from 'voice-router-dev/constants'
+ *
+ * { language: GladiaLanguage.en }
+ * { language: GladiaLanguage.es }
+ * ```
+ */
+export const GladiaLanguage = TranscriptionLanguageCodeEnum
+
+/**
+ * Gladia translation target language codes
+ *
+ * Common values: `en`, `es`, `fr`, `de`, `it`, `pt`, `nl`, `ja`, `ko`, `zh`, `ar`, `hi`, `ru`
+ *
+ * @example
+ * ```typescript
+ * import { GladiaTranslationLanguage } from 'voice-router-dev/constants'
+ *
+ * { targetLanguages: [GladiaTranslationLanguage.fr, GladiaTranslationLanguage.es] }
+ * ```
+ */
+export const GladiaTranslationLanguage = TranslationLanguageCodeEnum
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AssemblyAI Constants
@@ -157,8 +285,14 @@ export const AssemblyAISampleRate = {
 // Transcript Status Constants (for listTranscripts filtering)
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { TranscriptStatus } from "./generated/assemblyai/schema/transcriptStatus"
+import { TranscriptionControllerListV2StatusItem } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
+import { Status } from "./generated/azure/schema/status"
+
 /**
- * AssemblyAI transcript status values
+ * AssemblyAI transcript status values for filtering
+ *
+ * Values: `queued`, `processing`, `completed`, `error`
  *
  * @example
  * ```typescript
@@ -169,12 +303,14 @@ export const AssemblyAISampleRate = {
  * })
  * ```
  */
-export { TranscriptStatus as AssemblyAIStatus } from "./generated/assemblyai/schema/transcriptStatus"
+export const AssemblyAIStatus = TranscriptStatus
 
 /**
- * Gladia job status values
+ * Gladia job status values for filtering
  *
- * Note: Gladia uses "done" instead of "completed"
+ * Values: `queued`, `processing`, `done`, `error`
+ *
+ * Note: Gladia uses `done` instead of `completed`
  *
  * @example
  * ```typescript
@@ -185,12 +321,14 @@ export { TranscriptStatus as AssemblyAIStatus } from "./generated/assemblyai/sch
  * })
  * ```
  */
-export { TranscriptionControllerListV2StatusItem as GladiaStatus } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
+export const GladiaStatus = TranscriptionControllerListV2StatusItem
 
 /**
- * Azure Speech-to-Text transcription status values
+ * Azure Speech-to-Text transcription status values for filtering
  *
- * Note: Azure uses different names (NotStarted, Running, Succeeded, Failed)
+ * Values: `NotStarted`, `Running`, `Succeeded`, `Failed`
+ *
+ * Note: Azure uses different naming than other providers
  *
  * @example
  * ```typescript
@@ -201,20 +339,42 @@ export { TranscriptionControllerListV2StatusItem as GladiaStatus } from "./gener
  * })
  * ```
  */
-export { Status as AzureStatus } from "./generated/azure/schema/status"
+export const AzureStatus = Status
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type exports
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Deepgram encoding type derived from const object */
+export type DeepgramEncodingType = (typeof DeepgramEncoding)[keyof typeof DeepgramEncoding]
+
+/** Deepgram redaction type derived from const object */
+export type DeepgramRedactType = (typeof DeepgramRedact)[keyof typeof DeepgramRedact]
+
+/** Deepgram topic mode type derived from const object */
+export type DeepgramTopicModeType = (typeof DeepgramTopicMode)[keyof typeof DeepgramTopicMode]
+
 /** Deepgram model type derived from const object */
 export type DeepgramModelType = (typeof DeepgramModel)[keyof typeof DeepgramModel]
 
-/** Deepgram redaction type - re-exported from OpenAPI generated types */
-export type { ListenV1RedactParameterOneOfItem as DeepgramRedactType } from "./generated/deepgram/schema/listenV1RedactParameterOneOfItem"
+/** Gladia encoding type derived from const object */
+export type GladiaEncodingType = (typeof GladiaEncoding)[keyof typeof GladiaEncoding]
 
-/** Deepgram topic mode type - re-exported from OpenAPI generated types */
-export type { SharedCustomTopicModeParameter as DeepgramTopicModeType } from "./generated/deepgram/schema/sharedCustomTopicModeParameter"
+/** Gladia sample rate type derived from const object */
+export type GladiaSampleRateType = (typeof GladiaSampleRate)[keyof typeof GladiaSampleRate]
+
+/** Gladia bit depth type derived from const object */
+export type GladiaBitDepthType = (typeof GladiaBitDepth)[keyof typeof GladiaBitDepth]
+
+/** Gladia model type derived from const object */
+export type GladiaModelType = (typeof GladiaModel)[keyof typeof GladiaModel]
+
+/** Gladia language type derived from const object */
+export type GladiaLanguageType = (typeof GladiaLanguage)[keyof typeof GladiaLanguage]
+
+/** Gladia translation language type derived from const object */
+export type GladiaTranslationLanguageType =
+  (typeof GladiaTranslationLanguage)[keyof typeof GladiaTranslationLanguage]
 
 /** AssemblyAI encoding type derived from const object */
 export type AssemblyAIEncodingType = (typeof AssemblyAIEncoding)[keyof typeof AssemblyAIEncoding]
@@ -227,11 +387,11 @@ export type AssemblyAISpeechModelType =
 export type AssemblyAISampleRateType =
   (typeof AssemblyAISampleRate)[keyof typeof AssemblyAISampleRate]
 
-/** AssemblyAI status type - re-exported from OpenAPI generated types */
-export type { TranscriptStatus as AssemblyAIStatusType } from "./generated/assemblyai/schema/transcriptStatus"
+/** AssemblyAI status type derived from const object */
+export type AssemblyAIStatusType = (typeof AssemblyAIStatus)[keyof typeof AssemblyAIStatus]
 
-/** Gladia status type - re-exported from OpenAPI generated types */
-export type { TranscriptionControllerListV2StatusItem as GladiaStatusType } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
+/** Gladia status type derived from const object */
+export type GladiaStatusType = (typeof GladiaStatus)[keyof typeof GladiaStatus]
 
-/** Azure status type - re-exported from OpenAPI generated types */
-export type { Status as AzureStatusType } from "./generated/azure/schema/status"
+/** Azure status type derived from const object */
+export type AzureStatusType = (typeof AzureStatus)[keyof typeof AzureStatus]
