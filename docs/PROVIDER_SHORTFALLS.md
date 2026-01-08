@@ -163,6 +163,75 @@ If you find a provider has added types to their OpenAPI spec that we're manually
 
 ---
 
+---
+
+## Unified Response Types (Manual Normalization)
+
+The following types are **intentionally manual** because they normalize different provider schemas into a unified interface. This is the SDK's core value-add.
+
+### TranscriptMetadata
+
+Normalizes metadata fields across providers:
+
+| SDK Field | AssemblyAI | Gladia | Azure | Deepgram |
+|-----------|-----------|--------|-------|----------|
+| `audioUrl` | `audio_url` | N/A | `contentUrls[0]` | `metadata.request_id` |
+| `createdAt` | `created` | `created_at` | `createdDateTime` | N/A |
+| `completedAt` | `completed` | `completed_at` | `lastActionDateTime` | N/A |
+| `audioDuration` | `audio_duration` | `metadata.audio_duration` | N/A | `metadata.duration` |
+| `kind` | N/A | `kind` ("pre-recorded"/"live") | N/A | N/A |
+
+**Why manual:** No single OpenAPI spec defines these unified field names.
+
+### TranscriptData
+
+Normalizes the core transcript structure:
+
+| SDK Field | AssemblyAI | Gladia | Azure |
+|-----------|-----------|--------|-------|
+| `id` | `id` | `id` | `self.split('/').pop()` |
+| `text` | `text` | `result.transcription.full_transcript` | Combined from files |
+| `status` | `status` | `status` (mapped) | `status` (mapped) |
+| `words` | `words` | `result.transcription.utterances[].words` | `recognizedPhrases[].nBest[].words` |
+
+**Why manual:** Provider response structures differ significantly.
+
+### ListTranscriptsResponse
+
+Wrapper for list results:
+
+```typescript
+interface ListTranscriptsResponse {
+  transcripts: UnifiedTranscriptResponse[]
+  total?: number
+  hasMore?: boolean
+}
+```
+
+**Why manual:** Pagination differs (cursor-based vs offset-based vs next URL).
+
+### Accessing Raw Provider Types
+
+For users who need provider-specific types, use the `raw` field:
+
+```typescript
+const result = await adapter.transcribe(audio);
+
+// Typed access to provider-specific response
+if (result.raw) {
+  // result.raw is typed as AssemblyAITranscript | GladiaPreRecordedResponse | etc.
+}
+```
+
+Or use the generic parameter:
+
+```typescript
+const result: UnifiedTranscriptResponse<'assemblyai'> = await adapter.transcribe(audio);
+// result.raw is now typed as AssemblyAITranscript
+```
+
+---
+
 ## Summary Table
 
 | Const | Provider | Type Safety | Reason |
