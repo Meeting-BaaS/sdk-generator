@@ -486,6 +486,126 @@ export interface Utterance {
  */
 export type TranscriptionStatus = "queued" | "processing" | "completed" | "error"
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Transcript Data Types (for listTranscripts and getTranscript responses)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Transcript metadata with typed common fields
+ *
+ * Contains provider-agnostic metadata fields that are commonly available.
+ * Provider-specific fields can be accessed via the index signature.
+ *
+ * @example
+ * ```typescript
+ * const { transcripts } = await router.listTranscripts('assemblyai', { limit: 20 });
+ * transcripts.forEach(item => {
+ *   console.log(item.data?.metadata?.audioUrl);     // string | undefined
+ *   console.log(item.data?.metadata?.createdAt);    // string | undefined
+ *   console.log(item.data?.metadata?.audioDuration); // number | undefined
+ * });
+ * ```
+ */
+export interface TranscriptMetadata {
+  /** Original audio URL (if available) */
+  audioUrl?: string
+  /** Resource URL for the transcript */
+  resourceUrl?: string
+  /** Creation timestamp (ISO 8601) */
+  createdAt?: string
+  /** Completion timestamp (ISO 8601) */
+  completedAt?: string
+  /** Last action timestamp (Azure) */
+  lastActionAt?: string
+  /** Audio duration in seconds */
+  audioDuration?: number
+  /** Transcript type */
+  kind?: "batch" | "pre-recorded" | "live" | "streaming"
+  /** Display name (Azure) */
+  displayName?: string
+  /** Files URL (Azure) */
+  filesUrl?: string
+  /** Custom metadata (Gladia) */
+  customMetadata?: Record<string, unknown>
+  /** Provider-specific fields */
+  [key: string]: unknown
+}
+
+/**
+ * Transcript data structure
+ *
+ * Contains the core transcript information returned by getTranscript and listTranscripts.
+ *
+ * @example
+ * ```typescript
+ * const result = await router.getTranscript('abc123', 'assemblyai');
+ * if (result.success && result.data) {
+ *   console.log(result.data.id);           // string
+ *   console.log(result.data.text);         // string
+ *   console.log(result.data.status);       // TranscriptionStatus
+ *   console.log(result.data.metadata);     // TranscriptMetadata
+ * }
+ * ```
+ */
+export interface TranscriptData {
+  /** Unique transcript ID */
+  id: string
+  /** Full transcribed text (empty for list items) */
+  text: string
+  /** Overall confidence score (0-1) */
+  confidence?: number
+  /** Transcription status */
+  status: TranscriptionStatus
+  /** Detected or specified language code */
+  language?: string
+  /** Audio duration in seconds */
+  duration?: number
+  /** Speaker diarization results */
+  speakers?: Speaker[]
+  /** Word-level transcription with timestamps */
+  words?: Word[]
+  /** Utterances (speaker turns) */
+  utterances?: Utterance[]
+  /** Summary of the content (if summarization enabled) */
+  summary?: string
+  /** Transcript metadata */
+  metadata?: TranscriptMetadata
+  /** Creation timestamp (shorthand for metadata.createdAt) */
+  createdAt?: string
+  /** Completion timestamp (shorthand for metadata.completedAt) */
+  completedAt?: string
+}
+
+/**
+ * Response from listTranscripts
+ *
+ * @example
+ * ```typescript
+ * import type { ListTranscriptsResponse } from 'voice-router-dev';
+ *
+ * const response: ListTranscriptsResponse = await router.listTranscripts('assemblyai', {
+ *   status: 'completed',
+ *   limit: 50
+ * });
+ *
+ * response.transcripts.forEach(item => {
+ *   console.log(item.data?.id, item.data?.status);
+ * });
+ *
+ * if (response.hasMore) {
+ *   // Fetch next page
+ * }
+ * ```
+ */
+export interface ListTranscriptsResponse {
+  /** List of transcripts */
+  transcripts: UnifiedTranscriptResponse[]
+  /** Total count (if available from provider) */
+  total?: number
+  /** Whether more results are available */
+  hasMore?: boolean
+}
+
 /**
  * Map of provider names to their raw response types
  * Enables type-safe access to provider-specific raw responses
@@ -538,34 +658,7 @@ export interface UnifiedTranscriptResponse<
   /** Provider that performed the transcription */
   provider: P
   /** Transcription data (only present on success) */
-  data?: {
-    /** Unique transcription ID */
-    id: string
-    /** Full transcribed text */
-    text: string
-    /** Overall confidence score (0-1) */
-    confidence?: number
-    /** Transcription status */
-    status: TranscriptionStatus
-    /** Detected or specified language code */
-    language?: string
-    /** Audio duration in seconds */
-    duration?: number
-    /** Speaker diarization results */
-    speakers?: Speaker[]
-    /** Word-level transcription with timestamps */
-    words?: Word[]
-    /** Utterances (speaker turns) */
-    utterances?: Utterance[]
-    /** Summary of the content (if summarization enabled) */
-    summary?: string
-    /** Additional provider-specific metadata */
-    metadata?: Record<string, unknown>
-    /** Creation timestamp */
-    createdAt?: string
-    /** Completion timestamp */
-    completedAt?: string
-  }
+  data?: TranscriptData
   /**
    * Extended provider-specific data (fully typed from OpenAPI specs)
    *
