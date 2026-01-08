@@ -11,22 +11,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Gladia Audio File Download
 
-New `getAudioFile()` method for Gladia adapter - download the original audio used for transcription:
+New `getAudioFile()` method for Gladia adapter - download the original audio used for transcription.
+
+Returns `ArrayBuffer` for cross-platform compatibility (Node.js and browser):
 
 ```typescript
-// Download audio from a pre-recorded transcription
 const result = await gladiaAdapter.getAudioFile('transcript-123')
 if (result.success && result.data) {
-  // Save to file (Node.js)
-  const buffer = Buffer.from(await result.data.arrayBuffer())
+  // Node.js: Convert to Buffer and save
+  const buffer = Buffer.from(result.data)
   fs.writeFileSync('audio.mp3', buffer)
 
-  // Or create download URL (browser)
-  const url = URL.createObjectURL(result.data)
+  // Browser: Convert to Blob for playback/download
+  const blob = new Blob([result.data], { type: result.contentType || 'audio/mpeg' })
+  const url = URL.createObjectURL(blob)
 }
 
 // Download audio from a live/streaming session
 const liveResult = await gladiaAdapter.getAudioFile('stream-456', 'streaming')
+console.log('Size:', liveResult.data?.byteLength, 'bytes')
 ```
 
 **Note:** This is a Gladia-specific feature. Other providers (Deepgram, AssemblyAI, Azure) do not store audio files after transcription.

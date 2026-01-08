@@ -563,28 +563,36 @@ export class GladiaAdapter extends BaseAdapter {
    * Gladia stores the audio files used for transcription and allows downloading them.
    * This works for both pre-recorded and streaming (live) transcriptions.
    *
+   * Returns ArrayBuffer for cross-platform compatibility (Node.js and browser).
+   *
    * @param transcriptId - The ID of the transcript/job
    * @param jobType - Type of job: 'pre-recorded' or 'streaming' (defaults to 'pre-recorded')
-   * @returns Promise with the audio file as a Blob, or error
+   * @returns Promise with the audio file as ArrayBuffer, or error
    *
-   * @example Download audio from a pre-recorded transcription
+   * @example Download and save audio (Node.js)
    * ```typescript
    * const result = await adapter.getAudioFile('abc123');
    * if (result.success && result.data) {
-   *   // Save to file (Node.js)
-   *   const buffer = Buffer.from(await result.data.arrayBuffer());
+   *   const buffer = Buffer.from(result.data);
    *   fs.writeFileSync('audio.mp3', buffer);
+   * }
+   * ```
    *
-   *   // Or create download URL (browser)
-   *   const url = URL.createObjectURL(result.data);
+   * @example Download and create URL (Browser)
+   * ```typescript
+   * const result = await adapter.getAudioFile('abc123');
+   * if (result.success && result.data) {
+   *   const blob = new Blob([result.data], { type: 'audio/mpeg' });
+   *   const url = URL.createObjectURL(blob);
+   *   audioElement.src = url;
    * }
    * ```
    *
    * @example Download audio from a live/streaming session
    * ```typescript
    * const result = await adapter.getAudioFile('stream-456', 'streaming');
-   * if (result.success) {
-   *   console.log('Audio file size:', result.data?.size);
+   * if (result.success && result.data) {
+   *   console.log('Audio file size:', result.data.byteLength, 'bytes');
    * }
    * ```
    *
@@ -595,25 +603,33 @@ export class GladiaAdapter extends BaseAdapter {
     jobType: "pre-recorded" | "streaming" = "pre-recorded"
   ): Promise<{
     success: boolean
-    data?: Blob
+    data?: ArrayBuffer
+    contentType?: string
     error?: { code: string; message: string }
   }> {
     this.validateConfig()
 
     try {
-      let response: { data: Blob }
+      // Configure axios to return ArrayBuffer for cross-platform compatibility
+      const config = {
+        ...this.getAxiosConfig(),
+        responseType: "arraybuffer" as const
+      }
+
+      let response: { data: ArrayBuffer; headers?: Record<string, string> }
 
       if (jobType === "streaming") {
         // Download audio from live/streaming job
-        response = await streamingControllerGetAudioV2(transcriptId, this.getAxiosConfig())
+        response = await streamingControllerGetAudioV2(transcriptId, config)
       } else {
         // Download audio from pre-recorded job
-        response = await preRecordedControllerGetAudioV2(transcriptId, this.getAxiosConfig())
+        response = await preRecordedControllerGetAudioV2(transcriptId, config)
       }
 
       return {
         success: true,
-        data: response.data
+        data: response.data,
+        contentType: response.headers?.["content-type"]
       }
     } catch (error) {
       const err = error as { response?: { status?: number }; message?: string }
