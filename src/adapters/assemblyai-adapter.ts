@@ -8,6 +8,7 @@ import WebSocket from "ws"
 import type {
   AudioChunk,
   AudioInput,
+  ListTranscriptsOptions,
   ProviderCapabilities,
   StreamingCallbacks,
   StreamingOptions,
@@ -23,6 +24,7 @@ import {
   createTranscript,
   getTranscript as getTranscriptAPI,
   deleteTranscript as deleteTranscriptAPI,
+  listTranscripts as listTranscriptsAPI,
   createTemporaryToken
 } from "../generated/assemblyai/api/assemblyAIAPI"
 
@@ -30,6 +32,8 @@ import {
 import type { Transcript } from "../generated/assemblyai/schema/transcript"
 import type { TranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
 import type { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
+import type { TranscriptListItem } from "../generated/assemblyai/schema/transcriptListItem"
+import type { ListTranscriptsParams } from "../generated/assemblyai/schema/listTranscriptsParams"
 import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
 import type { TranscriptUtterance } from "../generated/assemblyai/schema/transcriptUtterance"
 import type { TranscriptOptionalParamsSpeechModel } from "../generated/assemblyai/schema/transcriptOptionalParamsSpeechModel"
@@ -286,6 +290,119 @@ export class AssemblyAIAdapter extends BaseAdapter {
         return { success: true }
       }
       throw error
+    }
+  }
+
+  /**
+   * List recent transcriptions with filtering
+   *
+   * Retrieves a list of transcripts with optional filtering by status and date.
+   * Transcripts are sorted from newest to oldest and can be retrieved for the
+   * last 90 days of usage.
+   *
+   * @param options - Filtering and pagination options
+   * @param options.limit - Maximum number of transcripts (max 200)
+   * @param options.status - Filter by status (queued, processing, completed, error)
+   * @param options.date - Filter by exact date (ISO format YYYY-MM-DD)
+   * @param options.assemblyai - Full AssemblyAI-specific options (before_id, after_id, etc.)
+   * @returns List of transcripts with pagination info
+   *
+   * @example List recent transcripts
+   * ```typescript
+   * const { transcripts, hasMore } = await adapter.listTranscripts({
+   *   limit: 50,
+   *   status: 'completed'
+   * })
+   * ```
+   *
+   * @example Filter by date
+   * ```typescript
+   * const { transcripts } = await adapter.listTranscripts({
+   *   date: '2026-01-07',
+   *   limit: 100
+   * })
+   * ```
+   *
+   * @example Use cursor pagination
+   * ```typescript
+   * const { transcripts } = await adapter.listTranscripts({
+   *   assemblyai: {
+   *     after_id: 'abc123',  // Get transcripts after this ID
+   *     limit: 50
+   *   }
+   * })
+   * ```
+   *
+   * @see https://www.assemblyai.com/docs/api-reference/transcripts/list
+   */
+  async listTranscripts(options?: ListTranscriptsOptions): Promise<{
+    transcripts: UnifiedTranscriptResponse[]
+    total?: number
+    hasMore?: boolean
+  }> {
+    this.validateConfig()
+
+    try {
+      // Build params from unified options + provider-specific passthrough
+      const params: ListTranscriptsParams = {
+        ...options?.assemblyai
+      }
+
+      // Map unified options to AssemblyAI params
+      if (options?.limit) {
+        params.limit = options.limit
+      }
+      if (options?.status) {
+        params.status = options.status as TranscriptStatus
+      }
+      if (options?.date) {
+        params.created_on = options.date
+      }
+
+      // Use generated API client function - FULLY TYPED!
+      const response = await listTranscriptsAPI(params, this.getAxiosConfig())
+
+      // Map list items to unified response format
+      const transcripts: UnifiedTranscriptResponse[] = response.data.transcripts.map(
+        (item: TranscriptListItem) => this.normalizeListItem(item)
+      )
+
+      return {
+        transcripts,
+        hasMore: response.data.page_details.next_url !== null
+      }
+    } catch (error) {
+      return {
+        transcripts: [this.createErrorResponse(error)],
+        hasMore: false
+      }
+    }
+  }
+
+  /**
+   * Normalize a transcript list item to unified format
+   */
+  private normalizeListItem(item: TranscriptListItem): UnifiedTranscriptResponse {
+    return {
+      success: item.status !== "error",
+      provider: this.name,
+      data: {
+        id: item.id,
+        text: "", // List items don't include full text
+        status: item.status as "queued" | "processing" | "completed" | "error",
+        metadata: {
+          audioUrl: item.audio_url,
+          createdAt: item.created,
+          completedAt: item.completed || undefined,
+          resourceUrl: item.resource_url
+        }
+      },
+      error: item.error
+        ? {
+            code: "TRANSCRIPTION_ERROR",
+            message: item.error
+          }
+        : undefined
     }
   }
 

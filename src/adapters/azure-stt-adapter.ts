@@ -6,6 +6,7 @@
 import axios from "axios"
 import type {
   AudioInput,
+  ListTranscriptsOptions,
   ProviderCapabilities,
   TranscribeOptions,
   UnifiedTranscriptResponse
@@ -17,8 +18,14 @@ import {
   transcriptionsCreate,
   transcriptionsGet,
   transcriptionsDelete,
+  transcriptionsList,
   transcriptionsListFiles
 } from "../generated/azure/api/speechServicesAPIV31"
+
+// Import Azure generated types for list
+import type { TranscriptionsListParams } from "../generated/azure/schema/transcriptionsListParams"
+import type { PaginatedTranscriptions } from "../generated/azure/schema/paginatedTranscriptions"
+import { Status as AzureStatus } from "../generated/azure/schema/status"
 
 // Import Azure generated types
 import type { Transcription } from "../generated/azure/schema/transcription"
@@ -304,6 +311,129 @@ export class AzureSTTAdapter extends BaseAdapter {
         return { success: true }
       }
       throw error
+    }
+  }
+
+  /**
+   * List recent transcriptions with filtering
+   *
+   * Retrieves a list of transcription jobs for the authenticated subscription.
+   * Azure uses OData filtering for advanced queries.
+   *
+   * @param options - Filtering and pagination options
+   * @param options.limit - Maximum number of transcripts (maps to 'top')
+   * @param options.offset - Pagination offset (maps to 'skip')
+   * @param options.status - Filter by status (uses OData filter)
+   * @returns List of transcripts with pagination info
+   *
+   * @example List recent transcripts
+   * ```typescript
+   * const { transcripts, hasMore } = await adapter.listTranscripts({
+   *   limit: 50
+   * })
+   * ```
+   *
+   * @example Filter by status using OData
+   * ```typescript
+   * const { transcripts } = await adapter.listTranscripts({
+   *   status: 'Succeeded',
+   *   limit: 100
+   * })
+   * ```
+   *
+   * @see https://learn.microsoft.com/azure/cognitive-services/speech-service/batch-transcription
+   */
+  async listTranscripts(options?: ListTranscriptsOptions): Promise<{
+    transcripts: UnifiedTranscriptResponse[]
+    total?: number
+    hasMore?: boolean
+  }> {
+    this.validateConfig()
+
+    try {
+      // Build params from unified options
+      const params: TranscriptionsListParams = {}
+
+      // Map unified options to Azure params
+      if (options?.limit) {
+        params.top = options.limit
+      }
+      if (options?.offset) {
+        params.skip = options.offset
+      }
+      // Azure uses OData filter for status
+      if (options?.status) {
+        // Map unified status to Azure status format
+        const azureStatus = this.mapStatusToAzure(options.status)
+        params.filter = `status eq '${azureStatus}'`
+      }
+
+      // Use generated API client function - FULLY TYPED!
+      const response = await transcriptionsList(params, this.getAxiosConfig())
+
+      // Map list items to unified response format
+      const transcripts: UnifiedTranscriptResponse[] = (response.data.values || []).map(
+        (item: Transcription) => this.normalizeListItem(item)
+      )
+
+      return {
+        transcripts,
+        hasMore: response.data["@nextLink"] !== undefined
+      }
+    } catch (error) {
+      return {
+        transcripts: [this.createErrorResponse(error)],
+        hasMore: false
+      }
+    }
+  }
+
+  /**
+   * Map unified status to Azure status format using generated enum
+   */
+  private mapStatusToAzure(status: string): AzureStatus {
+    const statusMap: Record<string, AzureStatus> = {
+      completed: AzureStatus.Succeeded,
+      succeeded: AzureStatus.Succeeded,
+      processing: AzureStatus.Running,
+      running: AzureStatus.Running,
+      queued: AzureStatus.NotStarted,
+      notstarted: AzureStatus.NotStarted,
+      error: AzureStatus.Failed,
+      failed: AzureStatus.Failed
+    }
+    return statusMap[status.toLowerCase()] || status as AzureStatus
+  }
+
+  /**
+   * Normalize a transcript list item to unified format
+   */
+  private normalizeListItem(item: Transcription): UnifiedTranscriptResponse {
+    const id = item.self?.split("/").pop() || ""
+    const status = this.normalizeStatus(item.status)
+
+    return {
+      success: status !== "error",
+      provider: this.name,
+      data: {
+        id,
+        text: "", // List items don't include full text
+        status,
+        language: item.locale,
+        metadata: {
+          displayName: item.displayName,
+          createdAt: item.createdDateTime,
+          lastActionAt: item.lastActionDateTime,
+          filesUrl: item.links?.files
+        }
+      },
+      error:
+        status === "error"
+          ? {
+              code: "TRANSCRIPTION_ERROR",
+              message: item.properties?.error?.message || "Transcription failed"
+            }
+          : undefined
     }
   }
 

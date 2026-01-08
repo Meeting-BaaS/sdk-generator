@@ -8,6 +8,7 @@ import WebSocket from "ws"
 import type {
   AudioChunk,
   AudioInput,
+  ListTranscriptsOptions,
   ProviderCapabilities,
   StreamingCallbacks,
   StreamingOptions,
@@ -47,6 +48,7 @@ import {
   preRecordedControllerInitPreRecordedJobV2,
   preRecordedControllerGetPreRecordedJobV2,
   preRecordedControllerDeletePreRecordedJobV2,
+  transcriptionControllerListV2,
   streamingControllerInitStreamingSessionV2,
   streamingControllerDeleteStreamingJobV2
 } from "../generated/gladia/api/gladiaControlAPI"
@@ -54,7 +56,11 @@ import {
 // Import Gladia generated types
 import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
 import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
+import type { StreamingResponse } from "../generated/gladia/schema/streamingResponse"
 import type { StreamingRequest } from "../generated/gladia/schema/streamingRequest"
+import type { TranscriptionControllerListV2Params } from "../generated/gladia/schema/transcriptionControllerListV2Params"
+import { TranscriptionControllerListV2StatusItem } from "../generated/gladia/schema/transcriptionControllerListV2StatusItem"
+import type { ListTranscriptionResponseItemsItem } from "../generated/gladia/schema/listTranscriptionResponseItemsItem"
 import type { TranscriptionDTO } from "../generated/gladia/schema/transcriptionDTO"
 import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
 import type { WordDTO } from "../generated/gladia/schema/wordDTO"
@@ -541,6 +547,155 @@ export class GladiaAdapter extends BaseAdapter {
         return { success: true }
       }
       throw error
+    }
+  }
+
+  /**
+   * List recent transcriptions with filtering
+   *
+   * Retrieves a list of transcription jobs (both pre-recorded and streaming)
+   * with optional filtering by status, date, and custom metadata.
+   *
+   * @param options - Filtering and pagination options
+   * @param options.limit - Maximum number of transcripts to return
+   * @param options.offset - Pagination offset (skip N results)
+   * @param options.status - Filter by status (queued, processing, done, error)
+   * @param options.date - Filter by exact date (ISO format YYYY-MM-DD)
+   * @param options.beforeDate - Filter for transcripts before this date
+   * @param options.afterDate - Filter for transcripts after this date
+   * @param options.gladia - Full Gladia-specific options (custom_metadata, kind, etc.)
+   * @returns List of transcripts with pagination info
+   *
+   * @example List recent transcripts
+   * ```typescript
+   * const { transcripts, hasMore } = await adapter.listTranscripts({
+   *   limit: 50,
+   *   status: 'done'
+   * })
+   * ```
+   *
+   * @example Filter by date range
+   * ```typescript
+   * const { transcripts } = await adapter.listTranscripts({
+   *   afterDate: '2026-01-01',
+   *   beforeDate: '2026-01-31',
+   *   limit: 100
+   * })
+   * ```
+   *
+   * @example Filter by custom metadata
+   * ```typescript
+   * const { transcripts } = await adapter.listTranscripts({
+   *   gladia: {
+   *     custom_metadata: { project: 'my-project' }
+   *   }
+   * })
+   * ```
+   *
+   * @see https://docs.gladia.io/
+   */
+  async listTranscripts(options?: ListTranscriptsOptions): Promise<{
+    transcripts: UnifiedTranscriptResponse[]
+    total?: number
+    hasMore?: boolean
+  }> {
+    this.validateConfig()
+
+    try {
+      // Build params from unified options + provider-specific passthrough
+      const params: TranscriptionControllerListV2Params = {
+        ...options?.gladia
+      }
+
+      // Map unified options to Gladia params
+      if (options?.limit) {
+        params.limit = options.limit
+      }
+      if (options?.offset) {
+        params.offset = options.offset
+      }
+      if (options?.status) {
+        // Gladia uses array of statuses - map to generated enum
+        const statusMap: Record<string, TranscriptionControllerListV2StatusItem> = {
+          queued: TranscriptionControllerListV2StatusItem.queued,
+          processing: TranscriptionControllerListV2StatusItem.processing,
+          completed: TranscriptionControllerListV2StatusItem.done, // Gladia uses 'done' not 'completed'
+          done: TranscriptionControllerListV2StatusItem.done,
+          error: TranscriptionControllerListV2StatusItem.error
+        }
+        const mappedStatus = statusMap[options.status.toLowerCase()]
+        if (mappedStatus) {
+          params.status = [mappedStatus]
+        }
+      }
+      if (options?.date) {
+        params.date = options.date
+      }
+      if (options?.beforeDate) {
+        params.before_date = options.beforeDate
+      }
+      if (options?.afterDate) {
+        params.after_date = options.afterDate
+      }
+
+      // Use generated API client function - FULLY TYPED!
+      const response = await transcriptionControllerListV2(params, this.getAxiosConfig())
+
+      // Map list items to unified response format
+      const transcripts: UnifiedTranscriptResponse[] = response.data.items.map(
+        (item: ListTranscriptionResponseItemsItem) => this.normalizeListItem(item)
+      )
+
+      return {
+        transcripts,
+        hasMore: response.data.next !== null
+      }
+    } catch (error) {
+      return {
+        transcripts: [this.createErrorResponse(error)],
+        hasMore: false
+      }
+    }
+  }
+
+  /**
+   * Normalize a transcript list item to unified format
+   */
+  private normalizeListItem(item: ListTranscriptionResponseItemsItem): UnifiedTranscriptResponse {
+    // Item can be PreRecordedResponse or StreamingResponse
+    const preRecorded = item as PreRecordedResponse
+    const streaming = item as StreamingResponse
+
+    // Determine type and extract common fields
+    // Gladia uses "live" for streaming jobs, "pre-recorded" for batch jobs
+    const isLive = "kind" in item && item.kind === "live"
+    const id = preRecorded.id || streaming.id
+    const status = normalizeStatus(preRecorded.status || streaming.status, "gladia")
+
+    // Extract text if available (pre-recorded has full result)
+    const text = preRecorded.result?.transcription?.full_transcript || ""
+
+    return {
+      success: status !== "error",
+      provider: this.name,
+      data: {
+        id,
+        text,
+        status,
+        metadata: {
+          createdAt: preRecorded.created_at || streaming.created_at,
+          completedAt: preRecorded.completed_at || streaming.completed_at || undefined,
+          kind: isLive ? "live" : "pre-recorded",
+          customMetadata: preRecorded.custom_metadata || streaming.custom_metadata
+        }
+      },
+      error:
+        preRecorded.error_code || streaming.error_code
+          ? {
+              code: (preRecorded.error_code || streaming.error_code)?.toString() || "ERROR",
+              message: "Transcription failed"
+            }
+          : undefined
     }
   }
 
