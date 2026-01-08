@@ -5,6 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2026-01-08
+
+### Added
+
+#### listTranscripts Implementation
+
+Full `listTranscripts()` support for AssemblyAI, Gladia, and Azure using only generated types:
+
+```typescript
+// List recent transcripts with filtering
+const { transcripts, hasMore } = await router.listTranscripts('assemblyai', {
+  status: 'completed',
+  date: '2026-01-07',
+  limit: 50
+})
+
+// Date range filtering (Gladia)
+const { transcripts } = await router.listTranscripts('gladia', {
+  afterDate: '2026-01-01',
+  beforeDate: '2026-01-31'
+})
+
+// Provider-specific passthrough
+const { transcripts } = await router.listTranscripts('assemblyai', {
+  assemblyai: { after_id: 'cursor-123' }
+})
+```
+
+#### Status Enums for Filtering
+
+New status constants with IDE autocomplete:
+
+```typescript
+import { AssemblyAIStatus, GladiaStatus, AzureStatus } from 'voice-router-dev/constants'
+
+await router.listTranscripts('assemblyai', {
+  status: AssemblyAIStatus.completed  // queued | processing | completed | error
+})
+
+await router.listTranscripts('gladia', {
+  status: GladiaStatus.done  // queued | processing | done | error
+})
+
+await router.listTranscripts('azure-stt', {
+  status: AzureStatus.Succeeded  // NotStarted | Running | Succeeded | Failed
+})
+```
+
+#### JSDoc Comments for All Constants
+
+All constants now have JSDoc with:
+- Available values listed
+- Usage examples
+- Provider-specific notes
+
+### Changed
+
+- All adapter `listTranscripts()` implementations use generated API functions and types only
+- Status mappings use generated enums (`TranscriptStatus`, `TranscriptionControllerListV2StatusItem`, `Status`)
+
+---
+
 ## [0.3.0] - 2026-01-07
 
 ### Added
