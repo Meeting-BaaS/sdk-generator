@@ -9,9 +9,117 @@ The SDK aims to use **only generated types** from provider OpenAPI specs. Howeve
 | Provider | OpenAPI Completeness | Manual Workarounds | listTranscripts | getTranscript | getAudioFile |
 |----------|---------------------|-------------------|-----------------|---------------|--------------|
 | **Gladia** | Excellent | None | ✅ Full | ✅ Full | ✅ Yes |
-| **Deepgram** | Good | Sample rate, Model enum, Language | ⚠️ Metadata | ✅ Full (requires projectId) | ❌ No |
+| **Deepgram** | Good | Sample rate, Model enum, Language | ✅ Metadata | ✅ Full (requires projectId) | ❌ No |
 | **AssemblyAI** | Moderate | Sample rate, Encoding, Speech model | ✅ Full | ✅ Full | ❌ No |
 | **Azure** | Good | None | ✅ Full | ✅ Full | ❌ No |
+
+---
+
+## Audio Retrieval & Re-transcription
+
+This table shows what's available for re-processing or exporting transcription data:
+
+| Capability | Gladia | AssemblyAI | Azure | Deepgram |
+|------------|--------|------------|-------|----------|
+| **List transcripts** | ✅ Full metadata | ✅ Full metadata | ✅ Full metadata | ✅ Request history |
+| **Get full transcript** | ✅ | ✅ | ✅ | ✅ (requires projectId) |
+| **Audio file stored** | ✅ By provider | ❌ | ❌ | ❌ |
+| **Download audio** | ✅ `getAudioFile()` | ❌ | ❌ | ❌ |
+| **Source URL returned** | ✅ `sourceAudioUrl` | ✅ `sourceAudioUrl` | ❌ Write-only | ❌ Not stored |
+| **Re-transcribe** | ✅ Download & resubmit | ⚠️ If URL still valid | ❌ Store your own | ❌ Store your own |
+
+### Use Cases by Provider
+
+**Gladia** - Best for re-processing:
+```typescript
+// List, download audio, re-transcribe with different settings
+const { transcripts } = await gladiaAdapter.listTranscripts({ limit: 100 })
+for (const t of transcripts) {
+  if (t.data?.metadata?.audioFileAvailable) {
+    const audio = await gladiaAdapter.getAudioFile(t.data.id)
+    // Re-transcribe with different options
+    await gladiaAdapter.transcribe({ type: 'buffer', buffer: Buffer.from(audio.data!) }, newOptions)
+  }
+}
+```
+
+**AssemblyAI** - Re-transcribe if URL still accessible:
+```typescript
+const { transcripts } = await assemblyaiAdapter.listTranscripts({ status: 'completed' })
+for (const t of transcripts) {
+  const sourceUrl = t.data?.metadata?.sourceAudioUrl
+  if (sourceUrl) {
+    // Only works if URL is still valid/accessible
+    await assemblyaiAdapter.transcribe({ type: 'url', url: sourceUrl }, newOptions)
+  }
+}
+```
+
+**Deepgram** - Export metadata, store your own audio references:
+```typescript
+// Useful for: audit trails, usage analytics, billing reconciliation
+const { transcripts } = await deepgramAdapter.listTranscripts({
+  afterDate: '2026-01-01',
+  status: 'succeeded'
+})
+
+// Export to CSV for reporting
+const csv = transcripts.map(t => ({
+  requestId: t.data?.id,
+  createdAt: t.data?.metadata?.createdAt,
+  endpoint: t.data?.metadata?.apiPath,
+  status: t.data?.status
+}))
+
+// To re-transcribe: you must store audio URLs yourself
+// const myAudioUrl = await myDatabase.getAudioUrl(t.data?.id)
+```
+
+**Azure** - Similar to Deepgram:
+```typescript
+const { transcripts } = await azureAdapter.listTranscripts({ status: 'Succeeded' })
+// contentUrls is write-only - not returned in responses
+// Store your own audio references for re-transcription
+```
+
+---
+
+## List Filtering Capabilities
+
+Each provider supports different filtering options. The SDK provides a unified interface where each provider implements what they support:
+
+| Filter Option | Gladia | AssemblyAI | Azure | Deepgram |
+|---------------|--------|------------|-------|----------|
+| `limit` | ✅ | ✅ | ✅ `top` | ✅ |
+| `offset` | ✅ | ❌ | ✅ `skip` | ❌ |
+| `page` | ❌ | ❌ | ❌ | ✅ |
+| `cursor` (after_id) | ❌ | ✅ | ❌ | ❌ |
+| `status` | ✅ | ✅ | ✅ OData | ✅ |
+| `date` (exact) | ✅ | ✅ `created_on` | ❌ | ❌ |
+| `afterDate` | ✅ | ❌ | ✅ OData | ✅ `start` |
+| `beforeDate` | ✅ | ❌ | ✅ OData | ✅ `end` |
+| `kind` (pre-recorded/live) | ✅ | ❌ | ❌ | ❌ |
+| `requestId` | ❌ | ❌ | ❌ | ✅ |
+| `endpoint` | ❌ | ❌ | ❌ | ✅ |
+| `customMetadata` | ✅ | ❌ | ❌ | ❌ |
+
+### Deepgram-specific filters
+
+Deepgram's request history API has unique filtering for API usage analysis:
+
+```typescript
+await deepgramAdapter.listTranscripts({
+  afterDate: '2026-01-01',
+  beforeDate: '2026-01-31',
+  status: 'succeeded',
+  deepgram: {
+    endpoint: '/v1/listen',      // Filter by API endpoint
+    method: 'POST',              // Filter by HTTP method
+    request_id: 'abc123',        // Find specific request
+    deployment: 'production'     // Filter by deployment
+  }
+})
+```
 
 ---
 
@@ -229,11 +337,14 @@ Normalizes metadata fields across providers:
 
 | SDK Field | AssemblyAI | Gladia | Azure | Deepgram |
 |-----------|-----------|--------|-------|----------|
-| `audioUrl` | `audio_url` | N/A | `contentUrls[0]` | `metadata.request_id` |
-| `createdAt` | `created` | `created_at` | `createdDateTime` | N/A |
+| `sourceAudioUrl` | `audio_url` | `file.source` | ❌ (write-only) | ❌ (not stored) |
+| `audioFileAvailable` | `false` | `true` | `false` | `false` |
+| `createdAt` | `created` | `created_at` | `createdDateTime` | `created` |
 | `completedAt` | `completed` | `completed_at` | `lastActionDateTime` | N/A |
-| `audioDuration` | `audio_duration` | `metadata.audio_duration` | N/A | `metadata.duration` |
+| `audioDuration` | `audio_duration` | `file.audio_duration` | N/A | N/A |
 | `kind` | N/A | `kind` ("pre-recorded"/"live") | N/A | N/A |
+| `apiPath` | N/A | N/A | N/A | `path` |
+| `apiKeyId` | N/A | N/A | N/A | `api_key_id` |
 
 **Why manual:** No single OpenAPI spec defines these unified field names.
 
