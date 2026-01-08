@@ -402,7 +402,7 @@ export class AzureSTTAdapter extends BaseAdapter {
       error: AzureStatus.Failed,
       failed: AzureStatus.Failed
     }
-    return statusMap[status.toLowerCase()] || status as AzureStatus
+    return statusMap[status.toLowerCase()] || (status as AzureStatus)
   }
 
   /**
