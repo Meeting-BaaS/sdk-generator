@@ -1105,3 +1105,40 @@ export function createAssemblyAIAdapter(config: ProviderConfig): AssemblyAIAdapt
   adapter.initialize(config)
   return adapter
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Re-export generated types for direct SDK access
+// ─────────────────────────────────────────────────────────────────────────────
+
+// API client functions - for advanced direct API usage
+export {
+  createTranscript,
+  getTranscript as getTranscriptAPI,
+  deleteTranscript as deleteTranscriptAPI,
+  listTranscripts as listTranscriptsAPI,
+  createTemporaryToken
+} from "../generated/assemblyai/api/assemblyAIAPI"
+
+// Response/Request types
+export type {
+  Transcript,
+  TranscriptParams,
+  TranscriptStatus,
+  TranscriptListItem,
+  ListTranscriptsParams,
+  TranscriptWord,
+  TranscriptUtterance,
+  TranscriptOptionalParamsSpeechModel
+}
+
+// Streaming types (v3 API)
+export type {
+  BeginEvent,
+  TurnEvent,
+  TerminationEvent,
+  ErrorEvent,
+  StreamingEventMessage,
+  StreamingWord,
+  StreamingUpdateConfiguration,
+  StreamingForceEndpoint
+}

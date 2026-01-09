@@ -1331,3 +1331,27 @@ export function createDeepgramAdapter(config: DeepgramConfig): DeepgramAdapter {
   adapter.initialize(config)
   return adapter
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Re-export generated types for direct SDK access
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Response types
+export type {
+  ListenV1Response,
+  ListenV1MediaTranscribeParams,
+  ListenV1ResponseResultsChannelsItemAlternativesItem,
+  ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem,
+  ListenV1ResponseResultsUtterancesItem
+}
+
+// Request history types (for listTranscripts)
+export type {
+  ListProjectRequestsV1Response,
+  ManageV1ProjectsRequestsListParams,
+  ProjectRequestResponse,
+  GetProjectRequestV1Response
+}
+
+// Enum constants for filtering
+export { ManageV1FilterStatusParameter, ManageV1FilterEndpointParameter }

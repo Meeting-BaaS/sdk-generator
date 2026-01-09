@@ -1496,3 +1496,57 @@ export function createGladiaAdapter(config: ProviderConfig): GladiaAdapter {
   adapter.initialize(config)
   return adapter
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Re-export generated types for direct SDK access
+// ─────────────────────────────────────────────────────────────────────────────
+
+// API client functions - for advanced direct API usage
+export {
+  preRecordedControllerInitPreRecordedJobV2,
+  preRecordedControllerGetPreRecordedJobV2,
+  preRecordedControllerDeletePreRecordedJobV2,
+  preRecordedControllerGetAudioV2,
+  transcriptionControllerListV2,
+  streamingControllerInitStreamingSessionV2,
+  streamingControllerDeleteStreamingJobV2,
+  streamingControllerGetAudioV2
+} from "../generated/gladia/api/gladiaControlAPI"
+
+// Request/Response types
+export type {
+  InitTranscriptionRequest,
+  PreRecordedResponse,
+  StreamingResponse,
+  StreamingRequest,
+  TranscriptionControllerListV2Params,
+  ListTranscriptionResponseItemsItem,
+  TranscriptionDTO,
+  UtteranceDTO,
+  WordDTO
+}
+
+// WebSocket message types - for custom message handling
+export type {
+  TranscriptMessage,
+  SpeechStartMessage,
+  SpeechEndMessage,
+  TranslationMessage,
+  SentimentAnalysisMessage,
+  NamedEntityRecognitionMessage,
+  PostSummarizationMessage,
+  PostChapterizationMessage,
+  AudioChunkAckMessage,
+  StartSessionMessage,
+  StartRecordingMessage,
+  StopRecordingAckMessage,
+  EndRecordingMessage,
+  EndSessionMessage,
+  PostTranscriptMessage,
+  PostFinalTranscriptMessage
+}
+
+// Enum constants for validation
+export { TranscriptionControllerListV2StatusItem }
+export { StreamingSupportedSampleRateEnum, StreamingSupportedBitDepthEnum }
+export type { StreamingSupportedEncodingEnum, StreamingSupportedModels, TranscriptionLanguageCodeEnum }

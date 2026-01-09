@@ -564,3 +564,27 @@ export function createAzureSTTAdapter(
   adapter.initialize(config)
   return adapter
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Re-export generated types for direct SDK access
+// ─────────────────────────────────────────────────────────────────────────────
+
+// API client functions
+export {
+  transcriptionsCreate,
+  transcriptionsGet,
+  transcriptionsDelete,
+  transcriptionsList,
+  transcriptionsListFiles
+} from "../generated/azure/api/speechServicesAPIV31"
+
+// Request/Response types
+export type {
+  Transcription,
+  TranscriptionProperties,
+  TranscriptionsListParams,
+  PaginatedTranscriptions
+}
+
+// Status enum
+export { AzureStatus }

@@ -394,3 +394,18 @@ export function createOpenAIWhisperAdapter(config: ProviderConfig): OpenAIWhispe
   adapter.initialize(config)
   return adapter
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Re-export generated types for direct SDK access
+// ─────────────────────────────────────────────────────────────────────────────
+
+// API client function
+export { createTranscription } from "../generated/openai/api/openAIAPI"
+
+// Request/Response types
+export type {
+  CreateTranscriptionRequest,
+  CreateTranscriptionResponseVerboseJson,
+  CreateTranscriptionResponseDiarizedJson,
+  AudioTranscriptionModel
+}
