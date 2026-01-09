@@ -232,9 +232,47 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
 }
 
 /**
- * Convert a Zod object schema to an array of field configs
+ * Extract shape from various Zod schema types
+ */
+function extractShape(schema: z.ZodTypeAny): Record<string, z.ZodTypeAny> {
+  const typeName = getZodTypeName(schema)
+  // Cast to any for accessing internal Zod properties
+  const def = schema._def as any
+
+  switch (typeName) {
+    case "ZodObject":
+      return def?.shape?.() || (schema as any).shape || {}
+
+    case "ZodIntersection":
+      // Merge shapes from both sides of intersection
+      const left = extractShape(def?.left)
+      const right = extractShape(def?.right)
+      return { ...left, ...right }
+
+    case "ZodUnion":
+      // For unions, try first option that's an object
+      const options = def?.options || []
+      for (const opt of options) {
+        const shape = extractShape(opt)
+        if (Object.keys(shape).length > 0) return shape
+      }
+      return {}
+
+    case "ZodEffects":
+      // Unwrap effects (refinements, transforms)
+      return extractShape(def?.schema)
+
+    default:
+      return {}
+  }
+}
+
+/**
+ * Convert a Zod schema to an array of field configs
  *
- * @param schema - Zod object schema (e.g., listenV1MediaTranscribeParams)
+ * Supports ZodObject, ZodIntersection, ZodUnion, and ZodEffects.
+ *
+ * @param schema - Zod schema (object, intersection, union, etc.)
  * @returns Array of field configurations for UI rendering
  *
  * @example
@@ -252,8 +290,8 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
  * // ]
  * ```
  */
-export function zodToFieldConfigs(schema: z.ZodObject<any>): ZodFieldConfig[] {
-  const shape = schema._def?.shape?.() || schema.shape || {}
+export function zodToFieldConfigs(schema: z.ZodTypeAny): ZodFieldConfig[] {
+  const shape = extractShape(schema)
   const fields: ZodFieldConfig[] = []
 
   for (const [key, value] of Object.entries(shape)) {
