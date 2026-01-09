@@ -32,9 +32,12 @@ import {
   listTranscriptsQueryParams as assemblyaiListParams
 } from "./generated/assemblyai/api/assemblyAIAPI.zod"
 
+import { streamingTranscriberParams as assemblyaiStreamingParams } from "./generated/assemblyai/streaming-types.zod"
+
 import {
   transcriptionControllerInitPreRecordedJobV2Body as gladiaTranscribeParams,
-  transcriptionControllerListV2QueryParams as gladiaListParams
+  transcriptionControllerListV2QueryParams as gladiaListParams,
+  streamingControllerInitStreamingSessionV2Body as gladiaStreamingParams
 } from "./generated/gladia/api/gladiaControlAPI.zod"
 
 import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAPI.zod"
@@ -79,12 +82,20 @@ export function getGladiaListFilterFields(): ZodFieldConfig[] {
 }
 
 /**
+ * Get Gladia streaming fields (derived from OpenAPI spec)
+ */
+export function getGladiaStreamingFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(gladiaStreamingParams)
+}
+
+/**
  * Get all Gladia field configs
  */
 export function getGladiaFieldConfigs(): ProviderFieldConfigs {
   return {
     provider: "gladia",
     transcription: getGladiaTranscriptionFields(),
+    streaming: getGladiaStreamingFields(),
     listFilters: getGladiaListFilterFields()
   }
 }
@@ -108,12 +119,21 @@ export function getDeepgramListFilterFields(): ZodFieldConfig[] {
 }
 
 /**
+ * Get Deepgram streaming fields (same as transcription - Deepgram uses same params)
+ */
+export function getDeepgramStreamingFields(): ZodFieldConfig[] {
+  // Deepgram streaming uses the same query params as batch transcription
+  return zodToFieldConfigs(deepgramTranscribeParams)
+}
+
+/**
  * Get all Deepgram field configs
  */
 export function getDeepgramFieldConfigs(): ProviderFieldConfigs {
   return {
     provider: "deepgram",
     transcription: getDeepgramTranscriptionFields(),
+    streaming: getDeepgramStreamingFields(),
     listFilters: getDeepgramListFilterFields()
   }
 }
@@ -137,12 +157,20 @@ export function getAssemblyAIListFilterFields(): ZodFieldConfig[] {
 }
 
 /**
+ * Get AssemblyAI streaming fields (derived from streaming types)
+ */
+export function getAssemblyAIStreamingFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(assemblyaiStreamingParams)
+}
+
+/**
  * Get all AssemblyAI field configs
  */
 export function getAssemblyAIFieldConfigs(): ProviderFieldConfigs {
   return {
     provider: "assemblyai",
     transcription: getAssemblyAITranscriptionFields(),
+    streaming: getAssemblyAIStreamingFields(),
     listFilters: getAssemblyAIListFilterFields()
   }
 }
