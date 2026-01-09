@@ -7,9 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * SharedCustomTopicModeParameter type definition
- */
 
 /**
  * SharedCustomTopicModeParameter type definition

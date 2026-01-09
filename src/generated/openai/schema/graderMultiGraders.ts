@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderStringCheck } from "./graderStringCheck"
-import type { GraderTextSimilarity } from "./graderTextSimilarity"
+
+import type { GraderLabelModel } from "./graderLabelModel"
 import type { GraderPython } from "./graderPython"
 import type { GraderScoreModel } from "./graderScoreModel"
-import type { GraderLabelModel } from "./graderLabelModel"
+import type { GraderStringCheck } from "./graderStringCheck"
+import type { GraderTextSimilarity } from "./graderTextSimilarity"
 
 export type GraderMultiGraders =
   | GraderStringCheck

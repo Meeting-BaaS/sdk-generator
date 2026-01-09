@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { CreateTranscriptionResponseDiarizedJsonTask } from "./createTranscriptionResponseDiarizedJsonTask"
-import type { TranscriptionDiarizedSegment } from "./transcriptionDiarizedSegment"
 import type { CreateTranscriptionResponseDiarizedJsonUsage } from "./createTranscriptionResponseDiarizedJsonUsage"
+import type { TranscriptionDiarizedSegment } from "./transcriptionDiarizedSegment"
 
 /**
  * Represents a diarized transcription response returned by the model, including the combined transcript and speaker-segment annotations.

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import axios from "axios"
+
 import type { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
 
 import type {
   CreateFileRequest,
@@ -34,7 +35,7 @@ export const createSpeech = <TData = AxiosResponse<Blob | CreateSpeechResponseSt
   createSpeechRequest: CreateSpeechRequest,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/audio/speech`, createSpeechRequest, options)
+  return axios.post("/audio/speech", createSpeechRequest, options)
 }
 
 /**
@@ -48,57 +49,52 @@ export const createTranscription = <
   options?: AxiosRequestConfig
 ): Promise<TData> => {
   const formData = new FormData()
-  formData.append(`file`, createTranscriptionRequest.file)
-  formData.append(`model`, createTranscriptionRequest.model)
+  formData.append("file", createTranscriptionRequest.file)
+  formData.append("model", createTranscriptionRequest.model)
   if (createTranscriptionRequest.language !== undefined) {
-    formData.append(`language`, createTranscriptionRequest.language)
+    formData.append("language", createTranscriptionRequest.language)
   }
   if (createTranscriptionRequest.prompt !== undefined) {
-    formData.append(`prompt`, createTranscriptionRequest.prompt)
+    formData.append("prompt", createTranscriptionRequest.prompt)
   }
   if (createTranscriptionRequest.response_format !== undefined) {
-    formData.append(`response_format`, createTranscriptionRequest.response_format)
+    formData.append("response_format", createTranscriptionRequest.response_format)
   }
   if (createTranscriptionRequest.temperature !== undefined) {
-    formData.append(`temperature`, createTranscriptionRequest.temperature.toString())
+    formData.append("temperature", createTranscriptionRequest.temperature.toString())
   }
   if (createTranscriptionRequest.include !== undefined) {
-    createTranscriptionRequest.include.forEach((value) => formData.append(`include`, value))
+    createTranscriptionRequest.include.forEach((value) => formData.append("include", value))
   }
   if (createTranscriptionRequest.timestamp_granularities !== undefined) {
     createTranscriptionRequest.timestamp_granularities.forEach((value) =>
-      formData.append(`timestamp_granularities`, value)
+      formData.append("timestamp_granularities", value)
     )
   }
   if (
     createTranscriptionRequest.stream !== undefined &&
     createTranscriptionRequest.stream !== null
   ) {
-    formData.append(`stream`, createTranscriptionRequest.stream.toString())
+    formData.append("stream", createTranscriptionRequest.stream.toString())
   }
   if (
     createTranscriptionRequest.chunking_strategy !== undefined &&
     createTranscriptionRequest.chunking_strategy !== null
   ) {
-    formData.append(
-      "chunking_strategy",
-      typeof createTranscriptionRequest.chunking_strategy === "object"
-        ? JSON.stringify(createTranscriptionRequest.chunking_strategy)
-        : String(createTranscriptionRequest.chunking_strategy)
-    )
+    formData.append("chunking_strategy", typeof createTranscriptionRequest.chunking_strategy === "object" ? JSON.stringify(createTranscriptionRequest.chunking_strategy) : String(createTranscriptionRequest.chunking_strategy))
   }
   if (createTranscriptionRequest.known_speaker_names !== undefined) {
     createTranscriptionRequest.known_speaker_names.forEach((value) =>
-      formData.append(`known_speaker_names`, value)
+      formData.append("known_speaker_names", value)
     )
   }
   if (createTranscriptionRequest.known_speaker_references !== undefined) {
     createTranscriptionRequest.known_speaker_references.forEach((value) =>
-      formData.append(`known_speaker_references`, value)
+      formData.append("known_speaker_references", value)
     )
   }
 
-  return axios.post(`/audio/transcriptions`, formData, options)
+  return axios.post("/audio/transcriptions", formData, options)
 }
 
 /**
@@ -110,19 +106,19 @@ export const createTranslation = <TData = AxiosResponse<CreateTranslation200>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
   const formData = new FormData()
-  formData.append(`file`, createTranslationRequest.file)
-  formData.append(`model`, createTranslationRequest.model)
+  formData.append("file", createTranslationRequest.file)
+  formData.append("model", createTranslationRequest.model)
   if (createTranslationRequest.prompt !== undefined) {
-    formData.append(`prompt`, createTranslationRequest.prompt)
+    formData.append("prompt", createTranslationRequest.prompt)
   }
   if (createTranslationRequest.response_format !== undefined) {
-    formData.append(`response_format`, createTranslationRequest.response_format)
+    formData.append("response_format", createTranslationRequest.response_format)
   }
   if (createTranslationRequest.temperature !== undefined) {
-    formData.append(`temperature`, createTranslationRequest.temperature.toString())
+    formData.append("temperature", createTranslationRequest.temperature.toString())
   }
 
-  return axios.post(`/audio/translations`, formData, options)
+  return axios.post("/audio/translations", formData, options)
 }
 
 /**
@@ -133,7 +129,7 @@ export const listFiles = <TData = AxiosResponse<ListFilesResponse>>(
   params?: ListFilesParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/files`, {
+  return axios.get("/files", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -165,13 +161,13 @@ export const createFile = <TData = AxiosResponse<OpenAIFile>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
   const formData = new FormData()
-  formData.append(`file`, createFileRequest.file)
-  formData.append(`purpose`, createFileRequest.purpose)
+  formData.append("file", createFileRequest.file)
+  formData.append("purpose", createFileRequest.purpose)
   if (createFileRequest.expires_after !== undefined) {
-    formData.append(`expires_after`, JSON.stringify(createFileRequest.expires_after))
+    formData.append("expires_after", JSON.stringify(createFileRequest.expires_after))
   }
 
-  return axios.post(`/files`, formData, options)
+  return axios.post("/files", formData, options)
 }
 
 /**
@@ -214,7 +210,7 @@ export const downloadFile = <TData = AxiosResponse<string>>(
 export const listModels = <TData = AxiosResponse<ListModelsResponse>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/models`, options)
+  return axios.get("/models", options)
 }
 
 /**

@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { BatchObject } from "./batchObject"
+
 import type { BatchErrors } from "./batchErrors"
-import type { BatchStatus } from "./batchStatus"
+import type { BatchObject } from "./batchObject"
 import type { BatchRequestCounts } from "./batchRequestCounts"
+import type { BatchStatus } from "./batchStatus"
 import type { BatchUsage } from "./batchUsage"
 import type { Metadata } from "./metadata"
 

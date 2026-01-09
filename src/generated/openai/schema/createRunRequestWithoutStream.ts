@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateRunRequestWithoutStreamModel } from "./createRunRequestWithoutStreamModel"
-import type { ReasoningEffort } from "./reasoningEffort"
-import type { CreateMessageRequest } from "./createMessageRequest"
-import type { AssistantTool } from "./assistantTool"
-import type { Metadata } from "./metadata"
-import type { CreateRunRequestWithoutStreamTruncationStrategy } from "./createRunRequestWithoutStreamTruncationStrategy"
-import type { CreateRunRequestWithoutStreamToolChoice } from "./createRunRequestWithoutStreamToolChoice"
-import type { ParallelToolCalls } from "./parallelToolCalls"
+
 import type { AssistantsApiResponseFormatOption } from "./assistantsApiResponseFormatOption"
+import type { AssistantTool } from "./assistantTool"
+import type { CreateMessageRequest } from "./createMessageRequest"
+import type { CreateRunRequestWithoutStreamModel } from "./createRunRequestWithoutStreamModel"
+import type { CreateRunRequestWithoutStreamToolChoice } from "./createRunRequestWithoutStreamToolChoice"
+import type { CreateRunRequestWithoutStreamTruncationStrategy } from "./createRunRequestWithoutStreamTruncationStrategy"
+import type { Metadata } from "./metadata"
+import type { ParallelToolCalls } from "./parallelToolCalls"
+import type { ReasoningEffort } from "./reasoningEffort"
 
 export interface CreateRunRequestWithoutStream {
   /** The ID of the [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to execute this run. */

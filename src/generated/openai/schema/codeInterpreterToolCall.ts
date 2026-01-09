@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterToolCallType } from "./codeInterpreterToolCallType"
-import type { CodeInterpreterToolCallStatus } from "./codeInterpreterToolCallStatus"
+
 import type { CodeInterpreterToolCallCode } from "./codeInterpreterToolCallCode"
 import type { CodeInterpreterToolCallOutputs } from "./codeInterpreterToolCallOutputs"
+import type { CodeInterpreterToolCallStatus } from "./codeInterpreterToolCallStatus"
+import type { CodeInterpreterToolCallType } from "./codeInterpreterToolCallType"
 
 /**
  * A tool call to run code.

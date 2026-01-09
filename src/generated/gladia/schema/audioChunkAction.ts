@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AudioChunkActionType } from "./audioChunkActionType"
+
 import type { AudioChunkActionData } from "./audioChunkActionData"
+import type { AudioChunkActionType } from "./audioChunkActionType"
 
 export interface AudioChunkAction {
   type: AudioChunkActionType

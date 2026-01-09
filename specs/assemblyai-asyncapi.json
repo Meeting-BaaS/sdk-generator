@@ -470,7 +470,14 @@
       "RealtimeBaseTranscript": {
         "type": "object",
         "x-fern-sdk-group-name": "realtime",
-        "required": ["audio_start", "audio_end", "confidence", "text", "words", "created"],
+        "required": [
+          "audio_start",
+          "audio_end",
+          "confidence",
+          "text",
+          "words",
+          "created"
+        ],
         "properties": {
           "audio_start": {
             "description": "Start time of audio sample relative to session start, in milliseconds",

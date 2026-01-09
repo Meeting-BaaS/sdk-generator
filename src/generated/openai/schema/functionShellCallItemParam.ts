@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallItemParamId } from "./functionShellCallItemParamId"
-import type { FunctionShellCallItemParamType } from "./functionShellCallItemParamType"
+
 import type { FunctionShellActionParam } from "./functionShellActionParam"
+import type { FunctionShellCallItemParamId } from "./functionShellCallItemParamId"
 import type { FunctionShellCallItemParamStatus } from "./functionShellCallItemParamStatus"
+import type { FunctionShellCallItemParamType } from "./functionShellCallItemParamType"
 
 /**
  * A tool representing a request to execute one or more shell commands.

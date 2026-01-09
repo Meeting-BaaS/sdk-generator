@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchToolType } from "./webSearchToolType"
-import type { WebSearchToolFilters } from "./webSearchToolFilters"
+
 import type { WebSearchApproximateLocation } from "./webSearchApproximateLocation"
+import type { WebSearchToolFilters } from "./webSearchToolFilters"
 import type { WebSearchToolSearchContextSize } from "./webSearchToolSearchContextSize"
+import type { WebSearchToolType } from "./webSearchToolType"
 
 /**
  * Search the Internet for sources related to the prompt. Learn more about the

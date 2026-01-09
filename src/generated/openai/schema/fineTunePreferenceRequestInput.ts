@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTunePreferenceRequestInputInput } from "./fineTunePreferenceRequestInputInput"
+
 import type { ChatCompletionRequestAssistantMessage } from "./chatCompletionRequestAssistantMessage"
+import type { FineTunePreferenceRequestInputInput } from "./fineTunePreferenceRequestInputInput"
 
 /**
  * The per-line training example of a fine-tuning input file for chat models using the dpo method.

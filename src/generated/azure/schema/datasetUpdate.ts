@@ -5,8 +5,9 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { EntityReference } from "./entityReference"
+
 import type { DatasetUpdateCustomProperties } from "./datasetUpdateCustomProperties"
+import type { EntityReference } from "./entityReference"
 
 export interface DatasetUpdate {
   project?: EntityReference

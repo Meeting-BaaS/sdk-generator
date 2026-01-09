@@ -5,16 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaResponseCreateParamsModalitiesItem } from "./realtimeBetaResponseCreateParamsModalitiesItem"
-import type { VoiceIdsShared } from "./voiceIdsShared"
-import type { RealtimeBetaResponseCreateParamsOutputAudioFormat } from "./realtimeBetaResponseCreateParamsOutputAudioFormat"
-import type { RealtimeBetaResponseCreateParamsToolsItem } from "./realtimeBetaResponseCreateParamsToolsItem"
-import type { RealtimeBetaResponseCreateParamsToolChoice } from "./realtimeBetaResponseCreateParamsToolChoice"
-import type { RealtimeBetaResponseCreateParamsMaxOutputTokens } from "./realtimeBetaResponseCreateParamsMaxOutputTokens"
-import type { RealtimeBetaResponseCreateParamsConversation } from "./realtimeBetaResponseCreateParamsConversation"
+
 import type { Metadata } from "./metadata"
 import type { Prompt } from "./prompt"
+import type { RealtimeBetaResponseCreateParamsConversation } from "./realtimeBetaResponseCreateParamsConversation"
+import type { RealtimeBetaResponseCreateParamsMaxOutputTokens } from "./realtimeBetaResponseCreateParamsMaxOutputTokens"
+import type { RealtimeBetaResponseCreateParamsModalitiesItem } from "./realtimeBetaResponseCreateParamsModalitiesItem"
+import type { RealtimeBetaResponseCreateParamsOutputAudioFormat } from "./realtimeBetaResponseCreateParamsOutputAudioFormat"
+import type { RealtimeBetaResponseCreateParamsToolChoice } from "./realtimeBetaResponseCreateParamsToolChoice"
+import type { RealtimeBetaResponseCreateParamsToolsItem } from "./realtimeBetaResponseCreateParamsToolsItem"
 import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { VoiceIdsShared } from "./voiceIdsShared"
 
 /**
  * Create a new Realtime response with these parameters

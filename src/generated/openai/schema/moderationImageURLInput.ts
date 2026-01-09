@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModerationImageURLInputType } from "./moderationImageURLInputType"
+
 import type { ModerationImageURLInputImageUrl } from "./moderationImageURLInputImageUrl"
+import type { ModerationImageURLInputType } from "./moderationImageURLInputType"
 
 /**
  * An object describing an image to classify.

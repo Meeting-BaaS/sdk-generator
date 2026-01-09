@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { CreateEvalResponsesRunDataSourceSamplingParamsText } from "./createEvalResponsesRunDataSourceSamplingParamsText"
 import type { ReasoningEffort } from "./reasoningEffort"
 import type { Tool } from "./tool"
-import type { CreateEvalResponsesRunDataSourceSamplingParamsText } from "./createEvalResponsesRunDataSourceSamplingParamsText"
 
 export type CreateEvalResponsesRunDataSourceSamplingParams = {
   reasoning_effort?: ReasoningEffort

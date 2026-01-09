@@ -5,14 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { Metadata } from "./metadata"
+import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { RealtimeResponseAudio } from "./realtimeResponseAudio"
+import type { RealtimeResponseMaxOutputTokens } from "./realtimeResponseMaxOutputTokens"
+import type { RealtimeResponseOutputModalitiesItem } from "./realtimeResponseOutputModalitiesItem"
 import type { RealtimeResponseStatus } from "./realtimeResponseStatus"
 import type { RealtimeResponseStatusDetails } from "./realtimeResponseStatusDetails"
-import type { RealtimeConversationItem } from "./realtimeConversationItem"
-import type { Metadata } from "./metadata"
-import type { RealtimeResponseAudio } from "./realtimeResponseAudio"
 import type { RealtimeResponseUsage } from "./realtimeResponseUsage"
-import type { RealtimeResponseOutputModalitiesItem } from "./realtimeResponseOutputModalitiesItem"
-import type { RealtimeResponseMaxOutputTokens } from "./realtimeResponseMaxOutputTokens"
 
 /**
  * The response resource.

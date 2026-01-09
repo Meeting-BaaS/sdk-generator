@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { Attachment } from "./attachment"
+import type { UserMessageItemContentItem } from "./userMessageItemContentItem"
+import type { UserMessageItemInferenceOptions } from "./userMessageItemInferenceOptions"
 import type { UserMessageItemObject } from "./userMessageItemObject"
 import type { UserMessageItemType } from "./userMessageItemType"
-import type { UserMessageItemContentItem } from "./userMessageItemContentItem"
-import type { Attachment } from "./attachment"
-import type { UserMessageItemInferenceOptions } from "./userMessageItemInferenceOptions"
 
 /**
  * User-authored messages within a thread.

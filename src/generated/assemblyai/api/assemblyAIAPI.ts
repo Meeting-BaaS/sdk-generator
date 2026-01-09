@@ -5,52 +5,47 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import axios from "axios"
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-
-import type {
-  CreateRealtimeTemporaryTokenParams,
-  GetSubtitlesParams,
-  LemurQuestionAnswerParams,
-  LemurSummaryParams,
-  LemurTaskParams,
-  ListTranscriptsParams,
-  SubtitleFormat,
-  TranscriptParams,
-  WordSearchParams
-} from "../schema"
 
 import { faker } from "@faker-js/faker"
-
-import { HttpResponse, delay, http } from "msw"
-
-import {
-  AudioIntelligenceModelStatus,
-  RedactPiiAudioQuality,
-  RedactedAudioStatus,
-  SpeechModel,
-  SubstitutionPolicy,
-  TranscriptLanguageCode,
-  TranscriptStatus
-} from "../schema"
+import type { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
+import { delay, HttpResponse, http } from "msw"
 import type {
   AutoHighlightsResult,
   ContentSafetyLabelsResult,
+  CreateRealtimeTemporaryTokenParams,
+  GetSubtitlesParams,
+  LemurQuestionAnswerParams,
   LemurQuestionAnswerResponse,
   LemurResponse,
   LemurStringResponse,
+  LemurSummaryParams,
   LemurSummaryResponse,
+  LemurTaskParams,
   LemurTaskResponse,
+  ListTranscriptsParams,
   ParagraphsResponse,
   PurgeLemurRequestDataResponse,
   RealtimeTemporaryTokenResponse,
   RedactedAudioResponse,
   SentencesResponse,
+  SubtitleFormat,
   TopicDetectionModelResult,
   Transcript,
   TranscriptList,
+  TranscriptParams,
   UploadedFile,
+  WordSearchParams,
   WordSearchResponse
+} from "../schema"
+import {
+  AudioIntelligenceModelStatus,
+  RedactedAudioStatus,
+  RedactPiiAudioQuality,
+  SpeechModel,
+  SubstitutionPolicy,
+  TranscriptLanguageCode,
+  TranscriptStatus
 } from "../schema"
 
 /**
@@ -63,7 +58,7 @@ export const uploadFile = <TData = AxiosResponse<UploadedFile>>(
   uploadFileBody: Blob,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/upload`, uploadFileBody, options)
+  return axios.post("/v2/upload", uploadFileBody, options)
 }
 
 /**
@@ -76,7 +71,7 @@ export const createTranscript = <TData = AxiosResponse<Transcript>>(
   transcriptParams: TranscriptParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/transcript`, transcriptParams, options)
+  return axios.post("/v2/transcript", transcriptParams, options)
 }
 
 /**
@@ -92,7 +87,7 @@ export const listTranscripts = <TData = AxiosResponse<TranscriptList>>(
   params?: ListTranscriptsParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v2/transcript`, {
+  return axios.get("/v2/transcript", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -210,7 +205,7 @@ export const createTemporaryToken = <TData = AxiosResponse<RealtimeTemporaryToke
   createRealtimeTemporaryTokenParams: CreateRealtimeTemporaryTokenParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/realtime/token`, createRealtimeTemporaryTokenParams, options)
+  return axios.post("/v2/realtime/token", createRealtimeTemporaryTokenParams, options)
 }
 
 /**
@@ -222,7 +217,7 @@ export const lemurTask = <TData = AxiosResponse<LemurTaskResponse>>(
   lemurTaskParams: LemurTaskParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/lemur/v3/generate/task`, lemurTaskParams, options)
+  return axios.post("/lemur/v3/generate/task", lemurTaskParams, options)
 }
 
 /**
@@ -235,7 +230,7 @@ export const lemurSummary = <TData = AxiosResponse<LemurSummaryResponse>>(
   lemurSummaryParams: LemurSummaryParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/lemur/v3/generate/summary`, lemurSummaryParams, options)
+  return axios.post("/lemur/v3/generate/summary", lemurSummaryParams, options)
 }
 
 /**
@@ -248,7 +243,7 @@ export const lemurQuestionAnswer = <TData = AxiosResponse<LemurQuestionAnswerRes
   lemurQuestionAnswerParams: LemurQuestionAnswerParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/lemur/v3/generate/question-answer`, lemurQuestionAnswerParams, options)
+  return axios.post("/lemur/v3/generate/question-answer", lemurQuestionAnswerParams, options)
 }
 
 /**
@@ -610,7 +605,7 @@ export const getListTranscriptsResponseMock = (
       id: faker.string.uuid(),
       resource_url: faker.internet.url(),
       status: faker.helpers.arrayElement(Object.values(TranscriptStatus)),
-      created: faker.helpers.fromRegExp("^(?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))$"),
+      created: faker.helpers.fromRegExp("^(?:(d{4}-d{2}-d{2})T(d{2}:d{2}:d{2}(?:.d+)?))$"),
       completed: faker.helpers.arrayElement([faker.string.alpha(20), null]),
       audio_url: faker.internet.url(),
       error: faker.helpers.arrayElement([faker.string.alpha(20), null])

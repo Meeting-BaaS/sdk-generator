@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateChatCompletionResponseChoicesItem } from "./createChatCompletionResponseChoicesItem"
-import type { ServiceTier } from "./serviceTier"
-import type { CreateChatCompletionResponseObject } from "./createChatCompletionResponseObject"
+
 import type { CompletionUsage } from "./completionUsage"
+import type { CreateChatCompletionResponseChoicesItem } from "./createChatCompletionResponseChoicesItem"
+import type { CreateChatCompletionResponseObject } from "./createChatCompletionResponseObject"
+import type { ServiceTier } from "./serviceTier"
 
 /**
  * Represents a chat completion response returned by model, based on the provided input.

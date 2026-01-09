@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InferenceOptionsToolChoice } from "./inferenceOptionsToolChoice"
+
 import type { InferenceOptionsModel } from "./inferenceOptionsModel"
+import type { InferenceOptionsToolChoice } from "./inferenceOptionsToolChoice"
 
 /**
  * Model and tool overrides applied when generating the assistant response.

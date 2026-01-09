@@ -4,13 +4,14 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionMetadataDTO } from "./transcriptionMetadataDTO"
-import type { TranscriptionDTO } from "./transcriptionDTO"
-import type { TranslationDTO } from "./translationDTO"
-import type { SummarizationDTO } from "./summarizationDTO"
+
+import type { ChapterizationDTO } from "./chapterizationDTO"
 import type { NamedEntityRecognitionDTO } from "./namedEntityRecognitionDTO"
 import type { SentimentAnalysisDTO } from "./sentimentAnalysisDTO"
-import type { ChapterizationDTO } from "./chapterizationDTO"
+import type { SummarizationDTO } from "./summarizationDTO"
+import type { TranscriptionDTO } from "./transcriptionDTO"
+import type { TranscriptionMetadataDTO } from "./transcriptionMetadataDTO"
+import type { TranslationDTO } from "./translationDTO"
 
 export interface StreamingTranscriptionResultDTO {
   /** Metadata for the given transcription & audio file */

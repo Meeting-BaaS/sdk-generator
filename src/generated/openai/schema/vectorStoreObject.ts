@@ -5,13 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreObjectObject } from "./vectorStoreObjectObject"
-import type { VectorStoreObjectFileCounts } from "./vectorStoreObjectFileCounts"
-import type { VectorStoreObjectStatus } from "./vectorStoreObjectStatus"
+
+import type { Metadata } from "./metadata"
 import type { VectorStoreExpirationAfter } from "./vectorStoreExpirationAfter"
 import type { VectorStoreObjectExpiresAt } from "./vectorStoreObjectExpiresAt"
+import type { VectorStoreObjectFileCounts } from "./vectorStoreObjectFileCounts"
 import type { VectorStoreObjectLastActiveAt } from "./vectorStoreObjectLastActiveAt"
-import type { Metadata } from "./metadata"
+import type { VectorStoreObjectObject } from "./vectorStoreObjectObject"
+import type { VectorStoreObjectStatus } from "./vectorStoreObjectStatus"
 
 /**
  * A vector store is a collection of processed files can be used by the `file_search` tool.

@@ -5,11 +5,12 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
+
+import type { EntityReference } from "./entityReference"
+import type { Status } from "./status"
+import type { TranscriptionCustomProperties } from "./transcriptionCustomProperties"
 import type { TranscriptionLinks } from "./transcriptionLinks"
 import type { TranscriptionProperties } from "./transcriptionProperties"
-import type { EntityReference } from "./entityReference"
-import type { TranscriptionCustomProperties } from "./transcriptionCustomProperties"
-import type { Status } from "./status"
 
 export interface Transcription {
   links?: TranscriptionLinks

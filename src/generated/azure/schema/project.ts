@@ -5,9 +5,10 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
+
+import type { ProjectCustomProperties } from "./projectCustomProperties"
 import type { ProjectLinks } from "./projectLinks"
 import type { ProjectProperties } from "./projectProperties"
-import type { ProjectCustomProperties } from "./projectCustomProperties"
 
 export interface Project {
   links?: ProjectLinks

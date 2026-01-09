@@ -6,18 +6,7 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedCallbackParameter } from "./sharedCallbackParameter"
-import type { SharedCallbackMethodParameter } from "./sharedCallbackMethodParameter"
-import type { SharedExtraParameter } from "./sharedExtraParameter"
-import type { SharedSentimentParameter } from "./sharedSentimentParameter"
-import type { SharedSummarizeParameter } from "./sharedSummarizeParameter"
-import type { SharedTagParameter } from "./sharedTagParameter"
-import type { SharedTopicsParameter } from "./sharedTopicsParameter"
-import type { SharedCustomTopicParameter } from "./sharedCustomTopicParameter"
-import type { SharedCustomTopicModeParameter } from "./sharedCustomTopicModeParameter"
-import type { SharedIntentsParameter } from "./sharedIntentsParameter"
-import type { SharedCustomIntentParameter } from "./sharedCustomIntentParameter"
-import type { SharedCustomIntentModeParameter } from "./sharedCustomIntentModeParameter"
+
 import type { ListenV1DetectEntitiesParameter } from "./listenV1DetectEntitiesParameter"
 import type { ListenV1DetectLanguageParameter } from "./listenV1DetectLanguageParameter"
 import type { ListenV1DiarizeParameter } from "./listenV1DiarizeParameter"
@@ -41,7 +30,19 @@ import type { ListenV1SmartFormatParameter } from "./listenV1SmartFormatParamete
 import type { ListenV1UtterancesParameter } from "./listenV1UtterancesParameter"
 import type { ListenV1UttSplitParameter } from "./listenV1UttSplitParameter"
 import type { ListenV1VersionParameter } from "./listenV1VersionParameter"
+import type { SharedCallbackMethodParameter } from "./sharedCallbackMethodParameter"
+import type { SharedCallbackParameter } from "./sharedCallbackParameter"
+import type { SharedCustomIntentModeParameter } from "./sharedCustomIntentModeParameter"
+import type { SharedCustomIntentParameter } from "./sharedCustomIntentParameter"
+import type { SharedCustomTopicModeParameter } from "./sharedCustomTopicModeParameter"
+import type { SharedCustomTopicParameter } from "./sharedCustomTopicParameter"
+import type { SharedExtraParameter } from "./sharedExtraParameter"
+import type { SharedIntentsParameter } from "./sharedIntentsParameter"
 import type { SharedMipOptOutParameter } from "./sharedMipOptOutParameter"
+import type { SharedSentimentParameter } from "./sharedSentimentParameter"
+import type { SharedSummarizeParameter } from "./sharedSummarizeParameter"
+import type { SharedTagParameter } from "./sharedTagParameter"
+import type { SharedTopicsParameter } from "./sharedTopicsParameter"
 
 export type ListenV1MediaTranscribeParams = {
   /**

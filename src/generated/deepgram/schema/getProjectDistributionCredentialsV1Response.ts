@@ -6,8 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { GetProjectDistributionCredentialsV1ResponseMember } from "./getProjectDistributionCredentialsV1ResponseMember"
+
 import type { GetProjectDistributionCredentialsV1ResponseDistributionCredentials } from "./getProjectDistributionCredentialsV1ResponseDistributionCredentials"
+import type { GetProjectDistributionCredentialsV1ResponseMember } from "./getProjectDistributionCredentialsV1ResponseMember"
 
 export interface GetProjectDistributionCredentialsV1Response {
   member: GetProjectDistributionCredentialsV1ResponseMember

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalCustomDataSourceConfigType } from "./createEvalCustomDataSourceConfigType"
+
 import type { CreateEvalCustomDataSourceConfigItemSchema } from "./createEvalCustomDataSourceConfigItemSchema"
+import type { CreateEvalCustomDataSourceConfigType } from "./createEvalCustomDataSourceConfigType"
 
 /**
  * A CustomDataSourceConfig object that defines the schema for the data source used for the evaluation runs.

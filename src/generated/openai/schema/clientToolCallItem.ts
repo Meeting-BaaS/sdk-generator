@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { ClientToolCallItemObject } from "./clientToolCallItemObject"
+import type { ClientToolCallItemOutput } from "./clientToolCallItemOutput"
 import type { ClientToolCallItemType } from "./clientToolCallItemType"
 import type { ClientToolCallStatus } from "./clientToolCallStatus"
-import type { ClientToolCallItemOutput } from "./clientToolCallItemOutput"
 
 /**
  * Record of a client side tool invocation initiated by the assistant.

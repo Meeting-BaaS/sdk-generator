@@ -5,18 +5,24 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import axios from "axios"
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
 
+import { faker } from "@faker-js/faker"
+import type { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
+import { delay, HttpResponse, http } from "msw"
 import type {
+  BaseModel,
   CommitBlocksEntry,
-  DatasetUpdate,
+  CustomModel,
+  Dataset,
+  DatasetLocales,
   DatasetsGetFileParams,
   DatasetsListFilesParams,
   DatasetsListParams,
   DatasetsUploadBlockParams,
   DatasetsUploadBody,
-  EndpointUpdate,
+  DatasetUpdate,
+  Endpoint,
   EndpointsDeleteBaseModelLogsParams,
   EndpointsDeleteLogsParams,
   EndpointsGetBaseModelLogParams,
@@ -24,54 +30,22 @@ import type {
   EndpointsListBaseModelLogsParams,
   EndpointsListLogsParams,
   EndpointsListParams,
-  EvaluationUpdate,
+  EndpointUpdate,
+  Evaluation,
   EvaluationsGetFileParams,
   EvaluationsListFilesParams,
   EvaluationsListParams,
+  EvaluationUpdate,
+  File,
   ModelCopy,
-  ModelUpdate,
+  ModelManifest,
   ModelsGetBaseModelManifestParams,
   ModelsGetCustomModelManifestParams,
   ModelsGetFileParams,
   ModelsListBaseModelsParams,
   ModelsListCustomModelsParams,
   ModelsListFilesParams,
-  ProjectUpdate,
-  ProjectsListDatasetsParams,
-  ProjectsListEndpointsParams,
-  ProjectsListEvaluationsParams,
-  ProjectsListModelsParams,
-  ProjectsListParams,
-  ProjectsListTranscriptionsParams,
-  TranscriptionUpdate,
-  TranscriptionsGetFileParams,
-  TranscriptionsListFilesParams,
-  TranscriptionsListParams,
-  WebHookUpdate,
-  WebHooksListParams
-} from "../schema"
-
-import { faker } from "@faker-js/faker"
-
-import { HttpResponse, delay, http } from "msw"
-
-import {
-  DatasetKind,
-  FileKind,
-  HealthStatus,
-  ProfanityFilterMode,
-  PunctuationMode,
-  Status
-} from "../schema"
-import type {
-  BaseModel,
-  CustomModel,
-  Dataset,
-  DatasetLocales,
-  Endpoint,
-  Evaluation,
-  File,
-  ModelManifest,
+  ModelUpdate,
   PaginatedBaseModels,
   PaginatedCustomModels,
   PaginatedDatasets,
@@ -82,10 +56,31 @@ import type {
   PaginatedTranscriptions,
   PaginatedWebHooks,
   Project,
+  ProjectsListDatasetsParams,
+  ProjectsListEndpointsParams,
+  ProjectsListEvaluationsParams,
+  ProjectsListModelsParams,
+  ProjectsListParams,
+  ProjectsListTranscriptionsParams,
+  ProjectUpdate,
   ServiceHealth,
   Transcription,
+  TranscriptionsGetFileParams,
+  TranscriptionsListFilesParams,
+  TranscriptionsListParams,
+  TranscriptionUpdate,
   UploadedBlocks,
-  WebHook
+  WebHook,
+  WebHooksListParams,
+  WebHookUpdate
+} from "../schema"
+import {
+  DatasetKind,
+  FileKind,
+  HealthStatus,
+  ProfanityFilterMode,
+  PunctuationMode,
+  Status
 } from "../schema"
 
 // https://stackoverflow.com/questions/49579094/typescript-conditional-types-filter-out-readonly-properties-pick-only-requir/49579497#49579497
@@ -117,7 +112,7 @@ type NonReadonly<T> = [T] extends [UnionToIntersection<T>]
 export const datasetsListSupportedLocales = <TData = AxiosResponse<DatasetLocales>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/datasets/locales`, options)
+  return axios.get("/datasets/locales", options)
 }
 
 /**
@@ -127,7 +122,7 @@ export const datasetsList = <TData = AxiosResponse<PaginatedDatasets>>(
   params?: DatasetsListParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/datasets`, {
+  return axios.get("/datasets", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -140,7 +135,7 @@ export const datasetsCreate = <TData = AxiosResponse<Dataset>>(
   dataset: NonReadonly<Dataset>,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/datasets`, dataset, options)
+  return axios.post("/datasets", dataset, options)
 }
 
 /**
@@ -209,25 +204,25 @@ export const datasetsUpload = <TData = AxiosResponse<Dataset>>(
 ): Promise<TData> => {
   const formData = new FormData()
   if (datasetsUploadBody.project !== undefined) {
-    formData.append(`project`, datasetsUploadBody.project)
+    formData.append("project", datasetsUploadBody.project)
   }
-  formData.append(`displayName`, datasetsUploadBody.displayName)
+  formData.append("displayName", datasetsUploadBody.displayName)
   if (datasetsUploadBody.description !== undefined) {
-    formData.append(`description`, datasetsUploadBody.description)
+    formData.append("description", datasetsUploadBody.description)
   }
-  formData.append(`locale`, datasetsUploadBody.locale)
-  formData.append(`kind`, datasetsUploadBody.kind)
+  formData.append("locale", datasetsUploadBody.locale)
+  formData.append("kind", datasetsUploadBody.kind)
   if (datasetsUploadBody.customProperties !== undefined) {
-    formData.append(`customProperties`, datasetsUploadBody.customProperties)
+    formData.append("customProperties", datasetsUploadBody.customProperties)
   }
   if (datasetsUploadBody.data !== undefined) {
-    formData.append(`data`, datasetsUploadBody.data)
+    formData.append("data", datasetsUploadBody.data)
   }
   if (datasetsUploadBody.email !== undefined) {
-    formData.append(`email`, datasetsUploadBody.email)
+    formData.append("email", datasetsUploadBody.email)
   }
 
-  return axios.post(`/datasets/upload`, formData, options)
+  return axios.post("/datasets/upload", formData, options)
 }
 
 /**
@@ -276,7 +271,7 @@ export const datasetsGetFile = <TData = AxiosResponse<File>>(
 export const endpointsListSupportedLocales = <TData = AxiosResponse<string[]>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/endpoints/locales`, options)
+  return axios.get("/endpoints/locales", options)
 }
 
 /**
@@ -286,7 +281,7 @@ export const endpointsList = <TData = AxiosResponse<PaginatedEndpoints>>(
   params?: EndpointsListParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/endpoints`, {
+  return axios.get("/endpoints", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -299,7 +294,7 @@ export const endpointsCreate = <TData = AxiosResponse<Endpoint>>(
   endpoint: NonReadonly<Endpoint>,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/endpoints`, endpoint, options)
+  return axios.post("/endpoints", endpoint, options)
 }
 
 /**
@@ -449,7 +444,7 @@ export const endpointsDeleteBaseModelLog = <TData = AxiosResponse<void>>(
 export const evaluationsListSupportedLocales = <TData = AxiosResponse<string[]>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/evaluations/locales`, options)
+  return axios.get("/evaluations/locales", options)
 }
 
 /**
@@ -459,7 +454,7 @@ export const evaluationsList = <TData = AxiosResponse<PaginatedEvaluations>>(
   params?: EvaluationsListParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/evaluations`, {
+  return axios.get("/evaluations", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -472,7 +467,7 @@ export const evaluationsCreate = <TData = AxiosResponse<Evaluation>>(
   evaluation: NonReadonly<Evaluation>,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/evaluations`, evaluation, options)
+  return axios.post("/evaluations", evaluation, options)
 }
 
 /**
@@ -541,7 +536,7 @@ export const evaluationsDelete = <TData = AxiosResponse<void>>(
 export const modelsListSupportedLocales = <TData = AxiosResponse<string[]>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/models/locales`, options)
+  return axios.get("/models/locales", options)
 }
 
 /**
@@ -551,7 +546,7 @@ export const modelsListCustomModels = <TData = AxiosResponse<PaginatedCustomMode
   params?: ModelsListCustomModelsParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/models`, {
+  return axios.get("/models", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -564,7 +559,7 @@ export const modelsCreate = <TData = AxiosResponse<CustomModel>>(
   customModel: NonReadonly<CustomModel>,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/models`, customModel, options)
+  return axios.post("/models", customModel, options)
 }
 
 /**
@@ -574,7 +569,7 @@ export const modelsListBaseModels = <TData = AxiosResponse<PaginatedBaseModels>>
   params?: ModelsListBaseModelsParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/models/base`, {
+  return axios.get("/models/base", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -698,7 +693,7 @@ export const modelsGetFile = <TData = AxiosResponse<File>>(
 export const projectsListSupportedLocales = <TData = AxiosResponse<string[]>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/projects/locales`, options)
+  return axios.get("/projects/locales", options)
 }
 
 /**
@@ -708,7 +703,7 @@ export const projectsList = <TData = AxiosResponse<PaginatedProjects>>(
   params?: ProjectsListParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/projects`, {
+  return axios.get("/projects", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -721,7 +716,7 @@ export const projectsCreate = <TData = AxiosResponse<Project>>(
   project: NonReadonly<Project>,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/projects`, project, options)
+  return axios.post("/projects", project, options)
 }
 
 /**
@@ -831,7 +826,7 @@ export const projectsListTranscriptions = <TData = AxiosResponse<PaginatedTransc
 export const transcriptionsListSupportedLocales = <TData = AxiosResponse<string[]>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/transcriptions/locales`, options)
+  return axios.get("/transcriptions/locales", options)
 }
 
 /**
@@ -841,7 +836,7 @@ export const transcriptionsList = <TData = AxiosResponse<PaginatedTranscriptions
   params?: TranscriptionsListParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/transcriptions`, {
+  return axios.get("/transcriptions", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -854,7 +849,7 @@ export const transcriptionsCreate = <TData = AxiosResponse<Transcription>>(
   transcription: NonReadonly<Transcription>,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/transcriptions`, transcription, options)
+  return axios.post("/transcriptions", transcription, options)
 }
 
 /**
@@ -924,7 +919,7 @@ export const webHooksList = <TData = AxiosResponse<PaginatedWebHooks>>(
   params?: WebHooksListParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/webhooks`, {
+  return axios.get("/webhooks", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -946,7 +941,7 @@ export const webHooksCreate = <TData = AxiosResponse<WebHook>>(
   webHook: NonReadonly<WebHook>,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/webhooks`, webHook, options)
+  return axios.post("/webhooks", webHook, options)
 }
 
 /**
@@ -1025,7 +1020,7 @@ export const webHooksTest = <TData = AxiosResponse<void>>(
 export const serviceHealthGet = <TData = AxiosResponse<ServiceHealth>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/healthstatus`, options)
+  return axios.get("/healthstatus", options)
 }
 
 export type DatasetsListSupportedLocalesResult = AxiosResponse<DatasetLocales>

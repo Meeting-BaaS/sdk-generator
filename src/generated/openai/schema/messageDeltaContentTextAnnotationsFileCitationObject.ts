@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaContentTextAnnotationsFileCitationObjectType } from "./messageDeltaContentTextAnnotationsFileCitationObjectType"
+
 import type { MessageDeltaContentTextAnnotationsFileCitationObjectFileCitation } from "./messageDeltaContentTextAnnotationsFileCitationObjectFileCitation"
+import type { MessageDeltaContentTextAnnotationsFileCitationObjectType } from "./messageDeltaContentTextAnnotationsFileCitationObjectType"
 
 /**
  * A citation within the message that points to a specific quote from a specific File associated with the assistant or the message. Generated when the assistant uses the "file_search" tool to search files.

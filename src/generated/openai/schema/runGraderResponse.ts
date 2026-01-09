@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { RunGraderResponseMetadata } from "./runGraderResponseMetadata"
-import type { RunGraderResponseSubRewards } from "./runGraderResponseSubRewards"
 import type { RunGraderResponseModelGraderTokenUsagePerModel } from "./runGraderResponseModelGraderTokenUsagePerModel"
+import type { RunGraderResponseSubRewards } from "./runGraderResponseSubRewards"
 
 export interface RunGraderResponse {
   reward: number

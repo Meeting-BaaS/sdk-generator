@@ -5,17 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepObjectObject } from "./runStepObjectObject"
-import type { RunStepObjectType } from "./runStepObjectType"
-import type { RunStepObjectStatus } from "./runStepObjectStatus"
-import type { RunStepObjectStepDetails } from "./runStepObjectStepDetails"
-import type { RunStepObjectLastError } from "./runStepObjectLastError"
-import type { RunStepObjectExpiredAt } from "./runStepObjectExpiredAt"
-import type { RunStepObjectCancelledAt } from "./runStepObjectCancelledAt"
-import type { RunStepObjectFailedAt } from "./runStepObjectFailedAt"
-import type { RunStepObjectCompletedAt } from "./runStepObjectCompletedAt"
+
 import type { Metadata } from "./metadata"
 import type { RunStepCompletionUsage } from "./runStepCompletionUsage"
+import type { RunStepObjectCancelledAt } from "./runStepObjectCancelledAt"
+import type { RunStepObjectCompletedAt } from "./runStepObjectCompletedAt"
+import type { RunStepObjectExpiredAt } from "./runStepObjectExpiredAt"
+import type { RunStepObjectFailedAt } from "./runStepObjectFailedAt"
+import type { RunStepObjectLastError } from "./runStepObjectLastError"
+import type { RunStepObjectObject } from "./runStepObjectObject"
+import type { RunStepObjectStatus } from "./runStepObjectStatus"
+import type { RunStepObjectStepDetails } from "./runStepObjectStepDetails"
+import type { RunStepObjectType } from "./runStepObjectType"
 
 /**
  * Represents a step in execution of a run.

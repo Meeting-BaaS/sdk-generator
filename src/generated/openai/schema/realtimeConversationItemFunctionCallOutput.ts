@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { RealtimeConversationItemFunctionCallOutputObject } from "./realtimeConversationItemFunctionCallOutputObject"
-import type { RealtimeConversationItemFunctionCallOutputType } from "./realtimeConversationItemFunctionCallOutputType"
 import type { RealtimeConversationItemFunctionCallOutputStatus } from "./realtimeConversationItemFunctionCallOutputStatus"
+import type { RealtimeConversationItemFunctionCallOutputType } from "./realtimeConversationItemFunctionCallOutputType"
 
 /**
  * A function call output item in a Realtime conversation.

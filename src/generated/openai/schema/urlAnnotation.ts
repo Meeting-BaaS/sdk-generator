@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UrlAnnotationType } from "./urlAnnotationType"
+
 import type { UrlAnnotationSource } from "./urlAnnotationSource"
+import type { UrlAnnotationType } from "./urlAnnotationType"
 
 /**
  * Annotation that references a URL.

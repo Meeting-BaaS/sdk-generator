@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionMessageToolCallChunkType } from "./chatCompletionMessageToolCallChunkType"
+
 import type { ChatCompletionMessageToolCallChunkFunction } from "./chatCompletionMessageToolCallChunkFunction"
+import type { ChatCompletionMessageToolCallChunkType } from "./chatCompletionMessageToolCallChunkType"
 
 export interface ChatCompletionMessageToolCallChunk {
   index: number

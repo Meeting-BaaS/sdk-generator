@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VideoResource } from "./videoResource"
+
 import type { VideoListResourceFirstId } from "./videoListResourceFirstId"
 import type { VideoListResourceLastId } from "./videoListResourceLastId"
+import type { VideoResource } from "./videoResource"
 
 export interface VideoListResource {
   /** The type of object returned, must be `list`. */

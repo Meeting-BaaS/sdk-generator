@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RoleObject } from "./roleObject"
+
 import type { RoleDescription } from "./roleDescription"
+import type { RoleObject } from "./roleObject"
 
 /**
  * Details about a role that can be assigned through the public Roles API.

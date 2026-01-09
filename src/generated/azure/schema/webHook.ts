@@ -5,11 +5,12 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { WebHookLinks } from "./webHookLinks"
-import type { WebHookProperties } from "./webHookProperties"
-import type { WebHookEvents } from "./webHookEvents"
+
 import type { Status } from "./status"
 import type { WebHookCustomProperties } from "./webHookCustomProperties"
+import type { WebHookEvents } from "./webHookEvents"
+import type { WebHookLinks } from "./webHookLinks"
+import type { WebHookProperties } from "./webHookProperties"
 
 export interface WebHook {
   /** The registered URL that will be used to send the POST requests for the registered events to. */

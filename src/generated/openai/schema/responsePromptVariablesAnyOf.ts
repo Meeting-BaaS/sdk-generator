@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputTextContent } from "./inputTextContent"
-import type { InputImageContent } from "./inputImageContent"
+
 import type { InputFileContent } from "./inputFileContent"
+import type { InputImageContent } from "./inputImageContent"
+import type { InputTextContent } from "./inputTextContent"
 
 /**
  * Optional map of values to substitute in for variables in your

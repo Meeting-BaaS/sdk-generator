@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatSessionResourceObject } from "./chatSessionResourceObject"
+
 import type { ChatkitWorkflow } from "./chatkitWorkflow"
-import type { ChatSessionRateLimits } from "./chatSessionRateLimits"
-import type { ChatSessionStatus } from "./chatSessionStatus"
 import type { ChatSessionChatkitConfiguration } from "./chatSessionChatkitConfiguration"
+import type { ChatSessionRateLimits } from "./chatSessionRateLimits"
+import type { ChatSessionResourceObject } from "./chatSessionResourceObject"
+import type { ChatSessionStatus } from "./chatSessionStatus"
 
 /**
  * Represents a ChatKit session and its resolved configuration.

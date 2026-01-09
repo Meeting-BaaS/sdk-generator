@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { AudioChunkAckMessageData } from "./audioChunkAckMessageData"
 import type { AudioChunkAckMessageError } from "./audioChunkAckMessageError"
 import type { AudioChunkAckMessageType } from "./audioChunkAckMessageType"
-import type { AudioChunkAckMessageData } from "./audioChunkAckMessageData"
 
 export interface AudioChunkAckMessage {
   /** Id of the live session */

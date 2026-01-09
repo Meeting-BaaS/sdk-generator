@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionAllowedToolsChoiceType } from "./chatCompletionAllowedToolsChoiceType"
+
 import type { ChatCompletionAllowedTools } from "./chatCompletionAllowedTools"
+import type { ChatCompletionAllowedToolsChoiceType } from "./chatCompletionAllowedToolsChoiceType"
 
 /**
  * Constrains the tools available to the model to a pre-defined set.

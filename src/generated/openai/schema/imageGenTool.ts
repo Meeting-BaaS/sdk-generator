@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageGenToolType } from "./imageGenToolType"
-import type { ImageGenToolModel } from "./imageGenToolModel"
-import type { ImageGenToolQuality } from "./imageGenToolQuality"
-import type { ImageGenToolSize } from "./imageGenToolSize"
-import type { ImageGenToolOutputFormat } from "./imageGenToolOutputFormat"
-import type { ImageGenToolModeration } from "./imageGenToolModeration"
+
 import type { ImageGenToolBackground } from "./imageGenToolBackground"
 import type { ImageGenToolInputFidelity } from "./imageGenToolInputFidelity"
 import type { ImageGenToolInputImageMask } from "./imageGenToolInputImageMask"
+import type { ImageGenToolModel } from "./imageGenToolModel"
+import type { ImageGenToolModeration } from "./imageGenToolModeration"
+import type { ImageGenToolOutputFormat } from "./imageGenToolOutputFormat"
+import type { ImageGenToolQuality } from "./imageGenToolQuality"
+import type { ImageGenToolSize } from "./imageGenToolSize"
+import type { ImageGenToolType } from "./imageGenToolType"
 
 /**
  * A tool that generates images using a model like `gpt-image-1`.

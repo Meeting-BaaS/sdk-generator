@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TruncationObjectType } from "./truncationObjectType"
+
 import type { TruncationObjectLastMessages } from "./truncationObjectLastMessages"
+import type { TruncationObjectType } from "./truncationObjectType"
 
 /**
  * Controls for how a thread will be truncated prior to the run. Use this to control the initial context window of the run.

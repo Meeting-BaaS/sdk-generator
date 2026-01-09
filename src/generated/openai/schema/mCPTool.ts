@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolType } from "./mCPToolType"
+
+import type { MCPToolAllowedTools } from "./mCPToolAllowedTools"
 import type { MCPToolConnectorId } from "./mCPToolConnectorId"
 import type { MCPToolHeaders } from "./mCPToolHeaders"
-import type { MCPToolAllowedTools } from "./mCPToolAllowedTools"
 import type { MCPToolRequireApproval } from "./mCPToolRequireApproval"
+import type { MCPToolType } from "./mCPToolType"
 
 /**
  * Give the model access to additional tools via remote Model Context Protocol

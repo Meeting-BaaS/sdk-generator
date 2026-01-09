@@ -5,7 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderScoreModel } from "./graderScoreModel"
+
 import type { EvalGraderScoreModelAllOf } from "./evalGraderScoreModelAllOf"
+import type { GraderScoreModel } from "./graderScoreModel"
 
 export type EvalGraderScoreModel = GraderScoreModel & EvalGraderScoreModelAllOf

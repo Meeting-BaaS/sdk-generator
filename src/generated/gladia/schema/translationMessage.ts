@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { TranslationMessageData } from "./translationMessageData"
 import type { TranslationMessageError } from "./translationMessageError"
 import type { TranslationMessageType } from "./translationMessageType"
-import type { TranslationMessageData } from "./translationMessageData"
 
 export interface TranslationMessage {
   /** Id of the live session */

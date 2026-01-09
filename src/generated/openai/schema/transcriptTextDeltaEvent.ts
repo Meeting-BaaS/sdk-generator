@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextDeltaEventType } from "./transcriptTextDeltaEventType"
+
 import type { TranscriptTextDeltaEventLogprobsItem } from "./transcriptTextDeltaEventLogprobsItem"
+import type { TranscriptTextDeltaEventType } from "./transcriptTextDeltaEventType"
 
 /**
  * Emitted when there is an additional text delta. This is also the first event emitted when the transcription starts. Only emitted when you [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription) with the `Stream` parameter set to `true`.

@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadStreamEvent } from "./threadStreamEvent"
-import type { RunStreamEvent } from "./runStreamEvent"
-import type { RunStepStreamEvent } from "./runStepStreamEvent"
-import type { MessageStreamEvent } from "./messageStreamEvent"
+
 import type { ErrorEvent } from "./errorEvent"
+import type { MessageStreamEvent } from "./messageStreamEvent"
+import type { RunStepStreamEvent } from "./runStepStreamEvent"
+import type { RunStreamEvent } from "./runStreamEvent"
+import type { ThreadStreamEvent } from "./threadStreamEvent"
 
 /**
  * Represents an event emitted when streaming a Run.

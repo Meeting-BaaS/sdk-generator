@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPApprovalResponseResourceType } from "./mCPApprovalResponseResourceType"
+
 import type { MCPApprovalResponseResourceReason } from "./mCPApprovalResponseResourceReason"
+import type { MCPApprovalResponseResourceType } from "./mCPApprovalResponseResourceType"
 
 /**
  * A response to an MCP approval request.

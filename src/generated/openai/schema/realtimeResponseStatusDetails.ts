@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeResponseStatusDetailsType } from "./realtimeResponseStatusDetailsType"
-import type { RealtimeResponseStatusDetailsReason } from "./realtimeResponseStatusDetailsReason"
+
 import type { RealtimeResponseStatusDetailsError } from "./realtimeResponseStatusDetailsError"
+import type { RealtimeResponseStatusDetailsReason } from "./realtimeResponseStatusDetailsReason"
+import type { RealtimeResponseStatusDetailsType } from "./realtimeResponseStatusDetailsType"
 
 /**
  * Additional details about the status.

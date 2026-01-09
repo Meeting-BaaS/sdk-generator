@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageEditCompletedEventType } from "./imageEditCompletedEventType"
-import type { ImageEditCompletedEventSize } from "./imageEditCompletedEventSize"
-import type { ImageEditCompletedEventQuality } from "./imageEditCompletedEventQuality"
+
 import type { ImageEditCompletedEventBackground } from "./imageEditCompletedEventBackground"
 import type { ImageEditCompletedEventOutputFormat } from "./imageEditCompletedEventOutputFormat"
+import type { ImageEditCompletedEventQuality } from "./imageEditCompletedEventQuality"
+import type { ImageEditCompletedEventSize } from "./imageEditCompletedEventSize"
+import type { ImageEditCompletedEventType } from "./imageEditCompletedEventType"
 import type { ImagesUsage } from "./imagesUsage"
 
 /**

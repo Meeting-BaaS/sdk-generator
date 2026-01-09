@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { ActiveStatus } from "./activeStatus"
-import type { LockedStatus } from "./lockedStatus"
 import type { ClosedStatus } from "./closedStatus"
+import type { LockedStatus } from "./lockedStatus"
 
 /**
  * Current status for the thread. Defaults to `active` for newly created threads.

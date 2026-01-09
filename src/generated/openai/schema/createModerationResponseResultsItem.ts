@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { CreateModerationResponseResultsItemCategories } from "./createModerationResponseResultsItemCategories"
-import type { CreateModerationResponseResultsItemCategoryScores } from "./createModerationResponseResultsItemCategoryScores"
 import type { CreateModerationResponseResultsItemCategoryAppliedInputTypes } from "./createModerationResponseResultsItemCategoryAppliedInputTypes"
+import type { CreateModerationResponseResultsItemCategoryScores } from "./createModerationResponseResultsItemCategoryScores"
 
 export type CreateModerationResponseResultsItem = {
   /** Whether any of the below categories are flagged. */

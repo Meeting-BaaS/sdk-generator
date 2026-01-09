@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunGraderResponseMetadataErrorsPythonGraderServerErrorType } from "./runGraderResponseMetadataErrorsPythonGraderServerErrorType"
-import type { RunGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails } from "./runGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails"
+
 import type { RunGraderResponseMetadataErrorsModelGraderServerErrorDetails } from "./runGraderResponseMetadataErrorsModelGraderServerErrorDetails"
+import type { RunGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails } from "./runGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails"
+import type { RunGraderResponseMetadataErrorsPythonGraderServerErrorType } from "./runGraderResponseMetadataErrorsPythonGraderServerErrorType"
 
 export type RunGraderResponseMetadataErrors = {
   formula_parse_error: boolean

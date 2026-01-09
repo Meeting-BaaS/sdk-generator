@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { WebhookTranscriptionCreatedPayloadEvent } from "./webhookTranscriptionCreatedPayloadEvent"
+
 import type { PreRecordedEventPayload } from "./preRecordedEventPayload"
+import type { WebhookTranscriptionCreatedPayloadEvent } from "./webhookTranscriptionCreatedPayloadEvent"
 
 export interface WebhookTranscriptionCreatedPayload {
   event: WebhookTranscriptionCreatedPayloadEvent

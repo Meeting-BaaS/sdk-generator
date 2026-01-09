@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { ModelResponseProperties } from "./modelResponseProperties"
-import type { ResponseProperties } from "./responseProperties"
 import type { ResponseAllOf } from "./responseAllOf"
+import type { ResponseProperties } from "./responseProperties"
 
 export type Response = ModelResponseProperties &
   ResponseProperties &

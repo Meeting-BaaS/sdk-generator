@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AttachmentType } from "./attachmentType"
+
 import type { AttachmentPreviewUrl } from "./attachmentPreviewUrl"
+import type { AttachmentType } from "./attachmentType"
 
 /**
  * Attachment metadata included on thread items.

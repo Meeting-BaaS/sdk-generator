@@ -6,18 +6,19 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedCallbackParameter } from "./sharedCallbackParameter"
+
+import type { ReadV1LanguageParameter } from "./readV1LanguageParameter"
 import type { SharedCallbackMethodParameter } from "./sharedCallbackMethodParameter"
+import type { SharedCallbackParameter } from "./sharedCallbackParameter"
+import type { SharedCustomIntentModeParameter } from "./sharedCustomIntentModeParameter"
+import type { SharedCustomIntentParameter } from "./sharedCustomIntentParameter"
+import type { SharedCustomTopicModeParameter } from "./sharedCustomTopicModeParameter"
+import type { SharedCustomTopicParameter } from "./sharedCustomTopicParameter"
+import type { SharedIntentsParameter } from "./sharedIntentsParameter"
 import type { SharedSentimentParameter } from "./sharedSentimentParameter"
 import type { SharedSummarizeParameter } from "./sharedSummarizeParameter"
 import type { SharedTagParameter } from "./sharedTagParameter"
 import type { SharedTopicsParameter } from "./sharedTopicsParameter"
-import type { SharedCustomTopicParameter } from "./sharedCustomTopicParameter"
-import type { SharedCustomTopicModeParameter } from "./sharedCustomTopicModeParameter"
-import type { SharedIntentsParameter } from "./sharedIntentsParameter"
-import type { SharedCustomIntentParameter } from "./sharedCustomIntentParameter"
-import type { SharedCustomIntentModeParameter } from "./sharedCustomIntentModeParameter"
-import type { ReadV1LanguageParameter } from "./readV1LanguageParameter"
 
 export type ReadV1TextAnalyzeParams = {
   /**

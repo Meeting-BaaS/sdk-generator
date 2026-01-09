@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VoiceIdsShared } from "./voiceIdsShared"
+
 import type { CreateChatCompletionRequestAllOfAudioFormat } from "./createChatCompletionRequestAllOfAudioFormat"
+import type { VoiceIdsShared } from "./voiceIdsShared"
 
 /**
  * Parameters for audio output. Required when audio output is requested with

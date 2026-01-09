@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatText } from "./responseFormatText"
-import type { ResponseFormatJsonSchema } from "./responseFormatJsonSchema"
+
 import type { ResponseFormatJsonObject } from "./responseFormatJsonObject"
+import type { ResponseFormatJsonSchema } from "./responseFormatJsonSchema"
+import type { ResponseFormatText } from "./responseFormatText"
 
 /**
  * An object specifying the format that the model must output.

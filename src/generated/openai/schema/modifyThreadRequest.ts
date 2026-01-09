@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModifyThreadRequestToolResources } from "./modifyThreadRequestToolResources"
+
 import type { Metadata } from "./metadata"
+import type { ModifyThreadRequestToolResources } from "./modifyThreadRequestToolResources"
 
 export interface ModifyThreadRequest {
   tool_resources?: ModifyThreadRequestToolResources

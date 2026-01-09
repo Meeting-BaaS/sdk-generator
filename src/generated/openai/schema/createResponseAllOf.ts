@@ -5,14 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputParam } from "./inputParam"
+
+import type { CreateResponseAllOfConversation } from "./createResponseAllOfConversation"
 import type { CreateResponseAllOfInclude } from "./createResponseAllOfInclude"
+import type { CreateResponseAllOfInstructions } from "./createResponseAllOfInstructions"
 import type { CreateResponseAllOfParallelToolCalls } from "./createResponseAllOfParallelToolCalls"
 import type { CreateResponseAllOfStore } from "./createResponseAllOfStore"
-import type { CreateResponseAllOfInstructions } from "./createResponseAllOfInstructions"
 import type { CreateResponseAllOfStream } from "./createResponseAllOfStream"
+import type { InputParam } from "./inputParam"
 import type { ResponseStreamOptions } from "./responseStreamOptions"
-import type { CreateResponseAllOfConversation } from "./createResponseAllOfConversation"
 
 export type CreateResponseAllOf = {
   input?: InputParam

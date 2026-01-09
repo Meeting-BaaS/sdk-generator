@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { MessageStreamEventAnyOf } from "./messageStreamEventAnyOf"
-import type { MessageStreamEventAnyOfThree } from "./messageStreamEventAnyOfThree"
 import type { MessageStreamEventAnyOfFive } from "./messageStreamEventAnyOfFive"
-import type { MessageStreamEventAnyOfSeven } from "./messageStreamEventAnyOfSeven"
 import type { MessageStreamEventAnyOfNine } from "./messageStreamEventAnyOfNine"
+import type { MessageStreamEventAnyOfSeven } from "./messageStreamEventAnyOfSeven"
+import type { MessageStreamEventAnyOfThree } from "./messageStreamEventAnyOfThree"
 
 export type MessageStreamEvent =
   | MessageStreamEventAnyOf

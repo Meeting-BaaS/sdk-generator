@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { CreateImageRequestBackground } from "./createImageRequestBackground"
 import type { CreateImageRequestModel } from "./createImageRequestModel"
+import type { CreateImageRequestModeration } from "./createImageRequestModeration"
+import type { CreateImageRequestOutputFormat } from "./createImageRequestOutputFormat"
 import type { CreateImageRequestQuality } from "./createImageRequestQuality"
 import type { CreateImageRequestResponseFormat } from "./createImageRequestResponseFormat"
-import type { CreateImageRequestOutputFormat } from "./createImageRequestOutputFormat"
-import type { PartialImages } from "./partialImages"
 import type { CreateImageRequestSize } from "./createImageRequestSize"
-import type { CreateImageRequestModeration } from "./createImageRequestModeration"
-import type { CreateImageRequestBackground } from "./createImageRequestBackground"
 import type { CreateImageRequestStyle } from "./createImageRequestStyle"
+import type { PartialImages } from "./partialImages"
 
 export interface CreateImageRequest {
   /** A text description of the desired image(s). The maximum length is 32000 characters for `gpt-image-1`, 1000 characters for `dall-e-2` and 4000 characters for `dall-e-3`. */

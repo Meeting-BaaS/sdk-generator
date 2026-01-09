@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { CreateEmbeddingRequestEncodingFormat } from "./createEmbeddingRequestEncodingFormat"
 import type { CreateEmbeddingRequestInput } from "./createEmbeddingRequestInput"
 import type { CreateEmbeddingRequestModel } from "./createEmbeddingRequestModel"
-import type { CreateEmbeddingRequestEncodingFormat } from "./createEmbeddingRequestEncodingFormat"
 
 export interface CreateEmbeddingRequest {
   /** Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input tokens for the model (8192 tokens for all embedding models), cannot be an empty string, and any array must be 2048 dimensions or less. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens. In addition to the per-input token limit, all embedding  models enforce a maximum of 300,000 tokens summed across all inputs in a  single request.

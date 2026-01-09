@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { Metadata } from "./metadata"
 import type { ThreadObjectObject } from "./threadObjectObject"
 import type { ThreadObjectToolResources } from "./threadObjectToolResources"
-import type { Metadata } from "./metadata"
 
 /**
  * Represents a thread that contains [messages](https://platform.openai.com/docs/api-reference/messages).

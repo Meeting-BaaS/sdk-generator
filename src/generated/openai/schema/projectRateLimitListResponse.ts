@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectRateLimitListResponseObject } from "./projectRateLimitListResponseObject"
+
 import type { ProjectRateLimit } from "./projectRateLimit"
+import type { ProjectRateLimitListResponseObject } from "./projectRateLimitListResponseObject"
 
 export interface ProjectRateLimitListResponse {
   object: ProjectRateLimitListResponseObject

@@ -7,9 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * ManageV1GroupingParameter type definition
- */
 
 /**
  * ManageV1GroupingParameter type definition

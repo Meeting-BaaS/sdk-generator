@@ -5,18 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionTool } from "./functionTool"
-import type { FileSearchTool } from "./fileSearchTool"
-import type { ComputerUsePreviewTool } from "./computerUsePreviewTool"
-import type { WebSearchTool } from "./webSearchTool"
-import type { MCPTool } from "./mCPTool"
+
+import type { ApplyPatchToolParam } from "./applyPatchToolParam"
 import type { CodeInterpreterTool } from "./codeInterpreterTool"
+import type { ComputerUsePreviewTool } from "./computerUsePreviewTool"
+import type { CustomToolParam } from "./customToolParam"
+import type { FileSearchTool } from "./fileSearchTool"
+import type { FunctionShellToolParam } from "./functionShellToolParam"
+import type { FunctionTool } from "./functionTool"
 import type { ImageGenTool } from "./imageGenTool"
 import type { LocalShellToolParam } from "./localShellToolParam"
-import type { FunctionShellToolParam } from "./functionShellToolParam"
-import type { CustomToolParam } from "./customToolParam"
+import type { MCPTool } from "./mCPTool"
 import type { WebSearchPreviewTool } from "./webSearchPreviewTool"
-import type { ApplyPatchToolParam } from "./applyPatchToolParam"
+import type { WebSearchTool } from "./webSearchTool"
 
 /**
  * A tool that can be used to generate a response.

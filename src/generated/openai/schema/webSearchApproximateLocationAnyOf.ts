@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchApproximateLocationAnyOfType } from "./webSearchApproximateLocationAnyOfType"
+
+import type { WebSearchApproximateLocationAnyOfCity } from "./webSearchApproximateLocationAnyOfCity"
 import type { WebSearchApproximateLocationAnyOfCountry } from "./webSearchApproximateLocationAnyOfCountry"
 import type { WebSearchApproximateLocationAnyOfRegion } from "./webSearchApproximateLocationAnyOfRegion"
-import type { WebSearchApproximateLocationAnyOfCity } from "./webSearchApproximateLocationAnyOfCity"
 import type { WebSearchApproximateLocationAnyOfTimezone } from "./webSearchApproximateLocationAnyOfTimezone"
+import type { WebSearchApproximateLocationAnyOfType } from "./webSearchApproximateLocationAnyOfType"
 
 /**
  * The approximate location of the user.

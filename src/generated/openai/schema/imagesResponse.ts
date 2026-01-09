@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { Image } from "./image"
+import type { ImageGenUsage } from "./imageGenUsage"
 import type { ImagesResponseBackground } from "./imagesResponseBackground"
 import type { ImagesResponseOutputFormat } from "./imagesResponseOutputFormat"
-import type { ImagesResponseSize } from "./imagesResponseSize"
 import type { ImagesResponseQuality } from "./imagesResponseQuality"
-import type { ImageGenUsage } from "./imageGenUsage"
+import type { ImagesResponseSize } from "./imagesResponseSize"
 
 /**
  * The response from the image generation endpoint.

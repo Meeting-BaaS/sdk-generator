@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionMessageToolCallType } from "./chatCompletionMessageToolCallType"
+
 import type { ChatCompletionMessageToolCallFunction } from "./chatCompletionMessageToolCallFunction"
+import type { ChatCompletionMessageToolCallType } from "./chatCompletionMessageToolCallType"
 
 /**
  * A call to a function tool created by the model.

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationItemCreatedPreviousItemId } from "./realtimeServerEventConversationItemCreatedPreviousItemId"
+
 import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { RealtimeServerEventConversationItemCreatedPreviousItemId } from "./realtimeServerEventConversationItemCreatedPreviousItemId"
 
 /**
  * Returned when a conversation item is created. There are several scenarios that produce this event:

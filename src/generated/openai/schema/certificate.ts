@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CertificateObject } from "./certificateObject"
+
 import type { CertificateCertificateDetails } from "./certificateCertificateDetails"
+import type { CertificateObject } from "./certificateObject"
 
 /**
  * Represents an individual `certificate` uploaded to the organization.

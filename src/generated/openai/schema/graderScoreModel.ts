@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderScoreModelType } from "./graderScoreModelType"
-import type { GraderScoreModelSamplingParams } from "./graderScoreModelSamplingParams"
+
 import type { EvalItem } from "./evalItem"
+import type { GraderScoreModelSamplingParams } from "./graderScoreModelSamplingParams"
+import type { GraderScoreModelType } from "./graderScoreModelType"
 
 /**
  * A ScoreModelGrader object that uses a model to assign a score to the input.

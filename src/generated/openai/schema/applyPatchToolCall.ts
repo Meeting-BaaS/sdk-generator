@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchToolCallType } from "./applyPatchToolCallType"
+
 import type { ApplyPatchCallStatus } from "./applyPatchCallStatus"
 import type { ApplyPatchToolCallOperation } from "./applyPatchToolCallOperation"
+import type { ApplyPatchToolCallType } from "./applyPatchToolCallType"
 
 /**
  * A tool call that applies file diffs by creating, deleting, or updating files.

@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionControllerListV2StatusItem } from "./transcriptionControllerListV2StatusItem"
+
 import type { TranscriptionControllerListV2KindItem } from "./transcriptionControllerListV2KindItem"
+import type { TranscriptionControllerListV2StatusItem } from "./transcriptionControllerListV2StatusItem"
 
 export type TranscriptionControllerListV2Params = {
   /**

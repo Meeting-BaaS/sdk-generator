@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolCallType } from "./mCPToolCallType"
-import type { MCPToolCallOutput } from "./mCPToolCallOutput"
-import type { MCPToolCallError } from "./mCPToolCallError"
-import type { MCPToolCallStatus } from "./mCPToolCallStatus"
+
 import type { MCPToolCallApprovalRequestId } from "./mCPToolCallApprovalRequestId"
+import type { MCPToolCallError } from "./mCPToolCallError"
+import type { MCPToolCallOutput } from "./mCPToolCallOutput"
+import type { MCPToolCallStatus } from "./mCPToolCallStatus"
+import type { MCPToolCallType } from "./mCPToolCallType"
 
 /**
  * An invocation of a tool on an MCP server.

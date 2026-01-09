@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputTextContentParam } from "./inputTextContentParam"
-import type { InputImageContentParamAutoParam } from "./inputImageContentParamAutoParam"
+
 import type { InputFileContentParam } from "./inputFileContentParam"
+import type { InputImageContentParamAutoParam } from "./inputImageContentParamAutoParam"
+import type { InputTextContentParam } from "./inputTextContentParam"
 
 export type FunctionCallOutputItemParamOutputAnyOfItem =
   | InputTextContentParam

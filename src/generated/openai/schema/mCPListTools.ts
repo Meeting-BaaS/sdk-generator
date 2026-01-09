@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPListToolsType } from "./mCPListToolsType"
-import type { MCPListToolsTool } from "./mCPListToolsTool"
+
 import type { MCPListToolsError } from "./mCPListToolsError"
+import type { MCPListToolsTool } from "./mCPListToolsTool"
+import type { MCPListToolsType } from "./mCPListToolsType"
 
 /**
  * A list of tools available on an MCP server.

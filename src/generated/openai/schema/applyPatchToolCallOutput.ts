@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchToolCallOutputType } from "./applyPatchToolCallOutputType"
+
 import type { ApplyPatchCallOutputStatus } from "./applyPatchCallOutputStatus"
 import type { ApplyPatchToolCallOutputOutput } from "./applyPatchToolCallOutputOutput"
+import type { ApplyPatchToolCallOutputType } from "./applyPatchToolCallOutputType"
 
 /**
  * The output emitted by an apply patch tool call.

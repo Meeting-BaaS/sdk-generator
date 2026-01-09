@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { GroupListResourceNext } from "./groupListResourceNext"
 import type { GroupListResourceObject } from "./groupListResourceObject"
 import type { GroupResponse } from "./groupResponse"
-import type { GroupListResourceNext } from "./groupListResourceNext"
 
 /**
  * Paginated list of organization groups.

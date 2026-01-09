@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UserListResourceObject } from "./userListResourceObject"
+
 import type { User } from "./user"
 import type { UserListResourceNext } from "./userListResourceNext"
+import type { UserListResourceObject } from "./userListResourceObject"
 
 /**
  * Paginated list of user objects returned when inspecting group membership.

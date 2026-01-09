@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuneReinforcementRequestInputMessagesItem } from "./fineTuneReinforcementRequestInputMessagesItem"
+
 import type { ChatCompletionTool } from "./chatCompletionTool"
+import type { FineTuneReinforcementRequestInputMessagesItem } from "./fineTuneReinforcementRequestInputMessagesItem"
 
 /**
  * Per-line training example for reinforcement fine-tuning. Note that `messages` and `tools` are the only reserved keywords.

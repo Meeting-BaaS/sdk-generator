@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestToolMessageRole } from "./chatCompletionRequestToolMessageRole"
+
 import type { ChatCompletionRequestToolMessageContent } from "./chatCompletionRequestToolMessageContent"
+import type { ChatCompletionRequestToolMessageRole } from "./chatCompletionRequestToolMessageRole"
 
 export interface ChatCompletionRequestToolMessage {
   /** The role of the messages author, in this case `tool`. */

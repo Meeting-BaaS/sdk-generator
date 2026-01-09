@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { PostSummarizationMessageDataProperty } from "./postSummarizationMessageDataProperty"
 import type { PostSummarizationMessageError } from "./postSummarizationMessageError"
 import type { PostSummarizationMessageType } from "./postSummarizationMessageType"
-import type { PostSummarizationMessageDataProperty } from "./postSummarizationMessageDataProperty"
 
 export interface PostSummarizationMessage {
   /** Id of the live session */

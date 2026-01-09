@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaResponseStatus } from "./realtimeBetaResponseStatus"
-import type { RealtimeBetaResponseStatusDetails } from "./realtimeBetaResponseStatusDetails"
-import type { RealtimeConversationItem } from "./realtimeConversationItem"
+
 import type { Metadata } from "./metadata"
-import type { RealtimeBetaResponseUsage } from "./realtimeBetaResponseUsage"
-import type { VoiceIdsShared } from "./voiceIdsShared"
+import type { RealtimeBetaResponseMaxOutputTokens } from "./realtimeBetaResponseMaxOutputTokens"
 import type { RealtimeBetaResponseModalitiesItem } from "./realtimeBetaResponseModalitiesItem"
 import type { RealtimeBetaResponseOutputAudioFormat } from "./realtimeBetaResponseOutputAudioFormat"
-import type { RealtimeBetaResponseMaxOutputTokens } from "./realtimeBetaResponseMaxOutputTokens"
+import type { RealtimeBetaResponseStatus } from "./realtimeBetaResponseStatus"
+import type { RealtimeBetaResponseStatusDetails } from "./realtimeBetaResponseStatusDetails"
+import type { RealtimeBetaResponseUsage } from "./realtimeBetaResponseUsage"
+import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { VoiceIdsShared } from "./voiceIdsShared"
 
 /**
  * The response resource.

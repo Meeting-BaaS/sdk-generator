@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionToolCallType } from "./functionToolCallType"
+
 import type { FunctionToolCallStatus } from "./functionToolCallStatus"
+import type { FunctionToolCallType } from "./functionToolCallType"
 
 /**
  * A tool call to run a function. See the 

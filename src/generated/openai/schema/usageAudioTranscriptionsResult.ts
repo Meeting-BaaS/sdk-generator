@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { UsageAudioTranscriptionsResultApiKeyId } from "./usageAudioTranscriptionsResultApiKeyId"
+import type { UsageAudioTranscriptionsResultModel } from "./usageAudioTranscriptionsResultModel"
 import type { UsageAudioTranscriptionsResultObject } from "./usageAudioTranscriptionsResultObject"
 import type { UsageAudioTranscriptionsResultProjectId } from "./usageAudioTranscriptionsResultProjectId"
 import type { UsageAudioTranscriptionsResultUserId } from "./usageAudioTranscriptionsResultUserId"
-import type { UsageAudioTranscriptionsResultApiKeyId } from "./usageAudioTranscriptionsResultApiKeyId"
-import type { UsageAudioTranscriptionsResultModel } from "./usageAudioTranscriptionsResultModel"
 
 /**
  * The aggregated audio transcriptions usage details of the specific time bucket.

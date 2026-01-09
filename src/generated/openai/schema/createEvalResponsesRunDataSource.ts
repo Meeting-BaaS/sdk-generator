@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalResponsesRunDataSourceType } from "./createEvalResponsesRunDataSourceType"
+
 import type { CreateEvalResponsesRunDataSourceInputMessages } from "./createEvalResponsesRunDataSourceInputMessages"
 import type { CreateEvalResponsesRunDataSourceSamplingParams } from "./createEvalResponsesRunDataSourceSamplingParams"
 import type { CreateEvalResponsesRunDataSourceSource } from "./createEvalResponsesRunDataSourceSource"
+import type { CreateEvalResponsesRunDataSourceType } from "./createEvalResponsesRunDataSourceType"
 
 /**
  * A ResponsesRunDataSource object describing a model sampling configuration.

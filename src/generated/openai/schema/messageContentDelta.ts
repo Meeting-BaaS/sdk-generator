@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { MessageDeltaContentImageFileObject } from "./messageDeltaContentImageFileObject"
-import type { MessageDeltaContentTextObject } from "./messageDeltaContentTextObject"
-import type { MessageDeltaContentRefusalObject } from "./messageDeltaContentRefusalObject"
 import type { MessageDeltaContentImageUrlObject } from "./messageDeltaContentImageUrlObject"
+import type { MessageDeltaContentRefusalObject } from "./messageDeltaContentRefusalObject"
+import type { MessageDeltaContentTextObject } from "./messageDeltaContentTextObject"
 
 export type MessageContentDelta =
   | MessageDeltaContentImageFileObject

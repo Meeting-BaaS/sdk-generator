@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { PublicRoleListResourceNext } from "./publicRoleListResourceNext"
 import type { PublicRoleListResourceObject } from "./publicRoleListResourceObject"
 import type { Role } from "./role"
-import type { PublicRoleListResourceNext } from "./publicRoleListResourceNext"
 
 /**
  * Paginated list of roles available on an organization or project.

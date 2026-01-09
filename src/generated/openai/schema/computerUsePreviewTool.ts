@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComputerUsePreviewToolType } from "./computerUsePreviewToolType"
+
 import type { ComputerEnvironment } from "./computerEnvironment"
+import type { ComputerUsePreviewToolType } from "./computerUsePreviewToolType"
 
 /**
  * A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).

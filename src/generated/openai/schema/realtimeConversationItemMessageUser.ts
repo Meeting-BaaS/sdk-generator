@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeConversationItemMessageUserObject } from "./realtimeConversationItemMessageUserObject"
-import type { RealtimeConversationItemMessageUserType } from "./realtimeConversationItemMessageUserType"
-import type { RealtimeConversationItemMessageUserStatus } from "./realtimeConversationItemMessageUserStatus"
-import type { RealtimeConversationItemMessageUserRole } from "./realtimeConversationItemMessageUserRole"
+
 import type { RealtimeConversationItemMessageUserContentItem } from "./realtimeConversationItemMessageUserContentItem"
+import type { RealtimeConversationItemMessageUserObject } from "./realtimeConversationItemMessageUserObject"
+import type { RealtimeConversationItemMessageUserRole } from "./realtimeConversationItemMessageUserRole"
+import type { RealtimeConversationItemMessageUserStatus } from "./realtimeConversationItemMessageUserStatus"
+import type { RealtimeConversationItemMessageUserType } from "./realtimeConversationItemMessageUserType"
 
 /**
  * A user message item in a Realtime conversation.

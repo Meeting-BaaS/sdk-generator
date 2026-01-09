@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateThreadRequest } from "./createThreadRequest"
-import type { CreateThreadAndRunRequestModel } from "./createThreadAndRunRequestModel"
-import type { AssistantTool } from "./assistantTool"
-import type { CreateThreadAndRunRequestToolResources } from "./createThreadAndRunRequestToolResources"
-import type { Metadata } from "./metadata"
-import type { CreateThreadAndRunRequestTruncationStrategy } from "./createThreadAndRunRequestTruncationStrategy"
-import type { CreateThreadAndRunRequestToolChoice } from "./createThreadAndRunRequestToolChoice"
-import type { ParallelToolCalls } from "./parallelToolCalls"
+
 import type { AssistantsApiResponseFormatOption } from "./assistantsApiResponseFormatOption"
+import type { AssistantTool } from "./assistantTool"
+import type { CreateThreadAndRunRequestModel } from "./createThreadAndRunRequestModel"
+import type { CreateThreadAndRunRequestToolChoice } from "./createThreadAndRunRequestToolChoice"
+import type { CreateThreadAndRunRequestToolResources } from "./createThreadAndRunRequestToolResources"
+import type { CreateThreadAndRunRequestTruncationStrategy } from "./createThreadAndRunRequestTruncationStrategy"
+import type { CreateThreadRequest } from "./createThreadRequest"
+import type { Metadata } from "./metadata"
+import type { ParallelToolCalls } from "./parallelToolCalls"
 
 export interface CreateThreadAndRunRequest {
   /** The ID of the [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to execute this run. */

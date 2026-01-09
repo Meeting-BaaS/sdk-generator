@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
+
 import type { SentencesDTO } from "./sentencesDTO"
 import type { SubtitleDTO } from "./subtitleDTO"
+import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
 import type { UtteranceDTO } from "./utteranceDTO"
 
 export interface TranscriptionDTO {

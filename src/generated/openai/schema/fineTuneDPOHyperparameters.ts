@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuneDPOHyperparametersBeta } from "./fineTuneDPOHyperparametersBeta"
+
 import type { FineTuneDPOHyperparametersBatchSize } from "./fineTuneDPOHyperparametersBatchSize"
+import type { FineTuneDPOHyperparametersBeta } from "./fineTuneDPOHyperparametersBeta"
 import type { FineTuneDPOHyperparametersLearningRateMultiplier } from "./fineTuneDPOHyperparametersLearningRateMultiplier"
 import type { FineTuneDPOHyperparametersNEpochs } from "./fineTuneDPOHyperparametersNEpochs"
 

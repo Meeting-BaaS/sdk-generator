@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InviteListResponseObject } from "./inviteListResponseObject"
+
 import type { Invite } from "./invite"
+import type { InviteListResponseObject } from "./inviteListResponseObject"
 
 export interface InviteListResponse {
   /** The object type, which is always `list` */

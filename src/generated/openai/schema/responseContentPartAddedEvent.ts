@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseContentPartAddedEventType } from "./responseContentPartAddedEventType"
+
 import type { OutputContent } from "./outputContent"
+import type { ResponseContentPartAddedEventType } from "./responseContentPartAddedEventType"
 
 /**
  * Emitted when a new content part is added.

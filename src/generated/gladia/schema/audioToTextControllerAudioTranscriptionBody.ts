@@ -4,10 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour } from "./audioToTextControllerAudioTranscriptionBodyLanguageBehaviour"
+
 import type { AudioToTextControllerAudioTranscriptionBodyLanguage } from "./audioToTextControllerAudioTranscriptionBodyLanguage"
-import type { AudioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage } from "./audioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage"
+import type { AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour } from "./audioToTextControllerAudioTranscriptionBodyLanguageBehaviour"
 import type { AudioToTextControllerAudioTranscriptionBodyOutputFormat } from "./audioToTextControllerAudioTranscriptionBodyOutputFormat"
+import type { AudioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage } from "./audioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage"
 
 export type AudioToTextControllerAudioTranscriptionBody = {
   audio?: Blob

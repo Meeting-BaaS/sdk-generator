@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationItemAddedPreviousItemId } from "./realtimeServerEventConversationItemAddedPreviousItemId"
+
 import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { RealtimeServerEventConversationItemAddedPreviousItemId } from "./realtimeServerEventConversationItemAddedPreviousItemId"
 
 /**
  * Sent by the server when an Item is added to the default Conversation. This can happen in several cases:

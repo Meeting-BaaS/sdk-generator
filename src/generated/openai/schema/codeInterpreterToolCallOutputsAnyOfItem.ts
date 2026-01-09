@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterOutputLogs } from "./codeInterpreterOutputLogs"
+
 import type { CodeInterpreterOutputImage } from "./codeInterpreterOutputImage"
+import type { CodeInterpreterOutputLogs } from "./codeInterpreterOutputLogs"
 
 export type CodeInterpreterToolCallOutputsAnyOfItem =
   | CodeInterpreterOutputLogs

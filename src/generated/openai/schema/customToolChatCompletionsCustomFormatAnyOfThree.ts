@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomToolChatCompletionsCustomFormatAnyOfThreeType } from "./customToolChatCompletionsCustomFormatAnyOfThreeType"
+
 import type { CustomToolChatCompletionsCustomFormatAnyOfThreeGrammar } from "./customToolChatCompletionsCustomFormatAnyOfThreeGrammar"
+import type { CustomToolChatCompletionsCustomFormatAnyOfThreeType } from "./customToolChatCompletionsCustomFormatAnyOfThreeType"
 
 /**
  * A grammar defined by the user.

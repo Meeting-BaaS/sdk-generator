@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseOutputItemDoneEventType } from "./responseOutputItemDoneEventType"
+
 import type { OutputItem } from "./outputItem"
+import type { ResponseOutputItemDoneEventType } from "./responseOutputItemDoneEventType"
 
 /**
  * Emitted when an output item is marked done.

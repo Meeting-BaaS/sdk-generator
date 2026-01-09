@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { OutputTextContentType } from "./outputTextContentType"
+
 import type { Annotation } from "./annotation"
 import type { LogProb } from "./logProb"
+import type { OutputTextContentType } from "./outputTextContentType"
 
 /**
  * A text output from the model.

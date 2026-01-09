@@ -5,12 +5,13 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Limit } from "./limit"
-import type { TranscriptStatus } from "./transcriptStatus"
-import type { CreatedOn } from "./createdOn"
-import type { BeforeId } from "./beforeId"
+
 import type { AfterId } from "./afterId"
+import type { BeforeId } from "./beforeId"
+import type { CreatedOn } from "./createdOn"
+import type { Limit } from "./limit"
 import type { ThrottledOnly } from "./throttledOnly"
+import type { TranscriptStatus } from "./transcriptStatus"
 
 export type ListTranscriptsParams = {
   /**

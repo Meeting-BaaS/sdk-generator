@@ -6,11 +6,12 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemWordsItem"
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphs } from "./listenV1ResponseResultsChannelsItemAlternativesItemParagraphs"
+
 import type { ListenV1ResponseResultsChannelsItemAlternativesItemEntitiesItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemEntitiesItem"
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphs } from "./listenV1ResponseResultsChannelsItemAlternativesItemParagraphs"
 import type { ListenV1ResponseResultsChannelsItemAlternativesItemSummariesItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemSummariesItem"
 import type { ListenV1ResponseResultsChannelsItemAlternativesItemTopicsItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemTopicsItem"
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemWordsItem"
 
 export type ListenV1ResponseResultsChannelsItemAlternativesItem = {
   transcript?: string

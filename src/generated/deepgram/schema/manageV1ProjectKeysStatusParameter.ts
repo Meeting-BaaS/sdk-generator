@@ -7,9 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * ManageV1ProjectKeysStatusParameter type definition
- */
 
 /**
  * ManageV1ProjectKeysStatusParameter type definition

@@ -6,9 +6,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ErrorResponseTextError } from "./errorResponseTextError"
+
 import type { ErrorResponseLegacyError } from "./errorResponseLegacyError"
 import type { ErrorResponseModernError } from "./errorResponseModernError"
+import type { ErrorResponseTextError } from "./errorResponseTextError"
 
 export type ErrorResponse =
   | ErrorResponseTextError

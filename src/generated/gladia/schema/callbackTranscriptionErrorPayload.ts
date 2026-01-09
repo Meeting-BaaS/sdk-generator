@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { CallbackTranscriptionErrorPayloadCustomMetadata } from "./callbackTranscriptionErrorPayloadCustomMetadata"
 import type { CallbackTranscriptionErrorPayloadEvent } from "./callbackTranscriptionErrorPayloadEvent"
 import type { ErrorDTO } from "./errorDTO"
-import type { CallbackTranscriptionErrorPayloadCustomMetadata } from "./callbackTranscriptionErrorPayloadCustomMetadata"
 
 export interface CallbackTranscriptionErrorPayload {
   /** Id of the job */

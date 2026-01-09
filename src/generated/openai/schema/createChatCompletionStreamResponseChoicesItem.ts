@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { ChatCompletionStreamResponseDelta } from "./chatCompletionStreamResponseDelta"
-import type { CreateChatCompletionStreamResponseChoicesItemLogprobs } from "./createChatCompletionStreamResponseChoicesItemLogprobs"
 import type { CreateChatCompletionStreamResponseChoicesItemFinishReason } from "./createChatCompletionStreamResponseChoicesItemFinishReason"
+import type { CreateChatCompletionStreamResponseChoicesItemLogprobs } from "./createChatCompletionStreamResponseChoicesItemLogprobs"
 
 export type CreateChatCompletionStreamResponseChoicesItem = {
   delta: ChatCompletionStreamResponseDelta

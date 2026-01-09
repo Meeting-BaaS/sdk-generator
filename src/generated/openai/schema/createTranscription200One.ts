@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateTranscriptionResponseJson } from "./createTranscriptionResponseJson"
+
 import type { CreateTranscriptionResponseDiarizedJson } from "./createTranscriptionResponseDiarizedJson"
+import type { CreateTranscriptionResponseJson } from "./createTranscriptionResponseJson"
 import type { CreateTranscriptionResponseVerboseJson } from "./createTranscriptionResponseVerboseJson"
 
 export type CreateTranscription200One =

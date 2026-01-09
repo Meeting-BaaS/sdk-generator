@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileSearchToolCallType } from "./fileSearchToolCallType"
-import type { FileSearchToolCallStatus } from "./fileSearchToolCallStatus"
+
 import type { FileSearchToolCallResults } from "./fileSearchToolCallResults"
+import type { FileSearchToolCallStatus } from "./fileSearchToolCallStatus"
+import type { FileSearchToolCallType } from "./fileSearchToolCallType"
 
 /**
  * The results of a file search tool call. See the

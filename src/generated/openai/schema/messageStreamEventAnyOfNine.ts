@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageStreamEventAnyOfNineEvent } from "./messageStreamEventAnyOfNineEvent"
+
 import type { MessageObject } from "./messageObject"
+import type { MessageStreamEventAnyOfNineEvent } from "./messageStreamEventAnyOfNineEvent"
 
 /**
  * Occurs when a [message](https://platform.openai.com/docs/api-reference/messages/object) ends before it is completed.

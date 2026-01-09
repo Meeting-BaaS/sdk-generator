@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallType } from "./functionShellCallType"
+
 import type { FunctionShellAction } from "./functionShellAction"
+import type { FunctionShellCallType } from "./functionShellCallType"
 import type { LocalShellCallStatus } from "./localShellCallStatus"
 
 /**

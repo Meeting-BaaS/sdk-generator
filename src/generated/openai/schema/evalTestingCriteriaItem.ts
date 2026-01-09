@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { EvalGraderLabelModel } from "./evalGraderLabelModel"
-import type { EvalGraderStringCheck } from "./evalGraderStringCheck"
-import type { EvalGraderTextSimilarity } from "./evalGraderTextSimilarity"
 import type { EvalGraderPython } from "./evalGraderPython"
 import type { EvalGraderScoreModel } from "./evalGraderScoreModel"
+import type { EvalGraderStringCheck } from "./evalGraderStringCheck"
+import type { EvalGraderTextSimilarity } from "./evalGraderTextSimilarity"
 
 export type EvalTestingCriteriaItem =
   | EvalGraderLabelModel

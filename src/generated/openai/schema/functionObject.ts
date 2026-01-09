@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionParameters } from "./functionParameters"
+
 import type { FunctionObjectStrict } from "./functionObjectStrict"
+import type { FunctionParameters } from "./functionParameters"
 
 export interface FunctionObject {
   /** A description of what the function does, used by the model to choose when and how to call the function. */

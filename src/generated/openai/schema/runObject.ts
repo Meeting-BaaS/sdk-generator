@@ -5,18 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunObjectObject } from "./runObjectObject"
-import type { RunStatus } from "./runStatus"
-import type { RunObjectRequiredAction } from "./runObjectRequiredAction"
-import type { RunObjectLastError } from "./runObjectLastError"
-import type { RunObjectIncompleteDetails } from "./runObjectIncompleteDetails"
+
+import type { AssistantsApiResponseFormatOption } from "./assistantsApiResponseFormatOption"
 import type { AssistantTool } from "./assistantTool"
 import type { Metadata } from "./metadata"
-import type { RunCompletionUsage } from "./runCompletionUsage"
-import type { RunObjectTruncationStrategy } from "./runObjectTruncationStrategy"
-import type { RunObjectToolChoice } from "./runObjectToolChoice"
 import type { ParallelToolCalls } from "./parallelToolCalls"
-import type { AssistantsApiResponseFormatOption } from "./assistantsApiResponseFormatOption"
+import type { RunCompletionUsage } from "./runCompletionUsage"
+import type { RunObjectIncompleteDetails } from "./runObjectIncompleteDetails"
+import type { RunObjectLastError } from "./runObjectLastError"
+import type { RunObjectObject } from "./runObjectObject"
+import type { RunObjectRequiredAction } from "./runObjectRequiredAction"
+import type { RunObjectToolChoice } from "./runObjectToolChoice"
+import type { RunObjectTruncationStrategy } from "./runObjectTruncationStrategy"
+import type { RunStatus } from "./runStatus"
 
 /**
  * Represents an execution run on a [thread](https://platform.openai.com/docs/api-reference/threads).

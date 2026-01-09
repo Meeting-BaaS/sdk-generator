@@ -5,8 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptWord } from "./transcriptWord"
+
 import type { TranscriptUtteranceChannel } from "./transcriptUtteranceChannel"
+import type { TranscriptWord } from "./transcriptWord"
 
 export interface TranscriptUtterance {
   /**

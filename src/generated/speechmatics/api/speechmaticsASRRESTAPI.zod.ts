@@ -60,9 +60,9 @@ export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverride
 
 export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1
 export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  new RegExp("^(.|all)$")
+  /^(.|all)$/
 export const getJobsResponseJobsItemConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  new RegExp("^[A-Za-z0-9._]+$")
+  /^[A-Za-z0-9._]+$/
 export const getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
 
 export const getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
@@ -135,7 +135,7 @@ export const getJobsResponse = zod.object({
                   .string()
                   .optional()
                   .describe(
-                    'Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'
+                    'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
                   ),
                 output_locale: zod
                   .string()
@@ -259,7 +259,7 @@ export const getJobsResponse = zod.object({
                       .boolean()
                       .optional()
                       .describe(
-                        'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'
+                        'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
                       ),
                     speaker_sensitivity: zod
                       .number()
@@ -454,9 +454,9 @@ export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverride
 
 export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1
 export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  new RegExp("^(.|all)$")
+  /^(.|all)$/
 export const getJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  new RegExp("^[A-Za-z0-9._]+$")
+  /^[A-Za-z0-9._]+$/
 export const getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
 
 export const getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
@@ -528,7 +528,7 @@ export const getJobsJobidResponse = zod.object({
                 .string()
                 .optional()
                 .describe(
-                  'Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'
+                  'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
                 ),
               output_locale: zod
                 .string()
@@ -650,7 +650,7 @@ export const getJobsJobidResponse = zod.object({
                     .boolean()
                     .optional()
                     .describe(
-                      'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'
+                      'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
                     ),
                   speaker_sensitivity: zod
                     .number()
@@ -851,9 +851,9 @@ export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverr
 
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  new RegExp("^(.|all)$")
+  /^(.|all)$/
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  new RegExp("^[A-Za-z0-9._]+$")
+  /^[A-Za-z0-9._]+$/
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
 
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
@@ -925,7 +925,7 @@ export const deleteJobsJobidResponse = zod.object({
                 .string()
                 .optional()
                 .describe(
-                  'Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'
+                  'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
                 ),
               output_locale: zod
                 .string()
@@ -1047,7 +1047,7 @@ export const deleteJobsJobidResponse = zod.object({
                     .boolean()
                     .optional()
                     .describe(
-                      'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'
+                      'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
                     ),
                   speaker_sensitivity: zod
                     .number()
@@ -1263,9 +1263,9 @@ export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuatio
 
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMax = 1
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  new RegExp("^(.|all)$")
+  /^(.|all)$/
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  new RegExp("^[A-Za-z0-9._]+$")
+  /^[A-Za-z0-9._]+$/
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
 
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
@@ -1319,7 +1319,7 @@ export const getJobsJobidTranscriptResponse = zod.object({
             .string()
             .optional()
             .describe(
-              'Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'
+              'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
             ),
           output_locale: zod
             .string()
@@ -1441,7 +1441,7 @@ export const getJobsJobidTranscriptResponse = zod.object({
                 .boolean()
                 .optional()
                 .describe(
-                  'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'
+                  'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
                 ),
               speaker_sensitivity: zod
                 .number()

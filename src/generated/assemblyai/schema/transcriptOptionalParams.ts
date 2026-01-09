@@ -5,19 +5,20 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptOptionalParamsLanguageCode } from "./transcriptOptionalParamsLanguageCode"
-import type { TranscriptOptionalParamsSpeechModel } from "./transcriptOptionalParamsSpeechModel"
-import type { TranscriptOptionalParamsWebhookAuthHeaderName } from "./transcriptOptionalParamsWebhookAuthHeaderName"
-import type { TranscriptOptionalParamsWebhookAuthHeaderValue } from "./transcriptOptionalParamsWebhookAuthHeaderValue"
-import type { TranscriptBoostParam } from "./transcriptBoostParam"
-import type { RedactPiiAudioQuality } from "./redactPiiAudioQuality"
+
 import type { PiiPolicy } from "./piiPolicy"
-import type { TranscriptOptionalParamsRedactPiiSub } from "./transcriptOptionalParamsRedactPiiSub"
-import type { TranscriptOptionalParamsSpeakersExpected } from "./transcriptOptionalParamsSpeakersExpected"
-import type { TranscriptCustomSpelling } from "./transcriptCustomSpelling"
-import type { TranscriptOptionalParamsSpeechThreshold } from "./transcriptOptionalParamsSpeechThreshold"
+import type { RedactPiiAudioQuality } from "./redactPiiAudioQuality"
 import type { SummaryModel } from "./summaryModel"
 import type { SummaryType } from "./summaryType"
+import type { TranscriptBoostParam } from "./transcriptBoostParam"
+import type { TranscriptCustomSpelling } from "./transcriptCustomSpelling"
+import type { TranscriptOptionalParamsLanguageCode } from "./transcriptOptionalParamsLanguageCode"
+import type { TranscriptOptionalParamsRedactPiiSub } from "./transcriptOptionalParamsRedactPiiSub"
+import type { TranscriptOptionalParamsSpeakersExpected } from "./transcriptOptionalParamsSpeakersExpected"
+import type { TranscriptOptionalParamsSpeechModel } from "./transcriptOptionalParamsSpeechModel"
+import type { TranscriptOptionalParamsSpeechThreshold } from "./transcriptOptionalParamsSpeechThreshold"
+import type { TranscriptOptionalParamsWebhookAuthHeaderName } from "./transcriptOptionalParamsWebhookAuthHeaderName"
+import type { TranscriptOptionalParamsWebhookAuthHeaderValue } from "./transcriptOptionalParamsWebhookAuthHeaderValue"
 
 /**
  * The parameters for creating a transcript

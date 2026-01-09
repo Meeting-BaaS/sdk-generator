@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageContentTextAnnotationsFilePathObjectType } from "./messageContentTextAnnotationsFilePathObjectType"
+
 import type { MessageContentTextAnnotationsFilePathObjectFilePath } from "./messageContentTextAnnotationsFilePathObjectFilePath"
+import type { MessageContentTextAnnotationsFilePathObjectType } from "./messageContentTextAnnotationsFilePathObjectType"
 
 /**
  * A URL for the file that's generated when the assistant used the `code_interpreter` tool to generate a file.

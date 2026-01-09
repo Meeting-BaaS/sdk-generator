@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { RunGraderResponseMetadataErrors } from "./runGraderResponseMetadataErrors"
+import type { RunGraderResponseMetadataSampledModelName } from "./runGraderResponseMetadataSampledModelName"
 import type { RunGraderResponseMetadataScores } from "./runGraderResponseMetadataScores"
 import type { RunGraderResponseMetadataTokenUsage } from "./runGraderResponseMetadataTokenUsage"
-import type { RunGraderResponseMetadataSampledModelName } from "./runGraderResponseMetadataSampledModelName"
 
 export type RunGraderResponseMetadata = {
   name: string

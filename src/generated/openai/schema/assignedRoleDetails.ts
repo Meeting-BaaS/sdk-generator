@@ -5,12 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssignedRoleDetailsDescription } from "./assignedRoleDetailsDescription"
+
 import type { AssignedRoleDetailsCreatedAt } from "./assignedRoleDetailsCreatedAt"
-import type { AssignedRoleDetailsUpdatedAt } from "./assignedRoleDetailsUpdatedAt"
 import type { AssignedRoleDetailsCreatedBy } from "./assignedRoleDetailsCreatedBy"
 import type { AssignedRoleDetailsCreatedByUserObj } from "./assignedRoleDetailsCreatedByUserObj"
+import type { AssignedRoleDetailsDescription } from "./assignedRoleDetailsDescription"
 import type { AssignedRoleDetailsMetadata } from "./assignedRoleDetailsMetadata"
+import type { AssignedRoleDetailsUpdatedAt } from "./assignedRoleDetailsUpdatedAt"
 
 /**
  * Detailed information about a role assignment entry returned when listing assignments.

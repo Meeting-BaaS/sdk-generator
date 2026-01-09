@@ -5,12 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateTranscriptionRequestModel } from "./createTranscriptionRequestModel"
+
 import type { AudioResponseFormat } from "./audioResponseFormat"
-import type { TranscriptionInclude } from "./transcriptionInclude"
-import type { CreateTranscriptionRequestTimestampGranularitiesItem } from "./createTranscriptionRequestTimestampGranularitiesItem"
+import type { CreateTranscriptionRequestModel } from "./createTranscriptionRequestModel"
 import type { CreateTranscriptionRequestStream } from "./createTranscriptionRequestStream"
+import type { CreateTranscriptionRequestTimestampGranularitiesItem } from "./createTranscriptionRequestTimestampGranularitiesItem"
 import type { TranscriptionChunkingStrategy } from "./transcriptionChunkingStrategy"
+import type { TranscriptionInclude } from "./transcriptionInclude"
 
 export interface CreateTranscriptionRequest {
   /** The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.

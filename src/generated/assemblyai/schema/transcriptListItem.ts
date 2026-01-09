@@ -5,9 +5,10 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptStatus } from "./transcriptStatus"
+
 import type { TranscriptListItemCompleted } from "./transcriptListItemCompleted"
 import type { TranscriptListItemError } from "./transcriptListItemError"
+import type { TranscriptStatus } from "./transcriptStatus"
 
 export interface TranscriptListItem {
   /** The unique identifier for the transcript */

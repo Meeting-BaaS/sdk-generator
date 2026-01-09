@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseOutputItemAddedEventType } from "./responseOutputItemAddedEventType"
+
 import type { OutputItem } from "./outputItem"
+import type { ResponseOutputItemAddedEventType } from "./responseOutputItemAddedEventType"
 
 /**
  * Emitted when a new output item is added.

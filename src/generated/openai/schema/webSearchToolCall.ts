@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchToolCallType } from "./webSearchToolCallType"
-import type { WebSearchToolCallStatus } from "./webSearchToolCallStatus"
+
 import type { WebSearchToolCallAction } from "./webSearchToolCallAction"
+import type { WebSearchToolCallStatus } from "./webSearchToolCallStatus"
+import type { WebSearchToolCallType } from "./webSearchToolCallType"
 
 /**
  * The results of a web search tool call. See the

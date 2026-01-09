@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { PredictionContentType } from "./predictionContentType"
+
 import type { PredictionContentContent } from "./predictionContentContent"
+import type { PredictionContentType } from "./predictionContentType"
 
 /**
  * Static predicted output content, such as the content of a text file that is

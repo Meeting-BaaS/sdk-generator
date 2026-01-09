@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { EvalStoredCompletionsDataSourceConfigSchema } from "./evalStoredCompletionsDataSourceConfigSchema"
 import type { EvalStoredCompletionsDataSourceConfigType } from "./evalStoredCompletionsDataSourceConfigType"
 import type { Metadata } from "./metadata"
-import type { EvalStoredCompletionsDataSourceConfigSchema } from "./evalStoredCompletionsDataSourceConfigSchema"
 
 /**
  * Deprecated in favor of LogsDataSourceConfig.

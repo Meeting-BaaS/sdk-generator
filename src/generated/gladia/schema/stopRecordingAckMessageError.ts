@@ -4,7 +4,7 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { Error as ErrorType } from "./error"
+import type { Error } from "./error"
 
 /**
  * Error message if the action was not successfully acknowledged

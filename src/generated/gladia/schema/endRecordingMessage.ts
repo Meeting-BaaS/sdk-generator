@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { EndRecordingMessageType } from "./endRecordingMessageType"
+
 import type { EndRecordingMessageData } from "./endRecordingMessageData"
+import type { EndRecordingMessageType } from "./endRecordingMessageType"
 
 export interface EndRecordingMessage {
   /** Id of the live session */

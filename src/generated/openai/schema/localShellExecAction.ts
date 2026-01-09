@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { LocalShellExecActionType } from "./localShellExecActionType"
-import type { LocalShellExecActionTimeoutMs } from "./localShellExecActionTimeoutMs"
-import type { LocalShellExecActionWorkingDirectory } from "./localShellExecActionWorkingDirectory"
+
 import type { LocalShellExecActionEnv } from "./localShellExecActionEnv"
+import type { LocalShellExecActionTimeoutMs } from "./localShellExecActionTimeoutMs"
+import type { LocalShellExecActionType } from "./localShellExecActionType"
 import type { LocalShellExecActionUser } from "./localShellExecActionUser"
+import type { LocalShellExecActionWorkingDirectory } from "./localShellExecActionWorkingDirectory"
 
 /**
  * Execute a shell command on the server.

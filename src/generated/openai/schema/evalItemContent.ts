@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputTextContent } from "./inputTextContent"
+
 import type { EvalItemContentAnyOf } from "./evalItemContentAnyOf"
 import type { EvalItemContentAnyOfThree } from "./evalItemContentAnyOfThree"
 import type { InputAudio } from "./inputAudio"
+import type { InputTextContent } from "./inputTextContent"
 
 /**
  * Inputs to the model - can contain template strings.

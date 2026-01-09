@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterContainerAutoType } from "./codeInterpreterContainerAutoType"
+
 import type { CodeInterpreterContainerAutoMemoryLimit } from "./codeInterpreterContainerAutoMemoryLimit"
+import type { CodeInterpreterContainerAutoType } from "./codeInterpreterContainerAutoType"
 
 /**
  * Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.

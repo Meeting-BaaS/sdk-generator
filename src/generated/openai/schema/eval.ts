@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalObject } from "./evalObject"
+
 import type { EvalDataSourceConfig } from "./evalDataSourceConfig"
+import type { EvalObject } from "./evalObject"
 import type { EvalTestingCriteriaItem } from "./evalTestingCriteriaItem"
 import type { Metadata } from "./metadata"
 

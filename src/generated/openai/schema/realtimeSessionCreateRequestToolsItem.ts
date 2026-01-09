@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequestToolsItemType } from "./realtimeSessionCreateRequestToolsItemType"
+
 import type { RealtimeSessionCreateRequestToolsItemParameters } from "./realtimeSessionCreateRequestToolsItemParameters"
+import type { RealtimeSessionCreateRequestToolsItemType } from "./realtimeSessionCreateRequestToolsItemType"
 
 export type RealtimeSessionCreateRequestToolsItem = {
   /** The type of the tool, i.e. `function`. */

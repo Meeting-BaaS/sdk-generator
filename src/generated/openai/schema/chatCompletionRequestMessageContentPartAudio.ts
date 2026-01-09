@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestMessageContentPartAudioType } from "./chatCompletionRequestMessageContentPartAudioType"
+
 import type { ChatCompletionRequestMessageContentPartAudioInputAudio } from "./chatCompletionRequestMessageContentPartAudioInputAudio"
+import type { ChatCompletionRequestMessageContentPartAudioType } from "./chatCompletionRequestMessageContentPartAudioType"
 
 /**
  * Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).

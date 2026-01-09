@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionToolType } from "./functionToolType"
+
 import type { FunctionToolDescription } from "./functionToolDescription"
 import type { FunctionToolParameters } from "./functionToolParameters"
 import type { FunctionToolStrict } from "./functionToolStrict"
+import type { FunctionToolType } from "./functionToolType"
 
 /**
  * Defines a function in your own code the model can choose to call. Learn more about [function calling](https://platform.openai.com/docs/guides/function-calling).

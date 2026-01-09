@@ -5,16 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantObjectObject } from "./assistantObjectObject"
-import type { AssistantObjectName } from "./assistantObjectName"
+
 import type { AssistantObjectDescription } from "./assistantObjectDescription"
 import type { AssistantObjectInstructions } from "./assistantObjectInstructions"
-import type { AssistantTool } from "./assistantTool"
-import type { AssistantObjectToolResources } from "./assistantObjectToolResources"
-import type { Metadata } from "./metadata"
-import type { AssistantObjectTemperature } from "./assistantObjectTemperature"
-import type { AssistantObjectTopP } from "./assistantObjectTopP"
+import type { AssistantObjectName } from "./assistantObjectName"
+import type { AssistantObjectObject } from "./assistantObjectObject"
 import type { AssistantObjectResponseFormat } from "./assistantObjectResponseFormat"
+import type { AssistantObjectTemperature } from "./assistantObjectTemperature"
+import type { AssistantObjectToolResources } from "./assistantObjectToolResources"
+import type { AssistantObjectTopP } from "./assistantObjectTopP"
+import type { AssistantTool } from "./assistantTool"
+import type { Metadata } from "./metadata"
 
 /**
  * Represents an `assistant` that can call the model and use tools.

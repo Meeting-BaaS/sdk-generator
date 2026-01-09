@@ -5,17 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequestGAType } from "./realtimeSessionCreateRequestGAType"
-import type { RealtimeSessionCreateRequestGAOutputModalitiesItem } from "./realtimeSessionCreateRequestGAOutputModalitiesItem"
-import type { RealtimeSessionCreateRequestGAModel } from "./realtimeSessionCreateRequestGAModel"
+
+import type { Prompt } from "./prompt"
 import type { RealtimeSessionCreateRequestGAAudio } from "./realtimeSessionCreateRequestGAAudio"
 import type { RealtimeSessionCreateRequestGAIncludeItem } from "./realtimeSessionCreateRequestGAIncludeItem"
-import type { RealtimeSessionCreateRequestGATracing } from "./realtimeSessionCreateRequestGATracing"
-import type { RealtimeSessionCreateRequestGAToolsItem } from "./realtimeSessionCreateRequestGAToolsItem"
-import type { RealtimeSessionCreateRequestGAToolChoice } from "./realtimeSessionCreateRequestGAToolChoice"
 import type { RealtimeSessionCreateRequestGAMaxOutputTokens } from "./realtimeSessionCreateRequestGAMaxOutputTokens"
+import type { RealtimeSessionCreateRequestGAModel } from "./realtimeSessionCreateRequestGAModel"
+import type { RealtimeSessionCreateRequestGAOutputModalitiesItem } from "./realtimeSessionCreateRequestGAOutputModalitiesItem"
+import type { RealtimeSessionCreateRequestGAToolChoice } from "./realtimeSessionCreateRequestGAToolChoice"
+import type { RealtimeSessionCreateRequestGAToolsItem } from "./realtimeSessionCreateRequestGAToolsItem"
+import type { RealtimeSessionCreateRequestGATracing } from "./realtimeSessionCreateRequestGATracing"
+import type { RealtimeSessionCreateRequestGAType } from "./realtimeSessionCreateRequestGAType"
 import type { RealtimeTruncation } from "./realtimeTruncation"
-import type { Prompt } from "./prompt"
 
 /**
  * Realtime session object configuration.

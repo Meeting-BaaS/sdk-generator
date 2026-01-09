@@ -6,10 +6,10 @@
  * OpenAPI spec version: v3.1
  */
 import type { EntityReference } from "./entityReference"
+import type { EvaluationCustomProperties } from "./evaluationCustomProperties"
 import type { EvaluationLinks } from "./evaluationLinks"
 import type { EvaluationProperties } from "./evaluationProperties"
 import type { Status } from "./status"
-import type { EvaluationCustomProperties } from "./evaluationCustomProperties"
 
 export interface Evaluation {
   model1: EntityReference

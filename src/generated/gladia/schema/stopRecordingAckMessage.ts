@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { StopRecordingAckMessageData } from "./stopRecordingAckMessageData"
 import type { StopRecordingAckMessageError } from "./stopRecordingAckMessageError"
 import type { StopRecordingAckMessageType } from "./stopRecordingAckMessageType"
-import type { StopRecordingAckMessageData } from "./stopRecordingAckMessageData"
 
 export interface StopRecordingAckMessage {
   /** Id of the live session */

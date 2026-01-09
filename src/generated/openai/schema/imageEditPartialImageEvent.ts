@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageEditPartialImageEventType } from "./imageEditPartialImageEventType"
-import type { ImageEditPartialImageEventSize } from "./imageEditPartialImageEventSize"
-import type { ImageEditPartialImageEventQuality } from "./imageEditPartialImageEventQuality"
+
 import type { ImageEditPartialImageEventBackground } from "./imageEditPartialImageEventBackground"
 import type { ImageEditPartialImageEventOutputFormat } from "./imageEditPartialImageEventOutputFormat"
+import type { ImageEditPartialImageEventQuality } from "./imageEditPartialImageEventQuality"
+import type { ImageEditPartialImageEventSize } from "./imageEditPartialImageEventSize"
+import type { ImageEditPartialImageEventType } from "./imageEditPartialImageEventType"
 
 /**
  * Emitted when a partial image is available during image editing streaming.

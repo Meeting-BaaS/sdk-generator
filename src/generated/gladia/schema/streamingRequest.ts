@@ -4,17 +4,18 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StreamingSupportedEncodingEnum } from "./streamingSupportedEncodingEnum"
-import type { StreamingSupportedBitDepthEnum } from "./streamingSupportedBitDepthEnum"
-import type { StreamingSupportedSampleRateEnum } from "./streamingSupportedSampleRateEnum"
-import type { StreamingRequestCustomMetadata } from "./streamingRequestCustomMetadata"
-import type { StreamingSupportedModels } from "./streamingSupportedModels"
+
+import type { CallbackConfig } from "./callbackConfig"
 import type { LanguageConfig } from "./languageConfig"
+import type { MessagesConfig } from "./messagesConfig"
+import type { PostProcessingConfig } from "./postProcessingConfig"
 import type { PreProcessingConfig } from "./preProcessingConfig"
 import type { RealtimeProcessingConfig } from "./realtimeProcessingConfig"
-import type { PostProcessingConfig } from "./postProcessingConfig"
-import type { MessagesConfig } from "./messagesConfig"
-import type { CallbackConfig } from "./callbackConfig"
+import type { StreamingRequestCustomMetadata } from "./streamingRequestCustomMetadata"
+import type { StreamingSupportedBitDepthEnum } from "./streamingSupportedBitDepthEnum"
+import type { StreamingSupportedEncodingEnum } from "./streamingSupportedEncodingEnum"
+import type { StreamingSupportedModels } from "./streamingSupportedModels"
+import type { StreamingSupportedSampleRateEnum } from "./streamingSupportedSampleRateEnum"
 
 export interface StreamingRequest {
   /** The encoding format of the audio stream. Supported formats: 

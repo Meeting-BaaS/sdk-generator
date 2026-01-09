@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { FunctionCallOutputItemParamId } from "./functionCallOutputItemParamId"
-import type { FunctionCallOutputItemParamType } from "./functionCallOutputItemParamType"
 import type { FunctionCallOutputItemParamOutput } from "./functionCallOutputItemParamOutput"
 import type { FunctionCallOutputItemParamStatus } from "./functionCallOutputItemParamStatus"
+import type { FunctionCallOutputItemParamType } from "./functionCallOutputItemParamType"
 
 /**
  * The output of a function tool call.

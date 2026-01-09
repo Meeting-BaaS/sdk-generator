@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveAudioChunkAckMessageEvent } from "./callbackLiveAudioChunkAckMessageEvent"
+
 import type { AudioChunkAckMessage } from "./audioChunkAckMessage"
+import type { CallbackLiveAudioChunkAckMessageEvent } from "./callbackLiveAudioChunkAckMessageEvent"
 
 export interface CallbackLiveAudioChunkAckMessage {
   /** Id of the job */

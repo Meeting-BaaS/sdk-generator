@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { OutputTextContent } from "./outputTextContent"
-import type { RefusalContent } from "./refusalContent"
 import type { ReasoningTextContent } from "./reasoningTextContent"
+import type { RefusalContent } from "./refusalContent"
 
 export type OutputContent = OutputTextContent | RefusalContent | ReasoningTextContent

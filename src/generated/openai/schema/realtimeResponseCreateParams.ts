@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeResponseCreateParamsOutputModalitiesItem } from "./realtimeResponseCreateParamsOutputModalitiesItem"
-import type { RealtimeResponseCreateParamsAudio } from "./realtimeResponseCreateParamsAudio"
-import type { RealtimeResponseCreateParamsToolsItem } from "./realtimeResponseCreateParamsToolsItem"
-import type { RealtimeResponseCreateParamsToolChoice } from "./realtimeResponseCreateParamsToolChoice"
-import type { RealtimeResponseCreateParamsMaxOutputTokens } from "./realtimeResponseCreateParamsMaxOutputTokens"
-import type { RealtimeResponseCreateParamsConversation } from "./realtimeResponseCreateParamsConversation"
+
 import type { Metadata } from "./metadata"
 import type { Prompt } from "./prompt"
 import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { RealtimeResponseCreateParamsAudio } from "./realtimeResponseCreateParamsAudio"
+import type { RealtimeResponseCreateParamsConversation } from "./realtimeResponseCreateParamsConversation"
+import type { RealtimeResponseCreateParamsMaxOutputTokens } from "./realtimeResponseCreateParamsMaxOutputTokens"
+import type { RealtimeResponseCreateParamsOutputModalitiesItem } from "./realtimeResponseCreateParamsOutputModalitiesItem"
+import type { RealtimeResponseCreateParamsToolChoice } from "./realtimeResponseCreateParamsToolChoice"
+import type { RealtimeResponseCreateParamsToolsItem } from "./realtimeResponseCreateParamsToolsItem"
 
 /**
  * Create a new Realtime response with these parameters

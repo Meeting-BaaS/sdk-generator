@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatkitWorkflowVersion } from "./chatkitWorkflowVersion"
+
 import type { ChatkitWorkflowStateVariables } from "./chatkitWorkflowStateVariables"
 import type { ChatkitWorkflowTracing } from "./chatkitWorkflowTracing"
+import type { ChatkitWorkflowVersion } from "./chatkitWorkflowVersion"
 
 /**
  * Workflow metadata and state returned for the session.

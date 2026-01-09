@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptMessageType } from "./transcriptMessageType"
+
 import type { TranscriptMessageData } from "./transcriptMessageData"
+import type { TranscriptMessageType } from "./transcriptMessageType"
 
 export interface TranscriptMessage {
   /** Id of the live session */

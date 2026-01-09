@@ -40,114 +40,11 @@ export const preRecordedControllerInitPreRecordedJobV2BodyCustomVocabularyConfig
 export const preRecordedControllerInitPreRecordedJobV2BodyCustomVocabularyConfigDefaultIntensityMax = 1
 export const preRecordedControllerInitPreRecordedJobV2BodyDetectLanguageDefault = true
 export const preRecordedControllerInitPreRecordedJobV2BodyEnableCodeSwitchingDefault = false
-export const preRecordedControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const preRecordedControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault = []
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -174,107 +71,7 @@ export const preRecordedControllerInitPreRecordedJobV2BodyAudioToLlmDefault = fa
 export const preRecordedControllerInitPreRecordedJobV2BodySentencesDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyDisplayModeDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyPunctuationEnhancedDefault = false
-export const preRecordedControllerInitPreRecordedJobV2BodyLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const preRecordedControllerInitPreRecordedJobV2BodyLanguageConfigLanguagesDefault = []
 export const preRecordedControllerInitPreRecordedJobV2BodyLanguageConfigCodeSwitchingDefault = false
 
 export const preRecordedControllerInitPreRecordedJobV2Body = zod.object({
@@ -1195,115 +992,14 @@ export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestPa
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCustomVocabularyConfigDefaultIntensityMax = 1
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsDetectLanguageDefault = true
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsEnableCodeSwitchingDefault = false
-export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault =
+  []
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCallbackDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -1333,107 +1029,8 @@ export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestPa
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSentencesDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsDisplayModeDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsPunctuationEnhancedDefault = false
-export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault =
+  []
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsLanguageConfigCodeSwitchingDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemResultTranscriptionUtterancesItemChannelMin = 0
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemResultTranscriptionUtterancesItemSpeakerMin = 0
@@ -1455,14 +1052,14 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
         status: zod
           .enum(["queued", "processing", "done", "error"])
           .describe(
-            '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+            '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
           ),
         created_at: zod.string().datetime({}).describe("Creation date"),
         completed_at: zod
           .string()
           .datetime({})
           .nullish()
-          .describe('Completion date when status is \"done\" or \"error\"'),
+          .describe('Completion date when status is "done" or "error"'),
         custom_metadata: zod
           .record(zod.string(), zod.any())
           .optional()
@@ -1472,7 +1069,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
           .min(preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemErrorCodeMin)
           .max(preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemErrorCodeMax)
           .nullish()
-          .describe('HTTP status code of the error if status is \"error\"'),
+          .describe('HTTP status code of the error if status is "error"'),
         post_session_metadata: zod
           .object({})
           .describe("For debugging purposes, send data that could help to identify issues"),
@@ -1493,7 +1090,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
               .describe("Number of channels in the audio file")
           })
           .nullish()
-          .describe('The file data you uploaded. Can be null if status is \"error\"'),
+          .describe('The file data you uploaded. Can be null if status is "error"'),
         request_params: zod
           .object({
             context_prompt: zod
@@ -2402,7 +1999,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
           })
           .nullish()
           .describe(
-            'Parameters used for this pre-recorded transcription. Can be null if status is \"error\"'
+            'Parameters used for this pre-recorded transcription. Can be null if status is "error"'
           ),
         result: zod
           .object({
@@ -3653,7 +3250,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
               )
           })
           .nullish()
-          .describe('Pre-recorded transcription\'s result when status is \"done\"')
+          .describe('Pre-recorded transcription\'s result when status is "done"')
       })
     )
     .describe("List of pre-recorded transcriptions")
@@ -3679,115 +3276,14 @@ export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCustom
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCustomVocabularyConfigDefaultIntensityMax = 1
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsDetectLanguageDefault = true
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsEnableCodeSwitchingDefault = false
-export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault =
+  []
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallbackDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -3817,107 +3313,8 @@ export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsAudioT
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSentencesDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsDisplayModeDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsPunctuationEnhancedDefault = false
-export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsLanguageConfigLanguagesDefault =
+  []
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsLanguageConfigCodeSwitchingDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseResultTranscriptionUtterancesItemChannelMin = 0
 export const preRecordedControllerGetPreRecordedJobV2ResponseResultTranscriptionUtterancesItemSpeakerMin = 0
@@ -3933,14 +3330,14 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
   status: zod
     .enum(["queued", "processing", "done", "error"])
     .describe(
-      '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+      '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
     ),
   created_at: zod.string().datetime({}).describe("Creation date"),
   completed_at: zod
     .string()
     .datetime({})
     .nullish()
-    .describe('Completion date when status is \"done\" or \"error\"'),
+    .describe('Completion date when status is "done" or "error"'),
   custom_metadata: zod
     .record(zod.string(), zod.any())
     .optional()
@@ -3950,7 +3347,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
     .min(preRecordedControllerGetPreRecordedJobV2ResponseErrorCodeMin)
     .max(preRecordedControllerGetPreRecordedJobV2ResponseErrorCodeMax)
     .nullish()
-    .describe('HTTP status code of the error if status is \"error\"'),
+    .describe('HTTP status code of the error if status is "error"'),
   post_session_metadata: zod
     .object({})
     .describe("For debugging purposes, send data that could help to identify issues"),
@@ -3971,7 +3368,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
         .describe("Number of channels in the audio file")
     })
     .nullish()
-    .describe('The file data you uploaded. Can be null if status is \"error\"'),
+    .describe('The file data you uploaded. Can be null if status is "error"'),
   request_params: zod
     .object({
       context_prompt: zod
@@ -4867,7 +4264,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
     })
     .nullish()
     .describe(
-      'Parameters used for this pre-recorded transcription. Can be null if status is \"error\"'
+      'Parameters used for this pre-recorded transcription. Can be null if status is "error"'
     ),
   result: zod
     .object({
@@ -6051,7 +5448,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
         )
     })
     .nullish()
-    .describe('Pre-recorded transcription\'s result when status is \"done\"')
+    .describe('Pre-recorded transcription\'s result when status is "done"')
 })
 
 /**
@@ -6080,114 +5477,11 @@ export const transcriptionControllerInitPreRecordedJobV2BodyCustomVocabularyConf
 export const transcriptionControllerInitPreRecordedJobV2BodyCustomVocabularyConfigDefaultIntensityMax = 1
 export const transcriptionControllerInitPreRecordedJobV2BodyDetectLanguageDefault = true
 export const transcriptionControllerInitPreRecordedJobV2BodyEnableCodeSwitchingDefault = false
-export const transcriptionControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const transcriptionControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLanguagesDefault = []
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -6215,107 +5509,7 @@ export const transcriptionControllerInitPreRecordedJobV2BodyAudioToLlmDefault = 
 export const transcriptionControllerInitPreRecordedJobV2BodySentencesDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyDisplayModeDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyPunctuationEnhancedDefault = false
-export const transcriptionControllerInitPreRecordedJobV2BodyLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const transcriptionControllerInitPreRecordedJobV2BodyLanguageConfigLanguagesDefault = []
 export const transcriptionControllerInitPreRecordedJobV2BodyLanguageConfigCodeSwitchingDefault = false
 
 export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
@@ -7246,115 +6440,14 @@ export const transcriptionControllerListV2ResponseItemsItemRequestParamsCustomVo
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsCustomVocabularyConfigDefaultIntensityMax = 1
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsDetectLanguageDefault = true
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsEnableCodeSwitchingDefault = false
-export const transcriptionControllerListV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const transcriptionControllerListV2ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault =
+  []
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallbackDefault = false
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -7384,107 +6477,8 @@ export const transcriptionControllerListV2ResponseItemsItemRequestParamsAudioToL
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSentencesDefault = false
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsDisplayModeDefault = false
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsPunctuationEnhancedDefault = false
-export const transcriptionControllerListV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const transcriptionControllerListV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault =
+  []
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsLanguageConfigCodeSwitchingDefault = false
 export const transcriptionControllerListV2ResponseItemsItemResultTranscriptionUtterancesItemChannelMin = 0
 export const transcriptionControllerListV2ResponseItemsItemResultTranscriptionUtterancesItemSpeakerMin = 0
@@ -7577,14 +6571,14 @@ export const transcriptionControllerListV2Response = zod.object({
           status: zod
             .enum(["queued", "processing", "done", "error"])
             .describe(
-              '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+              '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
             ),
           created_at: zod.string().datetime({}).describe("Creation date"),
           completed_at: zod
             .string()
             .datetime({})
             .nullish()
-            .describe('Completion date when status is \"done\" or \"error\"'),
+            .describe('Completion date when status is "done" or "error"'),
           custom_metadata: zod
             .record(zod.string(), zod.any())
             .optional()
@@ -7594,7 +6588,7 @@ export const transcriptionControllerListV2Response = zod.object({
             .min(transcriptionControllerListV2ResponseItemsItemErrorCodeMin)
             .max(transcriptionControllerListV2ResponseItemsItemErrorCodeMax)
             .nullish()
-            .describe('HTTP status code of the error if status is \"error\"'),
+            .describe('HTTP status code of the error if status is "error"'),
           post_session_metadata: zod
             .object({})
             .describe("For debugging purposes, send data that could help to identify issues"),
@@ -7615,7 +6609,7 @@ export const transcriptionControllerListV2Response = zod.object({
                 .describe("Number of channels in the audio file")
             })
             .nullish()
-            .describe('The file data you uploaded. Can be null if status is \"error\"'),
+            .describe('The file data you uploaded. Can be null if status is "error"'),
           request_params: zod
             .object({
               context_prompt: zod
@@ -8526,7 +7520,7 @@ export const transcriptionControllerListV2Response = zod.object({
             })
             .nullish()
             .describe(
-              'Parameters used for this pre-recorded transcription. Can be null if status is \"error\"'
+              'Parameters used for this pre-recorded transcription. Can be null if status is "error"'
             ),
           result: zod
             .object({
@@ -9791,7 +8785,7 @@ export const transcriptionControllerListV2Response = zod.object({
                 )
             })
             .nullish()
-            .describe('Pre-recorded transcription\'s result when status is \"done\"')
+            .describe('Pre-recorded transcription\'s result when status is "done"')
         })
         .or(
           zod.object({
@@ -9801,14 +8795,14 @@ export const transcriptionControllerListV2Response = zod.object({
             status: zod
               .enum(["queued", "processing", "done", "error"])
               .describe(
-                '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+                '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
               ),
             created_at: zod.string().datetime({}).describe("Creation date"),
             completed_at: zod
               .string()
               .datetime({})
               .nullish()
-              .describe('Completion date when status is \"done\" or \"error\"'),
+              .describe('Completion date when status is "done" or "error"'),
             custom_metadata: zod
               .record(zod.string(), zod.any())
               .optional()
@@ -9818,7 +8812,7 @@ export const transcriptionControllerListV2Response = zod.object({
               .min(transcriptionControllerListV2ResponseItemsItemErrorCodeMinOne)
               .max(transcriptionControllerListV2ResponseItemsItemErrorCodeMaxOne)
               .nullish()
-              .describe('HTTP status code of the error if status is \"error\"'),
+              .describe('HTTP status code of the error if status is "error"'),
             post_session_metadata: zod
               .object({})
               .describe("For debugging purposes, send data that could help to identify issues"),
@@ -9839,7 +8833,7 @@ export const transcriptionControllerListV2Response = zod.object({
                   .describe("Number of channels in the audio file")
               })
               .nullish()
-              .describe('The file data you uploaded. Can be null if status is \"error\"'),
+              .describe('The file data you uploaded. Can be null if status is "error"'),
             request_params: zod
               .object({
                 encoding: zod
@@ -9884,13 +8878,9 @@ export const transcriptionControllerListV2Response = zod.object({
                   .describe("The number of channels of the audio stream"),
                 model: zod
                   .enum(["solaria-1"])
-                  .describe(
-                    'The model used to process the audio. \"solaria-1\" is used by default.'
-                  )
+                  .describe('The model used to process the audio. "solaria-1" is used by default.')
                   .default(transcriptionControllerListV2ResponseItemsItemRequestParamsModelDefault)
-                  .describe(
-                    'The model used to process the audio. \"solaria-1\" is used by default.'
-                  ),
+                  .describe('The model used to process the audio. "solaria-1" is used by default.'),
                 endpointing: zod
                   .number()
                   .min(transcriptionControllerListV2ResponseItemsItemRequestParamsEndpointingMin)
@@ -10561,7 +9551,7 @@ export const transcriptionControllerListV2Response = zod.object({
               })
               .nullish()
               .describe(
-                'Parameters used for this live transcription. Can be null if status is \"error\"'
+                'Parameters used for this live transcription. Can be null if status is "error"'
               ),
             result: zod
               .object({
@@ -11414,7 +10404,7 @@ export const transcriptionControllerListV2Response = zod.object({
                   .describe("Real-Time messages sent by the server during the live transcription")
               })
               .nullish()
-              .describe('Live transcription\'s result when status is \"done\"')
+              .describe('Live transcription\'s result when status is "done"')
           })
         )
     )
@@ -11441,115 +10431,14 @@ export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCustomVo
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCustomVocabularyConfigDefaultIntensityMax = 1
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsDetectLanguageDefault = true
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsEnableCodeSwitchingDefault = false
-export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCodeSwitchingConfigLanguagesDefault =
+  []
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallbackDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesDefault = false
-export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -11579,107 +10468,8 @@ export const transcriptionControllerGetTranscriptV2ResponseRequestParamsAudioToL
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSentencesDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsDisplayModeDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsPunctuationEnhancedDefault = false
-export const transcriptionControllerGetTranscriptV2ResponseRequestParamsLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const transcriptionControllerGetTranscriptV2ResponseRequestParamsLanguageConfigLanguagesDefault =
+  []
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsLanguageConfigCodeSwitchingDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseResultTranscriptionUtterancesItemChannelMin = 0
 export const transcriptionControllerGetTranscriptV2ResponseResultTranscriptionUtterancesItemSpeakerMin = 0
@@ -11766,14 +10556,14 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
     status: zod
       .enum(["queued", "processing", "done", "error"])
       .describe(
-        '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+        '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
       ),
     created_at: zod.string().datetime({}).describe("Creation date"),
     completed_at: zod
       .string()
       .datetime({})
       .nullish()
-      .describe('Completion date when status is \"done\" or \"error\"'),
+      .describe('Completion date when status is "done" or "error"'),
     custom_metadata: zod
       .record(zod.string(), zod.any())
       .optional()
@@ -11783,7 +10573,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
       .min(transcriptionControllerGetTranscriptV2ResponseErrorCodeMin)
       .max(transcriptionControllerGetTranscriptV2ResponseErrorCodeMax)
       .nullish()
-      .describe('HTTP status code of the error if status is \"error\"'),
+      .describe('HTTP status code of the error if status is "error"'),
     post_session_metadata: zod
       .object({})
       .describe("For debugging purposes, send data that could help to identify issues"),
@@ -11804,7 +10594,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
           .describe("Number of channels in the audio file")
       })
       .nullish()
-      .describe('The file data you uploaded. Can be null if status is \"error\"'),
+      .describe('The file data you uploaded. Can be null if status is "error"'),
     request_params: zod
       .object({
         context_prompt: zod
@@ -12705,7 +11495,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
       })
       .nullish()
       .describe(
-        'Parameters used for this pre-recorded transcription. Can be null if status is \"error\"'
+        'Parameters used for this pre-recorded transcription. Can be null if status is "error"'
       ),
     result: zod
       .object({
@@ -13925,7 +12715,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
           )
       })
       .nullish()
-      .describe('Pre-recorded transcription\'s result when status is \"done\"')
+      .describe('Pre-recorded transcription\'s result when status is "done"')
   }),
   zod.object({
     id: zod.string().uuid().describe("Id of the job"),
@@ -13934,14 +12724,14 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
     status: zod
       .enum(["queued", "processing", "done", "error"])
       .describe(
-        '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+        '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
       ),
     created_at: zod.string().datetime({}).describe("Creation date"),
     completed_at: zod
       .string()
       .datetime({})
       .nullish()
-      .describe('Completion date when status is \"done\" or \"error\"'),
+      .describe('Completion date when status is "done" or "error"'),
     custom_metadata: zod
       .record(zod.string(), zod.any())
       .optional()
@@ -13951,7 +12741,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
       .min(transcriptionControllerGetTranscriptV2ResponseErrorCodeMinOne)
       .max(transcriptionControllerGetTranscriptV2ResponseErrorCodeMaxOne)
       .nullish()
-      .describe('HTTP status code of the error if status is \"error\"'),
+      .describe('HTTP status code of the error if status is "error"'),
     post_session_metadata: zod
       .object({})
       .describe("For debugging purposes, send data that could help to identify issues"),
@@ -13972,7 +12762,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
           .describe("Number of channels in the audio file")
       })
       .nullish()
-      .describe('The file data you uploaded. Can be null if status is \"error\"'),
+      .describe('The file data you uploaded. Can be null if status is "error"'),
     request_params: zod
       .object({
         encoding: zod
@@ -14009,9 +12799,9 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
           .describe("The number of channels of the audio stream"),
         model: zod
           .enum(["solaria-1"])
-          .describe('The model used to process the audio. \"solaria-1\" is used by default.')
+          .describe('The model used to process the audio. "solaria-1" is used by default.')
           .default(transcriptionControllerGetTranscriptV2ResponseRequestParamsModelDefault)
-          .describe('The model used to process the audio. \"solaria-1\" is used by default.'),
+          .describe('The model used to process the audio. "solaria-1" is used by default.'),
         endpointing: zod
           .number()
           .min(transcriptionControllerGetTranscriptV2ResponseRequestParamsEndpointingMin)
@@ -14669,7 +13459,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
           .describe("Specify the callback configuration")
       })
       .nullish()
-      .describe('Parameters used for this live transcription. Can be null if status is \"error\"'),
+      .describe('Parameters used for this live transcription. Can be null if status is "error"'),
     result: zod
       .object({
         metadata: zod
@@ -15475,7 +14265,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
           .describe("Real-Time messages sent by the server during the live transcription")
       })
       .nullish()
-      .describe('Live transcription\'s result when status is \"done\"')
+      .describe('Live transcription\'s result when status is "done"')
   })
 ])
 
@@ -16032,115 +14822,14 @@ export const historyControllerGetListV1ResponseItemsItemRequestParamsCustomVocab
 export const historyControllerGetListV1ResponseItemsItemRequestParamsCustomVocabularyConfigDefaultIntensityMax = 1
 export const historyControllerGetListV1ResponseItemsItemRequestParamsDetectLanguageDefault = true
 export const historyControllerGetListV1ResponseItemsItemRequestParamsEnableCodeSwitchingDefault = false
-export const historyControllerGetListV1ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const historyControllerGetListV1ResponseItemsItemRequestParamsCodeSwitchingConfigLanguagesDefault =
+  []
 export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackDefault = false
 export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -16170,107 +14859,8 @@ export const historyControllerGetListV1ResponseItemsItemRequestParamsAudioToLlmD
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSentencesDefault = false
 export const historyControllerGetListV1ResponseItemsItemRequestParamsDisplayModeDefault = false
 export const historyControllerGetListV1ResponseItemsItemRequestParamsPunctuationEnhancedDefault = false
-export const historyControllerGetListV1ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const historyControllerGetListV1ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault =
+  []
 export const historyControllerGetListV1ResponseItemsItemRequestParamsLanguageConfigCodeSwitchingDefault = false
 export const historyControllerGetListV1ResponseItemsItemResultTranscriptionUtterancesItemChannelMin = 0
 export const historyControllerGetListV1ResponseItemsItemResultTranscriptionUtterancesItemSpeakerMin = 0
@@ -16363,14 +14953,14 @@ export const historyControllerGetListV1Response = zod.object({
           status: zod
             .enum(["queued", "processing", "done", "error"])
             .describe(
-              '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+              '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
             ),
           created_at: zod.string().datetime({}).describe("Creation date"),
           completed_at: zod
             .string()
             .datetime({})
             .nullish()
-            .describe('Completion date when status is \"done\" or \"error\"'),
+            .describe('Completion date when status is "done" or "error"'),
           custom_metadata: zod
             .record(zod.string(), zod.any())
             .optional()
@@ -16380,7 +14970,7 @@ export const historyControllerGetListV1Response = zod.object({
             .min(historyControllerGetListV1ResponseItemsItemErrorCodeMin)
             .max(historyControllerGetListV1ResponseItemsItemErrorCodeMax)
             .nullish()
-            .describe('HTTP status code of the error if status is \"error\"'),
+            .describe('HTTP status code of the error if status is "error"'),
           post_session_metadata: zod
             .object({})
             .describe("For debugging purposes, send data that could help to identify issues"),
@@ -16401,7 +14991,7 @@ export const historyControllerGetListV1Response = zod.object({
                 .describe("Number of channels in the audio file")
             })
             .nullish()
-            .describe('The file data you uploaded. Can be null if status is \"error\"'),
+            .describe('The file data you uploaded. Can be null if status is "error"'),
           request_params: zod
             .object({
               context_prompt: zod
@@ -17312,7 +15902,7 @@ export const historyControllerGetListV1Response = zod.object({
             })
             .nullish()
             .describe(
-              'Parameters used for this pre-recorded transcription. Can be null if status is \"error\"'
+              'Parameters used for this pre-recorded transcription. Can be null if status is "error"'
             ),
           result: zod
             .object({
@@ -18577,7 +17167,7 @@ export const historyControllerGetListV1Response = zod.object({
                 )
             })
             .nullish()
-            .describe('Pre-recorded transcription\'s result when status is \"done\"')
+            .describe('Pre-recorded transcription\'s result when status is "done"')
         })
         .or(
           zod.object({
@@ -18587,14 +17177,14 @@ export const historyControllerGetListV1Response = zod.object({
             status: zod
               .enum(["queued", "processing", "done", "error"])
               .describe(
-                '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+                '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
               ),
             created_at: zod.string().datetime({}).describe("Creation date"),
             completed_at: zod
               .string()
               .datetime({})
               .nullish()
-              .describe('Completion date when status is \"done\" or \"error\"'),
+              .describe('Completion date when status is "done" or "error"'),
             custom_metadata: zod
               .record(zod.string(), zod.any())
               .optional()
@@ -18604,7 +17194,7 @@ export const historyControllerGetListV1Response = zod.object({
               .min(historyControllerGetListV1ResponseItemsItemErrorCodeMinOne)
               .max(historyControllerGetListV1ResponseItemsItemErrorCodeMaxOne)
               .nullish()
-              .describe('HTTP status code of the error if status is \"error\"'),
+              .describe('HTTP status code of the error if status is "error"'),
             post_session_metadata: zod
               .object({})
               .describe("For debugging purposes, send data that could help to identify issues"),
@@ -18625,7 +17215,7 @@ export const historyControllerGetListV1Response = zod.object({
                   .describe("Number of channels in the audio file")
               })
               .nullish()
-              .describe('The file data you uploaded. Can be null if status is \"error\"'),
+              .describe('The file data you uploaded. Can be null if status is "error"'),
             request_params: zod
               .object({
                 encoding: zod
@@ -18664,13 +17254,9 @@ export const historyControllerGetListV1Response = zod.object({
                   .describe("The number of channels of the audio stream"),
                 model: zod
                   .enum(["solaria-1"])
-                  .describe(
-                    'The model used to process the audio. \"solaria-1\" is used by default.'
-                  )
+                  .describe('The model used to process the audio. "solaria-1" is used by default.')
                   .default(historyControllerGetListV1ResponseItemsItemRequestParamsModelDefault)
-                  .describe(
-                    'The model used to process the audio. \"solaria-1\" is used by default.'
-                  ),
+                  .describe('The model used to process the audio. "solaria-1" is used by default.'),
                 endpointing: zod
                   .number()
                   .min(historyControllerGetListV1ResponseItemsItemRequestParamsEndpointingMin)
@@ -19341,7 +17927,7 @@ export const historyControllerGetListV1Response = zod.object({
               })
               .nullish()
               .describe(
-                'Parameters used for this live transcription. Can be null if status is \"error\"'
+                'Parameters used for this live transcription. Can be null if status is "error"'
               ),
             result: zod
               .object({
@@ -20194,7 +18780,7 @@ export const historyControllerGetListV1Response = zod.object({
                   .describe("Real-Time messages sent by the server during the live transcription")
               })
               .nullish()
-              .describe('Live transcription\'s result when status is \"done\"')
+              .describe('Live transcription\'s result when status is "done"')
           })
         )
     )
@@ -20225,107 +18811,7 @@ export const streamingControllerInitStreamingSessionV2BodyMaximumDurationWithout
 export const streamingControllerInitStreamingSessionV2BodyMaximumDurationWithoutEndpointingMin = 5
 
 export const streamingControllerInitStreamingSessionV2BodyMaximumDurationWithoutEndpointingMax = 60
-export const streamingControllerInitStreamingSessionV2BodyLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const streamingControllerInitStreamingSessionV2BodyLanguageConfigLanguagesDefault = []
 export const streamingControllerInitStreamingSessionV2BodyLanguageConfigCodeSwitchingDefault = false
 export const streamingControllerInitStreamingSessionV2BodyPreProcessingAudioEnhancerDefault = false
 export const streamingControllerInitStreamingSessionV2BodyPreProcessingSpeechThresholdDefault = 0.6
@@ -20412,9 +18898,9 @@ export const streamingControllerInitStreamingSessionV2Body = zod.object({
     .describe("Custom metadata you can attach to this live transcription"),
   model: zod
     .enum(["solaria-1"])
-    .describe('The model used to process the audio. \"solaria-1\" is used by default.')
+    .describe('The model used to process the audio. "solaria-1" is used by default.')
     .default(streamingControllerInitStreamingSessionV2BodyModelDefault)
-    .describe('The model used to process the audio. \"solaria-1\" is used by default.'),
+    .describe('The model used to process the audio. "solaria-1" is used by default.'),
   endpointing: zod
     .number()
     .min(streamingControllerInitStreamingSessionV2BodyEndpointingMin)
@@ -21111,107 +19597,8 @@ export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParams
 export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsMaximumDurationWithoutEndpointingMin = 5
 
 export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsMaximumDurationWithoutEndpointingMax = 60
-export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsLanguageConfigLanguagesDefault =
+  []
 export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsLanguageConfigCodeSwitchingDefault = false
 export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsPreProcessingAudioEnhancerDefault = false
 export const streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsPreProcessingSpeechThresholdDefault = 0.6
@@ -21276,14 +19663,14 @@ export const streamingControllerGetStreamingJobsV2Response = zod.object({
         status: zod
           .enum(["queued", "processing", "done", "error"])
           .describe(
-            '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+            '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
           ),
         created_at: zod.string().datetime({}).describe("Creation date"),
         completed_at: zod
           .string()
           .datetime({})
           .nullish()
-          .describe('Completion date when status is \"done\" or \"error\"'),
+          .describe('Completion date when status is "done" or "error"'),
         custom_metadata: zod
           .record(zod.string(), zod.any())
           .optional()
@@ -21293,7 +19680,7 @@ export const streamingControllerGetStreamingJobsV2Response = zod.object({
           .min(streamingControllerGetStreamingJobsV2ResponseItemsItemErrorCodeMin)
           .max(streamingControllerGetStreamingJobsV2ResponseItemsItemErrorCodeMax)
           .nullish()
-          .describe('HTTP status code of the error if status is \"error\"'),
+          .describe('HTTP status code of the error if status is "error"'),
         post_session_metadata: zod
           .object({})
           .describe("For debugging purposes, send data that could help to identify issues"),
@@ -21314,7 +19701,7 @@ export const streamingControllerGetStreamingJobsV2Response = zod.object({
               .describe("Number of channels in the audio file")
           })
           .nullish()
-          .describe('The file data you uploaded. Can be null if status is \"error\"'),
+          .describe('The file data you uploaded. Can be null if status is "error"'),
         request_params: zod
           .object({
             encoding: zod
@@ -21359,11 +19746,11 @@ export const streamingControllerGetStreamingJobsV2Response = zod.object({
               .describe("The number of channels of the audio stream"),
             model: zod
               .enum(["solaria-1"])
-              .describe('The model used to process the audio. \"solaria-1\" is used by default.')
+              .describe('The model used to process the audio. "solaria-1" is used by default.')
               .default(
                 streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsModelDefault
               )
-              .describe('The model used to process the audio. \"solaria-1\" is used by default.'),
+              .describe('The model used to process the audio. "solaria-1" is used by default.'),
             endpointing: zod
               .number()
               .min(
@@ -22030,7 +20417,7 @@ export const streamingControllerGetStreamingJobsV2Response = zod.object({
           })
           .nullish()
           .describe(
-            'Parameters used for this live transcription. Can be null if status is \"error\"'
+            'Parameters used for this live transcription. Can be null if status is "error"'
           ),
         result: zod
           .object({
@@ -22861,7 +21248,7 @@ export const streamingControllerGetStreamingJobsV2Response = zod.object({
               .describe("Real-Time messages sent by the server during the live transcription")
           })
           .nullish()
-          .describe('Live transcription\'s result when status is \"done\"')
+          .describe('Live transcription\'s result when status is "done"')
       })
     )
     .describe("List of live transcriptions")
@@ -22892,107 +21279,8 @@ export const streamingControllerGetStreamingJobV2ResponseRequestParamsMaximumDur
 export const streamingControllerGetStreamingJobV2ResponseRequestParamsMaximumDurationWithoutEndpointingMin = 5
 
 export const streamingControllerGetStreamingJobV2ResponseRequestParamsMaximumDurationWithoutEndpointingMax = 60
-export const streamingControllerGetStreamingJobV2ResponseRequestParamsLanguageConfigLanguagesDefault: (
-  | "af"
-  | "am"
-  | "ar"
-  | "as"
-  | "az"
-  | "ba"
-  | "be"
-  | "bg"
-  | "bn"
-  | "bo"
-  | "br"
-  | "bs"
-  | "ca"
-  | "cs"
-  | "cy"
-  | "da"
-  | "de"
-  | "el"
-  | "en"
-  | "es"
-  | "et"
-  | "eu"
-  | "fa"
-  | "fi"
-  | "fo"
-  | "fr"
-  | "gl"
-  | "gu"
-  | "ha"
-  | "haw"
-  | "he"
-  | "hi"
-  | "hr"
-  | "ht"
-  | "hu"
-  | "hy"
-  | "id"
-  | "is"
-  | "it"
-  | "ja"
-  | "jw"
-  | "ka"
-  | "kk"
-  | "km"
-  | "kn"
-  | "ko"
-  | "la"
-  | "lb"
-  | "ln"
-  | "lo"
-  | "lt"
-  | "lv"
-  | "mg"
-  | "mi"
-  | "mk"
-  | "ml"
-  | "mn"
-  | "mr"
-  | "ms"
-  | "mt"
-  | "my"
-  | "ne"
-  | "nl"
-  | "nn"
-  | "no"
-  | "oc"
-  | "pa"
-  | "pl"
-  | "ps"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sa"
-  | "sd"
-  | "si"
-  | "sk"
-  | "sl"
-  | "sn"
-  | "so"
-  | "sq"
-  | "sr"
-  | "su"
-  | "sv"
-  | "sw"
-  | "ta"
-  | "te"
-  | "tg"
-  | "th"
-  | "tk"
-  | "tl"
-  | "tr"
-  | "tt"
-  | "uk"
-  | "ur"
-  | "uz"
-  | "vi"
-  | "yi"
-  | "yo"
-  | "zh"
-)[] = []
+export const streamingControllerGetStreamingJobV2ResponseRequestParamsLanguageConfigLanguagesDefault =
+  []
 export const streamingControllerGetStreamingJobV2ResponseRequestParamsLanguageConfigCodeSwitchingDefault = false
 export const streamingControllerGetStreamingJobV2ResponseRequestParamsPreProcessingAudioEnhancerDefault = false
 export const streamingControllerGetStreamingJobV2ResponseRequestParamsPreProcessingSpeechThresholdDefault = 0.6
@@ -23051,14 +21339,14 @@ export const streamingControllerGetStreamingJobV2Response = zod.object({
   status: zod
     .enum(["queued", "processing", "done", "error"])
     .describe(
-      '\"queued\": the job has been queued. \"processing\": the job is being processed. \"done\": the job has been processed and the result is available. \"error\": an error occurred during the job\'s processing.'
+      '"queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job\'s processing.'
     ),
   created_at: zod.string().datetime({}).describe("Creation date"),
   completed_at: zod
     .string()
     .datetime({})
     .nullish()
-    .describe('Completion date when status is \"done\" or \"error\"'),
+    .describe('Completion date when status is "done" or "error"'),
   custom_metadata: zod
     .record(zod.string(), zod.any())
     .optional()
@@ -23068,7 +21356,7 @@ export const streamingControllerGetStreamingJobV2Response = zod.object({
     .min(streamingControllerGetStreamingJobV2ResponseErrorCodeMin)
     .max(streamingControllerGetStreamingJobV2ResponseErrorCodeMax)
     .nullish()
-    .describe('HTTP status code of the error if status is \"error\"'),
+    .describe('HTTP status code of the error if status is "error"'),
   post_session_metadata: zod
     .object({})
     .describe("For debugging purposes, send data that could help to identify issues"),
@@ -23089,7 +21377,7 @@ export const streamingControllerGetStreamingJobV2Response = zod.object({
         .describe("Number of channels in the audio file")
     })
     .nullish()
-    .describe('The file data you uploaded. Can be null if status is \"error\"'),
+    .describe('The file data you uploaded. Can be null if status is "error"'),
   request_params: zod
     .object({
       encoding: zod
@@ -23126,9 +21414,9 @@ export const streamingControllerGetStreamingJobV2Response = zod.object({
         .describe("The number of channels of the audio stream"),
       model: zod
         .enum(["solaria-1"])
-        .describe('The model used to process the audio. \"solaria-1\" is used by default.')
+        .describe('The model used to process the audio. "solaria-1" is used by default.')
         .default(streamingControllerGetStreamingJobV2ResponseRequestParamsModelDefault)
-        .describe('The model used to process the audio. \"solaria-1\" is used by default.'),
+        .describe('The model used to process the audio. "solaria-1" is used by default.'),
       endpointing: zod
         .number()
         .min(streamingControllerGetStreamingJobV2ResponseRequestParamsEndpointingMin)
@@ -23780,7 +22068,7 @@ export const streamingControllerGetStreamingJobV2Response = zod.object({
         .describe("Specify the callback configuration")
     })
     .nullish()
-    .describe('Parameters used for this live transcription. Can be null if status is \"error\"'),
+    .describe('Parameters used for this live transcription. Can be null if status is "error"'),
   result: zod
     .object({
       metadata: zod
@@ -24570,7 +22858,7 @@ export const streamingControllerGetStreamingJobV2Response = zod.object({
         .describe("Real-Time messages sent by the server during the live transcription")
     })
     .nullish()
-    .describe('Live transcription\'s result when status is \"done\"')
+    .describe('Live transcription\'s result when status is "done"')
 })
 
 /**

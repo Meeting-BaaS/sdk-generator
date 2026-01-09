@@ -4,21 +4,22 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionMetadataDTO } from "./transcriptionMetadataDTO"
-import type { TranscriptionDTO } from "./transcriptionDTO"
-import type { TranslationDTO } from "./translationDTO"
-import type { SummarizationDTO } from "./summarizationDTO"
+
+import type { AudioToLlmListDTO } from "./audioToLlmListDTO"
+import type { ChapterizationDTO } from "./chapterizationDTO"
+import type { DiarizationDTO } from "./diarizationDTO"
+import type { DisplayModeDTO } from "./displayModeDTO"
 import type { ModerationDTO } from "./moderationDTO"
 import type { NamedEntityRecognitionDTO } from "./namedEntityRecognitionDTO"
 import type { NamesConsistencyDTO } from "./namesConsistencyDTO"
+import type { SentencesDTO } from "./sentencesDTO"
+import type { SentimentAnalysisDTO } from "./sentimentAnalysisDTO"
 import type { SpeakerReidentificationDTO } from "./speakerReidentificationDTO"
 import type { StructuredDataExtractionDTO } from "./structuredDataExtractionDTO"
-import type { SentimentAnalysisDTO } from "./sentimentAnalysisDTO"
-import type { AudioToLlmListDTO } from "./audioToLlmListDTO"
-import type { SentencesDTO } from "./sentencesDTO"
-import type { DisplayModeDTO } from "./displayModeDTO"
-import type { ChapterizationDTO } from "./chapterizationDTO"
-import type { DiarizationDTO } from "./diarizationDTO"
+import type { SummarizationDTO } from "./summarizationDTO"
+import type { TranscriptionDTO } from "./transcriptionDTO"
+import type { TranscriptionMetadataDTO } from "./transcriptionMetadataDTO"
+import type { TranslationDTO } from "./translationDTO"
 
 export interface TranscriptionResultDTO {
   /** Metadata for the given transcription & audio file */

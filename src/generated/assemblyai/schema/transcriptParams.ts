@@ -5,8 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptParamsAllOf } from "./transcriptParamsAllOf"
+
 import type { TranscriptOptionalParams } from "./transcriptOptionalParams"
+import type { TranscriptParamsAllOf } from "./transcriptParamsAllOf"
 
 /**
  * The parameters for creating a transcript

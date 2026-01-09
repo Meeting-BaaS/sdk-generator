@@ -4,28 +4,36 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import axios from "axios"
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
 
+import { faker } from "@faker-js/faker"
+import type { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
+import { delay, HttpResponse, http } from "msw"
 import type {
   AudioToTextControllerAudioTranscriptionBody,
+  AudioUploadResponse,
+  CustomVocabularyEntryDTO,
   FileControllerUploadV2BodyOne,
   FileControllerUploadV2BodyTwo,
   HistoryControllerGetListV1Params,
+  InitPreRecordedTranscriptionResponse,
+  InitStreamingResponse,
   InitTranscriptionRequest,
+  ListHistoryResponse,
+  ListPreRecordedResponse,
+  ListStreamingResponse,
+  ListTranscriptionResponse,
   PatchRequestParamsDTO,
   PreRecordedControllerGetPreRecordedJobsV2Params,
+  PreRecordedResponse,
   StreamingControllerGetStreamingJobsV2Params,
   StreamingControllerInitStreamingSessionV2Params,
   StreamingRequest,
+  StreamingResponse,
+  TranscriptionControllerGetTranscriptV2200,
   TranscriptionControllerListV2Params,
   VideoToTextControllerVideoTranscriptionBody
 } from "../schema"
-
-import { faker } from "@faker-js/faker"
-
-import { HttpResponse, delay, http } from "msw"
-
 import {
   CallbackMethodEnum,
   StreamingSupportedEncodingEnum,
@@ -37,19 +45,6 @@ import {
   TranslationLanguageCodeEnum,
   TranslationModelEnum
 } from "../schema"
-import type {
-  AudioUploadResponse,
-  CustomVocabularyEntryDTO,
-  InitPreRecordedTranscriptionResponse,
-  InitStreamingResponse,
-  ListHistoryResponse,
-  ListPreRecordedResponse,
-  ListStreamingResponse,
-  ListTranscriptionResponse,
-  PreRecordedResponse,
-  StreamingResponse,
-  TranscriptionControllerGetTranscriptV2200
-} from "../schema"
 
 /**
  * @summary Upload an audio file or provide an audio URL for processing
@@ -58,7 +53,7 @@ export const fileControllerUploadV2 = <TData = AxiosResponse<AudioUploadResponse
   fileControllerUploadV2Body: FileControllerUploadV2BodyOne | FileControllerUploadV2BodyTwo,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/upload`, fileControllerUploadV2Body, options)
+  return axios.post("/v2/upload", fileControllerUploadV2Body, options)
 }
 
 /**
@@ -70,7 +65,7 @@ export const preRecordedControllerInitPreRecordedJobV2 = <
   initTranscriptionRequest: InitTranscriptionRequest,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/pre-recorded`, initTranscriptionRequest, options)
+  return axios.post("/v2/pre-recorded", initTranscriptionRequest, options)
 }
 
 /**
@@ -82,7 +77,7 @@ export const preRecordedControllerGetPreRecordedJobsV2 = <
   params?: PreRecordedControllerGetPreRecordedJobsV2Params,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v2/pre-recorded`, {
+  return axios.get("/v2/pre-recorded", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -132,7 +127,7 @@ export const transcriptionControllerInitPreRecordedJobV2 = <
   initTranscriptionRequest: InitTranscriptionRequest,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/transcription`, initTranscriptionRequest, options)
+  return axios.post("/v2/transcription", initTranscriptionRequest, options)
 }
 
 /**
@@ -142,7 +137,7 @@ export const transcriptionControllerListV2 = <TData = AxiosResponse<ListTranscri
   params?: TranscriptionControllerListV2Params,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v2/transcription`, {
+  return axios.get("/v2/transcription", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -189,82 +184,82 @@ export const audioToTextControllerAudioTranscription = <TData = AxiosResponse<vo
 ): Promise<TData> => {
   const formData = new FormData()
   if (audioToTextControllerAudioTranscriptionBody.audio !== undefined) {
-    formData.append(`audio`, audioToTextControllerAudioTranscriptionBody.audio)
+    formData.append("audio", audioToTextControllerAudioTranscriptionBody.audio)
   }
   if (audioToTextControllerAudioTranscriptionBody.audio_url !== undefined) {
-    formData.append(`audio_url`, audioToTextControllerAudioTranscriptionBody.audio_url)
+    formData.append("audio_url", audioToTextControllerAudioTranscriptionBody.audio_url)
   }
   if (audioToTextControllerAudioTranscriptionBody.language_behaviour !== undefined) {
     formData.append(
-      `language_behaviour`,
+      "language_behaviour",
       audioToTextControllerAudioTranscriptionBody.language_behaviour
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.language !== undefined) {
-    formData.append(`language`, audioToTextControllerAudioTranscriptionBody.language)
+    formData.append("language", audioToTextControllerAudioTranscriptionBody.language)
   }
   if (audioToTextControllerAudioTranscriptionBody.transcription_hint !== undefined) {
     formData.append(
-      `transcription_hint`,
+      "transcription_hint",
       audioToTextControllerAudioTranscriptionBody.transcription_hint
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.toggle_diarization !== undefined) {
     formData.append(
-      `toggle_diarization`,
+      "toggle_diarization",
       audioToTextControllerAudioTranscriptionBody.toggle_diarization.toString()
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.diarization_num_speakers !== undefined) {
     formData.append(
-      `diarization_num_speakers`,
+      "diarization_num_speakers",
       audioToTextControllerAudioTranscriptionBody.diarization_num_speakers.toString()
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.diarization_min_speakers !== undefined) {
     formData.append(
-      `diarization_min_speakers`,
+      "diarization_min_speakers",
       audioToTextControllerAudioTranscriptionBody.diarization_min_speakers.toString()
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.diarization_max_speakers !== undefined) {
     formData.append(
-      `diarization_max_speakers`,
+      "diarization_max_speakers",
       audioToTextControllerAudioTranscriptionBody.diarization_max_speakers.toString()
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.toggle_direct_translate !== undefined) {
     formData.append(
-      `toggle_direct_translate`,
+      "toggle_direct_translate",
       audioToTextControllerAudioTranscriptionBody.toggle_direct_translate.toString()
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.target_translation_language !== undefined) {
     formData.append(
-      `target_translation_language`,
+      "target_translation_language",
       audioToTextControllerAudioTranscriptionBody.target_translation_language
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.output_format !== undefined) {
-    formData.append(`output_format`, audioToTextControllerAudioTranscriptionBody.output_format)
+    formData.append("output_format", audioToTextControllerAudioTranscriptionBody.output_format)
   }
   if (audioToTextControllerAudioTranscriptionBody.toggle_noise_reduction !== undefined) {
     formData.append(
-      `toggle_noise_reduction`,
+      "toggle_noise_reduction",
       audioToTextControllerAudioTranscriptionBody.toggle_noise_reduction.toString()
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.toggle_accurate_words_timestamps !== undefined) {
     formData.append(
-      `toggle_accurate_words_timestamps`,
+      "toggle_accurate_words_timestamps",
       audioToTextControllerAudioTranscriptionBody.toggle_accurate_words_timestamps.toString()
     )
   }
   if (audioToTextControllerAudioTranscriptionBody.webhook_url !== undefined) {
-    formData.append(`webhook_url`, audioToTextControllerAudioTranscriptionBody.webhook_url)
+    formData.append("webhook_url", audioToTextControllerAudioTranscriptionBody.webhook_url)
   }
 
-  return axios.post(`/audio/text/audio-transcription`, formData, options)
+  return axios.post("/audio/text/audio-transcription", formData, options)
 }
 
 export const videoToTextControllerVideoTranscription = <TData = AxiosResponse<void>>(
@@ -273,82 +268,82 @@ export const videoToTextControllerVideoTranscription = <TData = AxiosResponse<vo
 ): Promise<TData> => {
   const formData = new FormData()
   if (videoToTextControllerVideoTranscriptionBody.video !== undefined) {
-    formData.append(`video`, videoToTextControllerVideoTranscriptionBody.video)
+    formData.append("video", videoToTextControllerVideoTranscriptionBody.video)
   }
   if (videoToTextControllerVideoTranscriptionBody.video_url !== undefined) {
-    formData.append(`video_url`, videoToTextControllerVideoTranscriptionBody.video_url)
+    formData.append("video_url", videoToTextControllerVideoTranscriptionBody.video_url)
   }
   if (videoToTextControllerVideoTranscriptionBody.language_behaviour !== undefined) {
     formData.append(
-      `language_behaviour`,
+      "language_behaviour",
       videoToTextControllerVideoTranscriptionBody.language_behaviour
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.language !== undefined) {
-    formData.append(`language`, videoToTextControllerVideoTranscriptionBody.language)
+    formData.append("language", videoToTextControllerVideoTranscriptionBody.language)
   }
   if (videoToTextControllerVideoTranscriptionBody.transcription_hint !== undefined) {
     formData.append(
-      `transcription_hint`,
+      "transcription_hint",
       videoToTextControllerVideoTranscriptionBody.transcription_hint
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.toggle_diarization !== undefined) {
     formData.append(
-      `toggle_diarization`,
+      "toggle_diarization",
       videoToTextControllerVideoTranscriptionBody.toggle_diarization.toString()
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.diarization_num_speakers !== undefined) {
     formData.append(
-      `diarization_num_speakers`,
+      "diarization_num_speakers",
       videoToTextControllerVideoTranscriptionBody.diarization_num_speakers.toString()
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.diarization_min_speakers !== undefined) {
     formData.append(
-      `diarization_min_speakers`,
+      "diarization_min_speakers",
       videoToTextControllerVideoTranscriptionBody.diarization_min_speakers.toString()
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.diarization_max_speakers !== undefined) {
     formData.append(
-      `diarization_max_speakers`,
+      "diarization_max_speakers",
       videoToTextControllerVideoTranscriptionBody.diarization_max_speakers.toString()
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.toggle_direct_translate !== undefined) {
     formData.append(
-      `toggle_direct_translate`,
+      "toggle_direct_translate",
       videoToTextControllerVideoTranscriptionBody.toggle_direct_translate.toString()
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.target_translation_language !== undefined) {
     formData.append(
-      `target_translation_language`,
+      "target_translation_language",
       videoToTextControllerVideoTranscriptionBody.target_translation_language
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.output_format !== undefined) {
-    formData.append(`output_format`, videoToTextControllerVideoTranscriptionBody.output_format)
+    formData.append("output_format", videoToTextControllerVideoTranscriptionBody.output_format)
   }
   if (videoToTextControllerVideoTranscriptionBody.toggle_noise_reduction !== undefined) {
     formData.append(
-      `toggle_noise_reduction`,
+      "toggle_noise_reduction",
       videoToTextControllerVideoTranscriptionBody.toggle_noise_reduction.toString()
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.toggle_accurate_words_timestamps !== undefined) {
     formData.append(
-      `toggle_accurate_words_timestamps`,
+      "toggle_accurate_words_timestamps",
       videoToTextControllerVideoTranscriptionBody.toggle_accurate_words_timestamps.toString()
     )
   }
   if (videoToTextControllerVideoTranscriptionBody.webhook_url !== undefined) {
-    formData.append(`webhook_url`, videoToTextControllerVideoTranscriptionBody.webhook_url)
+    formData.append("webhook_url", videoToTextControllerVideoTranscriptionBody.webhook_url)
   }
 
-  return axios.post(`/video/text/video-transcription`, formData, options)
+  return axios.post("/video/text/video-transcription", formData, options)
 }
 
 /**
@@ -358,7 +353,7 @@ export const historyControllerGetListV1 = <TData = AxiosResponse<ListHistoryResp
   params?: HistoryControllerGetListV1Params,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v1/history`, {
+  return axios.get("/v1/history", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -374,7 +369,7 @@ export const streamingControllerInitStreamingSessionV2 = <
   params?: StreamingControllerInitStreamingSessionV2Params,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/live`, streamingRequest, {
+  return axios.post("/v2/live", streamingRequest, {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -387,7 +382,7 @@ export const streamingControllerGetStreamingJobsV2 = <TData = AxiosResponse<List
   params?: StreamingControllerGetStreamingJobsV2Params,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v2/live`, {
+  return axios.get("/v2/live", {
     ...options,
     params: { ...params, ...options?.params }
   })

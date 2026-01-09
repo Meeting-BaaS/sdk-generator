@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseErrorEventType } from "./responseErrorEventType"
+
 import type { ResponseErrorEventCode } from "./responseErrorEventCode"
 import type { ResponseErrorEventParam } from "./responseErrorEventParam"
+import type { ResponseErrorEventType } from "./responseErrorEventType"
 
 /**
  * Emitted when an error occurs.

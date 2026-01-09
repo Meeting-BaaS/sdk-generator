@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileObjectObject } from "./vectorStoreFileObjectObject"
-import type { VectorStoreFileObjectStatus } from "./vectorStoreFileObjectStatus"
-import type { VectorStoreFileObjectLastError } from "./vectorStoreFileObjectLastError"
+
 import type { ChunkingStrategyResponse } from "./chunkingStrategyResponse"
 import type { VectorStoreFileAttributes } from "./vectorStoreFileAttributes"
+import type { VectorStoreFileObjectLastError } from "./vectorStoreFileObjectLastError"
+import type { VectorStoreFileObjectObject } from "./vectorStoreFileObjectObject"
+import type { VectorStoreFileObjectStatus } from "./vectorStoreFileObjectStatus"
 
 /**
  * A list of files attached to a vector store.

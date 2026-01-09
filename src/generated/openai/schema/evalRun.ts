@@ -5,13 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { EvalApiError } from "./evalApiError"
+import type { EvalRunDataSource } from "./evalRunDataSource"
 import type { EvalRunObject } from "./evalRunObject"
-import type { EvalRunResultCounts } from "./evalRunResultCounts"
 import type { EvalRunPerModelUsageItem } from "./evalRunPerModelUsageItem"
 import type { EvalRunPerTestingCriteriaResultsItem } from "./evalRunPerTestingCriteriaResultsItem"
-import type { EvalRunDataSource } from "./evalRunDataSource"
+import type { EvalRunResultCounts } from "./evalRunResultCounts"
 import type { Metadata } from "./metadata"
-import type { EvalApiError } from "./evalApiError"
 
 /**
  * A schema representing an evaluation run.

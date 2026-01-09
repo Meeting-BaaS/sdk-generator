@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatJsonSchemaType } from "./responseFormatJsonSchemaType"
+
 import type { ResponseFormatJsonSchemaJsonSchema } from "./responseFormatJsonSchemaJsonSchema"
+import type { ResponseFormatJsonSchemaType } from "./responseFormatJsonSchemaType"
 
 /**
  * JSON Schema response format. Used to generate structured JSON responses.

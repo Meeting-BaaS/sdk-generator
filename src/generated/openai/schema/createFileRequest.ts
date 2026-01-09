@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FilePurpose } from "./filePurpose"
+
 import type { FileExpirationAfter } from "./fileExpirationAfter"
+import type { FilePurpose } from "./filePurpose"
 
 export interface CreateFileRequest {
   /** The File object (not file name) to be uploaded.

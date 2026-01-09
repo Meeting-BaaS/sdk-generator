@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { NamedEntityRecognitionMessageData } from "./namedEntityRecognitionMessageData"
 import type { NamedEntityRecognitionMessageError } from "./namedEntityRecognitionMessageError"
 import type { NamedEntityRecognitionMessageType } from "./namedEntityRecognitionMessageType"
-import type { NamedEntityRecognitionMessageData } from "./namedEntityRecognitionMessageData"
 
 export interface NamedEntityRecognitionMessage {
   /** Id of the live session */

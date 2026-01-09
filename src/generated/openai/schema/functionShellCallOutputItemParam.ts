@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallOutputItemParamId } from "./functionShellCallOutputItemParamId"
-import type { FunctionShellCallOutputItemParamType } from "./functionShellCallOutputItemParamType"
+
 import type { FunctionShellCallOutputContentParam } from "./functionShellCallOutputContentParam"
+import type { FunctionShellCallOutputItemParamId } from "./functionShellCallOutputItemParamId"
 import type { FunctionShellCallOutputItemParamMaxOutputLength } from "./functionShellCallOutputItemParamMaxOutputLength"
+import type { FunctionShellCallOutputItemParamType } from "./functionShellCallOutputItemParamType"
 
 /**
  * The streamed output items emitted by a shell tool call.

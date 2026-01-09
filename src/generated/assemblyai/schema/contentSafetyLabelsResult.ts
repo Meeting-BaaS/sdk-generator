@@ -7,8 +7,8 @@
  */
 import type { AudioIntelligenceModelStatus } from "./audioIntelligenceModelStatus"
 import type { ContentSafetyLabelResult } from "./contentSafetyLabelResult"
-import type { ContentSafetyLabelsResultSummary } from "./contentSafetyLabelsResultSummary"
 import type { ContentSafetyLabelsResultSeverityScoreSummary } from "./contentSafetyLabelsResultSeverityScoreSummary"
+import type { ContentSafetyLabelsResultSummary } from "./contentSafetyLabelsResultSummary"
 
 /**
  * An array of results for the Content Moderation model, if it is enabled.

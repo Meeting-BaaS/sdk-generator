@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputImageContentParamAutoParamType } from "./inputImageContentParamAutoParamType"
-import type { InputImageContentParamAutoParamImageUrl } from "./inputImageContentParamAutoParamImageUrl"
-import type { InputImageContentParamAutoParamFileId } from "./inputImageContentParamAutoParamFileId"
+
 import type { InputImageContentParamAutoParamDetail } from "./inputImageContentParamAutoParamDetail"
+import type { InputImageContentParamAutoParamFileId } from "./inputImageContentParamAutoParamFileId"
+import type { InputImageContentParamAutoParamImageUrl } from "./inputImageContentParamAutoParamImageUrl"
+import type { InputImageContentParamAutoParamType } from "./inputImageContentParamAutoParamType"
 
 /**
  * An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision)

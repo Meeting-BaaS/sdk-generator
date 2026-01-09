@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType } from "./realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType"
+
 import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs } from "./realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs"
+import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType } from "./realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType"
 import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage } from "./realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage"
 
 /**

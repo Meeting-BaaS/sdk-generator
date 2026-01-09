@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateChatCompletionResponseChoicesItemFinishReason } from "./createChatCompletionResponseChoicesItemFinishReason"
+
 import type { ChatCompletionResponseMessage } from "./chatCompletionResponseMessage"
+import type { CreateChatCompletionResponseChoicesItemFinishReason } from "./createChatCompletionResponseChoicesItemFinishReason"
 import type { CreateChatCompletionResponseChoicesItemLogprobs } from "./createChatCompletionResponseChoicesItemLogprobs"
 
 export type CreateChatCompletionResponseChoicesItem = {

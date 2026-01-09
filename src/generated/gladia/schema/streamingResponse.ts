@@ -4,13 +4,14 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StreamingResponseStatus } from "./streamingResponseStatus"
+
 import type { StreamingResponseCustomMetadata } from "./streamingResponseCustomMetadata"
-import type { StreamingResponsePostSessionMetadata } from "./streamingResponsePostSessionMetadata"
-import type { StreamingResponseKind } from "./streamingResponseKind"
 import type { StreamingResponseFile } from "./streamingResponseFile"
+import type { StreamingResponseKind } from "./streamingResponseKind"
+import type { StreamingResponsePostSessionMetadata } from "./streamingResponsePostSessionMetadata"
 import type { StreamingResponseRequestParams } from "./streamingResponseRequestParams"
 import type { StreamingResponseResult } from "./streamingResponseResult"
+import type { StreamingResponseStatus } from "./streamingResponseStatus"
 
 export interface StreamingResponse {
   /** Id of the job */

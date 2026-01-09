@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadResource } from "./threadResource"
+
 import type { ThreadListResourceFirstId } from "./threadListResourceFirstId"
 import type { ThreadListResourceLastId } from "./threadListResourceLastId"
+import type { ThreadResource } from "./threadResource"
 
 /**
  * A paginated list of ChatKit threads.

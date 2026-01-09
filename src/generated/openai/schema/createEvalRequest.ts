@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Metadata } from "./metadata"
+
 import type { CreateEvalRequestDataSourceConfig } from "./createEvalRequestDataSourceConfig"
 import type { CreateEvalRequestTestingCriteriaItem } from "./createEvalRequestTestingCriteriaItem"
+import type { Metadata } from "./metadata"
 
 export interface CreateEvalRequest {
   /** The name of the evaluation. */

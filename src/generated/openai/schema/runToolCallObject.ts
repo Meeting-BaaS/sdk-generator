@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunToolCallObjectType } from "./runToolCallObjectType"
+
 import type { RunToolCallObjectFunction } from "./runToolCallObjectFunction"
+import type { RunToolCallObjectType } from "./runToolCallObjectType"
 
 /**
  * Tool call objects

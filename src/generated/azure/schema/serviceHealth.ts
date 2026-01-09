@@ -5,8 +5,9 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { HealthStatus } from "./healthStatus"
+
 import type { Component } from "./component"
+import type { HealthStatus } from "./healthStatus"
 
 export interface ServiceHealth {
   status?: HealthStatus

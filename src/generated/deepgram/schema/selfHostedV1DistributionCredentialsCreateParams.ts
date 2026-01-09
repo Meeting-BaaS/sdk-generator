@@ -6,8 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SelfHostedV1ParamsDistributionScopesParameter } from "./selfHostedV1ParamsDistributionScopesParameter"
+
 import type { SelfHostedV1ParamsDistributionProviderParameter } from "./selfHostedV1ParamsDistributionProviderParameter"
+import type { SelfHostedV1ParamsDistributionScopesParameter } from "./selfHostedV1ParamsDistributionScopesParameter"
 
 export type SelfHostedV1DistributionCredentialsCreateParams = {
   /**

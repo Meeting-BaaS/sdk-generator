@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDeltaStepDetailsToolCallsCodeOutputImageObjectType } from "./runStepDeltaStepDetailsToolCallsCodeOutputImageObjectType"
+
 import type { RunStepDeltaStepDetailsToolCallsCodeOutputImageObjectImage } from "./runStepDeltaStepDetailsToolCallsCodeOutputImageObjectImage"
+import type { RunStepDeltaStepDetailsToolCallsCodeOutputImageObjectType } from "./runStepDeltaStepDetailsToolCallsCodeOutputImageObjectType"
 
 export interface RunStepDeltaStepDetailsToolCallsCodeOutputImageObject {
   /** The index of the output in the outputs array. */

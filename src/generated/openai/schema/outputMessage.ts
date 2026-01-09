@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { OutputMessageType } from "./outputMessageType"
-import type { OutputMessageRole } from "./outputMessageRole"
+
 import type { OutputMessageContent } from "./outputMessageContent"
+import type { OutputMessageRole } from "./outputMessageRole"
 import type { OutputMessageStatus } from "./outputMessageStatus"
+import type { OutputMessageType } from "./outputMessageType"
 
 /**
  * An output message from the model.

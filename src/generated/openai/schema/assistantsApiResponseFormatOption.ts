@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatText } from "./responseFormatText"
+
 import type { ResponseFormatJsonObject } from "./responseFormatJsonObject"
 import type { ResponseFormatJsonSchema } from "./responseFormatJsonSchema"
+import type { ResponseFormatText } from "./responseFormatText"
 
 /**
  * Specifies the format that the model must output. Compatible with [GPT-4o](https://platform.openai.com/docs/models#gpt-4o), [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4), and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.

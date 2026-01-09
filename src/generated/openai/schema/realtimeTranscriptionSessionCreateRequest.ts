@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateRequestTurnDetection } from "./realtimeTranscriptionSessionCreateRequestTurnDetection"
-import type { RealtimeTranscriptionSessionCreateRequestInputAudioNoiseReduction } from "./realtimeTranscriptionSessionCreateRequestInputAudioNoiseReduction"
-import type { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "./realtimeTranscriptionSessionCreateRequestInputAudioFormat"
+
 import type { AudioTranscription } from "./audioTranscription"
 import type { RealtimeTranscriptionSessionCreateRequestIncludeItem } from "./realtimeTranscriptionSessionCreateRequestIncludeItem"
+import type { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "./realtimeTranscriptionSessionCreateRequestInputAudioFormat"
+import type { RealtimeTranscriptionSessionCreateRequestInputAudioNoiseReduction } from "./realtimeTranscriptionSessionCreateRequestInputAudioNoiseReduction"
+import type { RealtimeTranscriptionSessionCreateRequestTurnDetection } from "./realtimeTranscriptionSessionCreateRequestTurnDetection"
 
 /**
  * Realtime transcription session object configuration.

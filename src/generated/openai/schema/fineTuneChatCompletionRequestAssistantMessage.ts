@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuneChatCompletionRequestAssistantMessageAllOf } from "./fineTuneChatCompletionRequestAssistantMessageAllOf"
+
 import type { ChatCompletionRequestAssistantMessage } from "./chatCompletionRequestAssistantMessage"
+import type { FineTuneChatCompletionRequestAssistantMessageAllOf } from "./fineTuneChatCompletionRequestAssistantMessageAllOf"
 
 export type FineTuneChatCompletionRequestAssistantMessage =
   FineTuneChatCompletionRequestAssistantMessageAllOf & ChatCompletionRequestAssistantMessage

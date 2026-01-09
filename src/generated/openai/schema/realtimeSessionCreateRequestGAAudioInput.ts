@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
+
 import type { AudioTranscription } from "./audioTranscription"
+import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
 import type { RealtimeSessionCreateRequestGAAudioInputNoiseReduction } from "./realtimeSessionCreateRequestGAAudioInputNoiseReduction"
 import type { RealtimeTurnDetection } from "./realtimeTurnDetection"
 

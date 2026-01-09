@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputMessageType } from "./inputMessageType"
+
+import type { InputMessageContentList } from "./inputMessageContentList"
 import type { InputMessageRole } from "./inputMessageRole"
 import type { InputMessageStatus } from "./inputMessageStatus"
-import type { InputMessageContentList } from "./inputMessageContentList"
+import type { InputMessageType } from "./inputMessageType"
 
 /**
  * A message input to the model with a role indicating instruction following

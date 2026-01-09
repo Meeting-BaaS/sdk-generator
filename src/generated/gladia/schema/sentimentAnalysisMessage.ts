@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { SentimentAnalysisMessageData } from "./sentimentAnalysisMessageData"
 import type { SentimentAnalysisMessageError } from "./sentimentAnalysisMessageError"
 import type { SentimentAnalysisMessageType } from "./sentimentAnalysisMessageType"
-import type { SentimentAnalysisMessageData } from "./sentimentAnalysisMessageData"
 
 export interface SentimentAnalysisMessage {
   /** Id of the live session */

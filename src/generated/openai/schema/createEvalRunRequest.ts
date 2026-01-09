@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Metadata } from "./metadata"
+
 import type { CreateEvalRunRequestDataSource } from "./createEvalRunRequestDataSource"
+import type { Metadata } from "./metadata"
 
 export interface CreateEvalRunRequest {
   /** The name of the run. */

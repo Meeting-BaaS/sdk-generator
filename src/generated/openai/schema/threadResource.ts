@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { ThreadResourceObject } from "./threadResourceObject"
-import type { ThreadResourceTitle } from "./threadResourceTitle"
 import type { ThreadResourceStatus } from "./threadResourceStatus"
+import type { ThreadResourceTitle } from "./threadResourceTitle"
 
 /**
  * Represents a ChatKit thread and its current status.

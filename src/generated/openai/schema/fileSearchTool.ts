@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { FileSearchToolFilters } from "./fileSearchToolFilters"
 import type { FileSearchToolType } from "./fileSearchToolType"
 import type { RankingOptions } from "./rankingOptions"
-import type { FileSearchToolFilters } from "./fileSearchToolFilters"
 
 /**
  * A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).

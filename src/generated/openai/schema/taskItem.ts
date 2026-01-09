@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { TaskItemHeading } from "./taskItemHeading"
 import type { TaskItemObject } from "./taskItemObject"
+import type { TaskItemSummary } from "./taskItemSummary"
 import type { TaskItemType } from "./taskItemType"
 import type { TaskType } from "./taskType"
-import type { TaskItemHeading } from "./taskItemHeading"
-import type { TaskItemSummary } from "./taskItemSummary"
 
 /**
  * Task emitted by the workflow to show progress and status updates.

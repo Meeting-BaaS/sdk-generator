@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { ProjectServiceAccountApiKey } from "./projectServiceAccountApiKey"
 import type { ProjectServiceAccountCreateResponseObject } from "./projectServiceAccountCreateResponseObject"
 import type { ProjectServiceAccountCreateResponseRole } from "./projectServiceAccountCreateResponseRole"
-import type { ProjectServiceAccountApiKey } from "./projectServiceAccountApiKey"
 
 export interface ProjectServiceAccountCreateResponse {
   object: ProjectServiceAccountCreateResponseObject

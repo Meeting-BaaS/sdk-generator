@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UploadStatus } from "./uploadStatus"
-import type { UploadObject } from "./uploadObject"
+
 import type { UploadFile } from "./uploadFile"
+import type { UploadObject } from "./uploadObject"
+import type { UploadStatus } from "./uploadStatus"
 
 /**
  * The Upload object can accept byte chunks in the form of Parts.

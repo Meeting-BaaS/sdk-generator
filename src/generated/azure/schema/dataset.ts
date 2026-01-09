@@ -5,11 +5,12 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
+
+import type { DatasetCustomProperties } from "./datasetCustomProperties"
+import type { DatasetKind } from "./datasetKind"
 import type { DatasetLinks } from "./datasetLinks"
 import type { DatasetProperties } from "./datasetProperties"
-import type { DatasetKind } from "./datasetKind"
 import type { EntityReference } from "./entityReference"
-import type { DatasetCustomProperties } from "./datasetCustomProperties"
 import type { Status } from "./status"
 
 export interface Dataset {

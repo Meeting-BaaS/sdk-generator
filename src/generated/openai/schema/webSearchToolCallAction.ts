@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchActionSearch } from "./webSearchActionSearch"
-import type { WebSearchActionOpenPage } from "./webSearchActionOpenPage"
+
 import type { WebSearchActionFind } from "./webSearchActionFind"
+import type { WebSearchActionOpenPage } from "./webSearchActionOpenPage"
+import type { WebSearchActionSearch } from "./webSearchActionSearch"
 
 /**
  * An object describing the specific action taken in this web search call.

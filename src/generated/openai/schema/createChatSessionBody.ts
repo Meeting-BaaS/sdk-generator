@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WorkflowParam } from "./workflowParam"
+
+import type { ChatkitConfigurationParam } from "./chatkitConfigurationParam"
 import type { ExpiresAfterParam } from "./expiresAfterParam"
 import type { RateLimitsParam } from "./rateLimitsParam"
-import type { ChatkitConfigurationParam } from "./chatkitConfigurationParam"
+import type { WorkflowParam } from "./workflowParam"
 
 /**
  * Parameters for provisioning a new ChatKit session.

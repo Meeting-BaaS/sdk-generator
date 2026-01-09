@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { CreateSpeechRequestModel } from "./createSpeechRequestModel"
-import type { VoiceIdsShared } from "./voiceIdsShared"
 import type { CreateSpeechRequestResponseFormat } from "./createSpeechRequestResponseFormat"
 import type { CreateSpeechRequestStreamFormat } from "./createSpeechRequestStreamFormat"
+import type { VoiceIdsShared } from "./voiceIdsShared"
 
 export interface CreateSpeechRequest {
   /** One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.

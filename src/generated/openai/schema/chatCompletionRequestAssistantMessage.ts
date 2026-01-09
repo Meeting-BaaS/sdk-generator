@@ -5,12 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { ChatCompletionMessageToolCalls } from "./chatCompletionMessageToolCalls"
+import type { ChatCompletionRequestAssistantMessageAudio } from "./chatCompletionRequestAssistantMessageAudio"
 import type { ChatCompletionRequestAssistantMessageContent } from "./chatCompletionRequestAssistantMessageContent"
+import type { ChatCompletionRequestAssistantMessageFunctionCall } from "./chatCompletionRequestAssistantMessageFunctionCall"
 import type { ChatCompletionRequestAssistantMessageRefusal } from "./chatCompletionRequestAssistantMessageRefusal"
 import type { ChatCompletionRequestAssistantMessageRole } from "./chatCompletionRequestAssistantMessageRole"
-import type { ChatCompletionRequestAssistantMessageAudio } from "./chatCompletionRequestAssistantMessageAudio"
-import type { ChatCompletionMessageToolCalls } from "./chatCompletionMessageToolCalls"
-import type { ChatCompletionRequestAssistantMessageFunctionCall } from "./chatCompletionRequestAssistantMessageFunctionCall"
 
 /**
  * Messages sent by the model in response to user messages.

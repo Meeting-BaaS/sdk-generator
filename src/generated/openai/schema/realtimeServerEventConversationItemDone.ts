@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationItemDonePreviousItemId } from "./realtimeServerEventConversationItemDonePreviousItemId"
+
 import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { RealtimeServerEventConversationItemDonePreviousItemId } from "./realtimeServerEventConversationItemDonePreviousItemId"
 
 /**
  * Returned when a conversation item is finalized.

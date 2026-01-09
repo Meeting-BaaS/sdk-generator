@@ -5,17 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponsePropertiesPreviousResponseId } from "./responsePropertiesPreviousResponseId"
+
 import type { ModelIdsResponses } from "./modelIdsResponses"
-import type { ResponsePropertiesReasoning } from "./responsePropertiesReasoning"
+import type { Prompt } from "./prompt"
 import type { ResponsePropertiesBackground } from "./responsePropertiesBackground"
 import type { ResponsePropertiesMaxOutputTokens } from "./responsePropertiesMaxOutputTokens"
 import type { ResponsePropertiesMaxToolCalls } from "./responsePropertiesMaxToolCalls"
-import type { ResponseTextParam } from "./responseTextParam"
-import type { ToolsArray } from "./toolsArray"
-import type { ToolChoiceParam } from "./toolChoiceParam"
-import type { Prompt } from "./prompt"
+import type { ResponsePropertiesPreviousResponseId } from "./responsePropertiesPreviousResponseId"
+import type { ResponsePropertiesReasoning } from "./responsePropertiesReasoning"
 import type { ResponsePropertiesTruncation } from "./responsePropertiesTruncation"
+import type { ResponseTextParam } from "./responseTextParam"
+import type { ToolChoiceParam } from "./toolChoiceParam"
+import type { ToolsArray } from "./toolsArray"
 
 export interface ResponseProperties {
   previous_response_id?: ResponsePropertiesPreviousResponseId

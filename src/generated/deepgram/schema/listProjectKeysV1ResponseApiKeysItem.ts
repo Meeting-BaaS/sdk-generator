@@ -6,8 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListProjectKeysV1ResponseApiKeysItemMember } from "./listProjectKeysV1ResponseApiKeysItemMember"
+
 import type { ListProjectKeysV1ResponseApiKeysItemApiKey } from "./listProjectKeysV1ResponseApiKeysItemApiKey"
+import type { ListProjectKeysV1ResponseApiKeysItemMember } from "./listProjectKeysV1ResponseApiKeysItemMember"
 
 export type ListProjectKeysV1ResponseApiKeysItem = {
   member?: ListProjectKeysV1ResponseApiKeysItemMember

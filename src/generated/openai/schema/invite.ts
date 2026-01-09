@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { InviteObject } from "./inviteObject"
+import type { InviteProjectsItem } from "./inviteProjectsItem"
 import type { InviteRole } from "./inviteRole"
 import type { InviteStatus } from "./inviteStatus"
-import type { InviteProjectsItem } from "./inviteProjectsItem"
 
 /**
  * Represents an individual `invite` to the organization.

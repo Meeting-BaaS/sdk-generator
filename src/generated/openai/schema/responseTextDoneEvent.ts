@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseTextDoneEventType } from "./responseTextDoneEventType"
+
 import type { ResponseLogProb } from "./responseLogProb"
+import type { ResponseTextDoneEventType } from "./responseTextDoneEventType"
 
 /**
  * Emitted when text content is finalized.

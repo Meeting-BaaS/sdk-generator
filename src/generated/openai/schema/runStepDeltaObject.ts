@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDeltaObjectObject } from "./runStepDeltaObjectObject"
+
 import type { RunStepDeltaObjectDelta } from "./runStepDeltaObjectDelta"
+import type { RunStepDeltaObjectObject } from "./runStepDeltaObjectObject"
 
 /**
  * Represents a run step delta i.e. any changed fields on a run step during streaming.

@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { UtteranceDTO } from "./utteranceDTO"
+
 import type { SentimentAnalysisResult } from "./sentimentAnalysisResult"
+import type { UtteranceDTO } from "./utteranceDTO"
 
 export interface SentimentAnalysisData {
   /** Id of the utterance used for this result */

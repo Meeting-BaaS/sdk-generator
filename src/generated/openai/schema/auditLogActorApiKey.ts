@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { AuditLogActorApiKeyType } from "./auditLogActorApiKeyType"
-import type { AuditLogActorUser } from "./auditLogActorUser"
 import type { AuditLogActorServiceAccount } from "./auditLogActorServiceAccount"
+import type { AuditLogActorUser } from "./auditLogActorUser"
 
 /**
  * The API Key used to perform the audit logged action.

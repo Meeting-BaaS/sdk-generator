@@ -4,13 +4,14 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PreRecordedResponseStatus } from "./preRecordedResponseStatus"
+
 import type { PreRecordedResponseCustomMetadata } from "./preRecordedResponseCustomMetadata"
-import type { PreRecordedResponsePostSessionMetadata } from "./preRecordedResponsePostSessionMetadata"
-import type { PreRecordedResponseKind } from "./preRecordedResponseKind"
 import type { PreRecordedResponseFile } from "./preRecordedResponseFile"
+import type { PreRecordedResponseKind } from "./preRecordedResponseKind"
+import type { PreRecordedResponsePostSessionMetadata } from "./preRecordedResponsePostSessionMetadata"
 import type { PreRecordedResponseRequestParams } from "./preRecordedResponseRequestParams"
 import type { PreRecordedResponseResult } from "./preRecordedResponseResult"
+import type { PreRecordedResponseStatus } from "./preRecordedResponseStatus"
 
 export interface PreRecordedResponse {
   /** Id of the job */

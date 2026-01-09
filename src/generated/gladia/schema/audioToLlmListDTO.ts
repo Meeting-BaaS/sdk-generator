@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AudioToLlmListDTOError } from "./audioToLlmListDTOError"
+
 import type { AudioToLlmDTO } from "./audioToLlmDTO"
+import type { AudioToLlmListDTOError } from "./audioToLlmListDTOError"
 
 export interface AudioToLlmListDTO {
   /** The audio intelligence model succeeded to get a valid output */

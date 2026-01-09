@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterToolType } from "./codeInterpreterToolType"
+
 import type { CodeInterpreterToolContainer } from "./codeInterpreterToolContainer"
+import type { CodeInterpreterToolType } from "./codeInterpreterToolType"
 
 /**
  * A tool that runs Python code to help generate a response to a prompt.

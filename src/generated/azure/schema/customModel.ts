@@ -5,11 +5,12 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { SharedModel } from "./sharedModel"
-import type { EntityReference } from "./entityReference"
+
+import type { CustomModelCustomProperties } from "./customModelCustomProperties"
 import type { CustomModelLinks } from "./customModelLinks"
 import type { CustomModelProperties } from "./customModelProperties"
-import type { CustomModelCustomProperties } from "./customModelCustomProperties"
+import type { EntityReference } from "./entityReference"
+import type { SharedModel } from "./sharedModel"
 
 export type CustomModel = SharedModel & {
   project?: EntityReference

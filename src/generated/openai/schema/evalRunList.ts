@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunListObject } from "./evalRunListObject"
+
 import type { EvalRun } from "./evalRun"
+import type { EvalRunListObject } from "./evalRunListObject"
 
 /**
  * An object representing a list of runs for an evaluation.

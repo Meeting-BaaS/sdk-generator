@@ -5,17 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { FineTuneMethod } from "./fineTuneMethod"
 import type { FineTuningJobError } from "./fineTuningJobError"
+import type { FineTuningJobEstimatedFinish } from "./fineTuningJobEstimatedFinish"
 import type { FineTuningJobFineTunedModel } from "./fineTuningJobFineTunedModel"
 import type { FineTuningJobFinishedAt } from "./fineTuningJobFinishedAt"
 import type { FineTuningJobHyperparameters } from "./fineTuningJobHyperparameters"
+import type { FineTuningJobIntegrations } from "./fineTuningJobIntegrations"
 import type { FineTuningJobObject } from "./fineTuningJobObject"
 import type { FineTuningJobStatus } from "./fineTuningJobStatus"
 import type { FineTuningJobTrainedTokens } from "./fineTuningJobTrainedTokens"
 import type { FineTuningJobValidationFile } from "./fineTuningJobValidationFile"
-import type { FineTuningJobIntegrations } from "./fineTuningJobIntegrations"
-import type { FineTuningJobEstimatedFinish } from "./fineTuningJobEstimatedFinish"
-import type { FineTuneMethod } from "./fineTuneMethod"
 import type { Metadata } from "./metadata"
 
 /**

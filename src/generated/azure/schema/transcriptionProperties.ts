@@ -5,11 +5,12 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { PunctuationMode } from "./punctuationMode"
-import type { ProfanityFilterMode } from "./profanityFilterMode"
+
 import type { DiarizationProperties } from "./diarizationProperties"
-import type { LanguageIdentificationProperties } from "./languageIdentificationProperties"
 import type { EntityError } from "./entityError"
+import type { LanguageIdentificationProperties } from "./languageIdentificationProperties"
+import type { ProfanityFilterMode } from "./profanityFilterMode"
+import type { PunctuationMode } from "./punctuationMode"
 
 export interface TranscriptionProperties {
   /** A value indicating whether diarization (speaker identification) is requested. The default value

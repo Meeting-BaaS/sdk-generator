@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepStreamEventAnyOfEvent } from "./runStepStreamEventAnyOfEvent"
+
 import type { RunStepObject } from "./runStepObject"
+import type { RunStepStreamEventAnyOfEvent } from "./runStepStreamEventAnyOfEvent"
 
 /**
  * Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) is created.

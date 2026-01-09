@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchToolCallItemParamType } from "./applyPatchToolCallItemParamType"
-import type { ApplyPatchToolCallItemParamId } from "./applyPatchToolCallItemParamId"
+
 import type { ApplyPatchCallStatusParam } from "./applyPatchCallStatusParam"
 import type { ApplyPatchOperationParam } from "./applyPatchOperationParam"
+import type { ApplyPatchToolCallItemParamId } from "./applyPatchToolCallItemParamId"
+import type { ApplyPatchToolCallItemParamType } from "./applyPatchToolCallItemParamType"
 
 /**
  * A tool call representing a request to create, delete, or update files using diff patches.

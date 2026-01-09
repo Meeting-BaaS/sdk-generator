@@ -5,9 +5,10 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { EntityReference } from "./entityReference"
+
 import type { EndpointPropertiesUpdate } from "./endpointPropertiesUpdate"
 import type { EndpointUpdateCustomProperties } from "./endpointUpdateCustomProperties"
+import type { EntityReference } from "./entityReference"
 
 export interface EndpointUpdate {
   model?: EntityReference

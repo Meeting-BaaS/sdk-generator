@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageContentTextObjectType } from "./messageContentTextObjectType"
+
 import type { MessageContentTextObjectText } from "./messageContentTextObjectText"
+import type { MessageContentTextObjectType } from "./messageContentTextObjectType"
 
 /**
  * The text content that is part of a message.

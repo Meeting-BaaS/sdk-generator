@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DoneEventEvent } from "./doneEventEvent"
+
 import type { DoneEventData } from "./doneEventData"
+import type { DoneEventEvent } from "./doneEventEvent"
 
 /**
  * Occurs when a stream ends.

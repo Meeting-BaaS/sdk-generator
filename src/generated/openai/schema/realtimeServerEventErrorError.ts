@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { RealtimeServerEventErrorErrorCode } from "./realtimeServerEventErrorErrorCode"
-import type { RealtimeServerEventErrorErrorParam } from "./realtimeServerEventErrorErrorParam"
 import type { RealtimeServerEventErrorErrorEventId } from "./realtimeServerEventErrorErrorEventId"
+import type { RealtimeServerEventErrorErrorParam } from "./realtimeServerEventErrorErrorParam"
 
 /**
  * Details of the error.

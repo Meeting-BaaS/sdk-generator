@@ -6,17 +6,50 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import axios from "axios"
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
 
+import { faker } from "@faker-js/faker"
+import type { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
+import { delay, HttpResponse, http } from "msw"
 import type {
+  AgentThinkModelsV1Response,
+  BillingBreakdownV1Response,
   CreateKeyV1Request,
+  CreateKeyV1Response,
   CreateProjectDistributionCredentialsV1Request,
+  CreateProjectDistributionCredentialsV1Response,
   CreateProjectInviteV1Request,
+  CreateProjectInviteV1Response,
+  DeleteProjectInviteV1Response,
+  DeleteProjectKeyV1Response,
+  DeleteProjectMemberV1Response,
+  DeleteProjectV1Response,
+  GetModelV1Response,
+  GetProjectBalanceV1Response,
+  GetProjectDistributionCredentialsV1Response,
+  GetProjectKeyV1Response,
+  GetProjectRequestV1Response,
+  GetProjectV1Response,
   GrantV1Request,
+  GrantV1Response,
+  LeaveProjectV1Response,
+  ListBillingFieldsV1Response,
+  ListenV1AcceptedResponse,
+  ListenV1MediaTranscribe200,
   ListenV1MediaTranscribeParams,
   ListenV1RequestFile,
   ListenV1RequestUrl,
+  ListenV1Response,
+  ListModelsV1Response,
+  ListProjectBalancesV1Response,
+  ListProjectDistributionCredentialsV1Response,
+  ListProjectInvitesV1Response,
+  ListProjectKeysV1Response,
+  ListProjectMemberScopesV1Response,
+  ListProjectMembersV1Response,
+  ListProjectPurchasesV1Response,
+  ListProjectRequestsV1Response,
+  ListProjectsV1Response,
   ManageV1ModelsListParams,
   ManageV1ProjectsBillingBreakdownListParams,
   ManageV1ProjectsBillingFieldsListParams,
@@ -29,53 +62,15 @@ import type {
   ManageV1ProjectsUsageFieldsListParams,
   ManageV1ProjectsUsageGetParams,
   ReadV1Request,
+  ReadV1Response,
   ReadV1TextAnalyzeParams,
   SelfHostedV1DistributionCredentialsCreateParams,
   SpeakV1AudioGenerateParams,
   SpeakV1Request,
-  UpdateProjectMemberScopesV1Request,
-  UpdateProjectV1Request
-} from "../schema"
-
-import { faker } from "@faker-js/faker"
-
-import { HttpResponse, delay, http } from "msw"
-
-import type {
-  AgentThinkModelsV1Response,
-  BillingBreakdownV1Response,
-  CreateKeyV1Response,
-  CreateProjectDistributionCredentialsV1Response,
-  CreateProjectInviteV1Response,
-  DeleteProjectInviteV1Response,
-  DeleteProjectKeyV1Response,
-  DeleteProjectMemberV1Response,
-  DeleteProjectV1Response,
-  GetModelV1Response,
-  GetProjectBalanceV1Response,
-  GetProjectDistributionCredentialsV1Response,
-  GetProjectKeyV1Response,
-  GetProjectRequestV1Response,
-  GetProjectV1Response,
-  GrantV1Response,
-  LeaveProjectV1Response,
-  ListBillingFieldsV1Response,
-  ListModelsV1Response,
-  ListProjectBalancesV1Response,
-  ListProjectDistributionCredentialsV1Response,
-  ListProjectInvitesV1Response,
-  ListProjectKeysV1Response,
-  ListProjectMemberScopesV1Response,
-  ListProjectMembersV1Response,
-  ListProjectPurchasesV1Response,
-  ListProjectRequestsV1Response,
-  ListProjectsV1Response,
-  ListenV1AcceptedResponse,
-  ListenV1MediaTranscribe200,
-  ListenV1Response,
-  ReadV1Response,
   SpeakV1Response,
+  UpdateProjectMemberScopesV1Request,
   UpdateProjectMemberScopesV1Response,
+  UpdateProjectV1Request,
   UpdateProjectV1Response,
   UsageBreakdownV1Response,
   UsageFieldsV1Response,
@@ -89,7 +84,7 @@ import type {
 export const agentV1SettingsThinkModelsList = <TData = AxiosResponse<AgentThinkModelsV1Response>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v1/agent/settings/think/models`, options)
+  return axios.get("/v1/agent/settings/think/models", options)
 }
 
 /**
@@ -100,7 +95,7 @@ export const authV1TokensGrant = <TData = AxiosResponse<GrantV1Response>>(
   grantV1Request?: GrantV1Request,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v1/auth/grant`, grantV1Request, options)
+  return axios.post("/v1/auth/grant", grantV1Request, options)
 }
 
 /**
@@ -112,7 +107,7 @@ export const listenV1MediaTranscribe = <TData = AxiosResponse<ListenV1MediaTrans
   params?: ListenV1MediaTranscribeParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v1/listen`, listenV1MediaTranscribeBody, {
+  return axios.post("/v1/listen", listenV1MediaTranscribeBody, {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -126,7 +121,7 @@ export const manageV1ModelsList = <TData = AxiosResponse<ListModelsV1Response>>(
   params?: ManageV1ModelsListParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v1/models`, {
+  return axios.get("/v1/models", {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -150,7 +145,7 @@ export const manageV1ModelsGet = <TData = AxiosResponse<GetModelV1Response>>(
 export const manageV1ProjectsList = <TData = AxiosResponse<ListProjectsV1Response>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get(`/v1/projects`, options)
+  return axios.get("/v1/projects", options)
 }
 
 /**
@@ -606,7 +601,7 @@ export const readV1TextAnalyze = <TData = AxiosResponse<ReadV1Response>>(
   params?: ReadV1TextAnalyzeParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v1/read`, readV1Request, {
+  return axios.post("/v1/read", readV1Request, {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -621,7 +616,7 @@ export const speakV1AudioGenerate = <TData = AxiosResponse<SpeakV1Response>>(
   params?: SpeakV1AudioGenerateParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v1/speak`, speakV1Request, {
+  return axios.post("/v1/speak", speakV1Request, {
     ...options,
     params: { ...params, ...options?.params }
   })
@@ -693,7 +688,7 @@ export const getAgentV1SettingsThinkModelsListResponseMock = (
           "gpt-4o-mini"
         ] as const),
         name: faker.string.alpha(20),
-        provider: "open_ai"
+        provider: 'open_ai'
       },
       {
         id: faker.helpers.arrayElement([
@@ -701,7 +696,7 @@ export const getAgentV1SettingsThinkModelsListResponseMock = (
           "claude-sonnet-4-20250514"
         ] as const),
         name: faker.string.alpha(20),
-        provider: "anthropic"
+        provider: 'anthropic'
       },
       {
         id: faker.helpers.arrayElement([
@@ -710,14 +705,14 @@ export const getAgentV1SettingsThinkModelsListResponseMock = (
           "gemini-2.0-flash-lite"
         ] as const),
         name: faker.string.alpha(20),
-        provider: "google"
+        provider: 'google'
       },
       {
         id: faker.helpers.arrayElement(["openai/gpt-oss-20b"] as const),
         name: faker.string.alpha(20),
-        provider: "groq"
+        provider: 'groq'
       },
-      { id: faker.string.alpha(20), name: faker.string.alpha(20), provider: "aws_bedrock" }
+      { id: faker.string.alpha(20), name: faker.string.alpha(20), provider: 'aws_bedrock' }
     ])
   ),
   ...overrideResponse

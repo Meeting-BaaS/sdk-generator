@@ -82,9 +82,7 @@ export const createSpeechBody = zod.object({
  */
 export const createTranscriptionBodyResponseFormatDefault = "json"
 export const createTranscriptionBodyTemperatureDefault = 0
-export const createTranscriptionBodyTimestampGranularitiesDefault: ("word" | "segment")[] = [
-  "segment"
-]
+export const createTranscriptionBodyTimestampGranularitiesDefault: ("word" | "segment")[] = ["segment"]
 export const createTranscriptionBodyStreamDefaultOne = false
 export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto"
 export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault = 300
@@ -158,7 +156,7 @@ export const createTranscriptionBody = zod.object({
   chunking_strategy: zod
     .enum(["auto"])
     .describe(
-      'Automatically set chunking parameters based on the audio. Must be set to `\"auto\"`.\n'
+      'Automatically set chunking parameters based on the audio. Must be set to `"auto"`.\n'
     )
     .or(
       zod.object({
@@ -186,7 +184,7 @@ export const createTranscriptionBody = zod.object({
       })
     )
     .describe(
-      'Controls how the audio is cut into chunks. When set to `\"auto\"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. '
+      'Controls how the audio is cut into chunks. When set to `"auto"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. '
     )
     .or(zod.null())
     .optional(),
@@ -206,7 +204,7 @@ export const createTranscriptionBody = zod.object({
     )
 })
 
-export const createTranscriptionResponse = zod.union([
+export const createTranscriptionResponse = zod.union( [
   zod
     .object({
       text: zod.string().describe("The transcribed text."),
@@ -738,7 +736,7 @@ export const listModelsResponse = zod.object({
         created: zod
           .number()
           .describe("The Unix timestamp (in seconds) when the model was created."),
-        object: zod.enum(["model"]).describe('The object type, which is always \"model\".'),
+        object: zod.enum(["model"]).describe('The object type, which is always "model".'),
         owned_by: zod.string().describe("The organization that owns the model.")
       })
       .describe("Describes an OpenAI model offering that can be used with the API.")
@@ -759,7 +757,7 @@ export const retrieveModelResponse = zod
       .string()
       .describe("The model identifier, which can be referenced in the API endpoints."),
     created: zod.number().describe("The Unix timestamp (in seconds) when the model was created."),
-    object: zod.enum(["model"]).describe('The object type, which is always \"model\".'),
+    object: zod.enum(["model"]).describe('The object type, which is always "model".'),
     owned_by: zod.string().describe("The organization that owns the model.")
   })
   .describe("Describes an OpenAI model offering that can be used with the API.")

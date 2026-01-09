@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SpeechStartMessageType } from "./speechStartMessageType"
+
 import type { SpeechMessageData } from "./speechMessageData"
+import type { SpeechStartMessageType } from "./speechStartMessageType"
 
 export interface SpeechStartMessage {
   /** Id of the live session */

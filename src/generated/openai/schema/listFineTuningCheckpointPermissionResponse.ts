@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { FineTuningCheckpointPermission } from "./fineTuningCheckpointPermission"
-import type { ListFineTuningCheckpointPermissionResponseObject } from "./listFineTuningCheckpointPermissionResponseObject"
 import type { ListFineTuningCheckpointPermissionResponseFirstId } from "./listFineTuningCheckpointPermissionResponseFirstId"
 import type { ListFineTuningCheckpointPermissionResponseLastId } from "./listFineTuningCheckpointPermissionResponseLastId"
+import type { ListFineTuningCheckpointPermissionResponseObject } from "./listFineTuningCheckpointPermissionResponseObject"
 
 export interface ListFineTuningCheckpointPermissionResponse {
   data: FineTuningCheckpointPermission[]

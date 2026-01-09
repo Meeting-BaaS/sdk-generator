@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CustomVocabularyConfigDTO } from "./customVocabularyConfigDTO"
+
 import type { CustomSpellingConfigDTO } from "./customSpellingConfigDTO"
+import type { CustomVocabularyConfigDTO } from "./customVocabularyConfigDTO"
 import type { TranslationConfigDTO } from "./translationConfigDTO"
 
 export interface RealtimeProcessingConfig {

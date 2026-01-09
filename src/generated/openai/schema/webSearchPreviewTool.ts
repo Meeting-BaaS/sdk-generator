@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { SearchContextSize } from "./searchContextSize"
 import type { WebSearchPreviewToolType } from "./webSearchPreviewToolType"
 import type { WebSearchPreviewToolUserLocation } from "./webSearchPreviewToolUserLocation"
-import type { SearchContextSize } from "./searchContextSize"
 
 /**
  * This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).

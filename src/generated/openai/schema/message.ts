@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageType } from "./messageType"
-import type { MessageStatus } from "./messageStatus"
-import type { MessageRole } from "./messageRole"
+
 import type { MessageContentPropertyItem } from "./messageContentPropertyItem"
+import type { MessageRole } from "./messageRole"
+import type { MessageStatus } from "./messageStatus"
+import type { MessageType } from "./messageType"
 
 /**
  * A message to or from the model.

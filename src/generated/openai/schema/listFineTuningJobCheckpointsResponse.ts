@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { FineTuningJobCheckpoint } from "./fineTuningJobCheckpoint"
-import type { ListFineTuningJobCheckpointsResponseObject } from "./listFineTuningJobCheckpointsResponseObject"
 import type { ListFineTuningJobCheckpointsResponseFirstId } from "./listFineTuningJobCheckpointsResponseFirstId"
 import type { ListFineTuningJobCheckpointsResponseLastId } from "./listFineTuningJobCheckpointsResponseLastId"
+import type { ListFineTuningJobCheckpointsResponseObject } from "./listFineTuningJobCheckpointsResponseObject"
 
 export interface ListFineTuningJobCheckpointsResponse {
   data: FineTuningJobCheckpoint[]

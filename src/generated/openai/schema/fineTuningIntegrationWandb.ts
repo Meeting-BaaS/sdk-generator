@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningIntegrationWandbName } from "./fineTuningIntegrationWandbName"
+
 import type { FineTuningIntegrationWandbEntity } from "./fineTuningIntegrationWandbEntity"
+import type { FineTuningIntegrationWandbName } from "./fineTuningIntegrationWandbName"
 
 /**
  * The settings for your integration with Weights and Biases. This payload specifies the project that

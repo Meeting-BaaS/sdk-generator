@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunOutputItemObject } from "./evalRunOutputItemObject"
+
 import type { EvalRunOutputItemDatasourceItem } from "./evalRunOutputItemDatasourceItem"
+import type { EvalRunOutputItemObject } from "./evalRunOutputItemObject"
 import type { EvalRunOutputItemResult } from "./evalRunOutputItemResult"
 import type { EvalRunOutputItemSample } from "./evalRunOutputItemSample"
 

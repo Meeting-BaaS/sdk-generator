@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDetailsMessageCreationObjectType } from "./runStepDetailsMessageCreationObjectType"
+
 import type { RunStepDetailsMessageCreationObjectMessageCreation } from "./runStepDetailsMessageCreationObjectMessageCreation"
+import type { RunStepDetailsMessageCreationObjectType } from "./runStepDetailsMessageCreationObjectType"
 
 /**
  * Details of the message creation by the run step.

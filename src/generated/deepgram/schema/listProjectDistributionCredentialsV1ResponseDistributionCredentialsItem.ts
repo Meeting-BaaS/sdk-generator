@@ -6,8 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemMember } from "./listProjectDistributionCredentialsV1ResponseDistributionCredentialsItemMember"
+
 import type { ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemDistributionCredentials } from "./listProjectDistributionCredentialsV1ResponseDistributionCredentialsItemDistributionCredentials"
+import type { ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemMember } from "./listProjectDistributionCredentialsV1ResponseDistributionCredentialsItemMember"
 
 export type ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItem = {
   member: ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemMember

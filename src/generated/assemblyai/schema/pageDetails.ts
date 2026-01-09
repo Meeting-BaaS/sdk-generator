@@ -5,8 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { PageDetailsPrevUrl } from "./pageDetailsPrevUrl"
+
 import type { PageDetailsNextUrl } from "./pageDetailsNextUrl"
+import type { PageDetailsPrevUrl } from "./pageDetailsPrevUrl"
 
 /**
  * Details of the transcript page. Transcripts are sorted from newest to oldest. The previous URL always points to a page with older transcripts.

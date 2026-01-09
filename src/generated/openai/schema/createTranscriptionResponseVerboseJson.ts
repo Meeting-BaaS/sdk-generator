@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptionWord } from "./transcriptionWord"
+
 import type { TranscriptionSegment } from "./transcriptionSegment"
+import type { TranscriptionWord } from "./transcriptionWord"
 import type { TranscriptTextUsageDuration } from "./transcriptTextUsageDuration"
 
 /**

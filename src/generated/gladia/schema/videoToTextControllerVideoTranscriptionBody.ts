@@ -4,10 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour } from "./videoToTextControllerVideoTranscriptionBodyLanguageBehaviour"
+
 import type { VideoToTextControllerVideoTranscriptionBodyLanguage } from "./videoToTextControllerVideoTranscriptionBodyLanguage"
-import type { VideoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage } from "./videoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage"
+import type { VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour } from "./videoToTextControllerVideoTranscriptionBodyLanguageBehaviour"
 import type { VideoToTextControllerVideoTranscriptionBodyOutputFormat } from "./videoToTextControllerVideoTranscriptionBodyOutputFormat"
+import type { VideoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage } from "./videoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage"
 
 export type VideoToTextControllerVideoTranscriptionBody = {
   video?: Blob

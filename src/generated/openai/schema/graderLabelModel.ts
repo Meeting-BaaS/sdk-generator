@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderLabelModelType } from "./graderLabelModelType"
+
 import type { EvalItem } from "./evalItem"
+import type { GraderLabelModelType } from "./graderLabelModelType"
 
 /**
  * A LabelModelGrader object which uses a model to assign labels to each item

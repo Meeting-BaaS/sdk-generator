@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomToolCallOutputType } from "./customToolCallOutputType"
+
 import type { CustomToolCallOutputOutput } from "./customToolCallOutputOutput"
+import type { CustomToolCallOutputType } from "./customToolCallOutputType"
 
 /**
  * The output of a custom tool call from your code, being sent back to the model.

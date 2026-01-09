@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogActorType } from "./auditLogActorType"
-import type { AuditLogActorSession } from "./auditLogActorSession"
+
 import type { AuditLogActorApiKey } from "./auditLogActorApiKey"
+import type { AuditLogActorSession } from "./auditLogActorSession"
+import type { AuditLogActorType } from "./auditLogActorType"
 
 /**
  * The actor who performed the audit logged action.

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderMultiType } from "./graderMultiType"
+
 import type { GraderMultiGraders } from "./graderMultiGraders"
+import type { GraderMultiType } from "./graderMultiType"
 
 /**
  * A MultiGrader object combines the output of multiple graders to produce a single score.

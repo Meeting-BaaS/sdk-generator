@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { Metadata } from "./metadata"
-import type { ModelResponsePropertiesTopLogprobs } from "./modelResponsePropertiesTopLogprobs"
+import type { ModelResponsePropertiesPromptCacheRetention } from "./modelResponsePropertiesPromptCacheRetention"
 import type { ModelResponsePropertiesTemperature } from "./modelResponsePropertiesTemperature"
+import type { ModelResponsePropertiesTopLogprobs } from "./modelResponsePropertiesTopLogprobs"
 import type { ModelResponsePropertiesTopP } from "./modelResponsePropertiesTopP"
 import type { ServiceTier } from "./serviceTier"
-import type { ModelResponsePropertiesPromptCacheRetention } from "./modelResponsePropertiesPromptCacheRetention"
 
 export interface ModelResponseProperties {
   metadata?: Metadata

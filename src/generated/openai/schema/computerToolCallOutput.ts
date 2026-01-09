@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComputerToolCallOutputType } from "./computerToolCallOutputType"
+
 import type { ComputerCallSafetyCheckParam } from "./computerCallSafetyCheckParam"
 import type { ComputerScreenshotImage } from "./computerScreenshotImage"
 import type { ComputerToolCallOutputStatus } from "./computerToolCallOutputStatus"
+import type { ComputerToolCallOutputType } from "./computerToolCallOutputType"
 
 /**
  * The output of a computer tool call.

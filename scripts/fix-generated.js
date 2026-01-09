@@ -452,23 +452,27 @@ function fixFormDataObjectAppend(content, filePath) {
 /**
  * Fix discriminated unions where first variant is missing the discriminator field
  * This is an Orval bug - we'll convert discriminatedUnion to regular union
+ * Handles multi-line patterns where zod.object is on the next line
  */
 function fixDiscriminatedUnionMissingField(content, filePath) {
   const before = content
 
   // Find problematic discriminated unions where the first object doesn't have the discriminator
-  // Pattern: zod.discriminatedUnion("task", [zod.object({
+  // Pattern: zod.discriminatedUnion("task", [\n  zod.object({
   // where the object doesn't start with "task":
   // Replace discriminatedUnion with union for these cases
+  // Use [\s\S] to match any character including newlines
+
+  // Single quotes version
   content = content.replace(
-    /zod\.discriminatedUnion\('task',\s*\[zod\.object\(\{/g,
-    "zod.union([zod.object({"
+    /zod\.discriminatedUnion\('task',\s*\[[\s\S]*?zod\s*\.object\(\{(?!\s*task:)/g,
+    (match) => match.replace("zod.discriminatedUnion('task',", "zod.union(")
   )
 
-  // Also handle double-quoted version
+  // Double quotes version
   content = content.replace(
-    /zod\.discriminatedUnion\("task",\s*\[zod\.object\(\{/g,
-    "zod.union([zod.object({"
+    /zod\.discriminatedUnion\("task",\s*\[[\s\S]*?zod\s*\.object\(\{(?!\s*task:)/g,
+    (match) => match.replace('zod.discriminatedUnion("task",', "zod.union(")
   )
 
   if (content !== before) {
@@ -504,6 +508,8 @@ function fixEmptyZodArrayCalls(content, filePath) {
  * - Google models (gemini-*) -> 'google'
  * - Groq models (openai/gpt-oss-*) -> 'groq'
  * - Custom models (any string) -> 'aws_bedrock'
+ *
+ * Handles multi-line patterns where array elements are on separate lines.
  */
 function fixDeepgramMockProvider(content, filePath) {
   if (!filePath.includes("deepgram") || !filePath.includes("APISpecification.ts")) {
@@ -512,41 +518,91 @@ function fixDeepgramMockProvider(content, filePath) {
 
   const before = content
 
-  // Fix each model variant with the correct provider
-  // Pattern: {id: faker.helpers.arrayElement(['model-ids'...] as const), name: ..., provider: {}}
+  // Simple approach: Replace all `provider: {}` patterns based on context
+  // Split by model blocks and fix each one
 
-  // OpenAI models (gpt-5, gpt-4o, etc.) -> 'open_ai'
+  // Pattern 1: OpenAI models (contains gpt-5 or gpt-4)
   content = content.replace(
-    /\{id: faker\.helpers\.arrayElement\(\['gpt-5','gpt-5-mini','gpt-5-nano','gpt-4\.1','gpt-4\.1-mini','gpt-4\.1-nano','gpt-4o','gpt-4o-mini'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
-    "{id: faker.helpers.arrayElement(['gpt-5','gpt-5-mini','gpt-5-nano','gpt-4.1','gpt-4.1-mini','gpt-4.1-nano','gpt-4o','gpt-4o-mini'] as const), name: faker.string.alpha(20), provider: 'open_ai'}"
+    /(faker\.helpers\.arrayElement\(\[\s*["']gpt-5["'][\s\S]*?\] as const\),\s*name: faker\.string\.alpha\(20\),\s*)provider:\s*\{\}/g,
+    "$1provider: 'open_ai'"
   )
 
-  // Anthropic models (claude-*) -> 'anthropic'
+  // Pattern 2: Anthropic models (contains claude-)
   content = content.replace(
-    /\{id: faker\.helpers\.arrayElement\(\['claude-3-5-haiku-latest','claude-sonnet-4-20250514'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
-    "{id: faker.helpers.arrayElement(['claude-3-5-haiku-latest','claude-sonnet-4-20250514'] as const), name: faker.string.alpha(20), provider: 'anthropic'}"
+    /(faker\.helpers\.arrayElement\(\[\s*["']claude-[\s\S]*?\] as const\),\s*name: faker\.string\.alpha\(20\),\s*)provider:\s*\{\}/g,
+    "$1provider: 'anthropic'"
   )
 
-  // Google models (gemini-*) -> 'google'
+  // Pattern 3: Google models (contains gemini-)
   content = content.replace(
-    /\{id: faker\.helpers\.arrayElement\(\['gemini-2\.5-flash','gemini-2\.0-flash','gemini-2\.0-flash-lite'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
-    "{id: faker.helpers.arrayElement(['gemini-2.5-flash','gemini-2.0-flash','gemini-2.0-flash-lite'] as const), name: faker.string.alpha(20), provider: 'google'}"
+    /(faker\.helpers\.arrayElement\(\[\s*["']gemini-[\s\S]*?\] as const\),\s*name: faker\.string\.alpha\(20\),\s*)provider:\s*\{\}/g,
+    "$1provider: 'google'"
   )
 
-  // Groq models (openai/gpt-oss-*) -> 'groq'
+  // Pattern 4: Groq models (contains openai/)
   content = content.replace(
-    /\{id: faker\.helpers\.arrayElement\(\['openai\/gpt-oss-20b'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
-    "{id: faker.helpers.arrayElement(['openai/gpt-oss-20b'] as const), name: faker.string.alpha(20), provider: 'groq'}"
+    /(faker\.helpers\.arrayElement\(\[["']openai\/[\s\S]*?\] as const\),\s*name: faker\.string\.alpha\(20\),\s*)provider:\s*\{\}/g,
+    "$1provider: 'groq'"
   )
 
-  // Custom models (any string id) -> 'aws_bedrock'
+  // Pattern 5: Custom models (id: faker.string.alpha directly)
   content = content.replace(
-    /\{id: faker\.string\.alpha\(20\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
-    "{id: faker.string.alpha(20), name: faker.string.alpha(20), provider: 'aws_bedrock'}"
+    /(\{\s*id:\s*faker\.string\.alpha\(20\),\s*name:\s*faker\.string\.alpha\(20\),\s*)provider:\s*\{\}/g,
+    "$1provider: 'aws_bedrock'"
   )
 
   if (content !== before) {
     fixes.push(`Fixed mock provider types in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
+ * Fix Deepgram scopes default array type
+ * The selfHostedV1DistributionCredentialsCreateQueryScopesDefault needs proper typing
+ */
+function fixDeepgramScopesDefault(content, filePath) {
+  if (!filePath.includes("deepgram") || !filePath.includes(".zod.ts")) {
+    return content
+  }
+
+  const before = content
+
+  // Add type cast to scopes default
+  content = content.replace(
+    /export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault = \[/g,
+    "export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: (\"self-hosted:products\" | \"self-hosted:product:api\" | \"self-hosted:product:engine\" | \"self-hosted:product:license-proxy\" | \"self-hosted:product:dgtools\" | \"self-hosted:product:billing\" | \"self-hosted:product:hotpepper\" | \"self-hosted:product:metrics-server\")[] = ["
+  )
+
+  if (content !== before) {
+    fixes.push(`Fixed Deepgram scopes default type in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
+ * Fix Gladia subtitles formats default array type
+ * Arrays assigned to ZodDefault need explicit type annotations
+ */
+function fixGladiaSubtitlesDefault(content, filePath) {
+  if (!filePath.includes("gladia") || !filePath.includes(".zod.ts")) {
+    return content
+  }
+
+  const before = content
+
+  // Fix all subtitles config formats defaults that are missing type annotation
+  // Pattern: export const ...SubtitlesConfigFormatsDefault =\n  ["srt"]
+  // Needs: export const ...SubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
+  content = content.replace(
+    /export const (\w+SubtitlesConfigFormatsDefault) =(\s*)\[/g,
+    'export const $1: ("srt" | "vtt")[] =$2['
+  )
+
+  if (content !== before) {
+    fixes.push(`Fixed Gladia subtitles formats default type in ${filePath}`)
   }
 
   return content
@@ -604,6 +660,8 @@ function processFile(filePath) {
   content = fixDiscriminatedUnionMissingField(content, filePath)
   content = fixEmptyZodArrayCalls(content, filePath)
   content = fixDeepgramMockProvider(content, filePath)
+  content = fixDeepgramScopesDefault(content, filePath)
+  content = fixGladiaSubtitlesDefault(content, filePath)
 
   // Only write if changed
   if (content !== original) {

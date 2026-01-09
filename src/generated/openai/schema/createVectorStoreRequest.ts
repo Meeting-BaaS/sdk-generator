@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreExpirationAfter } from "./vectorStoreExpirationAfter"
+
 import type { ChunkingStrategyRequestParam } from "./chunkingStrategyRequestParam"
 import type { Metadata } from "./metadata"
+import type { VectorStoreExpirationAfter } from "./vectorStoreExpirationAfter"
 
 export interface CreateVectorStoreRequest {
   /**

@@ -6,12 +6,12 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { FineTuneReinforcementHyperparametersBatchSize } from "./fineTuneReinforcementHyperparametersBatchSize"
-import type { FineTuneReinforcementHyperparametersLearningRateMultiplier } from "./fineTuneReinforcementHyperparametersLearningRateMultiplier"
-import type { FineTuneReinforcementHyperparametersNEpochs } from "./fineTuneReinforcementHyperparametersNEpochs"
-import type { FineTuneReinforcementHyperparametersReasoningEffort } from "./fineTuneReinforcementHyperparametersReasoningEffort"
 import type { FineTuneReinforcementHyperparametersComputeMultiplier } from "./fineTuneReinforcementHyperparametersComputeMultiplier"
 import type { FineTuneReinforcementHyperparametersEvalInterval } from "./fineTuneReinforcementHyperparametersEvalInterval"
 import type { FineTuneReinforcementHyperparametersEvalSamples } from "./fineTuneReinforcementHyperparametersEvalSamples"
+import type { FineTuneReinforcementHyperparametersLearningRateMultiplier } from "./fineTuneReinforcementHyperparametersLearningRateMultiplier"
+import type { FineTuneReinforcementHyperparametersNEpochs } from "./fineTuneReinforcementHyperparametersNEpochs"
+import type { FineTuneReinforcementHyperparametersReasoningEffort } from "./fineTuneReinforcementHyperparametersReasoningEffort"
 
 /**
  * The hyperparameters used for the reinforcement fine-tuning job.

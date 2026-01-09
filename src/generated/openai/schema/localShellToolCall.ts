@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { LocalShellToolCallType } from "./localShellToolCallType"
+
 import type { LocalShellExecAction } from "./localShellExecAction"
 import type { LocalShellToolCallStatus } from "./localShellToolCallStatus"
+import type { LocalShellToolCallType } from "./localShellToolCallType"
 
 /**
  * A tool call to run a command on the local shell.

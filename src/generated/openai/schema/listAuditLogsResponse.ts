@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ListAuditLogsResponseObject } from "./listAuditLogsResponseObject"
+
 import type { AuditLog } from "./auditLog"
+import type { ListAuditLogsResponseObject } from "./listAuditLogsResponseObject"
 
 export interface ListAuditLogsResponse {
   object: ListAuditLogsResponseObject

@@ -6,10 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ReadV1ResponseMetadataMetadataSummaryInfo } from "./readV1ResponseMetadataMetadataSummaryInfo"
-import type { ReadV1ResponseMetadataMetadataSentimentInfo } from "./readV1ResponseMetadataMetadataSentimentInfo"
-import type { ReadV1ResponseMetadataMetadataTopicsInfo } from "./readV1ResponseMetadataMetadataTopicsInfo"
+
 import type { ReadV1ResponseMetadataMetadataIntentsInfo } from "./readV1ResponseMetadataMetadataIntentsInfo"
+import type { ReadV1ResponseMetadataMetadataSentimentInfo } from "./readV1ResponseMetadataMetadataSentimentInfo"
+import type { ReadV1ResponseMetadataMetadataSummaryInfo } from "./readV1ResponseMetadataMetadataSummaryInfo"
+import type { ReadV1ResponseMetadataMetadataTopicsInfo } from "./readV1ResponseMetadataMetadataTopicsInfo"
 
 export type ReadV1ResponseMetadataMetadata = {
   request_id?: string

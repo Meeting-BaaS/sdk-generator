@@ -5,7 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageGenPartialImageEvent } from "./imageGenPartialImageEvent"
+
 import type { ImageGenCompletedEvent } from "./imageGenCompletedEvent"
+import type { ImageGenPartialImageEvent } from "./imageGenPartialImageEvent"
 
 export type ImageGenStreamEvent = ImageGenPartialImageEvent | ImageGenCompletedEvent

@@ -5,16 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VideoResourceObject } from "./videoResourceObject"
+
 import type { VideoModel } from "./videoModel"
-import type { VideoStatus } from "./videoStatus"
 import type { VideoResourceCompletedAt } from "./videoResourceCompletedAt"
-import type { VideoResourceExpiresAt } from "./videoResourceExpiresAt"
-import type { VideoResourcePrompt } from "./videoResourcePrompt"
-import type { VideoSize } from "./videoSize"
-import type { VideoSeconds } from "./videoSeconds"
-import type { VideoResourceRemixedFromVideoId } from "./videoResourceRemixedFromVideoId"
 import type { VideoResourceError } from "./videoResourceError"
+import type { VideoResourceExpiresAt } from "./videoResourceExpiresAt"
+import type { VideoResourceObject } from "./videoResourceObject"
+import type { VideoResourcePrompt } from "./videoResourcePrompt"
+import type { VideoResourceRemixedFromVideoId } from "./videoResourceRemixedFromVideoId"
+import type { VideoSeconds } from "./videoSeconds"
+import type { VideoSize } from "./videoSize"
+import type { VideoStatus } from "./videoStatus"
 
 /**
  * Structured information describing a generated video job.

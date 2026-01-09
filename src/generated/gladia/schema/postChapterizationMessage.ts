@@ -4,9 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
+
+import type { PostChapterizationMessageDataProperty } from "./postChapterizationMessageDataProperty"
 import type { PostChapterizationMessageError } from "./postChapterizationMessageError"
 import type { PostChapterizationMessageType } from "./postChapterizationMessageType"
-import type { PostChapterizationMessageDataProperty } from "./postChapterizationMessageDataProperty"
 
 export interface PostChapterizationMessage {
   /** Id of the live session */

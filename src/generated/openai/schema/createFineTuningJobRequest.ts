@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateFineTuningJobRequestModel } from "./createFineTuningJobRequestModel"
+
 import type { CreateFineTuningJobRequestHyperparameters } from "./createFineTuningJobRequestHyperparameters"
 import type { CreateFineTuningJobRequestIntegrationsItem } from "./createFineTuningJobRequestIntegrationsItem"
+import type { CreateFineTuningJobRequestModel } from "./createFineTuningJobRequestModel"
 import type { FineTuneMethod } from "./fineTuneMethod"
 import type { Metadata } from "./metadata"
 

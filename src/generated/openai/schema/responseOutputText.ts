@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseOutputTextType } from "./responseOutputTextType"
+
 import type { ResponseOutputTextAnnotationsItem } from "./responseOutputTextAnnotationsItem"
+import type { ResponseOutputTextType } from "./responseOutputTextType"
 
 /**
  * Assistant response text accompanied by optional annotations.

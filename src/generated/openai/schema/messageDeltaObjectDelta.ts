@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaObjectDeltaRole } from "./messageDeltaObjectDeltaRole"
+
 import type { MessageContentDelta } from "./messageContentDelta"
+import type { MessageDeltaObjectDeltaRole } from "./messageDeltaObjectDeltaRole"
 
 /**
  * The delta containing the fields that have changed on the Message.

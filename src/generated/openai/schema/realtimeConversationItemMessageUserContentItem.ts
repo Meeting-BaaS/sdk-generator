@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeConversationItemMessageUserContentItemType } from "./realtimeConversationItemMessageUserContentItemType"
+
 import type { RealtimeConversationItemMessageUserContentItemDetail } from "./realtimeConversationItemMessageUserContentItemDetail"
+import type { RealtimeConversationItemMessageUserContentItemType } from "./realtimeConversationItemMessageUserContentItemType"
 
 export type RealtimeConversationItemMessageUserContentItem = {
   /** The content type (`input_text`, `input_audio`, or `input_image`). */

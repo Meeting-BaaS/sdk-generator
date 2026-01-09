@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallOutputType } from "./functionShellCallOutputType"
+
 import type { FunctionShellCallOutputContent } from "./functionShellCallOutputContent"
 import type { FunctionShellCallOutputMaxOutputLength } from "./functionShellCallOutputMaxOutputLength"
+import type { FunctionShellCallOutputType } from "./functionShellCallOutputType"
 
 /**
  * The output of a shell tool call.

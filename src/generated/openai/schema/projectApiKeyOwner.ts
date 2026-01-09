@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { ProjectApiKeyOwnerType } from "./projectApiKeyOwnerType"
-import type { ProjectUser } from "./projectUser"
 import type { ProjectServiceAccount } from "./projectServiceAccount"
+import type { ProjectUser } from "./projectUser"
 
 export type ProjectApiKeyOwner = {
   /** `user` or `service_account` */

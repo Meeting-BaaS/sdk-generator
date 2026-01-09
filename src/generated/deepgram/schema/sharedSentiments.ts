@@ -6,8 +6,9 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedSentimentsSegmentsItem } from "./sharedSentimentsSegmentsItem"
+
 import type { SharedSentimentsAverage } from "./sharedSentimentsAverage"
+import type { SharedSentimentsSegmentsItem } from "./sharedSentimentsSegmentsItem"
 
 /**
  * Output whenever `sentiment=true` is used

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreSearchRequestQuery } from "./vectorStoreSearchRequestQuery"
+
 import type { VectorStoreSearchRequestFilters } from "./vectorStoreSearchRequestFilters"
+import type { VectorStoreSearchRequestQuery } from "./vectorStoreSearchRequestQuery"
 import type { VectorStoreSearchRequestRankingOptions } from "./vectorStoreSearchRequestRankingOptions"
 
 export interface VectorStoreSearchRequest {

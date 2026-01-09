@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CostsResultObject } from "./costsResultObject"
+
 import type { CostsResultAmount } from "./costsResultAmount"
 import type { CostsResultLineItem } from "./costsResultLineItem"
+import type { CostsResultObject } from "./costsResultObject"
 import type { CostsResultProjectId } from "./costsResultProjectId"
 
 /**

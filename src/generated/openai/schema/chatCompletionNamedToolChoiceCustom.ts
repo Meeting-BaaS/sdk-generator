@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionNamedToolChoiceCustomType } from "./chatCompletionNamedToolChoiceCustomType"
+
 import type { ChatCompletionNamedToolChoiceCustomCustom } from "./chatCompletionNamedToolChoiceCustomCustom"
+import type { ChatCompletionNamedToolChoiceCustomType } from "./chatCompletionNamedToolChoiceCustomType"
 
 /**
  * Specifies a tool the model should use. Use to force the model to call a specific custom tool.

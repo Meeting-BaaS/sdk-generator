@@ -5,16 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { Prompt } from "./prompt"
 import type { RealtimeSessionCreateRequestClientSecret } from "./realtimeSessionCreateRequestClientSecret"
-import type { RealtimeSessionCreateRequestModalitiesItem } from "./realtimeSessionCreateRequestModalitiesItem"
-import type { VoiceIdsShared } from "./voiceIdsShared"
 import type { RealtimeSessionCreateRequestInputAudioTranscription } from "./realtimeSessionCreateRequestInputAudioTranscription"
+import type { RealtimeSessionCreateRequestMaxResponseOutputTokens } from "./realtimeSessionCreateRequestMaxResponseOutputTokens"
+import type { RealtimeSessionCreateRequestModalitiesItem } from "./realtimeSessionCreateRequestModalitiesItem"
+import type { RealtimeSessionCreateRequestToolsItem } from "./realtimeSessionCreateRequestToolsItem"
 import type { RealtimeSessionCreateRequestTracing } from "./realtimeSessionCreateRequestTracing"
 import type { RealtimeSessionCreateRequestTurnDetection } from "./realtimeSessionCreateRequestTurnDetection"
-import type { RealtimeSessionCreateRequestToolsItem } from "./realtimeSessionCreateRequestToolsItem"
-import type { RealtimeSessionCreateRequestMaxResponseOutputTokens } from "./realtimeSessionCreateRequestMaxResponseOutputTokens"
 import type { RealtimeTruncation } from "./realtimeTruncation"
-import type { Prompt } from "./prompt"
+import type { VoiceIdsShared } from "./voiceIdsShared"
 
 /**
  * A new Realtime session configuration, with an ephemeral key. Default TTL

@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeMCPToolCallType } from "./realtimeMCPToolCallType"
+
 import type { RealtimeMCPToolCallApprovalRequestId } from "./realtimeMCPToolCallApprovalRequestId"
-import type { RealtimeMCPToolCallOutput } from "./realtimeMCPToolCallOutput"
 import type { RealtimeMCPToolCallError } from "./realtimeMCPToolCallError"
+import type { RealtimeMCPToolCallOutput } from "./realtimeMCPToolCallOutput"
+import type { RealtimeMCPToolCallType } from "./realtimeMCPToolCallType"
 
 /**
  * A Realtime item representing an invocation of a tool on an MCP server.

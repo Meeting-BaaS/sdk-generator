@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { CompletionUsage } from "./completionUsage"
 import type { CreateCompletionResponseChoicesItem } from "./createCompletionResponseChoicesItem"
 import type { CreateCompletionResponseObject } from "./createCompletionResponseObject"
-import type { CompletionUsage } from "./completionUsage"
 
 /**
  * Represents a completion response from the API. Note: both the streamed and non-streamed response objects share the same shape (unlike the chat endpoint).

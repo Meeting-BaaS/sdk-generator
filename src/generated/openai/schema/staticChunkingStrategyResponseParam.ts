@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { StaticChunkingStrategyResponseParamType } from "./staticChunkingStrategyResponseParamType"
+
 import type { StaticChunkingStrategy } from "./staticChunkingStrategy"
+import type { StaticChunkingStrategyResponseParamType } from "./staticChunkingStrategyResponseParamType"
 
 export interface StaticChunkingStrategyResponseParam {
   /** Always `static`. */

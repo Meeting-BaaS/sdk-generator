@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RoleListResourceObject } from "./roleListResourceObject"
+
 import type { AssignedRoleDetails } from "./assignedRoleDetails"
 import type { RoleListResourceNext } from "./roleListResourceNext"
+import type { RoleListResourceObject } from "./roleListResourceObject"
 
 /**
  * Paginated list of roles assigned to a principal.

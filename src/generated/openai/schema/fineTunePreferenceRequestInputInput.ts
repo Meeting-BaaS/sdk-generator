@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTunePreferenceRequestInputInputMessagesItem } from "./fineTunePreferenceRequestInputInputMessagesItem"
+
 import type { ChatCompletionTool } from "./chatCompletionTool"
+import type { FineTunePreferenceRequestInputInputMessagesItem } from "./fineTunePreferenceRequestInputInputMessagesItem"
 import type { ParallelToolCalls } from "./parallelToolCalls"
 
 export type FineTunePreferenceRequestInputInput = {

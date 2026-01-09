@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalCompletionsRunDataSourceInputMessagesAnyOfType } from "./createEvalCompletionsRunDataSourceInputMessagesAnyOfType"
+
 import type { CreateEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem } from "./createEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem"
+import type { CreateEvalCompletionsRunDataSourceInputMessagesAnyOfType } from "./createEvalCompletionsRunDataSourceInputMessagesAnyOfType"
 
 export type CreateEvalCompletionsRunDataSourceInputMessagesAnyOf = {
   /** The type of input messages. Always `template`. */

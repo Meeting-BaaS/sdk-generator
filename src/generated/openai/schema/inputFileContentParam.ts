@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputFileContentParamType } from "./inputFileContentParamType"
+
+import type { InputFileContentParamFileData } from "./inputFileContentParamFileData"
 import type { InputFileContentParamFileId } from "./inputFileContentParamFileId"
 import type { InputFileContentParamFilename } from "./inputFileContentParamFilename"
-import type { InputFileContentParamFileData } from "./inputFileContentParamFileData"
 import type { InputFileContentParamFileUrl } from "./inputFileContentParamFileUrl"
+import type { InputFileContentParamType } from "./inputFileContentParamType"
 
 /**
  * A file input to the model.

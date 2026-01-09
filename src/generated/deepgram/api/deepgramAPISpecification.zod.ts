@@ -219,9 +219,7 @@ export const listenV1MediaTranscribeQueryParams = zod.object({
   filler_words: zod
     .boolean()
     .optional()
-    .describe(
-      'Filler Words can help transcribe interruptions in your audio, like \"uh\" and \"um\"'
-    ),
+    .describe('Filler Words can help transcribe interruptions in your audio, like "uh" and "um"'),
   keyterm: zod
     .array(zod.string())
     .optional()
@@ -777,7 +775,7 @@ export const manageV1ProjectsBillingBalancesListResponse = zod.object({
       zod.object({
         balance_id: zod.string().optional().describe("The unique identifier of the balance"),
         amount: zod.number().optional().describe("The amount of the balance"),
-        units: zod.string().optional().describe('The units of the balance, such as \"USD\"'),
+        units: zod.string().optional().describe('The units of the balance, such as "USD"'),
         purchase_order_id: zod
           .string()
           .optional()
@@ -796,7 +794,7 @@ export const manageV1ProjectsBillingBalancesGetResponseAmountDefault = 0
 export const manageV1ProjectsBillingBalancesGetResponse = zod.object({
   balance_id: zod.string().optional().describe("The unique identifier of the balance"),
   amount: zod.number().optional().describe("The amount of the balance"),
-  units: zod.string().optional().describe('The units of the balance, such as \"USD\"'),
+  units: zod.string().optional().describe('The units of the balance, such as "USD"'),
   purchase_order_id: zod.string().optional().describe("Description or reference of the purchase")
 })
 
@@ -1344,16 +1342,7 @@ export const selfHostedV1DistributionCredentialsListResponse = zod.object({
  * Creates a set of distribution credentials for the specified project
  * @summary Create a Project Self-Hosted Distribution Credential
  */
-export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: (
-  | "self-hosted:products"
-  | "self-hosted:product:api"
-  | "self-hosted:product:engine"
-  | "self-hosted:product:license-proxy"
-  | "self-hosted:product:dgtools"
-  | "self-hosted:product:billing"
-  | "self-hosted:product:hotpepper"
-  | "self-hosted:product:metrics-server"
-)[] = ["self-hosted:products"]
+export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: ("self-hosted:products" | "self-hosted:product:api" | "self-hosted:product:engine" | "self-hosted:product:license-proxy" | "self-hosted:product:dgtools" | "self-hosted:product:billing" | "self-hosted:product:hotpepper" | "self-hosted:product:metrics-server")[] = ["self-hosted:products"]
 export const selfHostedV1DistributionCredentialsCreateQueryProviderDefault = "quay"
 
 export const selfHostedV1DistributionCredentialsCreateQueryParams = zod.object({

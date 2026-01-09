@@ -5,13 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateResponseIncludeItem } from "./realtimeSessionCreateResponseIncludeItem"
-import type { RealtimeSessionCreateResponseOutputModalitiesItem } from "./realtimeSessionCreateResponseOutputModalitiesItem"
+
+import type { RealtimeFunctionTool } from "./realtimeFunctionTool"
 import type { RealtimeSessionCreateResponseAudio } from "./realtimeSessionCreateResponseAudio"
+import type { RealtimeSessionCreateResponseIncludeItem } from "./realtimeSessionCreateResponseIncludeItem"
+import type { RealtimeSessionCreateResponseMaxOutputTokens } from "./realtimeSessionCreateResponseMaxOutputTokens"
+import type { RealtimeSessionCreateResponseOutputModalitiesItem } from "./realtimeSessionCreateResponseOutputModalitiesItem"
 import type { RealtimeSessionCreateResponseTracing } from "./realtimeSessionCreateResponseTracing"
 import type { RealtimeSessionCreateResponseTurnDetection } from "./realtimeSessionCreateResponseTurnDetection"
-import type { RealtimeFunctionTool } from "./realtimeFunctionTool"
-import type { RealtimeSessionCreateResponseMaxOutputTokens } from "./realtimeSessionCreateResponseMaxOutputTokens"
 
 /**
  * A Realtime session configuration object.

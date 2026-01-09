@@ -4,8 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { WordDTO } from "./wordDTO"
+
 import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
+import type { WordDTO } from "./wordDTO"
 
 export interface UtteranceDTO {
   /** Start timestamp in seconds of this utterance */

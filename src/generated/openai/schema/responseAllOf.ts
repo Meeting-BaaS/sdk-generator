@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { OutputItem } from "./outputItem"
+import type { ResponseAllOfConversation } from "./responseAllOfConversation"
+import type { ResponseAllOfIncompleteDetails } from "./responseAllOfIncompleteDetails"
+import type { ResponseAllOfInstructions } from "./responseAllOfInstructions"
 import type { ResponseAllOfObject } from "./responseAllOfObject"
+import type { ResponseAllOfOutputText } from "./responseAllOfOutputText"
 import type { ResponseAllOfStatus } from "./responseAllOfStatus"
 import type { ResponseError } from "./responseError"
-import type { ResponseAllOfIncompleteDetails } from "./responseAllOfIncompleteDetails"
-import type { OutputItem } from "./outputItem"
-import type { ResponseAllOfInstructions } from "./responseAllOfInstructions"
-import type { ResponseAllOfOutputText } from "./responseAllOfOutputText"
 import type { ResponseUsage } from "./responseUsage"
-import type { ResponseAllOfConversation } from "./responseAllOfConversation"
 
 export type ResponseAllOf = {
   /** Unique identifier for this Response.

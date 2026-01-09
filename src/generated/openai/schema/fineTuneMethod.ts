@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuneMethodType } from "./fineTuneMethodType"
-import type { FineTuneSupervisedMethod } from "./fineTuneSupervisedMethod"
+
 import type { FineTuneDPOMethod } from "./fineTuneDPOMethod"
+import type { FineTuneMethodType } from "./fineTuneMethodType"
 import type { FineTuneReinforcementMethod } from "./fineTuneReinforcementMethod"
+import type { FineTuneSupervisedMethod } from "./fineTuneSupervisedMethod"
 
 /**
  * The method used for fine-tuning.

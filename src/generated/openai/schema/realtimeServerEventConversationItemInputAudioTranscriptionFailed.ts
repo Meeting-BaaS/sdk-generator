@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailedType } from "./realtimeServerEventConversationItemInputAudioTranscriptionFailedType"
+
 import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailedError } from "./realtimeServerEventConversationItemInputAudioTranscriptionFailedError"
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionFailedType } from "./realtimeServerEventConversationItemInputAudioTranscriptionFailedType"
 
 /**
  * Returned when input audio transcription is configured, and a transcription 

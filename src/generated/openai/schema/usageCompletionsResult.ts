@@ -5,13 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { UsageCompletionsResultApiKeyId } from "./usageCompletionsResultApiKeyId"
+import type { UsageCompletionsResultBatch } from "./usageCompletionsResultBatch"
+import type { UsageCompletionsResultModel } from "./usageCompletionsResultModel"
 import type { UsageCompletionsResultObject } from "./usageCompletionsResultObject"
 import type { UsageCompletionsResultProjectId } from "./usageCompletionsResultProjectId"
-import type { UsageCompletionsResultUserId } from "./usageCompletionsResultUserId"
-import type { UsageCompletionsResultApiKeyId } from "./usageCompletionsResultApiKeyId"
-import type { UsageCompletionsResultModel } from "./usageCompletionsResultModel"
-import type { UsageCompletionsResultBatch } from "./usageCompletionsResultBatch"
 import type { UsageCompletionsResultServiceTier } from "./usageCompletionsResultServiceTier"
+import type { UsageCompletionsResultUserId } from "./usageCompletionsResultUserId"
 
 /**
  * The aggregated completions usage details of the specific time bucket.

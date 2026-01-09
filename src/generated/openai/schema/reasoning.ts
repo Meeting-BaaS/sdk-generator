@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { ReasoningEffort } from "./reasoningEffort"
-import type { ReasoningSummary } from "./reasoningSummary"
 import type { ReasoningGenerateSummary } from "./reasoningGenerateSummary"
+import type { ReasoningSummary } from "./reasoningSummary"
 
 /**
  * **gpt-5 and o-series models only**

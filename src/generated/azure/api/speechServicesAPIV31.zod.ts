@@ -44,28 +44,28 @@ export const datasetsListResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+                'The location to get all files of this entity. See operation "Datasets_ListFiles" for more details.'
               ),
             commitBlocks: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+                'The location to commit the list of blocks when uploading a dataset using blocks. See operation "Datasets_CommitBlocks" for more details.'
               ),
             listBlocks: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+                'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation "Datasets_GetDatasetBlocks" for more details.'
               ),
             uploadBlocks: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+                'The location to upload blocks to when uploading a dataset using blocks. See operation "Datasets_UploadBlock" for more details.'
               )
           })
           .optional(),
@@ -83,7 +83,7 @@ export const datasetsListResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             email: zod
               .string()
@@ -123,7 +123,7 @@ export const datasetsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -134,7 +134,7 @@ export const datasetsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -162,28 +162,28 @@ export const datasetsCreateBody = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Datasets_ListFiles" for more details.'
         ),
       commitBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+          'The location to commit the list of blocks when uploading a dataset using blocks. See operation "Datasets_CommitBlocks" for more details.'
         ),
       listBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation "Datasets_GetDatasetBlocks" for more details.'
         ),
       uploadBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+          'The location to upload blocks to when uploading a dataset using blocks. See operation "Datasets_UploadBlock" for more details.'
         )
     })
     .optional(),
@@ -201,7 +201,7 @@ export const datasetsCreateBody = zod.object({
         .string()
         .optional()
         .describe(
-          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       email: zod
         .string()
@@ -252,28 +252,28 @@ export const datasetsGetResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Datasets_ListFiles" for more details.'
         ),
       commitBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+          'The location to commit the list of blocks when uploading a dataset using blocks. See operation "Datasets_CommitBlocks" for more details.'
         ),
       listBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation "Datasets_GetDatasetBlocks" for more details.'
         ),
       uploadBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+          'The location to upload blocks to when uploading a dataset using blocks. See operation "Datasets_UploadBlock" for more details.'
         )
     })
     .optional(),
@@ -291,7 +291,7 @@ export const datasetsGetResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       email: zod
         .string()
@@ -331,7 +331,7 @@ export const datasetsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -342,7 +342,7 @@ export const datasetsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -377,28 +377,28 @@ export const datasetsUpdateResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Datasets_ListFiles" for more details.'
         ),
       commitBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+          'The location to commit the list of blocks when uploading a dataset using blocks. See operation "Datasets_CommitBlocks" for more details.'
         ),
       listBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation "Datasets_GetDatasetBlocks" for more details.'
         ),
       uploadBlocks: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+          'The location to upload blocks to when uploading a dataset using blocks. See operation "Datasets_UploadBlock" for more details.'
         )
     })
     .optional(),
@@ -416,7 +416,7 @@ export const datasetsUpdateResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       email: zod
         .string()
@@ -456,7 +456,7 @@ export const datasetsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -467,7 +467,7 @@ export const datasetsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -544,7 +544,7 @@ export const datasetsUploadBody = zod.object({
   kind: zod
     .string()
     .describe(
-      'The kind of the dataset (required). Possible values are \"Language\", \"Acoustic\", \"Pronunciation\", \"AudioFiles\", \"LanguageMarkdown\".'
+      'The kind of the dataset (required). Possible values are "Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown".'
     ),
   customProperties: zod
     .string()
@@ -650,7 +650,7 @@ export const datasetsListFilesResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               )
           })
           .optional(),
@@ -727,7 +727,7 @@ export const datasetsGetFileResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         )
     })
     .optional(),
@@ -809,7 +809,7 @@ export const endpointsListResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+                'The audio and transcription logs for this endpoint.  See operation "Endpoints_ListLogs" for more details.'
               )
           })
           .optional(),
@@ -825,7 +825,7 @@ export const endpointsListResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             email: zod
               .string()
@@ -865,7 +865,7 @@ export const endpointsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -876,7 +876,7 @@ export const endpointsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -945,7 +945,7 @@ export const endpointsCreateBody = zod.object({
         .url()
         .optional()
         .describe(
-          'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+          'The audio and transcription logs for this endpoint.  See operation "Endpoints_ListLogs" for more details.'
         )
     })
     .optional(),
@@ -961,7 +961,7 @@ export const endpointsCreateBody = zod.object({
         .string()
         .optional()
         .describe(
-          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       email: zod
         .string()
@@ -1053,7 +1053,7 @@ export const endpointsGetResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+          'The audio and transcription logs for this endpoint.  See operation "Endpoints_ListLogs" for more details.'
         )
     })
     .optional(),
@@ -1069,7 +1069,7 @@ export const endpointsGetResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       email: zod
         .string()
@@ -1109,7 +1109,7 @@ export const endpointsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -1120,7 +1120,7 @@ export const endpointsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -1218,7 +1218,7 @@ export const endpointsUpdateResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+          'The audio and transcription logs for this endpoint.  See operation "Endpoints_ListLogs" for more details.'
         )
     })
     .optional(),
@@ -1234,7 +1234,7 @@ export const endpointsUpdateResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       email: zod
         .string()
@@ -1274,7 +1274,7 @@ export const endpointsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -1285,7 +1285,7 @@ export const endpointsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -1354,7 +1354,7 @@ export const endpointsListLogsResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               )
           })
           .optional(),
@@ -1388,7 +1388,7 @@ export const endpointsDeleteLogsQueryParams = zod.object({
     .string()
     .optional()
     .describe(
-      'The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: \"yyyy-mm-dd\". For instance, \"2019-09-20\" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.'
+      'The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: "yyyy-mm-dd". For instance, "2019-09-20" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.'
     )
 })
 
@@ -1448,7 +1448,7 @@ export const endpointsGetLogResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         )
     })
     .optional(),
@@ -1529,7 +1529,7 @@ export const endpointsListBaseModelLogsResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               )
           })
           .optional(),
@@ -1563,7 +1563,7 @@ export const endpointsDeleteBaseModelLogsQueryParams = zod.object({
     .string()
     .optional()
     .describe(
-      'The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: \"yyyy-mm-dd\". For instance, \"2019-09-20\" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.'
+      'The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: "yyyy-mm-dd". For instance, "2019-09-20" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.'
     )
 })
 
@@ -1623,7 +1623,7 @@ export const endpointsGetBaseModelLogResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         )
     })
     .optional(),
@@ -1691,7 +1691,7 @@ export const evaluationsListResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+                'The location to get all files of this entity. See operation "Evaluations_ListFiles" for more details.'
               )
           })
           .optional(),
@@ -1786,7 +1786,7 @@ export const evaluationsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -1797,7 +1797,7 @@ export const evaluationsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         displayName: zod.string().min(1).describe("The display name of the object."),
         description: zod.string().optional().describe("The description of the object."),
@@ -1853,7 +1853,7 @@ export const evaluationsCreateBody = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Evaluations_ListFiles" for more details.'
         )
     })
     .optional(),
@@ -2013,7 +2013,7 @@ export const evaluationsListFilesResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               )
           })
           .optional(),
@@ -2090,7 +2090,7 @@ export const evaluationsGetFileResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         )
     })
     .optional(),
@@ -2132,7 +2132,7 @@ export const evaluationsGetResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Evaluations_ListFiles" for more details.'
         )
     })
     .optional(),
@@ -2221,7 +2221,7 @@ export const evaluationsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2232,7 +2232,7 @@ export const evaluationsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   displayName: zod.string().min(1).describe("The display name of the object."),
   description: zod.string().optional().describe("The description of the object."),
@@ -2295,7 +2295,7 @@ export const evaluationsUpdateResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Evaluations_ListFiles" for more details.'
         )
     })
     .optional(),
@@ -2384,7 +2384,7 @@ export const evaluationsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2395,7 +2395,7 @@ export const evaluationsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   displayName: zod.string().min(1).describe("The display name of the object."),
   description: zod.string().optional().describe("The description of the object."),
@@ -2448,7 +2448,7 @@ export const modelsListCustomModelsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2459,7 +2459,7 @@ export const modelsListCustomModelsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -2489,7 +2489,7 @@ export const modelsCreateBody = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2500,7 +2500,7 @@ export const modelsCreateBody = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -2531,7 +2531,7 @@ export const modelsListBaseModelsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2542,7 +2542,7 @@ export const modelsListBaseModelsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -2576,7 +2576,7 @@ export const modelsGetCustomModelResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2587,7 +2587,7 @@ export const modelsGetCustomModelResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -2624,7 +2624,7 @@ export const modelsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2635,7 +2635,7 @@ export const modelsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -2663,7 +2663,7 @@ export const modelsGetBaseModelResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -2674,7 +2674,7 @@ export const modelsGetBaseModelResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -2835,7 +2835,7 @@ export const modelsListFilesResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               )
           })
           .optional(),
@@ -2912,7 +2912,7 @@ export const modelsGetFileResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         )
     })
     .optional(),
@@ -2953,35 +2953,35 @@ export const projectsListResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+                'The location to get a list of all evaluations of this project. See operation "Projects_ListEvaluations" for more details.'
               ),
             datasets: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+                'The location to get a list of all datasets of this project. See operation "Projects_ListDatasets" for more details.'
               ),
             models: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+                'The location to get a list of all models of this project. See operation "Projects_ListModels" for more details.'
               ),
             endpoints: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+                'The location to get a list of all endpoints of this project. See operation "Projects_ListEndpoints" for more details.'
               ),
             transcriptions: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+                'The location to get a list of all transcriptions of this project. See operation "Projects_ListTranscriptions" for more details.'
               )
           })
           .optional(),
@@ -3024,7 +3024,7 @@ export const projectsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -3052,35 +3052,35 @@ export const projectsCreateBody = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+          'The location to get a list of all evaluations of this project. See operation "Projects_ListEvaluations" for more details.'
         ),
       datasets: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+          'The location to get a list of all datasets of this project. See operation "Projects_ListDatasets" for more details.'
         ),
       models: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+          'The location to get a list of all models of this project. See operation "Projects_ListModels" for more details.'
         ),
       endpoints: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+          'The location to get a list of all endpoints of this project. See operation "Projects_ListEndpoints" for more details.'
         ),
       transcriptions: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+          'The location to get a list of all transcriptions of this project. See operation "Projects_ListTranscriptions" for more details.'
         )
     })
     .optional(),
@@ -3134,35 +3134,35 @@ export const projectsGetResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+          'The location to get a list of all evaluations of this project. See operation "Projects_ListEvaluations" for more details.'
         ),
       datasets: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+          'The location to get a list of all datasets of this project. See operation "Projects_ListDatasets" for more details.'
         ),
       models: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+          'The location to get a list of all models of this project. See operation "Projects_ListModels" for more details.'
         ),
       endpoints: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+          'The location to get a list of all endpoints of this project. See operation "Projects_ListEndpoints" for more details.'
         ),
       transcriptions: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+          'The location to get a list of all transcriptions of this project. See operation "Projects_ListTranscriptions" for more details.'
         )
     })
     .optional(),
@@ -3205,7 +3205,7 @@ export const projectsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -3235,35 +3235,35 @@ export const projectsUpdateResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+          'The location to get a list of all evaluations of this project. See operation "Projects_ListEvaluations" for more details.'
         ),
       datasets: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+          'The location to get a list of all datasets of this project. See operation "Projects_ListDatasets" for more details.'
         ),
       models: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+          'The location to get a list of all models of this project. See operation "Projects_ListModels" for more details.'
         ),
       endpoints: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+          'The location to get a list of all endpoints of this project. See operation "Projects_ListEndpoints" for more details.'
         ),
       transcriptions: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+          'The location to get a list of all transcriptions of this project. See operation "Projects_ListTranscriptions" for more details.'
         )
     })
     .optional(),
@@ -3306,7 +3306,7 @@ export const projectsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -3365,7 +3365,7 @@ export const projectsListEvaluationsResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+                'The location to get all files of this entity. See operation "Evaluations_ListFiles" for more details.'
               )
           })
           .optional(),
@@ -3460,7 +3460,7 @@ export const projectsListEvaluationsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -3471,7 +3471,7 @@ export const projectsListEvaluationsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         displayName: zod.string().min(1).describe("The display name of the object."),
         description: zod.string().optional().describe("The description of the object."),
@@ -3526,28 +3526,28 @@ export const projectsListDatasetsResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+                'The location to get all files of this entity. See operation "Datasets_ListFiles" for more details.'
               ),
             commitBlocks: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+                'The location to commit the list of blocks when uploading a dataset using blocks. See operation "Datasets_CommitBlocks" for more details.'
               ),
             listBlocks: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+                'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation "Datasets_GetDatasetBlocks" for more details.'
               ),
             uploadBlocks: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+                'The location to upload blocks to when uploading a dataset using blocks. See operation "Datasets_UploadBlock" for more details.'
               )
           })
           .optional(),
@@ -3565,7 +3565,7 @@ export const projectsListDatasetsResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             email: zod
               .string()
@@ -3605,7 +3605,7 @@ export const projectsListDatasetsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -3616,7 +3616,7 @@ export const projectsListDatasetsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -3703,7 +3703,7 @@ export const projectsListEndpointsResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+                'The audio and transcription logs for this endpoint.  See operation "Endpoints_ListLogs" for more details.'
               )
           })
           .optional(),
@@ -3719,7 +3719,7 @@ export const projectsListEndpointsResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             email: zod
               .string()
@@ -3759,7 +3759,7 @@ export const projectsListEndpointsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -3770,7 +3770,7 @@ export const projectsListEndpointsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -3818,7 +3818,7 @@ export const projectsListModelsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -3829,7 +3829,7 @@ export const projectsListModelsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -3875,7 +3875,7 @@ export const projectsListTranscriptionsResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+                'The location to get all files of this entity. See operation "Transcriptions_ListFiles" for more details.'
               )
           })
           .optional(),
@@ -3903,7 +3903,7 @@ export const projectsListTranscriptionsResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             channels: zod
               .array(zod.number())
@@ -3916,7 +3916,7 @@ export const projectsListTranscriptionsResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+                'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use "Bring your own Storage (BYOS)"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
               ),
             punctuationMode: zod
               .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
@@ -3930,7 +3930,7 @@ export const projectsListTranscriptionsResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             diarization: zod
               .object({
@@ -3957,7 +3957,7 @@ export const projectsListTranscriptionsResponse = zod.object({
                 candidateLocales: zod
                   .array(zod.string())
                   .describe(
-                    'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+                    'The candidate locales for language identification (example ["en-US", "de-DE", "es-ES"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
                   ),
                 speechModelMapping: zod
                   .record(
@@ -4034,7 +4034,7 @@ export const projectsListTranscriptionsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -4045,7 +4045,7 @@ export const projectsListTranscriptionsResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -4095,7 +4095,7 @@ export const transcriptionsListResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+                'The location to get all files of this entity. See operation "Transcriptions_ListFiles" for more details.'
               )
           })
           .optional(),
@@ -4123,7 +4123,7 @@ export const transcriptionsListResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             channels: zod
               .array(zod.number())
@@ -4136,7 +4136,7 @@ export const transcriptionsListResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+                'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use "Bring your own Storage (BYOS)"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
               ),
             punctuationMode: zod
               .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
@@ -4150,7 +4150,7 @@ export const transcriptionsListResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               ),
             diarization: zod
               .object({
@@ -4177,7 +4177,7 @@ export const transcriptionsListResponse = zod.object({
                 candidateLocales: zod
                   .array(zod.string())
                   .describe(
-                    'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+                    'The candidate locales for language identification (example ["en-US", "de-DE", "es-ES"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
                   ),
                 speechModelMapping: zod
                   .record(
@@ -4254,7 +4254,7 @@ export const transcriptionsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -4265,7 +4265,7 @@ export const transcriptionsListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           )
       })
     )
@@ -4293,7 +4293,7 @@ export const transcriptionsCreateBody = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Transcriptions_ListFiles" for more details.'
         )
     })
     .optional(),
@@ -4321,7 +4321,7 @@ export const transcriptionsCreateBody = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       channels: zod
         .array(zod.number())
@@ -4334,7 +4334,7 @@ export const transcriptionsCreateBody = zod.object({
         .url()
         .optional()
         .describe(
-          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use "Bring your own Storage (BYOS)"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
         ),
       punctuationMode: zod
         .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
@@ -4348,7 +4348,7 @@ export const transcriptionsCreateBody = zod.object({
         .string()
         .optional()
         .describe(
-          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       diarization: zod
         .object({
@@ -4375,7 +4375,7 @@ export const transcriptionsCreateBody = zod.object({
           candidateLocales: zod
             .array(zod.string())
             .describe(
-              'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+              'The candidate locales for language identification (example ["en-US", "de-DE", "es-ES"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
             ),
           speechModelMapping: zod
             .record(
@@ -4463,7 +4463,7 @@ export const transcriptionsGetResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Transcriptions_ListFiles" for more details.'
         )
     })
     .optional(),
@@ -4491,7 +4491,7 @@ export const transcriptionsGetResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       channels: zod
         .array(zod.number())
@@ -4504,7 +4504,7 @@ export const transcriptionsGetResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use "Bring your own Storage (BYOS)"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
         ),
       punctuationMode: zod
         .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
@@ -4518,7 +4518,7 @@ export const transcriptionsGetResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       diarization: zod
         .object({
@@ -4545,7 +4545,7 @@ export const transcriptionsGetResponse = zod.object({
           candidateLocales: zod
             .array(zod.string())
             .describe(
-              'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+              'The candidate locales for language identification (example ["en-US", "de-DE", "es-ES"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
             ),
           speechModelMapping: zod
             .record(
@@ -4622,7 +4622,7 @@ export const transcriptionsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -4633,7 +4633,7 @@ export const transcriptionsGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -4668,7 +4668,7 @@ export const transcriptionsUpdateResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+          'The location to get all files of this entity. See operation "Transcriptions_ListFiles" for more details.'
         )
     })
     .optional(),
@@ -4696,7 +4696,7 @@ export const transcriptionsUpdateResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       channels: zod
         .array(zod.number())
@@ -4709,7 +4709,7 @@ export const transcriptionsUpdateResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use "Bring your own Storage (BYOS)"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
         ),
       punctuationMode: zod
         .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
@@ -4723,7 +4723,7 @@ export const transcriptionsUpdateResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         ),
       diarization: zod
         .object({
@@ -4750,7 +4750,7 @@ export const transcriptionsUpdateResponse = zod.object({
           candidateLocales: zod
             .array(zod.string())
             .describe(
-              'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+              'The candidate locales for language identification (example ["en-US", "de-DE", "es-ES"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
             ),
           speechModelMapping: zod
             .record(
@@ -4827,7 +4827,7 @@ export const transcriptionsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -4838,7 +4838,7 @@ export const transcriptionsUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     )
 })
 
@@ -4915,7 +4915,7 @@ export const transcriptionsListFilesResponse = zod.object({
               .string()
               .optional()
               .describe(
-                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
               )
           })
           .optional(),
@@ -4992,7 +4992,7 @@ export const transcriptionsGetFileResponse = zod.object({
         .string()
         .optional()
         .describe(
-          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
         )
     })
     .optional(),
@@ -5031,14 +5031,14 @@ export const webHooksListResponse = zod.object({
               .url()
               .optional()
               .describe(
-                'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+                'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation "WebHooks_Ping" for more details.'
               ),
             test: zod
               .string()
               .url()
               .optional()
               .describe(
-                'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+                'The URL that can be used sending test events to the registered URL of a web hook registration. See operation "WebHooks_Test" for more details.'
               )
           })
           .optional(),
@@ -5096,14 +5096,14 @@ export const webHooksListResponse = zod.object({
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         lastActionDateTime: zod
           .string()
           .datetime({})
           .optional()
           .describe(
-            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
           ),
         status: zod
           .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -5156,14 +5156,14 @@ export const webHooksCreateBody = zod.object({
         .url()
         .optional()
         .describe(
-          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation "WebHooks_Ping" for more details.'
         ),
       test: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation "WebHooks_Test" for more details.'
         )
     })
     .optional(),
@@ -5244,14 +5244,14 @@ export const webHooksGetResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation "WebHooks_Ping" for more details.'
         ),
       test: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation "WebHooks_Test" for more details.'
         )
     })
     .optional(),
@@ -5309,14 +5309,14 @@ export const webHooksGetResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   lastActionDateTime: zod
     .string()
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])
@@ -5413,14 +5413,14 @@ export const webHooksUpdateResponse = zod.object({
         .url()
         .optional()
         .describe(
-          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation "WebHooks_Ping" for more details.'
         ),
       test: zod
         .string()
         .url()
         .optional()
         .describe(
-          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation "WebHooks_Test" for more details.'
         )
     })
     .optional(),
@@ -5478,14 +5478,14 @@ export const webHooksUpdateResponse = zod.object({
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   lastActionDateTime: zod
     .string()
     .datetime({})
     .optional()
     .describe(
-      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
     ),
   status: zod
     .enum(["NotStarted", "Running", "Succeeded", "Failed"])

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { BatchRequestOutputResponse } from "./batchRequestOutputResponse"
+
 import type { BatchRequestOutputError } from "./batchRequestOutputError"
+import type { BatchRequestOutputResponse } from "./batchRequestOutputResponse"
 
 /**
  * The per-line object of the batch output and error files

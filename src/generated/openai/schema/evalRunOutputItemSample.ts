@@ -5,10 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { EvalApiError } from "./evalApiError"
 import type { EvalRunOutputItemSampleInputItem } from "./evalRunOutputItemSampleInputItem"
 import type { EvalRunOutputItemSampleOutputItem } from "./evalRunOutputItemSampleOutputItem"
 import type { EvalRunOutputItemSampleUsage } from "./evalRunOutputItemSampleUsage"
-import type { EvalApiError } from "./evalApiError"
 
 /**
  * A sample containing the input and output of the evaluation run.

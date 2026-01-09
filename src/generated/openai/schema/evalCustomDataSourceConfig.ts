@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalCustomDataSourceConfigType } from "./evalCustomDataSourceConfigType"
+
 import type { EvalCustomDataSourceConfigSchema } from "./evalCustomDataSourceConfigSchema"
+import type { EvalCustomDataSourceConfigType } from "./evalCustomDataSourceConfigType"
 
 /**
  * A CustomDataSourceConfig which specifies the schema of your `item` and optionally `sample` namespaces.

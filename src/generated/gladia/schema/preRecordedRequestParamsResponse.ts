@@ -4,18 +4,19 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CustomVocabularyConfigDTO } from "./customVocabularyConfigDTO"
-import type { CodeSwitchingConfigDTO } from "./codeSwitchingConfigDTO"
-import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
-import type { CallbackConfigDto } from "./callbackConfigDto"
-import type { SubtitlesConfigDTO } from "./subtitlesConfigDTO"
-import type { DiarizationConfigDTO } from "./diarizationConfigDTO"
-import type { TranslationConfigDTO } from "./translationConfigDTO"
-import type { SummarizationConfigDTO } from "./summarizationConfigDTO"
-import type { CustomSpellingConfigDTO } from "./customSpellingConfigDTO"
-import type { StructuredDataExtractionConfigDTO } from "./structuredDataExtractionConfigDTO"
+
 import type { AudioToLlmListConfigDTO } from "./audioToLlmListConfigDTO"
+import type { CallbackConfigDto } from "./callbackConfigDto"
+import type { CodeSwitchingConfigDTO } from "./codeSwitchingConfigDTO"
+import type { CustomSpellingConfigDTO } from "./customSpellingConfigDTO"
+import type { CustomVocabularyConfigDTO } from "./customVocabularyConfigDTO"
+import type { DiarizationConfigDTO } from "./diarizationConfigDTO"
 import type { LanguageConfig } from "./languageConfig"
+import type { StructuredDataExtractionConfigDTO } from "./structuredDataExtractionConfigDTO"
+import type { SubtitlesConfigDTO } from "./subtitlesConfigDTO"
+import type { SummarizationConfigDTO } from "./summarizationConfigDTO"
+import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
+import type { TranslationConfigDTO } from "./translationConfigDTO"
 
 export interface PreRecordedRequestParamsResponse {
   /**

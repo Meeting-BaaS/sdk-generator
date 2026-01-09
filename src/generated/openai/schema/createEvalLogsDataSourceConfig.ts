@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalLogsDataSourceConfigType } from "./createEvalLogsDataSourceConfigType"
+
 import type { CreateEvalLogsDataSourceConfigMetadata } from "./createEvalLogsDataSourceConfigMetadata"
+import type { CreateEvalLogsDataSourceConfigType } from "./createEvalLogsDataSourceConfigType"
 
 /**
  * A data source config which specifies the metadata property of your logs query.

@@ -5,16 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageObjectObject } from "./messageObjectObject"
-import type { MessageObjectStatus } from "./messageObjectStatus"
-import type { MessageObjectIncompleteDetails } from "./messageObjectIncompleteDetails"
-import type { MessageObjectCompletedAt } from "./messageObjectCompletedAt"
-import type { MessageObjectIncompleteAt } from "./messageObjectIncompleteAt"
-import type { MessageObjectRole } from "./messageObjectRole"
+
 import type { MessageContent } from "./messageContent"
 import type { MessageObjectAssistantId } from "./messageObjectAssistantId"
-import type { MessageObjectRunId } from "./messageObjectRunId"
 import type { MessageObjectAttachments } from "./messageObjectAttachments"
+import type { MessageObjectCompletedAt } from "./messageObjectCompletedAt"
+import type { MessageObjectIncompleteAt } from "./messageObjectIncompleteAt"
+import type { MessageObjectIncompleteDetails } from "./messageObjectIncompleteDetails"
+import type { MessageObjectObject } from "./messageObjectObject"
+import type { MessageObjectRole } from "./messageObjectRole"
+import type { MessageObjectRunId } from "./messageObjectRunId"
+import type { MessageObjectStatus } from "./messageObjectStatus"
 import type { Metadata } from "./metadata"
 
 /**

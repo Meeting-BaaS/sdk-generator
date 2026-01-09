@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { UsageModerationsResultApiKeyId } from "./usageModerationsResultApiKeyId"
+import type { UsageModerationsResultModel } from "./usageModerationsResultModel"
 import type { UsageModerationsResultObject } from "./usageModerationsResultObject"
 import type { UsageModerationsResultProjectId } from "./usageModerationsResultProjectId"
 import type { UsageModerationsResultUserId } from "./usageModerationsResultUserId"
-import type { UsageModerationsResultApiKeyId } from "./usageModerationsResultApiKeyId"
-import type { UsageModerationsResultModel } from "./usageModerationsResultModel"
 
 /**
  * The aggregated moderations usage details of the specific time bucket.

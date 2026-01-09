@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomTextFormatParam } from "./customTextFormatParam"
+
 import type { CustomGrammarFormatParam } from "./customGrammarFormatParam"
+import type { CustomTextFormatParam } from "./customTextFormatParam"
 
 /**
  * The input format for the custom tool. Default is unconstrained text.

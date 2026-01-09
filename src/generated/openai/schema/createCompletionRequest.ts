@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { ChatCompletionStreamOptions } from "./chatCompletionStreamOptions"
+import type { CreateCompletionRequestLogitBias } from "./createCompletionRequestLogitBias"
 import type { CreateCompletionRequestModel } from "./createCompletionRequestModel"
 import type { CreateCompletionRequestPrompt } from "./createCompletionRequestPrompt"
-import type { CreateCompletionRequestLogitBias } from "./createCompletionRequestLogitBias"
 import type { StopConfiguration } from "./stopConfiguration"
-import type { ChatCompletionStreamOptions } from "./chatCompletionStreamOptions"
 
 export interface CreateCompletionRequest {
   /** ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.

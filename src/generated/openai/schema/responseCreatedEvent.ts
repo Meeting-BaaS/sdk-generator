@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseCreatedEventType } from "./responseCreatedEventType"
+
 import type { Response } from "./response"
+import type { ResponseCreatedEventType } from "./responseCreatedEventType"
 
 /**
  * An event that is emitted when a response is created.

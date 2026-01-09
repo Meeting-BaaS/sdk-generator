@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectApiKeyListResponseObject } from "./projectApiKeyListResponseObject"
+
 import type { ProjectApiKey } from "./projectApiKey"
+import type { ProjectApiKeyListResponseObject } from "./projectApiKeyListResponseObject"
 
 export interface ProjectApiKeyListResponse {
   object: ProjectApiKeyListResponseObject

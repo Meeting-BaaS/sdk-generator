@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseQueuedEventType } from "./responseQueuedEventType"
+
 import type { Response } from "./response"
+import type { ResponseQueuedEventType } from "./responseQueuedEventType"
 
 /**
  * Emitted when a response is queued and waiting to be processed.

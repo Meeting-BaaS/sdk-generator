@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseCompletedEventType } from "./responseCompletedEventType"
+
 import type { Response } from "./response"
+import type { ResponseCompletedEventType } from "./responseCompletedEventType"
 
 /**
  * Emitted when the model response is complete.

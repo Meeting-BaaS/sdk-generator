@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDeltaStepDetailsToolCallsCodeObjectType } from "./runStepDeltaStepDetailsToolCallsCodeObjectType"
+
 import type { RunStepDeltaStepDetailsToolCallsCodeObjectCodeInterpreter } from "./runStepDeltaStepDetailsToolCallsCodeObjectCodeInterpreter"
+import type { RunStepDeltaStepDetailsToolCallsCodeObjectType } from "./runStepDeltaStepDetailsToolCallsCodeObjectType"
 
 /**
  * Details of the Code Interpreter tool call the run step was involved in.

@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ReasoningItemType } from "./reasoningItemType"
+
 import type { ReasoningItemEncryptedContent } from "./reasoningItemEncryptedContent"
-import type { Summary } from "./summary"
-import type { ReasoningTextContent } from "./reasoningTextContent"
 import type { ReasoningItemStatus } from "./reasoningItemStatus"
+import type { ReasoningItemType } from "./reasoningItemType"
+import type { ReasoningTextContent } from "./reasoningTextContent"
+import type { Summary } from "./summary"
 
 /**
  * A description of the chain of thought used by a reasoning model while generating

@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageGenPartialImageEventType } from "./imageGenPartialImageEventType"
-import type { ImageGenPartialImageEventSize } from "./imageGenPartialImageEventSize"
-import type { ImageGenPartialImageEventQuality } from "./imageGenPartialImageEventQuality"
+
 import type { ImageGenPartialImageEventBackground } from "./imageGenPartialImageEventBackground"
 import type { ImageGenPartialImageEventOutputFormat } from "./imageGenPartialImageEventOutputFormat"
+import type { ImageGenPartialImageEventQuality } from "./imageGenPartialImageEventQuality"
+import type { ImageGenPartialImageEventSize } from "./imageGenPartialImageEventSize"
+import type { ImageGenPartialImageEventType } from "./imageGenPartialImageEventType"
 
 /**
  * Emitted when a partial image is available during image generation streaming.

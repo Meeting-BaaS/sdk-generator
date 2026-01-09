@@ -6,8 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { RealtimeBetaServerEventErrorErrorCode } from "./realtimeBetaServerEventErrorErrorCode"
-import type { RealtimeBetaServerEventErrorErrorParam } from "./realtimeBetaServerEventErrorErrorParam"
 import type { RealtimeBetaServerEventErrorErrorEventId } from "./realtimeBetaServerEventErrorErrorEventId"
+import type { RealtimeBetaServerEventErrorErrorParam } from "./realtimeBetaServerEventErrorErrorParam"
 
 /**
  * Details of the error.

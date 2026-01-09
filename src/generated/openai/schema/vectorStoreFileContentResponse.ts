@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileContentResponseObject } from "./vectorStoreFileContentResponseObject"
+
 import type { VectorStoreFileContentResponseDataItem } from "./vectorStoreFileContentResponseDataItem"
 import type { VectorStoreFileContentResponseNextPage } from "./vectorStoreFileContentResponseNextPage"
+import type { VectorStoreFileContentResponseObject } from "./vectorStoreFileContentResponseObject"
 
 /**
  * Represents the parsed content of a vector store file.

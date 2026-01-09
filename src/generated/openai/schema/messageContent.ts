@@ -7,8 +7,8 @@
  */
 import type { MessageContentImageFileObject } from "./messageContentImageFileObject"
 import type { MessageContentImageUrlObject } from "./messageContentImageUrlObject"
-import type { MessageContentTextObject } from "./messageContentTextObject"
 import type { MessageContentRefusalObject } from "./messageContentRefusalObject"
+import type { MessageContentTextObject } from "./messageContentTextObject"
 
 export type MessageContent =
   | MessageContentImageFileObject

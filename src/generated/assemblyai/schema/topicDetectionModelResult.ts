@@ -6,8 +6,8 @@
  * OpenAPI spec version: 1.3.4
  */
 import type { AudioIntelligenceModelStatus } from "./audioIntelligenceModelStatus"
-import type { TopicDetectionResult } from "./topicDetectionResult"
 import type { TopicDetectionModelResultSummary } from "./topicDetectionModelResultSummary"
+import type { TopicDetectionResult } from "./topicDetectionResult"
 
 /**
  * The result of the Topic Detection model, if it is enabled.

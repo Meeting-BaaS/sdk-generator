@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+
+import type { UsageEmbeddingsResultApiKeyId } from "./usageEmbeddingsResultApiKeyId"
+import type { UsageEmbeddingsResultModel } from "./usageEmbeddingsResultModel"
 import type { UsageEmbeddingsResultObject } from "./usageEmbeddingsResultObject"
 import type { UsageEmbeddingsResultProjectId } from "./usageEmbeddingsResultProjectId"
 import type { UsageEmbeddingsResultUserId } from "./usageEmbeddingsResultUserId"
-import type { UsageEmbeddingsResultApiKeyId } from "./usageEmbeddingsResultApiKeyId"
-import type { UsageEmbeddingsResultModel } from "./usageEmbeddingsResultModel"
 
 /**
  * The aggregated embeddings usage details of the specific time bucket.

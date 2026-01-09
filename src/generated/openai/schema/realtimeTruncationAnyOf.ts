@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTruncationAnyOfType } from "./realtimeTruncationAnyOfType"
+
 import type { RealtimeTruncationAnyOfTokenLimits } from "./realtimeTruncationAnyOfTokenLimits"
+import type { RealtimeTruncationAnyOfType } from "./realtimeTruncationAnyOfType"
 
 /**
  * Retain a fraction of the conversation tokens when the conversation exceeds the input token limit. This allows you to amortize truncations across multiple turns, which can help improve cached token usage.

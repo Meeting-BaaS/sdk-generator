@@ -5,8 +5,9 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { WebHookPropertiesUpdate } from "./webHookPropertiesUpdate"
+
 import type { WebHookEvents } from "./webHookEvents"
+import type { WebHookPropertiesUpdate } from "./webHookPropertiesUpdate"
 import type { WebHookUpdateCustomProperties } from "./webHookUpdateCustomProperties"
 
 export interface WebHookUpdate {

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextUsageTokensType } from "./transcriptTextUsageTokensType"
+
 import type { TranscriptTextUsageTokensInputTokenDetails } from "./transcriptTextUsageTokensInputTokenDetails"
+import type { TranscriptTextUsageTokensType } from "./transcriptTextUsageTokensType"
 
 /**
  * Usage statistics for models billed by token usage.

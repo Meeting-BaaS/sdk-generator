@@ -5,15 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateImageEditRequestImage } from "./createImageEditRequestImage"
+
 import type { CreateImageEditRequestBackground } from "./createImageEditRequestBackground"
-import type { CreateImageEditRequestModel } from "./createImageEditRequestModel"
-import type { CreateImageEditRequestSize } from "./createImageEditRequestSize"
-import type { CreateImageEditRequestResponseFormat } from "./createImageEditRequestResponseFormat"
-import type { CreateImageEditRequestOutputFormat } from "./createImageEditRequestOutputFormat"
+import type { CreateImageEditRequestImage } from "./createImageEditRequestImage"
 import type { CreateImageEditRequestInputFidelity } from "./createImageEditRequestInputFidelity"
-import type { PartialImages } from "./partialImages"
+import type { CreateImageEditRequestModel } from "./createImageEditRequestModel"
+import type { CreateImageEditRequestOutputFormat } from "./createImageEditRequestOutputFormat"
 import type { CreateImageEditRequestQuality } from "./createImageEditRequestQuality"
+import type { CreateImageEditRequestResponseFormat } from "./createImageEditRequestResponseFormat"
+import type { CreateImageEditRequestSize } from "./createImageEditRequestSize"
+import type { PartialImages } from "./partialImages"
 
 export interface CreateImageEditRequest {
   /** The image(s) to edit. Must be a supported image file or an array of images.

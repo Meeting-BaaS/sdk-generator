@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderStringCheckType } from "./graderStringCheckType"
+
 import type { GraderStringCheckOperation } from "./graderStringCheckOperation"
+import type { GraderStringCheckType } from "./graderStringCheckType"
 
 /**
  * A StringCheckGrader object that performs a string comparison between input and reference using a specified operation.

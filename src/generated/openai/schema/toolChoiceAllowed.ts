@@ -5,9 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceAllowedType } from "./toolChoiceAllowedType"
+
 import type { ToolChoiceAllowedMode } from "./toolChoiceAllowedMode"
 import type { ToolChoiceAllowedToolsItem } from "./toolChoiceAllowedToolsItem"
+import type { ToolChoiceAllowedType } from "./toolChoiceAllowedType"
 
 /**
  * Constrains the tools available to the model to a pre-defined set.

@@ -5,8 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDeltaStepDetailsToolCallsFileSearchObjectType } from "./runStepDeltaStepDetailsToolCallsFileSearchObjectType"
+
 import type { RunStepDeltaStepDetailsToolCallsFileSearchObjectFileSearch } from "./runStepDeltaStepDetailsToolCallsFileSearchObjectFileSearch"
+import type { RunStepDeltaStepDetailsToolCallsFileSearchObjectType } from "./runStepDeltaStepDetailsToolCallsFileSearchObjectType"
 
 export interface RunStepDeltaStepDetailsToolCallsFileSearchObject {
   /** The index of the tool call in the tool calls array. */
