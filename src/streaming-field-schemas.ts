@@ -13,6 +13,7 @@
 
 import type { FieldConfig, FieldType } from "./field-configs"
 import type {
+  GladiaStreamingOptions,
   DeepgramStreamingOptions,
   AssemblyAIStreamingOptions
 } from "./router/provider-streaming-types"
@@ -25,7 +26,12 @@ import {
   DeepgramTopicMode,
   AssemblyAIEncoding,
   AssemblyAISpeechModel,
-  AssemblyAISampleRate
+  AssemblyAISampleRate,
+  GladiaModel,
+  GladiaEncoding,
+  GladiaSampleRate,
+  GladiaBitDepth,
+  GladiaRegion
 } from "./constants"
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -63,6 +69,105 @@ function schemaToFieldConfigs<T>(schema: SchemaMap<T>): readonly FieldConfig[] {
     stability: (fieldSchema as FieldSchema).stability ?? "stable"
   })) as readonly FieldConfig[]
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Gladia Streaming Schema
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Gladia streaming field schema
+ *
+ * Type-checked against GladiaStreamingOptions - any property name mismatch
+ * will cause a compile error.
+ */
+const GladiaStreamingSchema: SchemaMap<GladiaStreamingOptions> = {
+  // Model & Region
+  model: {
+    type: "select",
+    description: "Transcription model to use",
+    options: Object.values(GladiaModel),
+    default: "solaria-1"
+  },
+  region: {
+    type: "select",
+    description: "Regional endpoint for lower latency",
+    options: Object.values(GladiaRegion)
+  },
+
+  // Audio Format
+  encoding: {
+    type: "select",
+    description: "Audio encoding format",
+    options: Object.values(GladiaEncoding),
+    default: "wav/pcm"
+  },
+  sampleRate: {
+    type: "select",
+    description: "Audio sample rate in Hz",
+    options: Object.values(GladiaSampleRate),
+    default: 16000
+  },
+  bitDepth: {
+    type: "select",
+    description: "Audio bit depth",
+    options: Object.values(GladiaBitDepth),
+    default: 16
+  },
+  channels: {
+    type: "number",
+    description: "Number of audio channels",
+    default: 1,
+    min: 1,
+    max: 8
+  },
+
+  // Endpointing & Language
+  endpointing: {
+    type: "number",
+    description: "Silence duration in seconds to end utterance (0.01-10)",
+    min: 0.01,
+    max: 10
+  },
+  maximumDurationWithoutEndpointing: {
+    type: "number",
+    description: "Max duration without endpointing in seconds (5-60)",
+    min: 5,
+    max: 60
+  },
+  languageConfig: {
+    type: "object",
+    description: "Language configuration (languages, code switching)"
+  },
+
+  // Processing Options
+  interimResults: {
+    type: "boolean",
+    description: "Enable partial transcripts before final",
+    default: true
+  },
+  preProcessing: {
+    type: "object",
+    description: "Pre-processing configuration"
+  },
+  realtimeProcessing: {
+    type: "object",
+    description: "Realtime processing configuration"
+  },
+  postProcessing: {
+    type: "object",
+    description: "Post-processing configuration"
+  },
+  messagesConfig: {
+    type: "object",
+    description: "WebSocket messages configuration"
+  }
+} as const
+
+/**
+ * Gladia streaming field configurations
+ * Derived from GladiaStreamingSchema - type-safe against the interface
+ */
+export const GladiaStreamingFields = schemaToFieldConfigs(GladiaStreamingSchema)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Deepgram Streaming Schema

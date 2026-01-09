@@ -22,3 +22,13 @@ export * as AssemblyAITypes from "./generated/assemblyai/schema"
 export * as DeepgramTypes from "./generated/deepgram/schema"
 export * as OpenAITypes from "./generated/openai/schema"
 export * as AzureTypes from "./generated/azure/schema"
+
+// Zod schemas for runtime field config extraction
+export * as GladiaZodSchemas from "./generated/gladia/api/gladiaControlAPI.zod"
+export * as DeepgramZodSchemas from "./generated/deepgram/api/deepgramAPISpecification.zod"
+export * as AssemblyAIZodSchemas from "./generated/assemblyai/api/assemblyAIAPI.zod"
+export * as OpenAIZodSchemas from "./generated/openai/api/openAIAPI.zod"
+
+// Zod-to-field-configs utility
+export { zodToFieldConfigs, filterFields, excludeFields } from "./utils/zod-to-field-configs"
+export type { ZodFieldConfig, FieldType } from "./utils/zod-to-field-configs"

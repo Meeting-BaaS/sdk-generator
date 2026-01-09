@@ -98,12 +98,10 @@ export interface ProviderFieldConfigs {
 
 import { TranscriptionLanguageCodeEnum } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"
 import { TranslationLanguageCodeEnum } from "./generated/gladia/schema/translationLanguageCodeEnum"
-import { StreamingSupportedModels } from "./generated/gladia/schema/streamingSupportedModels"
-import { StreamingSupportedEncodingEnum } from "./generated/gladia/schema/streamingSupportedEncodingEnum"
-import { StreamingSupportedSampleRateEnum } from "./generated/gladia/schema/streamingSupportedSampleRateEnum"
-import { StreamingSupportedBitDepthEnum } from "./generated/gladia/schema/streamingSupportedBitDepthEnum"
-import { StreamingSupportedRegions } from "./generated/gladia/schema/streamingSupportedRegions"
 import { TranscriptionControllerListV2StatusItem } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
+
+// Import schema-derived streaming fields (single source of truth)
+import { GladiaStreamingFields } from "./streaming-field-schemas"
 
 /**
  * Gladia transcription field configurations
@@ -199,90 +197,8 @@ export const GladiaTranscriptionFields = [
   }
 ] as const satisfies readonly FieldConfig[]
 
-/**
- * Gladia streaming field configurations
- *
- * Generated from Gladia OpenAPI spec StreamingRequest schema
- */
-export const GladiaStreamingFields = [
-  {
-    name: "model",
-    type: "select",
-    description: "Transcription model to use",
-    options: Object.values(StreamingSupportedModels),
-    default: "solaria-1",
-    stability: "stable"
-  },
-  {
-    name: "encoding",
-    type: "select",
-    description: "Audio encoding format",
-    options: Object.values(StreamingSupportedEncodingEnum),
-    default: "wav/pcm",
-    stability: "stable"
-  },
-  {
-    name: "sample_rate",
-    type: "select",
-    description: "Audio sample rate in Hz",
-    options: Object.values(StreamingSupportedSampleRateEnum),
-    default: 16000,
-    stability: "stable"
-  },
-  {
-    name: "bit_depth",
-    type: "select",
-    description: "Audio bit depth",
-    options: Object.values(StreamingSupportedBitDepthEnum),
-    default: 16,
-    stability: "stable"
-  },
-  {
-    name: "channels",
-    type: "number",
-    description: "Number of audio channels",
-    default: 1,
-    min: 1,
-    max: 8,
-    stability: "stable"
-  },
-  {
-    name: "region",
-    type: "select",
-    description: "Regional endpoint for lower latency",
-    options: Object.values(StreamingSupportedRegions),
-    stability: "stable"
-  },
-  {
-    name: "language",
-    type: "select",
-    description: "Spoken language (ISO 639 standard)",
-    options: Object.values(TranscriptionLanguageCodeEnum),
-    example: "en",
-    stability: "stable"
-  },
-  {
-    name: "endpointing",
-    type: "number",
-    description: "Silence duration in seconds to end utterance (0.01-10)",
-    min: 0.01,
-    max: 10,
-    stability: "stable"
-  },
-  {
-    name: "interimResults",
-    type: "boolean",
-    description: "Enable partial transcripts before final",
-    default: true,
-    stability: "stable"
-  },
-  {
-    name: "languageConfig",
-    type: "object",
-    description: "Language configuration (languages array, code switching)",
-    stability: "stable"
-  }
-] as const satisfies readonly FieldConfig[]
+// Gladia streaming fields are now schema-derived from streaming-field-schemas.ts
+// They are imported and re-exported at the bottom of this file
 
 /**
  * Gladia list filters field configurations
@@ -617,11 +533,11 @@ export const DeepgramListFilterFields = [
   }
 ] as const satisfies readonly FieldConfig[]
 
-// Import schema-derived streaming fields (single source of truth)
+// Import remaining schema-derived streaming fields
 import { DeepgramStreamingFields, AssemblyAIStreamingFields } from "./streaming-field-schemas"
 
-// Re-export for convenience
-export { DeepgramStreamingFields, AssemblyAIStreamingFields }
+// Re-export all streaming fields for convenience
+export { GladiaStreamingFields, DeepgramStreamingFields, AssemblyAIStreamingFields }
 
 /**
  * Complete Deepgram field configurations

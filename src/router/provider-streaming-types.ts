@@ -36,6 +36,14 @@ import type {
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
 
+// Gladia model type from generated schema
+import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
+import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
+import type { MessagesConfig } from "../generated/gladia/schema/messagesConfig"
+import type { PreProcessingConfig } from "../generated/gladia/schema/preProcessingConfig"
+import type { RealtimeProcessingConfig } from "../generated/gladia/schema/realtimeProcessingConfig"
+import type { PostProcessingConfig } from "../generated/gladia/schema/postProcessingConfig"
+
 /**
  * Gladia streaming options (from OpenAPI spec)
  *
@@ -43,6 +51,8 @@ import type { StreamingCallbacks, StreamingProvider } from "./types"
  * All supported encodings, sample rates, and bit depths are from the spec.
  */
 export interface GladiaStreamingOptions {
+  /** Transcription model to use */
+  model?: StreamingSupportedModels
   /** Audio encoding format - only Gladia-supported formats (type-safe enum) */
   encoding?: StreamingSupportedEncodingEnum
   /** Sample rate - only Gladia-supported rates (type-safe enum) */
@@ -51,12 +61,24 @@ export interface GladiaStreamingOptions {
   bitDepth?: StreamingSupportedBitDepthEnum
   /** Number of audio channels (1-8) */
   channels?: number
+  /** Regional endpoint for lower latency */
+  region?: StreamingSupportedRegions
   /** Endpointing duration in seconds (0.01-10) */
   endpointing?: number
+  /** Maximum duration without endpointing in seconds (5-60) */
+  maximumDurationWithoutEndpointing?: number
   /** Language configuration */
   languageConfig?: LanguageConfig
   /** Interim/partial results */
   interimResults?: boolean
+  /** Pre-processing configuration */
+  preProcessing?: PreProcessingConfig
+  /** Realtime processing configuration */
+  realtimeProcessing?: RealtimeProcessingConfig
+  /** Post-processing configuration */
+  postProcessing?: PostProcessingConfig
+  /** WebSocket messages configuration */
+  messagesConfig?: MessagesConfig
 }
 
 /**
