@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ResponseFormatJsonSchemaJsonSchemaStrict } from "./responseFormatJsonSchemaJsonSchemaStrict"
-import type { ResponseFormatJsonSchemaSchema } from "./responseFormatJsonSchemaSchema"
+import type { ResponseFormatJsonSchemaSchema } from './responseFormatJsonSchemaSchema';
+import type { ResponseFormatJsonSchemaJsonSchemaStrict } from './responseFormatJsonSchemaJsonSchemaStrict';
 
 /**
  * Structured Outputs configuration options, including a JSON Schema.
@@ -17,11 +16,11 @@ export type ResponseFormatJsonSchemaJsonSchema = {
   /** A description of what the response format is for, used by the model to
 determine how to respond in the format.
  */
-  description?: string
+  description?: string;
   /** The name of the response format. Must be a-z, A-Z, 0-9, or contain
 underscores and dashes, with a maximum length of 64.
  */
-  name: string
-  schema?: ResponseFormatJsonSchemaSchema
-  strict?: ResponseFormatJsonSchemaJsonSchemaStrict
-}
+  name: string;
+  schema?: ResponseFormatJsonSchemaSchema;
+  strict?: ResponseFormatJsonSchemaJsonSchemaStrict;
+};

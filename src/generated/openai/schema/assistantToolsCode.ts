@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantToolsCodeType } from "./assistantToolsCodeType"
+import type { AssistantToolsCodeType } from './assistantToolsCodeType';
 
 export interface AssistantToolsCode {
   /** The type of tool being defined: `code_interpreter` */
-  type: AssistantToolsCodeType
+  type: AssistantToolsCodeType;
 }

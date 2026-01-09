@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ReasoningGenerateSummary = "auto" | "concise" | "detailed" | null
+export type ReasoningGenerateSummary = 'auto' | 'concise' | 'detailed' | null;

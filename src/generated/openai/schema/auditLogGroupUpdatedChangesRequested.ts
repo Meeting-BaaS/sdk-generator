@@ -11,5 +11,5 @@
  */
 export type AuditLogGroupUpdatedChangesRequested = {
   /** The updated group name. */
-  group_name?: string
-}
+  group_name?: string;
+};

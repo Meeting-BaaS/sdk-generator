@@ -9,11 +9,11 @@
 /**
  * Either success, or unavailable in the rare case that the model failed
  */
-export type AudioIntelligenceModelStatus =
-  (typeof AudioIntelligenceModelStatus)[keyof typeof AudioIntelligenceModelStatus]
+export type AudioIntelligenceModelStatus = typeof AudioIntelligenceModelStatus[keyof typeof AudioIntelligenceModelStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AudioIntelligenceModelStatus = {
-  success: "success",
-  unavailable: "unavailable"
-} as const
+  success: 'success',
+  unavailable: 'unavailable',
+} as const;

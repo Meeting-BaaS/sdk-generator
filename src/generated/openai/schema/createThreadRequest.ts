@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateMessageRequest } from "./createMessageRequest"
-import type { CreateThreadRequestToolResources } from "./createThreadRequestToolResources"
-import type { Metadata } from "./metadata"
+import type { CreateMessageRequest } from './createMessageRequest';
+import type { CreateThreadRequestToolResources } from './createThreadRequestToolResources';
+import type { Metadata } from './metadata';
 
 /**
  * Options to create a new thread. If no thread is provided when running a
@@ -16,7 +16,7 @@ request, an empty thread will be created.
  */
 export interface CreateThreadRequest {
   /** A list of [messages](https://platform.openai.com/docs/api-reference/messages) to start the thread with. */
-  messages?: CreateMessageRequest[]
-  tool_resources?: CreateThreadRequestToolResources
-  metadata?: Metadata
+  messages?: CreateMessageRequest[];
+  tool_resources?: CreateThreadRequestToolResources;
+  metadata?: Metadata;
 }

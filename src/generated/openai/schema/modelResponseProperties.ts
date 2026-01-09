@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Metadata } from "./metadata"
-import type { ModelResponsePropertiesPromptCacheRetention } from "./modelResponsePropertiesPromptCacheRetention"
-import type { ModelResponsePropertiesTemperature } from "./modelResponsePropertiesTemperature"
-import type { ModelResponsePropertiesTopLogprobs } from "./modelResponsePropertiesTopLogprobs"
-import type { ModelResponsePropertiesTopP } from "./modelResponsePropertiesTopP"
-import type { ServiceTier } from "./serviceTier"
+import type { Metadata } from './metadata';
+import type { ModelResponsePropertiesTopLogprobs } from './modelResponsePropertiesTopLogprobs';
+import type { ModelResponsePropertiesTemperature } from './modelResponsePropertiesTemperature';
+import type { ModelResponsePropertiesTopP } from './modelResponsePropertiesTopP';
+import type { ServiceTier } from './serviceTier';
+import type { ModelResponsePropertiesPromptCacheRetention } from './modelResponsePropertiesPromptCacheRetention';
 
 export interface ModelResponseProperties {
-  metadata?: Metadata
-  top_logprobs?: ModelResponsePropertiesTopLogprobs
-  temperature?: ModelResponsePropertiesTemperature
-  top_p?: ModelResponsePropertiesTopP
+  metadata?: Metadata;
+  top_logprobs?: ModelResponsePropertiesTopLogprobs;
+  temperature?: ModelResponsePropertiesTemperature;
+  top_p?: ModelResponsePropertiesTopP;
   /**
    * This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use `prompt_cache_key` instead to maintain caching optimizations.
 A stable identifier for your end-users.
@@ -24,14 +24,14 @@ Used to boost cache hit rates by better bucketing similar requests and  to help 
 
    * @deprecated
    */
-  user?: string
+  user?: string;
   /** A stable identifier used to help detect users of your application that may be violating OpenAI's usage policies.
 The IDs should be a string that uniquely identifies each user. We recommend hashing their username or email address, in order to avoid sending us any identifying information. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
  */
-  safety_identifier?: string
+  safety_identifier?: string;
   /** Used by OpenAI to cache responses for similar requests to optimize your cache hit rates. Replaces the `user` field. [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
-   */
-  prompt_cache_key?: string
-  service_tier?: ServiceTier
-  prompt_cache_retention?: ModelResponsePropertiesPromptCacheRetention
+ */
+  prompt_cache_key?: string;
+  service_tier?: ServiceTier;
+  prompt_cache_retention?: ModelResponsePropertiesPromptCacheRetention;
 }

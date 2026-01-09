@@ -7,5 +7,5 @@
 
 export interface Error {
   /** The error message */
-  message: string
+  message: string;
 }

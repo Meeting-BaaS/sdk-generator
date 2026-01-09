@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeSessionModalitiesItem =
-  (typeof RealtimeSessionModalitiesItem)[keyof typeof RealtimeSessionModalitiesItem]
+export type RealtimeSessionModalitiesItem = typeof RealtimeSessionModalitiesItem[keyof typeof RealtimeSessionModalitiesItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeSessionModalitiesItem = {
-  text: "text",
-  audio: "audio"
-} as const
+  text: 'text',
+  audio: 'audio',
+} as const;

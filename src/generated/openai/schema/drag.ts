@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { DragPoint } from "./dragPoint"
-import type { DragType } from "./dragType"
+import type { DragType } from './dragType';
+import type { DragPoint } from './dragPoint';
 
 /**
  * A drag action.
@@ -17,7 +16,7 @@ export interface Drag {
   /** Specifies the event type. For a drag action, this property is 
 always set to `drag`.
  */
-  type: DragType
+  type: DragType;
   /** An array of coordinates representing the path of the drag action. Coordinates will appear as an array
 of objects, eg
 ```
@@ -27,5 +26,5 @@ of objects, eg
 ]
 ```
  */
-  path: DragPoint[]
+  path: DragPoint[];
 }

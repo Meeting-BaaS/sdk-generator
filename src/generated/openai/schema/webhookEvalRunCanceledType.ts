@@ -10,10 +10,10 @@
  * The type of the event. Always `eval.run.canceled`.
 
  */
-export type WebhookEvalRunCanceledType =
-  (typeof WebhookEvalRunCanceledType)[keyof typeof WebhookEvalRunCanceledType]
+export type WebhookEvalRunCanceledType = typeof WebhookEvalRunCanceledType[keyof typeof WebhookEvalRunCanceledType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookEvalRunCanceledType = {
-  evalruncanceled: "eval.run.canceled"
-} as const
+  evalruncanceled: 'eval.run.canceled',
+} as const;

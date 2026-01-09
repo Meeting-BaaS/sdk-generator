@@ -9,12 +9,12 @@
 /**
  * The status of the item. Has no effect on the conversation.
  */
-export type RealtimeConversationItemMessageSystemStatus =
-  (typeof RealtimeConversationItemMessageSystemStatus)[keyof typeof RealtimeConversationItemMessageSystemStatus]
+export type RealtimeConversationItemMessageSystemStatus = typeof RealtimeConversationItemMessageSystemStatus[keyof typeof RealtimeConversationItemMessageSystemStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageSystemStatus = {
-  completed: "completed",
-  incomplete: "incomplete",
-  in_progress: "in_progress"
-} as const
+  completed: 'completed',
+  incomplete: 'incomplete',
+  in_progress: 'in_progress',
+} as const;

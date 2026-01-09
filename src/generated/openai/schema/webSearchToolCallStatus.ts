@@ -10,13 +10,13 @@
  * The status of the web search tool call.
 
  */
-export type WebSearchToolCallStatus =
-  (typeof WebSearchToolCallStatus)[keyof typeof WebSearchToolCallStatus]
+export type WebSearchToolCallStatus = typeof WebSearchToolCallStatus[keyof typeof WebSearchToolCallStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchToolCallStatus = {
-  in_progress: "in_progress",
-  searching: "searching",
-  completed: "completed",
-  failed: "failed"
-} as const
+  in_progress: 'in_progress',
+  searching: 'searching',
+  completed: 'completed',
+  failed: 'failed',
+} as const;

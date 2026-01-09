@@ -5,8 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+import type { GraderPython } from './graderPython';
+import type { EvalGraderPythonAllOf } from './evalGraderPythonAllOf';
 
-import type { EvalGraderPythonAllOf } from "./evalGraderPythonAllOf"
-import type { GraderPython } from "./graderPython"
-
-export type EvalGraderPython = GraderPython & EvalGraderPythonAllOf
+export type EvalGraderPython = GraderPython & EvalGraderPythonAllOf;

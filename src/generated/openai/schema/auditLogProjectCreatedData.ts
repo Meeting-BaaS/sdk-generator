@@ -11,7 +11,7 @@
  */
 export type AuditLogProjectCreatedData = {
   /** The project name. */
-  name?: string
+  name?: string;
   /** The title of the project as seen on the dashboard. */
-  title?: string
-}
+  title?: string;
+};

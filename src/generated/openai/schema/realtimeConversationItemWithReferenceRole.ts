@@ -11,12 +11,12 @@
 applicable for `message` items.
 
  */
-export type RealtimeConversationItemWithReferenceRole =
-  (typeof RealtimeConversationItemWithReferenceRole)[keyof typeof RealtimeConversationItemWithReferenceRole]
+export type RealtimeConversationItemWithReferenceRole = typeof RealtimeConversationItemWithReferenceRole[keyof typeof RealtimeConversationItemWithReferenceRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemWithReferenceRole = {
-  user: "user",
-  assistant: "assistant",
-  system: "system"
-} as const
+  user: 'user',
+  assistant: 'assistant',
+  system: 'system',
+} as const;

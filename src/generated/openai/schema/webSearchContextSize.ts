@@ -11,11 +11,12 @@
 search. One of `low`, `medium`, or `high`. `medium` is the default.
 
  */
-export type WebSearchContextSize = (typeof WebSearchContextSize)[keyof typeof WebSearchContextSize]
+export type WebSearchContextSize = typeof WebSearchContextSize[keyof typeof WebSearchContextSize];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchContextSize = {
-  low: "low",
-  medium: "medium",
-  high: "high"
-} as const
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+} as const;

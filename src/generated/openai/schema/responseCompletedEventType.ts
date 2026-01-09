@@ -10,10 +10,10 @@
  * The type of the event. Always `response.completed`.
 
  */
-export type ResponseCompletedEventType =
-  (typeof ResponseCompletedEventType)[keyof typeof ResponseCompletedEventType]
+export type ResponseCompletedEventType = typeof ResponseCompletedEventType[keyof typeof ResponseCompletedEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCompletedEventType = {
-  responsecompleted: "response.completed"
-} as const
+  responsecompleted: 'response.completed',
+} as const;

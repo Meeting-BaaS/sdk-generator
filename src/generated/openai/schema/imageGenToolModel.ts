@@ -10,10 +10,11 @@
  * The image generation model to use. Default: `gpt-image-1`.
 
  */
-export type ImageGenToolModel = (typeof ImageGenToolModel)[keyof typeof ImageGenToolModel]
+export type ImageGenToolModel = typeof ImageGenToolModel[keyof typeof ImageGenToolModel];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolModel = {
-  "gpt-image-1": "gpt-image-1",
-  "gpt-image-1-mini": "gpt-image-1-mini"
-} as const
+  'gpt-image-1': 'gpt-image-1',
+  'gpt-image-1-mini': 'gpt-image-1-mini',
+} as const;

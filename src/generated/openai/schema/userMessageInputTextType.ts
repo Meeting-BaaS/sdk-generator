@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `input_text`.
  */
-export type UserMessageInputTextType =
-  (typeof UserMessageInputTextType)[keyof typeof UserMessageInputTextType]
+export type UserMessageInputTextType = typeof UserMessageInputTextType[keyof typeof UserMessageInputTextType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserMessageInputTextType = {
-  input_text: "input_text"
-} as const
+  input_text: 'input_text',
+} as const;

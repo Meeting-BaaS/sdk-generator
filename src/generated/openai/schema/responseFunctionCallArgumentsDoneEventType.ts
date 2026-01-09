@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ResponseFunctionCallArgumentsDoneEventType =
-  (typeof ResponseFunctionCallArgumentsDoneEventType)[keyof typeof ResponseFunctionCallArgumentsDoneEventType]
+export type ResponseFunctionCallArgumentsDoneEventType = typeof ResponseFunctionCallArgumentsDoneEventType[keyof typeof ResponseFunctionCallArgumentsDoneEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFunctionCallArgumentsDoneEventType = {
-  responsefunction_call_argumentsdone: "response.function_call_arguments.done"
-} as const
+  responsefunction_call_argumentsdone: 'response.function_call_arguments.done',
+} as const;

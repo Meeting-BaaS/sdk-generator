@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `quoted_text`.
  */
-export type UserMessageQuotedTextType =
-  (typeof UserMessageQuotedTextType)[keyof typeof UserMessageQuotedTextType]
+export type UserMessageQuotedTextType = typeof UserMessageQuotedTextType[keyof typeof UserMessageQuotedTextType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserMessageQuotedTextType = {
-  quoted_text: "quoted_text"
-} as const
+  quoted_text: 'quoted_text',
+} as const;

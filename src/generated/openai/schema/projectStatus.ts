@@ -9,10 +9,11 @@
 /**
  * `active` or `archived`
  */
-export type ProjectStatus = (typeof ProjectStatus)[keyof typeof ProjectStatus]
+export type ProjectStatus = typeof ProjectStatus[keyof typeof ProjectStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectStatus = {
-  active: "active",
-  archived: "archived"
-} as const
+  active: 'active',
+  archived: 'archived',
+} as const;

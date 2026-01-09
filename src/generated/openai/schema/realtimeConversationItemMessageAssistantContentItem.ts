@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeConversationItemMessageAssistantContentItemType } from "./realtimeConversationItemMessageAssistantContentItemType"
+import type { RealtimeConversationItemMessageAssistantContentItemType } from './realtimeConversationItemMessageAssistantContentItemType';
 
 export type RealtimeConversationItemMessageAssistantContentItem = {
   /** The content type, `output_text` or `output_audio` depending on the session `output_modalities` configuration. */
-  type?: RealtimeConversationItemMessageAssistantContentItemType
+  type?: RealtimeConversationItemMessageAssistantContentItemType;
   /** The text content. */
-  text?: string
+  text?: string;
   /** Base64-encoded audio bytes, these will be parsed as the format specified in the session output audio type configuration. This defaults to PCM 16-bit 24kHz mono if not specified. */
-  audio?: string
+  audio?: string;
   /** The transcript of the audio content, this will always be present if the output type is `audio`. */
-  transcript?: string
-}
+  transcript?: string;
+};

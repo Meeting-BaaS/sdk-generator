@@ -10,10 +10,10 @@
  * The type of the event. Always `response.reasoning_summary_text.done`.
 
  */
-export type ResponseReasoningSummaryTextDoneEventType =
-  (typeof ResponseReasoningSummaryTextDoneEventType)[keyof typeof ResponseReasoningSummaryTextDoneEventType]
+export type ResponseReasoningSummaryTextDoneEventType = typeof ResponseReasoningSummaryTextDoneEventType[keyof typeof ResponseReasoningSummaryTextDoneEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseReasoningSummaryTextDoneEventType = {
-  responsereasoning_summary_textdone: "response.reasoning_summary_text.done"
-} as const
+  responsereasoning_summary_textdone: 'response.reasoning_summary_text.done',
+} as const;

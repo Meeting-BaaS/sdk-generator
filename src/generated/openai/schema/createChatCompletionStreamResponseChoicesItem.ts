@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionStreamResponseDelta } from "./chatCompletionStreamResponseDelta"
-import type { CreateChatCompletionStreamResponseChoicesItemFinishReason } from "./createChatCompletionStreamResponseChoicesItemFinishReason"
-import type { CreateChatCompletionStreamResponseChoicesItemLogprobs } from "./createChatCompletionStreamResponseChoicesItemLogprobs"
+import type { ChatCompletionStreamResponseDelta } from './chatCompletionStreamResponseDelta';
+import type { CreateChatCompletionStreamResponseChoicesItemLogprobs } from './createChatCompletionStreamResponseChoicesItemLogprobs';
+import type { CreateChatCompletionStreamResponseChoicesItemFinishReason } from './createChatCompletionStreamResponseChoicesItemFinishReason';
 
 export type CreateChatCompletionStreamResponseChoicesItem = {
-  delta: ChatCompletionStreamResponseDelta
+  delta: ChatCompletionStreamResponseDelta;
   /**
    * Log probability information for the choice.
    * @nullable
    */
-  logprobs?: CreateChatCompletionStreamResponseChoicesItemLogprobs
+  logprobs?: CreateChatCompletionStreamResponseChoicesItemLogprobs;
   /**
    * The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
 `length` if the maximum number of tokens specified in the request was reached,
@@ -24,7 +24,7 @@ export type CreateChatCompletionStreamResponseChoicesItem = {
 
    * @nullable
    */
-  finish_reason: CreateChatCompletionStreamResponseChoicesItemFinishReason
+  finish_reason: CreateChatCompletionStreamResponseChoicesItemFinishReason;
   /** The index of the choice in the list of choices. */
-  index: number
-}
+  index: number;
+};

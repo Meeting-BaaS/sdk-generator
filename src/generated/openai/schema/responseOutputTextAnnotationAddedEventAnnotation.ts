@@ -9,4 +9,4 @@
 /**
  * The annotation object being added. (See annotation schema for details.)
  */
-export type ResponseOutputTextAnnotationAddedEventAnnotation = { [key: string]: unknown }
+export type ResponseOutputTextAnnotationAddedEventAnnotation = { [key: string]: unknown };

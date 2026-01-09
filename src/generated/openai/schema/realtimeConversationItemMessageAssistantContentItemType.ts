@@ -9,11 +9,11 @@
 /**
  * The content type, `output_text` or `output_audio` depending on the session `output_modalities` configuration.
  */
-export type RealtimeConversationItemMessageAssistantContentItemType =
-  (typeof RealtimeConversationItemMessageAssistantContentItemType)[keyof typeof RealtimeConversationItemMessageAssistantContentItemType]
+export type RealtimeConversationItemMessageAssistantContentItemType = typeof RealtimeConversationItemMessageAssistantContentItemType[keyof typeof RealtimeConversationItemMessageAssistantContentItemType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageAssistantContentItemType = {
-  output_text: "output_text",
-  output_audio: "output_audio"
-} as const
+  output_text: 'output_text',
+  output_audio: 'output_audio',
+} as const;

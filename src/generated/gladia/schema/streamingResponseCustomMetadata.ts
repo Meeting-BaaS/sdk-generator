@@ -8,4 +8,4 @@
 /**
  * Custom metadata given in the initial request
  */
-export type StreamingResponseCustomMetadata = { [key: string]: unknown }
+export type StreamingResponseCustomMetadata = { [key: string]: unknown };

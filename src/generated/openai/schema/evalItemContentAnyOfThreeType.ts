@@ -10,10 +10,10 @@
  * The type of the image input. Always `input_image`.
 
  */
-export type EvalItemContentAnyOfThreeType =
-  (typeof EvalItemContentAnyOfThreeType)[keyof typeof EvalItemContentAnyOfThreeType]
+export type EvalItemContentAnyOfThreeType = typeof EvalItemContentAnyOfThreeType[keyof typeof EvalItemContentAnyOfThreeType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalItemContentAnyOfThreeType = {
-  input_image: "input_image"
-} as const
+  input_image: 'input_image',
+} as const;

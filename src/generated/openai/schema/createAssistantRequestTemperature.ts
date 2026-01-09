@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type CreateAssistantRequestTemperature = number | null
+export type CreateAssistantRequestTemperature = number | null;

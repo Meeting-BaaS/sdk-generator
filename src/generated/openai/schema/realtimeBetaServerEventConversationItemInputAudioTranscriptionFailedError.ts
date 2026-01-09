@@ -11,11 +11,11 @@
  */
 export type RealtimeBetaServerEventConversationItemInputAudioTranscriptionFailedError = {
   /** The type of error. */
-  type?: string
+  type?: string;
   /** Error code, if any. */
-  code?: string
+  code?: string;
   /** A human-readable error message. */
-  message?: string
+  message?: string;
   /** Parameter related to the error, if any. */
-  param?: string
-}
+  param?: string;
+};

@@ -50,7 +50,7 @@
     "openapi:sync:assemblyai": "node scripts/sync-specs.js --provider assemblyai && node scripts/sync-specs.js --provider assemblyaiAsync",
     "openapi:sync:deepgram": "node scripts/sync-specs.js --provider deepgram",
     "openapi:validate": "node scripts/sync-specs.js --validate-only",
-    "openapi:fix-specs": "node scripts/fix-openai-spec.js && node scripts/fix-speechmatics-spec.js",
+    "openapi:fix-specs": "node scripts/fix-openai-spec.js && node scripts/fix-speechmatics-spec.js && node scripts/fix-deepgram-spec.js",
     "openapi:clean": "rm -rf src/generated",
     "openapi:clean:gladia": "rm -rf src/generated/gladia",
     "openapi:clean:assemblyai": "rm -rf src/generated/assemblyai",

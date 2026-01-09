@@ -9,10 +9,10 @@
 /**
  * Always `file_citation`.
  */
-export type MessageDeltaContentTextAnnotationsFileCitationObjectType =
-  (typeof MessageDeltaContentTextAnnotationsFileCitationObjectType)[keyof typeof MessageDeltaContentTextAnnotationsFileCitationObjectType]
+export type MessageDeltaContentTextAnnotationsFileCitationObjectType = typeof MessageDeltaContentTextAnnotationsFileCitationObjectType[keyof typeof MessageDeltaContentTextAnnotationsFileCitationObjectType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageDeltaContentTextAnnotationsFileCitationObjectType = {
-  file_citation: "file_citation"
-} as const
+  file_citation: 'file_citation',
+} as const;

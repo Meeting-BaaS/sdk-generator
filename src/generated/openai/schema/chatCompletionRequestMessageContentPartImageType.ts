@@ -9,10 +9,10 @@
 /**
  * The type of the content part.
  */
-export type ChatCompletionRequestMessageContentPartImageType =
-  (typeof ChatCompletionRequestMessageContentPartImageType)[keyof typeof ChatCompletionRequestMessageContentPartImageType]
+export type ChatCompletionRequestMessageContentPartImageType = typeof ChatCompletionRequestMessageContentPartImageType[keyof typeof ChatCompletionRequestMessageContentPartImageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestMessageContentPartImageType = {
-  image_url: "image_url"
-} as const
+  image_url: 'image_url',
+} as const;

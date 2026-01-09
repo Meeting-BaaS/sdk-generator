@@ -5,7 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateCompletionResponseChoicesItemLogprobsAnyOf } from "./createCompletionResponseChoicesItemLogprobsAnyOf"
+import type { CreateCompletionResponseChoicesItemLogprobsAnyOf } from './createCompletionResponseChoicesItemLogprobsAnyOf';
 
-export type CreateCompletionResponseChoicesItemLogprobs =
-  CreateCompletionResponseChoicesItemLogprobsAnyOf | null
+export type CreateCompletionResponseChoicesItemLogprobs = CreateCompletionResponseChoicesItemLogprobsAnyOf | null;

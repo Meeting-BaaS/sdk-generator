@@ -6,11 +6,12 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type MessageStatus = (typeof MessageStatus)[keyof typeof MessageStatus]
+export type MessageStatus = typeof MessageStatus[keyof typeof MessageStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageStatus = {
-  in_progress: "in_progress",
-  completed: "completed",
-  incomplete: "incomplete"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+  incomplete: 'incomplete',
+} as const;

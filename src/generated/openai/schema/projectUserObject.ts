@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `organization.project.user`
  */
-export type ProjectUserObject = (typeof ProjectUserObject)[keyof typeof ProjectUserObject]
+export type ProjectUserObject = typeof ProjectUserObject[keyof typeof ProjectUserObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectUserObject = {
-  organizationprojectuser: "organization.project.user"
-} as const
+  organizationprojectuser: 'organization.project.user',
+} as const;

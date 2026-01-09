@@ -9,13 +9,14 @@
 /**
  * Type of data import.
  */
-export type DatasetKind = (typeof DatasetKind)[keyof typeof DatasetKind]
+export type DatasetKind = typeof DatasetKind[keyof typeof DatasetKind];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DatasetKind = {
-  Language: "Language",
-  Acoustic: "Acoustic",
-  Pronunciation: "Pronunciation",
-  AudioFiles: "AudioFiles",
-  LanguageMarkdown: "LanguageMarkdown"
-} as const
+  Language: 'Language',
+  Acoustic: 'Acoustic',
+  Pronunciation: 'Pronunciation',
+  AudioFiles: 'AudioFiles',
+  LanguageMarkdown: 'LanguageMarkdown',
+} as const;

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageResponseObject } from "./usageResponseObject"
-import type { UsageTimeBucket } from "./usageTimeBucket"
+import type { UsageResponseObject } from './usageResponseObject';
+import type { UsageTimeBucket } from './usageTimeBucket';
 
 export interface UsageResponse {
-  object: UsageResponseObject
-  data: UsageTimeBucket[]
-  has_more: boolean
-  next_page: string
+  object: UsageResponseObject;
+  data: UsageTimeBucket[];
+  has_more: boolean;
+  next_page: string;
 }

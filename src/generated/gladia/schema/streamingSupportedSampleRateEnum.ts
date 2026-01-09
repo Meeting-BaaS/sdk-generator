@@ -8,8 +8,8 @@
 /**
  * The sample rate of the audio stream
  */
-export type StreamingSupportedSampleRateEnum =
-  (typeof StreamingSupportedSampleRateEnum)[keyof typeof StreamingSupportedSampleRateEnum]
+export type StreamingSupportedSampleRateEnum = typeof StreamingSupportedSampleRateEnum[keyof typeof StreamingSupportedSampleRateEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingSupportedSampleRateEnum = {
@@ -17,5 +17,5 @@ export const StreamingSupportedSampleRateEnum = {
   NUMBER_16000: 16000,
   NUMBER_32000: 32000,
   NUMBER_44100: 44100,
-  NUMBER_48000: 48000
-} as const
+  NUMBER_48000: 48000,
+} as const;

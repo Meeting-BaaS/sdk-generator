@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ApplyPatchCallOutputStatus =
-  (typeof ApplyPatchCallOutputStatus)[keyof typeof ApplyPatchCallOutputStatus]
+export type ApplyPatchCallOutputStatus = typeof ApplyPatchCallOutputStatus[keyof typeof ApplyPatchCallOutputStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchCallOutputStatus = {
-  completed: "completed",
-  failed: "failed"
-} as const
+  completed: 'completed',
+  failed: 'failed',
+} as const;

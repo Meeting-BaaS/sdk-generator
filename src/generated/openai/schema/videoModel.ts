@@ -6,10 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VideoModel = (typeof VideoModel)[keyof typeof VideoModel]
+export type VideoModel = typeof VideoModel[keyof typeof VideoModel];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoModel = {
-  "sora-2": "sora-2",
-  "sora-2-pro": "sora-2-pro"
-} as const
+  'sora-2': 'sora-2',
+  'sora-2-pro': 'sora-2-pro',
+} as const;

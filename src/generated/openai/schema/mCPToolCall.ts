@@ -5,12 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { MCPToolCallApprovalRequestId } from "./mCPToolCallApprovalRequestId"
-import type { MCPToolCallError } from "./mCPToolCallError"
-import type { MCPToolCallOutput } from "./mCPToolCallOutput"
-import type { MCPToolCallStatus } from "./mCPToolCallStatus"
-import type { MCPToolCallType } from "./mCPToolCallType"
+import type { MCPToolCallType } from './mCPToolCallType';
+import type { MCPToolCallOutput } from './mCPToolCallOutput';
+import type { MCPToolCallError } from './mCPToolCallError';
+import type { MCPToolCallStatus } from './mCPToolCallStatus';
+import type { MCPToolCallApprovalRequestId } from './mCPToolCallApprovalRequestId';
 
 /**
  * An invocation of a tool on an MCP server.
@@ -18,24 +17,24 @@ import type { MCPToolCallType } from "./mCPToolCallType"
  */
 export interface MCPToolCall {
   /** The type of the item. Always `mcp_call`.
-   */
-  type: MCPToolCallType
+ */
+  type: MCPToolCallType;
   /** The unique ID of the tool call.
-   */
-  id: string
+ */
+  id: string;
   /** The label of the MCP server running the tool.
-   */
-  server_label: string
+ */
+  server_label: string;
   /** The name of the tool that was run.
-   */
-  name: string
+ */
+  name: string;
   /** A JSON string of the arguments passed to the tool.
-   */
-  arguments: string
-  output?: MCPToolCallOutput
-  error?: MCPToolCallError
+ */
+  arguments: string;
+  output?: MCPToolCallOutput;
+  error?: MCPToolCallError;
   /** The status of the tool call. One of `in_progress`, `completed`, `incomplete`, `calling`, or `failed`.
-   */
-  status?: MCPToolCallStatus
-  approval_request_id?: MCPToolCallApprovalRequestId
+ */
+  status?: MCPToolCallStatus;
+  approval_request_id?: MCPToolCallApprovalRequestId;
 }

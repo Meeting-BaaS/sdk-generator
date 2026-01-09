@@ -5,11 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ComputerAction } from "./computerAction"
-import type { ComputerCallSafetyCheckParam } from "./computerCallSafetyCheckParam"
-import type { ComputerToolCallStatus } from "./computerToolCallStatus"
-import type { ComputerToolCallType } from "./computerToolCallType"
+import type { ComputerToolCallType } from './computerToolCallType';
+import type { ComputerAction } from './computerAction';
+import type { ComputerCallSafetyCheckParam } from './computerCallSafetyCheckParam';
+import type { ComputerToolCallStatus } from './computerToolCallStatus';
 
 /**
  * A tool call to a computer use tool. See the
@@ -18,18 +17,18 @@ import type { ComputerToolCallType } from "./computerToolCallType"
  */
 export interface ComputerToolCall {
   /** The type of the computer call. Always `computer_call`. */
-  type: ComputerToolCallType
+  type: ComputerToolCallType;
   /** The unique ID of the computer call. */
-  id: string
+  id: string;
   /** An identifier used when responding to the tool call with output.
-   */
-  call_id: string
-  action: ComputerAction
+ */
+  call_id: string;
+  action: ComputerAction;
   /** The pending safety checks for the computer call.
-   */
-  pending_safety_checks: ComputerCallSafetyCheckParam[]
+ */
+  pending_safety_checks: ComputerCallSafetyCheckParam[];
   /** The status of the item. One of `in_progress`, `completed`, or
 `incomplete`. Populated when items are returned via API.
  */
-  status: ComputerToolCallStatus
+  status: ComputerToolCallStatus;
 }

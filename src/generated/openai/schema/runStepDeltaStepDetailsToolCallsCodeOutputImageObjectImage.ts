@@ -8,5 +8,5 @@
 
 export type RunStepDeltaStepDetailsToolCallsCodeOutputImageObjectImage = {
   /** The [file](https://platform.openai.com/docs/api-reference/files) ID of the image. */
-  file_id?: string
-}
+  file_id?: string;
+};

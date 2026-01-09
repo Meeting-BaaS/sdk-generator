@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem } from "./createCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem"
+import type { CreateCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem } from './createCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem';
 
 export type CreateCompletionResponseChoicesItemLogprobsAnyOf = {
-  text_offset?: number[]
-  token_logprobs?: number[]
-  tokens?: string[]
-  top_logprobs?: CreateCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem[]
-}
+  text_offset?: number[];
+  token_logprobs?: number[];
+  tokens?: string[];
+  top_logprobs?: CreateCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem[];
+};

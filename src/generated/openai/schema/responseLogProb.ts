@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseLogProbTopLogprobsItem } from "./responseLogProbTopLogprobsItem"
+import type { ResponseLogProbTopLogprobsItem } from './responseLogProbTopLogprobsItem';
 
 /**
  * A logprob is the logarithmic probability that the model assigns to producing 
@@ -15,11 +15,11 @@ logprob values indicate greater model confidence in that token choice.
  */
 export interface ResponseLogProb {
   /** A possible text token. */
-  token: string
+  token: string;
   /** The log probability of this token.
-   */
-  logprob: number
+ */
+  logprob: number;
   /** The log probability of the top 20 most likely tokens.
-   */
-  top_logprobs?: ResponseLogProbTopLogprobsItem[]
+ */
+  top_logprobs?: ResponseLogProbTopLogprobsItem[];
 }

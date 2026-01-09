@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { LockedStatusReason } from "./lockedStatusReason"
-import type { LockedStatusType } from "./lockedStatusType"
+import type { LockedStatusType } from './lockedStatusType';
+import type { LockedStatusReason } from './lockedStatusReason';
 
 /**
  * Indicates that a thread is locked and cannot accept new input.
  */
 export interface LockedStatus {
   /** Status discriminator that is always `locked`. */
-  type: LockedStatusType
-  reason: LockedStatusReason
+  type: LockedStatusType;
+  reason: LockedStatusReason;
 }

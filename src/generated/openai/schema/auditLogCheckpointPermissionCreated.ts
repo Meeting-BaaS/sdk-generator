@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogCheckpointPermissionCreatedData } from "./auditLogCheckpointPermissionCreatedData"
+import type { AuditLogCheckpointPermissionCreatedData } from './auditLogCheckpointPermissionCreatedData';
 
 /**
  * The project and fine-tuned model checkpoint that the checkpoint permission was created for.
  */
 export type AuditLogCheckpointPermissionCreated = {
   /** The ID of the checkpoint permission. */
-  id?: string
+  id?: string;
   /** The payload used to create the checkpoint permission. */
-  data?: AuditLogCheckpointPermissionCreatedData
-}
+  data?: AuditLogCheckpointPermissionCreatedData;
+};

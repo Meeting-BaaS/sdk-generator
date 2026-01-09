@@ -11,9 +11,10 @@
 always set to `scroll`.
 
  */
-export type ScrollType = (typeof ScrollType)[keyof typeof ScrollType]
+export type ScrollType = typeof ScrollType[keyof typeof ScrollType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ScrollType = {
-  scroll: "scroll"
-} as const
+  scroll: 'scroll',
+} as const;

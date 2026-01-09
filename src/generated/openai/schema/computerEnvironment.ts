@@ -6,13 +6,14 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ComputerEnvironment = (typeof ComputerEnvironment)[keyof typeof ComputerEnvironment]
+export type ComputerEnvironment = typeof ComputerEnvironment[keyof typeof ComputerEnvironment];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerEnvironment = {
-  windows: "windows",
-  mac: "mac",
-  linux: "linux",
-  ubuntu: "ubuntu",
-  browser: "browser"
-} as const
+  windows: 'windows',
+  mac: 'mac',
+  linux: 'linux',
+  ubuntu: 'ubuntu',
+  browser: 'browser',
+} as const;

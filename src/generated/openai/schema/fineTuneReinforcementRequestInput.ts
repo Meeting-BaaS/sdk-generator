@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ChatCompletionTool } from "./chatCompletionTool"
-import type { FineTuneReinforcementRequestInputMessagesItem } from "./fineTuneReinforcementRequestInputMessagesItem"
+import type { FineTuneReinforcementRequestInputMessagesItem } from './fineTuneReinforcementRequestInputMessagesItem';
+import type { ChatCompletionTool } from './chatCompletionTool';
 
 /**
  * Per-line training example for reinforcement fine-tuning. Note that `messages` and `tools` are the only reserved keywords.
@@ -18,7 +17,7 @@ are not currently supported for fine-tuning.
  */
 export interface FineTuneReinforcementRequestInput {
   /** @minItems 1 */
-  messages: FineTuneReinforcementRequestInputMessagesItem[]
+  messages: FineTuneReinforcementRequestInputMessagesItem[];
   /** A list of tools the model may generate JSON inputs for. */
-  tools?: ChatCompletionTool[]
+  tools?: ChatCompletionTool[];
 }

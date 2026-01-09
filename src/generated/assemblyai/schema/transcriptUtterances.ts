@@ -5,11 +5,11 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptUtterance } from "./transcriptUtterance"
+import type { TranscriptUtterance } from './transcriptUtterance';
 
 /**
  * When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
 See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
 
  */
-export type TranscriptUtterances = TranscriptUtterance[] | null
+export type TranscriptUtterances = TranscriptUtterance[] | null;

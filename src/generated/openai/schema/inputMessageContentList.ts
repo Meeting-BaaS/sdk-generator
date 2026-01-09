@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputContent } from "./inputContent"
+import type { InputContent } from './inputContent';
 
 /**
  * A list of one or many input items to the model, containing different content 
 types.
 
  */
-export type InputMessageContentList = InputContent[]
+export type InputMessageContentList = InputContent[];

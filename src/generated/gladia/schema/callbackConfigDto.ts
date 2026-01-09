@@ -4,11 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackMethodEnum } from "./callbackMethodEnum"
+import type { CallbackMethodEnum } from './callbackMethodEnum';
 
 export interface CallbackConfigDto {
   /** The URL to be called with the result of the transcription */
-  url: string
+  url: string;
   /** The HTTP method to be used. Allowed values are `POST` or `PUT` (default: `POST`) */
-  method?: CallbackMethodEnum
+  method?: CallbackMethodEnum;
 }

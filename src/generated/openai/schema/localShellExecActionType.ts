@@ -9,10 +9,10 @@
 /**
  * The type of the local shell action. Always `exec`.
  */
-export type LocalShellExecActionType =
-  (typeof LocalShellExecActionType)[keyof typeof LocalShellExecActionType]
+export type LocalShellExecActionType = typeof LocalShellExecActionType[keyof typeof LocalShellExecActionType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LocalShellExecActionType = {
-  exec: "exec"
-} as const
+  exec: 'exec',
+} as const;

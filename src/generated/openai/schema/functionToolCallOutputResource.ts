@@ -5,8 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionToolCallOutput } from "./functionToolCallOutput"
-import type { FunctionToolCallOutputResourceAllOf } from "./functionToolCallOutputResourceAllOf"
+import type { FunctionToolCallOutput } from './functionToolCallOutput';
+import type { FunctionToolCallOutputResourceAllOf } from './functionToolCallOutputResourceAllOf';
 
-export type FunctionToolCallOutputResource = FunctionToolCallOutput &
-  FunctionToolCallOutputResourceAllOf
+export type FunctionToolCallOutputResource = FunctionToolCallOutput & FunctionToolCallOutputResourceAllOf;

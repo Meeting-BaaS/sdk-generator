@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_call.in_progress'.
  */
-export type ResponseMCPCallInProgressEventType =
-  (typeof ResponseMCPCallInProgressEventType)[keyof typeof ResponseMCPCallInProgressEventType]
+export type ResponseMCPCallInProgressEventType = typeof ResponseMCPCallInProgressEventType[keyof typeof ResponseMCPCallInProgressEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPCallInProgressEventType = {
-  responsemcp_callin_progress: "response.mcp_call.in_progress"
-} as const
+  responsemcp_callin_progress: 'response.mcp_call.in_progress',
+} as const;

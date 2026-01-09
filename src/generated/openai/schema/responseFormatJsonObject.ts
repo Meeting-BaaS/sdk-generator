@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatJsonObjectType } from "./responseFormatJsonObjectType"
+import type { ResponseFormatJsonObjectType } from './responseFormatJsonObjectType';
 
 /**
  * JSON object response format. An older method of generating JSON responses.
@@ -16,5 +16,5 @@ to do so.
  */
 export interface ResponseFormatJsonObject {
   /** The type of response format being defined. Always `json_object`. */
-  type: ResponseFormatJsonObjectType
+  type: ResponseFormatJsonObjectType;
 }

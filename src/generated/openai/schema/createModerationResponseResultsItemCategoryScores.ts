@@ -11,29 +11,29 @@
  */
 export type CreateModerationResponseResultsItemCategoryScores = {
   /** The score for the category 'hate'. */
-  hate: number
+  hate: number;
   /** The score for the category 'hate/threatening'. */
-  "hate/threatening": number
+  'hate/threatening': number;
   /** The score for the category 'harassment'. */
-  harassment: number
+  harassment: number;
   /** The score for the category 'harassment/threatening'. */
-  "harassment/threatening": number
+  'harassment/threatening': number;
   /** The score for the category 'illicit'. */
-  illicit: number
+  illicit: number;
   /** The score for the category 'illicit/violent'. */
-  "illicit/violent": number
+  'illicit/violent': number;
   /** The score for the category 'self-harm'. */
-  "self-harm": number
+  'self-harm': number;
   /** The score for the category 'self-harm/intent'. */
-  "self-harm/intent": number
+  'self-harm/intent': number;
   /** The score for the category 'self-harm/instructions'. */
-  "self-harm/instructions": number
+  'self-harm/instructions': number;
   /** The score for the category 'sexual'. */
-  sexual: number
+  sexual: number;
   /** The score for the category 'sexual/minors'. */
-  "sexual/minors": number
+  'sexual/minors': number;
   /** The score for the category 'violence'. */
-  violence: number
+  violence: number;
   /** The score for the category 'violence/graphic'. */
-  "violence/graphic": number
-}
+  'violence/graphic': number;
+};

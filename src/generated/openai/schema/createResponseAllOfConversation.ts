@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ConversationParam } from "./conversationParam"
+import type { ConversationParam } from './conversationParam';
 
-export type CreateResponseAllOfConversation = ConversationParam | null
+export type CreateResponseAllOfConversation = ConversationParam | null;

@@ -10,10 +10,10 @@
  * The type of the event. Always `batch.failed`.
 
  */
-export type WebhookBatchFailedType =
-  (typeof WebhookBatchFailedType)[keyof typeof WebhookBatchFailedType]
+export type WebhookBatchFailedType = typeof WebhookBatchFailedType[keyof typeof WebhookBatchFailedType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookBatchFailedType = {
-  batchfailed: "batch.failed"
-} as const
+  batchfailed: 'batch.failed',
+} as const;

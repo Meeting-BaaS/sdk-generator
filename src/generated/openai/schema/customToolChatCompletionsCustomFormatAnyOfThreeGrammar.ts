@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax } from "./customToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax"
+import type { CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax } from './customToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax';
 
 /**
  * Your chosen grammar.
  */
 export type CustomToolChatCompletionsCustomFormatAnyOfThreeGrammar = {
   /** The grammar definition. */
-  definition: string
+  definition: string;
   /** The syntax of the grammar definition. One of `lark` or `regex`. */
-  syntax: CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax
-}
+  syntax: CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax;
+};

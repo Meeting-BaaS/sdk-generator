@@ -14,4 +14,4 @@ conversation. Set this to `none` to create an out-of-band response which
 will not add items to default conversation.
 
  */
-export type RealtimeResponseCreateParamsConversation = string | "auto" | "none"
+export type RealtimeResponseCreateParamsConversation = string | 'auto' | 'none';

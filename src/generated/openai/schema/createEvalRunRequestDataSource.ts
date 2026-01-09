@@ -5,15 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CreateEvalCompletionsRunDataSource } from "./createEvalCompletionsRunDataSource"
-import type { CreateEvalJsonlRunDataSource } from "./createEvalJsonlRunDataSource"
-import type { CreateEvalResponsesRunDataSource } from "./createEvalResponsesRunDataSource"
+import type { CreateEvalJsonlRunDataSource } from './createEvalJsonlRunDataSource';
+import type { CreateEvalCompletionsRunDataSource } from './createEvalCompletionsRunDataSource';
+import type { CreateEvalResponsesRunDataSource } from './createEvalResponsesRunDataSource';
 
 /**
  * Details about the run's data source.
  */
-export type CreateEvalRunRequestDataSource =
-  | CreateEvalJsonlRunDataSource
-  | CreateEvalCompletionsRunDataSource
-  | CreateEvalResponsesRunDataSource
+export type CreateEvalRunRequestDataSource = CreateEvalJsonlRunDataSource | CreateEvalCompletionsRunDataSource | CreateEvalResponsesRunDataSource;

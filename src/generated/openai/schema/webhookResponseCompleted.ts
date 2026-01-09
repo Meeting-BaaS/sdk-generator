@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookResponseCompletedData } from "./webhookResponseCompletedData"
-import type { WebhookResponseCompletedObject } from "./webhookResponseCompletedObject"
-import type { WebhookResponseCompletedType } from "./webhookResponseCompletedType"
+import type { WebhookResponseCompletedData } from './webhookResponseCompletedData';
+import type { WebhookResponseCompletedObject } from './webhookResponseCompletedObject';
+import type { WebhookResponseCompletedType } from './webhookResponseCompletedType';
 
 /**
  * Sent when a background response has been completed.
@@ -15,18 +15,18 @@ import type { WebhookResponseCompletedType } from "./webhookResponseCompletedTyp
  */
 export interface WebhookResponseCompleted {
   /** The Unix timestamp (in seconds) of when the model response was completed.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The unique ID of the event.
-   */
-  id: string
+ */
+  id: string;
   /** Event data payload.
-   */
-  data: WebhookResponseCompletedData
+ */
+  data: WebhookResponseCompletedData;
   /** The object of the event. Always `event`.
-   */
-  object?: WebhookResponseCompletedObject
+ */
+  object?: WebhookResponseCompletedObject;
   /** The type of the event. Always `response.completed`.
-   */
-  type: WebhookResponseCompletedType
+ */
+  type: WebhookResponseCompletedType;
 }

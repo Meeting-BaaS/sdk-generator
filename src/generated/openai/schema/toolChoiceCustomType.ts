@@ -9,9 +9,10 @@
 /**
  * For custom tool calling, the type is always `custom`.
  */
-export type ToolChoiceCustomType = (typeof ToolChoiceCustomType)[keyof typeof ToolChoiceCustomType]
+export type ToolChoiceCustomType = typeof ToolChoiceCustomType[keyof typeof ToolChoiceCustomType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ToolChoiceCustomType = {
-  custom: "custom"
-} as const
+  custom: 'custom',
+} as const;

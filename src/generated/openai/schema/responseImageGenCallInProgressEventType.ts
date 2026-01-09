@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.image_generation_call.in_progress'.
  */
-export type ResponseImageGenCallInProgressEventType =
-  (typeof ResponseImageGenCallInProgressEventType)[keyof typeof ResponseImageGenCallInProgressEventType]
+export type ResponseImageGenCallInProgressEventType = typeof ResponseImageGenCallInProgressEventType[keyof typeof ResponseImageGenCallInProgressEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseImageGenCallInProgressEventType = {
-  responseimage_generation_callin_progress: "response.image_generation_call.in_progress"
-} as const
+  responseimage_generation_callin_progress: 'response.image_generation_call.in_progress',
+} as const;

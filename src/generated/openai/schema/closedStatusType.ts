@@ -9,9 +9,10 @@
 /**
  * Status discriminator that is always `closed`.
  */
-export type ClosedStatusType = (typeof ClosedStatusType)[keyof typeof ClosedStatusType]
+export type ClosedStatusType = typeof ClosedStatusType[keyof typeof ClosedStatusType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ClosedStatusType = {
-  closed: "closed"
-} as const
+  closed: 'closed',
+} as const;

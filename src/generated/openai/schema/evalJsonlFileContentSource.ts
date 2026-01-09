@@ -5,13 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { EvalJsonlFileContentSourceContentItem } from "./evalJsonlFileContentSourceContentItem"
-import type { EvalJsonlFileContentSourceType } from "./evalJsonlFileContentSourceType"
+import type { EvalJsonlFileContentSourceType } from './evalJsonlFileContentSourceType';
+import type { EvalJsonlFileContentSourceContentItem } from './evalJsonlFileContentSourceContentItem';
 
 export interface EvalJsonlFileContentSource {
   /** The type of jsonl source. Always `file_content`. */
-  type: EvalJsonlFileContentSourceType
+  type: EvalJsonlFileContentSourceType;
   /** The content of the jsonl file. */
-  content: EvalJsonlFileContentSourceContentItem[]
+  content: EvalJsonlFileContentSourceContentItem[];
 }

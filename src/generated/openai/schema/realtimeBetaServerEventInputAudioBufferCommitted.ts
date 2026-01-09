@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaServerEventInputAudioBufferCommittedPreviousItemId } from "./realtimeBetaServerEventInputAudioBufferCommittedPreviousItemId"
+import type { RealtimeBetaServerEventInputAudioBufferCommittedPreviousItemId } from './realtimeBetaServerEventInputAudioBufferCommittedPreviousItemId';
 
 /**
  * Returned when an input audio buffer is committed, either by the client or
@@ -16,10 +16,10 @@ will also be sent to the client.
  */
 export interface RealtimeBetaServerEventInputAudioBufferCommitted {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `input_audio_buffer.committed`. */
-  type: "input_audio_buffer.committed"
-  previous_item_id?: RealtimeBetaServerEventInputAudioBufferCommittedPreviousItemId
+  type: 'input_audio_buffer.committed';
+  previous_item_id?: RealtimeBetaServerEventInputAudioBufferCommittedPreviousItemId;
   /** The ID of the user message item that will be created. */
-  item_id: string
+  item_id: string;
 }

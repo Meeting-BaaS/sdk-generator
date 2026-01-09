@@ -8,7 +8,7 @@
 
 export interface UploadCertificateRequest {
   /** An optional name for the certificate */
-  name?: string
+  name?: string;
   /** The certificate content in PEM format */
-  content: string
+  content: string;
 }

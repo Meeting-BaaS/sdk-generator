@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type LocalShellToolCallOutputStatus = "in_progress" | "completed" | "incomplete" | null
+export type LocalShellToolCallOutputStatus = 'in_progress' | 'completed' | 'incomplete' | null;

@@ -11,4 +11,4 @@
 Learn how to build JSON schemas [here](https://json-schema.org/).
 
  */
-export type EvalCustomDataSourceConfigSchema = { [key: string]: unknown }
+export type EvalCustomDataSourceConfigSchema = { [key: string]: unknown };

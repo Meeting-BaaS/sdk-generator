@@ -11,5 +11,5 @@ export interface ToggleCertificatesRequest {
    * @minItems 1
    * @maxItems 10
    */
-  certificate_ids: string[]
+  certificate_ids: string[];
 }

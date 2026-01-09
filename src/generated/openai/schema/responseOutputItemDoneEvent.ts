@@ -5,24 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { OutputItem } from "./outputItem"
-import type { ResponseOutputItemDoneEventType } from "./responseOutputItemDoneEventType"
+import type { ResponseOutputItemDoneEventType } from './responseOutputItemDoneEventType';
+import type { OutputItem } from './outputItem';
 
 /**
  * Emitted when an output item is marked done.
  */
 export interface ResponseOutputItemDoneEvent {
   /** The type of the event. Always `response.output_item.done`.
-   */
-  type: ResponseOutputItemDoneEventType
+ */
+  type: ResponseOutputItemDoneEventType;
   /** The index of the output item that was marked done.
-   */
-  output_index: number
+ */
+  output_index: number;
   /** The sequence number of this event.
-   */
-  sequence_number: number
+ */
+  sequence_number: number;
   /** The output item that was marked done.
-   */
-  item: OutputItem
+ */
+  item: OutputItem;
 }

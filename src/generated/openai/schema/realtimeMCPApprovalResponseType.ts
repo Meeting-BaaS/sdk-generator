@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `mcp_approval_response`.
  */
-export type RealtimeMCPApprovalResponseType =
-  (typeof RealtimeMCPApprovalResponseType)[keyof typeof RealtimeMCPApprovalResponseType]
+export type RealtimeMCPApprovalResponseType = typeof RealtimeMCPApprovalResponseType[keyof typeof RealtimeMCPApprovalResponseType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeMCPApprovalResponseType = {
-  mcp_approval_response: "mcp_approval_response"
-} as const
+  mcp_approval_response: 'mcp_approval_response',
+} as const;

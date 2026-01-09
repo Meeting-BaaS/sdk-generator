@@ -9,9 +9,10 @@
 /**
  * Must be set to `server_vad` to enable manual chunking using server side VAD.
  */
-export type VadConfigType = (typeof VadConfigType)[keyof typeof VadConfigType]
+export type VadConfigType = typeof VadConfigType[keyof typeof VadConfigType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VadConfigType = {
-  server_vad: "server_vad"
-} as const
+  server_vad: 'server_vad',
+} as const;

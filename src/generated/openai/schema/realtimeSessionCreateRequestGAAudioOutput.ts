@@ -5,19 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
-import type { VoiceIdsShared } from "./voiceIdsShared"
+import type { RealtimeAudioFormats } from './realtimeAudioFormats';
+import type { VoiceIdsShared } from './voiceIdsShared';
 
 export type RealtimeSessionCreateRequestGAAudioOutput = {
   /** The format of the output audio. */
-  format?: RealtimeAudioFormats
+  format?: RealtimeAudioFormats;
   /** The voice the model uses to respond. Voice cannot be changed during the
 session once the model has responded with audio at least once. Current
 voice options are `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`,
 `shimmer`, `verse`, `marin`, and `cedar`. We recommend `marin` and `cedar` for
 best quality.
  */
-  voice?: VoiceIdsShared
+  voice?: VoiceIdsShared;
   /**
    * The speed of the model's spoken response as a multiple of the original speed.
 1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed. This value can only be changed in between model turns, not while a response is in progress.
@@ -28,5 +28,5 @@ also possible to prompt the model to speak faster or slower.
    * @minimum 0.25
    * @maximum 1.5
    */
-  speed?: number
-}
+  speed?: number;
+};

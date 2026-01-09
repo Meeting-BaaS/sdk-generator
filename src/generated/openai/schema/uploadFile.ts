@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { OpenAIFile } from "./openAIFile"
-import type { UploadFileAllOf } from "./uploadFileAllOf"
+import type { OpenAIFile } from './openAIFile';
+import type { UploadFileAllOf } from './uploadFileAllOf';
 
-export type UploadFile = OpenAIFile & UploadFileAllOf
+export type UploadFile = OpenAIFile & UploadFileAllOf;

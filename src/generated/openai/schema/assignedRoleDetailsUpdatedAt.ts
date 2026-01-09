@@ -9,4 +9,4 @@
 /**
  * When the role was last updated.
  */
-export type AssignedRoleDetailsUpdatedAt = number | null
+export type AssignedRoleDetailsUpdatedAt = number | null;

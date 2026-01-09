@@ -5,556 +5,200 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import { z as zod } from "zod"
+import {
+  z as zod
+} from 'zod';
 
 /**
  * Generates audio from the input text.
  * @summary Create speech
  */
-export const createSpeechBodyInputMax = 4096
-export const createSpeechBodyInstructionsMax = 4096
-export const createSpeechBodyResponseFormatDefault = "mp3"
-export const createSpeechBodySpeedDefault = 1
-export const createSpeechBodySpeedMin = 0.25
+export const createSpeechBodyInputMax = 4096;
+export const createSpeechBodyInstructionsMax = 4096;
+export const createSpeechBodyResponseFormatDefault = "mp3";export const createSpeechBodySpeedDefault = 1;
+export const createSpeechBodySpeedMin = 0.25;
 
-export const createSpeechBodySpeedMax = 4
-export const createSpeechBodyStreamFormatDefault = "audio"
+export const createSpeechBodySpeedMax = 4;
+export const createSpeechBodyStreamFormatDefault = "audio";
 
 export const createSpeechBody = zod.object({
-  model: zod
-    .string()
-    .or(zod.enum(["tts-1", "tts-1-hd", "gpt-4o-mini-tts"]))
-    .describe(
-      "One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.\n"
-    ),
-  input: zod
-    .string()
-    .max(createSpeechBodyInputMax)
-    .describe("The text to generate audio for. The maximum length is 4096 characters."),
-  instructions: zod
-    .string()
-    .max(createSpeechBodyInstructionsMax)
-    .optional()
-    .describe(
-      "Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`."
-    ),
-  voice: zod
-    .string()
-    .or(
-      zod.enum([
-        "alloy",
-        "ash",
-        "ballad",
-        "coral",
-        "echo",
-        "sage",
-        "shimmer",
-        "verse",
-        "marin",
-        "cedar"
-      ])
-    ),
-  response_format: zod
-    .enum(["mp3", "opus", "aac", "flac", "wav", "pcm"])
-    .default(createSpeechBodyResponseFormatDefault)
-    .describe(
-      "The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`."
-    ),
-  speed: zod
-    .number()
-    .min(createSpeechBodySpeedMin)
-    .max(createSpeechBodySpeedMax)
-    .default(createSpeechBodySpeedDefault)
-    .describe(
-      "The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is the default."
-    ),
-  stream_format: zod
-    .enum(["sse", "audio"])
-    .default(createSpeechBodyStreamFormatDefault)
-    .describe(
-      "The format to stream the audio in. Supported formats are `sse` and `audio`. `sse` is not supported for `tts-1` or `tts-1-hd`."
-    )
+  "model": zod.string().or(zod.enum(['tts-1', 'tts-1-hd', 'gpt-4o-mini-tts'])).describe('One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.\n'),
+  "input": zod.string().max(createSpeechBodyInputMax).describe('The text to generate audio for. The maximum length is 4096 characters.'),
+  "instructions": zod.string().max(createSpeechBodyInstructionsMax).optional().describe('Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.'),
+  "voice": zod.string().or(zod.enum(['alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar'])),
+  "response_format": zod.enum(['mp3', 'opus', 'aac', 'flac', 'wav', 'pcm']).default(createSpeechBodyResponseFormatDefault).describe('The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`.'),
+  "speed": zod.number().min(createSpeechBodySpeedMin).max(createSpeechBodySpeedMax).default(createSpeechBodySpeedDefault).describe('The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is the default.'),
+  "stream_format": zod.enum(['sse', 'audio']).default(createSpeechBodyStreamFormatDefault).describe('The format to stream the audio in. Supported formats are `sse` and `audio`. `sse` is not supported for `tts-1` or `tts-1-hd`.')
 })
+
 
 /**
  * Transcribes audio into the input language.
  * @summary Create transcription
  */
-export const createTranscriptionBodyResponseFormatDefault = "json"
-export const createTranscriptionBodyTemperatureDefault = 0
-export const createTranscriptionBodyTimestampGranularitiesDefault: ("word" | "segment")[] = [
-  "segment"
-]
-export const createTranscriptionBodyStreamDefaultOne = false
-export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto"
-export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault = 300
-export const createTranscriptionBodyChunkingStrategySilenceDurationMsDefault = 200
-export const createTranscriptionBodyChunkingStrategyThresholdDefault = 0.5
-export const createTranscriptionBodyKnownSpeakerNamesMax = 4
-export const createTranscriptionBodyKnownSpeakerReferencesMax = 4
+export const createTranscriptionBodyResponseFormatDefault: ('json' | 'text' | 'srt' | 'verbose_json' | 'vtt' | 'diarized_json')[] = "json";export const createTranscriptionBodyTemperatureDefault = 0;export const createTranscriptionBodyTimestampGranularitiesDefault: ('word' | 'segment')[] = ["segment"];export const createTranscriptionBodyStreamDefaultOne = false;export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto";export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault: ('server_vad')[] = 300;export const createTranscriptionBodyChunkingStrategySilenceDurationMsDefault = 200;export const createTranscriptionBodyChunkingStrategyThresholdDefault = 0.5;export const createTranscriptionBodyKnownSpeakerNamesMax = 4;
+export const createTranscriptionBodyKnownSpeakerReferencesMax = 4;
+
 
 export const createTranscriptionBody = zod.object({
-  file: zod
-    .instanceof(File)
-    .describe(
-      "The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n"
-    ),
-  model: zod
-    .string()
-    .or(
-      zod.enum([
-        "whisper-1",
-        "gpt-4o-transcribe",
-        "gpt-4o-mini-transcribe",
-        "gpt-4o-transcribe-diarize"
-      ])
-    )
-    .describe(
-      "ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.\n"
-    ),
-  language: zod
-    .string()
-    .optional()
-    .describe(
-      "The language of the input audio. Supplying the input language in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format will improve accuracy and latency.\n"
-    ),
-  prompt: zod
-    .string()
-    .optional()
-    .describe(
-      "An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n"
-    ),
-  response_format: zod
-    .enum(["json", "text", "srt", "verbose_json", "vtt", "diarized_json"])
-    .default(createTranscriptionBodyResponseFormatDefault)
-    .describe(
-      "The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`, or `diarized_json`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`, the only supported format is `json`. For `gpt-4o-transcribe-diarize`, the supported formats are `json`, `text`, and `diarized_json`, with `diarized_json` required to receive speaker annotations.\n"
-    ),
-  temperature: zod
-    .number()
-    .optional()
-    .describe(
-      "The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n"
-    ),
-  include: zod
-    .array(zod.enum(["logprobs"]))
-    .optional()
-    .describe(
-      "Additional information to include in the transcription response.\n`logprobs` will return the log probabilities of the tokens in the\nresponse to understand the model's confidence in the transcription.\n`logprobs` only works with response_format set to `json` and only with\nthe models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`. This field is not supported when using `gpt-4o-transcribe-diarize`.\n"
-    ),
-  timestamp_granularities: zod
-    .array(zod.enum(["word", "segment"]))
-    .default(createTranscriptionBodyTimestampGranularitiesDefault)
-    .describe(
-      "The timestamp granularities to populate for this transcription. `response_format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`. Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.\nThis option is not available for `gpt-4o-transcribe-diarize`.\n"
-    ),
-  stream: zod
-    .boolean()
-    .describe(
-      "If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section of the Speech-to-Text guide](https://platform.openai.com/docs/guides/speech-to-text?lang=curl#streaming-transcriptions)\nfor more information.\n\nNote: Streaming is not supported for the `whisper-1` model and will be ignored.\n"
-    )
-    .or(zod.null())
-    .optional(),
-  chunking_strategy: zod
-    .enum(["auto"])
-    .describe(
-      'Automatically set chunking parameters based on the audio. Must be set to `\"auto\"`.\n'
-    )
-    .or(
-      zod.object({
-        type: zod
-          .enum(["server_vad"])
-          .describe("Must be set to `server_vad` to enable manual chunking using server side VAD."),
-        prefix_padding_ms: zod
-          .number()
-          .default(createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault)
-          .describe(
-            "Amount of audio to include before the VAD detected speech (in \nmilliseconds).\n"
-          ),
-        silence_duration_ms: zod
-          .number()
-          .default(createTranscriptionBodyChunkingStrategySilenceDurationMsDefault)
-          .describe(
-            "Duration of silence to detect speech stop (in milliseconds).\nWith shorter values the model will respond more quickly, \nbut may jump in on short pauses from the user.\n"
-          ),
-        threshold: zod
-          .number()
-          .default(createTranscriptionBodyChunkingStrategyThresholdDefault)
-          .describe(
-            "Sensitivity threshold (0.0 to 1.0) for voice activity detection. A \nhigher threshold will require louder audio to activate the model, and \nthus might perform better in noisy environments.\n"
-          )
-      })
-    )
-    .describe(
-      'Controls how the audio is cut into chunks. When set to `\"auto\"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. '
-    )
-    .or(zod.null())
-    .optional(),
-  known_speaker_names: zod
-    .array(zod.string())
-    .max(createTranscriptionBodyKnownSpeakerNamesMax)
-    .optional()
-    .describe(
-      "Optional list of speaker names that correspond to the audio samples provided in `known_speaker_references[]`. Each entry should be a short identifier (for example `customer` or `agent`). Up to 4 speakers are supported.\n"
-    ),
-  known_speaker_references: zod
-    .array(zod.string())
-    .max(createTranscriptionBodyKnownSpeakerReferencesMax)
-    .optional()
-    .describe(
-      "Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs)) that contain known speaker references matching `known_speaker_names[]`. Each sample must be between 2 and 10 seconds, and can use any of the same input audio formats supported by `file`.\n"
-    )
+  "file": zod.instanceof(File).describe('The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n'),
+  "model": zod.string().or(zod.enum(['whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-transcribe-diarize'])).describe('ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.\n'),
+  "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format will improve accuracy and latency.\n'),
+  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio segment. The [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n'),
+  "response_format": zod.enum(['json', 'text', 'srt', 'verbose_json', 'vtt', 'diarized_json']).default(createTranscriptionBodyResponseFormatDefault).describe('The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`, or `diarized_json`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`, the only supported format is `json`. For `gpt-4o-transcribe-diarize`, the supported formats are `json`, `text`, and `diarized_json`, with `diarized_json` required to receive speaker annotations.\n'),
+  "temperature": zod.number().optional().describe('The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n'),
+  "include": zod.array(zod.enum(['logprobs'])).optional().describe('Additional information to include in the transcription response.\n`logprobs` will return the log probabilities of the tokens in the\nresponse to understand the model\'s confidence in the transcription.\n`logprobs` only works with response_format set to `json` and only with\nthe models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`. This field is not supported when using `gpt-4o-transcribe-diarize`.\n'),
+  "timestamp_granularities": zod.array(zod.enum(['word', 'segment'])).default(createTranscriptionBodyTimestampGranularitiesDefault).describe('The timestamp granularities to populate for this transcription. `response_format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`. Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.\nThis option is not available for `gpt-4o-transcribe-diarize`.\n'),
+  "stream": zod.boolean().describe('If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section of the Speech-to-Text guide](https://platform.openai.com/docs/guides/speech-to-text?lang=curl#streaming-transcriptions)\nfor more information.\n\nNote: Streaming is not supported for the `whisper-1` model and will be ignored.\n').or(zod.null()).optional(),
+  "chunking_strategy": zod.enum(['auto']).describe('Automatically set chunking parameters based on the audio. Must be set to `\"auto\"`.\n').or(zod.object({
+  "type": zod.enum(['server_vad']).describe('Must be set to `server_vad` to enable manual chunking using server side VAD.'),
+  "prefix_padding_ms": zod.number().default(createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault).describe('Amount of audio to include before the VAD detected speech (in \nmilliseconds).\n'),
+  "silence_duration_ms": zod.number().default(createTranscriptionBodyChunkingStrategySilenceDurationMsDefault).describe('Duration of silence to detect speech stop (in milliseconds).\nWith shorter values the model will respond more quickly, \nbut may jump in on short pauses from the user.\n'),
+  "threshold": zod.number().default(createTranscriptionBodyChunkingStrategyThresholdDefault).describe('Sensitivity threshold (0.0 to 1.0) for voice activity detection. A \nhigher threshold will require louder audio to activate the model, and \nthus might perform better in noisy environments.\n')
+})).describe('Controls how the audio is cut into chunks. When set to `\"auto\"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. ').or(zod.null()).optional(),
+  "known_speaker_names": zod.array(zod.string()).max(createTranscriptionBodyKnownSpeakerNamesMax).optional().describe('Optional list of speaker names that correspond to the audio samples provided in `known_speaker_references[]`. Each entry should be a short identifier (for example `customer` or `agent`). Up to 4 speakers are supported.\n'),
+  "known_speaker_references": zod.array(zod.string()).max(createTranscriptionBodyKnownSpeakerReferencesMax).optional().describe('Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs)) that contain known speaker references matching `known_speaker_names[]`. Each sample must be between 2 and 10 seconds, and can use any of the same input audio formats supported by `file`.\n')
 })
 
-export const createTranscriptionResponse = zod.union([
-  zod
-    .object({
-      text: zod.string().describe("The transcribed text."),
-      logprobs: zod
-        .array(
-          zod.object({
-            token: zod.string().optional().describe("The token in the transcription."),
-            logprob: zod.number().optional().describe("The log probability of the token."),
-            bytes: zod.array(zod.number()).optional().describe("The bytes of the token.")
-          })
-        )
-        .optional()
-        .describe(
-          "The log probabilities of the tokens in the transcription. Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added to the `include` array.\n"
-        ),
-      usage: zod
-        .discriminatedUnion("type", [
-          zod
-            .object({
-              type: zod
-                .enum(["tokens"])
-                .describe("The type of the usage object. Always `tokens` for this variant."),
-              input_tokens: zod
-                .number()
-                .describe("Number of input tokens billed for this request."),
-              input_token_details: zod
-                .object({
-                  text_tokens: zod
-                    .number()
-                    .optional()
-                    .describe("Number of text tokens billed for this request."),
-                  audio_tokens: zod
-                    .number()
-                    .optional()
-                    .describe("Number of audio tokens billed for this request.")
-                })
-                .optional()
-                .describe("Details about the input tokens billed for this request."),
-              output_tokens: zod.number().describe("Number of output tokens generated."),
-              total_tokens: zod.number().describe("Total number of tokens used (input + output).")
-            })
-            .describe("Usage statistics for models billed by token usage."),
-          zod
-            .object({
-              type: zod
-                .enum(["duration"])
-                .describe("The type of the usage object. Always `duration` for this variant."),
-              seconds: zod.number().describe("Duration of the input audio in seconds.")
-            })
-            .describe("Usage statistics for models billed by audio input duration.")
-        ])
-        .optional()
-        .describe("Token usage statistics for the request.")
-    })
-    .describe(
-      "Represents a transcription response returned by model, based on the provided input."
-    ),
-  zod
-    .object({
-      task: zod
-        .enum(["transcribe"])
-        .describe("The type of task that was run. Always `transcribe`."),
-      duration: zod.number().describe("Duration of the input audio in seconds."),
-      text: zod.string().describe("The concatenated transcript text for the entire audio input."),
-      segments: zod
-        .array(
-          zod
-            .object({
-              type: zod
-                .enum(["transcript.text.segment"])
-                .describe("The type of the segment. Always `transcript.text.segment`.\n"),
-              id: zod.string().describe("Unique identifier for the segment."),
-              start: zod.number().describe("Start timestamp of the segment in seconds."),
-              end: zod.number().describe("End timestamp of the segment in seconds."),
-              text: zod.string().describe("Transcript text for this segment."),
-              speaker: zod
-                .string()
-                .describe(
-                  "Speaker label for this segment. When known speakers are provided, the label matches `known_speaker_names[]`. Otherwise speakers are labeled sequentially using capital letters (`A`, `B`, ...).\n"
-                )
-            })
-            .describe("A segment of diarized transcript text with speaker metadata.")
-        )
-        .describe("Segments of the transcript annotated with timestamps and speaker labels."),
-      usage: zod
-        .discriminatedUnion("type", [
-          zod
-            .object({
-              type: zod
-                .enum(["tokens"])
-                .describe("The type of the usage object. Always `tokens` for this variant."),
-              input_tokens: zod
-                .number()
-                .describe("Number of input tokens billed for this request."),
-              input_token_details: zod
-                .object({
-                  text_tokens: zod
-                    .number()
-                    .optional()
-                    .describe("Number of text tokens billed for this request."),
-                  audio_tokens: zod
-                    .number()
-                    .optional()
-                    .describe("Number of audio tokens billed for this request.")
-                })
-                .optional()
-                .describe("Details about the input tokens billed for this request."),
-              output_tokens: zod.number().describe("Number of output tokens generated."),
-              total_tokens: zod.number().describe("Total number of tokens used (input + output).")
-            })
-            .describe("Usage statistics for models billed by token usage."),
-          zod
-            .object({
-              type: zod
-                .enum(["duration"])
-                .describe("The type of the usage object. Always `duration` for this variant."),
-              seconds: zod.number().describe("Duration of the input audio in seconds.")
-            })
-            .describe("Usage statistics for models billed by audio input duration.")
-        ])
-        .optional()
-        .describe("Token or duration usage statistics for the request.")
-    })
-    .describe(
-      "Represents a diarized transcription response returned by the model, including the combined transcript and speaker-segment annotations.\n"
-    ),
-  zod
-    .object({
-      language: zod.string().describe("The language of the input audio."),
-      duration: zod.number().describe("The duration of the input audio."),
-      text: zod.string().describe("The transcribed text."),
-      words: zod
-        .array(
-          zod.object({
-            word: zod.string().describe("The text content of the word."),
-            start: zod.number().describe("Start time of the word in seconds."),
-            end: zod.number().describe("End time of the word in seconds.")
-          })
-        )
-        .optional()
-        .describe("Extracted words and their corresponding timestamps."),
-      segments: zod
-        .array(
-          zod.object({
-            id: zod.number().describe("Unique identifier of the segment."),
-            seek: zod.number().describe("Seek offset of the segment."),
-            start: zod.number().describe("Start time of the segment in seconds."),
-            end: zod.number().describe("End time of the segment in seconds."),
-            text: zod.string().describe("Text content of the segment."),
-            tokens: zod.array(zod.number()).describe("Array of token IDs for the text content."),
-            temperature: zod
-              .number()
-              .describe("Temperature parameter used for generating the segment."),
-            avg_logprob: zod
-              .number()
-              .describe(
-                "Average logprob of the segment. If the value is lower than -1, consider the logprobs failed."
-              ),
-            compression_ratio: zod
-              .number()
-              .describe(
-                "Compression ratio of the segment. If the value is greater than 2.4, consider the compression failed."
-              ),
-            no_speech_prob: zod
-              .number()
-              .describe(
-                "Probability of no speech in the segment. If the value is higher than 1.0 and the `avg_logprob` is below -1, consider this segment silent."
-              )
-          })
-        )
-        .optional()
-        .describe("Segments of the transcribed text and their corresponding details."),
-      usage: zod
-        .object({
-          type: zod
-            .enum(["duration"])
-            .describe("The type of the usage object. Always `duration` for this variant."),
-          seconds: zod.number().describe("Duration of the input audio in seconds.")
-        })
-        .optional()
-        .describe("Usage statistics for models billed by audio input duration.")
-    })
-    .describe(
-      "Represents a verbose json transcription response returned by model, based on the provided input."
-    )
-])
+export const createTranscriptionResponse = zod.discriminatedUnion('task', [zod.object({
+  "text": zod.string().describe('The transcribed text.'),
+  "logprobs": zod.array(zod.object({
+  "token": zod.string().optional().describe('The token in the transcription.'),
+  "logprob": zod.number().optional().describe('The log probability of the token.'),
+  "bytes": zod.array(zod.number()).optional().describe('The bytes of the token.')
+})).optional().describe('The log probabilities of the tokens in the transcription. Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added to the `include` array.\n'),
+  "usage": zod.discriminatedUnion('type', [zod.object({
+  "type": zod.enum(['tokens']).describe('The type of the usage object. Always `tokens` for this variant.'),
+  "input_tokens": zod.number().describe('Number of input tokens billed for this request.'),
+  "input_token_details": zod.object({
+  "text_tokens": zod.number().optional().describe('Number of text tokens billed for this request.'),
+  "audio_tokens": zod.number().optional().describe('Number of audio tokens billed for this request.')
+}).optional().describe('Details about the input tokens billed for this request.'),
+  "output_tokens": zod.number().describe('Number of output tokens generated.'),
+  "total_tokens": zod.number().describe('Total number of tokens used (input + output).')
+}).describe('Usage statistics for models billed by token usage.'),zod.object({
+  "type": zod.enum(['duration']).describe('The type of the usage object. Always `duration` for this variant.'),
+  "seconds": zod.number().describe('Duration of the input audio in seconds.')
+}).describe('Usage statistics for models billed by audio input duration.')]).optional().describe('Token usage statistics for the request.')
+}).describe('Represents a transcription response returned by model, based on the provided input.'),zod.object({
+  "task": zod.enum(['transcribe']).describe('The type of task that was run. Always `transcribe`.'),
+  "duration": zod.number().describe('Duration of the input audio in seconds.'),
+  "text": zod.string().describe('The concatenated transcript text for the entire audio input.'),
+  "segments": zod.array(zod.object({
+  "type": zod.enum(['transcript.text.segment']).describe('The type of the segment. Always `transcript.text.segment`.\n'),
+  "id": zod.string().describe('Unique identifier for the segment.'),
+  "start": zod.number().describe('Start timestamp of the segment in seconds.'),
+  "end": zod.number().describe('End timestamp of the segment in seconds.'),
+  "text": zod.string().describe('Transcript text for this segment.'),
+  "speaker": zod.string().describe('Speaker label for this segment. When known speakers are provided, the label matches `known_speaker_names[]`. Otherwise speakers are labeled sequentially using capital letters (`A`, `B`, ...).\n')
+}).describe('A segment of diarized transcript text with speaker metadata.')).describe('Segments of the transcript annotated with timestamps and speaker labels.'),
+  "usage": zod.discriminatedUnion('type', [zod.object({
+  "type": zod.enum(['tokens']).describe('The type of the usage object. Always `tokens` for this variant.'),
+  "input_tokens": zod.number().describe('Number of input tokens billed for this request.'),
+  "input_token_details": zod.object({
+  "text_tokens": zod.number().optional().describe('Number of text tokens billed for this request.'),
+  "audio_tokens": zod.number().optional().describe('Number of audio tokens billed for this request.')
+}).optional().describe('Details about the input tokens billed for this request.'),
+  "output_tokens": zod.number().describe('Number of output tokens generated.'),
+  "total_tokens": zod.number().describe('Total number of tokens used (input + output).')
+}).describe('Usage statistics for models billed by token usage.'),zod.object({
+  "type": zod.enum(['duration']).describe('The type of the usage object. Always `duration` for this variant.'),
+  "seconds": zod.number().describe('Duration of the input audio in seconds.')
+}).describe('Usage statistics for models billed by audio input duration.')]).optional().describe('Token or duration usage statistics for the request.')
+}).describe('Represents a diarized transcription response returned by the model, including the combined transcript and speaker-segment annotations.\n'),zod.object({
+  "language": zod.string().describe('The language of the input audio.'),
+  "duration": zod.number().describe('The duration of the input audio.'),
+  "text": zod.string().describe('The transcribed text.'),
+  "words": zod.array(zod.object({
+  "word": zod.string().describe('The text content of the word.'),
+  "start": zod.number().describe('Start time of the word in seconds.'),
+  "end": zod.number().describe('End time of the word in seconds.')
+})).optional().describe('Extracted words and their corresponding timestamps.'),
+  "segments": zod.array(zod.object({
+  "id": zod.number().describe('Unique identifier of the segment.'),
+  "seek": zod.number().describe('Seek offset of the segment.'),
+  "start": zod.number().describe('Start time of the segment in seconds.'),
+  "end": zod.number().describe('End time of the segment in seconds.'),
+  "text": zod.string().describe('Text content of the segment.'),
+  "tokens": zod.array(zod.number()).describe('Array of token IDs for the text content.'),
+  "temperature": zod.number().describe('Temperature parameter used for generating the segment.'),
+  "avg_logprob": zod.number().describe('Average logprob of the segment. If the value is lower than -1, consider the logprobs failed.'),
+  "compression_ratio": zod.number().describe('Compression ratio of the segment. If the value is greater than 2.4, consider the compression failed.'),
+  "no_speech_prob": zod.number().describe('Probability of no speech in the segment. If the value is higher than 1.0 and the `avg_logprob` is below -1, consider this segment silent.')
+})).optional().describe('Segments of the transcribed text and their corresponding details.'),
+  "usage": zod.object({
+  "type": zod.enum(['duration']).describe('The type of the usage object. Always `duration` for this variant.'),
+  "seconds": zod.number().describe('Duration of the input audio in seconds.')
+}).optional().describe('Usage statistics for models billed by audio input duration.')
+}).describe('Represents a verbose json transcription response returned by model, based on the provided input.')])
+
 
 /**
  * Translates audio into English.
  * @summary Create translation
  */
-export const createTranslationBodyResponseFormatDefault = "json"
-export const createTranslationBodyTemperatureDefault = 0
+export const createTranslationBodyResponseFormatDefault = "json";export const createTranslationBodyTemperatureDefault = 0;
 
 export const createTranslationBody = zod.object({
-  file: zod
-    .instanceof(File)
-    .describe(
-      "The audio file object (not file name) translate, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n"
-    ),
-  model: zod
-    .string()
-    .or(zod.enum(["whisper-1"]))
-    .describe(
-      "ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.\n"
-    ),
-  prompt: zod
-    .string()
-    .optional()
-    .describe(
-      "An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting) should be in English.\n"
-    ),
-  response_format: zod
-    .enum(["json", "text", "srt", "verbose_json", "vtt"])
-    .default(createTranslationBodyResponseFormatDefault)
-    .describe(
-      "The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.\n"
-    ),
-  temperature: zod
-    .number()
-    .optional()
-    .describe(
-      "The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n"
-    )
+  "file": zod.instanceof(File).describe('The audio file object (not file name) translate, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n'),
+  "model": zod.string().or(zod.enum(['whisper-1'])).describe('ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.\n'),
+  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio segment. The [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting) should be in English.\n'),
+  "response_format": zod.enum(['json', 'text', 'srt', 'verbose_json', 'vtt']).default(createTranslationBodyResponseFormatDefault).describe('The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.\n'),
+  "temperature": zod.number().optional().describe('The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n')
 })
 
-export const createTranslationResponse = zod
-  .object({
-    text: zod.string()
-  })
-  .or(
-    zod.object({
-      language: zod.string().describe("The language of the output translation (always `english`)."),
-      duration: zod.number().describe("The duration of the input audio."),
-      text: zod.string().describe("The translated text."),
-      segments: zod
-        .array(
-          zod.object({
-            id: zod.number().describe("Unique identifier of the segment."),
-            seek: zod.number().describe("Seek offset of the segment."),
-            start: zod.number().describe("Start time of the segment in seconds."),
-            end: zod.number().describe("End time of the segment in seconds."),
-            text: zod.string().describe("Text content of the segment."),
-            tokens: zod.array(zod.number()).describe("Array of token IDs for the text content."),
-            temperature: zod
-              .number()
-              .describe("Temperature parameter used for generating the segment."),
-            avg_logprob: zod
-              .number()
-              .describe(
-                "Average logprob of the segment. If the value is lower than -1, consider the logprobs failed."
-              ),
-            compression_ratio: zod
-              .number()
-              .describe(
-                "Compression ratio of the segment. If the value is greater than 2.4, consider the compression failed."
-              ),
-            no_speech_prob: zod
-              .number()
-              .describe(
-                "Probability of no speech in the segment. If the value is higher than 1.0 and the `avg_logprob` is below -1, consider this segment silent."
-              )
-          })
-        )
-        .optional()
-        .describe("Segments of the translated text and their corresponding details.")
-    })
-  )
+export const createTranslationResponse = zod.object({
+  "text": zod.string()
+}).or(zod.object({
+  "language": zod.string().describe('The language of the output translation (always `english`).'),
+  "duration": zod.number().describe('The duration of the input audio.'),
+  "text": zod.string().describe('The translated text.'),
+  "segments": zod.array(zod.object({
+  "id": zod.number().describe('Unique identifier of the segment.'),
+  "seek": zod.number().describe('Seek offset of the segment.'),
+  "start": zod.number().describe('Start time of the segment in seconds.'),
+  "end": zod.number().describe('End time of the segment in seconds.'),
+  "text": zod.string().describe('Text content of the segment.'),
+  "tokens": zod.array(zod.number()).describe('Array of token IDs for the text content.'),
+  "temperature": zod.number().describe('Temperature parameter used for generating the segment.'),
+  "avg_logprob": zod.number().describe('Average logprob of the segment. If the value is lower than -1, consider the logprobs failed.'),
+  "compression_ratio": zod.number().describe('Compression ratio of the segment. If the value is greater than 2.4, consider the compression failed.'),
+  "no_speech_prob": zod.number().describe('Probability of no speech in the segment. If the value is higher than 1.0 and the `avg_logprob` is below -1, consider this segment silent.')
+})).optional().describe('Segments of the translated text and their corresponding details.')
+}))
+
 
 /**
  * Returns a list of files.
  * @summary List files
  */
-export const listFilesQueryLimitDefault = 10000
-export const listFilesQueryOrderDefault = "desc"
+export const listFilesQueryLimitDefault = 10000;export const listFilesQueryOrderDefault = "desc";
 
 export const listFilesQueryParams = zod.object({
-  purpose: zod.string().optional().describe("Only return files with the given purpose."),
-  limit: zod
-    .number()
-    .default(listFilesQueryLimitDefault)
-    .describe(
-      "A limit on the number of objects to be returned. Limit can range between 1 and 10,000, and the default is 10,000.\n"
-    ),
-  order: zod
-    .enum(["asc", "desc"])
-    .default(listFilesQueryOrderDefault)
-    .describe(
-      "Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.\n"
-    ),
-  after: zod
-    .string()
-    .optional()
-    .describe(
-      "A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.\n"
-    )
+  "purpose": zod.string().optional().describe('Only return files with the given purpose.'),
+  "limit": zod.number().default(listFilesQueryLimitDefault).describe('A limit on the number of objects to be returned. Limit can range between 1 and 10,000, and the default is 10,000.\n'),
+  "order": zod.enum(['asc', 'desc']).default(listFilesQueryOrderDefault).describe('Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and `desc` for descending order.\n'),
+  "after": zod.string().optional().describe('A cursor for use in pagination. `after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.\n')
 })
 
 export const listFilesResponse = zod.object({
-  object: zod.string(),
-  data: zod.array(
-    zod
-      .object({
-        id: zod
-          .string()
-          .describe("The file identifier, which can be referenced in the API endpoints."),
-        bytes: zod.number().describe("The size of the file, in bytes."),
-        created_at: zod
-          .number()
-          .describe("The Unix timestamp (in seconds) for when the file was created."),
-        expires_at: zod
-          .number()
-          .optional()
-          .describe("The Unix timestamp (in seconds) for when the file will expire."),
-        filename: zod.string().describe("The name of the file."),
-        object: zod.enum(["file"]).describe("The object type, which is always `file`."),
-        purpose: zod
-          .enum([
-            "assistants",
-            "assistants_output",
-            "batch",
-            "batch_output",
-            "fine-tune",
-            "fine-tune-results",
-            "vision",
-            "user_data"
-          ])
-          .describe(
-            "The intended purpose of the file. Supported values are `assistants`, `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`, `vision`, and `user_data`."
-          ),
-        status: zod
-          .enum(["uploaded", "processed", "error"])
-          .describe(
-            "Deprecated. The current status of the file, which can be either `uploaded`, `processed`, or `error`."
-          ),
-        status_details: zod
-          .string()
-          .optional()
-          .describe(
-            "Deprecated. For details on why a fine-tuning training file failed validation, see the `error` field on `fine_tuning.job`."
-          )
-      })
-      .describe("The `File` object represents a document that has been uploaded to OpenAI.")
-  ),
-  first_id: zod.string(),
-  last_id: zod.string(),
-  has_more: zod.boolean()
+  "object": zod.string(),
+  "data": zod.array(zod.object({
+  "id": zod.string().describe('The file identifier, which can be referenced in the API endpoints.'),
+  "bytes": zod.number().describe('The size of the file, in bytes.'),
+  "created_at": zod.number().describe('The Unix timestamp (in seconds) for when the file was created.'),
+  "expires_at": zod.number().optional().describe('The Unix timestamp (in seconds) for when the file will expire.'),
+  "filename": zod.string().describe('The name of the file.'),
+  "object": zod.enum(['file']).describe('The object type, which is always `file`.'),
+  "purpose": zod.enum(['assistants', 'assistants_output', 'batch', 'batch_output', 'fine-tune', 'fine-tune-results', 'vision', 'user_data']).describe('The intended purpose of the file. Supported values are `assistants`, `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`, `vision`, and `user_data`.'),
+  "status": zod.enum(['uploaded', 'processed', 'error']).describe('Deprecated. The current status of the file, which can be either `uploaded`, `processed`, or `error`.'),
+  "status_details": zod.string().optional().describe('Deprecated. For details on why a fine-tuning training file failed validation, see the `error` field on `fine_tuning.job`.')
+}).describe('The `File` object represents a document that has been uploaded to OpenAI.')),
+  "first_id": zod.string(),
+  "last_id": zod.string(),
+  "has_more": zod.boolean()
 })
+
 
 /**
  * Upload a file that can be used across various endpoints. Individual files
@@ -577,203 +221,121 @@ storage limits.
 
  * @summary Upload file
  */
-export const createFileBodyExpiresAfterSecondsMin = 3600
+export const createFileBodyExpiresAfterSecondsMin = 3600;
 
-export const createFileBodyExpiresAfterSecondsMax = 2592000
+export const createFileBodyExpiresAfterSecondsMax = 2592000;
+
 
 export const createFileBody = zod.object({
-  file: zod.instanceof(File).describe("The File object (not file name) to be uploaded.\n"),
-  purpose: zod
-    .enum(["assistants", "batch", "fine-tune", "vision", "user_data", "evals"])
-    .describe(
-      "The intended purpose of the uploaded file. One of: - `assistants`: Used in the Assistants API - `batch`: Used in the Batch API - `fine-tune`: Used for fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`: Flexible file type for any purpose - `evals`: Used for eval data sets\n"
-    ),
-  expires_after: zod
-    .object({
-      anchor: zod
-        .enum(["created_at"])
-        .describe(
-          "Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`."
-        ),
-      seconds: zod
-        .number()
-        .min(createFileBodyExpiresAfterSecondsMin)
-        .max(createFileBodyExpiresAfterSecondsMax)
-        .describe(
-          "The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days)."
-        )
-    })
-    .optional()
-    .describe(
-      "The expiration policy for a file. By default, files with `purpose=batch` expire after 30 days and all other files are persisted until they are manually deleted."
-    )
+  "file": zod.instanceof(File).describe('The File object (not file name) to be uploaded.\n'),
+  "purpose": zod.enum(['assistants', 'batch', 'fine-tune', 'vision', 'user_data', 'evals']).describe('The intended purpose of the uploaded file. One of: - `assistants`: Used in the Assistants API - `batch`: Used in the Batch API - `fine-tune`: Used for fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`: Flexible file type for any purpose - `evals`: Used for eval data sets\n'),
+  "expires_after": zod.object({
+  "anchor": zod.enum(['created_at']).describe('Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.'),
+  "seconds": zod.number().min(createFileBodyExpiresAfterSecondsMin).max(createFileBodyExpiresAfterSecondsMax).describe('The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).')
+}).optional().describe('The expiration policy for a file. By default, files with `purpose=batch` expire after 30 days and all other files are persisted until they are manually deleted.')
 })
 
-export const createFileResponse = zod
-  .object({
-    id: zod.string().describe("The file identifier, which can be referenced in the API endpoints."),
-    bytes: zod.number().describe("The size of the file, in bytes."),
-    created_at: zod
-      .number()
-      .describe("The Unix timestamp (in seconds) for when the file was created."),
-    expires_at: zod
-      .number()
-      .optional()
-      .describe("The Unix timestamp (in seconds) for when the file will expire."),
-    filename: zod.string().describe("The name of the file."),
-    object: zod.enum(["file"]).describe("The object type, which is always `file`."),
-    purpose: zod
-      .enum([
-        "assistants",
-        "assistants_output",
-        "batch",
-        "batch_output",
-        "fine-tune",
-        "fine-tune-results",
-        "vision",
-        "user_data"
-      ])
-      .describe(
-        "The intended purpose of the file. Supported values are `assistants`, `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`, `vision`, and `user_data`."
-      ),
-    status: zod
-      .enum(["uploaded", "processed", "error"])
-      .describe(
-        "Deprecated. The current status of the file, which can be either `uploaded`, `processed`, or `error`."
-      ),
-    status_details: zod
-      .string()
-      .optional()
-      .describe(
-        "Deprecated. For details on why a fine-tuning training file failed validation, see the `error` field on `fine_tuning.job`."
-      )
-  })
-  .describe("The `File` object represents a document that has been uploaded to OpenAI.")
+export const createFileResponse = zod.object({
+  "id": zod.string().describe('The file identifier, which can be referenced in the API endpoints.'),
+  "bytes": zod.number().describe('The size of the file, in bytes.'),
+  "created_at": zod.number().describe('The Unix timestamp (in seconds) for when the file was created.'),
+  "expires_at": zod.number().optional().describe('The Unix timestamp (in seconds) for when the file will expire.'),
+  "filename": zod.string().describe('The name of the file.'),
+  "object": zod.enum(['file']).describe('The object type, which is always `file`.'),
+  "purpose": zod.enum(['assistants', 'assistants_output', 'batch', 'batch_output', 'fine-tune', 'fine-tune-results', 'vision', 'user_data']).describe('The intended purpose of the file. Supported values are `assistants`, `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`, `vision`, and `user_data`.'),
+  "status": zod.enum(['uploaded', 'processed', 'error']).describe('Deprecated. The current status of the file, which can be either `uploaded`, `processed`, or `error`.'),
+  "status_details": zod.string().optional().describe('Deprecated. For details on why a fine-tuning training file failed validation, see the `error` field on `fine_tuning.job`.')
+}).describe('The `File` object represents a document that has been uploaded to OpenAI.')
+
 
 /**
  * Delete a file and remove it from all vector stores.
  * @summary Delete file
  */
 export const deleteFileParams = zod.object({
-  file_id: zod.string().describe("The ID of the file to use for this request.")
+  "file_id": zod.string().describe('The ID of the file to use for this request.')
 })
 
 export const deleteFileResponse = zod.object({
-  id: zod.string(),
-  object: zod.enum(["file"]),
-  deleted: zod.boolean()
+  "id": zod.string(),
+  "object": zod.enum(['file']),
+  "deleted": zod.boolean()
 })
+
 
 /**
  * Returns information about a specific file.
  * @summary Retrieve file
  */
 export const retrieveFileParams = zod.object({
-  file_id: zod.string().describe("The ID of the file to use for this request.")
+  "file_id": zod.string().describe('The ID of the file to use for this request.')
 })
 
-export const retrieveFileResponse = zod
-  .object({
-    id: zod.string().describe("The file identifier, which can be referenced in the API endpoints."),
-    bytes: zod.number().describe("The size of the file, in bytes."),
-    created_at: zod
-      .number()
-      .describe("The Unix timestamp (in seconds) for when the file was created."),
-    expires_at: zod
-      .number()
-      .optional()
-      .describe("The Unix timestamp (in seconds) for when the file will expire."),
-    filename: zod.string().describe("The name of the file."),
-    object: zod.enum(["file"]).describe("The object type, which is always `file`."),
-    purpose: zod
-      .enum([
-        "assistants",
-        "assistants_output",
-        "batch",
-        "batch_output",
-        "fine-tune",
-        "fine-tune-results",
-        "vision",
-        "user_data"
-      ])
-      .describe(
-        "The intended purpose of the file. Supported values are `assistants`, `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`, `vision`, and `user_data`."
-      ),
-    status: zod
-      .enum(["uploaded", "processed", "error"])
-      .describe(
-        "Deprecated. The current status of the file, which can be either `uploaded`, `processed`, or `error`."
-      ),
-    status_details: zod
-      .string()
-      .optional()
-      .describe(
-        "Deprecated. For details on why a fine-tuning training file failed validation, see the `error` field on `fine_tuning.job`."
-      )
-  })
-  .describe("The `File` object represents a document that has been uploaded to OpenAI.")
+export const retrieveFileResponse = zod.object({
+  "id": zod.string().describe('The file identifier, which can be referenced in the API endpoints.'),
+  "bytes": zod.number().describe('The size of the file, in bytes.'),
+  "created_at": zod.number().describe('The Unix timestamp (in seconds) for when the file was created.'),
+  "expires_at": zod.number().optional().describe('The Unix timestamp (in seconds) for when the file will expire.'),
+  "filename": zod.string().describe('The name of the file.'),
+  "object": zod.enum(['file']).describe('The object type, which is always `file`.'),
+  "purpose": zod.enum(['assistants', 'assistants_output', 'batch', 'batch_output', 'fine-tune', 'fine-tune-results', 'vision', 'user_data']).describe('The intended purpose of the file. Supported values are `assistants`, `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`, `vision`, and `user_data`.'),
+  "status": zod.enum(['uploaded', 'processed', 'error']).describe('Deprecated. The current status of the file, which can be either `uploaded`, `processed`, or `error`.'),
+  "status_details": zod.string().optional().describe('Deprecated. For details on why a fine-tuning training file failed validation, see the `error` field on `fine_tuning.job`.')
+}).describe('The `File` object represents a document that has been uploaded to OpenAI.')
+
 
 /**
  * Returns the contents of the specified file.
  * @summary Retrieve file content
  */
 export const downloadFileParams = zod.object({
-  file_id: zod.string().describe("The ID of the file to use for this request.")
+  "file_id": zod.string().describe('The ID of the file to use for this request.')
 })
 
 export const downloadFileResponse = zod.string()
+
 
 /**
  * Lists the currently available models, and provides basic information about each one such as the owner and availability.
  * @summary List models
  */
 export const listModelsResponse = zod.object({
-  object: zod.enum(["list"]),
-  data: zod.array(
-    zod
-      .object({
-        id: zod
-          .string()
-          .describe("The model identifier, which can be referenced in the API endpoints."),
-        created: zod
-          .number()
-          .describe("The Unix timestamp (in seconds) when the model was created."),
-        object: zod.enum(["model"]).describe('The object type, which is always \"model\".'),
-        owned_by: zod.string().describe("The organization that owns the model.")
-      })
-      .describe("Describes an OpenAI model offering that can be used with the API.")
-  )
+  "object": zod.enum(['list']),
+  "data": zod.array(zod.object({
+  "id": zod.string().describe('The model identifier, which can be referenced in the API endpoints.'),
+  "created": zod.number().describe('The Unix timestamp (in seconds) when the model was created.'),
+  "object": zod.enum(['model']).describe('The object type, which is always \"model\".'),
+  "owned_by": zod.string().describe('The organization that owns the model.')
+}).describe('Describes an OpenAI model offering that can be used with the API.'))
 })
+
 
 /**
  * Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
  * @summary Retrieve model
  */
 export const retrieveModelParams = zod.object({
-  model: zod.string().describe("The ID of the model to use for this request")
+  "model": zod.string().describe('The ID of the model to use for this request')
 })
 
-export const retrieveModelResponse = zod
-  .object({
-    id: zod
-      .string()
-      .describe("The model identifier, which can be referenced in the API endpoints."),
-    created: zod.number().describe("The Unix timestamp (in seconds) when the model was created."),
-    object: zod.enum(["model"]).describe('The object type, which is always \"model\".'),
-    owned_by: zod.string().describe("The organization that owns the model.")
-  })
-  .describe("Describes an OpenAI model offering that can be used with the API.")
+export const retrieveModelResponse = zod.object({
+  "id": zod.string().describe('The model identifier, which can be referenced in the API endpoints.'),
+  "created": zod.number().describe('The Unix timestamp (in seconds) when the model was created.'),
+  "object": zod.enum(['model']).describe('The object type, which is always \"model\".'),
+  "owned_by": zod.string().describe('The organization that owns the model.')
+}).describe('Describes an OpenAI model offering that can be used with the API.')
+
 
 /**
  * Delete a fine-tuned model. You must have the Owner role in your organization to delete a model.
  * @summary Delete a fine-tuned model
  */
 export const deleteModelParams = zod.object({
-  model: zod.string().describe("The model to delete")
+  "model": zod.string().describe('The model to delete')
 })
 
 export const deleteModelResponse = zod.object({
-  id: zod.string(),
-  deleted: zod.boolean(),
-  object: zod.string()
+  "id": zod.string(),
+  "deleted": zod.boolean(),
+  "object": zod.string()
 })

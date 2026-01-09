@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectUserCreateRequestRole } from "./projectUserCreateRequestRole"
+import type { ProjectUserCreateRequestRole } from './projectUserCreateRequestRole';
 
 export interface ProjectUserCreateRequest {
   /** The ID of the user. */
-  user_id: string
+  user_id: string;
   /** `owner` or `member` */
-  role: ProjectUserCreateRequestRole
+  role: ProjectUserCreateRequestRole;
 }

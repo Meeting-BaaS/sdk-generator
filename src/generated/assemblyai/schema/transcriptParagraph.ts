@@ -5,21 +5,21 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptWord } from "./transcriptWord"
+import type { TranscriptWord } from './transcriptWord';
 
 export interface TranscriptParagraph {
   /** The transcript of the paragraph */
-  text: string
+  text: string;
   /** The starting time, in milliseconds, of the paragraph */
-  start: number
+  start: number;
   /** The ending time, in milliseconds, of the paragraph */
-  end: number
+  end: number;
   /**
    * The confidence score for the transcript of this paragraph
    * @minimum 0
    * @maximum 1
    */
-  confidence: number
+  confidence: number;
   /** An array of words in the paragraph */
-  words: TranscriptWord[]
+  words: TranscriptWord[];
 }

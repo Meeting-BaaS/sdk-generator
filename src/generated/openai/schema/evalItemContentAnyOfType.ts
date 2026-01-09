@@ -10,10 +10,10 @@
  * The type of the output text. Always `output_text`.
 
  */
-export type EvalItemContentAnyOfType =
-  (typeof EvalItemContentAnyOfType)[keyof typeof EvalItemContentAnyOfType]
+export type EvalItemContentAnyOfType = typeof EvalItemContentAnyOfType[keyof typeof EvalItemContentAnyOfType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalItemContentAnyOfType = {
-  output_text: "output_text"
-} as const
+  output_text: 'output_text',
+} as const;

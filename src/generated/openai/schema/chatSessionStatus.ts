@@ -6,11 +6,12 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ChatSessionStatus = (typeof ChatSessionStatus)[keyof typeof ChatSessionStatus]
+export type ChatSessionStatus = typeof ChatSessionStatus[keyof typeof ChatSessionStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatSessionStatus = {
-  active: "active",
-  expired: "expired",
-  cancelled: "cancelled"
-} as const
+  active: 'active',
+  expired: 'expired',
+  cancelled: 'cancelled',
+} as const;

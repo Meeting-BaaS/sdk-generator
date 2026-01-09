@@ -8,19 +8,19 @@
 
 export type DatasetsUploadBody = {
   /** The optional string representation of the url of a project. If set, the dataset will be associated with that project. */
-  project?: string
+  project?: string;
   /** The name of this dataset (required). */
-  displayName: string
+  displayName: string;
   /** Optional description of this dataset. */
-  description?: string
+  description?: string;
   /** The locale of this dataset (required). */
-  locale: string
+  locale: string;
   /** The kind of the dataset (required). Possible values are "Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown". */
-  kind: string
+  kind: string;
   /** The optional custom properties of this entity. The maximum allowed key length is 64 characters, the maximum allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: string
+  customProperties?: string;
   /** For acoustic datasets, a zip file containing the audio data and a text file containing the transcriptions for the audio data. For language datasets, a text file containing the language or pronunciation data. Required in both cases. */
-  data?: Blob
+  data?: Blob;
   /** An optional string containing the email address to send email notifications to in case the operation completes. The value will be removed after successfully sending the email. */
-  email?: string
-}
+  email?: string;
+};

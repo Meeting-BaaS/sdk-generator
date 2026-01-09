@@ -8,7 +8,7 @@
 
 export type CreateEvalResponsesRunDataSourceInputMessagesAnyOfTemplateItemAnyOf = {
   /** The role of the message (e.g. "system", "assistant", "user"). */
-  role: string
+  role: string;
   /** The content of the message. */
-  content: string
-}
+  content: string;
+};

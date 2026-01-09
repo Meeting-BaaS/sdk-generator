@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListProjectPurchasesV1ResponseOrdersItem } from "./listProjectPurchasesV1ResponseOrdersItem"
+import type { ListProjectPurchasesV1ResponseOrdersItem } from './listProjectPurchasesV1ResponseOrdersItem';
 
 export interface ListProjectPurchasesV1Response {
-  orders?: ListProjectPurchasesV1ResponseOrdersItem[]
+  orders?: ListProjectPurchasesV1ResponseOrdersItem[];
 }

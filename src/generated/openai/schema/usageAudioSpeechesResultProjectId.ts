@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageAudioSpeechesResultProjectId = string | null
+export type UsageAudioSpeechesResultProjectId = string | null;

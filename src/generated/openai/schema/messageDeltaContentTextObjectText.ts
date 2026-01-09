@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TextAnnotationDelta } from "./textAnnotationDelta"
+import type { TextAnnotationDelta } from './textAnnotationDelta';
 
 export type MessageDeltaContentTextObjectText = {
   /** The data that makes up the text. */
-  value?: string
-  annotations?: TextAnnotationDelta[]
-}
+  value?: string;
+  annotations?: TextAnnotationDelta[];
+};

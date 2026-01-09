@@ -9,10 +9,10 @@
 /**
  * The type of grader.
  */
-export type GraderTextSimilarityType =
-  (typeof GraderTextSimilarityType)[keyof typeof GraderTextSimilarityType]
+export type GraderTextSimilarityType = typeof GraderTextSimilarityType[keyof typeof GraderTextSimilarityType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderTextSimilarityType = {
-  text_similarity: "text_similarity"
-} as const
+  text_similarity: 'text_similarity',
+} as const;

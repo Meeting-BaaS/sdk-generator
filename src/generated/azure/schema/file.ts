@@ -5,20 +5,20 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { FileKind } from "./fileKind"
-import type { FileLinks } from "./fileLinks"
-import type { FileProperties } from "./fileProperties"
+import type { FileKind } from './fileKind';
+import type { FileLinks } from './fileLinks';
+import type { FileProperties } from './fileProperties';
 
 export interface File {
-  kind?: FileKind
-  links?: FileLinks
+  kind?: FileKind;
+  links?: FileLinks;
   /** The creation time of this file.
 The time stamp is encoded as ISO 8601 date and time format
 (see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly createdDateTime?: string
-  properties?: FileProperties
+  readonly createdDateTime?: string;
+  properties?: FileProperties;
   /** The name of this file. */
-  readonly name?: string
+  readonly name?: string;
   /** The location of this entity. */
-  readonly self?: string
+  readonly self?: string;
 }

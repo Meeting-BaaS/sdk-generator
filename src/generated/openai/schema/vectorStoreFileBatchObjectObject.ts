@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `vector_store.file_batch`.
  */
-export type VectorStoreFileBatchObjectObject =
-  (typeof VectorStoreFileBatchObjectObject)[keyof typeof VectorStoreFileBatchObjectObject]
+export type VectorStoreFileBatchObjectObject = typeof VectorStoreFileBatchObjectObject[keyof typeof VectorStoreFileBatchObjectObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreFileBatchObjectObject = {
-  vector_storefiles_batch: "vector_store.files_batch"
-} as const
+  vector_storefiles_batch: 'vector_store.files_batch',
+} as const;

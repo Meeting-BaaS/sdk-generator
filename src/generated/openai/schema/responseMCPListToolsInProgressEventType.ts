@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_list_tools.in_progress'.
  */
-export type ResponseMCPListToolsInProgressEventType =
-  (typeof ResponseMCPListToolsInProgressEventType)[keyof typeof ResponseMCPListToolsInProgressEventType]
+export type ResponseMCPListToolsInProgressEventType = typeof ResponseMCPListToolsInProgressEventType[keyof typeof ResponseMCPListToolsInProgressEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPListToolsInProgressEventType = {
-  responsemcp_list_toolsin_progress: "response.mcp_list_tools.in_progress"
-} as const
+  responsemcp_list_toolsin_progress: 'response.mcp_list_tools.in_progress',
+} as const;

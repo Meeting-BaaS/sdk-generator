@@ -8,7 +8,7 @@
 
 export interface WebHookLinks {
   /** The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation "WebHooks_Ping" for more details. */
-  readonly ping?: string
+  readonly ping?: string;
   /** The URL that can be used sending test events to the registered URL of a web hook registration. See operation "WebHooks_Test" for more details. */
-  readonly test?: string
+  readonly test?: string;
 }

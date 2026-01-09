@@ -4,12 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { AudioChunkActionData } from "./audioChunkActionData"
-import type { AudioChunkActionType } from "./audioChunkActionType"
+import type { AudioChunkActionType } from './audioChunkActionType';
+import type { AudioChunkActionData } from './audioChunkActionData';
 
 export interface AudioChunkAction {
-  type: AudioChunkActionType
+  type: AudioChunkActionType;
   /** Payload of the audio chunk action */
-  data: AudioChunkActionData
+  data: AudioChunkActionData;
 }

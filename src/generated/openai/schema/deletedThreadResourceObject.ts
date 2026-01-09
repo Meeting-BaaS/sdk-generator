@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.thread.deleted`.
  */
-export type DeletedThreadResourceObject =
-  (typeof DeletedThreadResourceObject)[keyof typeof DeletedThreadResourceObject]
+export type DeletedThreadResourceObject = typeof DeletedThreadResourceObject[keyof typeof DeletedThreadResourceObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeletedThreadResourceObject = {
-  chatkitthreaddeleted: "chatkit.thread.deleted"
-} as const
+  chatkitthreaddeleted: 'chatkit.thread.deleted',
+} as const;

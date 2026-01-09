@@ -9,4 +9,4 @@
 /**
  * The json schema for each row in the data source.
  */
-export type CreateEvalCustomDataSourceConfigItemSchema = { [key: string]: unknown }
+export type CreateEvalCustomDataSourceConfigItemSchema = { [key: string]: unknown };

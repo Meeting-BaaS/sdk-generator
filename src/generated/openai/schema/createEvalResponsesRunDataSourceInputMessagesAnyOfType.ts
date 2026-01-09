@@ -9,10 +9,10 @@
 /**
  * The type of input messages. Always `template`.
  */
-export type CreateEvalResponsesRunDataSourceInputMessagesAnyOfType =
-  (typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfType)[keyof typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfType]
+export type CreateEvalResponsesRunDataSourceInputMessagesAnyOfType = typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfType[keyof typeof CreateEvalResponsesRunDataSourceInputMessagesAnyOfType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEvalResponsesRunDataSourceInputMessagesAnyOfType = {
-  template: "template"
-} as const
+  template: 'template',
+} as const;

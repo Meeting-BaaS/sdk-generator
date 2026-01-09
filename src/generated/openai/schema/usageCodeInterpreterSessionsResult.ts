@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageCodeInterpreterSessionsResultObject } from "./usageCodeInterpreterSessionsResultObject"
-import type { UsageCodeInterpreterSessionsResultProjectId } from "./usageCodeInterpreterSessionsResultProjectId"
+import type { UsageCodeInterpreterSessionsResultObject } from './usageCodeInterpreterSessionsResultObject';
+import type { UsageCodeInterpreterSessionsResultProjectId } from './usageCodeInterpreterSessionsResultProjectId';
 
 /**
  * The aggregated code interpreter sessions usage details of the specific time bucket.
  */
 export interface UsageCodeInterpreterSessionsResult {
-  object: UsageCodeInterpreterSessionsResultObject
+  object: UsageCodeInterpreterSessionsResultObject;
   /** The number of code interpreter sessions. */
-  num_sessions?: number
-  project_id?: UsageCodeInterpreterSessionsResultProjectId
+  num_sessions?: number;
+  project_id?: UsageCodeInterpreterSessionsResultProjectId;
 }

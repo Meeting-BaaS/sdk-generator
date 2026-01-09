@@ -9,10 +9,10 @@
 /**
  * The type of response format being defined. Always `json_object`.
  */
-export type ResponseFormatJsonObjectType =
-  (typeof ResponseFormatJsonObjectType)[keyof typeof ResponseFormatJsonObjectType]
+export type ResponseFormatJsonObjectType = typeof ResponseFormatJsonObjectType[keyof typeof ResponseFormatJsonObjectType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFormatJsonObjectType = {
-  json_object: "json_object"
-} as const
+  json_object: 'json_object',
+} as const;

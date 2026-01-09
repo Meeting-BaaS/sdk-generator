@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RunStepDetailsToolCallsFunctionObjectFunction } from "./runStepDetailsToolCallsFunctionObjectFunction"
-import type { RunStepDetailsToolCallsFunctionObjectType } from "./runStepDetailsToolCallsFunctionObjectType"
+import type { RunStepDetailsToolCallsFunctionObjectType } from './runStepDetailsToolCallsFunctionObjectType';
+import type { RunStepDetailsToolCallsFunctionObjectFunction } from './runStepDetailsToolCallsFunctionObjectFunction';
 
 export interface RunStepDetailsToolCallsFunctionObject {
   /** The ID of the tool call object. */
-  id: string
+  id: string;
   /** The type of tool call. This is always going to be `function` for this type of tool call. */
-  type: RunStepDetailsToolCallsFunctionObjectType
+  type: RunStepDetailsToolCallsFunctionObjectType;
   /** The definition of the function that was called. */
-  function: RunStepDetailsToolCallsFunctionObjectFunction
+  function: RunStepDetailsToolCallsFunctionObjectFunction;
 }

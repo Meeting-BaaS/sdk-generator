@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningJobCheckpoint } from "./fineTuningJobCheckpoint"
-import type { ListFineTuningJobCheckpointsResponseFirstId } from "./listFineTuningJobCheckpointsResponseFirstId"
-import type { ListFineTuningJobCheckpointsResponseLastId } from "./listFineTuningJobCheckpointsResponseLastId"
-import type { ListFineTuningJobCheckpointsResponseObject } from "./listFineTuningJobCheckpointsResponseObject"
+import type { FineTuningJobCheckpoint } from './fineTuningJobCheckpoint';
+import type { ListFineTuningJobCheckpointsResponseObject } from './listFineTuningJobCheckpointsResponseObject';
+import type { ListFineTuningJobCheckpointsResponseFirstId } from './listFineTuningJobCheckpointsResponseFirstId';
+import type { ListFineTuningJobCheckpointsResponseLastId } from './listFineTuningJobCheckpointsResponseLastId';
 
 export interface ListFineTuningJobCheckpointsResponse {
-  data: FineTuningJobCheckpoint[]
-  object: ListFineTuningJobCheckpointsResponseObject
-  first_id?: ListFineTuningJobCheckpointsResponseFirstId
-  last_id?: ListFineTuningJobCheckpointsResponseLastId
-  has_more: boolean
+  data: FineTuningJobCheckpoint[];
+  object: ListFineTuningJobCheckpointsResponseObject;
+  first_id?: ListFineTuningJobCheckpointsResponseFirstId;
+  last_id?: ListFineTuningJobCheckpointsResponseLastId;
+  has_more: boolean;
 }

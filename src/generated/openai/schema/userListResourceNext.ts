@@ -9,4 +9,4 @@
 /**
  * Cursor to fetch the next page of results, or `null` when no further users are available.
  */
-export type UserListResourceNext = string | null
+export type UserListResourceNext = string | null;

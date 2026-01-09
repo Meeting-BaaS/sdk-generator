@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTurnDetectionAnyOf } from "./realtimeTurnDetectionAnyOf"
+import type { RealtimeTurnDetectionAnyOf } from './realtimeTurnDetectionAnyOf';
 
-export type RealtimeTurnDetection = RealtimeTurnDetectionAnyOf | null
+export type RealtimeTurnDetection = RealtimeTurnDetectionAnyOf | null;

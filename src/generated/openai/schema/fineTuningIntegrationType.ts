@@ -9,10 +9,10 @@
 /**
  * The type of the integration being enabled for the fine-tuning job
  */
-export type FineTuningIntegrationType =
-  (typeof FineTuningIntegrationType)[keyof typeof FineTuningIntegrationType]
+export type FineTuningIntegrationType = typeof FineTuningIntegrationType[keyof typeof FineTuningIntegrationType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuningIntegrationType = {
-  wandb: "wandb"
-} as const
+  wandb: 'wandb',
+} as const;

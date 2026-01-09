@@ -12,5 +12,5 @@ export type AssistantObjectToolResourcesAnyOfCodeInterpreter = {
 
    * @maxItems 20
    */
-  file_ids?: string[]
-}
+  file_ids?: string[];
+};

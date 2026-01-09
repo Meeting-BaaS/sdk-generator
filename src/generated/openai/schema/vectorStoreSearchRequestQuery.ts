@@ -9,4 +9,4 @@
 /**
  * A query string for a search
  */
-export type VectorStoreSearchRequestQuery = string | string[]
+export type VectorStoreSearchRequestQuery = string | string[];

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchToolFiltersAnyOfAllowedDomains } from "./webSearchToolFiltersAnyOfAllowedDomains"
+import type { WebSearchToolFiltersAnyOfAllowedDomains } from './webSearchToolFiltersAnyOfAllowedDomains';
 
 /**
  * Filters for the search.
 
  */
 export type WebSearchToolFiltersAnyOf = {
-  allowed_domains?: WebSearchToolFiltersAnyOfAllowedDomains
-}
+  allowed_domains?: WebSearchToolFiltersAnyOfAllowedDomains;
+};

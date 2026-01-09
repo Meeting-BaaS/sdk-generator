@@ -5,18 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { SearchContextSize } from "./searchContextSize"
-import type { WebSearchPreviewToolType } from "./webSearchPreviewToolType"
-import type { WebSearchPreviewToolUserLocation } from "./webSearchPreviewToolUserLocation"
+import type { WebSearchPreviewToolType } from './webSearchPreviewToolType';
+import type { WebSearchPreviewToolUserLocation } from './webSearchPreviewToolUserLocation';
+import type { SearchContextSize } from './searchContextSize';
 
 /**
  * This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
  */
 export interface WebSearchPreviewTool {
   /** The type of the web search tool. One of `web_search_preview` or `web_search_preview_2025_03_11`. */
-  type: WebSearchPreviewToolType
-  user_location?: WebSearchPreviewToolUserLocation
+  type: WebSearchPreviewToolType;
+  user_location?: WebSearchPreviewToolUserLocation;
   /** High level guidance for the amount of context window space to use for the search. One of `low`, `medium`, or `high`. `medium` is the default. */
-  search_context_size?: SearchContextSize
+  search_context_size?: SearchContextSize;
 }

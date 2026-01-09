@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { GraderTextSimilarityEvaluationMetric } from "./graderTextSimilarityEvaluationMetric"
-import type { GraderTextSimilarityType } from "./graderTextSimilarityType"
+import type { GraderTextSimilarityType } from './graderTextSimilarityType';
+import type { GraderTextSimilarityEvaluationMetric } from './graderTextSimilarityEvaluationMetric';
 
 /**
  * A TextSimilarityGrader object which grades text based on similarity metrics.
@@ -15,16 +14,16 @@ import type { GraderTextSimilarityType } from "./graderTextSimilarityType"
  */
 export interface GraderTextSimilarity {
   /** The type of grader. */
-  type: GraderTextSimilarityType
+  type: GraderTextSimilarityType;
   /** The name of the grader. */
-  name: string
+  name: string;
   /** The text being graded. */
-  input: string
+  input: string;
   /** The text being graded against. */
-  reference: string
+  reference: string;
   /** The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, 
 `gleu`, `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, 
 or `rouge_l`.
  */
-  evaluation_metric: GraderTextSimilarityEvaluationMetric
+  evaluation_metric: GraderTextSimilarityEvaluationMetric;
 }

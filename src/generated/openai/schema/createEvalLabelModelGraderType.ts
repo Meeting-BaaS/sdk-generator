@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `label_model`.
  */
-export type CreateEvalLabelModelGraderType =
-  (typeof CreateEvalLabelModelGraderType)[keyof typeof CreateEvalLabelModelGraderType]
+export type CreateEvalLabelModelGraderType = typeof CreateEvalLabelModelGraderType[keyof typeof CreateEvalLabelModelGraderType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEvalLabelModelGraderType = {
-  label_model: "label_model"
-} as const
+  label_model: 'label_model',
+} as const;

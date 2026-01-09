@@ -8,7 +8,7 @@
 
 export interface DeleteCertificateResponse {
   /** The object type, must be `certificate.deleted`. */
-  object: "certificate.deleted"
+  object: 'certificate.deleted';
   /** The ID of the certificate that was deleted. */
-  id: string
+  id: string;
 }

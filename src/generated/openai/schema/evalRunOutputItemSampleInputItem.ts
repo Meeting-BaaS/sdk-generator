@@ -11,7 +11,7 @@
  */
 export type EvalRunOutputItemSampleInputItem = {
   /** The role of the message sender (e.g., system, user, developer). */
-  role: string
+  role: string;
   /** The content of the message. */
-  content: string
-}
+  content: string;
+};

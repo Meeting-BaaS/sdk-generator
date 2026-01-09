@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ContainerMemoryLimit } from "./containerMemoryLimit"
+import type { ContainerMemoryLimit } from './containerMemoryLimit';
 
-export type CodeInterpreterContainerAutoMemoryLimit = ContainerMemoryLimit | null
+export type CodeInterpreterContainerAutoMemoryLimit = ContainerMemoryLimit | null;

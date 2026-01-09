@@ -9,10 +9,10 @@
 /**
  * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
  */
-export type RealtimeConversationItemMessageSystemObject =
-  (typeof RealtimeConversationItemMessageSystemObject)[keyof typeof RealtimeConversationItemMessageSystemObject]
+export type RealtimeConversationItemMessageSystemObject = typeof RealtimeConversationItemMessageSystemObject[keyof typeof RealtimeConversationItemMessageSystemObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageSystemObject = {
-  realtimeitem: "realtime.item"
-} as const
+  realtimeitem: 'realtime.item',
+} as const;

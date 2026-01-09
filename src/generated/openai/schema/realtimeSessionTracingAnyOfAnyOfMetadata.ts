@@ -11,4 +11,4 @@
 filtering in the traces dashboard.
 
  */
-export type RealtimeSessionTracingAnyOfAnyOfMetadata = { [key: string]: unknown }
+export type RealtimeSessionTracingAnyOfAnyOfMetadata = { [key: string]: unknown };

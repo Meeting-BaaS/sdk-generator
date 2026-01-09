@@ -10,26 +10,27 @@
  * The error code for the response.
 
  */
-export type ResponseErrorCode = (typeof ResponseErrorCode)[keyof typeof ResponseErrorCode]
+export type ResponseErrorCode = typeof ResponseErrorCode[keyof typeof ResponseErrorCode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseErrorCode = {
-  server_error: "server_error",
-  rate_limit_exceeded: "rate_limit_exceeded",
-  invalid_prompt: "invalid_prompt",
-  vector_store_timeout: "vector_store_timeout",
-  invalid_image: "invalid_image",
-  invalid_image_format: "invalid_image_format",
-  invalid_base64_image: "invalid_base64_image",
-  invalid_image_url: "invalid_image_url",
-  image_too_large: "image_too_large",
-  image_too_small: "image_too_small",
-  image_parse_error: "image_parse_error",
-  image_content_policy_violation: "image_content_policy_violation",
-  invalid_image_mode: "invalid_image_mode",
-  image_file_too_large: "image_file_too_large",
-  unsupported_image_media_type: "unsupported_image_media_type",
-  empty_image_file: "empty_image_file",
-  failed_to_download_image: "failed_to_download_image",
-  image_file_not_found: "image_file_not_found"
-} as const
+  server_error: 'server_error',
+  rate_limit_exceeded: 'rate_limit_exceeded',
+  invalid_prompt: 'invalid_prompt',
+  vector_store_timeout: 'vector_store_timeout',
+  invalid_image: 'invalid_image',
+  invalid_image_format: 'invalid_image_format',
+  invalid_base64_image: 'invalid_base64_image',
+  invalid_image_url: 'invalid_image_url',
+  image_too_large: 'image_too_large',
+  image_too_small: 'image_too_small',
+  image_parse_error: 'image_parse_error',
+  image_content_policy_violation: 'image_content_policy_violation',
+  invalid_image_mode: 'invalid_image_mode',
+  image_file_too_large: 'image_file_too_large',
+  unsupported_image_media_type: 'unsupported_image_media_type',
+  empty_image_file: 'empty_image_file',
+  failed_to_download_image: 'failed_to_download_image',
+  image_file_not_found: 'image_file_not_found',
+} as const;

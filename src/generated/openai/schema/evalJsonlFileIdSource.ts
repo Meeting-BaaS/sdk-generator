@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalJsonlFileIdSourceType } from "./evalJsonlFileIdSourceType"
+import type { EvalJsonlFileIdSourceType } from './evalJsonlFileIdSourceType';
 
 export interface EvalJsonlFileIdSource {
   /** The type of jsonl source. Always `file_id`. */
-  type: EvalJsonlFileIdSourceType
+  type: EvalJsonlFileIdSourceType;
   /** The identifier of the file. */
-  id: string
+  id: string;
 }

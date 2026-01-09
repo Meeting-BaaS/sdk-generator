@@ -10,4 +10,4 @@
 /**
  * Filter for requests where replace was used
  */
-export type ManageV1FilterReplaceParameter = boolean
+export type ManageV1FilterReplaceParameter = boolean;

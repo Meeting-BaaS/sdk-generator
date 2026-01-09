@@ -10,11 +10,11 @@
  * The format of the encoded audio data. Currently supports "wav" and "mp3".
 
  */
-export type ChatCompletionRequestMessageContentPartAudioInputAudioFormat =
-  (typeof ChatCompletionRequestMessageContentPartAudioInputAudioFormat)[keyof typeof ChatCompletionRequestMessageContentPartAudioInputAudioFormat]
+export type ChatCompletionRequestMessageContentPartAudioInputAudioFormat = typeof ChatCompletionRequestMessageContentPartAudioInputAudioFormat[keyof typeof ChatCompletionRequestMessageContentPartAudioInputAudioFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestMessageContentPartAudioInputAudioFormat = {
-  wav: "wav",
-  mp3: "mp3"
-} as const
+  wav: 'wav',
+  mp3: 'mp3',
+} as const;

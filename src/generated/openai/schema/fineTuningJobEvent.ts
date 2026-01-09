@@ -5,28 +5,27 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { FineTuningJobEventData } from "./fineTuningJobEventData"
-import type { FineTuningJobEventLevel } from "./fineTuningJobEventLevel"
-import type { FineTuningJobEventObject } from "./fineTuningJobEventObject"
-import type { FineTuningJobEventType } from "./fineTuningJobEventType"
+import type { FineTuningJobEventObject } from './fineTuningJobEventObject';
+import type { FineTuningJobEventLevel } from './fineTuningJobEventLevel';
+import type { FineTuningJobEventType } from './fineTuningJobEventType';
+import type { FineTuningJobEventData } from './fineTuningJobEventData';
 
 /**
  * Fine-tuning job event object
  */
 export interface FineTuningJobEvent {
   /** The object type, which is always "fine_tuning.job.event". */
-  object: FineTuningJobEventObject
+  object: FineTuningJobEventObject;
   /** The object identifier. */
-  id: string
+  id: string;
   /** The Unix timestamp (in seconds) for when the fine-tuning job was created. */
-  created_at: number
+  created_at: number;
   /** The log level of the event. */
-  level: FineTuningJobEventLevel
+  level: FineTuningJobEventLevel;
   /** The message of the event. */
-  message: string
+  message: string;
   /** The type of event. */
-  type?: FineTuningJobEventType
+  type?: FineTuningJobEventType;
   /** The data associated with the event. */
-  data?: FineTuningJobEventData
+  data?: FineTuningJobEventData;
 }

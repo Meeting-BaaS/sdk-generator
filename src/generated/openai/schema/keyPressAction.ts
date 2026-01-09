@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { KeyPressActionType } from "./keyPressActionType"
+import type { KeyPressActionType } from './keyPressActionType';
 
 /**
  * A collection of keypresses the model would like to perform.
  */
 export interface KeyPressAction {
   /** Specifies the event type. For a keypress action, this property is always set to `keypress`. */
-  type: KeyPressActionType
+  type: KeyPressActionType;
   /** The combination of keys the model is requesting to be pressed. This is an array of strings, each representing a key. */
-  keys: string[]
+  keys: string[];
 }

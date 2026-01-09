@@ -5,21 +5,20 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-
-import type { WebHookEvents } from "./webHookEvents"
-import type { WebHookPropertiesUpdate } from "./webHookPropertiesUpdate"
-import type { WebHookUpdateCustomProperties } from "./webHookUpdateCustomProperties"
+import type { WebHookPropertiesUpdate } from './webHookPropertiesUpdate';
+import type { WebHookEvents } from './webHookEvents';
+import type { WebHookUpdateCustomProperties } from './webHookUpdateCustomProperties';
 
 export interface WebHookUpdate {
   /** The registered URL that will be used to send the POST requests for the registered events to. */
-  webUrl?: string
-  properties?: WebHookPropertiesUpdate
-  events?: WebHookEvents
+  webUrl?: string;
+  properties?: WebHookPropertiesUpdate;
+  events?: WebHookEvents;
   /** The name of the object. */
-  displayName?: string
+  displayName?: string;
   /** The description of the object. */
-  description?: string
+  description?: string;
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: WebHookUpdateCustomProperties
+  customProperties?: WebHookUpdateCustomProperties;
 }

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TextResponseFormatConfiguration } from "./textResponseFormatConfiguration"
+import type { TextResponseFormatConfiguration } from './textResponseFormatConfiguration';
 
 /**
  * Configuration options for a text response from the model. Can be plain
@@ -15,5 +15,5 @@ text or structured JSON data. Learn more:
 
  */
 export type CreateEvalResponsesRunDataSourceSamplingParamsText = {
-  format?: TextResponseFormatConfiguration
-}
+  format?: TextResponseFormatConfiguration;
+};

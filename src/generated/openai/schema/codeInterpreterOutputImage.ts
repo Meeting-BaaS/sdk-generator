@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterOutputImageType } from "./codeInterpreterOutputImageType"
+import type { CodeInterpreterOutputImageType } from './codeInterpreterOutputImageType';
 
 /**
  * The image output from the code interpreter.
  */
 export interface CodeInterpreterOutputImage {
   /** The type of the output. Always `image`. */
-  type: CodeInterpreterOutputImageType
+  type: CodeInterpreterOutputImageType;
   /** The URL of the image output from the code interpreter. */
-  url: string
+  url: string;
 }

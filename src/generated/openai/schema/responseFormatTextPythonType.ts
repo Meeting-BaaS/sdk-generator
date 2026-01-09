@@ -9,10 +9,10 @@
 /**
  * The type of response format being defined. Always `python`.
  */
-export type ResponseFormatTextPythonType =
-  (typeof ResponseFormatTextPythonType)[keyof typeof ResponseFormatTextPythonType]
+export type ResponseFormatTextPythonType = typeof ResponseFormatTextPythonType[keyof typeof ResponseFormatTextPythonType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFormatTextPythonType = {
-  python: "python"
-} as const
+  python: 'python',
+} as const;

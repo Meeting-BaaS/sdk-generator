@@ -14,4 +14,4 @@ with a maximum length of 64 characters. Values are strings with a maximum
 length of 512 characters, booleans, or numbers.
 
  */
-export type VectorStoreFileAttributesAnyOf = { [key: string]: string | number | boolean }
+export type VectorStoreFileAttributesAnyOf = {[key: string]: string | number | boolean};

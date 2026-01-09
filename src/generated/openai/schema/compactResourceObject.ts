@@ -9,10 +9,10 @@
 /**
  * The object type. Always `response.compaction`.
  */
-export type CompactResourceObject =
-  (typeof CompactResourceObject)[keyof typeof CompactResourceObject]
+export type CompactResourceObject = typeof CompactResourceObject[keyof typeof CompactResourceObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CompactResourceObject = {
-  responsecompaction: "response.compaction"
-} as const
+  responsecompaction: 'response.compaction',
+} as const;

@@ -5,60 +5,59 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { BatchErrors } from "./batchErrors"
-import type { BatchObject } from "./batchObject"
-import type { BatchRequestCounts } from "./batchRequestCounts"
-import type { BatchStatus } from "./batchStatus"
-import type { BatchUsage } from "./batchUsage"
-import type { Metadata } from "./metadata"
+import type { BatchObject } from './batchObject';
+import type { BatchErrors } from './batchErrors';
+import type { BatchStatus } from './batchStatus';
+import type { BatchRequestCounts } from './batchRequestCounts';
+import type { BatchUsage } from './batchUsage';
+import type { Metadata } from './metadata';
 
 export interface Batch {
-  id: string
+  id: string;
   /** The object type, which is always `batch`. */
-  object: BatchObject
+  object: BatchObject;
   /** The OpenAI API endpoint used by the batch. */
-  endpoint: string
+  endpoint: string;
   /** Model ID used to process the batch, like `gpt-5-2025-08-07`. OpenAI
 offers a wide range of models with different capabilities, performance
 characteristics, and price points. Refer to the [model
 guide](https://platform.openai.com/docs/models) to browse and compare available models.
  */
-  model?: string
-  errors?: BatchErrors
+  model?: string;
+  errors?: BatchErrors;
   /** The ID of the input file for the batch. */
-  input_file_id: string
+  input_file_id: string;
   /** The time frame within which the batch should be processed. */
-  completion_window: string
+  completion_window: string;
   /** The current status of the batch. */
-  status: BatchStatus
+  status: BatchStatus;
   /** The ID of the file containing the outputs of successfully executed requests. */
-  output_file_id?: string
+  output_file_id?: string;
   /** The ID of the file containing the outputs of requests with errors. */
-  error_file_id?: string
+  error_file_id?: string;
   /** The Unix timestamp (in seconds) for when the batch was created. */
-  created_at: number
+  created_at: number;
   /** The Unix timestamp (in seconds) for when the batch started processing. */
-  in_progress_at?: number
+  in_progress_at?: number;
   /** The Unix timestamp (in seconds) for when the batch will expire. */
-  expires_at?: number
+  expires_at?: number;
   /** The Unix timestamp (in seconds) for when the batch started finalizing. */
-  finalizing_at?: number
+  finalizing_at?: number;
   /** The Unix timestamp (in seconds) for when the batch was completed. */
-  completed_at?: number
+  completed_at?: number;
   /** The Unix timestamp (in seconds) for when the batch failed. */
-  failed_at?: number
+  failed_at?: number;
   /** The Unix timestamp (in seconds) for when the batch expired. */
-  expired_at?: number
+  expired_at?: number;
   /** The Unix timestamp (in seconds) for when the batch started cancelling. */
-  cancelling_at?: number
+  cancelling_at?: number;
   /** The Unix timestamp (in seconds) for when the batch was cancelled. */
-  cancelled_at?: number
-  request_counts?: BatchRequestCounts
+  cancelled_at?: number;
+  request_counts?: BatchRequestCounts;
   /** Represents token usage details including input tokens, output tokens, a
 breakdown of output tokens, and the total tokens used. Only populated on
 batches created after September 7, 2025.
  */
-  usage?: BatchUsage
-  metadata?: Metadata
+  usage?: BatchUsage;
+  metadata?: Metadata;
 }

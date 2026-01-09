@@ -5,14 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { User } from "./user"
-import type { UserListResponseObject } from "./userListResponseObject"
+import type { UserListResponseObject } from './userListResponseObject';
+import type { User } from './user';
 
 export interface UserListResponse {
-  object: UserListResponseObject
-  data: User[]
-  first_id: string
-  last_id: string
-  has_more: boolean
+  object: UserListResponseObject;
+  data: User[];
+  first_id: string;
+  last_id: string;
+  has_more: boolean;
 }

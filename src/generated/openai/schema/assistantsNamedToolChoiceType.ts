@@ -9,12 +9,12 @@
 /**
  * The type of the tool. If type is `function`, the function name must be set
  */
-export type AssistantsNamedToolChoiceType =
-  (typeof AssistantsNamedToolChoiceType)[keyof typeof AssistantsNamedToolChoiceType]
+export type AssistantsNamedToolChoiceType = typeof AssistantsNamedToolChoiceType[keyof typeof AssistantsNamedToolChoiceType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AssistantsNamedToolChoiceType = {
-  function: "function",
-  code_interpreter: "code_interpreter",
-  file_search: "file_search"
-} as const
+  function: 'function',
+  code_interpreter: 'code_interpreter',
+  file_search: 'file_search',
+} as const;

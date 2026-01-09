@@ -11,12 +11,12 @@
 `jpeg`. Default: `png`.
 
  */
-export type ImageGenToolOutputFormat =
-  (typeof ImageGenToolOutputFormat)[keyof typeof ImageGenToolOutputFormat]
+export type ImageGenToolOutputFormat = typeof ImageGenToolOutputFormat[keyof typeof ImageGenToolOutputFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolOutputFormat = {
-  png: "png",
-  webp: "webp",
-  jpeg: "jpeg"
-} as const
+  png: 'png',
+  webp: 'webp',
+  jpeg: 'jpeg',
+} as const;

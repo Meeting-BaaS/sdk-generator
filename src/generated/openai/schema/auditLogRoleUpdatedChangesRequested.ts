@@ -5,24 +5,24 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogRoleUpdatedChangesRequestedMetadata } from "./auditLogRoleUpdatedChangesRequestedMetadata"
+import type { AuditLogRoleUpdatedChangesRequestedMetadata } from './auditLogRoleUpdatedChangesRequestedMetadata';
 
 /**
  * The payload used to update the role.
  */
 export type AuditLogRoleUpdatedChangesRequested = {
   /** The updated role name, when provided. */
-  role_name?: string
+  role_name?: string;
   /** The resource the role is scoped to. */
-  resource_id?: string
+  resource_id?: string;
   /** The type of resource the role belongs to. */
-  resource_type?: string
+  resource_type?: string;
   /** The permissions added to the role. */
-  permissions_added?: string[]
+  permissions_added?: string[];
   /** The permissions removed from the role. */
-  permissions_removed?: string[]
+  permissions_removed?: string[];
   /** The updated role description, when provided. */
-  description?: string
+  description?: string;
   /** Additional metadata stored on the role. */
-  metadata?: AuditLogRoleUpdatedChangesRequestedMetadata
-}
+  metadata?: AuditLogRoleUpdatedChangesRequestedMetadata;
+};

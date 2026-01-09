@@ -22,18 +22,18 @@ event.
  */
 export interface RealtimeBetaClientEventConversationItemTruncate {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string
+  event_id?: string;
   /** The event type, must be `conversation.item.truncate`. */
-  type: "conversation.item.truncate"
+  type: 'conversation.item.truncate';
   /** The ID of the assistant message item to truncate. Only assistant message 
 items can be truncated.
  */
-  item_id: string
+  item_id: string;
   /** The index of the content part to truncate. Set this to 0. */
-  content_index: number
+  content_index: number;
   /** Inclusive duration up to which audio is truncated, in milliseconds. If 
 the audio_end_ms is greater than the actual audio duration, the server 
 will respond with an error.
  */
-  audio_end_ms: number
+  audio_end_ms: number;
 }

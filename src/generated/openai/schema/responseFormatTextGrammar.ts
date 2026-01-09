@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatTextGrammarType } from "./responseFormatTextGrammarType"
+import type { ResponseFormatTextGrammarType } from './responseFormatTextGrammarType';
 
 /**
  * A custom grammar for the model to follow when generating text.
@@ -14,7 +14,7 @@ Learn more in the [custom grammars guide](https://platform.openai.com/docs/guide
  */
 export interface ResponseFormatTextGrammar {
   /** The type of response format being defined. Always `grammar`. */
-  type: ResponseFormatTextGrammarType
+  type: ResponseFormatTextGrammarType;
   /** The custom grammar for the model to follow. */
-  grammar: string
+  grammar: string;
 }

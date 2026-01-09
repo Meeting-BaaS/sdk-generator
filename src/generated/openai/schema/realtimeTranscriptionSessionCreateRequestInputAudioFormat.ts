@@ -12,12 +12,12 @@ For `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate,
 single channel (mono), and little-endian byte order.
 
  */
-export type RealtimeTranscriptionSessionCreateRequestInputAudioFormat =
-  (typeof RealtimeTranscriptionSessionCreateRequestInputAudioFormat)[keyof typeof RealtimeTranscriptionSessionCreateRequestInputAudioFormat]
+export type RealtimeTranscriptionSessionCreateRequestInputAudioFormat = typeof RealtimeTranscriptionSessionCreateRequestInputAudioFormat[keyof typeof RealtimeTranscriptionSessionCreateRequestInputAudioFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeTranscriptionSessionCreateRequestInputAudioFormat = {
-  pcm16: "pcm16",
-  g711_ulaw: "g711_ulaw",
-  g711_alaw: "g711_alaw"
-} as const
+  pcm16: 'pcm16',
+  g711_ulaw: 'g711_ulaw',
+  g711_alaw: 'g711_alaw',
+} as const;

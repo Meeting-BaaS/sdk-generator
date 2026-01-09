@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileSearchRankingOptions } from "./fileSearchRankingOptions"
+import type { FileSearchRankingOptions } from './fileSearchRankingOptions';
 
 /**
  * Overrides for the file search tool.
@@ -19,6 +19,6 @@ Note that the file search tool may output fewer than `max_num_results` results. 
    * @minimum 1
    * @maximum 50
    */
-  max_num_results?: number
-  ranking_options?: FileSearchRankingOptions
-}
+  max_num_results?: number;
+  ranking_options?: FileSearchRankingOptions;
+};

@@ -6,51 +6,51 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedCallbackParameter } from "./sharedCallbackParameter"
-import type { SharedCallbackMethodParameter } from "./sharedCallbackMethodParameter"
-import type { SharedMipOptOutParameter } from "./sharedMipOptOutParameter"
-import type { SharedTagParameter } from "./sharedTagParameter"
-import type { SpeakV1BitRateParameter } from "./speakV1BitRateParameter"
-import type { SpeakV1ContainerParameter } from "./speakV1ContainerParameter"
-import type { SpeakV1EncodingParameter } from "./speakV1EncodingParameter"
-import type { SpeakV1ModelParameter } from "./speakV1ModelParameter"
-import type { SpeakV1SampleRateParameter } from "./speakV1SampleRateParameter"
+import type { SharedCallbackParameter } from './sharedCallbackParameter';
+import type { SharedCallbackMethodParameter } from './sharedCallbackMethodParameter';
+import type { SharedMipOptOutParameter } from './sharedMipOptOutParameter';
+import type { SharedTagParameter } from './sharedTagParameter';
+import type { SpeakV1BitRateParameter } from './speakV1BitRateParameter';
+import type { SpeakV1AudioGenerateContainer } from './speakV1AudioGenerateContainer';
+import type { SpeakV1AudioGenerateEncoding } from './speakV1AudioGenerateEncoding';
+import type { SpeakV1ModelParameter } from './speakV1ModelParameter';
+import type { SpeakV1AudioGenerateSampleRate } from './speakV1AudioGenerateSampleRate';
 
 export type SpeakV1AudioGenerateParams = {
-  /**
-   * URL to which we'll make the callback request
-   */
-  callback?: SharedCallbackParameter
-  /**
-   * HTTP method by which the callback request will be made
-   */
-  callback_method?: SharedCallbackMethodParameter
-  /**
-   * Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
-   */
-  mip_opt_out?: SharedMipOptOutParameter
-  /**
-   * Label your requests for the purpose of identification during usage reporting
-   */
-  tag?: SharedTagParameter
-  /**
-   * The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
-   */
-  bit_rate?: SpeakV1BitRateParameter
-  /**
-   * Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
-   */
-  container?: SpeakV1ContainerParameter
-  /**
-   * Encoding allows you to specify the expected encoding of your audio output
-   */
-  encoding?: SpeakV1EncodingParameter
-  /**
-   * AI model used to process submitted text
-   */
-  model?: SpeakV1ModelParameter
-  /**
-   * Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
-   */
-  sample_rate?: SpeakV1SampleRateParameter
-}
+/**
+ * URL to which we'll make the callback request
+ */
+callback?: SharedCallbackParameter;
+/**
+ * HTTP method by which the callback request will be made
+ */
+callback_method?: SharedCallbackMethodParameter;
+/**
+ * Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
+ */
+mip_opt_out?: SharedMipOptOutParameter;
+/**
+ * Label your requests for the purpose of identification during usage reporting
+ */
+tag?: SharedTagParameter;
+/**
+ * The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
+ */
+bit_rate?: SpeakV1BitRateParameter;
+/**
+ * Container format for output audio
+ */
+container?: SpeakV1AudioGenerateContainer;
+/**
+ * Audio encoding format
+ */
+encoding?: SpeakV1AudioGenerateEncoding;
+/**
+ * AI model used to process submitted text
+ */
+model?: SpeakV1ModelParameter;
+/**
+ * Sample rate in Hz
+ */
+sample_rate?: SpeakV1AudioGenerateSampleRate;
+};

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantsNamedToolChoice } from "./assistantsNamedToolChoice"
+import type { AssistantsNamedToolChoice } from './assistantsNamedToolChoice';
 
 /**
  * Controls which (if any) tool is called by the model.
@@ -15,4 +15,4 @@ import type { AssistantsNamedToolChoice } from "./assistantsNamedToolChoice"
 Specifying a particular tool like `{"type": "file_search"}` or `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that tool.
 
  */
-export type AssistantsApiToolChoiceOption = "none" | "auto" | "required" | AssistantsNamedToolChoice
+export type AssistantsApiToolChoiceOption = 'none' | 'auto' | 'required' | AssistantsNamedToolChoice;

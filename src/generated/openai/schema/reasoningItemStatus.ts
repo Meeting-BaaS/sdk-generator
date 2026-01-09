@@ -11,11 +11,12 @@
 `incomplete`. Populated when items are returned via API.
 
  */
-export type ReasoningItemStatus = (typeof ReasoningItemStatus)[keyof typeof ReasoningItemStatus]
+export type ReasoningItemStatus = typeof ReasoningItemStatus[keyof typeof ReasoningItemStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ReasoningItemStatus = {
-  in_progress: "in_progress",
-  completed: "completed",
-  incomplete: "incomplete"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+  incomplete: 'incomplete',
+} as const;

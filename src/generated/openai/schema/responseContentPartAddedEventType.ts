@@ -10,10 +10,10 @@
  * The type of the event. Always `response.content_part.added`.
 
  */
-export type ResponseContentPartAddedEventType =
-  (typeof ResponseContentPartAddedEventType)[keyof typeof ResponseContentPartAddedEventType]
+export type ResponseContentPartAddedEventType = typeof ResponseContentPartAddedEventType[keyof typeof ResponseContentPartAddedEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseContentPartAddedEventType = {
-  responsecontent_partadded: "response.content_part.added"
-} as const
+  responsecontent_partadded: 'response.content_part.added',
+} as const;

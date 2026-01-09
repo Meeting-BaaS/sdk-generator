@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `video`.
  */
-export type VideoResourceObject = (typeof VideoResourceObject)[keyof typeof VideoResourceObject]
+export type VideoResourceObject = typeof VideoResourceObject[keyof typeof VideoResourceObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoResourceObject = {
-  video: "video"
-} as const
+  video: 'video',
+} as const;

@@ -11,7 +11,7 @@
  */
 export interface AuditLogActorUser {
   /** The user id. */
-  id?: string
+  id?: string;
   /** The user email. */
-  email?: string
+  email?: string;
 }

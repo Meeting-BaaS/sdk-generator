@@ -5,29 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { OutputContent } from "./outputContent"
-import type { ResponseContentPartDoneEventType } from "./responseContentPartDoneEventType"
+import type { ResponseContentPartDoneEventType } from './responseContentPartDoneEventType';
+import type { OutputContent } from './outputContent';
 
 /**
  * Emitted when a content part is done.
  */
 export interface ResponseContentPartDoneEvent {
   /** The type of the event. Always `response.content_part.done`.
-   */
-  type: ResponseContentPartDoneEventType
+ */
+  type: ResponseContentPartDoneEventType;
   /** The ID of the output item that the content part was added to.
-   */
-  item_id: string
+ */
+  item_id: string;
   /** The index of the output item that the content part was added to.
-   */
-  output_index: number
+ */
+  output_index: number;
   /** The index of the content part that is done.
-   */
-  content_index: number
+ */
+  content_index: number;
   /** The sequence number of this event. */
-  sequence_number: number
+  sequence_number: number;
   /** The content part that is done.
-   */
-  part: OutputContent
+ */
+  part: OutputContent;
 }

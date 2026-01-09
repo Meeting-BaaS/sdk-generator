@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallOutputContentOutcome } from "./functionShellCallOutputContentOutcome"
+import type { FunctionShellCallOutputContentOutcome } from './functionShellCallOutputContentOutcome';
 
 /**
  * The content of a shell call output.
  */
 export interface FunctionShellCallOutputContent {
-  stdout: string
-  stderr: string
+  stdout: string;
+  stderr: string;
   /** Represents either an exit outcome (with an exit code) or a timeout outcome for a shell call output chunk. */
-  outcome: FunctionShellCallOutputContentOutcome
-  created_by?: string
+  outcome: FunctionShellCallOutputContentOutcome;
+  created_by?: string;
 }

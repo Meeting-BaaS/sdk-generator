@@ -9,4 +9,4 @@
 /**
  * This event has no additional fields beyond the standard audit log attributes.
  */
-export type AuditLogLogoutSucceeded = { [key: string]: unknown }
+export type AuditLogLogoutSucceeded = { [key: string]: unknown };

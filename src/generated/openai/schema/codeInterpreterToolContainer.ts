@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterContainerAuto } from "./codeInterpreterContainerAuto"
+import type { CodeInterpreterContainerAuto } from './codeInterpreterContainerAuto';
 
 /**
  * The code interpreter container. Can be a container ID or an object that
@@ -13,4 +13,4 @@ specifies uploaded file IDs to make available to your code, along with an
 optional `memory_limit` setting.
 
  */
-export type CodeInterpreterToolContainer = string | CodeInterpreterContainerAuto
+export type CodeInterpreterToolContainer = string | CodeInterpreterContainerAuto;

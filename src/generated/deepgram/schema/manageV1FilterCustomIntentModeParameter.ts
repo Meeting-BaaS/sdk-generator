@@ -10,4 +10,4 @@
 /**
  * Filter for requests where custom intent mode was used
  */
-export type ManageV1FilterCustomIntentModeParameter = boolean
+export type ManageV1FilterCustomIntentModeParameter = boolean;

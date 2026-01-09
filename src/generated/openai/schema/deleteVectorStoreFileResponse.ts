@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DeleteVectorStoreFileResponseObject } from "./deleteVectorStoreFileResponseObject"
+import type { DeleteVectorStoreFileResponseObject } from './deleteVectorStoreFileResponseObject';
 
 export interface DeleteVectorStoreFileResponse {
-  id: string
-  deleted: boolean
-  object: DeleteVectorStoreFileResponseObject
+  id: string;
+  deleted: boolean;
+  object: DeleteVectorStoreFileResponseObject;
 }

@@ -5,24 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+import type { InputTextContent } from './inputTextContent';
+import type { OutputTextContent } from './outputTextContent';
+import type { TextContent } from './textContent';
+import type { SummaryTextContent } from './summaryTextContent';
+import type { ReasoningTextContent } from './reasoningTextContent';
+import type { RefusalContent } from './refusalContent';
+import type { InputImageContent } from './inputImageContent';
+import type { ComputerScreenshotContent } from './computerScreenshotContent';
+import type { InputFileContent } from './inputFileContent';
 
-import type { ComputerScreenshotContent } from "./computerScreenshotContent"
-import type { InputFileContent } from "./inputFileContent"
-import type { InputImageContent } from "./inputImageContent"
-import type { InputTextContent } from "./inputTextContent"
-import type { OutputTextContent } from "./outputTextContent"
-import type { ReasoningTextContent } from "./reasoningTextContent"
-import type { RefusalContent } from "./refusalContent"
-import type { SummaryTextContent } from "./summaryTextContent"
-import type { TextContent } from "./textContent"
-
-export type MessageContentPropertyItem =
-  | InputTextContent
-  | OutputTextContent
-  | TextContent
-  | SummaryTextContent
-  | ReasoningTextContent
-  | RefusalContent
-  | InputImageContent
-  | ComputerScreenshotContent
-  | InputFileContent
+export type MessageContentPropertyItem = InputTextContent | OutputTextContent | TextContent | SummaryTextContent | ReasoningTextContent | RefusalContent | InputImageContent | ComputerScreenshotContent | InputFileContent;

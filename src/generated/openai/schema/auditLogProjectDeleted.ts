@@ -11,5 +11,5 @@
  */
 export type AuditLogProjectDeleted = {
   /** The project ID. */
-  id?: string
-}
+  id?: string;
+};

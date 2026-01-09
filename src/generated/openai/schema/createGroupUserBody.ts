@@ -11,5 +11,5 @@
  */
 export interface CreateGroupUserBody {
   /** Identifier of the user to add to the group. */
-  user_id: string
+  user_id: string;
 }

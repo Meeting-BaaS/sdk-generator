@@ -10,12 +10,12 @@
  * The status of the local shell call.
 
  */
-export type LocalShellToolCallStatus =
-  (typeof LocalShellToolCallStatus)[keyof typeof LocalShellToolCallStatus]
+export type LocalShellToolCallStatus = typeof LocalShellToolCallStatus[keyof typeof LocalShellToolCallStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LocalShellToolCallStatus = {
-  in_progress: "in_progress",
-  completed: "completed",
-  incomplete: "incomplete"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+  incomplete: 'incomplete',
+} as const;

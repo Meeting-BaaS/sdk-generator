@@ -6,6 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type CreateCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem = {
-  [key: string]: number
-}
+export type CreateCompletionResponseChoicesItemLogprobsAnyOfTopLogprobsItem = {[key: string]: number};

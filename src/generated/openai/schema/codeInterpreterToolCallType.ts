@@ -10,10 +10,10 @@
  * The type of the code interpreter tool call. Always `code_interpreter_call`.
 
  */
-export type CodeInterpreterToolCallType =
-  (typeof CodeInterpreterToolCallType)[keyof typeof CodeInterpreterToolCallType]
+export type CodeInterpreterToolCallType = typeof CodeInterpreterToolCallType[keyof typeof CodeInterpreterToolCallType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterToolCallType = {
-  code_interpreter_call: "code_interpreter_call"
-} as const
+  code_interpreter_call: 'code_interpreter_call',
+} as const;

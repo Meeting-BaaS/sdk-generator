@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogRateLimitUpdatedChangesRequested } from "./auditLogRateLimitUpdatedChangesRequested"
+import type { AuditLogRateLimitUpdatedChangesRequested } from './auditLogRateLimitUpdatedChangesRequested';
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogRateLimitUpdated = {
   /** The rate limit ID */
-  id?: string
+  id?: string;
   /** The payload used to update the rate limits. */
-  changes_requested?: AuditLogRateLimitUpdatedChangesRequested
-}
+  changes_requested?: AuditLogRateLimitUpdatedChangesRequested;
+};

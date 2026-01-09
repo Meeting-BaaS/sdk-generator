@@ -5,19 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { FineTuneMethod } from "./fineTuneMethod"
-import type { FineTuningJobError } from "./fineTuningJobError"
-import type { FineTuningJobEstimatedFinish } from "./fineTuningJobEstimatedFinish"
-import type { FineTuningJobFineTunedModel } from "./fineTuningJobFineTunedModel"
-import type { FineTuningJobFinishedAt } from "./fineTuningJobFinishedAt"
-import type { FineTuningJobHyperparameters } from "./fineTuningJobHyperparameters"
-import type { FineTuningJobIntegrations } from "./fineTuningJobIntegrations"
-import type { FineTuningJobObject } from "./fineTuningJobObject"
-import type { FineTuningJobStatus } from "./fineTuningJobStatus"
-import type { FineTuningJobTrainedTokens } from "./fineTuningJobTrainedTokens"
-import type { FineTuningJobValidationFile } from "./fineTuningJobValidationFile"
-import type { Metadata } from "./metadata"
+import type { FineTuningJobError } from './fineTuningJobError';
+import type { FineTuningJobFineTunedModel } from './fineTuningJobFineTunedModel';
+import type { FineTuningJobFinishedAt } from './fineTuningJobFinishedAt';
+import type { FineTuningJobHyperparameters } from './fineTuningJobHyperparameters';
+import type { FineTuningJobObject } from './fineTuningJobObject';
+import type { FineTuningJobStatus } from './fineTuningJobStatus';
+import type { FineTuningJobTrainedTokens } from './fineTuningJobTrainedTokens';
+import type { FineTuningJobValidationFile } from './fineTuningJobValidationFile';
+import type { FineTuningJobIntegrations } from './fineTuningJobIntegrations';
+import type { FineTuningJobEstimatedFinish } from './fineTuningJobEstimatedFinish';
+import type { FineTuneMethod } from './fineTuneMethod';
+import type { Metadata } from './metadata';
 
 /**
  * The `fine_tuning.job` object represents a fine-tuning job that has been created through the API.
@@ -25,32 +24,32 @@ import type { Metadata } from "./metadata"
  */
 export interface FineTuningJob {
   /** The object identifier, which can be referenced in the API endpoints. */
-  id: string
+  id: string;
   /** The Unix timestamp (in seconds) for when the fine-tuning job was created. */
-  created_at: number
-  error: FineTuningJobError
-  fine_tuned_model: FineTuningJobFineTunedModel
-  finished_at: FineTuningJobFinishedAt
+  created_at: number;
+  error: FineTuningJobError;
+  fine_tuned_model: FineTuningJobFineTunedModel;
+  finished_at: FineTuningJobFinishedAt;
   /** The hyperparameters used for the fine-tuning job. This value will only be returned when running `supervised` jobs. */
-  hyperparameters: FineTuningJobHyperparameters
+  hyperparameters: FineTuningJobHyperparameters;
   /** The base model that is being fine-tuned. */
-  model: string
+  model: string;
   /** The object type, which is always "fine_tuning.job". */
-  object: FineTuningJobObject
+  object: FineTuningJobObject;
   /** The organization that owns the fine-tuning job. */
-  organization_id: string
+  organization_id: string;
   /** The compiled results file ID(s) for the fine-tuning job. You can retrieve the results with the [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents). */
-  result_files: string[]
+  result_files: string[];
   /** The current status of the fine-tuning job, which can be either `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`. */
-  status: FineTuningJobStatus
-  trained_tokens: FineTuningJobTrainedTokens
+  status: FineTuningJobStatus;
+  trained_tokens: FineTuningJobTrainedTokens;
   /** The file ID used for training. You can retrieve the training data with the [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents). */
-  training_file: string
-  validation_file: FineTuningJobValidationFile
-  integrations?: FineTuningJobIntegrations
+  training_file: string;
+  validation_file: FineTuningJobValidationFile;
+  integrations?: FineTuningJobIntegrations;
   /** The seed used for the fine-tuning job. */
-  seed: number
-  estimated_finish?: FineTuningJobEstimatedFinish
-  method?: FineTuneMethod
-  metadata?: Metadata
+  seed: number;
+  estimated_finish?: FineTuningJobEstimatedFinish;
+  method?: FineTuneMethod;
+  metadata?: Metadata;
 }

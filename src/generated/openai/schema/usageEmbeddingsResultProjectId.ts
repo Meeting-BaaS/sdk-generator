@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageEmbeddingsResultProjectId = string | null
+export type UsageEmbeddingsResultProjectId = string | null;

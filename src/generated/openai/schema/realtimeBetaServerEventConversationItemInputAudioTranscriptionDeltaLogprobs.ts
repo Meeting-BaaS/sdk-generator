@@ -5,8 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { LogProbProperties } from "./logProbProperties"
+import type { LogProbProperties } from './logProbProperties';
 
-export type RealtimeBetaServerEventConversationItemInputAudioTranscriptionDeltaLogprobs =
-  | LogProbProperties[]
-  | null
+export type RealtimeBetaServerEventConversationItemInputAudioTranscriptionDeltaLogprobs = LogProbProperties[] | null;

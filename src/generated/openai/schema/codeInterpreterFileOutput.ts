@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CodeInterpreterFileOutputFilesItem } from "./codeInterpreterFileOutputFilesItem"
-import type { CodeInterpreterFileOutputType } from "./codeInterpreterFileOutputType"
+import type { CodeInterpreterFileOutputType } from './codeInterpreterFileOutputType';
+import type { CodeInterpreterFileOutputFilesItem } from './codeInterpreterFileOutputFilesItem';
 
 /**
  * The output of a code interpreter tool call that is a file.
@@ -15,7 +14,7 @@ import type { CodeInterpreterFileOutputType } from "./codeInterpreterFileOutputT
  */
 export interface CodeInterpreterFileOutput {
   /** The type of the code interpreter file output. Always `files`.
-   */
-  type: CodeInterpreterFileOutputType
-  files: CodeInterpreterFileOutputFilesItem[]
+ */
+  type: CodeInterpreterFileOutputType;
+  files: CodeInterpreterFileOutputFilesItem[];
 }

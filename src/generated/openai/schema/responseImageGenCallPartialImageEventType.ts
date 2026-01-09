@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.image_generation_call.partial_image'.
  */
-export type ResponseImageGenCallPartialImageEventType =
-  (typeof ResponseImageGenCallPartialImageEventType)[keyof typeof ResponseImageGenCallPartialImageEventType]
+export type ResponseImageGenCallPartialImageEventType = typeof ResponseImageGenCallPartialImageEventType[keyof typeof ResponseImageGenCallPartialImageEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseImageGenCallPartialImageEventType = {
-  responseimage_generation_callpartial_image: "response.image_generation_call.partial_image"
-} as const
+  responseimage_generation_callpartial_image: 'response.image_generation_call.partial_image',
+} as const;

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomTextFormatParamType } from "./customTextFormatParamType"
+import type { CustomTextFormatParamType } from './customTextFormatParamType';
 
 /**
  * Unconstrained free-form text.
  */
 export interface CustomTextFormatParam {
   /** Unconstrained text format. Always `text`. */
-  type: CustomTextFormatParamType
+  type: CustomTextFormatParamType;
 }

@@ -10,4 +10,4 @@
 /**
  * Filter for requests where search was used
  */
-export type ManageV1FilterSearchParameter = boolean
+export type ManageV1FilterSearchParameter = boolean;

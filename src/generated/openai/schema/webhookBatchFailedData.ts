@@ -12,6 +12,6 @@
  */
 export type WebhookBatchFailedData = {
   /** The unique ID of the batch API request.
-   */
-  id: string
-}
+ */
+  id: string;
+};

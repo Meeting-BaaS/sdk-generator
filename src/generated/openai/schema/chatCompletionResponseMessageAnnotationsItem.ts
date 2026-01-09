@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionResponseMessageAnnotationsItemType } from "./chatCompletionResponseMessageAnnotationsItemType"
-import type { ChatCompletionResponseMessageAnnotationsItemUrlCitation } from "./chatCompletionResponseMessageAnnotationsItemUrlCitation"
+import type { ChatCompletionResponseMessageAnnotationsItemType } from './chatCompletionResponseMessageAnnotationsItemType';
+import type { ChatCompletionResponseMessageAnnotationsItemUrlCitation } from './chatCompletionResponseMessageAnnotationsItemUrlCitation';
 
 /**
  * A URL citation when using web search.
@@ -14,7 +14,7 @@ import type { ChatCompletionResponseMessageAnnotationsItemUrlCitation } from "./
  */
 export type ChatCompletionResponseMessageAnnotationsItem = {
   /** The type of the URL citation. Always `url_citation`. */
-  type: ChatCompletionResponseMessageAnnotationsItemType
+  type: ChatCompletionResponseMessageAnnotationsItemType;
   /** A URL citation when using web search. */
-  url_citation: ChatCompletionResponseMessageAnnotationsItemUrlCitation
-}
+  url_citation: ChatCompletionResponseMessageAnnotationsItemUrlCitation;
+};

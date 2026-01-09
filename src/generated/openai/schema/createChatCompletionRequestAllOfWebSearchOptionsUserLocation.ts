@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType } from "./createChatCompletionRequestAllOfWebSearchOptionsUserLocationType"
-import type { WebSearchLocation } from "./webSearchLocation"
+import type { CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType } from './createChatCompletionRequestAllOfWebSearchOptionsUserLocationType';
+import type { WebSearchLocation } from './webSearchLocation';
 
 /**
  * Approximate location parameters for the search.
@@ -15,7 +15,7 @@ import type { WebSearchLocation } from "./webSearchLocation"
  */
 export type CreateChatCompletionRequestAllOfWebSearchOptionsUserLocation = {
   /** The type of location approximation. Always `approximate`.
-   */
-  type: CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType
-  approximate: WebSearchLocation
-} | null
+ */
+  type: CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType;
+  approximate: WebSearchLocation;
+} | null;

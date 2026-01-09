@@ -9,9 +9,10 @@
 /**
  * The type of the custom tool. Always `custom`.
  */
-export type CustomToolParamType = (typeof CustomToolParamType)[keyof typeof CustomToolParamType]
+export type CustomToolParamType = typeof CustomToolParamType[keyof typeof CustomToolParamType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CustomToolParamType = {
-  custom: "custom"
-} as const
+  custom: 'custom',
+} as const;

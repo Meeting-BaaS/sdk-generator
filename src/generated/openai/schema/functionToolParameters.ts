@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionToolParametersAnyOf } from "./functionToolParametersAnyOf"
+import type { FunctionToolParametersAnyOf } from './functionToolParametersAnyOf';
 
-export type FunctionToolParameters = FunctionToolParametersAnyOf | null
+export type FunctionToolParameters = FunctionToolParametersAnyOf | null;

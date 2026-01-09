@@ -5,27 +5,26 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ComputerCallOutputItemParamAcknowledgedSafetyChecks } from "./computerCallOutputItemParamAcknowledgedSafetyChecks"
-import type { ComputerCallOutputItemParamId } from "./computerCallOutputItemParamId"
-import type { ComputerCallOutputItemParamStatus } from "./computerCallOutputItemParamStatus"
-import type { ComputerCallOutputItemParamType } from "./computerCallOutputItemParamType"
-import type { ComputerScreenshotImage } from "./computerScreenshotImage"
+import type { ComputerCallOutputItemParamId } from './computerCallOutputItemParamId';
+import type { ComputerCallOutputItemParamType } from './computerCallOutputItemParamType';
+import type { ComputerScreenshotImage } from './computerScreenshotImage';
+import type { ComputerCallOutputItemParamAcknowledgedSafetyChecks } from './computerCallOutputItemParamAcknowledgedSafetyChecks';
+import type { ComputerCallOutputItemParamStatus } from './computerCallOutputItemParamStatus';
 
 /**
  * The output of a computer tool call.
  */
 export interface ComputerCallOutputItemParam {
-  id?: ComputerCallOutputItemParamId
+  id?: ComputerCallOutputItemParamId;
   /**
    * The ID of the computer tool call that produced the output.
    * @minLength 1
    * @maxLength 64
    */
-  call_id: string
+  call_id: string;
   /** The type of the computer tool call output. Always `computer_call_output`. */
-  type: ComputerCallOutputItemParamType
-  output: ComputerScreenshotImage
-  acknowledged_safety_checks?: ComputerCallOutputItemParamAcknowledgedSafetyChecks
-  status?: ComputerCallOutputItemParamStatus
+  type: ComputerCallOutputItemParamType;
+  output: ComputerScreenshotImage;
+  acknowledged_safety_checks?: ComputerCallOutputItemParamAcknowledgedSafetyChecks;
+  status?: ComputerCallOutputItemParamStatus;
 }

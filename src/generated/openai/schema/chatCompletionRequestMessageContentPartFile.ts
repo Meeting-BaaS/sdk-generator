@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ChatCompletionRequestMessageContentPartFileFile } from "./chatCompletionRequestMessageContentPartFileFile"
-import type { ChatCompletionRequestMessageContentPartFileType } from "./chatCompletionRequestMessageContentPartFileType"
+import type { ChatCompletionRequestMessageContentPartFileType } from './chatCompletionRequestMessageContentPartFileType';
+import type { ChatCompletionRequestMessageContentPartFileFile } from './chatCompletionRequestMessageContentPartFileFile';
 
 /**
  * Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text generation.
@@ -15,6 +14,6 @@ import type { ChatCompletionRequestMessageContentPartFileType } from "./chatComp
  */
 export interface ChatCompletionRequestMessageContentPartFile {
   /** The type of the content part. Always `file`. */
-  type: ChatCompletionRequestMessageContentPartFileType
-  file: ChatCompletionRequestMessageContentPartFileFile
+  type: ChatCompletionRequestMessageContentPartFileType;
+  file: ChatCompletionRequestMessageContentPartFileFile;
 }

@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputTextContentType } from "./inputTextContentType"
+import type { InputTextContentType } from './inputTextContentType';
 
 /**
  * A text input to the model.
  */
 export interface InputTextContent {
   /** The type of the input item. Always `input_text`. */
-  type: InputTextContentType
+  type: InputTextContentType;
   /** The text input to the model. */
-  text: string
+  text: string;
 }

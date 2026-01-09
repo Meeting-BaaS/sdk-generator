@@ -10,4 +10,4 @@
  * The model to use for image generation. Only `dall-e-2` is supported at this time.
  * @nullable
  */
-export type CreateImageVariationRequestModel = string | "dall-e-2" | null
+export type CreateImageVariationRequestModel = string | 'dall-e-2' | null;

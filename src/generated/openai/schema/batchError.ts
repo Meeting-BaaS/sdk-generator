@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { BatchErrorLine } from "./batchErrorLine"
-import type { BatchErrorParam } from "./batchErrorParam"
+import type { BatchErrorParam } from './batchErrorParam';
+import type { BatchErrorLine } from './batchErrorLine';
 
 export interface BatchError {
   /** An error code identifying the error type. */
-  code?: string
+  code?: string;
   /** A human-readable message providing more details about the error. */
-  message?: string
-  param?: BatchErrorParam
-  line?: BatchErrorLine
+  message?: string;
+  param?: BatchErrorParam;
+  line?: BatchErrorLine;
 }

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChunkingStrategyRequestParam } from "./chunkingStrategyRequestParam"
-import type { VectorStoreFileAttributes } from "./vectorStoreFileAttributes"
+import type { ChunkingStrategyRequestParam } from './chunkingStrategyRequestParam';
+import type { VectorStoreFileAttributes } from './vectorStoreFileAttributes';
 
 export interface CreateVectorStoreFileRequest {
   /** A [File](https://platform.openai.com/docs/api-reference/files) ID that the vector store should use. Useful for tools like `file_search` that can access files. */
-  file_id: string
-  chunking_strategy?: ChunkingStrategyRequestParam
-  attributes?: VectorStoreFileAttributes
+  file_id: string;
+  chunking_strategy?: ChunkingStrategyRequestParam;
+  attributes?: VectorStoreFileAttributes;
 }

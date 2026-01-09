@@ -10,10 +10,10 @@
  * The type of this object. It is always set to "list".
 
  */
-export type ChatCompletionListObject =
-  (typeof ChatCompletionListObject)[keyof typeof ChatCompletionListObject]
+export type ChatCompletionListObject = typeof ChatCompletionListObject[keyof typeof ChatCompletionListObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionListObject = {
-  list: "list"
-} as const
+  list: 'list',
+} as const;

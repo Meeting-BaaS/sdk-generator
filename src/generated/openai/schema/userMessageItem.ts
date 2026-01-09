@@ -5,29 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { Attachment } from "./attachment"
-import type { UserMessageItemContentItem } from "./userMessageItemContentItem"
-import type { UserMessageItemInferenceOptions } from "./userMessageItemInferenceOptions"
-import type { UserMessageItemObject } from "./userMessageItemObject"
-import type { UserMessageItemType } from "./userMessageItemType"
+import type { UserMessageItemObject } from './userMessageItemObject';
+import type { UserMessageItemType } from './userMessageItemType';
+import type { UserMessageItemContentItem } from './userMessageItemContentItem';
+import type { Attachment } from './attachment';
+import type { UserMessageItemInferenceOptions } from './userMessageItemInferenceOptions';
 
 /**
  * User-authored messages within a thread.
  */
 export interface UserMessageItem {
   /** Identifier of the thread item. */
-  id: string
+  id: string;
   /** Type discriminator that is always `chatkit.thread_item`. */
-  object: UserMessageItemObject
+  object: UserMessageItemObject;
   /** Unix timestamp (in seconds) for when the item was created. */
-  created_at: number
+  created_at: number;
   /** Identifier of the parent thread. */
-  thread_id: string
-  type: UserMessageItemType
+  thread_id: string;
+  type: UserMessageItemType;
   /** Ordered content elements supplied by the user. */
-  content: UserMessageItemContentItem[]
+  content: UserMessageItemContentItem[];
   /** Attachments associated with the user message. Defaults to an empty list. */
-  attachments: Attachment[]
-  inference_options: UserMessageItemInferenceOptions
+  attachments: Attachment[];
+  inference_options: UserMessageItemInferenceOptions;
 }

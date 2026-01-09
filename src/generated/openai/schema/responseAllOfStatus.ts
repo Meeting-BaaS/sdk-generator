@@ -11,14 +11,15 @@
 `in_progress`, `cancelled`, `queued`, or `incomplete`.
 
  */
-export type ResponseAllOfStatus = (typeof ResponseAllOfStatus)[keyof typeof ResponseAllOfStatus]
+export type ResponseAllOfStatus = typeof ResponseAllOfStatus[keyof typeof ResponseAllOfStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseAllOfStatus = {
-  completed: "completed",
-  failed: "failed",
-  in_progress: "in_progress",
-  cancelled: "cancelled",
-  queued: "queued",
-  incomplete: "incomplete"
-} as const
+  completed: 'completed',
+  failed: 'failed',
+  in_progress: 'in_progress',
+  cancelled: 'cancelled',
+  queued: 'queued',
+  incomplete: 'incomplete',
+} as const;

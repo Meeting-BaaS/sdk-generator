@@ -5,30 +5,29 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ResponseReasoningSummaryPartDoneEventPart } from "./responseReasoningSummaryPartDoneEventPart"
-import type { ResponseReasoningSummaryPartDoneEventType } from "./responseReasoningSummaryPartDoneEventType"
+import type { ResponseReasoningSummaryPartDoneEventType } from './responseReasoningSummaryPartDoneEventType';
+import type { ResponseReasoningSummaryPartDoneEventPart } from './responseReasoningSummaryPartDoneEventPart';
 
 /**
  * Emitted when a reasoning summary part is completed.
  */
 export interface ResponseReasoningSummaryPartDoneEvent {
   /** The type of the event. Always `response.reasoning_summary_part.done`.
-   */
-  type: ResponseReasoningSummaryPartDoneEventType
+ */
+  type: ResponseReasoningSummaryPartDoneEventType;
   /** The ID of the item this summary part is associated with.
-   */
-  item_id: string
+ */
+  item_id: string;
   /** The index of the output item this summary part is associated with.
-   */
-  output_index: number
+ */
+  output_index: number;
   /** The index of the summary part within the reasoning summary.
-   */
-  summary_index: number
+ */
+  summary_index: number;
   /** The sequence number of this event.
-   */
-  sequence_number: number
+ */
+  sequence_number: number;
   /** The completed summary part.
-   */
-  part: ResponseReasoningSummaryPartDoneEventPart
+ */
+  part: ResponseReasoningSummaryPartDoneEventPart;
 }

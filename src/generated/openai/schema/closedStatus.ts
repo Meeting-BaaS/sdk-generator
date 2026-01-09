@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ClosedStatusReason } from "./closedStatusReason"
-import type { ClosedStatusType } from "./closedStatusType"
+import type { ClosedStatusType } from './closedStatusType';
+import type { ClosedStatusReason } from './closedStatusReason';
 
 /**
  * Indicates that a thread has been closed.
  */
 export interface ClosedStatus {
   /** Status discriminator that is always `closed`. */
-  type: ClosedStatusType
-  reason: ClosedStatusReason
+  type: ClosedStatusType;
+  reason: ClosedStatusReason;
 }

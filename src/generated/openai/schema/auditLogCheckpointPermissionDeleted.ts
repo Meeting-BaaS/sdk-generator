@@ -11,5 +11,5 @@
  */
 export type AuditLogCheckpointPermissionDeleted = {
   /** The ID of the checkpoint permission. */
-  id?: string
-}
+  id?: string;
+};

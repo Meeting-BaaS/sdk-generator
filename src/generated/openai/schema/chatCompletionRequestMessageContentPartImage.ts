@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ChatCompletionRequestMessageContentPartImageImageUrl } from "./chatCompletionRequestMessageContentPartImageImageUrl"
-import type { ChatCompletionRequestMessageContentPartImageType } from "./chatCompletionRequestMessageContentPartImageType"
+import type { ChatCompletionRequestMessageContentPartImageType } from './chatCompletionRequestMessageContentPartImageType';
+import type { ChatCompletionRequestMessageContentPartImageImageUrl } from './chatCompletionRequestMessageContentPartImageImageUrl';
 
 /**
  * Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
@@ -15,6 +14,6 @@ import type { ChatCompletionRequestMessageContentPartImageType } from "./chatCom
  */
 export interface ChatCompletionRequestMessageContentPartImage {
   /** The type of the content part. */
-  type: ChatCompletionRequestMessageContentPartImageType
-  image_url: ChatCompletionRequestMessageContentPartImageImageUrl
+  type: ChatCompletionRequestMessageContentPartImageType;
+  image_url: ChatCompletionRequestMessageContentPartImageImageUrl;
 }

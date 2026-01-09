@@ -9,10 +9,10 @@
 /**
  * Always `file_path`.
  */
-export type MessageContentTextAnnotationsFilePathObjectType =
-  (typeof MessageContentTextAnnotationsFilePathObjectType)[keyof typeof MessageContentTextAnnotationsFilePathObjectType]
+export type MessageContentTextAnnotationsFilePathObjectType = typeof MessageContentTextAnnotationsFilePathObjectType[keyof typeof MessageContentTextAnnotationsFilePathObjectType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageContentTextAnnotationsFilePathObjectType = {
-  file_path: "file_path"
-} as const
+  file_path: 'file_path',
+} as const;

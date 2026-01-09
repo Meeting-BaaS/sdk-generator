@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectUserObject } from "./projectUserObject"
-import type { ProjectUserRole } from "./projectUserRole"
+import type { ProjectUserObject } from './projectUserObject';
+import type { ProjectUserRole } from './projectUserRole';
 
 /**
  * Represents an individual user in a project.
  */
 export interface ProjectUser {
   /** The object type, which is always `organization.project.user` */
-  object: ProjectUserObject
+  object: ProjectUserObject;
   /** The identifier, which can be referenced in API endpoints */
-  id: string
+  id: string;
   /** The name of the user */
-  name: string
+  name: string;
   /** The email address of the user */
-  email: string
+  email: string;
   /** `owner` or `member` */
-  role: ProjectUserRole
+  role: ProjectUserRole;
   /** The Unix timestamp (in seconds) of when the project was added. */
-  added_at: number
+  added_at: number;
 }

@@ -9,13 +9,13 @@
 /**
  * The status of the vector store file, which can be either `in_progress`, `completed`, `cancelled`, or `failed`. The status `completed` indicates that the vector store file is ready for use.
  */
-export type VectorStoreFileObjectStatus =
-  (typeof VectorStoreFileObjectStatus)[keyof typeof VectorStoreFileObjectStatus]
+export type VectorStoreFileObjectStatus = typeof VectorStoreFileObjectStatus[keyof typeof VectorStoreFileObjectStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreFileObjectStatus = {
-  in_progress: "in_progress",
-  completed: "completed",
-  cancelled: "cancelled",
-  failed: "failed"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+  cancelled: 'cancelled',
+  failed: 'failed',
+} as const;

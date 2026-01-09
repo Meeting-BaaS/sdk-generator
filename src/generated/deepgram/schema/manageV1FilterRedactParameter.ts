@@ -10,4 +10,4 @@
 /**
  * Filter for requests where redact was used
  */
-export type ManageV1FilterRedactParameter = boolean
+export type ManageV1FilterRedactParameter = boolean;

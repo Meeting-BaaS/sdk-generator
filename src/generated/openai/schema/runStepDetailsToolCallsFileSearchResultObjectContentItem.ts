@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDetailsToolCallsFileSearchResultObjectContentItemType } from "./runStepDetailsToolCallsFileSearchResultObjectContentItemType"
+import type { RunStepDetailsToolCallsFileSearchResultObjectContentItemType } from './runStepDetailsToolCallsFileSearchResultObjectContentItemType';
 
 export type RunStepDetailsToolCallsFileSearchResultObjectContentItem = {
   /** The type of the content. */
-  type?: RunStepDetailsToolCallsFileSearchResultObjectContentItemType
+  type?: RunStepDetailsToolCallsFileSearchResultObjectContentItemType;
   /** The text content of the file. */
-  text?: string
-}
+  text?: string;
+};

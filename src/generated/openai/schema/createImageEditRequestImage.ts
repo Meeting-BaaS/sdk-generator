@@ -16,4 +16,4 @@ For `dall-e-2`, you can only provide one image, and it should be a square
 `png` file less than 4MB.
 
  */
-export type CreateImageEditRequestImage = Blob | Blob[]
+export type CreateImageEditRequestImage = Blob | Blob[];

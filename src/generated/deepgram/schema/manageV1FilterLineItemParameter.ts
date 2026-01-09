@@ -10,4 +10,4 @@
 /**
  * Filter requests by line item (e.g. streaming::nova-3)
  */
-export type ManageV1FilterLineItemParameter = string
+export type ManageV1FilterLineItemParameter = string;

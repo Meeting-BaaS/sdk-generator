@@ -11,7 +11,7 @@
  */
 export type ImagesUsageInputTokensDetails = {
   /** The number of text tokens in the input prompt. */
-  text_tokens: number
+  text_tokens: number;
   /** The number of image tokens in the input prompt. */
-  image_tokens: number
-}
+  image_tokens: number;
+};

@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `thread.run.step.delta`.
  */
-export type RunStepDeltaObjectObject =
-  (typeof RunStepDeltaObjectObject)[keyof typeof RunStepDeltaObjectObject]
+export type RunStepDeltaObjectObject = typeof RunStepDeltaObjectObject[keyof typeof RunStepDeltaObjectObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDeltaObjectObject = {
-  threadrunstepdelta: "thread.run.step.delta"
-} as const
+  threadrunstepdelta: 'thread.run.step.delta',
+} as const;

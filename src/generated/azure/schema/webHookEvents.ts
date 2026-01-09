@@ -7,26 +7,26 @@
  */
 
 export interface WebHookEvents {
-  datasetCreation?: boolean
-  datasetProcessing?: boolean
-  datasetCompletion?: boolean
-  datasetDeletion?: boolean
-  modelCreation?: boolean
-  modelProcessing?: boolean
-  modelCompletion?: boolean
-  modelDeletion?: boolean
-  evaluationCreation?: boolean
-  evaluationProcessing?: boolean
-  evaluationCompletion?: boolean
-  evaluationDeletion?: boolean
-  transcriptionCreation?: boolean
-  transcriptionProcessing?: boolean
-  transcriptionCompletion?: boolean
-  transcriptionDeletion?: boolean
-  endpointCreation?: boolean
-  endpointProcessing?: boolean
-  endpointCompletion?: boolean
-  endpointDeletion?: boolean
-  ping?: boolean
-  challenge?: boolean
+  datasetCreation?: boolean;
+  datasetProcessing?: boolean;
+  datasetCompletion?: boolean;
+  datasetDeletion?: boolean;
+  modelCreation?: boolean;
+  modelProcessing?: boolean;
+  modelCompletion?: boolean;
+  modelDeletion?: boolean;
+  evaluationCreation?: boolean;
+  evaluationProcessing?: boolean;
+  evaluationCompletion?: boolean;
+  evaluationDeletion?: boolean;
+  transcriptionCreation?: boolean;
+  transcriptionProcessing?: boolean;
+  transcriptionCompletion?: boolean;
+  transcriptionDeletion?: boolean;
+  endpointCreation?: boolean;
+  endpointProcessing?: boolean;
+  endpointCompletion?: boolean;
+  endpointDeletion?: boolean;
+  ping?: boolean;
+  challenge?: boolean;
 }

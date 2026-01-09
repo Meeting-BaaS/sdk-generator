@@ -9,10 +9,10 @@
 /**
  * The type of tool call the output is required for. For now, this is always `function`.
  */
-export type RunToolCallObjectType =
-  (typeof RunToolCallObjectType)[keyof typeof RunToolCallObjectType]
+export type RunToolCallObjectType = typeof RunToolCallObjectType[keyof typeof RunToolCallObjectType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunToolCallObjectType = {
-  function: "function"
-} as const
+  function: 'function',
+} as const;

@@ -5,16 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RealtimeAudioFormatsAnyOfRate } from "./realtimeAudioFormatsAnyOfRate"
-import type { RealtimeAudioFormatsAnyOfType } from "./realtimeAudioFormatsAnyOfType"
+import type { RealtimeAudioFormatsAnyOfType } from './realtimeAudioFormatsAnyOfType';
+import type { RealtimeAudioFormatsAnyOfRate } from './realtimeAudioFormatsAnyOfRate';
 
 /**
  * The PCM audio format. Only a 24kHz sample rate is supported.
  */
 export type RealtimeAudioFormatsAnyOf = {
   /** The audio format. Always `audio/pcm`. */
-  type?: RealtimeAudioFormatsAnyOfType
+  type?: RealtimeAudioFormatsAnyOfType;
   /** The sample rate of the audio. Always `24000`. */
-  rate?: RealtimeAudioFormatsAnyOfRate
-}
+  rate?: RealtimeAudioFormatsAnyOfRate;
+};

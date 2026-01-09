@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PreRecordedResponseKind =
-  (typeof PreRecordedResponseKind)[keyof typeof PreRecordedResponseKind]
+export type PreRecordedResponseKind = typeof PreRecordedResponseKind[keyof typeof PreRecordedResponseKind];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PreRecordedResponseKind = {
-  "pre-recorded": "pre-recorded"
-} as const
+  'pre-recorded': 'pre-recorded',
+} as const;

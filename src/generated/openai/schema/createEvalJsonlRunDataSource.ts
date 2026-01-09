@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CreateEvalJsonlRunDataSourceSource } from "./createEvalJsonlRunDataSourceSource"
-import type { CreateEvalJsonlRunDataSourceType } from "./createEvalJsonlRunDataSourceType"
+import type { CreateEvalJsonlRunDataSourceType } from './createEvalJsonlRunDataSourceType';
+import type { CreateEvalJsonlRunDataSourceSource } from './createEvalJsonlRunDataSourceSource';
 
 /**
  * A JsonlRunDataSource object with that specifies a JSONL file that matches the eval 
@@ -15,7 +14,7 @@ import type { CreateEvalJsonlRunDataSourceType } from "./createEvalJsonlRunDataS
  */
 export interface CreateEvalJsonlRunDataSource {
   /** The type of data source. Always `jsonl`. */
-  type: CreateEvalJsonlRunDataSourceType
+  type: CreateEvalJsonlRunDataSourceType;
   /** Determines what populates the `item` namespace in the data source. */
-  source: CreateEvalJsonlRunDataSourceSource
+  source: CreateEvalJsonlRunDataSourceSource;
 }

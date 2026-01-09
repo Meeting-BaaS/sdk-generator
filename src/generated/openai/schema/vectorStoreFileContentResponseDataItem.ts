@@ -8,7 +8,7 @@
 
 export type VectorStoreFileContentResponseDataItem = {
   /** The content type (currently only `"text"`) */
-  type?: string
+  type?: string;
   /** The text content */
-  text?: string
-}
+  text?: string;
+};

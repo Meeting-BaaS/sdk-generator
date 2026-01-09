@@ -9,4 +9,4 @@
 /**
  * Metadata filter for the responses. This is a query parameter used to select responses.
  */
-export type EvalResponsesSourceMetadataAnyOf = { [key: string]: unknown }
+export type EvalResponsesSourceMetadataAnyOf = { [key: string]: unknown };

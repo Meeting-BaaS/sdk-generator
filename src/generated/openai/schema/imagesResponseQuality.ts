@@ -9,12 +9,12 @@
 /**
  * The quality of the image generated. Either `low`, `medium`, or `high`.
  */
-export type ImagesResponseQuality =
-  (typeof ImagesResponseQuality)[keyof typeof ImagesResponseQuality]
+export type ImagesResponseQuality = typeof ImagesResponseQuality[keyof typeof ImagesResponseQuality];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImagesResponseQuality = {
-  low: "low",
-  medium: "medium",
-  high: "high"
-} as const
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+} as const;

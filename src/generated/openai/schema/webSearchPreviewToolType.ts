@@ -9,11 +9,11 @@
 /**
  * The type of the web search tool. One of `web_search_preview` or `web_search_preview_2025_03_11`.
  */
-export type WebSearchPreviewToolType =
-  (typeof WebSearchPreviewToolType)[keyof typeof WebSearchPreviewToolType]
+export type WebSearchPreviewToolType = typeof WebSearchPreviewToolType[keyof typeof WebSearchPreviewToolType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchPreviewToolType = {
-  web_search_preview: "web_search_preview",
-  web_search_preview_2025_03_11: "web_search_preview_2025_03_11"
-} as const
+  web_search_preview: 'web_search_preview',
+  web_search_preview_2025_03_11: 'web_search_preview_2025_03_11',
+} as const;

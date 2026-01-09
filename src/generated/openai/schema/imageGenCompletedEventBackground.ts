@@ -10,12 +10,12 @@
  * The background setting for the generated image.
 
  */
-export type ImageGenCompletedEventBackground =
-  (typeof ImageGenCompletedEventBackground)[keyof typeof ImageGenCompletedEventBackground]
+export type ImageGenCompletedEventBackground = typeof ImageGenCompletedEventBackground[keyof typeof ImageGenCompletedEventBackground];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenCompletedEventBackground = {
-  transparent: "transparent",
-  opaque: "opaque",
-  auto: "auto"
-} as const
+  transparent: 'transparent',
+  opaque: 'opaque',
+  auto: 'auto',
+} as const;

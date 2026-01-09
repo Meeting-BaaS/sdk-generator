@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ListFineTuningCheckpointPermissionResponseObject =
-  (typeof ListFineTuningCheckpointPermissionResponseObject)[keyof typeof ListFineTuningCheckpointPermissionResponseObject]
+export type ListFineTuningCheckpointPermissionResponseObject = typeof ListFineTuningCheckpointPermissionResponseObject[keyof typeof ListFineTuningCheckpointPermissionResponseObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListFineTuningCheckpointPermissionResponseObject = {
-  list: "list"
-} as const
+  list: 'list',
+} as const;

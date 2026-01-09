@@ -9,10 +9,10 @@
 /**
  * Unconstrained text format. Always `text`.
  */
-export type CustomTextFormatParamType =
-  (typeof CustomTextFormatParamType)[keyof typeof CustomTextFormatParamType]
+export type CustomTextFormatParamType = typeof CustomTextFormatParamType[keyof typeof CustomTextFormatParamType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CustomTextFormatParamType = {
-  text: "text"
-} as const
+  text: 'text',
+} as const;

@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningIntegration } from "./fineTuningIntegration"
+import type { FineTuningIntegration } from './fineTuningIntegration';
 
-export type FineTuningJobIntegrations = FineTuningIntegration[] | null
+export type FineTuningJobIntegrations = FineTuningIntegration[] | null;

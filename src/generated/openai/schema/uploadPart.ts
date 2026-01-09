@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UploadPartObject } from "./uploadPartObject"
+import type { UploadPartObject } from './uploadPartObject';
 
 /**
  * The upload Part represents a chunk of bytes we can add to an Upload object.
@@ -13,11 +13,11 @@ import type { UploadPartObject } from "./uploadPartObject"
  */
 export interface UploadPart {
   /** The upload Part unique identifier, which can be referenced in API endpoints. */
-  id: string
+  id: string;
   /** The Unix timestamp (in seconds) for when the Part was created. */
-  created_at: number
+  created_at: number;
   /** The ID of the Upload object that this Part was added to. */
-  upload_id: string
+  upload_id: string;
   /** The object type, which is always `upload.part`. */
-  object: UploadPartObject
+  object: UploadPartObject;
 }

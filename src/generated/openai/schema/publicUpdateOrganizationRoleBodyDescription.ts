@@ -9,4 +9,4 @@
 /**
  * New description for the role.
  */
-export type PublicUpdateOrganizationRoleBodyDescription = string | null
+export type PublicUpdateOrganizationRoleBodyDescription = string | null;

@@ -11,7 +11,7 @@
  */
 export interface DragPoint {
   /** The x-coordinate. */
-  x: number
+  x: number;
   /** The y-coordinate. */
-  y: number
+  y: number;
 }

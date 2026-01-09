@@ -9,10 +9,10 @@
 /**
  * The outcome type. Always `exit`.
  */
-export type FunctionShellCallOutputExitOutcomeParamType =
-  (typeof FunctionShellCallOutputExitOutcomeParamType)[keyof typeof FunctionShellCallOutputExitOutcomeParamType]
+export type FunctionShellCallOutputExitOutcomeParamType = typeof FunctionShellCallOutputExitOutcomeParamType[keyof typeof FunctionShellCallOutputExitOutcomeParamType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionShellCallOutputExitOutcomeParamType = {
-  exit: "exit"
-} as const
+  exit: 'exit',
+} as const;

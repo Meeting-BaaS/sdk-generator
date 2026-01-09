@@ -9,4 +9,4 @@
 /**
  * @nullable
  */
-export type CreateRunRequestWithoutStreamToolChoiceAllOf = unknown | null
+export type CreateRunRequestWithoutStreamToolChoiceAllOf = unknown | null;

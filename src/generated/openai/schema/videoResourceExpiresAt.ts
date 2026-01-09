@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VideoResourceExpiresAt = number | null
+export type VideoResourceExpiresAt = number | null;

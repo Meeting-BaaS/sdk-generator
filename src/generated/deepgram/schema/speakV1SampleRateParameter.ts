@@ -10,38 +10,14 @@
 /**
  * SpeakV1SampleRateParameter type definition
  */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
-
-/**
- * SpeakV1SampleRateParameter type definition
- */
 export type SpeakV1SampleRateParameter = typeof SpeakV1SampleRateParameter[keyof typeof SpeakV1SampleRateParameter];
 
 export const SpeakV1SampleRateParameter = {
+  NUMBER_8000: 8000,
   NUMBER_16000: 16000,
+  NUMBER_22050: 22050,
   NUMBER_24000: 24000,
   NUMBER_32000: 32000,
   NUMBER_48000: 48000,
-  null: null,
-  NUMBER_8000: 8000,
-  NUMBER_22050: 22050
+  null: null
 } as const

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WaitType } from "./waitType"
+import type { WaitType } from './waitType';
 
 /**
  * A wait action.
@@ -15,5 +15,5 @@ export interface Wait {
   /** Specifies the event type. For a wait action, this property is 
 always set to `wait`.
  */
-  type: WaitType
+  type: WaitType;
 }

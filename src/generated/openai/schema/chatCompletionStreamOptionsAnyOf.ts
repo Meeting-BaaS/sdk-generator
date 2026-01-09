@@ -20,7 +20,7 @@ All other chunks will also include a `usage` field, but with a null
 value. **NOTE:** If the stream is interrupted, you may not receive the
 final usage chunk which contains the total token usage for the request.
  */
-  include_usage?: boolean
+  include_usage?: boolean;
   /** When true, stream obfuscation will be enabled. Stream obfuscation adds
 random characters to an `obfuscation` field on streaming delta events to
 normalize payload sizes as a mitigation to certain side-channel attacks.
@@ -29,5 +29,5 @@ of overhead to the data stream. You can set `include_obfuscation` to
 false to optimize for bandwidth if you trust the network links between
 your application and the OpenAI API.
  */
-  include_obfuscation?: boolean
-}
+  include_obfuscation?: boolean;
+};

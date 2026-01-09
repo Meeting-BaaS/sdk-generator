@@ -13,14 +13,14 @@
 `tool_calls` if the model called a tool, or `function_call` (deprecated) if the model called a function.
 
  */
-export type CreateChatCompletionResponseChoicesItemFinishReason =
-  (typeof CreateChatCompletionResponseChoicesItemFinishReason)[keyof typeof CreateChatCompletionResponseChoicesItemFinishReason]
+export type CreateChatCompletionResponseChoicesItemFinishReason = typeof CreateChatCompletionResponseChoicesItemFinishReason[keyof typeof CreateChatCompletionResponseChoicesItemFinishReason];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateChatCompletionResponseChoicesItemFinishReason = {
-  stop: "stop",
-  length: "length",
-  tool_calls: "tool_calls",
-  content_filter: "content_filter",
-  function_call: "function_call"
-} as const
+  stop: 'stop',
+  length: 'length',
+  tool_calls: 'tool_calls',
+  content_filter: 'content_filter',
+  function_call: 'function_call',
+} as const;

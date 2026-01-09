@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GroupDeletedResourceObject } from "./groupDeletedResourceObject"
+import type { GroupDeletedResourceObject } from './groupDeletedResourceObject';
 
 /**
  * Confirmation payload returned after deleting a group.
  */
 export interface GroupDeletedResource {
   /** Always `group.deleted`. */
-  object: GroupDeletedResourceObject
+  object: GroupDeletedResourceObject;
   /** Identifier of the deleted group. */
-  id: string
+  id: string;
   /** Whether the group was deleted. */
-  deleted: boolean
+  deleted: boolean;
 }

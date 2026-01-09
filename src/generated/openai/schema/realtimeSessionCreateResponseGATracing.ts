@@ -5,7 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateResponseGATracingAnyOf } from "./realtimeSessionCreateResponseGATracingAnyOf"
+import type { RealtimeSessionCreateResponseGATracingAnyOf } from './realtimeSessionCreateResponseGATracingAnyOf';
 
-export type RealtimeSessionCreateResponseGATracing =
-  RealtimeSessionCreateResponseGATracingAnyOf | null
+export type RealtimeSessionCreateResponseGATracing = RealtimeSessionCreateResponseGATracingAnyOf | null;

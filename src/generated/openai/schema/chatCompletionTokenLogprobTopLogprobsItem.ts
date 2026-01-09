@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionTokenLogprobTopLogprobsItemBytes } from "./chatCompletionTokenLogprobTopLogprobsItemBytes"
+import type { ChatCompletionTokenLogprobTopLogprobsItemBytes } from './chatCompletionTokenLogprobTopLogprobsItemBytes';
 
 export type ChatCompletionTokenLogprobTopLogprobsItem = {
   /** The token. */
-  token: string
+  token: string;
   /** The log probability of this token, if it is within the top 20 most likely tokens. Otherwise, the value `-9999.0` is used to signify that the token is very unlikely. */
-  logprob: number
-  bytes: ChatCompletionTokenLogprobTopLogprobsItemBytes
-}
+  logprob: number;
+  bytes: ChatCompletionTokenLogprobTopLogprobsItemBytes;
+};

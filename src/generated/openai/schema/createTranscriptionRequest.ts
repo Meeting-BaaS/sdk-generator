@@ -5,54 +5,53 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { AudioResponseFormat } from "./audioResponseFormat"
-import type { CreateTranscriptionRequestModel } from "./createTranscriptionRequestModel"
-import type { CreateTranscriptionRequestStream } from "./createTranscriptionRequestStream"
-import type { CreateTranscriptionRequestTimestampGranularitiesItem } from "./createTranscriptionRequestTimestampGranularitiesItem"
-import type { TranscriptionChunkingStrategy } from "./transcriptionChunkingStrategy"
-import type { TranscriptionInclude } from "./transcriptionInclude"
+import type { CreateTranscriptionRequestModel } from './createTranscriptionRequestModel';
+import type { AudioResponseFormat } from './audioResponseFormat';
+import type { TranscriptionInclude } from './transcriptionInclude';
+import type { CreateTranscriptionRequestTimestampGranularitiesItem } from './createTranscriptionRequestTimestampGranularitiesItem';
+import type { CreateTranscriptionRequestStream } from './createTranscriptionRequestStream';
+import type { TranscriptionChunkingStrategy } from './transcriptionChunkingStrategy';
 
 export interface CreateTranscriptionRequest {
   /** The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
-   */
-  file: Blob
+ */
+  file: Blob;
   /** ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.
-   */
-  model: CreateTranscriptionRequestModel
+ */
+  model: CreateTranscriptionRequestModel;
   /** The language of the input audio. Supplying the input language in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format will improve accuracy and latency.
-   */
-  language?: string
+ */
+  language?: string;
   /** An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.
-   */
-  prompt?: string
-  response_format?: AudioResponseFormat
+ */
+  prompt?: string;
+  response_format?: AudioResponseFormat;
   /** The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.
-   */
-  temperature?: number
+ */
+  temperature?: number;
   /** Additional information to include in the transcription response.
 `logprobs` will return the log probabilities of the tokens in the
 response to understand the model's confidence in the transcription.
 `logprobs` only works with response_format set to `json` and only with
 the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`. This field is not supported when using `gpt-4o-transcribe-diarize`.
  */
-  include?: TranscriptionInclude[]
+  include?: TranscriptionInclude[];
   /** The timestamp granularities to populate for this transcription. `response_format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`. Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
 This option is not available for `gpt-4o-transcribe-diarize`.
  */
-  timestamp_granularities?: CreateTranscriptionRequestTimestampGranularitiesItem[]
-  stream?: CreateTranscriptionRequestStream
-  chunking_strategy?: TranscriptionChunkingStrategy
+  timestamp_granularities?: CreateTranscriptionRequestTimestampGranularitiesItem[];
+  stream?: CreateTranscriptionRequestStream;
+  chunking_strategy?: TranscriptionChunkingStrategy;
   /**
    * Optional list of speaker names that correspond to the audio samples provided in `known_speaker_references[]`. Each entry should be a short identifier (for example `customer` or `agent`). Up to 4 speakers are supported.
 
    * @maxItems 4
    */
-  known_speaker_names?: string[]
+  known_speaker_names?: string[];
   /**
    * Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs)) that contain known speaker references matching `known_speaker_names[]`. Each sample must be between 2 and 10 seconds, and can use any of the same input audio formats supported by `file`.
 
    * @maxItems 4
    */
-  known_speaker_references?: string[]
+  known_speaker_references?: string[];
 }

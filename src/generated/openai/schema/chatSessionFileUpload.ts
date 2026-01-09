@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatSessionFileUploadMaxFileSize } from "./chatSessionFileUploadMaxFileSize"
-import type { ChatSessionFileUploadMaxFiles } from "./chatSessionFileUploadMaxFiles"
+import type { ChatSessionFileUploadMaxFileSize } from './chatSessionFileUploadMaxFileSize';
+import type { ChatSessionFileUploadMaxFiles } from './chatSessionFileUploadMaxFiles';
 
 /**
  * Upload permissions and limits applied to the session.
  */
 export interface ChatSessionFileUpload {
   /** Indicates if uploads are enabled for the session. */
-  enabled: boolean
-  max_file_size: ChatSessionFileUploadMaxFileSize
-  max_files: ChatSessionFileUploadMaxFiles
+  enabled: boolean;
+  max_file_size: ChatSessionFileUploadMaxFileSize;
+  max_files: ChatSessionFileUploadMaxFiles;
 }

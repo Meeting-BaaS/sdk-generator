@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GroupUserAssignmentObject } from "./groupUserAssignmentObject"
+import type { GroupUserAssignmentObject } from './groupUserAssignmentObject';
 
 /**
  * Confirmation payload returned after adding a user to a group.
  */
 export interface GroupUserAssignment {
   /** Always `group.user`. */
-  object: GroupUserAssignmentObject
+  object: GroupUserAssignmentObject;
   /** Identifier of the user that was added. */
-  user_id: string
+  user_id: string;
   /** Identifier of the group the user was added to. */
-  group_id: string
+  group_id: string;
 }

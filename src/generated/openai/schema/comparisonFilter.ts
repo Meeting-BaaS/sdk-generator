@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComparisonFilterType } from "./comparisonFilterType"
-import type { ComparisonFilterValue } from "./comparisonFilterValue"
+import type { ComparisonFilterType } from './comparisonFilterType';
+import type { ComparisonFilterValue } from './comparisonFilterValue';
 
 /**
  * A filter used to compare a specified attribute key to a given value using a defined comparison operation.
@@ -23,9 +23,9 @@ export interface ComparisonFilter {
 - `in`: in
 - `nin`: not in
  */
-  type: ComparisonFilterType
+  type: ComparisonFilterType;
   /** The key to compare against the value. */
-  key: string
+  key: string;
   /** The value to compare against the attribute key; supports string, number, or boolean types. */
-  value: ComparisonFilterValue
+  value: ComparisonFilterValue;
 }

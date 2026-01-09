@@ -9,10 +9,10 @@
 /**
  * The type of the input item. Always `input_image`.
  */
-export type InputImageContentParamAutoParamType =
-  (typeof InputImageContentParamAutoParamType)[keyof typeof InputImageContentParamAutoParamType]
+export type InputImageContentParamAutoParamType = typeof InputImageContentParamAutoParamType[keyof typeof InputImageContentParamAutoParamType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputImageContentParamAutoParamType = {
-  input_image: "input_image"
-} as const
+  input_image: 'input_image',
+} as const;

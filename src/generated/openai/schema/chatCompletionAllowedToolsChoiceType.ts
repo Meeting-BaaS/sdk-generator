@@ -9,10 +9,10 @@
 /**
  * Allowed tool configuration type. Always `allowed_tools`.
  */
-export type ChatCompletionAllowedToolsChoiceType =
-  (typeof ChatCompletionAllowedToolsChoiceType)[keyof typeof ChatCompletionAllowedToolsChoiceType]
+export type ChatCompletionAllowedToolsChoiceType = typeof ChatCompletionAllowedToolsChoiceType[keyof typeof ChatCompletionAllowedToolsChoiceType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionAllowedToolsChoiceType = {
-  allowed_tools: "allowed_tools"
-} as const
+  allowed_tools: 'allowed_tools',
+} as const;

@@ -6,12 +6,13 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VideoSize = (typeof VideoSize)[keyof typeof VideoSize]
+export type VideoSize = typeof VideoSize[keyof typeof VideoSize];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoSize = {
-  "720x1280": "720x1280",
-  "1280x720": "1280x720",
-  "1024x1792": "1024x1792",
-  "1792x1024": "1792x1024"
-} as const
+  '720x1280': '720x1280',
+  '1280x720': '1280x720',
+  '1024x1792': '1024x1792',
+  '1792x1024': '1792x1024',
+} as const;

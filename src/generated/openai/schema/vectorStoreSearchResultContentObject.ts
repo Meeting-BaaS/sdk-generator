@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreSearchResultContentObjectType } from "./vectorStoreSearchResultContentObjectType"
+import type { VectorStoreSearchResultContentObjectType } from './vectorStoreSearchResultContentObjectType';
 
 export interface VectorStoreSearchResultContentObject {
   /** The type of content. */
-  type: VectorStoreSearchResultContentObjectType
+  type: VectorStoreSearchResultContentObjectType;
   /** The text content returned from search. */
-  text: string
+  text: string;
 }

@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { FineTuneReinforcementHyperparameters } from "./fineTuneReinforcementHyperparameters"
-import type { FineTuneReinforcementMethodGrader } from "./fineTuneReinforcementMethodGrader"
+import type { FineTuneReinforcementMethodGrader } from './fineTuneReinforcementMethodGrader';
+import type { FineTuneReinforcementHyperparameters } from './fineTuneReinforcementHyperparameters';
 
 /**
  * Configuration for the reinforcement fine-tuning method.
  */
 export interface FineTuneReinforcementMethod {
   /** The grader used for the fine-tuning job. */
-  grader: FineTuneReinforcementMethodGrader
-  hyperparameters?: FineTuneReinforcementHyperparameters
+  grader: FineTuneReinforcementMethodGrader;
+  hyperparameters?: FineTuneReinforcementHyperparameters;
 }

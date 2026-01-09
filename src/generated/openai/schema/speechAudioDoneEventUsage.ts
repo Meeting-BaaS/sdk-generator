@@ -12,9 +12,9 @@
  */
 export type SpeechAudioDoneEventUsage = {
   /** Number of input tokens in the prompt. */
-  input_tokens: number
+  input_tokens: number;
   /** Number of output tokens generated. */
-  output_tokens: number
+  output_tokens: number;
   /** Total number of tokens used (input + output). */
-  total_tokens: number
-}
+  total_tokens: number;
+};

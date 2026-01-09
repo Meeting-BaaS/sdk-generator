@@ -9,10 +9,10 @@
 /**
  * Always `image_url`.
  */
-export type MessageDeltaContentImageUrlObjectType =
-  (typeof MessageDeltaContentImageUrlObjectType)[keyof typeof MessageDeltaContentImageUrlObjectType]
+export type MessageDeltaContentImageUrlObjectType = typeof MessageDeltaContentImageUrlObjectType[keyof typeof MessageDeltaContentImageUrlObjectType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageDeltaContentImageUrlObjectType = {
-  image_url: "image_url"
-} as const
+  image_url: 'image_url',
+} as const;

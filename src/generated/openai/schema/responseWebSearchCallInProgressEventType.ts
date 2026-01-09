@@ -10,10 +10,10 @@
  * The type of the event. Always `response.web_search_call.in_progress`.
 
  */
-export type ResponseWebSearchCallInProgressEventType =
-  (typeof ResponseWebSearchCallInProgressEventType)[keyof typeof ResponseWebSearchCallInProgressEventType]
+export type ResponseWebSearchCallInProgressEventType = typeof ResponseWebSearchCallInProgressEventType[keyof typeof ResponseWebSearchCallInProgressEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseWebSearchCallInProgressEventType = {
-  responseweb_search_callin_progress: "response.web_search_call.in_progress"
-} as const
+  responseweb_search_callin_progress: 'response.web_search_call.in_progress',
+} as const;

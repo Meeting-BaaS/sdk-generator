@@ -10,12 +10,12 @@
  * The output format for the requested image.
 
  */
-export type ImageGenPartialImageEventOutputFormat =
-  (typeof ImageGenPartialImageEventOutputFormat)[keyof typeof ImageGenPartialImageEventOutputFormat]
+export type ImageGenPartialImageEventOutputFormat = typeof ImageGenPartialImageEventOutputFormat[keyof typeof ImageGenPartialImageEventOutputFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenPartialImageEventOutputFormat = {
-  png: "png",
-  webp: "webp",
-  jpeg: "jpeg"
-} as const
+  png: 'png',
+  webp: 'webp',
+  jpeg: 'jpeg',
+} as const;

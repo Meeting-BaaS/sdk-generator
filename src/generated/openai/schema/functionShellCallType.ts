@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `shell_call`.
  */
-export type FunctionShellCallType =
-  (typeof FunctionShellCallType)[keyof typeof FunctionShellCallType]
+export type FunctionShellCallType = typeof FunctionShellCallType[keyof typeof FunctionShellCallType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionShellCallType = {
-  shell_call: "shell_call"
-} as const
+  shell_call: 'shell_call',
+} as const;

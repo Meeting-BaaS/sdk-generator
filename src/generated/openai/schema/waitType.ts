@@ -11,9 +11,10 @@
 always set to `wait`.
 
  */
-export type WaitType = (typeof WaitType)[keyof typeof WaitType]
+export type WaitType = typeof WaitType[keyof typeof WaitType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WaitType = {
-  wait: "wait"
-} as const
+  wait: 'wait',
+} as const;

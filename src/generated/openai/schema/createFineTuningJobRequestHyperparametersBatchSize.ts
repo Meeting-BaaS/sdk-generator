@@ -11,4 +11,4 @@
 are updated less frequently, but with lower variance.
 
  */
-export type CreateFineTuningJobRequestHyperparametersBatchSize = "auto" | number
+export type CreateFineTuningJobRequestHyperparametersBatchSize = 'auto' | number;

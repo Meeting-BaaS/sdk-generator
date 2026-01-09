@@ -9,10 +9,10 @@
 /**
  * The type of content.
  */
-export type VectorStoreSearchResultContentObjectType =
-  (typeof VectorStoreSearchResultContentObjectType)[keyof typeof VectorStoreSearchResultContentObjectType]
+export type VectorStoreSearchResultContentObjectType = typeof VectorStoreSearchResultContentObjectType[keyof typeof VectorStoreSearchResultContentObjectType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreSearchResultContentObjectType = {
-  text: "text"
-} as const
+  text: 'text',
+} as const;

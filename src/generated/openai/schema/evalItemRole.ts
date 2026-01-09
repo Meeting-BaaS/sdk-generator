@@ -11,12 +11,13 @@
 `developer`.
 
  */
-export type EvalItemRole = (typeof EvalItemRole)[keyof typeof EvalItemRole]
+export type EvalItemRole = typeof EvalItemRole[keyof typeof EvalItemRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalItemRole = {
-  user: "user",
-  assistant: "assistant",
-  system: "system",
-  developer: "developer"
-} as const
+  user: 'user',
+  assistant: 'assistant',
+  system: 'system',
+  developer: 'developer',
+} as const;

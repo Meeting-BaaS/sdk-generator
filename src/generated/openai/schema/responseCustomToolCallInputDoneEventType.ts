@@ -9,10 +9,10 @@
 /**
  * The event type identifier.
  */
-export type ResponseCustomToolCallInputDoneEventType =
-  (typeof ResponseCustomToolCallInputDoneEventType)[keyof typeof ResponseCustomToolCallInputDoneEventType]
+export type ResponseCustomToolCallInputDoneEventType = typeof ResponseCustomToolCallInputDoneEventType[keyof typeof ResponseCustomToolCallInputDoneEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCustomToolCallInputDoneEventType = {
-  responsecustom_tool_call_inputdone: "response.custom_tool_call_input.done"
-} as const
+  responsecustom_tool_call_inputdone: 'response.custom_tool_call_input.done',
+} as const;

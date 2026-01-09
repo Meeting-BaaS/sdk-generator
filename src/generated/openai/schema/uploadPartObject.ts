@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `upload.part`.
  */
-export type UploadPartObject = (typeof UploadPartObject)[keyof typeof UploadPartObject]
+export type UploadPartObject = typeof UploadPartObject[keyof typeof UploadPartObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UploadPartObject = {
-  uploadpart: "upload.part"
-} as const
+  uploadpart: 'upload.part',
+} as const;

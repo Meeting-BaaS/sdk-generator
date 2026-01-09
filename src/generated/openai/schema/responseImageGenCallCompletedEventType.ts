@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.image_generation_call.completed'.
  */
-export type ResponseImageGenCallCompletedEventType =
-  (typeof ResponseImageGenCallCompletedEventType)[keyof typeof ResponseImageGenCallCompletedEventType]
+export type ResponseImageGenCallCompletedEventType = typeof ResponseImageGenCallCompletedEventType[keyof typeof ResponseImageGenCallCompletedEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseImageGenCallCompletedEventType = {
-  responseimage_generation_callcompleted: "response.image_generation_call.completed"
-} as const
+  responseimage_generation_callcompleted: 'response.image_generation_call.completed',
+} as const;

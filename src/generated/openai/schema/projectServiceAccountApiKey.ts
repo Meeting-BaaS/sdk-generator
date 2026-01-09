@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectServiceAccountApiKeyObject } from "./projectServiceAccountApiKeyObject"
+import type { ProjectServiceAccountApiKeyObject } from './projectServiceAccountApiKeyObject';
 
 export interface ProjectServiceAccountApiKey {
   /** The object type, which is always `organization.project.service_account.api_key` */
-  object: ProjectServiceAccountApiKeyObject
-  value: string
-  name: string
-  created_at: number
-  id: string
+  object: ProjectServiceAccountApiKeyObject;
+  value: string;
+  name: string;
+  created_at: number;
+  id: string;
 }

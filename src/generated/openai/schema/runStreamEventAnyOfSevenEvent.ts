@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunStreamEventAnyOfSevenEvent =
-  (typeof RunStreamEventAnyOfSevenEvent)[keyof typeof RunStreamEventAnyOfSevenEvent]
+export type RunStreamEventAnyOfSevenEvent = typeof RunStreamEventAnyOfSevenEvent[keyof typeof RunStreamEventAnyOfSevenEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStreamEventAnyOfSevenEvent = {
-  threadrunrequires_action: "thread.run.requires_action"
-} as const
+  threadrunrequires_action: 'thread.run.requires_action',
+} as const;

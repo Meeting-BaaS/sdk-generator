@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `file`.
  */
-export type FileAnnotationSourceType =
-  (typeof FileAnnotationSourceType)[keyof typeof FileAnnotationSourceType]
+export type FileAnnotationSourceType = typeof FileAnnotationSourceType[keyof typeof FileAnnotationSourceType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileAnnotationSourceType = {
-  file: "file"
-} as const
+  file: 'file',
+} as const;

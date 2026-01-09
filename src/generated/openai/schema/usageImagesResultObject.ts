@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageImagesResultObject =
-  (typeof UsageImagesResultObject)[keyof typeof UsageImagesResultObject]
+export type UsageImagesResultObject = typeof UsageImagesResultObject[keyof typeof UsageImagesResultObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageImagesResultObject = {
-  organizationusageimagesresult: "organization.usage.images.result"
-} as const
+  organizationusageimagesresult: 'organization.usage.images.result',
+} as const;

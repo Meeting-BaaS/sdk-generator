@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSession } from "./realtimeSession"
+import type { RealtimeSession } from './realtimeSession';
 
 /**
  * Returned when a Session is created. Emitted automatically when a new
@@ -15,8 +15,8 @@ the default Session configuration.
  */
 export interface RealtimeBetaServerEventSessionCreated {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `session.created`. */
-  type: "session.created"
-  session: RealtimeSession
+  type: 'session.created';
+  session: RealtimeSession;
 }

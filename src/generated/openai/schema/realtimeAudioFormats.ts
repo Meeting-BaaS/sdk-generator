@@ -5,11 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormatsAnyOf } from "./realtimeAudioFormatsAnyOf"
-import type { RealtimeAudioFormatsAnyOfFour } from "./realtimeAudioFormatsAnyOfFour"
-import type { RealtimeAudioFormatsAnyOfSix } from "./realtimeAudioFormatsAnyOfSix"
+import type { RealtimeAudioFormatsAnyOf } from './realtimeAudioFormatsAnyOf';
+import type { RealtimeAudioFormatsAnyOfFour } from './realtimeAudioFormatsAnyOfFour';
+import type { RealtimeAudioFormatsAnyOfSix } from './realtimeAudioFormatsAnyOfSix';
 
-export type RealtimeAudioFormats =
-  | RealtimeAudioFormatsAnyOf
-  | RealtimeAudioFormatsAnyOfFour
-  | RealtimeAudioFormatsAnyOfSix
+export type RealtimeAudioFormats = RealtimeAudioFormatsAnyOf | RealtimeAudioFormatsAnyOfFour | RealtimeAudioFormatsAnyOfSix;

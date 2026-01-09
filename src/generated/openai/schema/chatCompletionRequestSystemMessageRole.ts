@@ -9,10 +9,10 @@
 /**
  * The role of the messages author, in this case `system`.
  */
-export type ChatCompletionRequestSystemMessageRole =
-  (typeof ChatCompletionRequestSystemMessageRole)[keyof typeof ChatCompletionRequestSystemMessageRole]
+export type ChatCompletionRequestSystemMessageRole = typeof ChatCompletionRequestSystemMessageRole[keyof typeof ChatCompletionRequestSystemMessageRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestSystemMessageRole = {
-  system: "system"
-} as const
+  system: 'system',
+} as const;

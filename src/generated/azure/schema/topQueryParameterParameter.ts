@@ -9,4 +9,4 @@
 /**
  * Number of datasets that will be included after skipping.
  */
-export type TopQueryParameterParameter = number
+export type TopQueryParameterParameter = number;

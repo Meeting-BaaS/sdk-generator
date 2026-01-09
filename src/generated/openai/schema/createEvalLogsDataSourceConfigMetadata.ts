@@ -9,4 +9,4 @@
 /**
  * Metadata filters for the logs data source.
  */
-export type CreateEvalLogsDataSourceConfigMetadata = { [key: string]: unknown }
+export type CreateEvalLogsDataSourceConfigMetadata = { [key: string]: unknown };

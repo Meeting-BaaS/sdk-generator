@@ -11,5 +11,5 @@
  */
 export type AuditLogApiKeyUpdatedChangesRequested = {
   /** A list of scopes allowed for the API key, e.g. `["api.model.request"]` */
-  scopes?: string[]
-}
+  scopes?: string[];
+};

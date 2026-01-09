@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchCreateFileOperationType } from "./applyPatchCreateFileOperationType"
+import type { ApplyPatchCreateFileOperationType } from './applyPatchCreateFileOperationType';
 
 /**
  * Instruction describing how to create a file via the apply_patch tool.
  */
 export interface ApplyPatchCreateFileOperation {
   /** Create a new file with the provided diff. */
-  type: ApplyPatchCreateFileOperationType
+  type: ApplyPatchCreateFileOperationType;
   /** Path of the file to create. */
-  path: string
+  path: string;
   /** Diff to apply. */
-  diff: string
+  diff: string;
 }

@@ -5,9 +5,9 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { CustomModelDeprecationDates } from "./customModelDeprecationDates"
-import type { CustomModelFeatures } from "./customModelFeatures"
-import type { EntityError } from "./entityError"
+import type { CustomModelDeprecationDates } from './customModelDeprecationDates';
+import type { CustomModelFeatures } from './customModelFeatures';
+import type { EntityError } from './entityError';
 
 export interface CustomModelProperties {
   /**
@@ -17,11 +17,11 @@ Start without using this property. If needed, choose a larger (or smaller) weigh
    * @minimum 1
    * @maximum 100
    */
-  customModelWeightPercent?: number
-  deprecationDates?: CustomModelDeprecationDates
-  features?: CustomModelFeatures
+  customModelWeightPercent?: number;
+  deprecationDates?: CustomModelDeprecationDates;
+  features?: CustomModelFeatures;
   /** The email address to send email notifications to in case the operation completes.
 The value will be removed after successfully sending the email. */
-  email?: string
-  error?: EntityError
+  email?: string;
+  error?: EntityError;
 }

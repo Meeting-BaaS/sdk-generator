@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModerationImageURLInput } from "./moderationImageURLInput"
-import type { ModerationTextInput } from "./moderationTextInput"
+import type { ModerationImageURLInput } from './moderationImageURLInput';
+import type { ModerationTextInput } from './moderationTextInput';
 
-export type CreateModerationRequestInputAnyOfItem = ModerationImageURLInput | ModerationTextInput
+export type CreateModerationRequestInputAnyOfItem = ModerationImageURLInput | ModerationTextInput;

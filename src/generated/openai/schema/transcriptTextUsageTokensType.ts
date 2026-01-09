@@ -9,10 +9,10 @@
 /**
  * The type of the usage object. Always `tokens` for this variant.
  */
-export type TranscriptTextUsageTokensType =
-  (typeof TranscriptTextUsageTokensType)[keyof typeof TranscriptTextUsageTokensType]
+export type TranscriptTextUsageTokensType = typeof TranscriptTextUsageTokensType[keyof typeof TranscriptTextUsageTokensType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptTextUsageTokensType = {
-  tokens: "tokens"
-} as const
+  tokens: 'tokens',
+} as const;

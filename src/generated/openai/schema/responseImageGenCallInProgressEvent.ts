@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseImageGenCallInProgressEventType } from "./responseImageGenCallInProgressEventType"
+import type { ResponseImageGenCallInProgressEventType } from './responseImageGenCallInProgressEventType';
 
 /**
  * Emitted when an image generation tool call is in progress.
@@ -13,11 +13,11 @@ import type { ResponseImageGenCallInProgressEventType } from "./responseImageGen
  */
 export interface ResponseImageGenCallInProgressEvent {
   /** The type of the event. Always 'response.image_generation_call.in_progress'. */
-  type: ResponseImageGenCallInProgressEventType
+  type: ResponseImageGenCallInProgressEventType;
   /** The index of the output item in the response's output array. */
-  output_index: number
+  output_index: number;
   /** The unique identifier of the image generation item being processed. */
-  item_id: string
+  item_id: string;
   /** The sequence number of the image generation item being processed. */
-  sequence_number: number
+  sequence_number: number;
 }

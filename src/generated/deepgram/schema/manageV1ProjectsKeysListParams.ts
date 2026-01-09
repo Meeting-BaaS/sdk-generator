@@ -6,11 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ManageV1ProjectKeysStatusParameter } from "./manageV1ProjectKeysStatusParameter"
+import type { ManageV1ProjectKeysStatusParameter } from './manageV1ProjectKeysStatusParameter';
 
 export type ManageV1ProjectsKeysListParams = {
-  /**
-   * Only return keys with a specific status
-   */
-  status?: ManageV1ProjectKeysStatusParameter
-}
+/**
+ * Only return keys with a specific status
+ */
+status?: ManageV1ProjectKeysStatusParameter;
+};

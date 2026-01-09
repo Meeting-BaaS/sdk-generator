@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseCodeInterpreterCallCodeDoneEventType } from "./responseCodeInterpreterCallCodeDoneEventType"
+import type { ResponseCodeInterpreterCallCodeDoneEventType } from './responseCodeInterpreterCallCodeDoneEventType';
 
 /**
  * Emitted when the code snippet is finalized by the code interpreter.
  */
 export interface ResponseCodeInterpreterCallCodeDoneEvent {
   /** The type of the event. Always `response.code_interpreter_call_code.done`. */
-  type: ResponseCodeInterpreterCallCodeDoneEventType
+  type: ResponseCodeInterpreterCallCodeDoneEventType;
   /** The index of the output item in the response for which the code is finalized. */
-  output_index: number
+  output_index: number;
   /** The unique identifier of the code interpreter tool call item. */
-  item_id: string
+  item_id: string;
   /** The final code snippet output by the code interpreter. */
-  code: string
+  code: string;
   /** The sequence number of this event, used to order streaming events. */
-  sequence_number: number
+  sequence_number: number;
 }

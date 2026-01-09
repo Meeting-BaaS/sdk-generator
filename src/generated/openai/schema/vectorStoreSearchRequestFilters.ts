@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComparisonFilter } from "./comparisonFilter"
-import type { CompoundFilter } from "./compoundFilter"
+import type { ComparisonFilter } from './comparisonFilter';
+import type { CompoundFilter } from './compoundFilter';
 
 /**
  * A filter to apply based on file attributes.
  */
-export type VectorStoreSearchRequestFilters = ComparisonFilter | CompoundFilter
+export type VectorStoreSearchRequestFilters = ComparisonFilter | CompoundFilter;

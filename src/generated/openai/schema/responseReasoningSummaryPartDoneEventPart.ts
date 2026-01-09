@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseReasoningSummaryPartDoneEventPartType } from "./responseReasoningSummaryPartDoneEventPartType"
+import type { ResponseReasoningSummaryPartDoneEventPartType } from './responseReasoningSummaryPartDoneEventPartType';
 
 /**
  * The completed summary part.
@@ -13,7 +13,7 @@ import type { ResponseReasoningSummaryPartDoneEventPartType } from "./responseRe
  */
 export type ResponseReasoningSummaryPartDoneEventPart = {
   /** The type of the summary part. Always `summary_text`. */
-  type: ResponseReasoningSummaryPartDoneEventPartType
+  type: ResponseReasoningSummaryPartDoneEventPartType;
   /** The text of the summary part. */
-  text: string
-}
+  text: string;
+};

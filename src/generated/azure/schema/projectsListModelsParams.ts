@@ -5,19 +5,19 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { SkipQueryParameterParameter } from "./skipQueryParameterParameter"
-import type { TopQueryParameterParameter } from "./topQueryParameterParameter"
+import type { SkipQueryParameterParameter } from './skipQueryParameterParameter';
+import type { TopQueryParameterParameter } from './topQueryParameterParameter';
 
 export type ProjectsListModelsParams = {
-  /**
-   * Number of datasets that will be skipped.
-   */
-  skip?: SkipQueryParameterParameter
-  /**
-   * Number of datasets that will be included after skipping.
-   */
-  top?: TopQueryParameterParameter
-  /**
+/**
+ * Number of datasets that will be skipped.
+ */
+skip?: SkipQueryParameterParameter;
+/**
+ * Number of datasets that will be included after skipping.
+ */
+top?: TopQueryParameterParameter;
+/**
  * A filtering expression for selecting a subset of the available models.
             - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.
               - Operators:
@@ -27,5 +27,5 @@ export type ProjectsListModelsParams = {
             - Example:
               filter=status eq 'NotStarted' or status eq 'Running'
  */
-  filter?: string
-}
+filter?: string;
+};

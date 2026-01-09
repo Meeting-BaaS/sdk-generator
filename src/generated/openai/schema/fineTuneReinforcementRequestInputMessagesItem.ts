@@ -5,13 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestDeveloperMessage } from "./chatCompletionRequestDeveloperMessage"
-import type { ChatCompletionRequestToolMessage } from "./chatCompletionRequestToolMessage"
-import type { ChatCompletionRequestUserMessage } from "./chatCompletionRequestUserMessage"
-import type { FineTuneChatCompletionRequestAssistantMessage } from "./fineTuneChatCompletionRequestAssistantMessage"
+import type { ChatCompletionRequestDeveloperMessage } from './chatCompletionRequestDeveloperMessage';
+import type { ChatCompletionRequestUserMessage } from './chatCompletionRequestUserMessage';
+import type { FineTuneChatCompletionRequestAssistantMessage } from './fineTuneChatCompletionRequestAssistantMessage';
+import type { ChatCompletionRequestToolMessage } from './chatCompletionRequestToolMessage';
 
-export type FineTuneReinforcementRequestInputMessagesItem =
-  | ChatCompletionRequestDeveloperMessage
-  | ChatCompletionRequestUserMessage
-  | FineTuneChatCompletionRequestAssistantMessage
-  | ChatCompletionRequestToolMessage
+export type FineTuneReinforcementRequestInputMessagesItem = ChatCompletionRequestDeveloperMessage | ChatCompletionRequestUserMessage | FineTuneChatCompletionRequestAssistantMessage | ChatCompletionRequestToolMessage;

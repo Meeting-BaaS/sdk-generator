@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StopRecordingAckMessageType =
-  (typeof StopRecordingAckMessageType)[keyof typeof StopRecordingAckMessageType]
+export type StopRecordingAckMessageType = typeof StopRecordingAckMessageType[keyof typeof StopRecordingAckMessageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StopRecordingAckMessageType = {
-  stop_recording: "stop_recording"
-} as const
+  stop_recording: 'stop_recording',
+} as const;

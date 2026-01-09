@@ -9,5 +9,5 @@
 export interface EndpointPropertiesUpdate {
   /** A value indicating whether content logging (audio & transcriptions)
 is being used for a deployment. */
-  contentLoggingEnabled?: boolean
+  contentLoggingEnabled?: boolean;
 }

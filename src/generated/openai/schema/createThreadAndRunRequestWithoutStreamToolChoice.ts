@@ -5,8 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantsApiToolChoiceOption } from "./assistantsApiToolChoiceOption"
-import type { CreateThreadAndRunRequestWithoutStreamToolChoiceAllOf } from "./createThreadAndRunRequestWithoutStreamToolChoiceAllOf"
+import type { AssistantsApiToolChoiceOption } from './assistantsApiToolChoiceOption';
+import type { CreateThreadAndRunRequestWithoutStreamToolChoiceAllOf } from './createThreadAndRunRequestWithoutStreamToolChoiceAllOf';
 
-export type CreateThreadAndRunRequestWithoutStreamToolChoice = AssistantsApiToolChoiceOption &
-  CreateThreadAndRunRequestWithoutStreamToolChoiceAllOf
+export type CreateThreadAndRunRequestWithoutStreamToolChoice = AssistantsApiToolChoiceOption & CreateThreadAndRunRequestWithoutStreamToolChoiceAllOf;

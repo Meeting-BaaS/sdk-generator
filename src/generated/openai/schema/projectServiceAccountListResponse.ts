@@ -5,14 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ProjectServiceAccount } from "./projectServiceAccount"
-import type { ProjectServiceAccountListResponseObject } from "./projectServiceAccountListResponseObject"
+import type { ProjectServiceAccountListResponseObject } from './projectServiceAccountListResponseObject';
+import type { ProjectServiceAccount } from './projectServiceAccount';
 
 export interface ProjectServiceAccountListResponse {
-  object: ProjectServiceAccountListResponseObject
-  data: ProjectServiceAccount[]
-  first_id: string
-  last_id: string
-  has_more: boolean
+  object: ProjectServiceAccountListResponseObject;
+  data: ProjectServiceAccount[];
+  first_id: string;
+  last_id: string;
+  has_more: boolean;
 }

@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `organization.project.service_account`
  */
-export type ProjectServiceAccountObject =
-  (typeof ProjectServiceAccountObject)[keyof typeof ProjectServiceAccountObject]
+export type ProjectServiceAccountObject = typeof ProjectServiceAccountObject[keyof typeof ProjectServiceAccountObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectServiceAccountObject = {
-  organizationprojectservice_account: "organization.project.service_account"
-} as const
+  organizationprojectservice_account: 'organization.project.service_account',
+} as const;

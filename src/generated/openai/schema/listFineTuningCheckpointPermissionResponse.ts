@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningCheckpointPermission } from "./fineTuningCheckpointPermission"
-import type { ListFineTuningCheckpointPermissionResponseFirstId } from "./listFineTuningCheckpointPermissionResponseFirstId"
-import type { ListFineTuningCheckpointPermissionResponseLastId } from "./listFineTuningCheckpointPermissionResponseLastId"
-import type { ListFineTuningCheckpointPermissionResponseObject } from "./listFineTuningCheckpointPermissionResponseObject"
+import type { FineTuningCheckpointPermission } from './fineTuningCheckpointPermission';
+import type { ListFineTuningCheckpointPermissionResponseObject } from './listFineTuningCheckpointPermissionResponseObject';
+import type { ListFineTuningCheckpointPermissionResponseFirstId } from './listFineTuningCheckpointPermissionResponseFirstId';
+import type { ListFineTuningCheckpointPermissionResponseLastId } from './listFineTuningCheckpointPermissionResponseLastId';
 
 export interface ListFineTuningCheckpointPermissionResponse {
-  data: FineTuningCheckpointPermission[]
-  object: ListFineTuningCheckpointPermissionResponseObject
-  first_id?: ListFineTuningCheckpointPermissionResponseFirstId
-  last_id?: ListFineTuningCheckpointPermissionResponseLastId
-  has_more: boolean
+  data: FineTuningCheckpointPermission[];
+  object: ListFineTuningCheckpointPermissionResponseObject;
+  first_id?: ListFineTuningCheckpointPermissionResponseFirstId;
+  last_id?: ListFineTuningCheckpointPermissionResponseLastId;
+  has_more: boolean;
 }

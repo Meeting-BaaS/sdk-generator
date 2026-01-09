@@ -11,9 +11,9 @@
  */
 export type AuditLogIpAllowlistCreated = {
   /** The ID of the IP allowlist configuration. */
-  id?: string
+  id?: string;
   /** The name of the IP allowlist configuration. */
-  name?: string
+  name?: string;
   /** The IP addresses or CIDR ranges included in the configuration. */
-  allowed_ips?: string[]
-}
+  allowed_ips?: string[];
+};

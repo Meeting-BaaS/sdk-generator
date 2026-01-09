@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileSearchToolCallResultsAnyOfItem } from "./fileSearchToolCallResultsAnyOfItem"
+import type { FileSearchToolCallResultsAnyOfItem } from './fileSearchToolCallResultsAnyOfItem';
 
-export type FileSearchToolCallResults = FileSearchToolCallResultsAnyOfItem[] | null
+export type FileSearchToolCallResults = FileSearchToolCallResultsAnyOfItem[] | null;

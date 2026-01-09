@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogExternalKeyRegisteredData } from "./auditLogExternalKeyRegisteredData"
+import type { AuditLogExternalKeyRegisteredData } from './auditLogExternalKeyRegisteredData';
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogExternalKeyRegistered = {
   /** The ID of the external key configuration. */
-  id?: string
+  id?: string;
   /** The configuration for the external key. */
-  data?: AuditLogExternalKeyRegisteredData
-}
+  data?: AuditLogExternalKeyRegisteredData;
+};

@@ -10,13 +10,12 @@
  * The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024`.
  * @nullable
  */
-export type CreateImageVariationRequestSize =
-  | (typeof CreateImageVariationRequestSize)[keyof typeof CreateImageVariationRequestSize]
-  | null
+export type CreateImageVariationRequestSize = typeof CreateImageVariationRequestSize[keyof typeof CreateImageVariationRequestSize] | null;
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageVariationRequestSize = {
-  "256x256": "256x256",
-  "512x512": "512x512",
-  "1024x1024": "1024x1024"
-} as const
+  '256x256': '256x256',
+  '512x512': '512x512',
+  '1024x1024': '1024x1024',
+} as const;

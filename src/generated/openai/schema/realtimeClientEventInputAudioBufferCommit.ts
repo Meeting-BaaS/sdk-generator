@@ -17,7 +17,7 @@ export interface RealtimeClientEventInputAudioBufferCommit {
    * Optional client-generated ID used to identify this event.
    * @maxLength 512
    */
-  event_id?: string
+  event_id?: string;
   /** The event type, must be `input_audio_buffer.commit`. */
-  type: "input_audio_buffer.commit"
+  type: 'input_audio_buffer.commit';
 }

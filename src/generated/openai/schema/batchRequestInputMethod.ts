@@ -9,10 +9,10 @@
 /**
  * The HTTP method to be used for the request. Currently only `POST` is supported.
  */
-export type BatchRequestInputMethod =
-  (typeof BatchRequestInputMethod)[keyof typeof BatchRequestInputMethod]
+export type BatchRequestInputMethod = typeof BatchRequestInputMethod[keyof typeof BatchRequestInputMethod];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BatchRequestInputMethod = {
-  POST: "POST"
-} as const
+  POST: 'POST',
+} as const;

@@ -13,9 +13,9 @@
  */
 export type ImageGenToolInputImageMask = {
   /** Base64-encoded mask image.
-   */
-  image_url?: string
+ */
+  image_url?: string;
   /** File ID for the mask image.
-   */
-  file_id?: string
-}
+ */
+  file_id?: string;
+};

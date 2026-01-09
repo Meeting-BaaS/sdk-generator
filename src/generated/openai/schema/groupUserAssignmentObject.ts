@@ -9,10 +9,10 @@
 /**
  * Always `group.user`.
  */
-export type GroupUserAssignmentObject =
-  (typeof GroupUserAssignmentObject)[keyof typeof GroupUserAssignmentObject]
+export type GroupUserAssignmentObject = typeof GroupUserAssignmentObject[keyof typeof GroupUserAssignmentObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupUserAssignmentObject = {
-  groupuser: "group.user"
-} as const
+  groupuser: 'group.user',
+} as const;

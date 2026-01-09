@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { MessageContentImageFileObjectImageFile } from "./messageContentImageFileObjectImageFile"
-import type { MessageContentImageFileObjectType } from "./messageContentImageFileObjectType"
+import type { MessageContentImageFileObjectType } from './messageContentImageFileObjectType';
+import type { MessageContentImageFileObjectImageFile } from './messageContentImageFileObjectImageFile';
 
 /**
  * References an image [File](https://platform.openai.com/docs/api-reference/files) in the content of a message.
  */
 export interface MessageContentImageFileObject {
   /** Always `image_file`. */
-  type: MessageContentImageFileObjectType
-  image_file: MessageContentImageFileObjectImageFile
+  type: MessageContentImageFileObjectType;
+  image_file: MessageContentImageFileObjectImageFile;
 }

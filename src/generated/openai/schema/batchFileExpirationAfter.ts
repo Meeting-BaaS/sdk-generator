@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { BatchFileExpirationAfterAnchor } from "./batchFileExpirationAfterAnchor"
+import type { BatchFileExpirationAfterAnchor } from './batchFileExpirationAfterAnchor';
 
 /**
  * The expiration policy for the output and/or error file that are generated for a batch.
  */
 export interface BatchFileExpirationAfter {
   /** Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`. Note that the anchor is the file creation time, not the time the batch is created. */
-  anchor: BatchFileExpirationAfterAnchor
+  anchor: BatchFileExpirationAfterAnchor;
   /**
    * The number of seconds after the anchor time that the file will expire. Must be between 3600 (1 hour) and 2592000 (30 days).
    * @minimum 3600
    * @maximum 2592000
    */
-  seconds: number
+  seconds: number;
 }

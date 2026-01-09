@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ToolChoiceMCPName } from "./toolChoiceMCPName"
-import type { ToolChoiceMCPType } from "./toolChoiceMCPType"
+import type { ToolChoiceMCPType } from './toolChoiceMCPType';
+import type { ToolChoiceMCPName } from './toolChoiceMCPName';
 
 /**
  * Use this option to force the model to call a specific tool on a remote MCP server.
@@ -15,9 +14,9 @@ import type { ToolChoiceMCPType } from "./toolChoiceMCPType"
  */
 export interface ToolChoiceMCP {
   /** For MCP tools, the type is always `mcp`. */
-  type: ToolChoiceMCPType
+  type: ToolChoiceMCPType;
   /** The label of the MCP server to use.
-   */
-  server_label: string
-  name?: ToolChoiceMCPName
+ */
+  server_label: string;
+  name?: ToolChoiceMCPName;
 }

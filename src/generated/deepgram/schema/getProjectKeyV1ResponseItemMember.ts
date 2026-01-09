@@ -6,12 +6,12 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { GetProjectKeyV1ResponseItemMemberApiKey } from "./getProjectKeyV1ResponseItemMemberApiKey"
+import type { GetProjectKeyV1ResponseItemMemberApiKey } from './getProjectKeyV1ResponseItemMemberApiKey';
 
 export type GetProjectKeyV1ResponseItemMember = {
-  member_id?: string
-  email?: string
-  first_name?: string
-  last_name?: string
-  api_key?: GetProjectKeyV1ResponseItemMemberApiKey
-}
+  member_id?: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+  api_key?: GetProjectKeyV1ResponseItemMemberApiKey;
+};

@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ClosedStatusReason = string | null
+export type ClosedStatusReason = string | null;

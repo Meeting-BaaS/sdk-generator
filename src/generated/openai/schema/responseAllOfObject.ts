@@ -10,9 +10,10 @@
  * The object type of this resource - always set to `response`.
 
  */
-export type ResponseAllOfObject = (typeof ResponseAllOfObject)[keyof typeof ResponseAllOfObject]
+export type ResponseAllOfObject = typeof ResponseAllOfObject[keyof typeof ResponseAllOfObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseAllOfObject = {
-  response: "response"
-} as const
+  response: 'response',
+} as const;

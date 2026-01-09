@@ -4,21 +4,20 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { CallbackTranscriptionSuccessPayloadCustomMetadata } from "./callbackTranscriptionSuccessPayloadCustomMetadata"
-import type { CallbackTranscriptionSuccessPayloadEvent } from "./callbackTranscriptionSuccessPayloadEvent"
-import type { TranscriptionResultDTO } from "./transcriptionResultDTO"
+import type { CallbackTranscriptionSuccessPayloadEvent } from './callbackTranscriptionSuccessPayloadEvent';
+import type { TranscriptionResultDTO } from './transcriptionResultDTO';
+import type { CallbackTranscriptionSuccessPayloadCustomMetadata } from './callbackTranscriptionSuccessPayloadCustomMetadata';
 
 export interface CallbackTranscriptionSuccessPayload {
   /** Id of the job */
-  id: string
+  id: string;
   /** Type of event */
-  event: CallbackTranscriptionSuccessPayloadEvent
+  event: CallbackTranscriptionSuccessPayloadEvent;
   /** Result of the transcription */
-  payload: TranscriptionResultDTO
+  payload: TranscriptionResultDTO;
   /**
    * Custom metadata given in the initial request
    * @nullable
    */
-  custom_metadata?: CallbackTranscriptionSuccessPayloadCustomMetadata
+  custom_metadata?: CallbackTranscriptionSuccessPayloadCustomMetadata;
 }

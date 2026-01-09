@@ -11,9 +11,9 @@
  */
 export interface BatchRequestCounts {
   /** Total number of requests in the batch. */
-  total: number
+  total: number;
   /** Number of requests that have been completed successfully. */
-  completed: number
+  completed: number;
   /** Number of requests that have failed. */
-  failed: number
+  failed: number;
 }

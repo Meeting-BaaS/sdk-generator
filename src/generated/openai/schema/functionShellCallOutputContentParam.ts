@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallOutputOutcomeParam } from "./functionShellCallOutputOutcomeParam"
+import type { FunctionShellCallOutputOutcomeParam } from './functionShellCallOutputOutcomeParam';
 
 /**
  * Captured stdout and stderr for a portion of a shell tool call output.
@@ -15,12 +15,12 @@ export interface FunctionShellCallOutputContentParam {
    * Captured stdout output for the shell call.
    * @maxLength 10485760
    */
-  stdout: string
+  stdout: string;
   /**
    * Captured stderr output for the shell call.
    * @maxLength 10485760
    */
-  stderr: string
+  stderr: string;
   /** The exit or timeout outcome associated with this shell call. */
-  outcome: FunctionShellCallOutputOutcomeParam
+  outcome: FunctionShellCallOutputOutcomeParam;
 }

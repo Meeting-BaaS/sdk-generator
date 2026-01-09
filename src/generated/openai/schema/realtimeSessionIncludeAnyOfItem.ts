@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeSessionIncludeAnyOfItem =
-  (typeof RealtimeSessionIncludeAnyOfItem)[keyof typeof RealtimeSessionIncludeAnyOfItem]
+export type RealtimeSessionIncludeAnyOfItem = typeof RealtimeSessionIncludeAnyOfItem[keyof typeof RealtimeSessionIncludeAnyOfItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeSessionIncludeAnyOfItem = {
-  iteminput_audio_transcriptionlogprobs: "item.input_audio_transcription.logprobs"
-} as const
+  iteminput_audio_transcriptionlogprobs: 'item.input_audio_transcription.logprobs',
+} as const;

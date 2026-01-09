@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RunStepDeltaStepDetailsMessageCreationObjectMessageCreation } from "./runStepDeltaStepDetailsMessageCreationObjectMessageCreation"
-import type { RunStepDeltaStepDetailsMessageCreationObjectType } from "./runStepDeltaStepDetailsMessageCreationObjectType"
+import type { RunStepDeltaStepDetailsMessageCreationObjectType } from './runStepDeltaStepDetailsMessageCreationObjectType';
+import type { RunStepDeltaStepDetailsMessageCreationObjectMessageCreation } from './runStepDeltaStepDetailsMessageCreationObjectMessageCreation';
 
 /**
  * Details of the message creation by the run step.
  */
 export interface RunStepDeltaStepDetailsMessageCreationObject {
   /** Always `message_creation`. */
-  type: RunStepDeltaStepDetailsMessageCreationObjectType
-  message_creation?: RunStepDeltaStepDetailsMessageCreationObjectMessageCreation
+  type: RunStepDeltaStepDetailsMessageCreationObjectType;
+  message_creation?: RunStepDeltaStepDetailsMessageCreationObjectMessageCreation;
 }

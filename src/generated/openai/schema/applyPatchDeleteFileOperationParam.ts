@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchDeleteFileOperationParamType } from "./applyPatchDeleteFileOperationParamType"
+import type { ApplyPatchDeleteFileOperationParamType } from './applyPatchDeleteFileOperationParamType';
 
 /**
  * Instruction for deleting an existing file via the apply_patch tool.
  */
 export interface ApplyPatchDeleteFileOperationParam {
   /** The operation type. Always `delete_file`. */
-  type: ApplyPatchDeleteFileOperationParamType
+  type: ApplyPatchDeleteFileOperationParamType;
   /**
    * Path of the file to delete relative to the workspace root.
    * @minLength 1
    */
-  path: string
+  path: string;
 }

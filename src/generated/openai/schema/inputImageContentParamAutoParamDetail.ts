@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DetailEnum } from "./detailEnum"
+import type { DetailEnum } from './detailEnum';
 
-export type InputImageContentParamAutoParamDetail = DetailEnum | null
+export type InputImageContentParamAutoParamDetail = DetailEnum | null;

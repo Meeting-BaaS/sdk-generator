@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ConversationParam2 } from "./conversationParam2"
+import type { ConversationParam2 } from './conversationParam2';
 
 /**
  * The conversation that this response belongs to. Items from this conversation are prepended to `input_items` for this response request.
 Input items and output items from this response are automatically added to this conversation after this response completes.
 
  */
-export type ConversationParam = string | ConversationParam2
+export type ConversationParam = string | ConversationParam2;

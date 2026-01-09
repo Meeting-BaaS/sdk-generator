@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ContainerResource } from "./containerResource"
+import type { ContainerResource } from './containerResource';
 
 export interface ContainerListResource {
   /** The type of object returned, must be 'list'. */
-  object: "list"
+  object: 'list';
   /** A list of containers. */
-  data: ContainerResource[]
+  data: ContainerResource[];
   /** The ID of the first container in the list. */
-  first_id: string
+  first_id: string;
   /** The ID of the last container in the list. */
-  last_id: string
+  last_id: string;
   /** Whether there are more containers available. */
-  has_more: boolean
+  has_more: boolean;
 }

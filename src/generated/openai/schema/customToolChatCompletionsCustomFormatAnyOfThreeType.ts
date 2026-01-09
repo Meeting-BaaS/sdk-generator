@@ -9,10 +9,10 @@
 /**
  * Grammar format. Always `grammar`.
  */
-export type CustomToolChatCompletionsCustomFormatAnyOfThreeType =
-  (typeof CustomToolChatCompletionsCustomFormatAnyOfThreeType)[keyof typeof CustomToolChatCompletionsCustomFormatAnyOfThreeType]
+export type CustomToolChatCompletionsCustomFormatAnyOfThreeType = typeof CustomToolChatCompletionsCustomFormatAnyOfThreeType[keyof typeof CustomToolChatCompletionsCustomFormatAnyOfThreeType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CustomToolChatCompletionsCustomFormatAnyOfThreeType = {
-  grammar: "grammar"
-} as const
+  grammar: 'grammar',
+} as const;

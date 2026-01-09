@@ -10,5 +10,5 @@ export interface StructuredDataExtractionConfigDTO {
    * The list of classes to extract from the audio transcription
    * @minItems 1
    */
-  classes: unknown[][]
+  classes: unknown[][];
 }

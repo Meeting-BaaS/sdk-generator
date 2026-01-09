@@ -10,10 +10,10 @@
  * The type of the event. Always `image_edit.partial_image`.
 
  */
-export type ImageEditPartialImageEventType =
-  (typeof ImageEditPartialImageEventType)[keyof typeof ImageEditPartialImageEventType]
+export type ImageEditPartialImageEventType = typeof ImageEditPartialImageEventType[keyof typeof ImageEditPartialImageEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditPartialImageEventType = {
-  image_editpartial_image: "image_edit.partial_image"
-} as const
+  image_editpartial_image: 'image_edit.partial_image',
+} as const;

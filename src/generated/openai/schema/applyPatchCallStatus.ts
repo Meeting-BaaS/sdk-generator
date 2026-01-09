@@ -6,10 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ApplyPatchCallStatus = (typeof ApplyPatchCallStatus)[keyof typeof ApplyPatchCallStatus]
+export type ApplyPatchCallStatus = typeof ApplyPatchCallStatus[keyof typeof ApplyPatchCallStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchCallStatus = {
-  in_progress: "in_progress",
-  completed: "completed"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+} as const;

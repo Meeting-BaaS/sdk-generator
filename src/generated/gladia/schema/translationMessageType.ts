@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TranslationMessageType =
-  (typeof TranslationMessageType)[keyof typeof TranslationMessageType]
+export type TranslationMessageType = typeof TranslationMessageType[keyof typeof TranslationMessageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranslationMessageType = {
-  translation: "translation"
-} as const
+  translation: 'translation',
+} as const;

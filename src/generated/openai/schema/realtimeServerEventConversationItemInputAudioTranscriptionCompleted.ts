@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompletedLogprobs } from "./realtimeServerEventConversationItemInputAudioTranscriptionCompletedLogprobs"
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType } from "./realtimeServerEventConversationItemInputAudioTranscriptionCompletedType"
-import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompletedUsage } from "./realtimeServerEventConversationItemInputAudioTranscriptionCompletedUsage"
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType } from './realtimeServerEventConversationItemInputAudioTranscriptionCompletedType';
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompletedLogprobs } from './realtimeServerEventConversationItemInputAudioTranscriptionCompletedLogprobs';
+import type { RealtimeServerEventConversationItemInputAudioTranscriptionCompletedUsage } from './realtimeServerEventConversationItemInputAudioTranscriptionCompletedUsage';
 
 /**
  * This event is the output of audio transcription for user audio written to the
@@ -25,18 +24,18 @@ should be treated as a rough guide.
  */
 export interface RealtimeServerEventConversationItemInputAudioTranscriptionCompleted {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be
 `conversation.item.input_audio_transcription.completed`.
  */
-  type: RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType
+  type: RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType;
   /** The ID of the item containing the audio that is being transcribed. */
-  item_id: string
+  item_id: string;
   /** The index of the content part containing the audio. */
-  content_index: number
+  content_index: number;
   /** The transcribed text. */
-  transcript: string
-  logprobs?: RealtimeServerEventConversationItemInputAudioTranscriptionCompletedLogprobs
+  transcript: string;
+  logprobs?: RealtimeServerEventConversationItemInputAudioTranscriptionCompletedLogprobs;
   /** Usage statistics for the transcription, this is billed according to the ASR model's pricing rather than the realtime model's pricing. */
-  usage: RealtimeServerEventConversationItemInputAudioTranscriptionCompletedUsage
+  usage: RealtimeServerEventConversationItemInputAudioTranscriptionCompletedUsage;
 }

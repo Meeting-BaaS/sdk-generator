@@ -10,13 +10,13 @@
  * The quality setting for the generated image.
 
  */
-export type ImageGenCompletedEventQuality =
-  (typeof ImageGenCompletedEventQuality)[keyof typeof ImageGenCompletedEventQuality]
+export type ImageGenCompletedEventQuality = typeof ImageGenCompletedEventQuality[keyof typeof ImageGenCompletedEventQuality];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenCompletedEventQuality = {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  auto: "auto"
-} as const
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  auto: 'auto',
+} as const;

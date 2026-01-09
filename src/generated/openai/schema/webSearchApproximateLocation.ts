@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchApproximateLocationAnyOf } from "./webSearchApproximateLocationAnyOf"
+import type { WebSearchApproximateLocationAnyOf } from './webSearchApproximateLocationAnyOf';
 
-export type WebSearchApproximateLocation = WebSearchApproximateLocationAnyOf | null
+export type WebSearchApproximateLocation = WebSearchApproximateLocationAnyOf | null;

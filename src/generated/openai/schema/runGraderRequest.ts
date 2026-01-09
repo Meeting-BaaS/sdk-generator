@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunGraderRequestGrader } from "./runGraderRequestGrader"
-import type { RunGraderRequestItem } from "./runGraderRequestItem"
+import type { RunGraderRequestGrader } from './runGraderRequestGrader';
+import type { RunGraderRequestItem } from './runGraderRequestItem';
 
 export interface RunGraderRequest {
   /** The grader used for the fine-tuning job. */
-  grader: RunGraderRequestGrader
+  grader: RunGraderRequestGrader;
   /** The dataset item provided to the grader. This will be used to populate 
 the `item` namespace. See [the guide](https://platform.openai.com/docs/guides/graders) for more details. 
  */
-  item?: RunGraderRequestItem
+  item?: RunGraderRequestItem;
   /** The model sample to be evaluated. This value will be used to populate 
 the `sample` namespace. See [the guide](https://platform.openai.com/docs/guides/graders) for more details.
 The `output_json` variable will be populated if the model sample is a 
 valid JSON string.
  
  */
-  model_sample: string
+  model_sample: string;
 }

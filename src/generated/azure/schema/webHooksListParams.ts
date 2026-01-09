@@ -5,19 +5,19 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { SkipQueryParameterParameter } from "./skipQueryParameterParameter"
-import type { TopQueryParameterParameter } from "./topQueryParameterParameter"
+import type { SkipQueryParameterParameter } from './skipQueryParameterParameter';
+import type { TopQueryParameterParameter } from './topQueryParameterParameter';
 
 export type WebHooksListParams = {
-  /**
-   * Number of datasets that will be skipped.
-   */
-  skip?: SkipQueryParameterParameter
-  /**
-   * Number of datasets that will be included after skipping.
-   */
-  top?: TopQueryParameterParameter
-  /**
+/**
+ * Number of datasets that will be skipped.
+ */
+skip?: SkipQueryParameterParameter;
+/**
+ * Number of datasets that will be included after skipping.
+ */
+top?: TopQueryParameterParameter;
+/**
  * A filtering expression for selecting a subset of the available hooks.
             Supported properties: displayName, description, createdDateTime, lastActionDateTime, status and webUrl.
             - Operators:
@@ -27,5 +27,5 @@ export type WebHooksListParams = {
             - Example:
               filter=displayName eq 'test'
  */
-  filter?: string
-}
+filter?: string;
+};

@@ -11,11 +11,11 @@
  */
 export type ChatCompletionResponseMessageAnnotationsItemUrlCitation = {
   /** The index of the last character of the URL citation in the message. */
-  end_index: number
+  end_index: number;
   /** The index of the first character of the URL citation in the message. */
-  start_index: number
+  start_index: number;
   /** The URL of the web resource. */
-  url: string
+  url: string;
   /** The title of the web resource. */
-  title: string
-}
+  title: string;
+};

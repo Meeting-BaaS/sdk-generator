@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextSegmentEventType } from "./transcriptTextSegmentEventType"
+import type { TranscriptTextSegmentEventType } from './transcriptTextSegmentEventType';
 
 /**
  * Emitted when a diarized transcription returns a completed segment with speaker information. Only emitted when you [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription) with `stream` set to `true` and `response_format` set to `diarized_json`.
@@ -13,15 +13,15 @@ import type { TranscriptTextSegmentEventType } from "./transcriptTextSegmentEven
  */
 export interface TranscriptTextSegmentEvent {
   /** The type of the event. Always `transcript.text.segment`. */
-  type: TranscriptTextSegmentEventType
+  type: TranscriptTextSegmentEventType;
   /** Unique identifier for the segment. */
-  id: string
+  id: string;
   /** Start timestamp of the segment in seconds. */
-  start: number
+  start: number;
   /** End timestamp of the segment in seconds. */
-  end: number
+  end: number;
   /** Transcript text for this segment. */
-  text: string
+  text: string;
   /** Speaker label for this segment. */
-  speaker: string
+  speaker: string;
 }

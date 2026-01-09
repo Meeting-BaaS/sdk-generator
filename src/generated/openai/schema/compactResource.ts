@@ -5,19 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CompactResourceObject } from "./compactResourceObject"
-import type { OutputItem } from "./outputItem"
-import type { ResponseUsage } from "./responseUsage"
+import type { CompactResourceObject } from './compactResourceObject';
+import type { OutputItem } from './outputItem';
+import type { ResponseUsage } from './responseUsage';
 
 export interface CompactResource {
   /** The unique identifier for the compacted response. */
-  id: string
+  id: string;
   /** The object type. Always `response.compaction`. */
-  object: CompactResourceObject
+  object: CompactResourceObject;
   /** The compacted list of output items. This is a list of all user messages, followed by a single compaction item. */
-  output: OutputItem[]
+  output: OutputItem[];
   /** Unix timestamp (in seconds) when the compacted conversation was created. */
-  created_at: number
+  created_at: number;
   /** Token accounting for the compaction pass, including cached, reasoning, and total tokens. */
-  usage: ResponseUsage
+  usage: ResponseUsage;
 }

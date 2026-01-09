@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageVectorStoresResultObject =
-  (typeof UsageVectorStoresResultObject)[keyof typeof UsageVectorStoresResultObject]
+export type UsageVectorStoresResultObject = typeof UsageVectorStoresResultObject[keyof typeof UsageVectorStoresResultObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageVectorStoresResultObject = {
-  organizationusagevector_storesresult: "organization.usage.vector_stores.result"
-} as const
+  organizationusagevector_storesresult: 'organization.usage.vector_stores.result',
+} as const;

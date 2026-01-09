@@ -9,4 +9,4 @@
 /**
  * @nullable
  */
-export type UpdateVectorStoreRequestExpiresAfterAllOf = unknown | null
+export type UpdateVectorStoreRequestExpiresAfterAllOf = unknown | null;

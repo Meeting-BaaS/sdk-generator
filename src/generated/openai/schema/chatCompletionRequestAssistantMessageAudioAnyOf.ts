@@ -13,6 +13,6 @@
  */
 export type ChatCompletionRequestAssistantMessageAudioAnyOf = {
   /** Unique identifier for a previous audio response from the model.
-   */
-  id: string
-}
+ */
+  id: string;
+};

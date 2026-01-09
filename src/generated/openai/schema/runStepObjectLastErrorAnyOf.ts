@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepObjectLastErrorAnyOfCode } from "./runStepObjectLastErrorAnyOfCode"
+import type { RunStepObjectLastErrorAnyOfCode } from './runStepObjectLastErrorAnyOfCode';
 
 /**
  * The last error associated with this run step. Will be `null` if there are no errors.
  */
 export type RunStepObjectLastErrorAnyOf = {
   /** One of `server_error` or `rate_limit_exceeded`. */
-  code: RunStepObjectLastErrorAnyOfCode
+  code: RunStepObjectLastErrorAnyOfCode;
   /** A human-readable description of the error. */
-  message: string
-}
+  message: string;
+};

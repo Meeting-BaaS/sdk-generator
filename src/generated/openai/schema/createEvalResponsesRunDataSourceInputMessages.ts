@@ -5,12 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalResponsesRunDataSourceInputMessagesAnyOf } from "./createEvalResponsesRunDataSourceInputMessagesAnyOf"
-import type { CreateEvalResponsesRunDataSourceInputMessagesAnyOfFive } from "./createEvalResponsesRunDataSourceInputMessagesAnyOfFive"
+import type { CreateEvalResponsesRunDataSourceInputMessagesAnyOf } from './createEvalResponsesRunDataSourceInputMessagesAnyOf';
+import type { CreateEvalResponsesRunDataSourceInputMessagesAnyOfFive } from './createEvalResponsesRunDataSourceInputMessagesAnyOfFive';
 
 /**
  * Used when sampling from a model. Dictates the structure of the messages passed into the model. Can either be a reference to a prebuilt trajectory (ie, `item.input_trajectory`), or a template with variable references to the `item` namespace.
  */
-export type CreateEvalResponsesRunDataSourceInputMessages =
-  | CreateEvalResponsesRunDataSourceInputMessagesAnyOf
-  | CreateEvalResponsesRunDataSourceInputMessagesAnyOfFive
+export type CreateEvalResponsesRunDataSourceInputMessages = CreateEvalResponsesRunDataSourceInputMessagesAnyOf | CreateEvalResponsesRunDataSourceInputMessagesAnyOfFive;

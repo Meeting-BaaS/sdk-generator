@@ -9,10 +9,10 @@
 /**
  * The type of the tool. Always `custom`.
  */
-export type ChatCompletionMessageCustomToolCallType =
-  (typeof ChatCompletionMessageCustomToolCallType)[keyof typeof ChatCompletionMessageCustomToolCallType]
+export type ChatCompletionMessageCustomToolCallType = typeof ChatCompletionMessageCustomToolCallType[keyof typeof ChatCompletionMessageCustomToolCallType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionMessageCustomToolCallType = {
-  custom: "custom"
-} as const
+  custom: 'custom',
+} as const;

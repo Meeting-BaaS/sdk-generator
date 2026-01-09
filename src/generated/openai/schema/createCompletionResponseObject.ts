@@ -9,10 +9,10 @@
 /**
  * The object type, which is always "text_completion"
  */
-export type CreateCompletionResponseObject =
-  (typeof CreateCompletionResponseObject)[keyof typeof CreateCompletionResponseObject]
+export type CreateCompletionResponseObject = typeof CreateCompletionResponseObject[keyof typeof CreateCompletionResponseObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateCompletionResponseObject = {
-  text_completion: "text_completion"
-} as const
+  text_completion: 'text_completion',
+} as const;

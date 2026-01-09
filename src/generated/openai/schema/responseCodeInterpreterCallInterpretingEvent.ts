@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseCodeInterpreterCallInterpretingEventType } from "./responseCodeInterpreterCallInterpretingEventType"
+import type { ResponseCodeInterpreterCallInterpretingEventType } from './responseCodeInterpreterCallInterpretingEventType';
 
 /**
  * Emitted when the code interpreter is actively interpreting the code snippet.
  */
 export interface ResponseCodeInterpreterCallInterpretingEvent {
   /** The type of the event. Always `response.code_interpreter_call.interpreting`. */
-  type: ResponseCodeInterpreterCallInterpretingEventType
+  type: ResponseCodeInterpreterCallInterpretingEventType;
   /** The index of the output item in the response for which the code interpreter is interpreting code. */
-  output_index: number
+  output_index: number;
   /** The unique identifier of the code interpreter tool call item. */
-  item_id: string
+  item_id: string;
   /** The sequence number of this event, used to order streaming events. */
-  sequence_number: number
+  sequence_number: number;
 }

@@ -6,9 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ErrorEventEvent = (typeof ErrorEventEvent)[keyof typeof ErrorEventEvent]
+export type ErrorEventEvent = typeof ErrorEventEvent[keyof typeof ErrorEventEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ErrorEventEvent = {
-  error: "error"
-} as const
+  error: 'error',
+} as const;

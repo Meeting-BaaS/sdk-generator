@@ -9,11 +9,12 @@
 /**
  * Type of data block.
  */
-export type BlockKind = (typeof BlockKind)[keyof typeof BlockKind]
+export type BlockKind = typeof BlockKind[keyof typeof BlockKind];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BlockKind = {
-  Committed: "Committed",
-  Uncommitted: "Uncommitted",
-  Latest: "Latest"
-} as const
+  Committed: 'Committed',
+  Uncommitted: 'Uncommitted',
+  Latest: 'Latest',
+} as const;

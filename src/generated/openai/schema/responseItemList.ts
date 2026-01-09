@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ItemResource } from "./itemResource"
+import type { ItemResource } from './itemResource';
 
 /**
  * A list of Response items.
  */
 export interface ResponseItemList {
   /** The type of object returned, must be `list`. */
-  object: "list"
+  object: 'list';
   /** A list of items used to generate this response. */
-  data: ItemResource[]
+  data: ItemResource[];
   /** Whether there are more items available. */
-  has_more: boolean
+  has_more: boolean;
   /** The ID of the first item in the list. */
-  first_id: string
+  first_id: string;
   /** The ID of the last item in the list. */
-  last_id: string
+  last_id: string;
 }

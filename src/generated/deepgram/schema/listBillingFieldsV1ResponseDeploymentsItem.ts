@@ -7,13 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ListBillingFieldsV1ResponseDeploymentsItem =
-  (typeof ListBillingFieldsV1ResponseDeploymentsItem)[keyof typeof ListBillingFieldsV1ResponseDeploymentsItem]
+export type ListBillingFieldsV1ResponseDeploymentsItem = typeof ListBillingFieldsV1ResponseDeploymentsItem[keyof typeof ListBillingFieldsV1ResponseDeploymentsItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListBillingFieldsV1ResponseDeploymentsItem = {
-  hosted: "hosted",
-  beta: "beta",
-  "self-hosted": "self-hosted",
-  dedicated: "dedicated"
-} as const
+  hosted: 'hosted',
+  beta: 'beta',
+  'self-hosted': 'self-hosted',
+  dedicated: 'dedicated',
+} as const;

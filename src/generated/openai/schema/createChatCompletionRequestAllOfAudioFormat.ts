@@ -11,15 +11,15 @@
 `opus`, or `pcm16`.
 
  */
-export type CreateChatCompletionRequestAllOfAudioFormat =
-  (typeof CreateChatCompletionRequestAllOfAudioFormat)[keyof typeof CreateChatCompletionRequestAllOfAudioFormat]
+export type CreateChatCompletionRequestAllOfAudioFormat = typeof CreateChatCompletionRequestAllOfAudioFormat[keyof typeof CreateChatCompletionRequestAllOfAudioFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateChatCompletionRequestAllOfAudioFormat = {
-  wav: "wav",
-  aac: "aac",
-  mp3: "mp3",
-  flac: "flac",
-  opus: "opus",
-  pcm16: "pcm16"
-} as const
+  wav: 'wav',
+  aac: 'aac',
+  mp3: 'mp3',
+  flac: 'flac',
+  opus: 'opus',
+  pcm16: 'pcm16',
+} as const;

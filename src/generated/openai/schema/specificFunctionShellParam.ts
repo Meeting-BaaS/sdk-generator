@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { SpecificFunctionShellParamType } from "./specificFunctionShellParamType"
+import type { SpecificFunctionShellParamType } from './specificFunctionShellParamType';
 
 /**
  * Forces the model to call the shell tool when a tool call is required.
  */
 export interface SpecificFunctionShellParam {
   /** The tool to call. Always `shell`. */
-  type: SpecificFunctionShellParamType
+  type: SpecificFunctionShellParamType;
 }

@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateModerationResponseResultsItem } from "./createModerationResponseResultsItem"
+import type { CreateModerationResponseResultsItem } from './createModerationResponseResultsItem';
 
 /**
  * Represents if a given text input is potentially harmful.
  */
 export interface CreateModerationResponse {
   /** The unique identifier for the moderation request. */
-  id: string
+  id: string;
   /** The model used to generate the moderation results. */
-  model: string
+  model: string;
   /** A list of moderation objects. */
-  results: CreateModerationResponseResultsItem[]
+  results: CreateModerationResponseResultsItem[];
 }

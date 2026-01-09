@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunStreamEventAnyOfOneoneEvent =
-  (typeof RunStreamEventAnyOfOneoneEvent)[keyof typeof RunStreamEventAnyOfOneoneEvent]
+export type RunStreamEventAnyOfOneoneEvent = typeof RunStreamEventAnyOfOneoneEvent[keyof typeof RunStreamEventAnyOfOneoneEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStreamEventAnyOfOneoneEvent = {
-  threadrunincomplete: "thread.run.incomplete"
-} as const
+  threadrunincomplete: 'thread.run.incomplete',
+} as const;

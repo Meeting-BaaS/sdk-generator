@@ -5,14 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequestGA } from "./realtimeSessionCreateRequestGA"
-import type { RealtimeTranscriptionSessionCreateRequestGA } from "./realtimeTranscriptionSessionCreateRequestGA"
+import type { RealtimeSessionCreateRequestGA } from './realtimeSessionCreateRequestGA';
+import type { RealtimeTranscriptionSessionCreateRequestGA } from './realtimeTranscriptionSessionCreateRequestGA';
 
 /**
  * Update the Realtime session. Choose either a realtime
 session or a transcription session.
 
  */
-export type RealtimeClientEventSessionUpdateSession =
-  | RealtimeSessionCreateRequestGA
-  | RealtimeTranscriptionSessionCreateRequestGA
+export type RealtimeClientEventSessionUpdateSession = RealtimeSessionCreateRequestGA | RealtimeTranscriptionSessionCreateRequestGA;

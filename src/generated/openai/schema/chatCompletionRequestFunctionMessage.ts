@@ -5,17 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ChatCompletionRequestFunctionMessageContent } from "./chatCompletionRequestFunctionMessageContent"
-import type { ChatCompletionRequestFunctionMessageRole } from "./chatCompletionRequestFunctionMessageRole"
+import type { ChatCompletionRequestFunctionMessageRole } from './chatCompletionRequestFunctionMessageRole';
+import type { ChatCompletionRequestFunctionMessageContent } from './chatCompletionRequestFunctionMessageContent';
 
 /**
  * @deprecated
  */
 export interface ChatCompletionRequestFunctionMessage {
   /** The role of the messages author, in this case `function`. */
-  role: ChatCompletionRequestFunctionMessageRole
-  content: ChatCompletionRequestFunctionMessageContent
+  role: ChatCompletionRequestFunctionMessageRole;
+  content: ChatCompletionRequestFunctionMessageContent;
   /** The name of the function to call. */
-  name: string
+  name: string;
 }

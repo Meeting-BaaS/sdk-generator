@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceParam } from "./toolChoiceParam"
+import type { ToolChoiceParam } from './toolChoiceParam';
 
-export type TokenCountsBodyToolChoice = ToolChoiceParam | null
+export type TokenCountsBodyToolChoice = ToolChoiceParam | null;

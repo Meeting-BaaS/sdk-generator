@@ -9,10 +9,10 @@
 /**
  * Delete the specified file.
  */
-export type ApplyPatchDeleteFileOperationType =
-  (typeof ApplyPatchDeleteFileOperationType)[keyof typeof ApplyPatchDeleteFileOperationType]
+export type ApplyPatchDeleteFileOperationType = typeof ApplyPatchDeleteFileOperationType[keyof typeof ApplyPatchDeleteFileOperationType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchDeleteFileOperationType = {
-  delete_file: "delete_file"
-} as const
+  delete_file: 'delete_file',
+} as const;

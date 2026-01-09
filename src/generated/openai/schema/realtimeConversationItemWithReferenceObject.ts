@@ -10,10 +10,10 @@
  * Identifier for the API object being returned - always `realtime.item`.
 
  */
-export type RealtimeConversationItemWithReferenceObject =
-  (typeof RealtimeConversationItemWithReferenceObject)[keyof typeof RealtimeConversationItemWithReferenceObject]
+export type RealtimeConversationItemWithReferenceObject = typeof RealtimeConversationItemWithReferenceObject[keyof typeof RealtimeConversationItemWithReferenceObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemWithReferenceObject = {
-  realtimeitem: "realtime.item"
-} as const
+  realtimeitem: 'realtime.item',
+} as const;

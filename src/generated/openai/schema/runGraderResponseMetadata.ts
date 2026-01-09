@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunGraderResponseMetadataErrors } from "./runGraderResponseMetadataErrors"
-import type { RunGraderResponseMetadataSampledModelName } from "./runGraderResponseMetadataSampledModelName"
-import type { RunGraderResponseMetadataScores } from "./runGraderResponseMetadataScores"
-import type { RunGraderResponseMetadataTokenUsage } from "./runGraderResponseMetadataTokenUsage"
+import type { RunGraderResponseMetadataErrors } from './runGraderResponseMetadataErrors';
+import type { RunGraderResponseMetadataScores } from './runGraderResponseMetadataScores';
+import type { RunGraderResponseMetadataTokenUsage } from './runGraderResponseMetadataTokenUsage';
+import type { RunGraderResponseMetadataSampledModelName } from './runGraderResponseMetadataSampledModelName';
 
 export type RunGraderResponseMetadata = {
-  name: string
-  type: string
-  errors: RunGraderResponseMetadataErrors
-  execution_time: number
-  scores: RunGraderResponseMetadataScores
-  token_usage: RunGraderResponseMetadataTokenUsage
-  sampled_model_name: RunGraderResponseMetadataSampledModelName
-}
+  name: string;
+  type: string;
+  errors: RunGraderResponseMetadataErrors;
+  execution_time: number;
+  scores: RunGraderResponseMetadataScores;
+  token_usage: RunGraderResponseMetadataTokenUsage;
+  sampled_model_name: RunGraderResponseMetadataSampledModelName;
+};

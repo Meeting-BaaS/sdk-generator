@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogServiceAccountCreatedData } from "./auditLogServiceAccountCreatedData"
+import type { AuditLogServiceAccountCreatedData } from './auditLogServiceAccountCreatedData';
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogServiceAccountCreated = {
   /** The service account ID. */
-  id?: string
+  id?: string;
   /** The payload used to create the service account. */
-  data?: AuditLogServiceAccountCreatedData
-}
+  data?: AuditLogServiceAccountCreatedData;
+};

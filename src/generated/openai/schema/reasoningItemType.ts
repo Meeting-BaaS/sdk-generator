@@ -10,9 +10,10 @@
  * The type of the object. Always `reasoning`.
 
  */
-export type ReasoningItemType = (typeof ReasoningItemType)[keyof typeof ReasoningItemType]
+export type ReasoningItemType = typeof ReasoningItemType[keyof typeof ReasoningItemType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ReasoningItemType = {
-  reasoning: "reasoning"
-} as const
+  reasoning: 'reasoning',
+} as const;

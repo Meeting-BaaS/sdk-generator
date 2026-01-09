@@ -9,10 +9,10 @@
 /**
  * The type of jsonl source. Always `file_id`.
  */
-export type EvalJsonlFileIdSourceType =
-  (typeof EvalJsonlFileIdSourceType)[keyof typeof EvalJsonlFileIdSourceType]
+export type EvalJsonlFileIdSourceType = typeof EvalJsonlFileIdSourceType[keyof typeof EvalJsonlFileIdSourceType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalJsonlFileIdSourceType = {
-  file_id: "file_id"
-} as const
+  file_id: 'file_id',
+} as const;

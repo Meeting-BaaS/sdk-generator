@@ -9,10 +9,11 @@
 /**
  * The type of actor. Is either `session` or `api_key`.
  */
-export type AuditLogActorType = (typeof AuditLogActorType)[keyof typeof AuditLogActorType]
+export type AuditLogActorType = typeof AuditLogActorType[keyof typeof AuditLogActorType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AuditLogActorType = {
-  session: "session",
-  api_key: "api_key"
-} as const
+  session: 'session',
+  api_key: 'api_key',
+} as const;

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileObject } from "./vectorStoreFileObject"
+import type { VectorStoreFileObject } from './vectorStoreFileObject';
 
 export interface ListVectorStoreFilesResponse {
-  object: string
-  data: VectorStoreFileObject[]
-  first_id: string
-  last_id: string
-  has_more: boolean
+  object: string;
+  data: VectorStoreFileObject[];
+  first_id: string;
+  last_id: string;
+  has_more: boolean;
 }

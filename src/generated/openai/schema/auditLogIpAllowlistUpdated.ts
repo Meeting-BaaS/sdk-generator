@@ -11,7 +11,7 @@
  */
 export type AuditLogIpAllowlistUpdated = {
   /** The ID of the IP allowlist configuration. */
-  id?: string
+  id?: string;
   /** The updated set of IP addresses or CIDR ranges in the configuration. */
-  allowed_ips?: string[]
-}
+  allowed_ips?: string[];
+};

@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ListCertificatesResponseObject =
-  (typeof ListCertificatesResponseObject)[keyof typeof ListCertificatesResponseObject]
+export type ListCertificatesResponseObject = typeof ListCertificatesResponseObject[keyof typeof ListCertificatesResponseObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListCertificatesResponseObject = {
-  list: "list"
-} as const
+  list: 'list',
+} as const;

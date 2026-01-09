@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseTextParam } from "./responseTextParam"
+import type { ResponseTextParam } from './responseTextParam';
 
-export type TokenCountsBodyText = ResponseTextParam | null
+export type TokenCountsBodyText = ResponseTextParam | null;

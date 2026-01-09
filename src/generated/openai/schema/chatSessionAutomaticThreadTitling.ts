@@ -11,5 +11,5 @@
  */
 export interface ChatSessionAutomaticThreadTitling {
   /** Whether automatic thread titling is enabled. */
-  enabled: boolean
+  enabled: boolean;
 }

@@ -9,17 +9,18 @@
 /**
  * The status of the run, which can be either `queued`, `in_progress`, `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`, `incomplete`, or `expired`.
  */
-export type RunStatus = (typeof RunStatus)[keyof typeof RunStatus]
+export type RunStatus = typeof RunStatus[keyof typeof RunStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStatus = {
-  queued: "queued",
-  in_progress: "in_progress",
-  requires_action: "requires_action",
-  cancelling: "cancelling",
-  cancelled: "cancelled",
-  failed: "failed",
-  completed: "completed",
-  incomplete: "incomplete",
-  expired: "expired"
-} as const
+  queued: 'queued',
+  in_progress: 'in_progress',
+  requires_action: 'requires_action',
+  cancelling: 'cancelling',
+  cancelled: 'cancelled',
+  failed: 'failed',
+  completed: 'completed',
+  incomplete: 'incomplete',
+  expired: 'expired',
+} as const;

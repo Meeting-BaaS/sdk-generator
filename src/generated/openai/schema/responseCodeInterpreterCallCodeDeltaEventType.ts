@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always `response.code_interpreter_call_code.delta`.
  */
-export type ResponseCodeInterpreterCallCodeDeltaEventType =
-  (typeof ResponseCodeInterpreterCallCodeDeltaEventType)[keyof typeof ResponseCodeInterpreterCallCodeDeltaEventType]
+export type ResponseCodeInterpreterCallCodeDeltaEventType = typeof ResponseCodeInterpreterCallCodeDeltaEventType[keyof typeof ResponseCodeInterpreterCallCodeDeltaEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCodeInterpreterCallCodeDeltaEventType = {
-  responsecode_interpreter_call_codedelta: "response.code_interpreter_call_code.delta"
-} as const
+  responsecode_interpreter_call_codedelta: 'response.code_interpreter_call_code.delta',
+} as const;

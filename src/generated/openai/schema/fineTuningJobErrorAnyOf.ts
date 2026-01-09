@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningJobErrorAnyOfParam } from "./fineTuningJobErrorAnyOfParam"
+import type { FineTuningJobErrorAnyOfParam } from './fineTuningJobErrorAnyOfParam';
 
 /**
  * For fine-tuning jobs that have `failed`, this will contain more information on the cause of the failure.
  */
 export type FineTuningJobErrorAnyOf = {
   /** A machine-readable error code. */
-  code: string
+  code: string;
   /** A human-readable error message. */
-  message: string
-  param: FineTuningJobErrorAnyOfParam
-}
+  message: string;
+  param: FineTuningJobErrorAnyOfParam;
+};

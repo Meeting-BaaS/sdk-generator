@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepObjectLastErrorAnyOf } from "./runStepObjectLastErrorAnyOf"
+import type { RunStepObjectLastErrorAnyOf } from './runStepObjectLastErrorAnyOf';
 
-export type RunStepObjectLastError = RunStepObjectLastErrorAnyOf | null
+export type RunStepObjectLastError = RunStepObjectLastErrorAnyOf | null;

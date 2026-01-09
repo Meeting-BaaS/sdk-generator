@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseAudioDoneEventType } from "./responseAudioDoneEventType"
+import type { ResponseAudioDoneEventType } from './responseAudioDoneEventType';
 
 /**
  * Emitted when the audio response is complete.
  */
 export interface ResponseAudioDoneEvent {
   /** The type of the event. Always `response.audio.done`.
-   */
-  type: ResponseAudioDoneEventType
+ */
+  type: ResponseAudioDoneEventType;
   /** The sequence number of the delta.
-   */
-  sequence_number: number
+ */
+  sequence_number: number;
 }

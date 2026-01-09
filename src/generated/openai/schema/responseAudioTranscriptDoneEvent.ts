@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseAudioTranscriptDoneEventType } from "./responseAudioTranscriptDoneEventType"
+import type { ResponseAudioTranscriptDoneEventType } from './responseAudioTranscriptDoneEventType';
 
 /**
  * Emitted when the full audio transcript is completed.
  */
 export interface ResponseAudioTranscriptDoneEvent {
   /** The type of the event. Always `response.audio.transcript.done`.
-   */
-  type: ResponseAudioTranscriptDoneEventType
+ */
+  type: ResponseAudioTranscriptDoneEventType;
   /** The sequence number of this event. */
-  sequence_number: number
+  sequence_number: number;
 }

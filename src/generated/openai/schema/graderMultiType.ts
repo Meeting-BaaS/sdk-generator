@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `multi`.
  */
-export type GraderMultiType = (typeof GraderMultiType)[keyof typeof GraderMultiType]
+export type GraderMultiType = typeof GraderMultiType[keyof typeof GraderMultiType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderMultiType = {
-  multi: "multi"
-} as const
+  multi: 'multi',
+} as const;

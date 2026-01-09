@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunOutputItemResultSample } from "./evalRunOutputItemResultSample"
+import type { EvalRunOutputItemResultSample } from './evalRunOutputItemResultSample';
 
 /**
  * A single grader result for an evaluation run output item.
@@ -13,14 +13,14 @@ import type { EvalRunOutputItemResultSample } from "./evalRunOutputItemResultSam
  */
 export interface EvalRunOutputItemResult {
   /** The name of the grader. */
-  name: string
+  name: string;
   /** The grader type (for example, "string-check-grader"). */
-  type?: string
+  type?: string;
   /** The numeric score produced by the grader. */
-  score: number
+  score: number;
   /** Whether the grader considered the output a pass. */
-  passed: boolean
+  passed: boolean;
   /** Optional sample or intermediate data produced by the grader. */
-  sample?: EvalRunOutputItemResultSample
-  [key: string]: unknown
-}
+  sample?: EvalRunOutputItemResultSample;
+  [key: string]: unknown;
+ }

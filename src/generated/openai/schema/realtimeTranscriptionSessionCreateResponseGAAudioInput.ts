@@ -5,23 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { AudioTranscription } from "./audioTranscription"
-import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
-import type { RealtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction } from "./realtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction"
-import type { RealtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection } from "./realtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection"
+import type { RealtimeAudioFormats } from './realtimeAudioFormats';
+import type { AudioTranscription } from './audioTranscription';
+import type { RealtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction } from './realtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction';
+import type { RealtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection } from './realtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection';
 
 export type RealtimeTranscriptionSessionCreateResponseGAAudioInput = {
-  format?: RealtimeAudioFormats
+  format?: RealtimeAudioFormats;
   /** Configuration of the transcription model.
-   */
-  transcription?: AudioTranscription
+ */
+  transcription?: AudioTranscription;
   /** Configuration for input audio noise reduction.
-   */
-  noise_reduction?: RealtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction
+ */
+  noise_reduction?: RealtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction;
   /** Configuration for turn detection. Can be set to `null` to turn off. Server
 VAD means that the model will detect the start and end of speech based on
 audio volume and respond at the end of user speech.
  */
-  turn_detection?: RealtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection
-}
+  turn_detection?: RealtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection;
+};

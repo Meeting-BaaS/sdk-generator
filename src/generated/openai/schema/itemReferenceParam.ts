@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ItemReferenceParamType } from "./itemReferenceParamType"
+import type { ItemReferenceParamType } from './itemReferenceParamType';
 
 /**
  * An internal identifier for an item to reference.
  */
 export interface ItemReferenceParam {
-  type?: ItemReferenceParamType
+  type?: ItemReferenceParamType;
   /** The ID of the item to reference. */
-  id: string
+  id: string;
 }

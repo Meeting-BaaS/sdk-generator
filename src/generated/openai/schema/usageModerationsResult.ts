@@ -5,24 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { UsageModerationsResultApiKeyId } from "./usageModerationsResultApiKeyId"
-import type { UsageModerationsResultModel } from "./usageModerationsResultModel"
-import type { UsageModerationsResultObject } from "./usageModerationsResultObject"
-import type { UsageModerationsResultProjectId } from "./usageModerationsResultProjectId"
-import type { UsageModerationsResultUserId } from "./usageModerationsResultUserId"
+import type { UsageModerationsResultObject } from './usageModerationsResultObject';
+import type { UsageModerationsResultProjectId } from './usageModerationsResultProjectId';
+import type { UsageModerationsResultUserId } from './usageModerationsResultUserId';
+import type { UsageModerationsResultApiKeyId } from './usageModerationsResultApiKeyId';
+import type { UsageModerationsResultModel } from './usageModerationsResultModel';
 
 /**
  * The aggregated moderations usage details of the specific time bucket.
  */
 export interface UsageModerationsResult {
-  object: UsageModerationsResultObject
+  object: UsageModerationsResultObject;
   /** The aggregated number of input tokens used. */
-  input_tokens: number
+  input_tokens: number;
   /** The count of requests made to the model. */
-  num_model_requests: number
-  project_id?: UsageModerationsResultProjectId
-  user_id?: UsageModerationsResultUserId
-  api_key_id?: UsageModerationsResultApiKeyId
-  model?: UsageModerationsResultModel
+  num_model_requests: number;
+  project_id?: UsageModerationsResultProjectId;
+  user_id?: UsageModerationsResultUserId;
+  api_key_id?: UsageModerationsResultApiKeyId;
+  model?: UsageModerationsResultModel;
 }

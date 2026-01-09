@@ -5,18 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ApproximateLocationCity } from "./approximateLocationCity"
-import type { ApproximateLocationCountry } from "./approximateLocationCountry"
-import type { ApproximateLocationRegion } from "./approximateLocationRegion"
-import type { ApproximateLocationTimezone } from "./approximateLocationTimezone"
-import type { ApproximateLocationType } from "./approximateLocationType"
+import type { ApproximateLocationType } from './approximateLocationType';
+import type { ApproximateLocationCountry } from './approximateLocationCountry';
+import type { ApproximateLocationRegion } from './approximateLocationRegion';
+import type { ApproximateLocationCity } from './approximateLocationCity';
+import type { ApproximateLocationTimezone } from './approximateLocationTimezone';
 
 export interface ApproximateLocation {
   /** The type of location approximation. Always `approximate`. */
-  type: ApproximateLocationType
-  country?: ApproximateLocationCountry
-  region?: ApproximateLocationRegion
-  city?: ApproximateLocationCity
-  timezone?: ApproximateLocationTimezone
+  type: ApproximateLocationType;
+  country?: ApproximateLocationCountry;
+  region?: ApproximateLocationRegion;
+  city?: ApproximateLocationCity;
+  timezone?: ApproximateLocationTimezone;
 }

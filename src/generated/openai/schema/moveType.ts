@@ -11,9 +11,10 @@
 always set to `move`.
 
  */
-export type MoveType = (typeof MoveType)[keyof typeof MoveType]
+export type MoveType = typeof MoveType[keyof typeof MoveType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MoveType = {
-  move: "move"
-} as const
+  move: 'move',
+} as const;

@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseAudioTranscriptDeltaEventType } from "./responseAudioTranscriptDeltaEventType"
+import type { ResponseAudioTranscriptDeltaEventType } from './responseAudioTranscriptDeltaEventType';
 
 /**
  * Emitted when there is a partial transcript of audio.
  */
 export interface ResponseAudioTranscriptDeltaEvent {
   /** The type of the event. Always `response.audio.transcript.delta`.
-   */
-  type: ResponseAudioTranscriptDeltaEventType
+ */
+  type: ResponseAudioTranscriptDeltaEventType;
   /** The partial transcript of the audio response.
-   */
-  delta: string
+ */
+  delta: string;
   /** The sequence number of this event. */
-  sequence_number: number
+  sequence_number: number;
 }

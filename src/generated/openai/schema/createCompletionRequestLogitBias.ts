@@ -15,4 +15,4 @@ As an example, you can pass `{"50256": -100}` to prevent the <|endoftext|> token
 
  * @nullable
  */
-export type CreateCompletionRequestLogitBias = { [key: string]: number } | null
+export type CreateCompletionRequestLogitBias = {[key: string]: number} | null;

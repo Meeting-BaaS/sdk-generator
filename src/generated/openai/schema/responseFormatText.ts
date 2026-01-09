@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatTextType } from "./responseFormatTextType"
+import type { ResponseFormatTextType } from './responseFormatTextType';
 
 /**
  * Default response format. Used to generate text responses.
@@ -13,5 +13,5 @@ import type { ResponseFormatTextType } from "./responseFormatTextType"
  */
 export interface ResponseFormatText {
   /** The type of response format being defined. Always `text`. */
-  type: ResponseFormatTextType
+  type: ResponseFormatTextType;
 }

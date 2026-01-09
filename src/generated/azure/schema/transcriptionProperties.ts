@@ -5,12 +5,11 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-
-import type { DiarizationProperties } from "./diarizationProperties"
-import type { EntityError } from "./entityError"
-import type { LanguageIdentificationProperties } from "./languageIdentificationProperties"
-import type { ProfanityFilterMode } from "./profanityFilterMode"
-import type { PunctuationMode } from "./punctuationMode"
+import type { PunctuationMode } from './punctuationMode';
+import type { ProfanityFilterMode } from './profanityFilterMode';
+import type { DiarizationProperties } from './diarizationProperties';
+import type { LanguageIdentificationProperties } from './languageIdentificationProperties';
+import type { EntityError } from './entityError';
 
 export interface TranscriptionProperties {
   /** A value indicating whether diarization (speaker identification) is requested. The default value
@@ -24,18 +23,18 @@ No extra charges are applied for the basic diarization.
             
 The basic diarization system is deprecated and will be removed in the next major version of the API.
 This `diarizationEnabled` setting will also be removed. */
-  diarizationEnabled?: boolean
+  diarizationEnabled?: boolean;
   /** A value indicating whether word level timestamps are requested. The default value is
 `false`. */
-  wordLevelTimestampsEnabled?: boolean
+  wordLevelTimestampsEnabled?: boolean;
   /** A value indicating whether word level timestamps for the display form are requested. The default value is `false`. */
-  displayFormWordLevelTimestampsEnabled?: boolean
+  displayFormWordLevelTimestampsEnabled?: boolean;
   /** The duration of the transcription. The duration is encoded as ISO 8601 duration
 ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations). */
-  readonly duration?: string
+  readonly duration?: string;
   /** A collection of the requested channel numbers.
 In the default case, the channels 0 and 1 are considered. */
-  channels?: number[]
+  channels?: number[];
   /** The requested destination container.
 ### Remarks ###
 When a destination container is used in combination with a `timeToLive`, the metadata of a
@@ -44,19 +43,19 @@ transcription results, will remain untouched, because no delete permissions are 
 container.<br />
 To support automatic cleanup, either configure blob lifetimes on the container, or use "Bring your own Storage (BYOS)"
 instead of `destinationContainerUrl`, where blobs can be cleaned up. */
-  destinationContainerUrl?: string
-  punctuationMode?: PunctuationMode
-  profanityFilterMode?: ProfanityFilterMode
+  destinationContainerUrl?: string;
+  punctuationMode?: PunctuationMode;
+  profanityFilterMode?: ProfanityFilterMode;
   /** How long the transcription will be kept in the system after it has completed. Once the
 transcription reaches the time to live after completion (successful or failed) it will be automatically
 deleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported
 duration is 31 days.
 The duration is encoded as ISO 8601 duration ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations). */
-  timeToLive?: string
-  diarization?: DiarizationProperties
-  languageIdentification?: LanguageIdentificationProperties
+  timeToLive?: string;
+  diarization?: DiarizationProperties;
+  languageIdentification?: LanguageIdentificationProperties;
   /** The email address to send email notifications to in case the operation completes.
 The value will be removed after successfully sending the email. */
-  email?: string
-  error?: EntityError
+  email?: string;
+  error?: EntityError;
 }

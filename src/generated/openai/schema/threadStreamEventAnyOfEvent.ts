@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ThreadStreamEventAnyOfEvent =
-  (typeof ThreadStreamEventAnyOfEvent)[keyof typeof ThreadStreamEventAnyOfEvent]
+export type ThreadStreamEventAnyOfEvent = typeof ThreadStreamEventAnyOfEvent[keyof typeof ThreadStreamEventAnyOfEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ThreadStreamEventAnyOfEvent = {
-  threadcreated: "thread.created"
-} as const
+  threadcreated: 'thread.created',
+} as const;

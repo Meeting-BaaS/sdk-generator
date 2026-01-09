@@ -5,35 +5,35 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateSpeechRequestModel } from "./createSpeechRequestModel"
-import type { CreateSpeechRequestResponseFormat } from "./createSpeechRequestResponseFormat"
-import type { CreateSpeechRequestStreamFormat } from "./createSpeechRequestStreamFormat"
-import type { VoiceIdsShared } from "./voiceIdsShared"
+import type { CreateSpeechRequestModel } from './createSpeechRequestModel';
+import type { VoiceIdsShared } from './voiceIdsShared';
+import type { CreateSpeechRequestResponseFormat } from './createSpeechRequestResponseFormat';
+import type { CreateSpeechRequestStreamFormat } from './createSpeechRequestStreamFormat';
 
 export interface CreateSpeechRequest {
   /** One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
-   */
-  model: CreateSpeechRequestModel
+ */
+  model: CreateSpeechRequestModel;
   /**
    * The text to generate audio for. The maximum length is 4096 characters.
    * @maxLength 4096
    */
-  input: string
+  input: string;
   /**
    * Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.
    * @maxLength 4096
    */
-  instructions?: string
+  instructions?: string;
   /** The voice to use when generating the audio. Supported voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and `verse`. Previews of the voices are available in the [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options). */
-  voice: VoiceIdsShared
+  voice: VoiceIdsShared;
   /** The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`. */
-  response_format?: CreateSpeechRequestResponseFormat
+  response_format?: CreateSpeechRequestResponseFormat;
   /**
    * The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is the default.
    * @minimum 0.25
    * @maximum 4
    */
-  speed?: number
+  speed?: number;
   /** The format to stream the audio in. Supported formats are `sse` and `audio`. `sse` is not supported for `tts-1` or `tts-1-hd`. */
-  stream_format?: CreateSpeechRequestStreamFormat
+  stream_format?: CreateSpeechRequestStreamFormat;
 }

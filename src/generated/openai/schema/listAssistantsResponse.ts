@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantObject } from "./assistantObject"
+import type { AssistantObject } from './assistantObject';
 
 export interface ListAssistantsResponse {
-  object: string
-  data: AssistantObject[]
-  first_id: string
-  last_id: string
-  has_more: boolean
+  object: string;
+  data: AssistantObject[];
+  first_id: string;
+  last_id: string;
+  has_more: boolean;
 }

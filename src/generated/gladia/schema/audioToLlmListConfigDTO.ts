@@ -10,5 +10,5 @@ export interface AudioToLlmListConfigDTO {
    * The list of prompts applied on the audio transcription
    * @minItems 1
    */
-  prompts: unknown[][]
+  prompts: unknown[][];
 }

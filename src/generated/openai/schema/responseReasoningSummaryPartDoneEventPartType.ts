@@ -9,10 +9,10 @@
 /**
  * The type of the summary part. Always `summary_text`.
  */
-export type ResponseReasoningSummaryPartDoneEventPartType =
-  (typeof ResponseReasoningSummaryPartDoneEventPartType)[keyof typeof ResponseReasoningSummaryPartDoneEventPartType]
+export type ResponseReasoningSummaryPartDoneEventPartType = typeof ResponseReasoningSummaryPartDoneEventPartType[keyof typeof ResponseReasoningSummaryPartDoneEventPartType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseReasoningSummaryPartDoneEventPartType = {
-  summary_text: "summary_text"
-} as const
+  summary_text: 'summary_text',
+} as const;

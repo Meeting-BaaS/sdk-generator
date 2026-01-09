@@ -13,7 +13,7 @@
  */
 export interface RealtimeBetaServerEventInputAudioBufferCleared {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `input_audio_buffer.cleared`. */
-  type: "input_audio_buffer.cleared"
+  type: 'input_audio_buffer.cleared';
 }

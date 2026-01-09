@@ -8,6 +8,6 @@
 
 export type LemurSummaryParamsAllOf = {
   /** How you want the summary to be returned. This can be any text. Examples: "TLDR", "bullet points"
-   */
-  answer_format?: string
-}
+ */
+  answer_format?: string;
+};

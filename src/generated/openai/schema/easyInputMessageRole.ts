@@ -11,12 +11,13 @@
 `developer`.
 
  */
-export type EasyInputMessageRole = (typeof EasyInputMessageRole)[keyof typeof EasyInputMessageRole]
+export type EasyInputMessageRole = typeof EasyInputMessageRole[keyof typeof EasyInputMessageRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EasyInputMessageRole = {
-  user: "user",
-  assistant: "assistant",
-  system: "system",
-  developer: "developer"
-} as const
+  user: 'user',
+  assistant: 'assistant',
+  system: 'system',
+  developer: 'developer',
+} as const;

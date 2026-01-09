@@ -4,9 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
+import type { TranscriptionLanguageCodeEnum } from './transcriptionLanguageCodeEnum';
 
 export interface CodeSwitchingConfigDTO {
   /** Specify the languages you want to use when detecting multiple languages */
-  languages?: TranscriptionLanguageCodeEnum[]
+  languages?: TranscriptionLanguageCodeEnum[];
 }

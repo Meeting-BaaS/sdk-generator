@@ -9,4 +9,4 @@
 /**
  * New name for the role.
  */
-export type PublicUpdateOrganizationRoleBodyRoleName = string | null
+export type PublicUpdateOrganizationRoleBodyRoleName = string | null;

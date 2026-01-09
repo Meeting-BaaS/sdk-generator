@@ -10,13 +10,13 @@
  * The status of the image generation call.
 
  */
-export type ImageGenToolCallStatus =
-  (typeof ImageGenToolCallStatus)[keyof typeof ImageGenToolCallStatus]
+export type ImageGenToolCallStatus = typeof ImageGenToolCallStatus[keyof typeof ImageGenToolCallStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolCallStatus = {
-  in_progress: "in_progress",
-  completed: "completed",
-  generating: "generating",
-  failed: "failed"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+  generating: 'generating',
+  failed: 'failed',
+} as const;

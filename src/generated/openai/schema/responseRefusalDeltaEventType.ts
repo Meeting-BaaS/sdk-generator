@@ -10,10 +10,10 @@
  * The type of the event. Always `response.refusal.delta`.
 
  */
-export type ResponseRefusalDeltaEventType =
-  (typeof ResponseRefusalDeltaEventType)[keyof typeof ResponseRefusalDeltaEventType]
+export type ResponseRefusalDeltaEventType = typeof ResponseRefusalDeltaEventType[keyof typeof ResponseRefusalDeltaEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseRefusalDeltaEventType = {
-  responserefusaldelta: "response.refusal.delta"
-} as const
+  responserefusaldelta: 'response.refusal.delta',
+} as const;

@@ -6,11 +6,12 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type DetailEnum = (typeof DetailEnum)[keyof typeof DetailEnum]
+export type DetailEnum = typeof DetailEnum[keyof typeof DetailEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DetailEnum = {
-  low: "low",
-  high: "high",
-  auto: "auto"
-} as const
+  low: 'low',
+  high: 'high',
+  auto: 'auto',
+} as const;

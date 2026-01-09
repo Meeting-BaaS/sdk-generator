@@ -5,21 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ProjectGroup } from "./projectGroup"
-import type { ProjectGroupListResourceNext } from "./projectGroupListResourceNext"
-import type { ProjectGroupListResourceObject } from "./projectGroupListResourceObject"
+import type { ProjectGroupListResourceObject } from './projectGroupListResourceObject';
+import type { ProjectGroup } from './projectGroup';
+import type { ProjectGroupListResourceNext } from './projectGroupListResourceNext';
 
 /**
  * Paginated list of groups that have access to a project.
  */
 export interface ProjectGroupListResource {
   /** Always `list`. */
-  object: ProjectGroupListResourceObject
+  object: ProjectGroupListResourceObject;
   /** Project group memberships returned in the current page. */
-  data: ProjectGroup[]
+  data: ProjectGroup[];
   /** Whether additional project group memberships are available. */
-  has_more: boolean
+  has_more: boolean;
   /** Cursor to fetch the next page of results, or `null` when there are no more results. */
-  next: ProjectGroupListResourceNext
+  next: ProjectGroupListResourceNext;
 }

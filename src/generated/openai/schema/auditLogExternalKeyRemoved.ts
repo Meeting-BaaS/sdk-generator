@@ -11,5 +11,5 @@
  */
 export type AuditLogExternalKeyRemoved = {
   /** The ID of the external key configuration. */
-  id?: string
-}
+  id?: string;
+};

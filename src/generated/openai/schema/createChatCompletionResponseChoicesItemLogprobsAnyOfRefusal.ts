@@ -5,8 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionTokenLogprob } from "./chatCompletionTokenLogprob"
+import type { ChatCompletionTokenLogprob } from './chatCompletionTokenLogprob';
 
-export type CreateChatCompletionResponseChoicesItemLogprobsAnyOfRefusal =
-  | ChatCompletionTokenLogprob[]
-  | null
+export type CreateChatCompletionResponseChoicesItemLogprobsAnyOfRefusal = ChatCompletionTokenLogprob[] | null;

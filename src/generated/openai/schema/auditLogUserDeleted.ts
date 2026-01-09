@@ -11,5 +11,5 @@
  */
 export type AuditLogUserDeleted = {
   /** The user ID. */
-  id?: string
-}
+  id?: string;
+};

@@ -5,21 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { GroupListResourceNext } from "./groupListResourceNext"
-import type { GroupListResourceObject } from "./groupListResourceObject"
-import type { GroupResponse } from "./groupResponse"
+import type { GroupListResourceObject } from './groupListResourceObject';
+import type { GroupResponse } from './groupResponse';
+import type { GroupListResourceNext } from './groupListResourceNext';
 
 /**
  * Paginated list of organization groups.
  */
 export interface GroupListResource {
   /** Always `list`. */
-  object: GroupListResourceObject
+  object: GroupListResourceObject;
   /** Groups returned in the current page. */
-  data: GroupResponse[]
+  data: GroupResponse[];
   /** Whether additional groups are available when paginating. */
-  has_more: boolean
+  has_more: boolean;
   /** Cursor to fetch the next page of results, or `null` if there are no more results. */
-  next: GroupListResourceNext
+  next: GroupListResourceNext;
 }

@@ -9,10 +9,10 @@
 /**
  * The type of the output text. Always `output_text`.
  */
-export type OutputTextContentType =
-  (typeof OutputTextContentType)[keyof typeof OutputTextContentType]
+export type OutputTextContentType = typeof OutputTextContentType[keyof typeof OutputTextContentType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OutputTextContentType = {
-  output_text: "output_text"
-} as const
+  output_text: 'output_text',
+} as const;

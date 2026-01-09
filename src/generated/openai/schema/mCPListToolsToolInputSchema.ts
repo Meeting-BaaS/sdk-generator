@@ -10,4 +10,4 @@
  * The JSON schema describing the tool's input.
 
  */
-export type MCPListToolsToolInputSchema = { [key: string]: unknown }
+export type MCPListToolsToolInputSchema = { [key: string]: unknown };

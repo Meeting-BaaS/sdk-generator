@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InviteDeleteResponseObject } from "./inviteDeleteResponseObject"
+import type { InviteDeleteResponseObject } from './inviteDeleteResponseObject';
 
 export interface InviteDeleteResponse {
   /** The object type, which is always `organization.invite.deleted` */
-  object: InviteDeleteResponseObject
-  id: string
-  deleted: boolean
+  object: InviteDeleteResponseObject;
+  id: string;
+  deleted: boolean;
 }

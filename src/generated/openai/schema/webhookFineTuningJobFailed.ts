@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookFineTuningJobFailedData } from "./webhookFineTuningJobFailedData"
-import type { WebhookFineTuningJobFailedObject } from "./webhookFineTuningJobFailedObject"
-import type { WebhookFineTuningJobFailedType } from "./webhookFineTuningJobFailedType"
+import type { WebhookFineTuningJobFailedData } from './webhookFineTuningJobFailedData';
+import type { WebhookFineTuningJobFailedObject } from './webhookFineTuningJobFailedObject';
+import type { WebhookFineTuningJobFailedType } from './webhookFineTuningJobFailedType';
 
 /**
  * Sent when a fine-tuning job has failed.
@@ -15,18 +15,18 @@ import type { WebhookFineTuningJobFailedType } from "./webhookFineTuningJobFaile
  */
 export interface WebhookFineTuningJobFailed {
   /** The Unix timestamp (in seconds) of when the fine-tuning job failed.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The unique ID of the event.
-   */
-  id: string
+ */
+  id: string;
   /** Event data payload.
-   */
-  data: WebhookFineTuningJobFailedData
+ */
+  data: WebhookFineTuningJobFailedData;
   /** The object of the event. Always `event`.
-   */
-  object?: WebhookFineTuningJobFailedObject
+ */
+  object?: WebhookFineTuningJobFailedObject;
   /** The type of the event. Always `fine_tuning.job.failed`.
-   */
-  type: WebhookFineTuningJobFailedType
+ */
+  type: WebhookFineTuningJobFailedType;
 }

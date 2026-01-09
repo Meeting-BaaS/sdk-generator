@@ -5,17 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CreateEvalRequestDataSourceConfig } from "./createEvalRequestDataSourceConfig"
-import type { CreateEvalRequestTestingCriteriaItem } from "./createEvalRequestTestingCriteriaItem"
-import type { Metadata } from "./metadata"
+import type { Metadata } from './metadata';
+import type { CreateEvalRequestDataSourceConfig } from './createEvalRequestDataSourceConfig';
+import type { CreateEvalRequestTestingCriteriaItem } from './createEvalRequestTestingCriteriaItem';
 
 export interface CreateEvalRequest {
   /** The name of the evaluation. */
-  name?: string
-  metadata?: Metadata
+  name?: string;
+  metadata?: Metadata;
   /** The configuration for the data source used for the evaluation runs. Dictates the schema of the data used in the evaluation. */
-  data_source_config: CreateEvalRequestDataSourceConfig
+  data_source_config: CreateEvalRequestDataSourceConfig;
   /** A list of graders for all eval runs in this group. Graders can reference variables in the data source using double curly braces notation, like `{{item.variable_name}}`. To reference the model's output, use the `sample` namespace (ie, `{{sample.output_text}}`). */
-  testing_criteria: CreateEvalRequestTestingCriteriaItem[]
+  testing_criteria: CreateEvalRequestTestingCriteriaItem[];
 }

@@ -5,12 +5,12 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { LanguageIdentificationPropertiesSpeechModelMapping } from "./languageIdentificationPropertiesSpeechModelMapping"
+import type { LanguageIdentificationPropertiesSpeechModelMapping } from './languageIdentificationPropertiesSpeechModelMapping';
 
 export interface LanguageIdentificationProperties {
   /** The candidate locales for language identification (example ["en-US", "de-DE", "es-ES"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported. */
-  candidateLocales: string[]
+  candidateLocales: string[];
   /** An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.
 Keys must be locales contained in the candidate locales, values are entities for models of the respective locales. */
-  speechModelMapping?: LanguageIdentificationPropertiesSpeechModelMapping
+  speechModelMapping?: LanguageIdentificationPropertiesSpeechModelMapping;
 }

@@ -9,4 +9,4 @@
 /**
  * Parameters of the function in JSON Schema.
  */
-export type RealtimeSessionCreateRequestToolsItemParameters = { [key: string]: unknown }
+export type RealtimeSessionCreateRequestToolsItemParameters = { [key: string]: unknown };

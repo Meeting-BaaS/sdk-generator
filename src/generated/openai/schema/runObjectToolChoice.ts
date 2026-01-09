@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantsApiToolChoiceOption } from "./assistantsApiToolChoiceOption"
-import type { RunObjectToolChoiceAllOf } from "./runObjectToolChoiceAllOf"
+import type { AssistantsApiToolChoiceOption } from './assistantsApiToolChoiceOption';
+import type { RunObjectToolChoiceAllOf } from './runObjectToolChoiceAllOf';
 
-export type RunObjectToolChoice = AssistantsApiToolChoiceOption & RunObjectToolChoiceAllOf
+export type RunObjectToolChoice = AssistantsApiToolChoiceOption & RunObjectToolChoiceAllOf;

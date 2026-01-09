@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ToolChoiceAllowedMode } from "./toolChoiceAllowedMode"
-import type { ToolChoiceAllowedToolsItem } from "./toolChoiceAllowedToolsItem"
-import type { ToolChoiceAllowedType } from "./toolChoiceAllowedType"
+import type { ToolChoiceAllowedType } from './toolChoiceAllowedType';
+import type { ToolChoiceAllowedMode } from './toolChoiceAllowedMode';
+import type { ToolChoiceAllowedToolsItem } from './toolChoiceAllowedToolsItem';
 
 /**
  * Constrains the tools available to the model to a pre-defined set.
@@ -16,7 +15,7 @@ import type { ToolChoiceAllowedType } from "./toolChoiceAllowedType"
  */
 export interface ToolChoiceAllowed {
   /** Allowed tool configuration type. Always `allowed_tools`. */
-  type: ToolChoiceAllowedType
+  type: ToolChoiceAllowedType;
   /** Constrains the tools available to the model to a pre-defined set.
 
 `auto` allows the model to pick from among the allowed tools and generate a
@@ -24,7 +23,7 @@ message.
 
 `required` requires the model to call one or more of the allowed tools.
  */
-  mode: ToolChoiceAllowedMode
+  mode: ToolChoiceAllowedMode;
   /** A list of tool definitions that the model should be allowed to call.
 
 For the Responses API, the list of tool definitions might look like:
@@ -36,5 +35,5 @@ For the Responses API, the list of tool definitions might look like:
 ]
 ```
  */
-  tools: ToolChoiceAllowedToolsItem[]
+  tools: ToolChoiceAllowedToolsItem[];
 }

@@ -5,24 +5,24 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantMessageItemObject } from "./assistantMessageItemObject"
-import type { AssistantMessageItemType } from "./assistantMessageItemType"
-import type { ResponseOutputText } from "./responseOutputText"
+import type { AssistantMessageItemObject } from './assistantMessageItemObject';
+import type { AssistantMessageItemType } from './assistantMessageItemType';
+import type { ResponseOutputText } from './responseOutputText';
 
 /**
  * Assistant-authored message within a thread.
  */
 export interface AssistantMessageItem {
   /** Identifier of the thread item. */
-  id: string
+  id: string;
   /** Type discriminator that is always `chatkit.thread_item`. */
-  object: AssistantMessageItemObject
+  object: AssistantMessageItemObject;
   /** Unix timestamp (in seconds) for when the item was created. */
-  created_at: number
+  created_at: number;
   /** Identifier of the parent thread. */
-  thread_id: string
+  thread_id: string;
   /** Type discriminator that is always `chatkit.assistant_message`. */
-  type: AssistantMessageItemType
+  type: AssistantMessageItemType;
   /** Ordered assistant response segments. */
-  content: ResponseOutputText[]
+  content: ResponseOutputText[];
 }

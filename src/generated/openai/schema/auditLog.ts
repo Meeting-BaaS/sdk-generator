@@ -5,162 +5,161 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { AuditLogActor } from "./auditLogActor"
-import type { AuditLogApiKeyCreated } from "./auditLogApiKeyCreated"
-import type { AuditLogApiKeyDeleted } from "./auditLogApiKeyDeleted"
-import type { AuditLogApiKeyUpdated } from "./auditLogApiKeyUpdated"
-import type { AuditLogCertificateCreated } from "./auditLogCertificateCreated"
-import type { AuditLogCertificateDeleted } from "./auditLogCertificateDeleted"
-import type { AuditLogCertificatesActivated } from "./auditLogCertificatesActivated"
-import type { AuditLogCertificatesDeactivated } from "./auditLogCertificatesDeactivated"
-import type { AuditLogCertificateUpdated } from "./auditLogCertificateUpdated"
-import type { AuditLogCheckpointPermissionCreated } from "./auditLogCheckpointPermissionCreated"
-import type { AuditLogCheckpointPermissionDeleted } from "./auditLogCheckpointPermissionDeleted"
-import type { AuditLogEventType } from "./auditLogEventType"
-import type { AuditLogExternalKeyRegistered } from "./auditLogExternalKeyRegistered"
-import type { AuditLogExternalKeyRemoved } from "./auditLogExternalKeyRemoved"
-import type { AuditLogGroupCreated } from "./auditLogGroupCreated"
-import type { AuditLogGroupDeleted } from "./auditLogGroupDeleted"
-import type { AuditLogGroupUpdated } from "./auditLogGroupUpdated"
-import type { AuditLogInviteAccepted } from "./auditLogInviteAccepted"
-import type { AuditLogInviteDeleted } from "./auditLogInviteDeleted"
-import type { AuditLogInviteSent } from "./auditLogInviteSent"
-import type { AuditLogIpAllowlistConfigActivated } from "./auditLogIpAllowlistConfigActivated"
-import type { AuditLogIpAllowlistConfigDeactivated } from "./auditLogIpAllowlistConfigDeactivated"
-import type { AuditLogIpAllowlistCreated } from "./auditLogIpAllowlistCreated"
-import type { AuditLogIpAllowlistDeleted } from "./auditLogIpAllowlistDeleted"
-import type { AuditLogIpAllowlistUpdated } from "./auditLogIpAllowlistUpdated"
-import type { AuditLogLoginFailed } from "./auditLogLoginFailed"
-import type { AuditLogLoginSucceeded } from "./auditLogLoginSucceeded"
-import type { AuditLogLogoutFailed } from "./auditLogLogoutFailed"
-import type { AuditLogLogoutSucceeded } from "./auditLogLogoutSucceeded"
-import type { AuditLogOrganizationUpdated } from "./auditLogOrganizationUpdated"
-import type { AuditLogProject } from "./auditLogProject"
-import type { AuditLogProjectArchived } from "./auditLogProjectArchived"
-import type { AuditLogProjectCreated } from "./auditLogProjectCreated"
-import type { AuditLogProjectDeleted } from "./auditLogProjectDeleted"
-import type { AuditLogProjectUpdated } from "./auditLogProjectUpdated"
-import type { AuditLogRateLimitDeleted } from "./auditLogRateLimitDeleted"
-import type { AuditLogRateLimitUpdated } from "./auditLogRateLimitUpdated"
-import type { AuditLogRoleAssignmentCreated } from "./auditLogRoleAssignmentCreated"
-import type { AuditLogRoleAssignmentDeleted } from "./auditLogRoleAssignmentDeleted"
-import type { AuditLogRoleCreated } from "./auditLogRoleCreated"
-import type { AuditLogRoleDeleted } from "./auditLogRoleDeleted"
-import type { AuditLogRoleUpdated } from "./auditLogRoleUpdated"
-import type { AuditLogScimDisabled } from "./auditLogScimDisabled"
-import type { AuditLogScimEnabled } from "./auditLogScimEnabled"
-import type { AuditLogServiceAccountCreated } from "./auditLogServiceAccountCreated"
-import type { AuditLogServiceAccountDeleted } from "./auditLogServiceAccountDeleted"
-import type { AuditLogServiceAccountUpdated } from "./auditLogServiceAccountUpdated"
-import type { AuditLogUserAdded } from "./auditLogUserAdded"
-import type { AuditLogUserDeleted } from "./auditLogUserDeleted"
-import type { AuditLogUserUpdated } from "./auditLogUserUpdated"
+import type { AuditLogEventType } from './auditLogEventType';
+import type { AuditLogProject } from './auditLogProject';
+import type { AuditLogActor } from './auditLogActor';
+import type { AuditLogApiKeyCreated } from './auditLogApiKeyCreated';
+import type { AuditLogApiKeyUpdated } from './auditLogApiKeyUpdated';
+import type { AuditLogApiKeyDeleted } from './auditLogApiKeyDeleted';
+import type { AuditLogCheckpointPermissionCreated } from './auditLogCheckpointPermissionCreated';
+import type { AuditLogCheckpointPermissionDeleted } from './auditLogCheckpointPermissionDeleted';
+import type { AuditLogExternalKeyRegistered } from './auditLogExternalKeyRegistered';
+import type { AuditLogExternalKeyRemoved } from './auditLogExternalKeyRemoved';
+import type { AuditLogGroupCreated } from './auditLogGroupCreated';
+import type { AuditLogGroupUpdated } from './auditLogGroupUpdated';
+import type { AuditLogGroupDeleted } from './auditLogGroupDeleted';
+import type { AuditLogScimEnabled } from './auditLogScimEnabled';
+import type { AuditLogScimDisabled } from './auditLogScimDisabled';
+import type { AuditLogInviteSent } from './auditLogInviteSent';
+import type { AuditLogInviteAccepted } from './auditLogInviteAccepted';
+import type { AuditLogInviteDeleted } from './auditLogInviteDeleted';
+import type { AuditLogIpAllowlistCreated } from './auditLogIpAllowlistCreated';
+import type { AuditLogIpAllowlistUpdated } from './auditLogIpAllowlistUpdated';
+import type { AuditLogIpAllowlistDeleted } from './auditLogIpAllowlistDeleted';
+import type { AuditLogIpAllowlistConfigActivated } from './auditLogIpAllowlistConfigActivated';
+import type { AuditLogIpAllowlistConfigDeactivated } from './auditLogIpAllowlistConfigDeactivated';
+import type { AuditLogLoginSucceeded } from './auditLogLoginSucceeded';
+import type { AuditLogLoginFailed } from './auditLogLoginFailed';
+import type { AuditLogLogoutSucceeded } from './auditLogLogoutSucceeded';
+import type { AuditLogLogoutFailed } from './auditLogLogoutFailed';
+import type { AuditLogOrganizationUpdated } from './auditLogOrganizationUpdated';
+import type { AuditLogProjectCreated } from './auditLogProjectCreated';
+import type { AuditLogProjectUpdated } from './auditLogProjectUpdated';
+import type { AuditLogProjectArchived } from './auditLogProjectArchived';
+import type { AuditLogProjectDeleted } from './auditLogProjectDeleted';
+import type { AuditLogRateLimitUpdated } from './auditLogRateLimitUpdated';
+import type { AuditLogRateLimitDeleted } from './auditLogRateLimitDeleted';
+import type { AuditLogRoleCreated } from './auditLogRoleCreated';
+import type { AuditLogRoleUpdated } from './auditLogRoleUpdated';
+import type { AuditLogRoleDeleted } from './auditLogRoleDeleted';
+import type { AuditLogRoleAssignmentCreated } from './auditLogRoleAssignmentCreated';
+import type { AuditLogRoleAssignmentDeleted } from './auditLogRoleAssignmentDeleted';
+import type { AuditLogServiceAccountCreated } from './auditLogServiceAccountCreated';
+import type { AuditLogServiceAccountUpdated } from './auditLogServiceAccountUpdated';
+import type { AuditLogServiceAccountDeleted } from './auditLogServiceAccountDeleted';
+import type { AuditLogUserAdded } from './auditLogUserAdded';
+import type { AuditLogUserUpdated } from './auditLogUserUpdated';
+import type { AuditLogUserDeleted } from './auditLogUserDeleted';
+import type { AuditLogCertificateCreated } from './auditLogCertificateCreated';
+import type { AuditLogCertificateUpdated } from './auditLogCertificateUpdated';
+import type { AuditLogCertificateDeleted } from './auditLogCertificateDeleted';
+import type { AuditLogCertificatesActivated } from './auditLogCertificatesActivated';
+import type { AuditLogCertificatesDeactivated } from './auditLogCertificatesDeactivated';
 
 /**
  * A log of a user action or configuration change within this organization.
  */
 export interface AuditLog {
   /** The ID of this log. */
-  id: string
-  type: AuditLogEventType
+  id: string;
+  type: AuditLogEventType;
   /** The Unix timestamp (in seconds) of the event. */
-  effective_at: number
+  effective_at: number;
   /** The project that the action was scoped to. Absent for actions not scoped to projects. Note that any admin actions taken via Admin API keys are associated with the default project. */
-  project?: AuditLogProject
-  actor: AuditLogActor
+  project?: AuditLogProject;
+  actor: AuditLogActor;
   /** The details for events with this `type`. */
-  "api_key.created"?: AuditLogApiKeyCreated
+  'api_key.created'?: AuditLogApiKeyCreated;
   /** The details for events with this `type`. */
-  "api_key.updated"?: AuditLogApiKeyUpdated
+  'api_key.updated'?: AuditLogApiKeyUpdated;
   /** The details for events with this `type`. */
-  "api_key.deleted"?: AuditLogApiKeyDeleted
+  'api_key.deleted'?: AuditLogApiKeyDeleted;
   /** The project and fine-tuned model checkpoint that the checkpoint permission was created for. */
-  "checkpoint.permission.created"?: AuditLogCheckpointPermissionCreated
+  'checkpoint.permission.created'?: AuditLogCheckpointPermissionCreated;
   /** The details for events with this `type`. */
-  "checkpoint.permission.deleted"?: AuditLogCheckpointPermissionDeleted
+  'checkpoint.permission.deleted'?: AuditLogCheckpointPermissionDeleted;
   /** The details for events with this `type`. */
-  "external_key.registered"?: AuditLogExternalKeyRegistered
+  'external_key.registered'?: AuditLogExternalKeyRegistered;
   /** The details for events with this `type`. */
-  "external_key.removed"?: AuditLogExternalKeyRemoved
+  'external_key.removed'?: AuditLogExternalKeyRemoved;
   /** The details for events with this `type`. */
-  "group.created"?: AuditLogGroupCreated
+  'group.created'?: AuditLogGroupCreated;
   /** The details for events with this `type`. */
-  "group.updated"?: AuditLogGroupUpdated
+  'group.updated'?: AuditLogGroupUpdated;
   /** The details for events with this `type`. */
-  "group.deleted"?: AuditLogGroupDeleted
+  'group.deleted'?: AuditLogGroupDeleted;
   /** The details for events with this `type`. */
-  "scim.enabled"?: AuditLogScimEnabled
+  'scim.enabled'?: AuditLogScimEnabled;
   /** The details for events with this `type`. */
-  "scim.disabled"?: AuditLogScimDisabled
+  'scim.disabled'?: AuditLogScimDisabled;
   /** The details for events with this `type`. */
-  "invite.sent"?: AuditLogInviteSent
+  'invite.sent'?: AuditLogInviteSent;
   /** The details for events with this `type`. */
-  "invite.accepted"?: AuditLogInviteAccepted
+  'invite.accepted'?: AuditLogInviteAccepted;
   /** The details for events with this `type`. */
-  "invite.deleted"?: AuditLogInviteDeleted
+  'invite.deleted'?: AuditLogInviteDeleted;
   /** The details for events with this `type`. */
-  "ip_allowlist.created"?: AuditLogIpAllowlistCreated
+  'ip_allowlist.created'?: AuditLogIpAllowlistCreated;
   /** The details for events with this `type`. */
-  "ip_allowlist.updated"?: AuditLogIpAllowlistUpdated
+  'ip_allowlist.updated'?: AuditLogIpAllowlistUpdated;
   /** The details for events with this `type`. */
-  "ip_allowlist.deleted"?: AuditLogIpAllowlistDeleted
+  'ip_allowlist.deleted'?: AuditLogIpAllowlistDeleted;
   /** The details for events with this `type`. */
-  "ip_allowlist.config.activated"?: AuditLogIpAllowlistConfigActivated
+  'ip_allowlist.config.activated'?: AuditLogIpAllowlistConfigActivated;
   /** The details for events with this `type`. */
-  "ip_allowlist.config.deactivated"?: AuditLogIpAllowlistConfigDeactivated
+  'ip_allowlist.config.deactivated'?: AuditLogIpAllowlistConfigDeactivated;
   /** This event has no additional fields beyond the standard audit log attributes. */
-  "login.succeeded"?: AuditLogLoginSucceeded
+  'login.succeeded'?: AuditLogLoginSucceeded;
   /** The details for events with this `type`. */
-  "login.failed"?: AuditLogLoginFailed
+  'login.failed'?: AuditLogLoginFailed;
   /** This event has no additional fields beyond the standard audit log attributes. */
-  "logout.succeeded"?: AuditLogLogoutSucceeded
+  'logout.succeeded'?: AuditLogLogoutSucceeded;
   /** The details for events with this `type`. */
-  "logout.failed"?: AuditLogLogoutFailed
+  'logout.failed'?: AuditLogLogoutFailed;
   /** The details for events with this `type`. */
-  "organization.updated"?: AuditLogOrganizationUpdated
+  'organization.updated'?: AuditLogOrganizationUpdated;
   /** The details for events with this `type`. */
-  "project.created"?: AuditLogProjectCreated
+  'project.created'?: AuditLogProjectCreated;
   /** The details for events with this `type`. */
-  "project.updated"?: AuditLogProjectUpdated
+  'project.updated'?: AuditLogProjectUpdated;
   /** The details for events with this `type`. */
-  "project.archived"?: AuditLogProjectArchived
+  'project.archived'?: AuditLogProjectArchived;
   /** The details for events with this `type`. */
-  "project.deleted"?: AuditLogProjectDeleted
+  'project.deleted'?: AuditLogProjectDeleted;
   /** The details for events with this `type`. */
-  "rate_limit.updated"?: AuditLogRateLimitUpdated
+  'rate_limit.updated'?: AuditLogRateLimitUpdated;
   /** The details for events with this `type`. */
-  "rate_limit.deleted"?: AuditLogRateLimitDeleted
+  'rate_limit.deleted'?: AuditLogRateLimitDeleted;
   /** The details for events with this `type`. */
-  "role.created"?: AuditLogRoleCreated
+  'role.created'?: AuditLogRoleCreated;
   /** The details for events with this `type`. */
-  "role.updated"?: AuditLogRoleUpdated
+  'role.updated'?: AuditLogRoleUpdated;
   /** The details for events with this `type`. */
-  "role.deleted"?: AuditLogRoleDeleted
+  'role.deleted'?: AuditLogRoleDeleted;
   /** The details for events with this `type`. */
-  "role.assignment.created"?: AuditLogRoleAssignmentCreated
+  'role.assignment.created'?: AuditLogRoleAssignmentCreated;
   /** The details for events with this `type`. */
-  "role.assignment.deleted"?: AuditLogRoleAssignmentDeleted
+  'role.assignment.deleted'?: AuditLogRoleAssignmentDeleted;
   /** The details for events with this `type`. */
-  "service_account.created"?: AuditLogServiceAccountCreated
+  'service_account.created'?: AuditLogServiceAccountCreated;
   /** The details for events with this `type`. */
-  "service_account.updated"?: AuditLogServiceAccountUpdated
+  'service_account.updated'?: AuditLogServiceAccountUpdated;
   /** The details for events with this `type`. */
-  "service_account.deleted"?: AuditLogServiceAccountDeleted
+  'service_account.deleted'?: AuditLogServiceAccountDeleted;
   /** The details for events with this `type`. */
-  "user.added"?: AuditLogUserAdded
+  'user.added'?: AuditLogUserAdded;
   /** The details for events with this `type`. */
-  "user.updated"?: AuditLogUserUpdated
+  'user.updated'?: AuditLogUserUpdated;
   /** The details for events with this `type`. */
-  "user.deleted"?: AuditLogUserDeleted
+  'user.deleted'?: AuditLogUserDeleted;
   /** The details for events with this `type`. */
-  "certificate.created"?: AuditLogCertificateCreated
+  'certificate.created'?: AuditLogCertificateCreated;
   /** The details for events with this `type`. */
-  "certificate.updated"?: AuditLogCertificateUpdated
+  'certificate.updated'?: AuditLogCertificateUpdated;
   /** The details for events with this `type`. */
-  "certificate.deleted"?: AuditLogCertificateDeleted
+  'certificate.deleted'?: AuditLogCertificateDeleted;
   /** The details for events with this `type`. */
-  "certificates.activated"?: AuditLogCertificatesActivated
+  'certificates.activated'?: AuditLogCertificatesActivated;
   /** The details for events with this `type`. */
-  "certificates.deactivated"?: AuditLogCertificatesDeactivated
+  'certificates.deactivated'?: AuditLogCertificatesDeactivated;
 }

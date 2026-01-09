@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { SpeechAudioDeltaEvent } from "./speechAudioDeltaEvent"
-import type { SpeechAudioDoneEvent } from "./speechAudioDoneEvent"
+import type { SpeechAudioDeltaEvent } from './speechAudioDeltaEvent';
+import type { SpeechAudioDoneEvent } from './speechAudioDoneEvent';
 
-export type CreateSpeechResponseStreamEvent = SpeechAudioDeltaEvent | SpeechAudioDoneEvent
+export type CreateSpeechResponseStreamEvent = SpeechAudioDeltaEvent | SpeechAudioDoneEvent;

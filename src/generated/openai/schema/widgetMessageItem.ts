@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WidgetMessageItemObject } from "./widgetMessageItemObject"
-import type { WidgetMessageItemType } from "./widgetMessageItemType"
+import type { WidgetMessageItemObject } from './widgetMessageItemObject';
+import type { WidgetMessageItemType } from './widgetMessageItemType';
 
 /**
  * Thread item that renders a widget payload.
  */
 export interface WidgetMessageItem {
   /** Identifier of the thread item. */
-  id: string
+  id: string;
   /** Type discriminator that is always `chatkit.thread_item`. */
-  object: WidgetMessageItemObject
+  object: WidgetMessageItemObject;
   /** Unix timestamp (in seconds) for when the item was created. */
-  created_at: number
+  created_at: number;
   /** Identifier of the parent thread. */
-  thread_id: string
+  thread_id: string;
   /** Type discriminator that is always `chatkit.widget`. */
-  type: WidgetMessageItemType
+  type: WidgetMessageItemType;
   /** Serialized widget payload rendered in the UI. */
-  widget: string
+  widget: string;
 }

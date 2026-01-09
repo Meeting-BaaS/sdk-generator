@@ -10,4 +10,4 @@
 /**
  * Spoken measurements will be converted to their corresponding abbreviations
  */
-export type ListenV1MeasurementsParameter = boolean
+export type ListenV1MeasurementsParameter = boolean;

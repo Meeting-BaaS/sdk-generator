@@ -9,13 +9,13 @@
 /**
  * Optional memory limit for the container. Defaults to "1g".
  */
-export type CreateContainerBodyMemoryLimit =
-  (typeof CreateContainerBodyMemoryLimit)[keyof typeof CreateContainerBodyMemoryLimit]
+export type CreateContainerBodyMemoryLimit = typeof CreateContainerBodyMemoryLimit[keyof typeof CreateContainerBodyMemoryLimit];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateContainerBodyMemoryLimit = {
-  "1g": "1g",
-  "4g": "4g",
-  "16g": "16g",
-  "64g": "64g"
-} as const
+  '1g': '1g',
+  '4g': '4g',
+  '16g': '16g',
+  '64g': '64g',
+} as const;

@@ -10,10 +10,10 @@
  * The type of the event. Always `response.completed`.
 
  */
-export type WebhookResponseCompletedType =
-  (typeof WebhookResponseCompletedType)[keyof typeof WebhookResponseCompletedType]
+export type WebhookResponseCompletedType = typeof WebhookResponseCompletedType[keyof typeof WebhookResponseCompletedType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookResponseCompletedType = {
-  responsecompleted: "response.completed"
-} as const
+  responsecompleted: 'response.completed',
+} as const;

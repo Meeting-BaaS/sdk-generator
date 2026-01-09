@@ -10,12 +10,12 @@
  * The output format for the generated image.
 
  */
-export type ImageGenCompletedEventOutputFormat =
-  (typeof ImageGenCompletedEventOutputFormat)[keyof typeof ImageGenCompletedEventOutputFormat]
+export type ImageGenCompletedEventOutputFormat = typeof ImageGenCompletedEventOutputFormat[keyof typeof ImageGenCompletedEventOutputFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenCompletedEventOutputFormat = {
-  png: "png",
-  webp: "webp",
-  jpeg: "jpeg"
-} as const
+  png: 'png',
+  webp: 'webp',
+  jpeg: 'jpeg',
+} as const;

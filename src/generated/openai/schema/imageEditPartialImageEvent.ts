@@ -5,12 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ImageEditPartialImageEventBackground } from "./imageEditPartialImageEventBackground"
-import type { ImageEditPartialImageEventOutputFormat } from "./imageEditPartialImageEventOutputFormat"
-import type { ImageEditPartialImageEventQuality } from "./imageEditPartialImageEventQuality"
-import type { ImageEditPartialImageEventSize } from "./imageEditPartialImageEventSize"
-import type { ImageEditPartialImageEventType } from "./imageEditPartialImageEventType"
+import type { ImageEditPartialImageEventType } from './imageEditPartialImageEventType';
+import type { ImageEditPartialImageEventSize } from './imageEditPartialImageEventSize';
+import type { ImageEditPartialImageEventQuality } from './imageEditPartialImageEventQuality';
+import type { ImageEditPartialImageEventBackground } from './imageEditPartialImageEventBackground';
+import type { ImageEditPartialImageEventOutputFormat } from './imageEditPartialImageEventOutputFormat';
 
 /**
  * Emitted when a partial image is available during image editing streaming.
@@ -18,27 +17,27 @@ import type { ImageEditPartialImageEventType } from "./imageEditPartialImageEven
  */
 export interface ImageEditPartialImageEvent {
   /** The type of the event. Always `image_edit.partial_image`.
-   */
-  type: ImageEditPartialImageEventType
+ */
+  type: ImageEditPartialImageEventType;
   /** Base64-encoded partial image data, suitable for rendering as an image.
-   */
-  b64_json: string
+ */
+  b64_json: string;
   /** The Unix timestamp when the event was created.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The size of the requested edited image.
-   */
-  size: ImageEditPartialImageEventSize
+ */
+  size: ImageEditPartialImageEventSize;
   /** The quality setting for the requested edited image.
-   */
-  quality: ImageEditPartialImageEventQuality
+ */
+  quality: ImageEditPartialImageEventQuality;
   /** The background setting for the requested edited image.
-   */
-  background: ImageEditPartialImageEventBackground
+ */
+  background: ImageEditPartialImageEventBackground;
   /** The output format for the requested edited image.
-   */
-  output_format: ImageEditPartialImageEventOutputFormat
+ */
+  output_format: ImageEditPartialImageEventOutputFormat;
   /** 0-based index for the partial image (streaming).
-   */
-  partial_image_index: number
+ */
+  partial_image_index: number;
 }

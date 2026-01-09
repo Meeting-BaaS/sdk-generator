@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RealtimeResponseStatusDetailsError } from "./realtimeResponseStatusDetailsError"
-import type { RealtimeResponseStatusDetailsReason } from "./realtimeResponseStatusDetailsReason"
-import type { RealtimeResponseStatusDetailsType } from "./realtimeResponseStatusDetailsType"
+import type { RealtimeResponseStatusDetailsType } from './realtimeResponseStatusDetailsType';
+import type { RealtimeResponseStatusDetailsReason } from './realtimeResponseStatusDetailsReason';
+import type { RealtimeResponseStatusDetailsError } from './realtimeResponseStatusDetailsError';
 
 /**
  * Additional details about the status.
@@ -18,12 +17,12 @@ export type RealtimeResponseStatusDetails = {
 with the `status` field (`completed`, `cancelled`, `incomplete`, 
 `failed`).
  */
-  type?: RealtimeResponseStatusDetailsType
+  type?: RealtimeResponseStatusDetailsType;
   /** The reason the Response did not complete. For a `cancelled` Response,  one of `turn_detected` (the server VAD detected a new start of speech)  or `client_cancelled` (the client sent a cancel event). For an  `incomplete` Response, one of `max_output_tokens` or `content_filter`  (the server-side safety filter activated and cut off the response).
-   */
-  reason?: RealtimeResponseStatusDetailsReason
+ */
+  reason?: RealtimeResponseStatusDetailsReason;
   /** A description of the error that caused the response to fail, 
 populated when the `status` is `failed`.
  */
-  error?: RealtimeResponseStatusDetailsError
-}
+  error?: RealtimeResponseStatusDetailsError;
+};

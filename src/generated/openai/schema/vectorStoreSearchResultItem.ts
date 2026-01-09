@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileAttributes } from "./vectorStoreFileAttributes"
-import type { VectorStoreSearchResultContentObject } from "./vectorStoreSearchResultContentObject"
+import type { VectorStoreFileAttributes } from './vectorStoreFileAttributes';
+import type { VectorStoreSearchResultContentObject } from './vectorStoreSearchResultContentObject';
 
 export interface VectorStoreSearchResultItem {
   /** The ID of the vector store file. */
-  file_id: string
+  file_id: string;
   /** The name of the vector store file. */
-  filename: string
+  filename: string;
   /**
    * The similarity score for the result.
    * @minimum 0
    * @maximum 1
    */
-  score: number
-  attributes: VectorStoreFileAttributes
+  score: number;
+  attributes: VectorStoreFileAttributes;
   /** Content chunks from the file. */
-  content: VectorStoreSearchResultContentObject[]
+  content: VectorStoreSearchResultContentObject[];
 }

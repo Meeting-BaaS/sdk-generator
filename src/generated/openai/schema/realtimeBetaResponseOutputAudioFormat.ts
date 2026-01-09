@@ -10,12 +10,12 @@
  * The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
 
  */
-export type RealtimeBetaResponseOutputAudioFormat =
-  (typeof RealtimeBetaResponseOutputAudioFormat)[keyof typeof RealtimeBetaResponseOutputAudioFormat]
+export type RealtimeBetaResponseOutputAudioFormat = typeof RealtimeBetaResponseOutputAudioFormat[keyof typeof RealtimeBetaResponseOutputAudioFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeBetaResponseOutputAudioFormat = {
-  pcm16: "pcm16",
-  g711_ulaw: "g711_ulaw",
-  g711_alaw: "g711_alaw"
-} as const
+  pcm16: 'pcm16',
+  g711_ulaw: 'g711_ulaw',
+  g711_alaw: 'g711_alaw',
+} as const;

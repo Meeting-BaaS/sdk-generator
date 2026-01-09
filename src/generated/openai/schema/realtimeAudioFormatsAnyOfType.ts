@@ -9,10 +9,10 @@
 /**
  * The audio format. Always `audio/pcm`.
  */
-export type RealtimeAudioFormatsAnyOfType =
-  (typeof RealtimeAudioFormatsAnyOfType)[keyof typeof RealtimeAudioFormatsAnyOfType]
+export type RealtimeAudioFormatsAnyOfType = typeof RealtimeAudioFormatsAnyOfType[keyof typeof RealtimeAudioFormatsAnyOfType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeAudioFormatsAnyOfType = {
-  "audio/pcm": "audio/pcm"
-} as const
+  'audio/pcm': 'audio/pcm',
+} as const;

@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaContentRefusalObjectType } from "./messageDeltaContentRefusalObjectType"
+import type { MessageDeltaContentRefusalObjectType } from './messageDeltaContentRefusalObjectType';
 
 /**
  * The refusal content that is part of a message.
  */
 export interface MessageDeltaContentRefusalObject {
   /** The index of the refusal part in the message. */
-  index: number
+  index: number;
   /** Always `refusal`. */
-  type: MessageDeltaContentRefusalObjectType
-  refusal?: string
+  type: MessageDeltaContentRefusalObjectType;
+  refusal?: string;
 }

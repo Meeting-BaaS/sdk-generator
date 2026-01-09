@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateResponseGAAudioInput } from "./realtimeTranscriptionSessionCreateResponseGAAudioInput"
+import type { RealtimeTranscriptionSessionCreateResponseGAAudioInput } from './realtimeTranscriptionSessionCreateResponseGAAudioInput';
 
 /**
  * Configuration for input audio for the session.
 
  */
 export type RealtimeTranscriptionSessionCreateResponseGAAudio = {
-  input?: RealtimeTranscriptionSessionCreateResponseGAAudioInput
-}
+  input?: RealtimeTranscriptionSessionCreateResponseGAAudioInput;
+};

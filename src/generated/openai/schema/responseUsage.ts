@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseUsageInputTokensDetails } from "./responseUsageInputTokensDetails"
-import type { ResponseUsageOutputTokensDetails } from "./responseUsageOutputTokensDetails"
+import type { ResponseUsageInputTokensDetails } from './responseUsageInputTokensDetails';
+import type { ResponseUsageOutputTokensDetails } from './responseUsageOutputTokensDetails';
 
 /**
  * Represents token usage details including input tokens, output tokens,
@@ -15,13 +15,13 @@ a breakdown of output tokens, and the total tokens used.
  */
 export interface ResponseUsage {
   /** The number of input tokens. */
-  input_tokens: number
+  input_tokens: number;
   /** A detailed breakdown of the input tokens. */
-  input_tokens_details: ResponseUsageInputTokensDetails
+  input_tokens_details: ResponseUsageInputTokensDetails;
   /** The number of output tokens. */
-  output_tokens: number
+  output_tokens: number;
   /** A detailed breakdown of the output tokens. */
-  output_tokens_details: ResponseUsageOutputTokensDetails
+  output_tokens_details: ResponseUsageOutputTokensDetails;
   /** The total number of tokens used. */
-  total_tokens: number
+  total_tokens: number;
 }

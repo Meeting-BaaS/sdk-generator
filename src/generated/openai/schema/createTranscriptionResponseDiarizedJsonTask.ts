@@ -9,10 +9,10 @@
 /**
  * The type of task that was run. Always `transcribe`.
  */
-export type CreateTranscriptionResponseDiarizedJsonTask =
-  (typeof CreateTranscriptionResponseDiarizedJsonTask)[keyof typeof CreateTranscriptionResponseDiarizedJsonTask]
+export type CreateTranscriptionResponseDiarizedJsonTask = typeof CreateTranscriptionResponseDiarizedJsonTask[keyof typeof CreateTranscriptionResponseDiarizedJsonTask];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateTranscriptionResponseDiarizedJsonTask = {
-  transcribe: "transcribe"
-} as const
+  transcribe: 'transcribe',
+} as const;

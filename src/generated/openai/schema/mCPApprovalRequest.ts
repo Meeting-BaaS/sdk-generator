@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPApprovalRequestType } from "./mCPApprovalRequestType"
+import type { MCPApprovalRequestType } from './mCPApprovalRequestType';
 
 /**
  * A request for human approval of a tool invocation.
@@ -13,18 +13,18 @@ import type { MCPApprovalRequestType } from "./mCPApprovalRequestType"
  */
 export interface MCPApprovalRequest {
   /** The type of the item. Always `mcp_approval_request`.
-   */
-  type: MCPApprovalRequestType
+ */
+  type: MCPApprovalRequestType;
   /** The unique ID of the approval request.
-   */
-  id: string
+ */
+  id: string;
   /** The label of the MCP server making the request.
-   */
-  server_label: string
+ */
+  server_label: string;
   /** The name of the tool to run.
-   */
-  name: string
+ */
+  name: string;
   /** A JSON string of arguments for the tool.
-   */
-  arguments: string
+ */
+  arguments: string;
 }

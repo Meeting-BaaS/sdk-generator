@@ -5,11 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CreateEvalResponsesRunDataSourceInputMessages } from "./createEvalResponsesRunDataSourceInputMessages"
-import type { CreateEvalResponsesRunDataSourceSamplingParams } from "./createEvalResponsesRunDataSourceSamplingParams"
-import type { CreateEvalResponsesRunDataSourceSource } from "./createEvalResponsesRunDataSourceSource"
-import type { CreateEvalResponsesRunDataSourceType } from "./createEvalResponsesRunDataSourceType"
+import type { CreateEvalResponsesRunDataSourceType } from './createEvalResponsesRunDataSourceType';
+import type { CreateEvalResponsesRunDataSourceInputMessages } from './createEvalResponsesRunDataSourceInputMessages';
+import type { CreateEvalResponsesRunDataSourceSamplingParams } from './createEvalResponsesRunDataSourceSamplingParams';
+import type { CreateEvalResponsesRunDataSourceSource } from './createEvalResponsesRunDataSourceSource';
 
 /**
  * A ResponsesRunDataSource object describing a model sampling configuration.
@@ -17,12 +16,12 @@ import type { CreateEvalResponsesRunDataSourceType } from "./createEvalResponses
  */
 export interface CreateEvalResponsesRunDataSource {
   /** The type of run data source. Always `responses`. */
-  type: CreateEvalResponsesRunDataSourceType
+  type: CreateEvalResponsesRunDataSourceType;
   /** Used when sampling from a model. Dictates the structure of the messages passed into the model. Can either be a reference to a prebuilt trajectory (ie, `item.input_trajectory`), or a template with variable references to the `item` namespace. */
-  input_messages?: CreateEvalResponsesRunDataSourceInputMessages
-  sampling_params?: CreateEvalResponsesRunDataSourceSamplingParams
+  input_messages?: CreateEvalResponsesRunDataSourceInputMessages;
+  sampling_params?: CreateEvalResponsesRunDataSourceSamplingParams;
   /** The name of the model to use for generating completions (e.g. "o3-mini"). */
-  model?: string
+  model?: string;
   /** Determines what populates the `item` namespace in this run's data source. */
-  source: CreateEvalResponsesRunDataSourceSource
+  source: CreateEvalResponsesRunDataSourceSource;
 }

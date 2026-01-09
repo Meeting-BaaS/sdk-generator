@@ -9,10 +9,10 @@
 /**
  * The reference point for the expiration.
  */
-export type ContainerResourceExpiresAfterAnchor =
-  (typeof ContainerResourceExpiresAfterAnchor)[keyof typeof ContainerResourceExpiresAfterAnchor]
+export type ContainerResourceExpiresAfterAnchor = typeof ContainerResourceExpiresAfterAnchor[keyof typeof ContainerResourceExpiresAfterAnchor];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ContainerResourceExpiresAfterAnchor = {
-  last_active_at: "last_active_at"
-} as const
+  last_active_at: 'last_active_at',
+} as const;

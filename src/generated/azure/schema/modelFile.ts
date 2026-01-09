@@ -8,7 +8,7 @@
 
 export interface ModelFile {
   /** The name of this file. */
-  readonly name?: string
+  readonly name?: string;
   /** The url to retrieve the content of this file. */
-  readonly contentUrl?: string
+  readonly contentUrl?: string;
 }

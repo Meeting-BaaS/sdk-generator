@@ -11,5 +11,5 @@
  */
 export type AuditLogScimEnabled = {
   /** The ID of the SCIM was enabled for. */
-  id?: string
-}
+  id?: string;
+};

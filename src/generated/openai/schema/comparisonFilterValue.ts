@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComparisonFilterValueItems } from "./comparisonFilterValueItems"
+import type { ComparisonFilterValueItems } from './comparisonFilterValueItems';
 
 /**
  * The value to compare against the attribute key; supports string, number, or boolean types.
  */
-export type ComparisonFilterValue = string | number | boolean | ComparisonFilterValueItems[]
+export type ComparisonFilterValue = string | number | boolean | ComparisonFilterValueItems[];

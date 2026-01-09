@@ -10,13 +10,13 @@
  * The reason the Response did not complete. For a `cancelled` Response,  one of `turn_detected` (the server VAD detected a new start of speech)  or `client_cancelled` (the client sent a cancel event). For an  `incomplete` Response, one of `max_output_tokens` or `content_filter`  (the server-side safety filter activated and cut off the response).
 
  */
-export type RealtimeResponseStatusDetailsReason =
-  (typeof RealtimeResponseStatusDetailsReason)[keyof typeof RealtimeResponseStatusDetailsReason]
+export type RealtimeResponseStatusDetailsReason = typeof RealtimeResponseStatusDetailsReason[keyof typeof RealtimeResponseStatusDetailsReason];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeResponseStatusDetailsReason = {
-  turn_detected: "turn_detected",
-  client_cancelled: "client_cancelled",
-  max_output_tokens: "max_output_tokens",
-  content_filter: "content_filter"
-} as const
+  turn_detected: 'turn_detected',
+  client_cancelled: 'client_cancelled',
+  max_output_tokens: 'max_output_tokens',
+  content_filter: 'content_filter',
+} as const;

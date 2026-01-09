@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputFidelity } from "./inputFidelity"
+import type { InputFidelity } from './inputFidelity';
 
-export type ImageGenToolInputFidelity = InputFidelity | null
+export type ImageGenToolInputFidelity = InputFidelity | null;

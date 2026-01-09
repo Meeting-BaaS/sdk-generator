@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventErrorError } from "./realtimeServerEventErrorError"
+import type { RealtimeServerEventErrorError } from './realtimeServerEventErrorError';
 
 /**
  * Returned when an error occurs, which could be a client problem or a server
@@ -15,9 +15,9 @@ recommend to implementors to monitor and log error messages by default.
  */
 export interface RealtimeServerEventError {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `error`. */
-  type: "error"
+  type: 'error';
   /** Details of the error. */
-  error: RealtimeServerEventErrorError
+  error: RealtimeServerEventErrorError;
 }

@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ModelResponsePropertiesPromptCacheRetention = "in-memory" | "24h" | null
+export type ModelResponsePropertiesPromptCacheRetention = 'in-memory' | '24h' | null;

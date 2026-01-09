@@ -5,11 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CompletionUsage } from "./completionUsage"
-import type { CreateChatCompletionStreamResponseChoicesItem } from "./createChatCompletionStreamResponseChoicesItem"
-import type { CreateChatCompletionStreamResponseObject } from "./createChatCompletionStreamResponseObject"
-import type { ServiceTier } from "./serviceTier"
+import type { CreateChatCompletionStreamResponseChoicesItem } from './createChatCompletionStreamResponseChoicesItem';
+import type { ServiceTier } from './serviceTier';
+import type { CreateChatCompletionStreamResponseObject } from './createChatCompletionStreamResponseObject';
+import type { CompletionUsage } from './completionUsage';
 
 /**
  * Represents a streamed chunk of a chat completion response returned
@@ -19,25 +18,25 @@ by the model, based on the provided input.
  */
 export interface CreateChatCompletionStreamResponse {
   /** A unique identifier for the chat completion. Each chunk has the same ID. */
-  id: string
+  id: string;
   /** A list of chat completion choices. Can contain more than one elements if `n` is greater than 1. Can also be empty for the
 last chunk if you set `stream_options: {"include_usage": true}`.
  */
-  choices: CreateChatCompletionStreamResponseChoicesItem[]
+  choices: CreateChatCompletionStreamResponseChoicesItem[];
   /** The Unix timestamp (in seconds) of when the chat completion was created. Each chunk has the same timestamp. */
-  created: number
+  created: number;
   /** The model to generate the completion. */
-  model: string
-  service_tier?: ServiceTier
+  model: string;
+  service_tier?: ServiceTier;
   /**
    * This fingerprint represents the backend configuration that the model runs with.
 Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.
 
    * @deprecated
    */
-  system_fingerprint?: string
+  system_fingerprint?: string;
   /** The object type, which is always `chat.completion.chunk`. */
-  object: CreateChatCompletionStreamResponseObject
+  object: CreateChatCompletionStreamResponseObject;
   /**
    * An optional field that will only be present when you set
 `stream_options: {"include_usage": true}` in your request. When present, it
@@ -50,5 +49,5 @@ the request.
 
    * @nullable
    */
-  usage?: CompletionUsage
+  usage?: CompletionUsage;
 }

@@ -11,5 +11,5 @@
  */
 export type ModerationImageURLInputImageUrl = {
   /** Either a URL of the image or the base64 encoded image data. */
-  url: string
-}
+  url: string;
+};

@@ -9,4 +9,4 @@
 /**
  * The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
  */
-export type TranscriptSummary = string | null
+export type TranscriptSummary = string | null;

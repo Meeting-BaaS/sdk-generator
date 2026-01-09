@@ -11,12 +11,12 @@
 For `pcm16`, output audio is sampled at a rate of 24kHz.
 
  */
-export type RealtimeSessionOutputAudioFormat =
-  (typeof RealtimeSessionOutputAudioFormat)[keyof typeof RealtimeSessionOutputAudioFormat]
+export type RealtimeSessionOutputAudioFormat = typeof RealtimeSessionOutputAudioFormat[keyof typeof RealtimeSessionOutputAudioFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeSessionOutputAudioFormat = {
-  pcm16: "pcm16",
-  g711_ulaw: "g711_ulaw",
-  g711_alaw: "g711_alaw"
-} as const
+  pcm16: 'pcm16',
+  g711_ulaw: 'g711_ulaw',
+  g711_alaw: 'g711_alaw',
+} as const;

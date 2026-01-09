@@ -5,14 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalJsonlFileContentSource } from "./evalJsonlFileContentSource"
-import type { EvalJsonlFileIdSource } from "./evalJsonlFileIdSource"
-import type { EvalStoredCompletionsSource } from "./evalStoredCompletionsSource"
+import type { EvalJsonlFileContentSource } from './evalJsonlFileContentSource';
+import type { EvalJsonlFileIdSource } from './evalJsonlFileIdSource';
+import type { EvalStoredCompletionsSource } from './evalStoredCompletionsSource';
 
 /**
  * Determines what populates the `item` namespace in this run's data source.
  */
-export type CreateEvalCompletionsRunDataSourceSource =
-  | EvalJsonlFileContentSource
-  | EvalJsonlFileIdSource
-  | EvalStoredCompletionsSource
+export type CreateEvalCompletionsRunDataSourceSource = EvalJsonlFileContentSource | EvalJsonlFileIdSource | EvalStoredCompletionsSource;

@@ -9,10 +9,10 @@
 /**
  * The role of the message sender. Always `system`.
  */
-export type RealtimeConversationItemMessageSystemRole =
-  (typeof RealtimeConversationItemMessageSystemRole)[keyof typeof RealtimeConversationItemMessageSystemRole]
+export type RealtimeConversationItemMessageSystemRole = typeof RealtimeConversationItemMessageSystemRole[keyof typeof RealtimeConversationItemMessageSystemRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageSystemRole = {
-  system: "system"
-} as const
+  system: 'system',
+} as const;

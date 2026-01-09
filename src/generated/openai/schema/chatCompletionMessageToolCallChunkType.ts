@@ -9,10 +9,10 @@
 /**
  * The type of the tool. Currently, only `function` is supported.
  */
-export type ChatCompletionMessageToolCallChunkType =
-  (typeof ChatCompletionMessageToolCallChunkType)[keyof typeof ChatCompletionMessageToolCallChunkType]
+export type ChatCompletionMessageToolCallChunkType = typeof ChatCompletionMessageToolCallChunkType[keyof typeof ChatCompletionMessageToolCallChunkType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionMessageToolCallChunkType = {
-  function: "function"
-} as const
+  function: 'function',
+} as const;

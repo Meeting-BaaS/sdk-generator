@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UserMessageQuotedTextType } from "./userMessageQuotedTextType"
+import type { UserMessageQuotedTextType } from './userMessageQuotedTextType';
 
 /**
  * Quoted snippet that the user referenced in their message.
  */
 export interface UserMessageQuotedText {
   /** Type discriminator that is always `quoted_text`. */
-  type: UserMessageQuotedTextType
+  type: UserMessageQuotedTextType;
   /** Quoted text content. */
-  text: string
+  text: string;
 }

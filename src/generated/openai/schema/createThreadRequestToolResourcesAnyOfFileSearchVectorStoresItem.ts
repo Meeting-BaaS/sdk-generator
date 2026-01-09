@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy } from "./createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy"
-import type { Metadata } from "./metadata"
+import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy } from './createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy';
+import type { Metadata } from './metadata';
 
 export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem = {
   /**
@@ -14,8 +14,8 @@ export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem = {
 
    * @maxItems 10000
    */
-  file_ids?: string[]
+  file_ids?: string[];
   /** The chunking strategy used to chunk the file(s). If not set, will use the `auto` strategy. */
-  chunking_strategy?: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy
-  metadata?: Metadata
-}
+  chunking_strategy?: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy;
+  metadata?: Metadata;
+};

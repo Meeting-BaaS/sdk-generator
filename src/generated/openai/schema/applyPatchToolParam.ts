@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchToolParamType } from "./applyPatchToolParamType"
+import type { ApplyPatchToolParamType } from './applyPatchToolParamType';
 
 /**
  * Allows the assistant to create, delete, or update files using unified diffs.
  */
 export interface ApplyPatchToolParam {
   /** The type of the tool. Always `apply_patch`. */
-  type: ApplyPatchToolParamType
+  type: ApplyPatchToolParamType;
 }

@@ -4,19 +4,19 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
+import type { TranscriptionLanguageCodeEnum } from './transcriptionLanguageCodeEnum';
 
 export interface CustomVocabularyEntryDTO {
   /** The text used to replace in the transcription. */
-  value: string
+  value: string;
   /**
    * The global intensity of the feature.
    * @minimum 0
    * @maximum 1
    */
-  intensity?: number
+  intensity?: number;
   /** The pronunciations used in the transcription. */
-  pronunciations?: string[]
+  pronunciations?: string[];
   /** Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language. */
-  language?: TranscriptionLanguageCodeEnum
+  language?: TranscriptionLanguageCodeEnum;
 }

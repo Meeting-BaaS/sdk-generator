@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `output_text`.
  */
-export type ResponseOutputTextType =
-  (typeof ResponseOutputTextType)[keyof typeof ResponseOutputTextType]
+export type ResponseOutputTextType = typeof ResponseOutputTextType[keyof typeof ResponseOutputTextType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseOutputTextType = {
-  output_text: "output_text"
-} as const
+  output_text: 'output_text',
+} as const;

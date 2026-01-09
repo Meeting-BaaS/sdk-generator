@@ -9,10 +9,10 @@
 /**
  * The type of run data source. Always `responses`.
  */
-export type EvalResponsesSourceType =
-  (typeof EvalResponsesSourceType)[keyof typeof EvalResponsesSourceType]
+export type EvalResponsesSourceType = typeof EvalResponsesSourceType[keyof typeof EvalResponsesSourceType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalResponsesSourceType = {
-  responses: "responses"
-} as const
+  responses: 'responses',
+} as const;

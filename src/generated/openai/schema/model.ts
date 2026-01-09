@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModelObject } from "./modelObject"
+import type { ModelObject } from './modelObject';
 
 /**
  * Describes an OpenAI model offering that can be used with the API.
  */
 export interface Model {
   /** The model identifier, which can be referenced in the API endpoints. */
-  id: string
+  id: string;
   /** The Unix timestamp (in seconds) when the model was created. */
-  created: number
+  created: number;
   /** The object type, which is always "model". */
-  object: ModelObject
+  object: ModelObject;
   /** The organization that owns the model. */
-  owned_by: string
+  owned_by: string;
 }

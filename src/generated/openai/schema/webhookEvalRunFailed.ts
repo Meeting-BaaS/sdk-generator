@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookEvalRunFailedData } from "./webhookEvalRunFailedData"
-import type { WebhookEvalRunFailedObject } from "./webhookEvalRunFailedObject"
-import type { WebhookEvalRunFailedType } from "./webhookEvalRunFailedType"
+import type { WebhookEvalRunFailedData } from './webhookEvalRunFailedData';
+import type { WebhookEvalRunFailedObject } from './webhookEvalRunFailedObject';
+import type { WebhookEvalRunFailedType } from './webhookEvalRunFailedType';
 
 /**
  * Sent when an eval run has failed.
@@ -15,18 +15,18 @@ import type { WebhookEvalRunFailedType } from "./webhookEvalRunFailedType"
  */
 export interface WebhookEvalRunFailed {
   /** The Unix timestamp (in seconds) of when the eval run failed.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The unique ID of the event.
-   */
-  id: string
+ */
+  id: string;
   /** Event data payload.
-   */
-  data: WebhookEvalRunFailedData
+ */
+  data: WebhookEvalRunFailedData;
   /** The object of the event. Always `event`.
-   */
-  object?: WebhookEvalRunFailedObject
+ */
+  object?: WebhookEvalRunFailedObject;
   /** The type of the event. Always `eval.run.failed`.
-   */
-  type: WebhookEvalRunFailedType
+ */
+  type: WebhookEvalRunFailedType;
 }

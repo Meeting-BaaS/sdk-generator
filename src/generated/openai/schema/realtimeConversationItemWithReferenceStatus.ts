@@ -12,12 +12,12 @@ on the conversation, but are accepted for consistency with the
 `conversation.item.created` event.
 
  */
-export type RealtimeConversationItemWithReferenceStatus =
-  (typeof RealtimeConversationItemWithReferenceStatus)[keyof typeof RealtimeConversationItemWithReferenceStatus]
+export type RealtimeConversationItemWithReferenceStatus = typeof RealtimeConversationItemWithReferenceStatus[keyof typeof RealtimeConversationItemWithReferenceStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemWithReferenceStatus = {
-  completed: "completed",
-  incomplete: "incomplete",
-  in_progress: "in_progress"
-} as const
+  completed: 'completed',
+  incomplete: 'incomplete',
+  in_progress: 'in_progress',
+} as const;

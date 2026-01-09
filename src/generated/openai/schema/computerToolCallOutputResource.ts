@@ -5,8 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComputerToolCallOutput } from "./computerToolCallOutput"
-import type { ComputerToolCallOutputResourceAllOf } from "./computerToolCallOutputResourceAllOf"
+import type { ComputerToolCallOutput } from './computerToolCallOutput';
+import type { ComputerToolCallOutputResourceAllOf } from './computerToolCallOutputResourceAllOf';
 
-export type ComputerToolCallOutputResource = ComputerToolCallOutput &
-  ComputerToolCallOutputResourceAllOf
+export type ComputerToolCallOutputResource = ComputerToolCallOutput & ComputerToolCallOutputResourceAllOf;

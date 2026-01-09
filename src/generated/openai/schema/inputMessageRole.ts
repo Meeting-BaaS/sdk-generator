@@ -10,11 +10,12 @@
  * The role of the message input. One of `user`, `system`, or `developer`.
 
  */
-export type InputMessageRole = (typeof InputMessageRole)[keyof typeof InputMessageRole]
+export type InputMessageRole = typeof InputMessageRole[keyof typeof InputMessageRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputMessageRole = {
-  user: "user",
-  system: "system",
-  developer: "developer"
-} as const
+  user: 'user',
+  system: 'system',
+  developer: 'developer',
+} as const;

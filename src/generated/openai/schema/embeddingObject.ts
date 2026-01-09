@@ -9,9 +9,10 @@
 /**
  * The object type, which is always "embedding".
  */
-export type EmbeddingObject = (typeof EmbeddingObject)[keyof typeof EmbeddingObject]
+export type EmbeddingObject = typeof EmbeddingObject[keyof typeof EmbeddingObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EmbeddingObject = {
-  embedding: "embedding"
-} as const
+  embedding: 'embedding',
+} as const;

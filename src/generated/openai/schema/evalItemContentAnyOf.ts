@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalItemContentAnyOfType } from "./evalItemContentAnyOfType"
+import type { EvalItemContentAnyOfType } from './evalItemContentAnyOfType';
 
 /**
  * A text output from the model.
@@ -13,9 +13,9 @@ import type { EvalItemContentAnyOfType } from "./evalItemContentAnyOfType"
  */
 export type EvalItemContentAnyOf = {
   /** The type of the output text. Always `output_text`.
-   */
-  type: EvalItemContentAnyOfType
+ */
+  type: EvalItemContentAnyOfType;
   /** The text output from the model.
-   */
-  text: string
-}
+ */
+  text: string;
+};

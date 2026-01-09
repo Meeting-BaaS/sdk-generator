@@ -8,9 +8,9 @@
 
 export interface CustomModelLinks {
   /** The location to the model copy action. See operation "Models_CopyTo" for more details. */
-  readonly copyTo?: string
+  readonly copyTo?: string;
   /** The location to get all files of this entity. See operation "Models_ListFiles" for more details. */
-  readonly files?: string
+  readonly files?: string;
   /** The location to get a manifest for this model to be used in the on-prem container. See operation "Models_GetCustomModelManifest" for more details. */
-  readonly manifest?: string
+  readonly manifest?: string;
 }

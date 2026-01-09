@@ -5,9 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+import axios from 'axios';
+import type {
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
 
 import type {
   CreateFileRequest,
@@ -25,120 +27,105 @@ import type {
   ListModelsResponse,
   Model,
   OpenAIFile
-} from "../schema"
+} from '../schema';
 
 /**
  * Generates audio from the input text.
  * @summary Create speech
  */
 export const createSpeech = <TData = AxiosResponse<Blob | CreateSpeechResponseStreamEvent>>(
-  createSpeechRequest: CreateSpeechRequest,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/audio/speech", createSpeechRequest, options)
-}
+    createSpeechRequest: CreateSpeechRequest, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.post(
+      `/audio/speech`,
+      createSpeechRequest,options
+    );
+  }
 
 /**
  * Transcribes audio into the input language.
  * @summary Create transcription
  */
-export const createTranscription = <
-  TData = AxiosResponse<CreateTranscription200One | CreateTranscriptionResponseStreamEvent>
->(
-  createTranscriptionRequest: CreateTranscriptionRequest,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  const formData = new FormData()
-  formData.append("file", createTranscriptionRequest.file)
-  formData.append("model", createTranscriptionRequest.model)
-  if (createTranscriptionRequest.language !== undefined) {
-    formData.append("language", createTranscriptionRequest.language)
-  }
-  if (createTranscriptionRequest.prompt !== undefined) {
-    formData.append("prompt", createTranscriptionRequest.prompt)
-  }
-  if (createTranscriptionRequest.response_format !== undefined) {
-    formData.append("response_format", createTranscriptionRequest.response_format)
-  }
-  if (createTranscriptionRequest.temperature !== undefined) {
-    formData.append("temperature", createTranscriptionRequest.temperature.toString())
-  }
-  if (createTranscriptionRequest.include !== undefined) {
-    createTranscriptionRequest.include.forEach((value) => formData.append("include", value))
-  }
-  if (createTranscriptionRequest.timestamp_granularities !== undefined) {
-    createTranscriptionRequest.timestamp_granularities.forEach((value) =>
-      formData.append("timestamp_granularities", value)
-    )
-  }
-  if (
-    createTranscriptionRequest.stream !== undefined &&
-    createTranscriptionRequest.stream !== null
-  ) {
-    formData.append("stream", createTranscriptionRequest.stream.toString())
-  }
-  if (
-    createTranscriptionRequest.chunking_strategy !== undefined &&
-    createTranscriptionRequest.chunking_strategy !== null
-  ) {
-    formData.append(
-      "chunking_strategy",
-      typeof createTranscriptionRequest.chunking_strategy === "object"
-        ? JSON.stringify(createTranscriptionRequest.chunking_strategy)
-        : createTranscriptionRequest.chunking_strategy
-    )
-  }
-  if (createTranscriptionRequest.known_speaker_names !== undefined) {
-    createTranscriptionRequest.known_speaker_names.forEach((value) =>
-      formData.append("known_speaker_names", value)
-    )
-  }
-  if (createTranscriptionRequest.known_speaker_references !== undefined) {
-    createTranscriptionRequest.known_speaker_references.forEach((value) =>
-      formData.append("known_speaker_references", value)
-    )
-  }
+export const createTranscription = <TData = AxiosResponse<CreateTranscription200One | CreateTranscriptionResponseStreamEvent>>(
+    createTranscriptionRequest: CreateTranscriptionRequest, options?: AxiosRequestConfig
+ ): Promise<TData> => {const formData = new FormData();
+formData.append(`file`, createTranscriptionRequest.file)
+formData.append(`model`, createTranscriptionRequest.model)
+if(createTranscriptionRequest.language !== undefined) {
+ formData.append(`language`, createTranscriptionRequest.language)
+ }
+if(createTranscriptionRequest.prompt !== undefined) {
+ formData.append(`prompt`, createTranscriptionRequest.prompt)
+ }
+if(createTranscriptionRequest.response_format !== undefined) {
+ formData.append(`response_format`, createTranscriptionRequest.response_format)
+ }
+if(createTranscriptionRequest.temperature !== undefined) {
+ formData.append(`temperature`, createTranscriptionRequest.temperature.toString())
+ }
+if(createTranscriptionRequest.include !== undefined) {
+ createTranscriptionRequest.include.forEach(value => formData.append(`include`, value));
+ }
+if(createTranscriptionRequest.timestamp_granularities !== undefined) {
+ createTranscriptionRequest.timestamp_granularities.forEach(value => formData.append(`timestamp_granularities`, value));
+ }
+if(createTranscriptionRequest.stream !== undefined && createTranscriptionRequest.stream !== null) {
+ formData.append(`stream`, createTranscriptionRequest.stream.toString())
+ }
+if(createTranscriptionRequest.chunking_strategy !== undefined && createTranscriptionRequest.chunking_strategy !== null) {
+ formData.append(`chunking_strategy`, createTranscriptionRequest.chunking_strategy)
+ }
+if(createTranscriptionRequest.known_speaker_names !== undefined) {
+ createTranscriptionRequest.known_speaker_names.forEach(value => formData.append(`known_speaker_names`, value));
+ }
+if(createTranscriptionRequest.known_speaker_references !== undefined) {
+ createTranscriptionRequest.known_speaker_references.forEach(value => formData.append(`known_speaker_references`, value));
+ }
 
-  return axios.post("/audio/transcriptions", formData, options)
-}
+    return axios.post(
+      `/audio/transcriptions`,
+      formData,options
+    );
+  }
 
 /**
  * Translates audio into English.
  * @summary Create translation
  */
 export const createTranslation = <TData = AxiosResponse<CreateTranslation200>>(
-  createTranslationRequest: CreateTranslationRequest,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  const formData = new FormData()
-  formData.append("file", createTranslationRequest.file)
-  formData.append("model", createTranslationRequest.model)
-  if (createTranslationRequest.prompt !== undefined) {
-    formData.append("prompt", createTranslationRequest.prompt)
-  }
-  if (createTranslationRequest.response_format !== undefined) {
-    formData.append("response_format", createTranslationRequest.response_format)
-  }
-  if (createTranslationRequest.temperature !== undefined) {
-    formData.append("temperature", createTranslationRequest.temperature.toString())
-  }
+    createTranslationRequest: CreateTranslationRequest, options?: AxiosRequestConfig
+ ): Promise<TData> => {const formData = new FormData();
+formData.append(`file`, createTranslationRequest.file)
+formData.append(`model`, createTranslationRequest.model)
+if(createTranslationRequest.prompt !== undefined) {
+ formData.append(`prompt`, createTranslationRequest.prompt)
+ }
+if(createTranslationRequest.response_format !== undefined) {
+ formData.append(`response_format`, createTranslationRequest.response_format)
+ }
+if(createTranslationRequest.temperature !== undefined) {
+ formData.append(`temperature`, createTranslationRequest.temperature.toString())
+ }
 
-  return axios.post("/audio/translations", formData, options)
-}
+    return axios.post(
+      `/audio/translations`,
+      formData,options
+    );
+  }
 
 /**
  * Returns a list of files.
  * @summary List files
  */
 export const listFiles = <TData = AxiosResponse<ListFilesResponse>>(
-  params?: ListFilesParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/files", {
+    params?: ListFilesParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/files`,{
     ...options,
-    params: { ...params, ...options?.params }
-  })
-}
+        params: {...params, ...options?.params},}
+    );
+  }
 
 /**
  * Upload a file that can be used across various endpoints. Individual files
@@ -162,88 +149,94 @@ storage limits.
  * @summary Upload file
  */
 export const createFile = <TData = AxiosResponse<OpenAIFile>>(
-  createFileRequest: CreateFileRequest,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  const formData = new FormData()
-  formData.append("file", createFileRequest.file)
-  formData.append("purpose", createFileRequest.purpose)
-  if (createFileRequest.expires_after !== undefined) {
-    formData.append("expires_after", JSON.stringify(createFileRequest.expires_after))
-  }
+    createFileRequest: CreateFileRequest, options?: AxiosRequestConfig
+ ): Promise<TData> => {const formData = new FormData();
+formData.append(`file`, createFileRequest.file)
+formData.append(`purpose`, createFileRequest.purpose)
+if(createFileRequest.expires_after !== undefined) {
+ formData.append(`expires_after`, JSON.stringify(createFileRequest.expires_after));
+ }
 
-  return axios.post("/files", formData, options)
-}
+    return axios.post(
+      `/files`,
+      formData,options
+    );
+  }
 
 /**
  * Delete a file and remove it from all vector stores.
  * @summary Delete file
  */
 export const deleteFile = <TData = AxiosResponse<DeleteFileResponse>>(
-  fileId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/files/${fileId}`, options)
-}
+    fileId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.delete(
+      `/files/${fileId}`,options
+    );
+  }
 
 /**
  * Returns information about a specific file.
  * @summary Retrieve file
  */
 export const retrieveFile = <TData = AxiosResponse<OpenAIFile>>(
-  fileId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/files/${fileId}`, options)
-}
+    fileId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/files/${fileId}`,options
+    );
+  }
 
 /**
  * Returns the contents of the specified file.
  * @summary Retrieve file content
  */
 export const downloadFile = <TData = AxiosResponse<string>>(
-  fileId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/files/${fileId}/content`, options)
-}
+    fileId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/files/${fileId}/content`,options
+    );
+  }
 
 /**
  * Lists the currently available models, and provides basic information about each one such as the owner and availability.
  * @summary List models
  */
 export const listModels = <TData = AxiosResponse<ListModelsResponse>>(
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/models", options)
-}
+     options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/models`,options
+    );
+  }
 
 /**
  * Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
  * @summary Retrieve model
  */
 export const retrieveModel = <TData = AxiosResponse<Model>>(
-  model: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/models/${model}`, options)
-}
+    model: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/models/${model}`,options
+    );
+  }
 
 /**
  * Delete a fine-tuned model. You must have the Owner role in your organization to delete a model.
  * @summary Delete a fine-tuned model
  */
 export const deleteModel = <TData = AxiosResponse<DeleteModelResponse>>(
-  model: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/models/${model}`, options)
-}
+    model: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.delete(
+      `/models/${model}`,options
+    );
+  }
 
 export type CreateSpeechResult = AxiosResponse<Blob | CreateSpeechResponseStreamEvent>
-export type CreateTranscriptionResult = AxiosResponse<
-  CreateTranscription200One | CreateTranscriptionResponseStreamEvent
->
+export type CreateTranscriptionResult = AxiosResponse<CreateTranscription200One | CreateTranscriptionResponseStreamEvent>
 export type CreateTranslationResult = AxiosResponse<CreateTranslation200>
 export type ListFilesResult = AxiosResponse<ListFilesResponse>
 export type CreateFileResult = AxiosResponse<OpenAIFile>

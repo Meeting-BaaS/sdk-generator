@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchCreateFileOperationParamType } from "./applyPatchCreateFileOperationParamType"
+import type { ApplyPatchCreateFileOperationParamType } from './applyPatchCreateFileOperationParamType';
 
 /**
  * Instruction for creating a new file via the apply_patch tool.
  */
 export interface ApplyPatchCreateFileOperationParam {
   /** The operation type. Always `create_file`. */
-  type: ApplyPatchCreateFileOperationParamType
+  type: ApplyPatchCreateFileOperationParamType;
   /**
    * Path of the file to create relative to the workspace root.
    * @minLength 1
    */
-  path: string
+  path: string;
   /**
    * Unified diff content to apply when creating the file.
    * @maxLength 10485760
    */
-  diff: string
+  diff: string;
 }

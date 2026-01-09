@@ -9,4 +9,4 @@
 /**
  * Metadata filters for the stored completions data source.
  */
-export type CreateEvalStoredCompletionsDataSourceConfigMetadata = { [key: string]: unknown }
+export type CreateEvalStoredCompletionsDataSourceConfigMetadata = { [key: string]: unknown };

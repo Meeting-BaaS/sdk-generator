@@ -6,11 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ManageV1LimitParameter } from "./manageV1LimitParameter"
+import type { ManageV1LimitParameter } from './manageV1LimitParameter';
 
 export type ManageV1ProjectsBillingPurchasesListParams = {
-  /**
-   * Number of results to return per page. Default 10. Range [1,1000]
-   */
-  limit?: ManageV1LimitParameter
-}
+/**
+ * Number of results to return per page. Default 10. Range [1,1000]
+ */
+limit?: ManageV1LimitParameter;
+};

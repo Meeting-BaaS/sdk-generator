@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always `response.code_interpreter_call.in_progress`.
  */
-export type ResponseCodeInterpreterCallInProgressEventType =
-  (typeof ResponseCodeInterpreterCallInProgressEventType)[keyof typeof ResponseCodeInterpreterCallInProgressEventType]
+export type ResponseCodeInterpreterCallInProgressEventType = typeof ResponseCodeInterpreterCallInProgressEventType[keyof typeof ResponseCodeInterpreterCallInProgressEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCodeInterpreterCallInProgressEventType = {
-  responsecode_interpreter_callin_progress: "response.code_interpreter_call.in_progress"
-} as const
+  responsecode_interpreter_callin_progress: 'response.code_interpreter_call.in_progress',
+} as const;

@@ -5,32 +5,32 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ClientToolCallItemObject } from "./clientToolCallItemObject"
-import type { ClientToolCallItemOutput } from "./clientToolCallItemOutput"
-import type { ClientToolCallItemType } from "./clientToolCallItemType"
-import type { ClientToolCallStatus } from "./clientToolCallStatus"
+import type { ClientToolCallItemObject } from './clientToolCallItemObject';
+import type { ClientToolCallItemType } from './clientToolCallItemType';
+import type { ClientToolCallStatus } from './clientToolCallStatus';
+import type { ClientToolCallItemOutput } from './clientToolCallItemOutput';
 
 /**
  * Record of a client side tool invocation initiated by the assistant.
  */
 export interface ClientToolCallItem {
   /** Identifier of the thread item. */
-  id: string
+  id: string;
   /** Type discriminator that is always `chatkit.thread_item`. */
-  object: ClientToolCallItemObject
+  object: ClientToolCallItemObject;
   /** Unix timestamp (in seconds) for when the item was created. */
-  created_at: number
+  created_at: number;
   /** Identifier of the parent thread. */
-  thread_id: string
+  thread_id: string;
   /** Type discriminator that is always `chatkit.client_tool_call`. */
-  type: ClientToolCallItemType
+  type: ClientToolCallItemType;
   /** Execution status for the tool call. */
-  status: ClientToolCallStatus
+  status: ClientToolCallStatus;
   /** Identifier for the client tool call. */
-  call_id: string
+  call_id: string;
   /** Tool name that was invoked. */
-  name: string
+  name: string;
   /** JSON-encoded arguments that were sent to the tool. */
-  arguments: string
-  output: ClientToolCallItemOutput
+  arguments: string;
+  output: ClientToolCallItemOutput;
 }

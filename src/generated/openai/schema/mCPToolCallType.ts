@@ -10,9 +10,10 @@
  * The type of the item. Always `mcp_call`.
 
  */
-export type MCPToolCallType = (typeof MCPToolCallType)[keyof typeof MCPToolCallType]
+export type MCPToolCallType = typeof MCPToolCallType[keyof typeof MCPToolCallType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MCPToolCallType = {
-  mcp_call: "mcp_call"
-} as const
+  mcp_call: 'mcp_call',
+} as const;

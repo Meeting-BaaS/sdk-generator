@@ -9,10 +9,10 @@
 /**
  * The object type, which is always "fine_tuning.job.event".
  */
-export type FineTuningJobEventObject =
-  (typeof FineTuningJobEventObject)[keyof typeof FineTuningJobEventObject]
+export type FineTuningJobEventObject = typeof FineTuningJobEventObject[keyof typeof FineTuningJobEventObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuningJobEventObject = {
-  fine_tuningjobevent: "fine_tuning.job.event"
-} as const
+  fine_tuningjobevent: 'fine_tuning.job.event',
+} as const;

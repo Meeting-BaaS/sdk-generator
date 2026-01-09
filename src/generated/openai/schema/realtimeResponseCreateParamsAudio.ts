@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeResponseCreateParamsAudioOutput } from "./realtimeResponseCreateParamsAudioOutput"
+import type { RealtimeResponseCreateParamsAudioOutput } from './realtimeResponseCreateParamsAudioOutput';
 
 /**
  * Configuration for audio input and output.
  */
 export type RealtimeResponseCreateParamsAudio = {
-  output?: RealtimeResponseCreateParamsAudioOutput
-}
+  output?: RealtimeResponseCreateParamsAudioOutput;
+};

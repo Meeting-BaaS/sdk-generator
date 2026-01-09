@@ -6,12 +6,12 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type FunctionCallItemStatus =
-  (typeof FunctionCallItemStatus)[keyof typeof FunctionCallItemStatus]
+export type FunctionCallItemStatus = typeof FunctionCallItemStatus[keyof typeof FunctionCallItemStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionCallItemStatus = {
-  in_progress: "in_progress",
-  completed: "completed",
-  incomplete: "incomplete"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+  incomplete: 'incomplete',
+} as const;

@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaServerEventConversationItemCreatedPreviousItemId } from "./realtimeBetaServerEventConversationItemCreatedPreviousItemId"
-import type { RealtimeConversationItem } from "./realtimeConversationItem"
+import type { RealtimeBetaServerEventConversationItemCreatedPreviousItemId } from './realtimeBetaServerEventConversationItemCreatedPreviousItemId';
+import type { RealtimeConversationItem } from './realtimeConversationItem';
 
 /**
  * Returned when a conversation item is created. There are several scenarios that produce this event:
@@ -22,9 +22,9 @@ import type { RealtimeConversationItem } from "./realtimeConversationItem"
  */
 export interface RealtimeBetaServerEventConversationItemCreated {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `conversation.item.created`. */
-  type: "conversation.item.created"
-  previous_item_id?: RealtimeBetaServerEventConversationItemCreatedPreviousItemId
-  item: RealtimeConversationItem
+  type: 'conversation.item.created';
+  previous_item_id?: RealtimeBetaServerEventConversationItemCreatedPreviousItemId;
+  item: RealtimeConversationItem;
 }

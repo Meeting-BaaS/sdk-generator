@@ -9,11 +9,11 @@
 /**
  * The syntax of the grammar definition. One of `lark` or `regex`.
  */
-export type CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax =
-  (typeof CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax)[keyof typeof CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax]
+export type CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax = typeof CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax[keyof typeof CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CustomToolChatCompletionsCustomFormatAnyOfThreeGrammarSyntax = {
-  lark: "lark",
-  regex: "regex"
-} as const
+  lark: 'lark',
+  regex: 'regex',
+} as const;

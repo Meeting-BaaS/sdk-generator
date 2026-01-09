@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CreateEvalItem } from "./createEvalItem"
-import type { CreateEvalLabelModelGraderType } from "./createEvalLabelModelGraderType"
+import type { CreateEvalLabelModelGraderType } from './createEvalLabelModelGraderType';
+import type { CreateEvalItem } from './createEvalItem';
 
 /**
  * A LabelModelGrader object which uses a model to assign labels to each item
@@ -16,15 +15,15 @@ in the evaluation.
  */
 export interface CreateEvalLabelModelGrader {
   /** The object type, which is always `label_model`. */
-  type: CreateEvalLabelModelGraderType
+  type: CreateEvalLabelModelGraderType;
   /** The name of the grader. */
-  name: string
+  name: string;
   /** The model to use for the evaluation. Must support structured outputs. */
-  model: string
+  model: string;
   /** A list of chat messages forming the prompt or context. May include variable references to the `item` namespace, ie {{item.name}}. */
-  input: CreateEvalItem[]
+  input: CreateEvalItem[];
   /** The labels to classify to each item in the evaluation. */
-  labels: string[]
+  labels: string[];
   /** The labels that indicate a passing result. Must be a subset of labels. */
-  passing_labels: string[]
+  passing_labels: string[];
 }

@@ -9,10 +9,10 @@
 /**
  * The type of the tool, i.e. `function`.
  */
-export type RealtimeBetaResponseCreateParamsToolsItemType =
-  (typeof RealtimeBetaResponseCreateParamsToolsItemType)[keyof typeof RealtimeBetaResponseCreateParamsToolsItemType]
+export type RealtimeBetaResponseCreateParamsToolsItemType = typeof RealtimeBetaResponseCreateParamsToolsItemType[keyof typeof RealtimeBetaResponseCreateParamsToolsItemType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeBetaResponseCreateParamsToolsItemType = {
-  function: "function"
-} as const
+  function: 'function',
+} as const;

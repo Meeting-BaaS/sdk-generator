@@ -18,4 +18,4 @@ should result in a ban or exclusive selection of the relevant token.
 
  * @nullable
  */
-export type CreateChatCompletionRequestAllOfLogitBias = { [key: string]: number } | null
+export type CreateChatCompletionRequestAllOfLogitBias = {[key: string]: number} | null;

@@ -6,12 +6,13 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ContainerMemoryLimit = (typeof ContainerMemoryLimit)[keyof typeof ContainerMemoryLimit]
+export type ContainerMemoryLimit = typeof ContainerMemoryLimit[keyof typeof ContainerMemoryLimit];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ContainerMemoryLimit = {
-  "1g": "1g",
-  "4g": "4g",
-  "16g": "16g",
-  "64g": "64g"
-} as const
+  '1g': '1g',
+  '4g': '4g',
+  '16g': '16g',
+  '64g': '64g',
+} as const;

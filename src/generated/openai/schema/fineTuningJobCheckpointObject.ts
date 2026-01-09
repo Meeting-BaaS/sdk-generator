@@ -9,10 +9,10 @@
 /**
  * The object type, which is always "fine_tuning.job.checkpoint".
  */
-export type FineTuningJobCheckpointObject =
-  (typeof FineTuningJobCheckpointObject)[keyof typeof FineTuningJobCheckpointObject]
+export type FineTuningJobCheckpointObject = typeof FineTuningJobCheckpointObject[keyof typeof FineTuningJobCheckpointObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuningJobCheckpointObject = {
-  fine_tuningjobcheckpoint: "fine_tuning.job.checkpoint"
-} as const
+  fine_tuningjobcheckpoint: 'fine_tuning.job.checkpoint',
+} as const;

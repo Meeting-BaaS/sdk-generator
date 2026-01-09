@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type DeleteMessageResponseObject =
-  (typeof DeleteMessageResponseObject)[keyof typeof DeleteMessageResponseObject]
+export type DeleteMessageResponseObject = typeof DeleteMessageResponseObject[keyof typeof DeleteMessageResponseObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeleteMessageResponseObject = {
-  threadmessagedeleted: "thread.message.deleted"
-} as const
+  threadmessagedeleted: 'thread.message.deleted',
+} as const;

@@ -5,13 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageContentImageFileObject } from "./messageContentImageFileObject"
-import type { MessageContentImageUrlObject } from "./messageContentImageUrlObject"
-import type { MessageContentRefusalObject } from "./messageContentRefusalObject"
-import type { MessageContentTextObject } from "./messageContentTextObject"
+import type { MessageContentImageFileObject } from './messageContentImageFileObject';
+import type { MessageContentImageUrlObject } from './messageContentImageUrlObject';
+import type { MessageContentTextObject } from './messageContentTextObject';
+import type { MessageContentRefusalObject } from './messageContentRefusalObject';
 
-export type MessageContent =
-  | MessageContentImageFileObject
-  | MessageContentImageUrlObject
-  | MessageContentTextObject
-  | MessageContentRefusalObject
+export type MessageContent = MessageContentImageFileObject | MessageContentImageUrlObject | MessageContentTextObject | MessageContentRefusalObject;

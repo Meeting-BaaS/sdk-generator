@@ -10,14 +10,15 @@
  * The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`, or `diarized_json`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`, the only supported format is `json`. For `gpt-4o-transcribe-diarize`, the supported formats are `json`, `text`, and `diarized_json`, with `diarized_json` required to receive speaker annotations.
 
  */
-export type AudioResponseFormat = (typeof AudioResponseFormat)[keyof typeof AudioResponseFormat]
+export type AudioResponseFormat = typeof AudioResponseFormat[keyof typeof AudioResponseFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AudioResponseFormat = {
-  json: "json",
-  text: "text",
-  srt: "srt",
-  verbose_json: "verbose_json",
-  vtt: "vtt",
-  diarized_json: "diarized_json"
-} as const
+  json: 'json',
+  text: 'text',
+  srt: 'srt',
+  verbose_json: 'verbose_json',
+  vtt: 'vtt',
+  diarized_json: 'diarized_json',
+} as const;

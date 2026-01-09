@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CompactResponseMethodPublicBodyInputAnyOf } from "./compactResponseMethodPublicBodyInputAnyOf"
+import type { CompactResponseMethodPublicBodyInputAnyOf } from './compactResponseMethodPublicBodyInputAnyOf';
 
-export type CompactResponseMethodPublicBodyInput = CompactResponseMethodPublicBodyInputAnyOf | null
+export type CompactResponseMethodPublicBodyInput = CompactResponseMethodPublicBodyInputAnyOf | null;

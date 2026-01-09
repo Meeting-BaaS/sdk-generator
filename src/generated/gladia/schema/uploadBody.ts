@@ -5,6 +5,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface UploadBody {
-  [key: string]: unknown
-}
+export interface UploadBody { [key: string]: unknown }

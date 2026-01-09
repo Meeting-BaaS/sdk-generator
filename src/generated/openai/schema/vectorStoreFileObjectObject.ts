@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `vector_store.file`.
  */
-export type VectorStoreFileObjectObject =
-  (typeof VectorStoreFileObjectObject)[keyof typeof VectorStoreFileObjectObject]
+export type VectorStoreFileObjectObject = typeof VectorStoreFileObjectObject[keyof typeof VectorStoreFileObjectObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreFileObjectObject = {
-  vector_storefile: "vector_store.file"
-} as const
+  vector_storefile: 'vector_store.file',
+} as const;

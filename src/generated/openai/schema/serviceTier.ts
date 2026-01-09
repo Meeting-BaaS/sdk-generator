@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ServiceTier = "auto" | "default" | "flex" | "scale" | "priority" | null
+export type ServiceTier = 'auto' | 'default' | 'flex' | 'scale' | 'priority' | null;

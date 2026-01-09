@@ -9,10 +9,10 @@
 /**
  * Always `user.role`.
  */
-export type UserRoleAssignmentObject =
-  (typeof UserRoleAssignmentObject)[keyof typeof UserRoleAssignmentObject]
+export type UserRoleAssignmentObject = typeof UserRoleAssignmentObject[keyof typeof UserRoleAssignmentObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserRoleAssignmentObject = {
-  userrole: "user.role"
-} as const
+  userrole: 'user.role',
+} as const;

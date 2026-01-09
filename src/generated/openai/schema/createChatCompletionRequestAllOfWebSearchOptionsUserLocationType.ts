@@ -10,10 +10,10 @@
  * The type of location approximation. Always `approximate`.
 
  */
-export type CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType =
-  (typeof CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType)[keyof typeof CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType]
+export type CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType = typeof CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType[keyof typeof CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateChatCompletionRequestAllOfWebSearchOptionsUserLocationType = {
-  approximate: "approximate"
-} as const
+  approximate: 'approximate',
+} as const;

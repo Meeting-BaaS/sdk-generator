@@ -7,5 +7,5 @@
 
 export interface PreRecordedEventPayload {
   /** Id of the job */
-  id: string
+  id: string;
 }

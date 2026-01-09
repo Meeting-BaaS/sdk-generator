@@ -10,10 +10,10 @@
 /**
  * The unique identifier of the Groq model
  */
-export type AgentThinkModelsV1ResponseModelsItemOneOfSevenId =
-  (typeof AgentThinkModelsV1ResponseModelsItemOneOfSevenId)[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfSevenId]
+export type AgentThinkModelsV1ResponseModelsItemOneOfSevenId = typeof AgentThinkModelsV1ResponseModelsItemOneOfSevenId[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfSevenId];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AgentThinkModelsV1ResponseModelsItemOneOfSevenId = {
-  "openai/gpt-oss-20b": "openai/gpt-oss-20b"
-} as const
+  'openai/gpt-oss-20b': 'openai/gpt-oss-20b',
+} as const;

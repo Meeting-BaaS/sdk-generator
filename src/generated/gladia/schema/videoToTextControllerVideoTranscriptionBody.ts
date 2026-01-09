@@ -4,26 +4,25 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { VideoToTextControllerVideoTranscriptionBodyLanguage } from "./videoToTextControllerVideoTranscriptionBodyLanguage"
-import type { VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour } from "./videoToTextControllerVideoTranscriptionBodyLanguageBehaviour"
-import type { VideoToTextControllerVideoTranscriptionBodyOutputFormat } from "./videoToTextControllerVideoTranscriptionBodyOutputFormat"
-import type { VideoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage } from "./videoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage"
+import type { VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour } from './videoToTextControllerVideoTranscriptionBodyLanguageBehaviour';
+import type { VideoToTextControllerVideoTranscriptionBodyLanguage } from './videoToTextControllerVideoTranscriptionBodyLanguage';
+import type { VideoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage } from './videoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage';
+import type { VideoToTextControllerVideoTranscriptionBodyOutputFormat } from './videoToTextControllerVideoTranscriptionBodyOutputFormat';
 
 export type VideoToTextControllerVideoTranscriptionBody = {
-  video?: Blob
-  video_url?: string
-  language_behaviour?: VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour
-  language?: VideoToTextControllerVideoTranscriptionBodyLanguage
-  transcription_hint?: string
-  toggle_diarization?: boolean
-  diarization_num_speakers?: number
-  diarization_min_speakers?: number
-  diarization_max_speakers?: number
-  toggle_direct_translate?: boolean
-  target_translation_language?: VideoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage
-  output_format?: VideoToTextControllerVideoTranscriptionBodyOutputFormat
-  toggle_noise_reduction?: boolean
-  toggle_accurate_words_timestamps?: boolean
-  webhook_url?: string
-}
+  video?: Blob;
+  video_url?: string;
+  language_behaviour?: VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour;
+  language?: VideoToTextControllerVideoTranscriptionBodyLanguage;
+  transcription_hint?: string;
+  toggle_diarization?: boolean;
+  diarization_num_speakers?: number;
+  diarization_min_speakers?: number;
+  diarization_max_speakers?: number;
+  toggle_direct_translate?: boolean;
+  target_translation_language?: VideoToTextControllerVideoTranscriptionBodyTargetTranslationLanguage;
+  output_format?: VideoToTextControllerVideoTranscriptionBodyOutputFormat;
+  toggle_noise_reduction?: boolean;
+  toggle_accurate_words_timestamps?: boolean;
+  webhook_url?: string;
+};

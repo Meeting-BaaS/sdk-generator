@@ -5,11 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { WebSearchApproximateLocation } from "./webSearchApproximateLocation"
-import type { WebSearchToolFilters } from "./webSearchToolFilters"
-import type { WebSearchToolSearchContextSize } from "./webSearchToolSearchContextSize"
-import type { WebSearchToolType } from "./webSearchToolType"
+import type { WebSearchToolType } from './webSearchToolType';
+import type { WebSearchToolFilters } from './webSearchToolFilters';
+import type { WebSearchApproximateLocation } from './webSearchApproximateLocation';
+import type { WebSearchToolSearchContextSize } from './webSearchToolSearchContextSize';
 
 /**
  * Search the Internet for sources related to the prompt. Learn more about the
@@ -18,9 +17,9 @@ import type { WebSearchToolType } from "./webSearchToolType"
  */
 export interface WebSearchTool {
   /** The type of the web search tool. One of `web_search` or `web_search_2025_08_26`. */
-  type: WebSearchToolType
-  filters?: WebSearchToolFilters
-  user_location?: WebSearchApproximateLocation
+  type: WebSearchToolType;
+  filters?: WebSearchToolFilters;
+  user_location?: WebSearchApproximateLocation;
   /** High level guidance for the amount of context window space to use for the search. One of `low`, `medium`, or `high`. `medium` is the default. */
-  search_context_size?: WebSearchToolSearchContextSize
+  search_context_size?: WebSearchToolSearchContextSize;
 }

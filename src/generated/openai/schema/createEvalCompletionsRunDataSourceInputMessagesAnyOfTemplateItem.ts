@@ -5,9 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EasyInputMessage } from "./easyInputMessage"
-import type { EvalItem } from "./evalItem"
+import type { EasyInputMessage } from './easyInputMessage';
+import type { EvalItem } from './evalItem';
 
-export type CreateEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem =
-  | EasyInputMessage
-  | EvalItem
+export type CreateEvalCompletionsRunDataSourceInputMessagesAnyOfTemplateItem = EasyInputMessage | EvalItem;

@@ -5,11 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { OutputMessageContent } from "./outputMessageContent"
-import type { OutputMessageRole } from "./outputMessageRole"
-import type { OutputMessageStatus } from "./outputMessageStatus"
-import type { OutputMessageType } from "./outputMessageType"
+import type { OutputMessageType } from './outputMessageType';
+import type { OutputMessageRole } from './outputMessageRole';
+import type { OutputMessageContent } from './outputMessageContent';
+import type { OutputMessageStatus } from './outputMessageStatus';
 
 /**
  * An output message from the model.
@@ -17,19 +16,19 @@ import type { OutputMessageType } from "./outputMessageType"
  */
 export interface OutputMessage {
   /** The unique ID of the output message.
-   */
-  id: string
+ */
+  id: string;
   /** The type of the output message. Always `message`.
-   */
-  type: OutputMessageType
+ */
+  type: OutputMessageType;
   /** The role of the output message. Always `assistant`.
-   */
-  role: OutputMessageRole
+ */
+  role: OutputMessageRole;
   /** The content of the output message.
-   */
-  content: OutputMessageContent[]
+ */
+  content: OutputMessageContent[];
   /** The status of the message input. One of `in_progress`, `completed`, or
 `incomplete`. Populated when input items are returned via API.
  */
-  status: OutputMessageStatus
+  status: OutputMessageStatus;
 }

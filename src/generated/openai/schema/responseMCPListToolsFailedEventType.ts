@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_list_tools.failed'.
  */
-export type ResponseMCPListToolsFailedEventType =
-  (typeof ResponseMCPListToolsFailedEventType)[keyof typeof ResponseMCPListToolsFailedEventType]
+export type ResponseMCPListToolsFailedEventType = typeof ResponseMCPListToolsFailedEventType[keyof typeof ResponseMCPListToolsFailedEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPListToolsFailedEventType = {
-  responsemcp_list_toolsfailed: "response.mcp_list_tools.failed"
-} as const
+  responsemcp_list_toolsfailed: 'response.mcp_list_tools.failed',
+} as const;

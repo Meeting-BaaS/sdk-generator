@@ -9,13 +9,14 @@
 /**
  * The status of the run step, which can be either `in_progress`, `cancelled`, `failed`, `completed`, or `expired`.
  */
-export type RunStepObjectStatus = (typeof RunStepObjectStatus)[keyof typeof RunStepObjectStatus]
+export type RunStepObjectStatus = typeof RunStepObjectStatus[keyof typeof RunStepObjectStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepObjectStatus = {
-  in_progress: "in_progress",
-  cancelled: "cancelled",
-  failed: "failed",
-  completed: "completed",
-  expired: "expired"
-} as const
+  in_progress: 'in_progress',
+  cancelled: 'cancelled',
+  failed: 'failed',
+  completed: 'completed',
+  expired: 'expired',
+} as const;

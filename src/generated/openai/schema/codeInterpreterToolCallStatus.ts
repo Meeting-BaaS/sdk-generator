@@ -10,14 +10,14 @@
  * The status of the code interpreter tool call. Valid values are `in_progress`, `completed`, `incomplete`, `interpreting`, and `failed`.
 
  */
-export type CodeInterpreterToolCallStatus =
-  (typeof CodeInterpreterToolCallStatus)[keyof typeof CodeInterpreterToolCallStatus]
+export type CodeInterpreterToolCallStatus = typeof CodeInterpreterToolCallStatus[keyof typeof CodeInterpreterToolCallStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterToolCallStatus = {
-  in_progress: "in_progress",
-  completed: "completed",
-  incomplete: "incomplete",
-  interpreting: "interpreting",
-  failed: "failed"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+  incomplete: 'incomplete',
+  interpreting: 'interpreting',
+  failed: 'failed',
+} as const;

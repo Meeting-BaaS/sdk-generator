@@ -11,13 +11,13 @@
  */
 export type AuditLogRoleCreated = {
   /** The role ID. */
-  id?: string
+  id?: string;
   /** The name of the role. */
-  role_name?: string
+  role_name?: string;
   /** The permissions granted by the role. */
-  permissions?: string[]
+  permissions?: string[];
   /** The type of resource the role belongs to. */
-  resource_type?: string
+  resource_type?: string;
   /** The resource the role is scoped to. */
-  resource_id?: string
-}
+  resource_id?: string;
+};

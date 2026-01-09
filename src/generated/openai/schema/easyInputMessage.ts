@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { EasyInputMessageContent } from "./easyInputMessageContent"
-import type { EasyInputMessageRole } from "./easyInputMessageRole"
-import type { EasyInputMessageType } from "./easyInputMessageType"
+import type { EasyInputMessageRole } from './easyInputMessageRole';
+import type { EasyInputMessageContent } from './easyInputMessageContent';
+import type { EasyInputMessageType } from './easyInputMessageType';
 
 /**
  * A message input to the model with a role indicating instruction following
@@ -22,12 +21,12 @@ export interface EasyInputMessage {
   /** The role of the message input. One of `user`, `assistant`, `system`, or
 `developer`.
  */
-  role: EasyInputMessageRole
+  role: EasyInputMessageRole;
   /** Text, image, or audio input to the model, used to generate a response.
 Can also contain previous assistant responses.
  */
-  content: EasyInputMessageContent
+  content: EasyInputMessageContent;
   /** The type of the message input. Always `message`.
-   */
-  type?: EasyInputMessageType
+ */
+  type?: EasyInputMessageType;
 }

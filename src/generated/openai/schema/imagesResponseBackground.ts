@@ -9,11 +9,11 @@
 /**
  * The background parameter used for the image generation. Either `transparent` or `opaque`.
  */
-export type ImagesResponseBackground =
-  (typeof ImagesResponseBackground)[keyof typeof ImagesResponseBackground]
+export type ImagesResponseBackground = typeof ImagesResponseBackground[keyof typeof ImagesResponseBackground];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImagesResponseBackground = {
-  transparent: "transparent",
-  opaque: "opaque"
-} as const
+  transparent: 'transparent',
+  opaque: 'opaque',
+} as const;

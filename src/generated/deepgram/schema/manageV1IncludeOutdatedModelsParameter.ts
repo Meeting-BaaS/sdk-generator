@@ -10,4 +10,4 @@
 /**
  * returns non-latest versions of models
  */
-export type ManageV1IncludeOutdatedModelsParameter = boolean
+export type ManageV1IncludeOutdatedModelsParameter = boolean;

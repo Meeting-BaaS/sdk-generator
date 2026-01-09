@@ -11,12 +11,13 @@
 `1536x1024`, or `auto`. Default: `auto`.
 
  */
-export type ImageGenToolSize = (typeof ImageGenToolSize)[keyof typeof ImageGenToolSize]
+export type ImageGenToolSize = typeof ImageGenToolSize[keyof typeof ImageGenToolSize];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolSize = {
-  "1024x1024": "1024x1024",
-  "1024x1536": "1024x1536",
-  "1536x1024": "1536x1024",
-  auto: "auto"
-} as const
+  '1024x1024': '1024x1024',
+  '1024x1536': '1024x1536',
+  '1536x1024': '1536x1024',
+  auto: 'auto',
+} as const;

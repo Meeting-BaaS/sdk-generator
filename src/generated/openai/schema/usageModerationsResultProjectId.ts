@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageModerationsResultProjectId = string | null
+export type UsageModerationsResultProjectId = string | null;

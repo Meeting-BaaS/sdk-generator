@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs } from "./realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs"
-import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType } from "./realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType"
-import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage } from "./realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage"
+import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType } from './realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType';
+import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs } from './realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs';
+import type { RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage } from './realtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage';
 
 /**
  * This event is the output of audio transcription for user audio written to the
@@ -25,18 +24,18 @@ should be treated as a rough guide.
  */
 export interface RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompleted {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be
 `conversation.item.input_audio_transcription.completed`.
  */
-  type: RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType
+  type: RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedType;
   /** The ID of the user message item containing the audio. */
-  item_id: string
+  item_id: string;
   /** The index of the content part containing the audio. */
-  content_index: number
+  content_index: number;
   /** The transcribed text. */
-  transcript: string
-  logprobs?: RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs
+  transcript: string;
+  logprobs?: RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedLogprobs;
   /** Usage statistics for the transcription. */
-  usage: RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage
+  usage: RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage;
 }

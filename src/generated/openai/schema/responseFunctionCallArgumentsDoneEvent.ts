@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFunctionCallArgumentsDoneEventType } from "./responseFunctionCallArgumentsDoneEventType"
+import type { ResponseFunctionCallArgumentsDoneEventType } from './responseFunctionCallArgumentsDoneEventType';
 
 /**
  * Emitted when function-call arguments are finalized.
  */
 export interface ResponseFunctionCallArgumentsDoneEvent {
-  type: ResponseFunctionCallArgumentsDoneEventType
+  type: ResponseFunctionCallArgumentsDoneEventType;
   /** The ID of the item. */
-  item_id: string
+  item_id: string;
   /** The name of the function that was called. */
-  name: string
+  name: string;
   /** The index of the output item. */
-  output_index: number
+  output_index: number;
   /** The sequence number of this event. */
-  sequence_number: number
+  sequence_number: number;
   /** The function-call arguments. */
-  arguments: string
+  arguments: string;
 }

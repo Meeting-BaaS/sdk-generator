@@ -11,15 +11,14 @@
 
  * @nullable
  */
-export type CreateImageEditRequestQuality =
-  | (typeof CreateImageEditRequestQuality)[keyof typeof CreateImageEditRequestQuality]
-  | null
+export type CreateImageEditRequestQuality = typeof CreateImageEditRequestQuality[keyof typeof CreateImageEditRequestQuality] | null;
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageEditRequestQuality = {
-  standard: "standard",
-  low: "low",
-  medium: "medium",
-  high: "high",
-  auto: "auto"
-} as const
+  standard: 'standard',
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  auto: 'auto',
+} as const;

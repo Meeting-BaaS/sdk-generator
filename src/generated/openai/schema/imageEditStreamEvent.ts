@@ -5,8 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+import type { ImageEditPartialImageEvent } from './imageEditPartialImageEvent';
+import type { ImageEditCompletedEvent } from './imageEditCompletedEvent';
 
-import type { ImageEditCompletedEvent } from "./imageEditCompletedEvent"
-import type { ImageEditPartialImageEvent } from "./imageEditPartialImageEvent"
-
-export type ImageEditStreamEvent = ImageEditPartialImageEvent | ImageEditCompletedEvent
+export type ImageEditStreamEvent = ImageEditPartialImageEvent | ImageEditCompletedEvent;

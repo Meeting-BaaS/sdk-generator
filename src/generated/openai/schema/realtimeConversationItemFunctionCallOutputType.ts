@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `function_call_output`.
  */
-export type RealtimeConversationItemFunctionCallOutputType =
-  (typeof RealtimeConversationItemFunctionCallOutputType)[keyof typeof RealtimeConversationItemFunctionCallOutputType]
+export type RealtimeConversationItemFunctionCallOutputType = typeof RealtimeConversationItemFunctionCallOutputType[keyof typeof RealtimeConversationItemFunctionCallOutputType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemFunctionCallOutputType = {
-  function_call_output: "function_call_output"
-} as const
+  function_call_output: 'function_call_output',
+} as const;

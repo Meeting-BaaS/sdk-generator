@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { OutputAudioType } from "./outputAudioType"
+import type { OutputAudioType } from './outputAudioType';
 
 /**
  * An audio output from the model.
@@ -13,12 +13,12 @@ import type { OutputAudioType } from "./outputAudioType"
  */
 export interface OutputAudio {
   /** The type of the output audio. Always `output_audio`.
-   */
-  type: OutputAudioType
+ */
+  type: OutputAudioType;
   /** Base64-encoded audio data from the model.
-   */
-  data: string
+ */
+  data: string;
   /** The transcript of the audio data from the model.
-   */
-  transcript: string
+ */
+  transcript: string;
 }

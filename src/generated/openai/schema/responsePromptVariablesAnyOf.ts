@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { InputFileContent } from "./inputFileContent"
-import type { InputImageContent } from "./inputImageContent"
-import type { InputTextContent } from "./inputTextContent"
+import type { InputTextContent } from './inputTextContent';
+import type { InputImageContent } from './inputImageContent';
+import type { InputFileContent } from './inputFileContent';
 
 /**
  * Optional map of values to substitute in for variables in your
@@ -16,6 +15,4 @@ prompt. The substitution values can either be strings, or other
 Response input types like images or files.
 
  */
-export type ResponsePromptVariablesAnyOf = {
-  [key: string]: string | InputTextContent | InputImageContent | InputFileContent
-}
+export type ResponsePromptVariablesAnyOf = {[key: string]: string | InputTextContent | InputImageContent | InputFileContent};

@@ -24,13 +24,13 @@ something relevant to the conversation or a prompt to continue speaking.
  */
 export interface RealtimeServerEventInputAudioBufferTimeoutTriggered {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `input_audio_buffer.timeout_triggered`. */
-  type: "input_audio_buffer.timeout_triggered"
+  type: 'input_audio_buffer.timeout_triggered';
   /** Millisecond offset of audio written to the input audio buffer that was after the playback time of the last model response. */
-  audio_start_ms: number
+  audio_start_ms: number;
   /** Millisecond offset of audio written to the input audio buffer at the time the timeout was triggered. */
-  audio_end_ms: number
+  audio_end_ms: number;
   /** The ID of the item associated with this segment. */
-  item_id: string
+  item_id: string;
 }

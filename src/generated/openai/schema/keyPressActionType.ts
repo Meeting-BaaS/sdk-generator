@@ -9,9 +9,10 @@
 /**
  * Specifies the event type. For a keypress action, this property is always set to `keypress`.
  */
-export type KeyPressActionType = (typeof KeyPressActionType)[keyof typeof KeyPressActionType]
+export type KeyPressActionType = typeof KeyPressActionType[keyof typeof KeyPressActionType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const KeyPressActionType = {
-  keypress: "keypress"
-} as const
+  keypress: 'keypress',
+} as const;

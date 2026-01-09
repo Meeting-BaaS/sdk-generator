@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `assistant`.
  */
-export type AssistantObjectObject =
-  (typeof AssistantObjectObject)[keyof typeof AssistantObjectObject]
+export type AssistantObjectObject = typeof AssistantObjectObject[keyof typeof AssistantObjectObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AssistantObjectObject = {
-  assistant: "assistant"
-} as const
+  assistant: 'assistant',
+} as const;

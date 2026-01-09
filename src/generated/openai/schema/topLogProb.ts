@@ -10,7 +10,7 @@
  * The top log probability of a token.
  */
 export interface TopLogProb {
-  token: string
-  logprob: number
-  bytes: number[]
+  token: string;
+  logprob: number;
+  bytes: number[];
 }

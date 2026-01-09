@@ -9,10 +9,10 @@
 /**
  * The type of the shell tool. Always `shell`.
  */
-export type FunctionShellToolParamType =
-  (typeof FunctionShellToolParamType)[keyof typeof FunctionShellToolParamType]
+export type FunctionShellToolParamType = typeof FunctionShellToolParamType[keyof typeof FunctionShellToolParamType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionShellToolParamType = {
-  shell: "shell"
-} as const
+  shell: 'shell',
+} as const;

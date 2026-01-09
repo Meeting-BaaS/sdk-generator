@@ -5,33 +5,32 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { EvalApiError } from "./evalApiError"
-import type { EvalRunOutputItemSampleInputItem } from "./evalRunOutputItemSampleInputItem"
-import type { EvalRunOutputItemSampleOutputItem } from "./evalRunOutputItemSampleOutputItem"
-import type { EvalRunOutputItemSampleUsage } from "./evalRunOutputItemSampleUsage"
+import type { EvalRunOutputItemSampleInputItem } from './evalRunOutputItemSampleInputItem';
+import type { EvalRunOutputItemSampleOutputItem } from './evalRunOutputItemSampleOutputItem';
+import type { EvalRunOutputItemSampleUsage } from './evalRunOutputItemSampleUsage';
+import type { EvalApiError } from './evalApiError';
 
 /**
  * A sample containing the input and output of the evaluation run.
  */
 export type EvalRunOutputItemSample = {
   /** An array of input messages. */
-  input: EvalRunOutputItemSampleInputItem[]
+  input: EvalRunOutputItemSampleInputItem[];
   /** An array of output messages. */
-  output: EvalRunOutputItemSampleOutputItem[]
+  output: EvalRunOutputItemSampleOutputItem[];
   /** The reason why the sample generation was finished. */
-  finish_reason: string
+  finish_reason: string;
   /** The model used for generating the sample. */
-  model: string
+  model: string;
   /** Token usage details for the sample. */
-  usage: EvalRunOutputItemSampleUsage
-  error: EvalApiError
+  usage: EvalRunOutputItemSampleUsage;
+  error: EvalApiError;
   /** The sampling temperature used. */
-  temperature: number
+  temperature: number;
   /** The maximum number of tokens allowed for completion. */
-  max_completion_tokens: number
+  max_completion_tokens: number;
   /** The top_p value used for sampling. */
-  top_p: number
+  top_p: number;
   /** The seed used for generating the sample. */
-  seed: number
-}
+  seed: number;
+};

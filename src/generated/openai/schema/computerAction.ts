@@ -5,23 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ClickParam } from "./clickParam"
-import type { DoubleClickAction } from "./doubleClickAction"
-import type { Drag } from "./drag"
-import type { KeyPressAction } from "./keyPressAction"
-import type { Move } from "./move"
-import type { Screenshot } from "./screenshot"
-import type { Scroll } from "./scroll"
-import type { Type } from "./type"
-import type { Wait } from "./wait"
+import type { ClickParam } from './clickParam';
+import type { DoubleClickAction } from './doubleClickAction';
+import type { Drag } from './drag';
+import type { KeyPressAction } from './keyPressAction';
+import type { Move } from './move';
+import type { Screenshot } from './screenshot';
+import type { Scroll } from './scroll';
+import type { Type } from './type';
+import type { Wait } from './wait';
 
-export type ComputerAction =
-  | ClickParam
-  | DoubleClickAction
-  | Drag
-  | KeyPressAction
-  | Move
-  | Screenshot
-  | Scroll
-  | Type
-  | Wait
+export type ComputerAction = ClickParam | DoubleClickAction | Drag | KeyPressAction | Move | Screenshot | Scroll | Type | Wait;

@@ -11,7 +11,7 @@
  */
 export type AuditLogCheckpointPermissionCreatedData = {
   /** The ID of the project that the checkpoint permission was created for. */
-  project_id?: string
+  project_id?: string;
   /** The ID of the fine-tuned model checkpoint. */
-  fine_tuned_model_checkpoint?: string
-}
+  fine_tuned_model_checkpoint?: string;
+};

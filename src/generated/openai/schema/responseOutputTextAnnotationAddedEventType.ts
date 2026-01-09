@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.output_text.annotation.added'.
  */
-export type ResponseOutputTextAnnotationAddedEventType =
-  (typeof ResponseOutputTextAnnotationAddedEventType)[keyof typeof ResponseOutputTextAnnotationAddedEventType]
+export type ResponseOutputTextAnnotationAddedEventType = typeof ResponseOutputTextAnnotationAddedEventType[keyof typeof ResponseOutputTextAnnotationAddedEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseOutputTextAnnotationAddedEventType = {
-  responseoutput_textannotationadded: "response.output_text.annotation.added"
-} as const
+  responseoutput_textannotationadded: 'response.output_text.annotation.added',
+} as const;

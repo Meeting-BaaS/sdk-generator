@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ReasoningEffort } from "./reasoningEffort"
-import type { ReasoningGenerateSummary } from "./reasoningGenerateSummary"
-import type { ReasoningSummary } from "./reasoningSummary"
+import type { ReasoningEffort } from './reasoningEffort';
+import type { ReasoningSummary } from './reasoningSummary';
+import type { ReasoningGenerateSummary } from './reasoningGenerateSummary';
 
 /**
  * **gpt-5 and o-series models only**
@@ -17,7 +17,7 @@ Configuration options for
 
  */
 export interface Reasoning {
-  effort?: ReasoningEffort
-  summary?: ReasoningSummary
-  generate_summary?: ReasoningGenerateSummary
+  effort?: ReasoningEffort;
+  summary?: ReasoningSummary;
+  generate_summary?: ReasoningGenerateSummary;
 }

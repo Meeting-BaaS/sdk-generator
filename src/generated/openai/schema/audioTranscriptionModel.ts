@@ -10,13 +10,13 @@
  * The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
 
  */
-export type AudioTranscriptionModel =
-  (typeof AudioTranscriptionModel)[keyof typeof AudioTranscriptionModel]
+export type AudioTranscriptionModel = typeof AudioTranscriptionModel[keyof typeof AudioTranscriptionModel];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AudioTranscriptionModel = {
-  "whisper-1": "whisper-1",
-  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
-  "gpt-4o-transcribe": "gpt-4o-transcribe",
-  "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize"
-} as const
+  'whisper-1': 'whisper-1',
+  'gpt-4o-mini-transcribe': 'gpt-4o-mini-transcribe',
+  'gpt-4o-transcribe': 'gpt-4o-transcribe',
+  'gpt-4o-transcribe-diarize': 'gpt-4o-transcribe-diarize',
+} as const;

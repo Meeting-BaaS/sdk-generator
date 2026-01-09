@@ -13,5 +13,5 @@ export type ResponseUsageInputTokensDetails = {
   /** The number of tokens that were retrieved from the cache. 
 [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
  */
-  cached_tokens: number
-}
+  cached_tokens: number;
+};

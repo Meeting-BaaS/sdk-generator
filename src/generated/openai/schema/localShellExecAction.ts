@@ -5,24 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { LocalShellExecActionEnv } from "./localShellExecActionEnv"
-import type { LocalShellExecActionTimeoutMs } from "./localShellExecActionTimeoutMs"
-import type { LocalShellExecActionType } from "./localShellExecActionType"
-import type { LocalShellExecActionUser } from "./localShellExecActionUser"
-import type { LocalShellExecActionWorkingDirectory } from "./localShellExecActionWorkingDirectory"
+import type { LocalShellExecActionType } from './localShellExecActionType';
+import type { LocalShellExecActionTimeoutMs } from './localShellExecActionTimeoutMs';
+import type { LocalShellExecActionWorkingDirectory } from './localShellExecActionWorkingDirectory';
+import type { LocalShellExecActionEnv } from './localShellExecActionEnv';
+import type { LocalShellExecActionUser } from './localShellExecActionUser';
 
 /**
  * Execute a shell command on the server.
  */
 export interface LocalShellExecAction {
   /** The type of the local shell action. Always `exec`. */
-  type: LocalShellExecActionType
+  type: LocalShellExecActionType;
   /** The command to run. */
-  command: string[]
-  timeout_ms?: LocalShellExecActionTimeoutMs
-  working_directory?: LocalShellExecActionWorkingDirectory
+  command: string[];
+  timeout_ms?: LocalShellExecActionTimeoutMs;
+  working_directory?: LocalShellExecActionWorkingDirectory;
   /** Environment variables to set for the command. */
-  env: LocalShellExecActionEnv
-  user?: LocalShellExecActionUser
+  env: LocalShellExecActionEnv;
+  user?: LocalShellExecActionUser;
 }

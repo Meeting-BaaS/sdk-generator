@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { MCPListToolsTool } from "./mCPListToolsTool"
-import type { RealtimeMCPListToolsType } from "./realtimeMCPListToolsType"
+import type { RealtimeMCPListToolsType } from './realtimeMCPListToolsType';
+import type { MCPListToolsTool } from './mCPListToolsTool';
 
 /**
  * A Realtime item listing tools available on an MCP server.
@@ -15,11 +14,11 @@ import type { RealtimeMCPListToolsType } from "./realtimeMCPListToolsType"
  */
 export interface RealtimeMCPListTools {
   /** The type of the item. Always `mcp_list_tools`. */
-  type: RealtimeMCPListToolsType
+  type: RealtimeMCPListToolsType;
   /** The unique ID of the list. */
-  id?: string
+  id?: string;
   /** The label of the MCP server. */
-  server_label: string
+  server_label: string;
   /** The tools available on the server. */
-  tools: MCPListToolsTool[]
+  tools: MCPListToolsTool[];
 }

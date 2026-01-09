@@ -15,11 +15,11 @@ message.
 `required` requires the model to call one or more of the allowed tools.
 
  */
-export type ChatCompletionAllowedToolsMode =
-  (typeof ChatCompletionAllowedToolsMode)[keyof typeof ChatCompletionAllowedToolsMode]
+export type ChatCompletionAllowedToolsMode = typeof ChatCompletionAllowedToolsMode[keyof typeof ChatCompletionAllowedToolsMode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionAllowedToolsMode = {
-  auto: "auto",
-  required: "required"
-} as const
+  auto: 'auto',
+  required: 'required',
+} as const;

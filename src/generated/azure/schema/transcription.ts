@@ -5,51 +5,50 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-
-import type { EntityReference } from "./entityReference"
-import type { Status } from "./status"
-import type { TranscriptionCustomProperties } from "./transcriptionCustomProperties"
-import type { TranscriptionLinks } from "./transcriptionLinks"
-import type { TranscriptionProperties } from "./transcriptionProperties"
+import type { TranscriptionLinks } from './transcriptionLinks';
+import type { TranscriptionProperties } from './transcriptionProperties';
+import type { EntityReference } from './entityReference';
+import type { TranscriptionCustomProperties } from './transcriptionCustomProperties';
+import type { Status } from './status';
 
 export interface Transcription {
-  links?: TranscriptionLinks
-  properties?: TranscriptionProperties
+  links?: TranscriptionLinks;
+  properties?: TranscriptionProperties;
   /** The location of this entity. */
-  readonly self?: string
-  model?: EntityReference
-  project?: EntityReference
-  dataset?: EntityReference
+  readonly self?: string;
+  model?: EntityReference;
+  project?: EntityReference;
+  dataset?: EntityReference;
   /** A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.
 This property will not be returned in a response. */
-  contentUrls?: string[]
+  contentUrls?: string[];
   /** A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.
 The maximum size for a blob is 2.5GB.
 Container SAS should contain 'r' (read) and 'l' (list) permissions.
 This property will not be returned in a response. */
-  contentContainerUrl?: string
+  contentContainerUrl?: string;
   /**
    * The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected.
    * @minLength 1
    */
-  locale: string
+  locale: string;
   /**
    * The display name of the object.
    * @minLength 1
    */
-  displayName: string
+  displayName: string;
   /** The description of the object. */
-  description?: string
+  description?: string;
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: TranscriptionCustomProperties
+  customProperties?: TranscriptionCustomProperties;
   /** The time-stamp when the current status was entered.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly lastActionDateTime?: string
-  status?: Status
+  readonly lastActionDateTime?: string;
+  status?: Status;
   /** The time-stamp when the object was created.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly createdDateTime?: string
+  readonly createdDateTime?: string;
 }

@@ -5,21 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { AudioTranscription } from "./audioTranscription"
-import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
-import type { RealtimeSessionCreateResponseAudioInputNoiseReduction } from "./realtimeSessionCreateResponseAudioInputNoiseReduction"
-import type { RealtimeSessionCreateResponseAudioInputTurnDetection } from "./realtimeSessionCreateResponseAudioInputTurnDetection"
+import type { RealtimeAudioFormats } from './realtimeAudioFormats';
+import type { AudioTranscription } from './audioTranscription';
+import type { RealtimeSessionCreateResponseAudioInputNoiseReduction } from './realtimeSessionCreateResponseAudioInputNoiseReduction';
+import type { RealtimeSessionCreateResponseAudioInputTurnDetection } from './realtimeSessionCreateResponseAudioInputTurnDetection';
 
 export type RealtimeSessionCreateResponseAudioInput = {
-  format?: RealtimeAudioFormats
+  format?: RealtimeAudioFormats;
   /** Configuration for input audio transcription.
-   */
-  transcription?: AudioTranscription
+ */
+  transcription?: AudioTranscription;
   /** Configuration for input audio noise reduction.
-   */
-  noise_reduction?: RealtimeSessionCreateResponseAudioInputNoiseReduction
+ */
+  noise_reduction?: RealtimeSessionCreateResponseAudioInputNoiseReduction;
   /** Configuration for turn detection.
-   */
-  turn_detection?: RealtimeSessionCreateResponseAudioInputTurnDetection
-}
+ */
+  turn_detection?: RealtimeSessionCreateResponseAudioInputTurnDetection;
+};

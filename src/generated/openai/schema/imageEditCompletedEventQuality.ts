@@ -10,13 +10,13 @@
  * The quality setting for the edited image.
 
  */
-export type ImageEditCompletedEventQuality =
-  (typeof ImageEditCompletedEventQuality)[keyof typeof ImageEditCompletedEventQuality]
+export type ImageEditCompletedEventQuality = typeof ImageEditCompletedEventQuality[keyof typeof ImageEditCompletedEventQuality];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditCompletedEventQuality = {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  auto: "auto"
-} as const
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  auto: 'auto',
+} as const;

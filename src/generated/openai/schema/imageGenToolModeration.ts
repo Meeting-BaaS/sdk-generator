@@ -10,11 +10,11 @@
  * Moderation level for the generated image. Default: `auto`.
 
  */
-export type ImageGenToolModeration =
-  (typeof ImageGenToolModeration)[keyof typeof ImageGenToolModeration]
+export type ImageGenToolModeration = typeof ImageGenToolModeration[keyof typeof ImageGenToolModeration];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolModeration = {
-  auto: "auto",
-  low: "low"
-} as const
+  auto: 'auto',
+  low: 'low',
+} as const;

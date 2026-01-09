@@ -8,5 +8,5 @@
 
 export interface EntityReference {
   /** The location of the referenced entity. */
-  self: string
+  self: string;
 }

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventConversationCreatedConversation } from "./realtimeServerEventConversationCreatedConversation"
+import type { RealtimeServerEventConversationCreatedConversation } from './realtimeServerEventConversationCreatedConversation';
 
 /**
  * Returned when a conversation is created. Emitted right after session creation.
@@ -13,9 +13,9 @@ import type { RealtimeServerEventConversationCreatedConversation } from "./realt
  */
 export interface RealtimeServerEventConversationCreated {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `conversation.created`. */
-  type: "conversation.created"
+  type: 'conversation.created';
   /** The conversation resource. */
-  conversation: RealtimeServerEventConversationCreatedConversation
+  conversation: RealtimeServerEventConversationCreatedConversation;
 }

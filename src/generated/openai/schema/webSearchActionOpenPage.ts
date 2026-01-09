@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchActionOpenPageType } from "./webSearchActionOpenPageType"
+import type { WebSearchActionOpenPageType } from './webSearchActionOpenPageType';
 
 /**
  * Action type "open_page" - Opens a specific URL from search results.
@@ -13,9 +13,9 @@ import type { WebSearchActionOpenPageType } from "./webSearchActionOpenPageType"
  */
 export interface WebSearchActionOpenPage {
   /** The action type.
-   */
-  type: WebSearchActionOpenPageType
+ */
+  type: WebSearchActionOpenPageType;
   /** The URL opened by the model.
-   */
-  url: string
+ */
+  url: string;
 }

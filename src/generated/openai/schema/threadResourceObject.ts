@@ -9,9 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.thread`.
  */
-export type ThreadResourceObject = (typeof ThreadResourceObject)[keyof typeof ThreadResourceObject]
+export type ThreadResourceObject = typeof ThreadResourceObject[keyof typeof ThreadResourceObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ThreadResourceObject = {
-  chatkitthread: "chatkit.thread"
-} as const
+  chatkitthread: 'chatkit.thread',
+} as const;

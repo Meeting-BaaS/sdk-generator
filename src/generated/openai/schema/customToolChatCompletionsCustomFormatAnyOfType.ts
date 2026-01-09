@@ -9,10 +9,10 @@
 /**
  * Unconstrained text format. Always `text`.
  */
-export type CustomToolChatCompletionsCustomFormatAnyOfType =
-  (typeof CustomToolChatCompletionsCustomFormatAnyOfType)[keyof typeof CustomToolChatCompletionsCustomFormatAnyOfType]
+export type CustomToolChatCompletionsCustomFormatAnyOfType = typeof CustomToolChatCompletionsCustomFormatAnyOfType[keyof typeof CustomToolChatCompletionsCustomFormatAnyOfType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CustomToolChatCompletionsCustomFormatAnyOfType = {
-  text: "text"
-} as const
+  text: 'text',
+} as const;

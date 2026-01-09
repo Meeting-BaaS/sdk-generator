@@ -12,10 +12,10 @@ export interface StaticChunkingStrategy {
    * @minimum 100
    * @maximum 4096
    */
-  max_chunk_size_tokens: number
+  max_chunk_size_tokens: number;
   /** The number of tokens that overlap between chunks. The default value is `400`.
 
 Note that the overlap must not exceed half of `max_chunk_size_tokens`.
  */
-  chunk_overlap_tokens: number
+  chunk_overlap_tokens: number;
 }

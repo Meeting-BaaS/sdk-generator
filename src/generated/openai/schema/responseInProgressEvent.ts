@@ -5,20 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { Response } from "./response"
-import type { ResponseInProgressEventType } from "./responseInProgressEventType"
+import type { ResponseInProgressEventType } from './responseInProgressEventType';
+import type { Response } from './response';
 
 /**
  * Emitted when the response is in progress.
  */
 export interface ResponseInProgressEvent {
   /** The type of the event. Always `response.in_progress`.
-   */
-  type: ResponseInProgressEventType
+ */
+  type: ResponseInProgressEventType;
   /** The response that is in progress.
-   */
-  response: Response
+ */
+  response: Response;
   /** The sequence number of this event. */
-  sequence_number: number
+  sequence_number: number;
 }

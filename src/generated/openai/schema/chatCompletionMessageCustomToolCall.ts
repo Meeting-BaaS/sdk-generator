@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ChatCompletionMessageCustomToolCallCustom } from "./chatCompletionMessageCustomToolCallCustom"
-import type { ChatCompletionMessageCustomToolCallType } from "./chatCompletionMessageCustomToolCallType"
+import type { ChatCompletionMessageCustomToolCallType } from './chatCompletionMessageCustomToolCallType';
+import type { ChatCompletionMessageCustomToolCallCustom } from './chatCompletionMessageCustomToolCallCustom';
 
 /**
  * A call to a custom tool created by the model.
@@ -15,9 +14,9 @@ import type { ChatCompletionMessageCustomToolCallType } from "./chatCompletionMe
  */
 export interface ChatCompletionMessageCustomToolCall {
   /** The ID of the tool call. */
-  id: string
+  id: string;
   /** The type of the tool. Always `custom`. */
-  type: ChatCompletionMessageCustomToolCallType
+  type: ChatCompletionMessageCustomToolCallType;
   /** The custom tool that the model called. */
-  custom: ChatCompletionMessageCustomToolCallCustom
+  custom: ChatCompletionMessageCustomToolCallCustom;
 }

@@ -9,4 +9,4 @@
 /**
  * Cursor to fetch the next page of results, or `null` when there are no additional roles.
  */
-export type PublicRoleListResourceNext = string | null
+export type PublicRoleListResourceNext = string | null;

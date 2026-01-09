@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { WebSearchActionSearchSourcesItem } from "./webSearchActionSearchSourcesItem"
-import type { WebSearchActionSearchType } from "./webSearchActionSearchType"
+import type { WebSearchActionSearchType } from './webSearchActionSearchType';
+import type { WebSearchActionSearchSourcesItem } from './webSearchActionSearchSourcesItem';
 
 /**
  * Action type "search" - Performs a web search query.
@@ -15,12 +14,12 @@ import type { WebSearchActionSearchType } from "./webSearchActionSearchType"
  */
 export interface WebSearchActionSearch {
   /** The action type.
-   */
-  type: WebSearchActionSearchType
+ */
+  type: WebSearchActionSearchType;
   /** The search query.
-   */
-  query: string
+ */
+  query: string;
   /** The sources used in the search.
-   */
-  sources?: WebSearchActionSearchSourcesItem[]
+ */
+  sources?: WebSearchActionSearchSourcesItem[];
 }

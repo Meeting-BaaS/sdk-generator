@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookRealtimeCallIncomingData } from "./webhookRealtimeCallIncomingData"
-import type { WebhookRealtimeCallIncomingObject } from "./webhookRealtimeCallIncomingObject"
-import type { WebhookRealtimeCallIncomingType } from "./webhookRealtimeCallIncomingType"
+import type { WebhookRealtimeCallIncomingData } from './webhookRealtimeCallIncomingData';
+import type { WebhookRealtimeCallIncomingObject } from './webhookRealtimeCallIncomingObject';
+import type { WebhookRealtimeCallIncomingType } from './webhookRealtimeCallIncomingType';
 
 /**
  * Sent when Realtime API Receives a incoming SIP call.
@@ -15,18 +15,18 @@ import type { WebhookRealtimeCallIncomingType } from "./webhookRealtimeCallIncom
  */
 export interface WebhookRealtimeCallIncoming {
   /** The Unix timestamp (in seconds) of when the model response was completed.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The unique ID of the event.
-   */
-  id: string
+ */
+  id: string;
   /** Event data payload.
-   */
-  data: WebhookRealtimeCallIncomingData
+ */
+  data: WebhookRealtimeCallIncomingData;
   /** The object of the event. Always `event`.
-   */
-  object?: WebhookRealtimeCallIncomingObject
+ */
+  object?: WebhookRealtimeCallIncomingObject;
   /** The type of the event. Always `realtime.call.incoming`.
-   */
-  type: WebhookRealtimeCallIncomingType
+ */
+  type: WebhookRealtimeCallIncomingType;
 }

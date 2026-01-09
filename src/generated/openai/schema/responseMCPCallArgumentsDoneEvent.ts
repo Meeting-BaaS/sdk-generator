@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseMCPCallArgumentsDoneEventType } from "./responseMCPCallArgumentsDoneEventType"
+import type { ResponseMCPCallArgumentsDoneEventType } from './responseMCPCallArgumentsDoneEventType';
 
 /**
  * Emitted when the arguments for an MCP tool call are finalized.
@@ -13,14 +13,14 @@ import type { ResponseMCPCallArgumentsDoneEventType } from "./responseMCPCallArg
  */
 export interface ResponseMCPCallArgumentsDoneEvent {
   /** The type of the event. Always 'response.mcp_call_arguments.done'. */
-  type: ResponseMCPCallArgumentsDoneEventType
+  type: ResponseMCPCallArgumentsDoneEventType;
   /** The index of the output item in the response's output array. */
-  output_index: number
+  output_index: number;
   /** The unique identifier of the MCP tool call item being processed. */
-  item_id: string
+  item_id: string;
   /** A JSON string containing the finalized arguments for the MCP tool call.
-   */
-  arguments: string
+ */
+  arguments: string;
   /** The sequence number of this event. */
-  sequence_number: number
+  sequence_number: number;
 }

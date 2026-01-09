@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ResponseModalitiesAnyOfItem =
-  (typeof ResponseModalitiesAnyOfItem)[keyof typeof ResponseModalitiesAnyOfItem]
+export type ResponseModalitiesAnyOfItem = typeof ResponseModalitiesAnyOfItem[keyof typeof ResponseModalitiesAnyOfItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseModalitiesAnyOfItem = {
-  text: "text",
-  audio: "audio"
-} as const
+  text: 'text',
+  audio: 'audio',
+} as const;

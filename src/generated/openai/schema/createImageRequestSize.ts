@@ -10,18 +10,17 @@
  * The size of the generated images. Must be one of `1024x1024`, `1536x1024` (landscape), `1024x1536` (portrait), or `auto` (default value) for `gpt-image-1`, one of `256x256`, `512x512`, or `1024x1024` for `dall-e-2`, and one of `1024x1024`, `1792x1024`, or `1024x1792` for `dall-e-3`.
  * @nullable
  */
-export type CreateImageRequestSize =
-  | (typeof CreateImageRequestSize)[keyof typeof CreateImageRequestSize]
-  | null
+export type CreateImageRequestSize = typeof CreateImageRequestSize[keyof typeof CreateImageRequestSize] | null;
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageRequestSize = {
-  auto: "auto",
-  "1024x1024": "1024x1024",
-  "1536x1024": "1536x1024",
-  "1024x1536": "1024x1536",
-  "256x256": "256x256",
-  "512x512": "512x512",
-  "1792x1024": "1792x1024",
-  "1024x1792": "1024x1792"
-} as const
+  auto: 'auto',
+  '1024x1024': '1024x1024',
+  '1536x1024': '1536x1024',
+  '1024x1536': '1024x1536',
+  '256x256': '256x256',
+  '512x512': '512x512',
+  '1792x1024': '1792x1024',
+  '1024x1792': '1024x1792',
+} as const;

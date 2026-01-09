@@ -7,29 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * SharedCallbackMethodParameter type definition
- */
-
-/**
- * SharedCallbackMethodParameter type definition
- */
-
-/**
- * SharedCallbackMethodParameter type definition
- */
-
-/**
- * SharedCallbackMethodParameter type definition
- */
-
-/**
- * SharedCallbackMethodParameter type definition
- */
-
-/**
- * SharedCallbackMethodParameter type definition
- */
 
 /**
  * SharedCallbackMethodParameter type definition
@@ -37,6 +14,6 @@
 export type SharedCallbackMethodParameter = typeof SharedCallbackMethodParameter[keyof typeof SharedCallbackMethodParameter];
 
 export const SharedCallbackMethodParameter = {
-  POST: "POST",
-  PUT: "PUT"
+  POST: 'POST',
+  PUT: 'PUT'
 } as const

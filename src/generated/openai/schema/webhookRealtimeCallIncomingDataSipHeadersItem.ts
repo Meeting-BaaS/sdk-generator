@@ -12,9 +12,9 @@
  */
 export type WebhookRealtimeCallIncomingDataSipHeadersItem = {
   /** Name of the SIP Header.
-   */
-  name: string
+ */
+  name: string;
   /** Value of the SIP Header.
-   */
-  value: string
-}
+ */
+  value: string;
+};

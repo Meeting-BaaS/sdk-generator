@@ -8,17 +8,17 @@
 
 export interface ContentSafetyLabel {
   /** The label of the sensitive topic */
-  label: string
+  label: string;
   /**
    * The confidence score for the topic being discussed, from 0 to 1
    * @minimum 0
    * @maximum 1
    */
-  confidence: number
+  confidence: number;
   /**
    * How severely the topic is discussed in the section, from 0 to 1
    * @minimum 0
    * @maximum 1
    */
-  severity: number
+  severity: number;
 }

@@ -5,28 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectRateLimitObject } from "./projectRateLimitObject"
+import type { ProjectRateLimitObject } from './projectRateLimitObject';
 
 /**
  * Represents a project rate limit config.
  */
 export interface ProjectRateLimit {
   /** The object type, which is always `project.rate_limit` */
-  object: ProjectRateLimitObject
+  object: ProjectRateLimitObject;
   /** The identifier, which can be referenced in API endpoints. */
-  id: string
+  id: string;
   /** The model this rate limit applies to. */
-  model: string
+  model: string;
   /** The maximum requests per minute. */
-  max_requests_per_1_minute: number
+  max_requests_per_1_minute: number;
   /** The maximum tokens per minute. */
-  max_tokens_per_1_minute: number
+  max_tokens_per_1_minute: number;
   /** The maximum images per minute. Only present for relevant models. */
-  max_images_per_1_minute?: number
+  max_images_per_1_minute?: number;
   /** The maximum audio megabytes per minute. Only present for relevant models. */
-  max_audio_megabytes_per_1_minute?: number
+  max_audio_megabytes_per_1_minute?: number;
   /** The maximum requests per day. Only present for relevant models. */
-  max_requests_per_1_day?: number
+  max_requests_per_1_day?: number;
   /** The maximum batch input tokens per day. Only present for relevant models. */
-  batch_1_day_max_input_tokens?: number
+  batch_1_day_max_input_tokens?: number;
 }

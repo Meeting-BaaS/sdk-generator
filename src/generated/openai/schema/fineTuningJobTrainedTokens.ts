@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type FineTuningJobTrainedTokens = number | null
+export type FineTuningJobTrainedTokens = number | null;

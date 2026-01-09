@@ -9,10 +9,11 @@
 /**
  * Type of operation: `and` or `or`.
  */
-export type CompoundFilterType = (typeof CompoundFilterType)[keyof typeof CompoundFilterType]
+export type CompoundFilterType = typeof CompoundFilterType[keyof typeof CompoundFilterType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CompoundFilterType = {
-  and: "and",
-  or: "or"
-} as const
+  and: 'and',
+  or: 'or',
+} as const;

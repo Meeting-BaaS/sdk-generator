@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ProjectServiceAccountCreateResponseObject =
-  (typeof ProjectServiceAccountCreateResponseObject)[keyof typeof ProjectServiceAccountCreateResponseObject]
+export type ProjectServiceAccountCreateResponseObject = typeof ProjectServiceAccountCreateResponseObject[keyof typeof ProjectServiceAccountCreateResponseObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectServiceAccountCreateResponseObject = {
-  organizationprojectservice_account: "organization.project.service_account"
-} as const
+  organizationprojectservice_account: 'organization.project.service_account',
+} as const;

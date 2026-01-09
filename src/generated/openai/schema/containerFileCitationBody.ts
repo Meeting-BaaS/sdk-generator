@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ContainerFileCitationBodyType } from "./containerFileCitationBodyType"
+import type { ContainerFileCitationBodyType } from './containerFileCitationBodyType';
 
 /**
  * A citation for a container file used to generate a model response.
  */
 export interface ContainerFileCitationBody {
   /** The type of the container file citation. Always `container_file_citation`. */
-  type: ContainerFileCitationBodyType
+  type: ContainerFileCitationBodyType;
   /** The ID of the container file. */
-  container_id: string
+  container_id: string;
   /** The ID of the file. */
-  file_id: string
+  file_id: string;
   /** The index of the first character of the container file citation in the message. */
-  start_index: number
+  start_index: number;
   /** The index of the last character of the container file citation in the message. */
-  end_index: number
+  end_index: number;
   /** The filename of the container file cited. */
-  filename: string
+  filename: string;
 }

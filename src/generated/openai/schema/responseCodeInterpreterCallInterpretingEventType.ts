@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always `response.code_interpreter_call.interpreting`.
  */
-export type ResponseCodeInterpreterCallInterpretingEventType =
-  (typeof ResponseCodeInterpreterCallInterpretingEventType)[keyof typeof ResponseCodeInterpreterCallInterpretingEventType]
+export type ResponseCodeInterpreterCallInterpretingEventType = typeof ResponseCodeInterpreterCallInterpretingEventType[keyof typeof ResponseCodeInterpreterCallInterpretingEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCodeInterpreterCallInterpretingEventType = {
-  responsecode_interpreter_callinterpreting: "response.code_interpreter_call.interpreting"
-} as const
+  responsecode_interpreter_callinterpreting: 'response.code_interpreter_call.interpreting',
+} as const;

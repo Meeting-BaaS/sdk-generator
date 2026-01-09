@@ -4,27 +4,26 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { StopRecordingAckMessageData } from "./stopRecordingAckMessageData"
-import type { StopRecordingAckMessageError } from "./stopRecordingAckMessageError"
-import type { StopRecordingAckMessageType } from "./stopRecordingAckMessageType"
+import type { StopRecordingAckMessageError } from './stopRecordingAckMessageError';
+import type { StopRecordingAckMessageType } from './stopRecordingAckMessageType';
+import type { StopRecordingAckMessageData } from './stopRecordingAckMessageData';
 
 export interface StopRecordingAckMessage {
   /** Id of the live session */
-  session_id: string
+  session_id: string;
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string
+  created_at: string;
   /** Flag to indicate if the action was successfully acknowledged */
-  acknowledged: boolean
+  acknowledged: boolean;
   /**
    * Error message if the action was not successfully acknowledged
    * @nullable
    */
-  error: StopRecordingAckMessageError
-  type: StopRecordingAckMessageType
+  error: StopRecordingAckMessageError;
+  type: StopRecordingAckMessageType;
   /**
    * The message data. "null" if the action was not successfully acknowledged
    * @nullable
    */
-  data: StopRecordingAckMessageData
+  data: StopRecordingAckMessageData;
 }

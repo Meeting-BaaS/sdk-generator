@@ -8,9 +8,9 @@
 
 export type EvalRunPerTestingCriteriaResultsItem = {
   /** A description of the testing criteria. */
-  testing_criteria: string
+  testing_criteria: string;
   /** Number of tests passed for this criteria. */
-  passed: number
+  passed: number;
   /** Number of tests failed for this criteria. */
-  failed: number
-}
+  failed: number;
+};

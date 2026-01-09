@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunGraderResponseMetadata } from "./runGraderResponseMetadata"
-import type { RunGraderResponseModelGraderTokenUsagePerModel } from "./runGraderResponseModelGraderTokenUsagePerModel"
-import type { RunGraderResponseSubRewards } from "./runGraderResponseSubRewards"
+import type { RunGraderResponseMetadata } from './runGraderResponseMetadata';
+import type { RunGraderResponseSubRewards } from './runGraderResponseSubRewards';
+import type { RunGraderResponseModelGraderTokenUsagePerModel } from './runGraderResponseModelGraderTokenUsagePerModel';
 
 export interface RunGraderResponse {
-  reward: number
-  metadata: RunGraderResponseMetadata
-  sub_rewards: RunGraderResponseSubRewards
-  model_grader_token_usage_per_model: RunGraderResponseModelGraderTokenUsagePerModel
+  reward: number;
+  metadata: RunGraderResponseMetadata;
+  sub_rewards: RunGraderResponseSubRewards;
+  model_grader_token_usage_per_model: RunGraderResponseModelGraderTokenUsagePerModel;
 }

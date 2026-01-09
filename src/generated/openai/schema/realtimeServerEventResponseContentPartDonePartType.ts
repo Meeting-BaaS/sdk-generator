@@ -9,11 +9,11 @@
 /**
  * The content type ("text", "audio").
  */
-export type RealtimeServerEventResponseContentPartDonePartType =
-  (typeof RealtimeServerEventResponseContentPartDonePartType)[keyof typeof RealtimeServerEventResponseContentPartDonePartType]
+export type RealtimeServerEventResponseContentPartDonePartType = typeof RealtimeServerEventResponseContentPartDonePartType[keyof typeof RealtimeServerEventResponseContentPartDonePartType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeServerEventResponseContentPartDonePartType = {
-  text: "text",
-  audio: "audio"
-} as const
+  text: 'text',
+  audio: 'audio',
+} as const;

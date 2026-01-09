@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TokenCountsResourceObject } from "./tokenCountsResourceObject"
+import type { TokenCountsResourceObject } from './tokenCountsResourceObject';
 
 export interface TokenCountsResource {
-  object: TokenCountsResourceObject
-  input_tokens: number
+  object: TokenCountsResourceObject;
+  input_tokens: number;
 }

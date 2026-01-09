@@ -9,11 +9,11 @@
 /**
  * One of `server_error` or `rate_limit_exceeded`.
  */
-export type RunStepObjectLastErrorAnyOfCode =
-  (typeof RunStepObjectLastErrorAnyOfCode)[keyof typeof RunStepObjectLastErrorAnyOfCode]
+export type RunStepObjectLastErrorAnyOfCode = typeof RunStepObjectLastErrorAnyOfCode[keyof typeof RunStepObjectLastErrorAnyOfCode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepObjectLastErrorAnyOfCode = {
-  server_error: "server_error",
-  rate_limit_exceeded: "rate_limit_exceeded"
-} as const
+  server_error: 'server_error',
+  rate_limit_exceeded: 'rate_limit_exceeded',
+} as const;

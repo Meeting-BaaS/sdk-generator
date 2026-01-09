@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Reasoning } from "./reasoning"
+import type { Reasoning } from './reasoning';
 
-export type ResponsePropertiesReasoning = Reasoning | null
+export type ResponsePropertiesReasoning = Reasoning | null;

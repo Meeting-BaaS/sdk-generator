@@ -5,14 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { MessageObject } from "./messageObject"
-import type { MessageStreamEventAnyOfSevenEvent } from "./messageStreamEventAnyOfSevenEvent"
+import type { MessageStreamEventAnyOfSevenEvent } from './messageStreamEventAnyOfSevenEvent';
+import type { MessageObject } from './messageObject';
 
 /**
  * Occurs when a [message](https://platform.openai.com/docs/api-reference/messages/object) is completed.
  */
 export type MessageStreamEventAnyOfSeven = {
-  event: MessageStreamEventAnyOfSevenEvent
-  data: MessageObject
-}
+  event: MessageStreamEventAnyOfSevenEvent;
+  data: MessageObject;
+};

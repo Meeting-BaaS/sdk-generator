@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ProjectApiKeyListResponseObject =
-  (typeof ProjectApiKeyListResponseObject)[keyof typeof ProjectApiKeyListResponseObject]
+export type ProjectApiKeyListResponseObject = typeof ProjectApiKeyListResponseObject[keyof typeof ProjectApiKeyListResponseObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectApiKeyListResponseObject = {
-  list: "list"
-} as const
+  list: 'list',
+} as const;

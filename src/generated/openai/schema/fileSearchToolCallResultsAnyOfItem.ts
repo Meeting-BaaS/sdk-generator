@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileAttributes } from "./vectorStoreFileAttributes"
+import type { VectorStoreFileAttributes } from './vectorStoreFileAttributes';
 
 export type FileSearchToolCallResultsAnyOfItem = {
   /** The unique ID of the file.
-   */
-  file_id?: string
+ */
+  file_id?: string;
   /** The text that was retrieved from the file.
-   */
-  text?: string
+ */
+  text?: string;
   /** The name of the file.
-   */
-  filename?: string
-  attributes?: VectorStoreFileAttributes
+ */
+  filename?: string;
+  attributes?: VectorStoreFileAttributes;
   /** The relevance score of the file - a value between 0 and 1.
-   */
-  score?: number
-}
+ */
+  score?: number;
+};

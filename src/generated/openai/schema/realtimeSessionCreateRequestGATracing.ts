@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequestGATracingAnyOf } from "./realtimeSessionCreateRequestGATracingAnyOf"
+import type { RealtimeSessionCreateRequestGATracingAnyOf } from './realtimeSessionCreateRequestGATracingAnyOf';
 
 /**
  * Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
@@ -16,7 +16,4 @@ workflow name, group id, and metadata.
 
  * @nullable
  */
-export type RealtimeSessionCreateRequestGATracing =
-  | "auto"
-  | RealtimeSessionCreateRequestGATracingAnyOf
-  | null
+export type RealtimeSessionCreateRequestGATracing = 'auto' | RealtimeSessionCreateRequestGATracingAnyOf | null;

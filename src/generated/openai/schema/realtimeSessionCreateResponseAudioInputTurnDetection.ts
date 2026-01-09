@@ -12,9 +12,9 @@
  */
 export type RealtimeSessionCreateResponseAudioInputTurnDetection = {
   /** Type of turn detection, only `server_vad` is currently supported.
-   */
-  type?: string
-  threshold?: number
-  prefix_padding_ms?: number
-  silence_duration_ms?: number
-}
+ */
+  type?: string;
+  threshold?: number;
+  prefix_padding_ms?: number;
+  silence_duration_ms?: number;
+};

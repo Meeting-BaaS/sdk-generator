@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageCodeInterpreterSessionsResultObject =
-  (typeof UsageCodeInterpreterSessionsResultObject)[keyof typeof UsageCodeInterpreterSessionsResultObject]
+export type UsageCodeInterpreterSessionsResultObject = typeof UsageCodeInterpreterSessionsResultObject[keyof typeof UsageCodeInterpreterSessionsResultObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageCodeInterpreterSessionsResultObject = {
-  organizationusagecode_interpreter_sessionsresult:
-    "organization.usage.code_interpreter_sessions.result"
-} as const
+  organizationusagecode_interpreter_sessionsresult: 'organization.usage.code_interpreter_sessions.result',
+} as const;

@@ -13,7 +13,7 @@ respond with an `input_audio_buffer.cleared` event.
  */
 export interface RealtimeBetaClientEventInputAudioBufferClear {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string
+  event_id?: string;
   /** The event type, must be `input_audio_buffer.clear`. */
-  type: "input_audio_buffer.clear"
+  type: 'input_audio_buffer.clear';
 }

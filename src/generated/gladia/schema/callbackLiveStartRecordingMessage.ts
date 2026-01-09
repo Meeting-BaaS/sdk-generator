@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveStartRecordingMessageEvent } from "./callbackLiveStartRecordingMessageEvent"
-import type { StartRecordingMessage } from "./startRecordingMessage"
+import type { CallbackLiveStartRecordingMessageEvent } from './callbackLiveStartRecordingMessageEvent';
+import type { StartRecordingMessage } from './startRecordingMessage';
 
 export interface CallbackLiveStartRecordingMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLiveStartRecordingMessageEvent
+  id: string;
+  event: CallbackLiveStartRecordingMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: StartRecordingMessage
+  payload: StartRecordingMessage;
 }

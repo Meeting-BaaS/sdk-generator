@@ -4,12 +4,12 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StartSessionMessageType } from "./startSessionMessageType"
+import type { StartSessionMessageType } from './startSessionMessageType';
 
 export interface StartSessionMessage {
   /** Id of the live session */
-  session_id: string
+  session_id: string;
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string
-  type: StartSessionMessageType
+  created_at: string;
+  type: StartSessionMessageType;
 }

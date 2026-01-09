@@ -9,9 +9,10 @@
 /**
  * Type discriminator that is always `url` for this annotation.
  */
-export type UrlAnnotationType = (typeof UrlAnnotationType)[keyof typeof UrlAnnotationType]
+export type UrlAnnotationType = typeof UrlAnnotationType[keyof typeof UrlAnnotationType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UrlAnnotationType = {
-  url: "url"
-} as const
+  url: 'url',
+} as const;

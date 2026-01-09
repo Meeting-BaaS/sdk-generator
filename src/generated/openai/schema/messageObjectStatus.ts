@@ -9,11 +9,12 @@
 /**
  * The status of the message, which can be either `in_progress`, `incomplete`, or `completed`.
  */
-export type MessageObjectStatus = (typeof MessageObjectStatus)[keyof typeof MessageObjectStatus]
+export type MessageObjectStatus = typeof MessageObjectStatus[keyof typeof MessageObjectStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageObjectStatus = {
-  in_progress: "in_progress",
-  incomplete: "incomplete",
-  completed: "completed"
-} as const
+  in_progress: 'in_progress',
+  incomplete: 'incomplete',
+  completed: 'completed',
+} as const;

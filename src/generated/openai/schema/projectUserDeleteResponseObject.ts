@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ProjectUserDeleteResponseObject =
-  (typeof ProjectUserDeleteResponseObject)[keyof typeof ProjectUserDeleteResponseObject]
+export type ProjectUserDeleteResponseObject = typeof ProjectUserDeleteResponseObject[keyof typeof ProjectUserDeleteResponseObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectUserDeleteResponseObject = {
-  organizationprojectuserdeleted: "organization.project.user.deleted"
-} as const
+  organizationprojectuserdeleted: 'organization.project.user.deleted',
+} as const;

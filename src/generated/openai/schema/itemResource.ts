@@ -5,50 +5,29 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ApplyPatchToolCall } from "./applyPatchToolCall"
-import type { ApplyPatchToolCallOutput } from "./applyPatchToolCallOutput"
-import type { CodeInterpreterToolCall } from "./codeInterpreterToolCall"
-import type { ComputerToolCall } from "./computerToolCall"
-import type { ComputerToolCallOutputResource } from "./computerToolCallOutputResource"
-import type { FileSearchToolCall } from "./fileSearchToolCall"
-import type { FunctionShellCall } from "./functionShellCall"
-import type { FunctionShellCallOutput } from "./functionShellCallOutput"
-import type { FunctionToolCallOutputResource } from "./functionToolCallOutputResource"
-import type { FunctionToolCallResource } from "./functionToolCallResource"
-import type { ImageGenToolCall } from "./imageGenToolCall"
-import type { InputMessageResource } from "./inputMessageResource"
-import type { LocalShellToolCall } from "./localShellToolCall"
-import type { LocalShellToolCallOutput } from "./localShellToolCallOutput"
-import type { MCPApprovalRequest } from "./mCPApprovalRequest"
-import type { MCPApprovalResponseResource } from "./mCPApprovalResponseResource"
-import type { MCPListTools } from "./mCPListTools"
-import type { MCPToolCall } from "./mCPToolCall"
-import type { OutputMessage } from "./outputMessage"
-import type { WebSearchToolCall } from "./webSearchToolCall"
+import type { InputMessageResource } from './inputMessageResource';
+import type { OutputMessage } from './outputMessage';
+import type { FileSearchToolCall } from './fileSearchToolCall';
+import type { ComputerToolCall } from './computerToolCall';
+import type { ComputerToolCallOutputResource } from './computerToolCallOutputResource';
+import type { WebSearchToolCall } from './webSearchToolCall';
+import type { FunctionToolCallResource } from './functionToolCallResource';
+import type { FunctionToolCallOutputResource } from './functionToolCallOutputResource';
+import type { ImageGenToolCall } from './imageGenToolCall';
+import type { CodeInterpreterToolCall } from './codeInterpreterToolCall';
+import type { LocalShellToolCall } from './localShellToolCall';
+import type { LocalShellToolCallOutput } from './localShellToolCallOutput';
+import type { FunctionShellCall } from './functionShellCall';
+import type { FunctionShellCallOutput } from './functionShellCallOutput';
+import type { ApplyPatchToolCall } from './applyPatchToolCall';
+import type { ApplyPatchToolCallOutput } from './applyPatchToolCallOutput';
+import type { MCPListTools } from './mCPListTools';
+import type { MCPApprovalRequest } from './mCPApprovalRequest';
+import type { MCPApprovalResponseResource } from './mCPApprovalResponseResource';
+import type { MCPToolCall } from './mCPToolCall';
 
 /**
  * Content item used to generate a response.
 
  */
-export type ItemResource =
-  | InputMessageResource
-  | OutputMessage
-  | FileSearchToolCall
-  | ComputerToolCall
-  | ComputerToolCallOutputResource
-  | WebSearchToolCall
-  | FunctionToolCallResource
-  | FunctionToolCallOutputResource
-  | ImageGenToolCall
-  | CodeInterpreterToolCall
-  | LocalShellToolCall
-  | LocalShellToolCallOutput
-  | FunctionShellCall
-  | FunctionShellCallOutput
-  | ApplyPatchToolCall
-  | ApplyPatchToolCallOutput
-  | MCPListTools
-  | MCPApprovalRequest
-  | MCPApprovalResponseResource
-  | MCPToolCall
+export type ItemResource = InputMessageResource | OutputMessage | FileSearchToolCall | ComputerToolCall | ComputerToolCallOutputResource | WebSearchToolCall | FunctionToolCallResource | FunctionToolCallOutputResource | ImageGenToolCall | CodeInterpreterToolCall | LocalShellToolCall | LocalShellToolCallOutput | FunctionShellCall | FunctionShellCallOutput | ApplyPatchToolCall | ApplyPatchToolCallOutput | MCPListTools | MCPApprovalRequest | MCPApprovalResponseResource | MCPToolCall;

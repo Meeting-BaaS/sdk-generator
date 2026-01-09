@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_call_arguments.delta'.
  */
-export type ResponseMCPCallArgumentsDeltaEventType =
-  (typeof ResponseMCPCallArgumentsDeltaEventType)[keyof typeof ResponseMCPCallArgumentsDeltaEventType]
+export type ResponseMCPCallArgumentsDeltaEventType = typeof ResponseMCPCallArgumentsDeltaEventType[keyof typeof ResponseMCPCallArgumentsDeltaEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPCallArgumentsDeltaEventType = {
-  responsemcp_call_argumentsdelta: "response.mcp_call_arguments.delta"
-} as const
+  responsemcp_call_argumentsdelta: 'response.mcp_call_arguments.delta',
+} as const;

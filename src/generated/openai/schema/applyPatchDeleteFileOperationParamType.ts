@@ -9,10 +9,10 @@
 /**
  * The operation type. Always `delete_file`.
  */
-export type ApplyPatchDeleteFileOperationParamType =
-  (typeof ApplyPatchDeleteFileOperationParamType)[keyof typeof ApplyPatchDeleteFileOperationParamType]
+export type ApplyPatchDeleteFileOperationParamType = typeof ApplyPatchDeleteFileOperationParamType[keyof typeof ApplyPatchDeleteFileOperationParamType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchDeleteFileOperationParamType = {
-  delete_file: "delete_file"
-} as const
+  delete_file: 'delete_file',
+} as const;

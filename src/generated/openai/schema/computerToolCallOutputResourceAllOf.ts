@@ -8,6 +8,6 @@
 
 export type ComputerToolCallOutputResourceAllOf = {
   /** The unique ID of the computer call tool output.
-   */
-  id: string
-}
+ */
+  id: string;
+};

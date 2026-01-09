@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookRealtimeCallIncomingDataSipHeadersItem } from "./webhookRealtimeCallIncomingDataSipHeadersItem"
+import type { WebhookRealtimeCallIncomingDataSipHeadersItem } from './webhookRealtimeCallIncomingDataSipHeadersItem';
 
 /**
  * Event data payload.
@@ -13,9 +13,9 @@ import type { WebhookRealtimeCallIncomingDataSipHeadersItem } from "./webhookRea
  */
 export type WebhookRealtimeCallIncomingData = {
   /** The unique ID of this call.
-   */
-  call_id: string
+ */
+  call_id: string;
   /** Headers from the SIP Invite.
-   */
-  sip_headers: WebhookRealtimeCallIncomingDataSipHeadersItem[]
-}
+ */
+  sip_headers: WebhookRealtimeCallIncomingDataSipHeadersItem[];
+};

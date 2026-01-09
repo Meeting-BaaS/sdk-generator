@@ -9,4 +9,4 @@
 /**
  * Details of the input data source item.
  */
-export type EvalRunOutputItemDatasourceItem = { [key: string]: unknown }
+export type EvalRunOutputItemDatasourceItem = { [key: string]: unknown };

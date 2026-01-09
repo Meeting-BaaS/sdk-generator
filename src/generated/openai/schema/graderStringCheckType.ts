@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `string_check`.
  */
-export type GraderStringCheckType =
-  (typeof GraderStringCheckType)[keyof typeof GraderStringCheckType]
+export type GraderStringCheckType = typeof GraderStringCheckType[keyof typeof GraderStringCheckType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderStringCheckType = {
-  string_check: "string_check"
-} as const
+  string_check: 'string_check',
+} as const;

@@ -5,14 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { Error } from "./error"
-import type { ErrorEventEvent } from "./errorEventEvent"
+import type { ErrorEventEvent } from './errorEventEvent';
+import type { Error as ErrorType } from './error';
 
 /**
  * Occurs when an [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs. This can happen due to an internal server error or a timeout.
  */
 export interface ErrorEvent {
-  event: ErrorEventEvent
-  data: Error
+  event: ErrorEventEvent;
+  data: ErrorType;
 }

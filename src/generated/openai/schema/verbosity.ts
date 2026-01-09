@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type Verbosity = "low" | "medium" | "high" | null
+export type Verbosity = 'low' | 'medium' | 'high' | null;

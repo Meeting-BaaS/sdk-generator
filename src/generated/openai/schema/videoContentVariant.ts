@@ -6,11 +6,12 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VideoContentVariant = (typeof VideoContentVariant)[keyof typeof VideoContentVariant]
+export type VideoContentVariant = typeof VideoContentVariant[keyof typeof VideoContentVariant];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoContentVariant = {
-  video: "video",
-  thumbnail: "thumbnail",
-  spritesheet: "spritesheet"
-} as const
+  video: 'video',
+  thumbnail: 'thumbnail',
+  spritesheet: 'spritesheet',
+} as const;

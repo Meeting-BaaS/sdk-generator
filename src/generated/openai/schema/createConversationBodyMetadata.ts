@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Metadata } from "./metadata"
+import type { Metadata } from './metadata';
 
-export type CreateConversationBodyMetadata = Metadata | null
+export type CreateConversationBodyMetadata = Metadata | null;

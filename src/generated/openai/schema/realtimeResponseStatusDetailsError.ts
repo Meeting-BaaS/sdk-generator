@@ -13,7 +13,7 @@ populated when the `status` is `failed`.
  */
 export type RealtimeResponseStatusDetailsError = {
   /** The type of error. */
-  type?: string
+  type?: string;
   /** Error code, if any. */
-  code?: string
-}
+  code?: string;
+};

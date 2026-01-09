@@ -10,4 +10,4 @@
 /**
  * Filter for requests where utt split was used
  */
-export type ManageV1FilterUttSplitParameter = boolean
+export type ManageV1FilterUttSplitParameter = boolean;

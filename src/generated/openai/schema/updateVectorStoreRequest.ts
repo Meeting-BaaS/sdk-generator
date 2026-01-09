@@ -5,16 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { Metadata } from "./metadata"
-import type { UpdateVectorStoreRequestExpiresAfter } from "./updateVectorStoreRequestExpiresAfter"
+import type { UpdateVectorStoreRequestExpiresAfter } from './updateVectorStoreRequestExpiresAfter';
+import type { Metadata } from './metadata';
 
 export interface UpdateVectorStoreRequest {
   /**
    * The name of the vector store.
    * @nullable
    */
-  name?: string | null
-  expires_after?: UpdateVectorStoreRequestExpiresAfter
-  metadata?: Metadata
+  name?: string | null;
+  expires_after?: UpdateVectorStoreRequestExpiresAfter;
+  metadata?: Metadata;
 }

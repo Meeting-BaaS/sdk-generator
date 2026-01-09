@@ -11,9 +11,9 @@
  */
 export interface SharedModelFeatures {
   /** A value indicating whether batch transcription is supported. */
-  readonly supportsTranscriptions?: boolean
+  readonly supportsTranscriptions?: boolean;
   /** A value indicating whether creation of endpoints for live transcription is supported. */
-  readonly supportsEndpoints?: boolean
+  readonly supportsEndpoints?: boolean;
   /** A value indicating whether this model can be used for transcription on speech container. This feature can be added on existing models when it becomes usable on speech container. */
-  readonly supportsTranscriptionsOnSpeechContainers?: boolean
+  readonly supportsTranscriptionsOnSpeechContainers?: boolean;
 }

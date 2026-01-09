@@ -5,17 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ToolChoiceFunction } from "./toolChoiceFunction"
-import type { ToolChoiceMCP } from "./toolChoiceMCP"
-import type { ToolChoiceOptions } from "./toolChoiceOptions"
+import type { ToolChoiceOptions } from './toolChoiceOptions';
+import type { ToolChoiceFunction } from './toolChoiceFunction';
+import type { ToolChoiceMCP } from './toolChoiceMCP';
 
 /**
  * How the model chooses tools. Provide one of the string modes or force a specific
 function/MCP tool.
 
  */
-export type RealtimeSessionCreateRequestGAToolChoice =
-  | ToolChoiceOptions
-  | ToolChoiceFunction
-  | ToolChoiceMCP
+export type RealtimeSessionCreateRequestGAToolChoice = ToolChoiceOptions | ToolChoiceFunction | ToolChoiceMCP;

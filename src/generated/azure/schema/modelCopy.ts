@@ -11,5 +11,5 @@ export interface ModelCopy {
    * The subscription key of the subscription that is the target of the copy operation.
    * @minLength 1
    */
-  targetSubscriptionKey: string
+  targetSubscriptionKey: string;
 }

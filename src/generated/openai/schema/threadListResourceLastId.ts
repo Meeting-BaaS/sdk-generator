@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ThreadListResourceLastId = string | null
+export type ThreadListResourceLastId = string | null;

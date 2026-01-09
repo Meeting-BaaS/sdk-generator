@@ -11,6 +11,4 @@
 Learn how to build JSON schemas [here](https://json-schema.org/).
 
  */
-export interface ResponseFormatJsonSchemaSchema {
-  [key: string]: unknown
-}
+export interface ResponseFormatJsonSchemaSchema { [key: string]: unknown }

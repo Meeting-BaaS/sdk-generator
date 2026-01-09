@@ -9,11 +9,12 @@
 /**
  * The size of the image generated. Either `1024x1024`, `1024x1536`, or `1536x1024`.
  */
-export type ImagesResponseSize = (typeof ImagesResponseSize)[keyof typeof ImagesResponseSize]
+export type ImagesResponseSize = typeof ImagesResponseSize[keyof typeof ImagesResponseSize];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImagesResponseSize = {
-  "1024x1024": "1024x1024",
-  "1024x1536": "1024x1536",
-  "1536x1024": "1536x1024"
-} as const
+  '1024x1024': '1024x1024',
+  '1024x1536': '1024x1536',
+  '1536x1024': '1536x1024',
+} as const;

@@ -5,13 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { EvalStoredCompletionsSourceCreatedAfter } from "./evalStoredCompletionsSourceCreatedAfter"
-import type { EvalStoredCompletionsSourceCreatedBefore } from "./evalStoredCompletionsSourceCreatedBefore"
-import type { EvalStoredCompletionsSourceLimit } from "./evalStoredCompletionsSourceLimit"
-import type { EvalStoredCompletionsSourceModel } from "./evalStoredCompletionsSourceModel"
-import type { EvalStoredCompletionsSourceType } from "./evalStoredCompletionsSourceType"
-import type { Metadata } from "./metadata"
+import type { EvalStoredCompletionsSourceType } from './evalStoredCompletionsSourceType';
+import type { Metadata } from './metadata';
+import type { EvalStoredCompletionsSourceModel } from './evalStoredCompletionsSourceModel';
+import type { EvalStoredCompletionsSourceCreatedAfter } from './evalStoredCompletionsSourceCreatedAfter';
+import type { EvalStoredCompletionsSourceCreatedBefore } from './evalStoredCompletionsSourceCreatedBefore';
+import type { EvalStoredCompletionsSourceLimit } from './evalStoredCompletionsSourceLimit';
 
 /**
  * A StoredCompletionsRunDataSource configuration describing a set of filters
@@ -19,10 +18,10 @@ import type { Metadata } from "./metadata"
  */
 export interface EvalStoredCompletionsSource {
   /** The type of source. Always `stored_completions`. */
-  type: EvalStoredCompletionsSourceType
-  metadata?: Metadata
-  model?: EvalStoredCompletionsSourceModel
-  created_after?: EvalStoredCompletionsSourceCreatedAfter
-  created_before?: EvalStoredCompletionsSourceCreatedBefore
-  limit?: EvalStoredCompletionsSourceLimit
+  type: EvalStoredCompletionsSourceType;
+  metadata?: Metadata;
+  model?: EvalStoredCompletionsSourceModel;
+  created_after?: EvalStoredCompletionsSourceCreatedAfter;
+  created_before?: EvalStoredCompletionsSourceCreatedBefore;
+  limit?: EvalStoredCompletionsSourceLimit;
 }

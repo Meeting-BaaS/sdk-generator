@@ -11,7 +11,7 @@
  */
 export interface InviteProjectGroupBody {
   /** Identifier of the group to add to the project. */
-  group_id: string
+  group_id: string;
   /** Identifier of the project role to grant to the group. */
-  role: string
+  role: string;
 }

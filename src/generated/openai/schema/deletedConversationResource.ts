@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DeletedConversationResourceObject } from "./deletedConversationResourceObject"
+import type { DeletedConversationResourceObject } from './deletedConversationResourceObject';
 
 export interface DeletedConversationResource {
-  object: DeletedConversationResourceObject
-  deleted: boolean
-  id: string
+  object: DeletedConversationResourceObject;
+  deleted: boolean;
+  id: string;
 }

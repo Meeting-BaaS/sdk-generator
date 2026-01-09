@@ -9,10 +9,10 @@
 /**
  * Specifies the event type. For a double click action, this property is always set to `double_click`.
  */
-export type DoubleClickActionType =
-  (typeof DoubleClickActionType)[keyof typeof DoubleClickActionType]
+export type DoubleClickActionType = typeof DoubleClickActionType[keyof typeof DoubleClickActionType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DoubleClickActionType = {
-  double_click: "double_click"
-} as const
+  double_click: 'double_click',
+} as const;

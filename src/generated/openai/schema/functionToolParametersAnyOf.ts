@@ -9,4 +9,4 @@
 /**
  * A JSON schema object describing the parameters of the function.
  */
-export type FunctionToolParametersAnyOf = { [key: string]: unknown }
+export type FunctionToolParametersAnyOf = {[key: string]: unknown};

@@ -5,24 +5,24 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { SasValidityQueryParameterParameter } from "./sasValidityQueryParameterParameter"
-import type { SkipQueryParameterParameter } from "./skipQueryParameterParameter"
-import type { TopQueryParameterParameter } from "./topQueryParameterParameter"
+import type { SasValidityQueryParameterParameter } from './sasValidityQueryParameterParameter';
+import type { SkipQueryParameterParameter } from './skipQueryParameterParameter';
+import type { TopQueryParameterParameter } from './topQueryParameterParameter';
 
 export type DatasetsListFilesParams = {
-  /**
-   * The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.
-   */
-  sasValidityInSeconds?: SasValidityQueryParameterParameter
-  /**
-   * Number of datasets that will be skipped.
-   */
-  skip?: SkipQueryParameterParameter
-  /**
-   * Number of datasets that will be included after skipping.
-   */
-  top?: TopQueryParameterParameter
-  /**
+/**
+ * The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.
+ */
+sasValidityInSeconds?: SasValidityQueryParameterParameter;
+/**
+ * Number of datasets that will be skipped.
+ */
+skip?: SkipQueryParameterParameter;
+/**
+ * Number of datasets that will be included after skipping.
+ */
+top?: TopQueryParameterParameter;
+/**
  * A filtering expression for selecting a subset of the available files.
             - Supported properties: name, createdDateTime, kind.
             - Operators:
@@ -32,5 +32,5 @@ export type DatasetsListFilesParams = {
             - Example:
               filter=name eq 'myaudio.wav' and kind eq 'Audio'
  */
-  filter?: string
-}
+filter?: string;
+};

@@ -5,14 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RunStepObject } from "./runStepObject"
-import type { RunStepStreamEventAnyOfOneoneEvent } from "./runStepStreamEventAnyOfOneoneEvent"
+import type { RunStepStreamEventAnyOfOneoneEvent } from './runStepStreamEventAnyOfOneoneEvent';
+import type { RunStepObject } from './runStepObject';
 
 /**
  * Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) is cancelled.
  */
 export type RunStepStreamEventAnyOfOneone = {
-  event: RunStepStreamEventAnyOfOneoneEvent
-  data: RunStepObject
-}
+  event: RunStepStreamEventAnyOfOneoneEvent;
+  data: RunStepObject;
+};

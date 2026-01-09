@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssignedRoleDetailsMetadataAnyOf } from "./assignedRoleDetailsMetadataAnyOf"
+import type { AssignedRoleDetailsMetadataAnyOf } from './assignedRoleDetailsMetadataAnyOf';
 
 /**
  * Arbitrary metadata stored on the role.
  */
-export type AssignedRoleDetailsMetadata = AssignedRoleDetailsMetadataAnyOf | null
+export type AssignedRoleDetailsMetadata = AssignedRoleDetailsMetadataAnyOf | null;

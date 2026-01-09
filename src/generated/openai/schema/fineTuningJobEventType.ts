@@ -9,11 +9,11 @@
 /**
  * The type of event.
  */
-export type FineTuningJobEventType =
-  (typeof FineTuningJobEventType)[keyof typeof FineTuningJobEventType]
+export type FineTuningJobEventType = typeof FineTuningJobEventType[keyof typeof FineTuningJobEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuningJobEventType = {
-  message: "message",
-  metrics: "metrics"
-} as const
+  message: 'message',
+  metrics: 'metrics',
+} as const;

@@ -4,15 +4,15 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SpeechEndMessageType } from "./speechEndMessageType"
-import type { SpeechMessageData } from "./speechMessageData"
+import type { SpeechEndMessageType } from './speechEndMessageType';
+import type { SpeechMessageData } from './speechMessageData';
 
 export interface SpeechEndMessage {
   /** Id of the live session */
-  session_id: string
+  session_id: string;
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string
-  type: SpeechEndMessageType
+  created_at: string;
+  type: SpeechEndMessageType;
   /** The message data */
-  data: SpeechMessageData
+  data: SpeechMessageData;
 }

@@ -5,20 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RealtimeFunctionToolParameters } from "./realtimeFunctionToolParameters"
-import type { RealtimeFunctionToolType } from "./realtimeFunctionToolType"
+import type { RealtimeFunctionToolType } from './realtimeFunctionToolType';
+import type { RealtimeFunctionToolParameters } from './realtimeFunctionToolParameters';
 
 export interface RealtimeFunctionTool {
   /** The type of the tool, i.e. `function`. */
-  type?: RealtimeFunctionToolType
+  type?: RealtimeFunctionToolType;
   /** The name of the function. */
-  name?: string
+  name?: string;
   /** The description of the function, including guidance on when and how
 to call it, and guidance about what to tell the user when calling
 (if anything).
  */
-  description?: string
+  description?: string;
   /** Parameters of the function in JSON Schema. */
-  parameters?: RealtimeFunctionToolParameters
+  parameters?: RealtimeFunctionToolParameters;
 }

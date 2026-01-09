@@ -17,11 +17,12 @@ more tools.
 `required` means the model must call one or more tools.
 
  */
-export type ToolChoiceOptions = (typeof ToolChoiceOptions)[keyof typeof ToolChoiceOptions]
+export type ToolChoiceOptions = typeof ToolChoiceOptions[keyof typeof ToolChoiceOptions];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ToolChoiceOptions = {
-  none: "none",
-  auto: "auto",
-  required: "required"
-} as const
+  none: 'none',
+  auto: 'auto',
+  required: 'required',
+} as const;

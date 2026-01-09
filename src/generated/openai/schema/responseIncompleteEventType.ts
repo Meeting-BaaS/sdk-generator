@@ -10,10 +10,10 @@
  * The type of the event. Always `response.incomplete`.
 
  */
-export type ResponseIncompleteEventType =
-  (typeof ResponseIncompleteEventType)[keyof typeof ResponseIncompleteEventType]
+export type ResponseIncompleteEventType = typeof ResponseIncompleteEventType[keyof typeof ResponseIncompleteEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseIncompleteEventType = {
-  responseincomplete: "response.incomplete"
-} as const
+  responseincomplete: 'response.incomplete',
+} as const;

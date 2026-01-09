@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectServiceAccountObject } from "./projectServiceAccountObject"
-import type { ProjectServiceAccountRole } from "./projectServiceAccountRole"
+import type { ProjectServiceAccountObject } from './projectServiceAccountObject';
+import type { ProjectServiceAccountRole } from './projectServiceAccountRole';
 
 /**
  * Represents an individual service account in a project.
  */
 export interface ProjectServiceAccount {
   /** The object type, which is always `organization.project.service_account` */
-  object: ProjectServiceAccountObject
+  object: ProjectServiceAccountObject;
   /** The identifier, which can be referenced in API endpoints */
-  id: string
+  id: string;
   /** The name of the service account */
-  name: string
+  name: string;
   /** `owner` or `member` */
-  role: ProjectServiceAccountRole
+  role: ProjectServiceAccountRole;
   /** The Unix timestamp (in seconds) of when the service account was created */
-  created_at: number
+  created_at: number;
 }

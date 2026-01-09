@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { SummaryTextContentType } from "./summaryTextContentType"
+import type { SummaryTextContentType } from './summaryTextContentType';
 
 /**
  * A summary text from the model.
  */
 export interface SummaryTextContent {
   /** The type of the object. Always `summary_text`. */
-  type: SummaryTextContentType
+  type: SummaryTextContentType;
   /** A summary of the reasoning output from the model so far. */
-  text: string
+  text: string;
 }

@@ -9,4 +9,4 @@
 /**
  * An array of timestamps structured as [`start_time`, `end_time`] in milliseconds
  */
-export type WordSearchTimestamp = number[]
+export type WordSearchTimestamp = number[];

@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptionSegment } from "./transcriptionSegment"
+import type { TranscriptionSegment } from './transcriptionSegment';
 
 export interface CreateTranslationResponseVerboseJson {
   /** The language of the output translation (always `english`). */
-  language: string
+  language: string;
   /** The duration of the input audio. */
-  duration: number
+  duration: number;
   /** The translated text. */
-  text: string
+  text: string;
   /** Segments of the translated text and their corresponding details. */
-  segments?: TranscriptionSegment[]
+  segments?: TranscriptionSegment[];
 }

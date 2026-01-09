@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoice } from "./toolChoice"
+import type { ToolChoice } from './toolChoice';
 
-export type InferenceOptionsToolChoice = ToolChoice | null
+export type InferenceOptionsToolChoice = ToolChoice | null;

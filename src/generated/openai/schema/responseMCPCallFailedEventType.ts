@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_call.failed'.
  */
-export type ResponseMCPCallFailedEventType =
-  (typeof ResponseMCPCallFailedEventType)[keyof typeof ResponseMCPCallFailedEventType]
+export type ResponseMCPCallFailedEventType = typeof ResponseMCPCallFailedEventType[keyof typeof ResponseMCPCallFailedEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPCallFailedEventType = {
-  responsemcp_callfailed: "response.mcp_call.failed"
-} as const
+  responsemcp_callfailed: 'response.mcp_call.failed',
+} as const;

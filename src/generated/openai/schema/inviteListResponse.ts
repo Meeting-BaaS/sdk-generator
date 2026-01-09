@@ -5,18 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { Invite } from "./invite"
-import type { InviteListResponseObject } from "./inviteListResponseObject"
+import type { InviteListResponseObject } from './inviteListResponseObject';
+import type { Invite } from './invite';
 
 export interface InviteListResponse {
   /** The object type, which is always `list` */
-  object: InviteListResponseObject
-  data: Invite[]
+  object: InviteListResponseObject;
+  data: Invite[];
   /** The first `invite_id` in the retrieved `list` */
-  first_id?: string
+  first_id?: string;
   /** The last `invite_id` in the retrieved `list` */
-  last_id?: string
+  last_id?: string;
   /** The `has_more` property is used for pagination to indicate there are additional results. */
-  has_more?: boolean
+  has_more?: boolean;
 }

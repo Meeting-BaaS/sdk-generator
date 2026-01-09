@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookResponseCancelledData } from "./webhookResponseCancelledData"
-import type { WebhookResponseCancelledObject } from "./webhookResponseCancelledObject"
-import type { WebhookResponseCancelledType } from "./webhookResponseCancelledType"
+import type { WebhookResponseCancelledData } from './webhookResponseCancelledData';
+import type { WebhookResponseCancelledObject } from './webhookResponseCancelledObject';
+import type { WebhookResponseCancelledType } from './webhookResponseCancelledType';
 
 /**
  * Sent when a background response has been cancelled.
@@ -15,18 +15,18 @@ import type { WebhookResponseCancelledType } from "./webhookResponseCancelledTyp
  */
 export interface WebhookResponseCancelled {
   /** The Unix timestamp (in seconds) of when the model response was cancelled.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The unique ID of the event.
-   */
-  id: string
+ */
+  id: string;
   /** Event data payload.
-   */
-  data: WebhookResponseCancelledData
+ */
+  data: WebhookResponseCancelledData;
   /** The object of the event. Always `event`.
-   */
-  object?: WebhookResponseCancelledObject
+ */
+  object?: WebhookResponseCancelledObject;
   /** The type of the event. Always `response.cancelled`.
-   */
-  type: WebhookResponseCancelledType
+ */
+  type: WebhookResponseCancelledType;
 }

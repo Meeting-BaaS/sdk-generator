@@ -9,11 +9,11 @@
 /**
  * Outcome values reported for apply_patch tool call outputs.
  */
-export type ApplyPatchCallOutputStatusParam =
-  (typeof ApplyPatchCallOutputStatusParam)[keyof typeof ApplyPatchCallOutputStatusParam]
+export type ApplyPatchCallOutputStatusParam = typeof ApplyPatchCallOutputStatusParam[keyof typeof ApplyPatchCallOutputStatusParam];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchCallOutputStatusParam = {
-  completed: "completed",
-  failed: "failed"
-} as const
+  completed: 'completed',
+  failed: 'failed',
+} as const;

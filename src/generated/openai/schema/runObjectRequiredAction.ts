@@ -5,9 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RunObjectRequiredActionSubmitToolOutputs } from "./runObjectRequiredActionSubmitToolOutputs"
-import type { RunObjectRequiredActionType } from "./runObjectRequiredActionType"
+import type { RunObjectRequiredActionType } from './runObjectRequiredActionType';
+import type { RunObjectRequiredActionSubmitToolOutputs } from './runObjectRequiredActionSubmitToolOutputs';
 
 /**
  * Details on the action required to continue the run. Will be `null` if no action is required.
@@ -15,7 +14,7 @@ import type { RunObjectRequiredActionType } from "./runObjectRequiredActionType"
  */
 export type RunObjectRequiredAction = {
   /** For now, this is always `submit_tool_outputs`. */
-  type: RunObjectRequiredActionType
+  type: RunObjectRequiredActionType;
   /** Details on the tool outputs needed for this run to continue. */
-  submit_tool_outputs: RunObjectRequiredActionSubmitToolOutputs
-} | null
+  submit_tool_outputs: RunObjectRequiredActionSubmitToolOutputs;
+} | null;

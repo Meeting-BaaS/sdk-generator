@@ -5,36 +5,36 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateImageVariationRequestModel } from "./createImageVariationRequestModel"
-import type { CreateImageVariationRequestResponseFormat } from "./createImageVariationRequestResponseFormat"
-import type { CreateImageVariationRequestSize } from "./createImageVariationRequestSize"
+import type { CreateImageVariationRequestModel } from './createImageVariationRequestModel';
+import type { CreateImageVariationRequestResponseFormat } from './createImageVariationRequestResponseFormat';
+import type { CreateImageVariationRequestSize } from './createImageVariationRequestSize';
 
 export interface CreateImageVariationRequest {
   /** The image to use as the basis for the variation(s). Must be a valid PNG file, less than 4MB, and square. */
-  image: Blob
+  image: Blob;
   /**
    * The model to use for image generation. Only `dall-e-2` is supported at this time.
    * @nullable
    */
-  model?: CreateImageVariationRequestModel
+  model?: CreateImageVariationRequestModel;
   /**
    * The number of images to generate. Must be between 1 and 10.
    * @minimum 1
    * @maximum 10
    * @nullable
    */
-  n?: number | null
+  n?: number | null;
   /**
    * The format in which the generated images are returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes after the image has been generated.
    * @nullable
    */
-  response_format?: CreateImageVariationRequestResponseFormat
+  response_format?: CreateImageVariationRequestResponseFormat;
   /**
    * The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024`.
    * @nullable
    */
-  size?: CreateImageVariationRequestSize
+  size?: CreateImageVariationRequestSize;
   /** A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
-   */
-  user?: string
+ */
+  user?: string;
 }

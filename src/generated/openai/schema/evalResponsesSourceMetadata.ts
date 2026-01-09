@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalResponsesSourceMetadataAnyOf } from "./evalResponsesSourceMetadataAnyOf"
+import type { EvalResponsesSourceMetadataAnyOf } from './evalResponsesSourceMetadataAnyOf';
 
-export type EvalResponsesSourceMetadata = EvalResponsesSourceMetadataAnyOf | null
+export type EvalResponsesSourceMetadata = EvalResponsesSourceMetadataAnyOf | null;

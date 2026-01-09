@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomGrammarFormatParamType } from "./customGrammarFormatParamType"
-import type { GrammarSyntax1 } from "./grammarSyntax1"
+import type { CustomGrammarFormatParamType } from './customGrammarFormatParamType';
+import type { GrammarSyntax1 } from './grammarSyntax1';
 
 /**
  * A grammar defined by the user.
  */
 export interface CustomGrammarFormatParam {
   /** Grammar format. Always `grammar`. */
-  type: CustomGrammarFormatParamType
+  type: CustomGrammarFormatParamType;
   /** The syntax of the grammar definition. One of `lark` or `regex`. */
-  syntax: GrammarSyntax1
+  syntax: GrammarSyntax1;
   /** The grammar definition. */
-  definition: string
+  definition: string;
 }

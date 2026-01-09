@@ -11,5 +11,5 @@
  */
 export interface ChatkitWorkflowTracing {
   /** Indicates whether tracing is enabled. */
-  enabled: boolean
+  enabled: boolean;
 }

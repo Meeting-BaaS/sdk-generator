@@ -14,5 +14,5 @@ export type RealtimeTruncationAnyOfTokenLimits = {
    * Maximum tokens allowed in the conversation after instructions (which including tool definitions). For example, setting this to 5,000 would mean that truncation would occur when the conversation exceeds 5,000 tokens after instructions. This cannot be higher than the model's context window size minus the maximum output tokens.
    * @minimum 0
    */
-  post_instructions?: number
-}
+  post_instructions?: number;
+};

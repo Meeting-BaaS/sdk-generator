@@ -8,6 +8,6 @@
 
 export type InputMessageResourceAllOf = {
   /** The unique ID of the message input.
-   */
-  id: string
-}
+ */
+  id: string;
+};

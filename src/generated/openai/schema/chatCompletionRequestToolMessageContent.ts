@@ -5,11 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestToolMessageContentPart } from "./chatCompletionRequestToolMessageContentPart"
+import type { ChatCompletionRequestToolMessageContentPart } from './chatCompletionRequestToolMessageContentPart';
 
 /**
  * The contents of the tool message.
  */
-export type ChatCompletionRequestToolMessageContent =
-  | string
-  | ChatCompletionRequestToolMessageContentPart[]
+export type ChatCompletionRequestToolMessageContent = string | ChatCompletionRequestToolMessageContentPart[];

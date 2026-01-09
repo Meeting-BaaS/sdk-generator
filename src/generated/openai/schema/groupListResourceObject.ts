@@ -9,10 +9,10 @@
 /**
  * Always `list`.
  */
-export type GroupListResourceObject =
-  (typeof GroupListResourceObject)[keyof typeof GroupListResourceObject]
+export type GroupListResourceObject = typeof GroupListResourceObject[keyof typeof GroupListResourceObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupListResourceObject = {
-  list: "list"
-} as const
+  list: 'list',
+} as const;

@@ -9,10 +9,10 @@
 /**
  * The type of tool call. This is always going to be `file_search` for this type of tool call.
  */
-export type RunStepDetailsToolCallsFileSearchObjectType =
-  (typeof RunStepDetailsToolCallsFileSearchObjectType)[keyof typeof RunStepDetailsToolCallsFileSearchObjectType]
+export type RunStepDetailsToolCallsFileSearchObjectType = typeof RunStepDetailsToolCallsFileSearchObjectType[keyof typeof RunStepDetailsToolCallsFileSearchObjectType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDetailsToolCallsFileSearchObjectType = {
-  file_search: "file_search"
-} as const
+  file_search: 'file_search',
+} as const;

@@ -5,12 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf } from "./createAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf"
-import type { CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree } from "./createAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree"
+import type { CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf } from './createAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf';
+import type { CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree } from './createAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree';
 
 /**
  * The chunking strategy used to chunk the file(s). If not set, will use the `auto` strategy.
  */
-export type CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy =
-  | CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf
-  | CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree
+export type CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategy = CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf | CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree;

@@ -5,14 +5,13 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-
-import type { DatasetKind } from "./datasetKind"
-import type { SharedModelFeatures } from "./sharedModelFeatures"
+import type { SharedModelFeatures } from './sharedModelFeatures';
+import type { DatasetKind } from './datasetKind';
 
 /**
  * Features supported by the model.
  */
 export type BaseModelFeatures = SharedModelFeatures & {
   /** Supported dataset kinds to adapt the model. */
-  readonly supportsAdaptationsWith?: readonly DatasetKind[]
-}
+  readonly supportsAdaptationsWith?: readonly DatasetKind[];
+};

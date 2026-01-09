@@ -5,13 +5,13 @@
  * OpenAPI spec version: 1.0
  */
 
-export type HistoryControllerGetListV1StatusItem =
-  (typeof HistoryControllerGetListV1StatusItem)[keyof typeof HistoryControllerGetListV1StatusItem]
+export type HistoryControllerGetListV1StatusItem = typeof HistoryControllerGetListV1StatusItem[keyof typeof HistoryControllerGetListV1StatusItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HistoryControllerGetListV1StatusItem = {
-  queued: "queued",
-  processing: "processing",
-  done: "done",
-  error: "error"
-} as const
+  queued: 'queued',
+  processing: 'processing',
+  done: 'done',
+  error: 'error',
+} as const;

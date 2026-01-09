@@ -6,10 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type OrderEnum = (typeof OrderEnum)[keyof typeof OrderEnum]
+export type OrderEnum = typeof OrderEnum[keyof typeof OrderEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OrderEnum = {
-  asc: "asc",
-  desc: "desc"
-} as const
+  asc: 'asc',
+  desc: 'desc',
+} as const;

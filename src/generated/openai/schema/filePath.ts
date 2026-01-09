@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FilePathType } from "./filePathType"
+import type { FilePathType } from './filePathType';
 
 /**
  * A path to a file.
@@ -13,12 +13,12 @@ import type { FilePathType } from "./filePathType"
  */
 export interface FilePath {
   /** The type of the file path. Always `file_path`.
-   */
-  type: FilePathType
+ */
+  type: FilePathType;
   /** The ID of the file.
-   */
-  file_id: string
+ */
+  file_id: string;
   /** The index of the file in the list of files.
-   */
-  index: number
+ */
+  index: number;
 }

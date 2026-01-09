@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventRateLimitsUpdatedRateLimitsItemName } from "./realtimeServerEventRateLimitsUpdatedRateLimitsItemName"
+import type { RealtimeServerEventRateLimitsUpdatedRateLimitsItemName } from './realtimeServerEventRateLimitsUpdatedRateLimitsItemName';
 
 export type RealtimeServerEventRateLimitsUpdatedRateLimitsItem = {
   /** The name of the rate limit (`requests`, `tokens`).
-   */
-  name?: RealtimeServerEventRateLimitsUpdatedRateLimitsItemName
+ */
+  name?: RealtimeServerEventRateLimitsUpdatedRateLimitsItemName;
   /** The maximum allowed value for the rate limit. */
-  limit?: number
+  limit?: number;
   /** The remaining value before the limit is reached. */
-  remaining?: number
+  remaining?: number;
   /** Seconds until the rate limit resets. */
-  reset_seconds?: number
-}
+  reset_seconds?: number;
+};

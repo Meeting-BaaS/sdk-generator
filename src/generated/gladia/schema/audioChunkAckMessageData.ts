@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AudioChunkAckData } from "./audioChunkAckData"
+import type { AudioChunkAckData } from './audioChunkAckData';
 
 /**
  * The message data. "null" if the action was not successfully acknowledged
  * @nullable
  */
-export type AudioChunkAckMessageData = AudioChunkAckData | null
+export type AudioChunkAckMessageData = AudioChunkAckData | null;

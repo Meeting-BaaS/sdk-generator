@@ -5,12 +5,12 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { BlockKind } from "./blockKind"
+import type { BlockKind } from './blockKind';
 
 /**
  * Entry of the commit block list.
  */
 export interface CommitBlocksEntry {
-  kind?: BlockKind
-  id?: string
+  kind?: BlockKind;
+  id?: string;
 }

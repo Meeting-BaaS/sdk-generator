@@ -9,9 +9,10 @@
 /**
  * Always `role`.
  */
-export type RoleObject = (typeof RoleObject)[keyof typeof RoleObject]
+export type RoleObject = typeof RoleObject[keyof typeof RoleObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RoleObject = {
-  role: "role"
-} as const
+  role: 'role',
+} as const;

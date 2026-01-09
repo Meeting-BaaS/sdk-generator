@@ -5,21 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { User } from "./user"
-import type { UserListResourceNext } from "./userListResourceNext"
-import type { UserListResourceObject } from "./userListResourceObject"
+import type { UserListResourceObject } from './userListResourceObject';
+import type { User } from './user';
+import type { UserListResourceNext } from './userListResourceNext';
 
 /**
  * Paginated list of user objects returned when inspecting group membership.
  */
 export interface UserListResource {
   /** Always `list`. */
-  object: UserListResourceObject
+  object: UserListResourceObject;
   /** Users in the current page. */
-  data: User[]
+  data: User[];
   /** Whether more users are available when paginating. */
-  has_more: boolean
+  has_more: boolean;
   /** Cursor to fetch the next page of results, or `null` when no further users are available. */
-  next: UserListResourceNext
+  next: UserListResourceNext;
 }

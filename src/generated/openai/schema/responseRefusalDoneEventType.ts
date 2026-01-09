@@ -10,10 +10,10 @@
  * The type of the event. Always `response.refusal.done`.
 
  */
-export type ResponseRefusalDoneEventType =
-  (typeof ResponseRefusalDoneEventType)[keyof typeof ResponseRefusalDoneEventType]
+export type ResponseRefusalDoneEventType = typeof ResponseRefusalDoneEventType[keyof typeof ResponseRefusalDoneEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseRefusalDoneEventType = {
-  responserefusaldone: "response.refusal.done"
-} as const
+  responserefusaldone: 'response.refusal.done',
+} as const;

@@ -10,4 +10,4 @@
 /**
  * Filter for requests where detect language was used
  */
-export type ManageV1FilterDetectLanguageParameter = boolean
+export type ManageV1FilterDetectLanguageParameter = boolean;

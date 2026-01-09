@@ -9,11 +9,12 @@
 /**
  * `accepted`,`expired`, or `pending`
  */
-export type InviteStatus = (typeof InviteStatus)[keyof typeof InviteStatus]
+export type InviteStatus = typeof InviteStatus[keyof typeof InviteStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InviteStatus = {
-  accepted: "accepted",
-  expired: "expired",
-  pending: "pending"
-} as const
+  accepted: 'accepted',
+  expired: 'expired',
+  pending: 'pending',
+} as const;

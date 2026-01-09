@@ -4,20 +4,19 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
-import type { TranslationLanguageCodeEnum } from "./translationLanguageCodeEnum"
-import type { UtteranceDTO } from "./utteranceDTO"
+import type { UtteranceDTO } from './utteranceDTO';
+import type { TranscriptionLanguageCodeEnum } from './transcriptionLanguageCodeEnum';
+import type { TranslationLanguageCodeEnum } from './translationLanguageCodeEnum';
 
 export interface TranslationData {
   /** Id of the utterance used for this result */
-  utterance_id: string
+  utterance_id: string;
   /** The transcribed utterance */
-  utterance: UtteranceDTO
+  utterance: UtteranceDTO;
   /** The original language in `iso639-1` or `iso639-2` format depending on the language */
-  original_language: TranscriptionLanguageCodeEnum
+  original_language: TranscriptionLanguageCodeEnum;
   /** The target language in `iso639-1` or `iso639-2` format depending on the language */
-  target_language: TranslationLanguageCodeEnum
+  target_language: TranslationLanguageCodeEnum;
   /** The translated utterance */
-  translated_utterance: UtteranceDTO
+  translated_utterance: UtteranceDTO;
 }

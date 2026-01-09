@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestSystemMessageContent } from "./chatCompletionRequestSystemMessageContent"
-import type { ChatCompletionRequestSystemMessageRole } from "./chatCompletionRequestSystemMessageRole"
+import type { ChatCompletionRequestSystemMessageContent } from './chatCompletionRequestSystemMessageContent';
+import type { ChatCompletionRequestSystemMessageRole } from './chatCompletionRequestSystemMessageRole';
 
 /**
  * Developer-provided instructions that the model should follow, regardless of
@@ -16,9 +16,9 @@ for this purpose instead.
  */
 export interface ChatCompletionRequestSystemMessage {
   /** The contents of the system message. */
-  content: ChatCompletionRequestSystemMessageContent
+  content: ChatCompletionRequestSystemMessageContent;
   /** The role of the messages author, in this case `system`. */
-  role: ChatCompletionRequestSystemMessageRole
+  role: ChatCompletionRequestSystemMessageRole;
   /** An optional name for the participant. Provides the model information to differentiate between participants of the same role. */
-  name?: string
+  name?: string;
 }

@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeMCPToolCallErrorAnyOf } from "./realtimeMCPToolCallErrorAnyOf"
+import type { RealtimeMCPToolCallErrorAnyOf } from './realtimeMCPToolCallErrorAnyOf';
 
-export type RealtimeMCPToolCallError = RealtimeMCPToolCallErrorAnyOf | null
+export type RealtimeMCPToolCallError = RealtimeMCPToolCallErrorAnyOf | null;

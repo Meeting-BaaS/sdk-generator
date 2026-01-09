@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UserMessageInputText } from "./userMessageInputText"
-import type { UserMessageQuotedText } from "./userMessageQuotedText"
+import type { UserMessageInputText } from './userMessageInputText';
+import type { UserMessageQuotedText } from './userMessageQuotedText';
 
 /**
  * Content blocks that comprise a user message.
  */
-export type UserMessageItemContentItem = UserMessageInputText | UserMessageQuotedText
+export type UserMessageItemContentItem = UserMessageInputText | UserMessageQuotedText;

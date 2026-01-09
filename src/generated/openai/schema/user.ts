@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UserObject } from "./userObject"
-import type { UserRole } from "./userRole"
+import type { UserObject } from './userObject';
+import type { UserRole } from './userRole';
 
 /**
  * Represents an individual `user` within an organization.
  */
 export interface User {
   /** The object type, which is always `organization.user` */
-  object: UserObject
+  object: UserObject;
   /** The identifier, which can be referenced in API endpoints */
-  id: string
+  id: string;
   /** The name of the user */
-  name: string
+  name: string;
   /** The email address of the user */
-  email: string
+  email: string;
   /** `owner` or `reader` */
-  role: UserRole
+  role: UserRole;
   /** The Unix timestamp (in seconds) of when the user was added. */
-  added_at: number
+  added_at: number;
 }

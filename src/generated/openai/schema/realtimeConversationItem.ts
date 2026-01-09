@@ -5,27 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RealtimeConversationItemFunctionCall } from "./realtimeConversationItemFunctionCall"
-import type { RealtimeConversationItemFunctionCallOutput } from "./realtimeConversationItemFunctionCallOutput"
-import type { RealtimeConversationItemMessageAssistant } from "./realtimeConversationItemMessageAssistant"
-import type { RealtimeConversationItemMessageSystem } from "./realtimeConversationItemMessageSystem"
-import type { RealtimeConversationItemMessageUser } from "./realtimeConversationItemMessageUser"
-import type { RealtimeMCPApprovalRequest } from "./realtimeMCPApprovalRequest"
-import type { RealtimeMCPApprovalResponse } from "./realtimeMCPApprovalResponse"
-import type { RealtimeMCPListTools } from "./realtimeMCPListTools"
-import type { RealtimeMCPToolCall } from "./realtimeMCPToolCall"
+import type { RealtimeConversationItemMessageSystem } from './realtimeConversationItemMessageSystem';
+import type { RealtimeConversationItemMessageUser } from './realtimeConversationItemMessageUser';
+import type { RealtimeConversationItemMessageAssistant } from './realtimeConversationItemMessageAssistant';
+import type { RealtimeConversationItemFunctionCall } from './realtimeConversationItemFunctionCall';
+import type { RealtimeConversationItemFunctionCallOutput } from './realtimeConversationItemFunctionCallOutput';
+import type { RealtimeMCPApprovalResponse } from './realtimeMCPApprovalResponse';
+import type { RealtimeMCPListTools } from './realtimeMCPListTools';
+import type { RealtimeMCPToolCall } from './realtimeMCPToolCall';
+import type { RealtimeMCPApprovalRequest } from './realtimeMCPApprovalRequest';
 
 /**
  * A single item within a Realtime conversation.
  */
-export type RealtimeConversationItem =
-  | RealtimeConversationItemMessageSystem
-  | RealtimeConversationItemMessageUser
-  | RealtimeConversationItemMessageAssistant
-  | RealtimeConversationItemFunctionCall
-  | RealtimeConversationItemFunctionCallOutput
-  | RealtimeMCPApprovalResponse
-  | RealtimeMCPListTools
-  | RealtimeMCPToolCall
-  | RealtimeMCPApprovalRequest
+export type RealtimeConversationItem = RealtimeConversationItemMessageSystem | RealtimeConversationItemMessageUser | RealtimeConversationItemMessageAssistant | RealtimeConversationItemFunctionCall | RealtimeConversationItemFunctionCallOutput | RealtimeMCPApprovalResponse | RealtimeMCPListTools | RealtimeMCPToolCall | RealtimeMCPApprovalRequest;

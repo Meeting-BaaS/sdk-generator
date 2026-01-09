@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateChatCompletionRequestAllOfWebSearchOptionsUserLocation } from "./createChatCompletionRequestAllOfWebSearchOptionsUserLocation"
-import type { WebSearchContextSize } from "./webSearchContextSize"
+import type { CreateChatCompletionRequestAllOfWebSearchOptionsUserLocation } from './createChatCompletionRequestAllOfWebSearchOptionsUserLocation';
+import type { WebSearchContextSize } from './webSearchContextSize';
 
 /**
  * This tool searches the web for relevant results to use in a response.
@@ -19,6 +19,6 @@ export type CreateChatCompletionRequestAllOfWebSearchOptions = {
 
    * @nullable
    */
-  user_location?: CreateChatCompletionRequestAllOfWebSearchOptionsUserLocation
-  search_context_size?: WebSearchContextSize
-}
+  user_location?: CreateChatCompletionRequestAllOfWebSearchOptionsUserLocation;
+  search_context_size?: WebSearchContextSize;
+};

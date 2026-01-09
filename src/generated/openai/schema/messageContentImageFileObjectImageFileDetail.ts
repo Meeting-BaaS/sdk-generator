@@ -9,12 +9,12 @@
 /**
  * Specifies the detail level of the image if specified by the user. `low` uses fewer tokens, you can opt in to high resolution using `high`.
  */
-export type MessageContentImageFileObjectImageFileDetail =
-  (typeof MessageContentImageFileObjectImageFileDetail)[keyof typeof MessageContentImageFileObjectImageFileDetail]
+export type MessageContentImageFileObjectImageFileDetail = typeof MessageContentImageFileObjectImageFileDetail[keyof typeof MessageContentImageFileObjectImageFileDetail];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageContentImageFileObjectImageFileDetail = {
-  auto: "auto",
-  low: "low",
-  high: "high"
-} as const
+  auto: 'auto',
+  low: 'low',
+  high: 'high',
+} as const;

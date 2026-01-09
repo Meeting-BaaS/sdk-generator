@@ -11,15 +11,15 @@
  */
 export interface RealtimeBetaServerEventResponseMCPCallArgumentsDone {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `response.mcp_call_arguments.done`. */
-  type: "response.mcp_call_arguments.done"
+  type: 'response.mcp_call_arguments.done';
   /** The ID of the response. */
-  response_id: string
+  response_id: string;
   /** The ID of the MCP tool call item. */
-  item_id: string
+  item_id: string;
   /** The index of the output item in the response. */
-  output_index: number
+  output_index: number;
   /** The final JSON-encoded arguments string. */
-  arguments: string
+  arguments: string;
 }

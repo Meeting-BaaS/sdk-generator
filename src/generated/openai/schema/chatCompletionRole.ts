@@ -9,14 +9,15 @@
 /**
  * The role of the author of a message
  */
-export type ChatCompletionRole = (typeof ChatCompletionRole)[keyof typeof ChatCompletionRole]
+export type ChatCompletionRole = typeof ChatCompletionRole[keyof typeof ChatCompletionRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRole = {
-  developer: "developer",
-  system: "system",
-  user: "user",
-  assistant: "assistant",
-  tool: "tool",
-  function: "function"
-} as const
+  developer: 'developer',
+  system: 'system',
+  user: 'user',
+  assistant: 'assistant',
+  tool: 'tool',
+  function: 'function',
+} as const;

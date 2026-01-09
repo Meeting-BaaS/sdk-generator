@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CompletionUsage } from "./completionUsage"
-import type { CreateCompletionResponseChoicesItem } from "./createCompletionResponseChoicesItem"
-import type { CreateCompletionResponseObject } from "./createCompletionResponseObject"
+import type { CreateCompletionResponseChoicesItem } from './createCompletionResponseChoicesItem';
+import type { CreateCompletionResponseObject } from './createCompletionResponseObject';
+import type { CompletionUsage } from './completionUsage';
 
 /**
  * Represents a completion response from the API. Note: both the streamed and non-streamed response objects share the same shape (unlike the chat endpoint).
@@ -16,19 +15,19 @@ import type { CreateCompletionResponseObject } from "./createCompletionResponseO
  */
 export interface CreateCompletionResponse {
   /** A unique identifier for the completion. */
-  id: string
+  id: string;
   /** The list of completion choices the model generated for the input prompt. */
-  choices: CreateCompletionResponseChoicesItem[]
+  choices: CreateCompletionResponseChoicesItem[];
   /** The Unix timestamp (in seconds) of when the completion was created. */
-  created: number
+  created: number;
   /** The model used for completion. */
-  model: string
+  model: string;
   /** This fingerprint represents the backend configuration that the model runs with.
 
 Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.
  */
-  system_fingerprint?: string
+  system_fingerprint?: string;
   /** The object type, which is always "text_completion" */
-  object: CreateCompletionResponseObject
-  usage?: CompletionUsage
+  object: CreateCompletionResponseObject;
+  usage?: CompletionUsage;
 }

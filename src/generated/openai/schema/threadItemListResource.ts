@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadItem } from "./threadItem"
-import type { ThreadItemListResourceFirstId } from "./threadItemListResourceFirstId"
-import type { ThreadItemListResourceLastId } from "./threadItemListResourceLastId"
+import type { ThreadItem } from './threadItem';
+import type { ThreadItemListResourceFirstId } from './threadItemListResourceFirstId';
+import type { ThreadItemListResourceLastId } from './threadItemListResourceLastId';
 
 /**
  * A paginated list of thread items rendered for the ChatKit API.
  */
 export interface ThreadItemListResource {
   /** The type of object returned, must be `list`. */
-  object: "list"
+  object: 'list';
   /** A list of items */
-  data: ThreadItem[]
-  first_id: ThreadItemListResourceFirstId
-  last_id: ThreadItemListResourceLastId
+  data: ThreadItem[];
+  first_id: ThreadItemListResourceFirstId;
+  last_id: ThreadItemListResourceLastId;
   /** Whether there are more items available. */
-  has_more: boolean
+  has_more: boolean;
 }

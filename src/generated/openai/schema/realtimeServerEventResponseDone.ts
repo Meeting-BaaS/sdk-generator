@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeResponse } from "./realtimeResponse"
+import type { RealtimeResponse } from './realtimeResponse';
 
 /**
  * Returned when a Response is done streaming. Always emitted, no matter the 
@@ -21,8 +21,8 @@ any audio content.
  */
 export interface RealtimeServerEventResponseDone {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `response.done`. */
-  type: "response.done"
-  response: RealtimeResponse
+  type: 'response.done';
+  response: RealtimeResponse;
 }

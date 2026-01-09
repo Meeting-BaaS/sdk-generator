@@ -5,7 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningJobHyperparametersBatchSizeAnyOf } from "./fineTuningJobHyperparametersBatchSizeAnyOf"
+import type { FineTuningJobHyperparametersBatchSizeAnyOf } from './fineTuningJobHyperparametersBatchSizeAnyOf';
 
-export type FineTuningJobHyperparametersBatchSize =
-  FineTuningJobHyperparametersBatchSizeAnyOf | null
+export type FineTuningJobHyperparametersBatchSize = FineTuningJobHyperparametersBatchSizeAnyOf | null;

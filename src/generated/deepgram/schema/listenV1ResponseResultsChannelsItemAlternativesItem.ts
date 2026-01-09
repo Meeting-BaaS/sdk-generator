@@ -6,16 +6,18 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemWordsItem"
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphs } from "./listenV1ResponseResultsChannelsItemAlternativesItemParagraphs"
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemSummariesItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemSummariesItem"
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemTopicsItem } from "./listenV1ResponseResultsChannelsItemAlternativesItemTopicsItem"
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem } from './listenV1ResponseResultsChannelsItemAlternativesItemWordsItem';
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemParagraphs } from './listenV1ResponseResultsChannelsItemAlternativesItemParagraphs';
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemEntitiesItem } from './listenV1ResponseResultsChannelsItemAlternativesItemEntitiesItem';
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemSummariesItem } from './listenV1ResponseResultsChannelsItemAlternativesItemSummariesItem';
+import type { ListenV1ResponseResultsChannelsItemAlternativesItemTopicsItem } from './listenV1ResponseResultsChannelsItemAlternativesItemTopicsItem';
 
 export type ListenV1ResponseResultsChannelsItemAlternativesItem = {
-  transcript?: string
-  confidence?: number
-  words?: ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem[]
-  paragraphs?: ListenV1ResponseResultsChannelsItemAlternativesItemParagraphs
-  summaries?: ListenV1ResponseResultsChannelsItemAlternativesItemSummariesItem[]
-  topics?: ListenV1ResponseResultsChannelsItemAlternativesItemTopicsItem[]
-}
+  transcript?: string;
+  confidence?: number;
+  words?: ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem[];
+  paragraphs?: ListenV1ResponseResultsChannelsItemAlternativesItemParagraphs;
+  entities?: ListenV1ResponseResultsChannelsItemAlternativesItemEntitiesItem[];
+  summaries?: ListenV1ResponseResultsChannelsItemAlternativesItemSummariesItem[];
+  topics?: ListenV1ResponseResultsChannelsItemAlternativesItemTopicsItem[];
+};

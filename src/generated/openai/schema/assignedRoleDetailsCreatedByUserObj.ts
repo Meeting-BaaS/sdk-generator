@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssignedRoleDetailsCreatedByUserObjAnyOf } from "./assignedRoleDetailsCreatedByUserObjAnyOf"
+import type { AssignedRoleDetailsCreatedByUserObjAnyOf } from './assignedRoleDetailsCreatedByUserObjAnyOf';
 
 /**
  * User details for the actor that created the role, when available.
  */
-export type AssignedRoleDetailsCreatedByUserObj = AssignedRoleDetailsCreatedByUserObjAnyOf | null
+export type AssignedRoleDetailsCreatedByUserObj = AssignedRoleDetailsCreatedByUserObjAnyOf | null;

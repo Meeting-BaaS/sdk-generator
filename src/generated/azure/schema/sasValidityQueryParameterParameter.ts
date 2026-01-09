@@ -9,4 +9,4 @@
 /**
  * The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.
  */
-export type SasValidityQueryParameterParameter = number
+export type SasValidityQueryParameterParameter = number;

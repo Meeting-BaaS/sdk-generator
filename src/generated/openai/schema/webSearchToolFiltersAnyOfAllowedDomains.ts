@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type WebSearchToolFiltersAnyOfAllowedDomains = string[] | null
+export type WebSearchToolFiltersAnyOfAllowedDomains = string[] | null;

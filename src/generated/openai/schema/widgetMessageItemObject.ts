@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.thread_item`.
  */
-export type WidgetMessageItemObject =
-  (typeof WidgetMessageItemObject)[keyof typeof WidgetMessageItemObject]
+export type WidgetMessageItemObject = typeof WidgetMessageItemObject[keyof typeof WidgetMessageItemObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WidgetMessageItemObject = {
-  chatkitthread_item: "chatkit.thread_item"
-} as const
+  chatkitthread_item: 'chatkit.thread_item',
+} as const;

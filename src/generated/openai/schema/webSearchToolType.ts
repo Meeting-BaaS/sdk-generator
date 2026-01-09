@@ -9,10 +9,11 @@
 /**
  * The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
  */
-export type WebSearchToolType = (typeof WebSearchToolType)[keyof typeof WebSearchToolType]
+export type WebSearchToolType = typeof WebSearchToolType[keyof typeof WebSearchToolType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchToolType = {
-  web_search: "web_search",
-  web_search_2025_08_26: "web_search_2025_08_26"
-} as const
+  web_search: 'web_search',
+  web_search_2025_08_26: 'web_search_2025_08_26',
+} as const;

@@ -10,10 +10,10 @@
  * The type of the event. Always `response.function_call_arguments.delta`.
 
  */
-export type ResponseFunctionCallArgumentsDeltaEventType =
-  (typeof ResponseFunctionCallArgumentsDeltaEventType)[keyof typeof ResponseFunctionCallArgumentsDeltaEventType]
+export type ResponseFunctionCallArgumentsDeltaEventType = typeof ResponseFunctionCallArgumentsDeltaEventType[keyof typeof ResponseFunctionCallArgumentsDeltaEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFunctionCallArgumentsDeltaEventType = {
-  responsefunction_call_argumentsdelta: "response.function_call_arguments.delta"
-} as const
+  responsefunction_call_argumentsdelta: 'response.function_call_arguments.delta',
+} as const;

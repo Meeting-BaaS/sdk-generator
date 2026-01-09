@@ -9,10 +9,10 @@
 /**
  * The type of the object. Always `summary_text`.
  */
-export type SummaryTextContentType =
-  (typeof SummaryTextContentType)[keyof typeof SummaryTextContentType]
+export type SummaryTextContentType = typeof SummaryTextContentType[keyof typeof SummaryTextContentType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummaryTextContentType = {
-  summary_text: "summary_text"
-} as const
+  summary_text: 'summary_text',
+} as const;

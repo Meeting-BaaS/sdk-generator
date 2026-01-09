@@ -5,20 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ComputerEnvironment } from "./computerEnvironment"
-import type { ComputerUsePreviewToolType } from "./computerUsePreviewToolType"
+import type { ComputerUsePreviewToolType } from './computerUsePreviewToolType';
+import type { ComputerEnvironment } from './computerEnvironment';
 
 /**
  * A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
  */
 export interface ComputerUsePreviewTool {
   /** The type of the computer use tool. Always `computer_use_preview`. */
-  type: ComputerUsePreviewToolType
+  type: ComputerUsePreviewToolType;
   /** The type of computer environment to control. */
-  environment: ComputerEnvironment
+  environment: ComputerEnvironment;
   /** The width of the computer display. */
-  display_width: number
+  display_width: number;
   /** The height of the computer display. */
-  display_height: number
+  display_height: number;
 }

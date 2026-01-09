@@ -9,10 +9,10 @@
 /**
  * Always `text`.
  */
-export type ModerationTextInputType =
-  (typeof ModerationTextInputType)[keyof typeof ModerationTextInputType]
+export type ModerationTextInputType = typeof ModerationTextInputType[keyof typeof ModerationTextInputType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModerationTextInputType = {
-  text: "text"
-} as const
+  text: 'text',
+} as const;

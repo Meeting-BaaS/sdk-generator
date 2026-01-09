@@ -5,24 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { TranscriptionSegment } from "./transcriptionSegment"
-import type { TranscriptionWord } from "./transcriptionWord"
-import type { TranscriptTextUsageDuration } from "./transcriptTextUsageDuration"
+import type { TranscriptionWord } from './transcriptionWord';
+import type { TranscriptionSegment } from './transcriptionSegment';
+import type { TranscriptTextUsageDuration } from './transcriptTextUsageDuration';
 
 /**
  * Represents a verbose json transcription response returned by model, based on the provided input.
  */
 export interface CreateTranscriptionResponseVerboseJson {
   /** The language of the input audio. */
-  language: string
+  language: string;
   /** The duration of the input audio. */
-  duration: number
+  duration: number;
   /** The transcribed text. */
-  text: string
+  text: string;
   /** Extracted words and their corresponding timestamps. */
-  words?: TranscriptionWord[]
+  words?: TranscriptionWord[];
   /** Segments of the transcribed text and their corresponding details. */
-  segments?: TranscriptionSegment[]
-  usage?: TranscriptTextUsageDuration
+  segments?: TranscriptionSegment[];
+  usage?: TranscriptTextUsageDuration;
 }

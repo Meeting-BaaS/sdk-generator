@@ -5,9 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+import type { TruncationObject } from './truncationObject';
+import type { CreateRunRequestTruncationStrategyAllOf } from './createRunRequestTruncationStrategyAllOf';
 
-import type { CreateRunRequestTruncationStrategyAllOf } from "./createRunRequestTruncationStrategyAllOf"
-import type { TruncationObject } from "./truncationObject"
-
-export type CreateRunRequestTruncationStrategy = TruncationObject &
-  CreateRunRequestTruncationStrategyAllOf
+export type CreateRunRequestTruncationStrategy = TruncationObject & CreateRunRequestTruncationStrategyAllOf;

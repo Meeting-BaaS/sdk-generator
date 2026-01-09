@@ -5,13 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateResponseGA } from "./realtimeSessionCreateResponseGA"
-import type { RealtimeTranscriptionSessionCreateResponseGA } from "./realtimeTranscriptionSessionCreateResponseGA"
+import type { RealtimeSessionCreateResponseGA } from './realtimeSessionCreateResponseGA';
+import type { RealtimeTranscriptionSessionCreateResponseGA } from './realtimeTranscriptionSessionCreateResponseGA';
 
 /**
  * The session configuration for either a realtime or transcription session.
 
  */
-export type RealtimeCreateClientSecretResponseSession =
-  | RealtimeSessionCreateResponseGA
-  | RealtimeTranscriptionSessionCreateResponseGA
+export type RealtimeCreateClientSecretResponseSession = RealtimeSessionCreateResponseGA | RealtimeTranscriptionSessionCreateResponseGA;

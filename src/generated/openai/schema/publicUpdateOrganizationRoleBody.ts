@@ -5,19 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { PublicUpdateOrganizationRoleBodyDescription } from "./publicUpdateOrganizationRoleBodyDescription"
-import type { PublicUpdateOrganizationRoleBodyPermissions } from "./publicUpdateOrganizationRoleBodyPermissions"
-import type { PublicUpdateOrganizationRoleBodyRoleName } from "./publicUpdateOrganizationRoleBodyRoleName"
+import type { PublicUpdateOrganizationRoleBodyPermissions } from './publicUpdateOrganizationRoleBodyPermissions';
+import type { PublicUpdateOrganizationRoleBodyDescription } from './publicUpdateOrganizationRoleBodyDescription';
+import type { PublicUpdateOrganizationRoleBodyRoleName } from './publicUpdateOrganizationRoleBodyRoleName';
 
 /**
  * Request payload for updating an existing role.
  */
 export interface PublicUpdateOrganizationRoleBody {
   /** Updated set of permissions for the role. */
-  permissions?: PublicUpdateOrganizationRoleBodyPermissions
+  permissions?: PublicUpdateOrganizationRoleBodyPermissions;
   /** New description for the role. */
-  description?: PublicUpdateOrganizationRoleBodyDescription
+  description?: PublicUpdateOrganizationRoleBodyDescription;
   /** New name for the role. */
-  role_name?: PublicUpdateOrganizationRoleBodyRoleName
+  role_name?: PublicUpdateOrganizationRoleBodyRoleName;
 }

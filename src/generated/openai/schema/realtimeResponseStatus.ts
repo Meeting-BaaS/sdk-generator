@@ -11,14 +11,14 @@
 `incomplete`, `in_progress`).
 
  */
-export type RealtimeResponseStatus =
-  (typeof RealtimeResponseStatus)[keyof typeof RealtimeResponseStatus]
+export type RealtimeResponseStatus = typeof RealtimeResponseStatus[keyof typeof RealtimeResponseStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeResponseStatus = {
-  completed: "completed",
-  cancelled: "cancelled",
-  failed: "failed",
-  incomplete: "incomplete",
-  in_progress: "in_progress"
-} as const
+  completed: 'completed',
+  cancelled: 'cancelled',
+  failed: 'failed',
+  incomplete: 'incomplete',
+  in_progress: 'in_progress',
+} as const;

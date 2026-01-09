@@ -12,5 +12,5 @@ export type AssistantObjectToolResourcesAnyOfFileSearch = {
 
    * @maxItems 1
    */
-  vector_store_ids?: string[]
-}
+  vector_store_ids?: string[];
+};

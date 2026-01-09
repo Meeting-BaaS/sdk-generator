@@ -9,4 +9,4 @@
 /**
  * @nullable
  */
-export type CreateRunRequestTruncationStrategyAllOf = unknown | null
+export type CreateRunRequestTruncationStrategyAllOf = unknown | null;

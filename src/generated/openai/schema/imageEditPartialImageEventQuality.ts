@@ -10,13 +10,13 @@
  * The quality setting for the requested edited image.
 
  */
-export type ImageEditPartialImageEventQuality =
-  (typeof ImageEditPartialImageEventQuality)[keyof typeof ImageEditPartialImageEventQuality]
+export type ImageEditPartialImageEventQuality = typeof ImageEditPartialImageEventQuality[keyof typeof ImageEditPartialImageEventQuality];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditPartialImageEventQuality = {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  auto: "auto"
-} as const
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  auto: 'auto',
+} as const;

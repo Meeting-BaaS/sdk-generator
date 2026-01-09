@@ -12,20 +12,20 @@
 or `rouge_l`.
 
  */
-export type GraderTextSimilarityEvaluationMetric =
-  (typeof GraderTextSimilarityEvaluationMetric)[keyof typeof GraderTextSimilarityEvaluationMetric]
+export type GraderTextSimilarityEvaluationMetric = typeof GraderTextSimilarityEvaluationMetric[keyof typeof GraderTextSimilarityEvaluationMetric];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderTextSimilarityEvaluationMetric = {
-  cosine: "cosine",
-  fuzzy_match: "fuzzy_match",
-  bleu: "bleu",
-  gleu: "gleu",
-  meteor: "meteor",
-  rouge_1: "rouge_1",
-  rouge_2: "rouge_2",
-  rouge_3: "rouge_3",
-  rouge_4: "rouge_4",
-  rouge_5: "rouge_5",
-  rouge_l: "rouge_l"
-} as const
+  cosine: 'cosine',
+  fuzzy_match: 'fuzzy_match',
+  bleu: 'bleu',
+  gleu: 'gleu',
+  meteor: 'meteor',
+  rouge_1: 'rouge_1',
+  rouge_2: 'rouge_2',
+  rouge_3: 'rouge_3',
+  rouge_4: 'rouge_4',
+  rouge_5: 'rouge_5',
+  rouge_l: 'rouge_l',
+} as const;

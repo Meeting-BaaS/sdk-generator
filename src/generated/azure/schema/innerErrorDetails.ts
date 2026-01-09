@@ -9,4 +9,4 @@
 /**
  * Additional supportive details regarding the error and/or expected policies.
  */
-export type InnerErrorDetails = { [key: string]: string }
+export type InnerErrorDetails = {[key: string]: string};

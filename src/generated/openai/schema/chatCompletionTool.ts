@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionToolType } from "./chatCompletionToolType"
-import type { FunctionObject } from "./functionObject"
+import type { ChatCompletionToolType } from './chatCompletionToolType';
+import type { FunctionObject } from './functionObject';
 
 /**
  * A function tool that can be used to generate a response.
@@ -14,6 +14,6 @@ import type { FunctionObject } from "./functionObject"
  */
 export interface ChatCompletionTool {
   /** The type of the tool. Currently, only `function` is supported. */
-  type: ChatCompletionToolType
-  function: FunctionObject
+  type: ChatCompletionToolType;
+  function: FunctionObject;
 }

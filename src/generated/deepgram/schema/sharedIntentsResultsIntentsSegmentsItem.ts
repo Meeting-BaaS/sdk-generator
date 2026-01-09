@@ -6,11 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedIntentsResultsIntentsSegmentsItemIntentsItem } from "./sharedIntentsResultsIntentsSegmentsItemIntentsItem"
+import type { SharedIntentsResultsIntentsSegmentsItemIntentsItem } from './sharedIntentsResultsIntentsSegmentsItemIntentsItem';
 
 export type SharedIntentsResultsIntentsSegmentsItem = {
-  text?: string
-  start_word?: number
-  end_word?: number
-  intents?: SharedIntentsResultsIntentsSegmentsItemIntentsItem[]
-}
+  text?: string;
+  start_word?: number;
+  end_word?: number;
+  intents?: SharedIntentsResultsIntentsSegmentsItemIntentsItem[];
+};

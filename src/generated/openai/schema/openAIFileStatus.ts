@@ -10,11 +10,12 @@
  * Deprecated. The current status of the file, which can be either `uploaded`, `processed`, or `error`.
  * @deprecated
  */
-export type OpenAIFileStatus = (typeof OpenAIFileStatus)[keyof typeof OpenAIFileStatus]
+export type OpenAIFileStatus = typeof OpenAIFileStatus[keyof typeof OpenAIFileStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OpenAIFileStatus = {
-  uploaded: "uploaded",
-  processed: "processed",
-  error: "error"
-} as const
+  uploaded: 'uploaded',
+  processed: 'processed',
+  error: 'error',
+} as const;

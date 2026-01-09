@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookFineTuningJobSucceededData } from "./webhookFineTuningJobSucceededData"
-import type { WebhookFineTuningJobSucceededObject } from "./webhookFineTuningJobSucceededObject"
-import type { WebhookFineTuningJobSucceededType } from "./webhookFineTuningJobSucceededType"
+import type { WebhookFineTuningJobSucceededData } from './webhookFineTuningJobSucceededData';
+import type { WebhookFineTuningJobSucceededObject } from './webhookFineTuningJobSucceededObject';
+import type { WebhookFineTuningJobSucceededType } from './webhookFineTuningJobSucceededType';
 
 /**
  * Sent when a fine-tuning job has succeeded.
@@ -15,18 +15,18 @@ import type { WebhookFineTuningJobSucceededType } from "./webhookFineTuningJobSu
  */
 export interface WebhookFineTuningJobSucceeded {
   /** The Unix timestamp (in seconds) of when the fine-tuning job succeeded.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The unique ID of the event.
-   */
-  id: string
+ */
+  id: string;
   /** Event data payload.
-   */
-  data: WebhookFineTuningJobSucceededData
+ */
+  data: WebhookFineTuningJobSucceededData;
   /** The object of the event. Always `event`.
-   */
-  object?: WebhookFineTuningJobSucceededObject
+ */
+  object?: WebhookFineTuningJobSucceededObject;
   /** The type of the event. Always `fine_tuning.job.succeeded`.
-   */
-  type: WebhookFineTuningJobSucceededType
+ */
+  type: WebhookFineTuningJobSucceededType;
 }

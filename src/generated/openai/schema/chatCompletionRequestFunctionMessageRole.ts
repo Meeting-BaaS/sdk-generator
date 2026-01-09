@@ -9,10 +9,10 @@
 /**
  * The role of the messages author, in this case `function`.
  */
-export type ChatCompletionRequestFunctionMessageRole =
-  (typeof ChatCompletionRequestFunctionMessageRole)[keyof typeof ChatCompletionRequestFunctionMessageRole]
+export type ChatCompletionRequestFunctionMessageRole = typeof ChatCompletionRequestFunctionMessageRole[keyof typeof ChatCompletionRequestFunctionMessageRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestFunctionMessageRole = {
-  function: "function"
-} as const
+  function: 'function',
+} as const;

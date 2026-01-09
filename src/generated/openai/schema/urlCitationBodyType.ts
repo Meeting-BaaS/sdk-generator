@@ -9,9 +9,10 @@
 /**
  * The type of the URL citation. Always `url_citation`.
  */
-export type UrlCitationBodyType = (typeof UrlCitationBodyType)[keyof typeof UrlCitationBodyType]
+export type UrlCitationBodyType = typeof UrlCitationBodyType[keyof typeof UrlCitationBodyType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UrlCitationBodyType = {
-  url_citation: "url_citation"
-} as const
+  url_citation: 'url_citation',
+} as const;

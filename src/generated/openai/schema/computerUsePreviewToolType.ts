@@ -9,10 +9,10 @@
 /**
  * The type of the computer use tool. Always `computer_use_preview`.
  */
-export type ComputerUsePreviewToolType =
-  (typeof ComputerUsePreviewToolType)[keyof typeof ComputerUsePreviewToolType]
+export type ComputerUsePreviewToolType = typeof ComputerUsePreviewToolType[keyof typeof ComputerUsePreviewToolType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerUsePreviewToolType = {
-  computer_use_preview: "computer_use_preview"
-} as const
+  computer_use_preview: 'computer_use_preview',
+} as const;

@@ -8,5 +8,5 @@
 
 export interface TranscriptionLinks {
   /** The location to get all files of this entity. See operation "Transcriptions_ListFiles" for more details. */
-  readonly files?: string
+  readonly files?: string;
 }

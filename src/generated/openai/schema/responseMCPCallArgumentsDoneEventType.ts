@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_call_arguments.done'.
  */
-export type ResponseMCPCallArgumentsDoneEventType =
-  (typeof ResponseMCPCallArgumentsDoneEventType)[keyof typeof ResponseMCPCallArgumentsDoneEventType]
+export type ResponseMCPCallArgumentsDoneEventType = typeof ResponseMCPCallArgumentsDoneEventType[keyof typeof ResponseMCPCallArgumentsDoneEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPCallArgumentsDoneEventType = {
-  responsemcp_call_argumentsdone: "response.mcp_call_arguments.done"
-} as const
+  responsemcp_call_argumentsdone: 'response.mcp_call_arguments.done',
+} as const;

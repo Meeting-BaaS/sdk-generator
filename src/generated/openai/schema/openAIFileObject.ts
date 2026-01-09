@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `file`.
  */
-export type OpenAIFileObject = (typeof OpenAIFileObject)[keyof typeof OpenAIFileObject]
+export type OpenAIFileObject = typeof OpenAIFileObject[keyof typeof OpenAIFileObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OpenAIFileObject = {
-  file: "file"
-} as const
+  file: 'file',
+} as const;

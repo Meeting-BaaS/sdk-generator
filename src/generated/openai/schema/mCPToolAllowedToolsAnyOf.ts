@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolFilter } from "./mCPToolFilter"
+import type { MCPToolFilter } from './mCPToolFilter';
 
 /**
  * List of allowed tool names or a filter object.
 
  */
-export type MCPToolAllowedToolsAnyOf = string[] | MCPToolFilter
+export type MCPToolAllowedToolsAnyOf = string[] | MCPToolFilter;

@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreExpirationAfterAnchor } from "./vectorStoreExpirationAfterAnchor"
+import type { VectorStoreExpirationAfterAnchor } from './vectorStoreExpirationAfterAnchor';
 
 /**
  * The expiration policy for a vector store.
  */
 export interface VectorStoreExpirationAfter {
   /** Anchor timestamp after which the expiration policy applies. Supported anchors: `last_active_at`. */
-  anchor: VectorStoreExpirationAfterAnchor
+  anchor: VectorStoreExpirationAfterAnchor;
   /**
    * The number of days after the anchor time that the vector store will expire.
    * @minimum 1
    * @maximum 365
    */
-  days: number
+  days: number;
 }

@@ -7,29 +7,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * SharedCustomTopicModeParameter type definition
- */
-
-/**
- * SharedCustomTopicModeParameter type definition
- */
-
-/**
- * SharedCustomTopicModeParameter type definition
- */
-
-/**
- * SharedCustomTopicModeParameter type definition
- */
-
-/**
- * SharedCustomTopicModeParameter type definition
- */
-
-/**
- * SharedCustomTopicModeParameter type definition
- */
 
 /**
  * SharedCustomTopicModeParameter type definition
@@ -37,6 +14,6 @@
 export type SharedCustomTopicModeParameter = typeof SharedCustomTopicModeParameter[keyof typeof SharedCustomTopicModeParameter];
 
 export const SharedCustomTopicModeParameter = {
-  extended: "extended",
-  strict: "strict"
+  extended: 'extended',
+  strict: 'strict'
 } as const

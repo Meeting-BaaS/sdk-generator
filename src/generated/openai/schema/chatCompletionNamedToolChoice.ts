@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ChatCompletionNamedToolChoiceFunction } from "./chatCompletionNamedToolChoiceFunction"
-import type { ChatCompletionNamedToolChoiceType } from "./chatCompletionNamedToolChoiceType"
+import type { ChatCompletionNamedToolChoiceType } from './chatCompletionNamedToolChoiceType';
+import type { ChatCompletionNamedToolChoiceFunction } from './chatCompletionNamedToolChoiceFunction';
 
 /**
  * Specifies a tool the model should use. Use to force the model to call a specific function.
  */
 export interface ChatCompletionNamedToolChoice {
   /** For function calling, the type is always `function`. */
-  type: ChatCompletionNamedToolChoiceType
-  function: ChatCompletionNamedToolChoiceFunction
+  type: ChatCompletionNamedToolChoiceType;
+  function: ChatCompletionNamedToolChoiceFunction;
 }

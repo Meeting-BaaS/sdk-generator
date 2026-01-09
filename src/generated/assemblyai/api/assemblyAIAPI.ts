@@ -5,48 +5,62 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-
-import { faker } from "@faker-js/faker"
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
-import { delay, HttpResponse, http } from "msw"
+import axios from 'axios';
 import type {
-  AutoHighlightsResult,
-  ContentSafetyLabelsResult,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
+
+import type {
   CreateRealtimeTemporaryTokenParams,
   GetSubtitlesParams,
   LemurQuestionAnswerParams,
+  LemurSummaryParams,
+  LemurTaskParams,
+  ListTranscriptsParams,
+  SubtitleFormat,
+  TranscriptParams,
+  WordSearchParams
+} from '../schema';
+
+import {
+  faker
+} from '@faker-js/faker';
+
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
+
+import {
+  AudioIntelligenceModelStatus,
+  RedactPiiAudioQuality,
+  RedactedAudioStatus,
+  SpeechModel,
+  SubstitutionPolicy,
+  TranscriptLanguageCode,
+  TranscriptStatus
+} from '../schema';
+import type {
+  AutoHighlightsResult,
+  ContentSafetyLabelsResult,
   LemurQuestionAnswerResponse,
   LemurResponse,
   LemurStringResponse,
-  LemurSummaryParams,
   LemurSummaryResponse,
-  LemurTaskParams,
   LemurTaskResponse,
-  ListTranscriptsParams,
   ParagraphsResponse,
   PurgeLemurRequestDataResponse,
   RealtimeTemporaryTokenResponse,
   RedactedAudioResponse,
   SentencesResponse,
-  SubtitleFormat,
   TopicDetectionModelResult,
   Transcript,
   TranscriptList,
-  TranscriptParams,
   UploadedFile,
-  WordSearchParams,
   WordSearchResponse
-} from "../schema"
-import {
-  AudioIntelligenceModelStatus,
-  RedactedAudioStatus,
-  RedactPiiAudioQuality,
-  SpeechModel,
-  SubstitutionPolicy,
-  TranscriptLanguageCode,
-  TranscriptStatus
-} from "../schema"
+} from '../schema';
 
 /**
  * <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -55,11 +69,13 @@ Upload a media file to AssemblyAI's servers.
  * @summary Upload a media file
  */
 export const uploadFile = <TData = AxiosResponse<UploadedFile>>(
-  uploadFileBody: Blob,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/upload", uploadFileBody, options)
-}
+    uploadFileBody: Blob, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.post(
+      `/v2/upload`,
+      uploadFileBody,options
+    );
+  }
 
 /**
  * <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -68,11 +84,13 @@ Create a transcript from a media file that is accessible via a URL.
  * @summary Transcribe audio
  */
 export const createTranscript = <TData = AxiosResponse<Transcript>>(
-  transcriptParams: TranscriptParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/transcript", transcriptParams, options)
-}
+    transcriptParams: TranscriptParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.post(
+      `/v2/transcript`,
+      transcriptParams,options
+    );
+  }
 
 /**
  * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -84,14 +102,14 @@ If you need to retrieve transcripts from more than 90 days ago please reach out 
  * @summary List transcripts
  */
 export const listTranscripts = <TData = AxiosResponse<TranscriptList>>(
-  params?: ListTranscriptsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/v2/transcript", {
+    params?: ListTranscriptsParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/v2/transcript`,{
     ...options,
-    params: { ...params, ...options?.params }
-  })
-}
+        params: {...params, ...options?.params},}
+    );
+  }
 
 /**
  * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -100,24 +118,27 @@ Get the transcript resource. The transcript is ready when the "status" is "compl
  * @summary Get transcript
  */
 export const getTranscript = <TData = AxiosResponse<Transcript>>(
-  transcriptId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/transcript/${transcriptId}`, options)
-}
+    transcriptId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/v2/transcript/${transcriptId}`,options
+    );
+  }
 
 /**
  * <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Remove the data from the transcript and mark it as deleted.
+<Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>
 
  * @summary Delete transcript
  */
 export const deleteTranscript = <TData = AxiosResponse<Transcript>>(
-  transcriptId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/v2/transcript/${transcriptId}`, options)
-}
+    transcriptId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.delete(
+      `/v2/transcript/${transcriptId}`,options
+    );
+  }
 
 /**
  * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -126,16 +147,16 @@ Export your transcript in SRT or VTT format to use with a video player for subti
  * @summary Get subtitles for transcript
  */
 export const getSubtitles = <TData = AxiosResponse<string>>(
-  transcriptId: string,
-  subtitleFormat: SubtitleFormat,
-  params?: GetSubtitlesParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/transcript/${transcriptId}/${subtitleFormat}`, {
+    transcriptId: string,
+    subtitleFormat: SubtitleFormat,
+    params?: GetSubtitlesParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/v2/transcript/${transcriptId}/${subtitleFormat}`,{
     ...options,
-    params: { ...params, ...options?.params }
-  })
-}
+        params: {...params, ...options?.params},}
+    );
+  }
 
 /**
  * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -144,11 +165,12 @@ Get the transcript split by sentences. The API will attempt to semantically segm
  * @summary Get sentences in transcript
  */
 export const getTranscriptSentences = <TData = AxiosResponse<SentencesResponse>>(
-  transcriptId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/transcript/${transcriptId}/sentences`, options)
-}
+    transcriptId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/v2/transcript/${transcriptId}/sentences`,options
+    );
+  }
 
 /**
  * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -157,11 +179,12 @@ Get the transcript split by paragraphs. The API will attempt to semantically seg
  * @summary Get paragraphs in transcript
  */
 export const getTranscriptParagraphs = <TData = AxiosResponse<ParagraphsResponse>>(
-  transcriptId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/transcript/${transcriptId}/paragraphs`, options)
-}
+    transcriptId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/v2/transcript/${transcriptId}/paragraphs`,options
+    );
+  }
 
 /**
  * <Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -170,15 +193,15 @@ Search through the transcript for keywords. You can search for individual words,
  * @summary Search words in transcript
  */
 export const wordSearch = <TData = AxiosResponse<WordSearchResponse>>(
-  transcriptId: string,
-  params: WordSearchParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/transcript/${transcriptId}/word-search`, {
+    transcriptId: string,
+    params: WordSearchParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/v2/transcript/${transcriptId}/word-search`,{
     ...options,
-    params: { ...params, ...options?.params }
-  })
-}
+        params: {...params, ...options?.params},}
+    );
+  }
 
 /**
  * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
@@ -187,11 +210,12 @@ Retrieve the redacted audio object containing the status and URL to the redacted
  * @summary Get redacted audio
  */
 export const getRedactedAudio = <TData = AxiosResponse<RedactedAudioResponse>>(
-  transcriptId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/transcript/${transcriptId}/redacted-audio`, options)
-}
+    transcriptId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/v2/transcript/${transcriptId}/redacted-audio`,options
+    );
+  }
 
 /**
  * <Warning>Streaming Speech-to-Text is currently not available on the EU endpoint.</Warning>
@@ -201,11 +225,13 @@ Create a temporary authentication token for Streaming Speech-to-Text
  * @summary Create temporary authentication token for Streaming STT
  */
 export const createTemporaryToken = <TData = AxiosResponse<RealtimeTemporaryTokenResponse>>(
-  createRealtimeTemporaryTokenParams: CreateRealtimeTemporaryTokenParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/realtime/token", createRealtimeTemporaryTokenParams, options)
-}
+    createRealtimeTemporaryTokenParams: CreateRealtimeTemporaryTokenParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.post(
+      `/v2/realtime/token`,
+      createRealtimeTemporaryTokenParams,options
+    );
+  }
 
 /**
  * Use the LeMUR task endpoint to input your own LLM prompt.
@@ -213,11 +239,13 @@ export const createTemporaryToken = <TData = AxiosResponse<RealtimeTemporaryToke
  * @summary Run a task using LeMUR
  */
 export const lemurTask = <TData = AxiosResponse<LemurTaskResponse>>(
-  lemurTaskParams: LemurTaskParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/lemur/v3/generate/task", lemurTaskParams, options)
-}
+    lemurTaskParams: LemurTaskParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.post(
+      `/lemur/v3/generate/task`,
+      lemurTaskParams,options
+    );
+  }
 
 /**
  * Custom Summary allows you to distill a piece of audio into a few impactful sentences.
@@ -226,11 +254,13 @@ You can give the model context to obtain more targeted results while outputting 
  * @summary Summarize a transcript using LeMUR
  */
 export const lemurSummary = <TData = AxiosResponse<LemurSummaryResponse>>(
-  lemurSummaryParams: LemurSummaryParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/lemur/v3/generate/summary", lemurSummaryParams, options)
-}
+    lemurSummaryParams: LemurSummaryParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.post(
+      `/lemur/v3/generate/summary`,
+      lemurSummaryParams,options
+    );
+  }
 
 /**
  * Question & Answer allows you to ask free-form questions about a single transcript or a group of transcripts.
@@ -239,11 +269,13 @@ The questions can be any whose answers you find useful, such as judging whether 
  * @summary Ask questions using LeMUR
  */
 export const lemurQuestionAnswer = <TData = AxiosResponse<LemurQuestionAnswerResponse>>(
-  lemurQuestionAnswerParams: LemurQuestionAnswerParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/lemur/v3/generate/question-answer", lemurQuestionAnswerParams, options)
-}
+    lemurQuestionAnswerParams: LemurQuestionAnswerParams, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.post(
+      `/lemur/v3/generate/question-answer`,
+      lemurQuestionAnswerParams,options
+    );
+  }
 
 /**
  * Retrieve a LeMUR response that was previously generated.
@@ -251,11 +283,12 @@ export const lemurQuestionAnswer = <TData = AxiosResponse<LemurQuestionAnswerRes
  * @summary Retrieve LeMUR response
  */
 export const getLemurResponse = <TData = AxiosResponse<LemurResponse>>(
-  requestId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/lemur/v3/${requestId}`, options)
-}
+    requestId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.get(
+      `/lemur/v3/${requestId}`,options
+    );
+  }
 
 /**
  * Delete the data for a previously submitted LeMUR request.
@@ -264,11 +297,12 @@ The LLM response data, as well as any context provided in the original request w
  * @summary Purge LeMUR request data
  */
 export const purgeLemurRequestData = <TData = AxiosResponse<PurgeLemurRequestDataResponse>>(
-  requestId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/lemur/v3/${requestId}`, options)
-}
+    requestId: string, options?: AxiosRequestConfig
+ ): Promise<TData> => {
+    return axios.delete(
+      `/lemur/v3/${requestId}`,options
+    );
+  }
 
 export type UploadFileResult = AxiosResponse<UploadedFile>
 export type CreateTranscriptResult = AxiosResponse<Transcript>
@@ -287,1487 +321,267 @@ export type LemurQuestionAnswerResult = AxiosResponse<LemurQuestionAnswerRespons
 export type GetLemurResponseResult = AxiosResponse<LemurResponse>
 export type PurgeLemurRequestDataResult = AxiosResponse<PurgeLemurRequestDataResponse>
 
-export const getUploadFileResponseMock = (
-  overrideResponse: Partial<UploadedFile> = {}
-): UploadedFile => ({ upload_url: faker.internet.url(), ...overrideResponse })
 
-export const getCreateTranscriptResponseAutoHighlightsResultMock = (
-  overrideResponse: Partial<AutoHighlightsResult> = {}
-): AutoHighlightsResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        count: faker.number.int({ min: undefined, max: undefined }),
-        rank: faker.number.float(),
-        text: faker.string.alpha(20),
-        timestamps: Array.from(
-          { length: faker.number.int({ min: 1, max: 10 }) },
-          (_, i) => i + 1
-        ).map(() => ({
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined })
-        }))
+export const getUploadFileResponseMock = (overrideResponse: Partial< UploadedFile > = {}): UploadedFile => ({upload_url: faker.internet.url(), ...overrideResponse})
+
+export const getCreateTranscriptResponseAutoHighlightsResultMock = (overrideResponse: Partial<AutoHighlightsResult> = {}): AutoHighlightsResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({count: faker.number.int({min: undefined, max: undefined}), rank: faker.number.float(), text: faker.string.alpha(20), timestamps: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}))}))}, ...overrideResponse});
+
+export const getCreateTranscriptResponseContentSafetyLabelsResultMock = (overrideResponse: Partial<ContentSafetyLabelsResult> = {}): ContentSafetyLabelsResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), labels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), confidence: faker.number.float(), severity: faker.number.float()})), sentences_idx_start: faker.number.int({min: undefined, max: undefined}), sentences_idx_end: faker.number.int({min: undefined, max: undefined}), timestamp: {start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}})), summary: {
+        [faker.string.alphanumeric(5)]: faker.number.float()
+      }, severity_score_summary: {
+        [faker.string.alphanumeric(5)]: {low: faker.number.float(), medium: faker.number.float(), high: faker.number.float()}
+      }}, ...overrideResponse});
+
+export const getCreateTranscriptResponseTopicDetectionModelResultMock = (overrideResponse: Partial<TopicDetectionModelResult> = {}): TopicDetectionModelResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), labels: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({relevance: faker.number.float(), label: faker.string.alpha(20)})), undefined]), timestamp: faker.helpers.arrayElement([{start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}, undefined])})), summary: {
+        [faker.string.alphanumeric(5)]: faker.number.float()
+      }}, ...overrideResponse});
+
+export const getCreateTranscriptResponseMock = (overrideResponse: Partial< Transcript > = {}): Transcript => ({id: faker.string.uuid(), audio_url: faker.internet.url(), status: faker.helpers.arrayElement(Object.values(TranscriptStatus)), language_code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(TranscriptLanguageCode)),faker.string.alpha(20),]), undefined]), language_detection: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), language_confidence_threshold: faker.number.float(), language_confidence: faker.number.float(), speech_model: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(SpeechModel)),null,]), text: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), words: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), audio_duration: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), punctuate: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), format_text: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), disfluencies: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), multichannel: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), audio_channels: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]), webhook_status_code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), webhook_auth: faker.datatype.boolean(), webhook_auth_header_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), speed_boost: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), auto_highlights: faker.datatype.boolean(), auto_highlights_result: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getCreateTranscriptResponseAutoHighlightsResultMock()},null,]), undefined]), audio_start_from: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), audio_end_at: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), word_boost: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), boost_param: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), filter_profanity: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), redact_pii: faker.datatype.boolean(), redact_pii_audio: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), redact_pii_audio_quality: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(RedactPiiAudioQuality)),null,]), undefined]), redact_pii_policies: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), redact_pii_sub: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(SubstitutionPolicy)), undefined]), speaker_labels: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), speakers_expected: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), content_safety: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), content_safety_labels: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getCreateTranscriptResponseContentSafetyLabelsResultMock()},null,]), undefined]), iab_categories: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), iab_categories_result: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getCreateTranscriptResponseTopicDetectionModelResultMock()},null,]), undefined]), custom_spelling: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), keyterms_prompt: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), prompt: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), auto_chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), summarization: faker.datatype.boolean(), summary_type: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), summary_model: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), summary: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), custom_topics: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), topics: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), sentiment_analysis: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), sentiment_analysis_results: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), entity_detection: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), entities: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), speech_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]), throttled: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), error: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), language_model: faker.string.alpha(20), acoustic_model: faker.string.alpha(20), ...overrideResponse})
+
+export const getListTranscriptsResponseMock = (overrideResponse: Partial< TranscriptList > = {}): TranscriptList => ({page_details: {limit: faker.number.int({min: undefined, max: undefined}), result_count: faker.number.int({min: undefined, max: undefined}), current_url: faker.internet.url(), prev_url: faker.internet.url(), next_url: faker.internet.url()}, transcripts: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), resource_url: faker.internet.url(), status: faker.helpers.arrayElement(Object.values(TranscriptStatus)), created: faker.helpers.fromRegExp('^(?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))$'), completed: faker.helpers.arrayElement([faker.string.alpha(20),null,]), audio_url: faker.internet.url(), error: faker.helpers.arrayElement([faker.string.alpha(20),null,])})), ...overrideResponse})
+
+export const getGetTranscriptResponseAutoHighlightsResultMock = (overrideResponse: Partial<AutoHighlightsResult> = {}): AutoHighlightsResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({count: faker.number.int({min: undefined, max: undefined}), rank: faker.number.float(), text: faker.string.alpha(20), timestamps: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}))}))}, ...overrideResponse});
+
+export const getGetTranscriptResponseContentSafetyLabelsResultMock = (overrideResponse: Partial<ContentSafetyLabelsResult> = {}): ContentSafetyLabelsResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), labels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), confidence: faker.number.float(), severity: faker.number.float()})), sentences_idx_start: faker.number.int({min: undefined, max: undefined}), sentences_idx_end: faker.number.int({min: undefined, max: undefined}), timestamp: {start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}})), summary: {
+        [faker.string.alphanumeric(5)]: faker.number.float()
+      }, severity_score_summary: {
+        [faker.string.alphanumeric(5)]: {low: faker.number.float(), medium: faker.number.float(), high: faker.number.float()}
+      }}, ...overrideResponse});
+
+export const getGetTranscriptResponseTopicDetectionModelResultMock = (overrideResponse: Partial<TopicDetectionModelResult> = {}): TopicDetectionModelResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), labels: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({relevance: faker.number.float(), label: faker.string.alpha(20)})), undefined]), timestamp: faker.helpers.arrayElement([{start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}, undefined])})), summary: {
+        [faker.string.alphanumeric(5)]: faker.number.float()
+      }}, ...overrideResponse});
+
+export const getGetTranscriptResponseMock = (overrideResponse: Partial< Transcript > = {}): Transcript => ({id: faker.string.uuid(), audio_url: faker.internet.url(), status: faker.helpers.arrayElement(Object.values(TranscriptStatus)), language_code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(TranscriptLanguageCode)),faker.string.alpha(20),]), undefined]), language_detection: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), language_confidence_threshold: faker.number.float(), language_confidence: faker.number.float(), speech_model: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(SpeechModel)),null,]), text: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), words: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), audio_duration: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), punctuate: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), format_text: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), disfluencies: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), multichannel: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), audio_channels: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]), webhook_status_code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), webhook_auth: faker.datatype.boolean(), webhook_auth_header_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), speed_boost: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), auto_highlights: faker.datatype.boolean(), auto_highlights_result: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getGetTranscriptResponseAutoHighlightsResultMock()},null,]), undefined]), audio_start_from: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), audio_end_at: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), word_boost: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), boost_param: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), filter_profanity: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), redact_pii: faker.datatype.boolean(), redact_pii_audio: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), redact_pii_audio_quality: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(RedactPiiAudioQuality)),null,]), undefined]), redact_pii_policies: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), redact_pii_sub: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(SubstitutionPolicy)), undefined]), speaker_labels: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), speakers_expected: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), content_safety: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), content_safety_labels: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getGetTranscriptResponseContentSafetyLabelsResultMock()},null,]), undefined]), iab_categories: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), iab_categories_result: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getGetTranscriptResponseTopicDetectionModelResultMock()},null,]), undefined]), custom_spelling: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), keyterms_prompt: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), prompt: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), auto_chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), summarization: faker.datatype.boolean(), summary_type: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), summary_model: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), summary: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), custom_topics: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), topics: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), sentiment_analysis: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), sentiment_analysis_results: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), entity_detection: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), entities: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), speech_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]), throttled: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), error: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), language_model: faker.string.alpha(20), acoustic_model: faker.string.alpha(20), ...overrideResponse})
+
+export const getDeleteTranscriptResponseAutoHighlightsResultMock = (overrideResponse: Partial<AutoHighlightsResult> = {}): AutoHighlightsResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({count: faker.number.int({min: undefined, max: undefined}), rank: faker.number.float(), text: faker.string.alpha(20), timestamps: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}))}))}, ...overrideResponse});
+
+export const getDeleteTranscriptResponseContentSafetyLabelsResultMock = (overrideResponse: Partial<ContentSafetyLabelsResult> = {}): ContentSafetyLabelsResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), labels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.string.alpha(20), confidence: faker.number.float(), severity: faker.number.float()})), sentences_idx_start: faker.number.int({min: undefined, max: undefined}), sentences_idx_end: faker.number.int({min: undefined, max: undefined}), timestamp: {start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}})), summary: {
+        [faker.string.alphanumeric(5)]: faker.number.float()
+      }, severity_score_summary: {
+        [faker.string.alphanumeric(5)]: {low: faker.number.float(), medium: faker.number.float(), high: faker.number.float()}
+      }}, ...overrideResponse});
+
+export const getDeleteTranscriptResponseTopicDetectionModelResultMock = (overrideResponse: Partial<TopicDetectionModelResult> = {}): TopicDetectionModelResult => ({...{status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)), results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), labels: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({relevance: faker.number.float(), label: faker.string.alpha(20)})), undefined]), timestamp: faker.helpers.arrayElement([{start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined})}, undefined])})), summary: {
+        [faker.string.alphanumeric(5)]: faker.number.float()
+      }}, ...overrideResponse});
+
+export const getDeleteTranscriptResponseMock = (overrideResponse: Partial< Transcript > = {}): Transcript => ({id: faker.string.uuid(), audio_url: faker.internet.url(), status: faker.helpers.arrayElement(Object.values(TranscriptStatus)), language_code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(TranscriptLanguageCode)),faker.string.alpha(20),]), undefined]), language_detection: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), language_confidence_threshold: faker.number.float(), language_confidence: faker.number.float(), speech_model: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(SpeechModel)),null,]), text: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), words: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), audio_duration: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), punctuate: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), format_text: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), disfluencies: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), multichannel: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), audio_channels: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]), webhook_status_code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), webhook_auth: faker.datatype.boolean(), webhook_auth_header_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), speed_boost: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), auto_highlights: faker.datatype.boolean(), auto_highlights_result: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getDeleteTranscriptResponseAutoHighlightsResultMock()},null,]), undefined]), audio_start_from: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), audio_end_at: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), word_boost: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), boost_param: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), filter_profanity: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), redact_pii: faker.datatype.boolean(), redact_pii_audio: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), redact_pii_audio_quality: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(RedactPiiAudioQuality)),null,]), undefined]), redact_pii_policies: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), redact_pii_sub: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(SubstitutionPolicy)), undefined]), speaker_labels: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), speakers_expected: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), undefined]), content_safety: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), content_safety_labels: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getDeleteTranscriptResponseContentSafetyLabelsResultMock()},null,]), undefined]), iab_categories: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), iab_categories_result: faker.helpers.arrayElement([faker.helpers.arrayElement([{...getDeleteTranscriptResponseTopicDetectionModelResultMock()},null,]), undefined]), custom_spelling: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), keyterms_prompt: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), prompt: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), auto_chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), summarization: faker.datatype.boolean(), summary_type: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), summary_model: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), summary: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), custom_topics: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), topics: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), sentiment_analysis: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), sentiment_analysis_results: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), entity_detection: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), entities: faker.helpers.arrayElement([faker.helpers.arrayElement([[],null,]), undefined]), speech_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]), throttled: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.datatype.boolean(),null,]), undefined]), error: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), language_model: faker.string.alpha(20), acoustic_model: faker.string.alpha(20), ...overrideResponse})
+
+export const getGetSubtitlesResponseMock = (): string => (faker.word.sample())
+
+export const getGetTranscriptSentencesResponseMock = (overrideResponse: Partial< SentencesResponse > = {}): SentencesResponse => ({id: faker.string.uuid(), confidence: faker.number.float(), audio_duration: faker.number.int({min: undefined, max: undefined}), sentences: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined}), confidence: faker.number.float(), words: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({confidence: faker.number.float(), start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined}), text: faker.string.alpha(20), channel: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), speaker: faker.helpers.arrayElement([faker.string.alpha(20),null,])})), channel: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), speaker: faker.helpers.arrayElement([faker.string.alpha(20),null,])})), ...overrideResponse})
+
+export const getGetTranscriptParagraphsResponseMock = (overrideResponse: Partial< ParagraphsResponse > = {}): ParagraphsResponse => ({id: faker.string.uuid(), confidence: faker.number.float(), audio_duration: faker.number.int({min: undefined, max: undefined}), paragraphs: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined}), confidence: faker.number.float(), words: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({confidence: faker.number.float(), start: faker.number.int({min: undefined, max: undefined}), end: faker.number.int({min: undefined, max: undefined}), text: faker.string.alpha(20), channel: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), speaker: faker.helpers.arrayElement([faker.string.alpha(20),null,])}))})), ...overrideResponse})
+
+export const getWordSearchResponseMock = (overrideResponse: Partial< WordSearchResponse > = {}): WordSearchResponse => ({id: faker.string.uuid(), total_count: faker.number.int({min: undefined, max: undefined}), matches: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.string.alpha(20), count: faker.number.int({min: undefined, max: undefined}), timestamps: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.number.int({min: undefined, max: undefined}))))), indexes: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.number.int({min: undefined, max: undefined})))})), ...overrideResponse})
+
+export const getGetRedactedAudioResponseMock = (overrideResponse: Partial< RedactedAudioResponse > = {}): RedactedAudioResponse => ({status: faker.helpers.arrayElement(Object.values(RedactedAudioStatus)), redacted_audio_url: faker.internet.url(), ...overrideResponse})
+
+export const getCreateTemporaryTokenResponseMock = (overrideResponse: Partial< RealtimeTemporaryTokenResponse > = {}): RealtimeTemporaryTokenResponse => ({token: faker.string.alpha(20), ...overrideResponse})
+
+export const getLemurTaskResponseMock = (): LemurTaskResponse => ({...{...{response: faker.string.alpha(20)},...{request_id: faker.string.uuid(), usage: {input_tokens: faker.number.int({min: 0, max: undefined}), output_tokens: faker.number.int({min: 0, max: undefined})}},},})
+
+export const getLemurSummaryResponseMock = (): LemurSummaryResponse => ({...{...{response: faker.string.alpha(20)},...{request_id: faker.string.uuid(), usage: {input_tokens: faker.number.int({min: 0, max: undefined}), output_tokens: faker.number.int({min: 0, max: undefined})}},},})
+
+export const getLemurQuestionAnswerResponseMock = (): LemurQuestionAnswerResponse => ({...{request_id: faker.string.uuid(), usage: {input_tokens: faker.number.int({min: 0, max: undefined}), output_tokens: faker.number.int({min: 0, max: undefined})}},...{response: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({question: faker.string.alpha(20), answer: faker.string.alpha(20)}))},})
+
+export const getGetLemurResponseResponseLemurStringResponseMock = (overrideResponse: Partial<LemurStringResponse> = {}): LemurStringResponse => ({...{...{response: faker.string.alpha(20)},...{request_id: faker.string.uuid(), usage: {input_tokens: faker.number.int({min: 0, max: undefined}), output_tokens: faker.number.int({min: 0, max: undefined})}},}, ...overrideResponse});
+
+export const getGetLemurResponseResponseLemurQuestionAnswerResponseMock = (overrideResponse: Partial<LemurQuestionAnswerResponse> = {}): LemurQuestionAnswerResponse => ({...{...{request_id: faker.string.uuid(), usage: {input_tokens: faker.number.int({min: 0, max: undefined}), output_tokens: faker.number.int({min: 0, max: undefined})}},...{response: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({question: faker.string.alpha(20), answer: faker.string.alpha(20)}))},}, ...overrideResponse});
+
+export const getGetLemurResponseResponseMock = (): LemurResponse => (faker.helpers.arrayElement([{...getGetLemurResponseResponseLemurStringResponseMock()},{...getGetLemurResponseResponseLemurQuestionAnswerResponseMock()},]))
+
+export const getPurgeLemurRequestDataResponseMock = (overrideResponse: Partial< PurgeLemurRequestDataResponse > = {}): PurgeLemurRequestDataResponse => ({request_id: faker.string.uuid(), request_id_to_purge: faker.string.uuid(), deleted: faker.datatype.boolean(), ...overrideResponse})
+
+
+export const getUploadFileMockHandler = (overrideResponse?: UploadedFile | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<UploadedFile> | UploadedFile)) => {
+  return http.post('https://api.assemblyai.com/v2/upload', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUploadFileResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
       })
-    )
-  },
-  ...overrideResponse
-})
-
-export const getCreateTranscriptResponseContentSafetyLabelsResultMock = (
-  overrideResponse: Partial<ContentSafetyLabelsResult> = {}
-): ContentSafetyLabelsResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        text: faker.string.alpha(20),
-        labels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-          () => ({
-            label: faker.string.alpha(20),
-            confidence: faker.number.float(),
-            severity: faker.number.float()
-          })
-        ),
-        sentences_idx_start: faker.number.int({ min: undefined, max: undefined }),
-        sentences_idx_end: faker.number.int({ min: undefined, max: undefined }),
-        timestamp: {
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined })
-        }
-      })
-    ),
-    summary: {
-      [faker.string.alphanumeric(5)]: faker.number.float()
-    },
-    severity_score_summary: {
-      [faker.string.alphanumeric(5)]: {
-        low: faker.number.float(),
-        medium: faker.number.float(),
-        high: faker.number.float()
-      }
-    }
-  },
-  ...overrideResponse
-})
-
-export const getCreateTranscriptResponseTopicDetectionModelResultMock = (
-  overrideResponse: Partial<TopicDetectionModelResult> = {}
-): TopicDetectionModelResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        text: faker.string.alpha(20),
-        labels: faker.helpers.arrayElement([
-          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-            () => ({ relevance: faker.number.float(), label: faker.string.alpha(20) })
-          ),
-          undefined
-        ]),
-        timestamp: faker.helpers.arrayElement([
-          {
-            start: faker.number.int({ min: undefined, max: undefined }),
-            end: faker.number.int({ min: undefined, max: undefined })
-          },
-          undefined
-        ])
-      })
-    ),
-    summary: {
-      [faker.string.alphanumeric(5)]: faker.number.float()
-    }
-  },
-  ...overrideResponse
-})
-
-export const getCreateTranscriptResponseMock = (
-  overrideResponse: Partial<Transcript> = {}
-): Transcript => ({
-  id: faker.string.uuid(),
-  audio_url: faker.internet.url(),
-  status: faker.helpers.arrayElement(Object.values(TranscriptStatus)),
-  language_code: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(TranscriptLanguageCode)),
-      faker.string.alpha(20)
-    ]),
-    undefined
-  ]),
-  language_detection: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  language_confidence_threshold: faker.number.float(),
-  language_confidence: faker.number.float(),
-  speech_model: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(Object.values(SpeechModel)),
-    null
-  ]),
-  text: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
-  audio_duration: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  punctuate: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  format_text: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  disfluencies: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  multichannel: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  audio_channels: faker.helpers.arrayElement([
-    faker.number.int({ min: undefined, max: undefined }),
-    undefined
-  ]),
-  webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]),
-  webhook_status_code: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  webhook_auth: faker.datatype.boolean(),
-  webhook_auth_header_name: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  speed_boost: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  auto_highlights: faker.datatype.boolean(),
-  auto_highlights_result: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getCreateTranscriptResponseAutoHighlightsResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  audio_start_from: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  audio_end_at: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  word_boost: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  boost_param: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  filter_profanity: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  redact_pii: faker.datatype.boolean(),
-  redact_pii_audio: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  redact_pii_audio_quality: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(RedactPiiAudioQuality)),
-      null
-    ]),
-    undefined
-  ]),
-  redact_pii_policies: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([[], null]),
-    undefined
-  ]),
-  redact_pii_sub: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(Object.values(SubstitutionPolicy)),
-    undefined
-  ]),
-  speaker_labels: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  speakers_expected: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  content_safety: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  content_safety_labels: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getCreateTranscriptResponseContentSafetyLabelsResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  iab_categories: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  iab_categories_result: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getCreateTranscriptResponseTopicDetectionModelResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  custom_spelling: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  keyterms_prompt: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  prompt: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  auto_chapters: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  summarization: faker.datatype.boolean(),
-  summary_type: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  summary_model: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  summary: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  custom_topics: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  topics: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  sentiment_analysis: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  sentiment_analysis_results: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([[], null]),
-    undefined
-  ]),
-  entity_detection: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  entities: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  speech_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]),
-  throttled: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  error: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  language_model: faker.string.alpha(20),
-  acoustic_model: faker.string.alpha(20),
-  ...overrideResponse
-})
-
-export const getListTranscriptsResponseMock = (
-  overrideResponse: Partial<TranscriptList> = {}
-): TranscriptList => ({
-  page_details: {
-    limit: faker.number.int({ min: undefined, max: undefined }),
-    result_count: faker.number.int({ min: undefined, max: undefined }),
-    current_url: faker.internet.url(),
-    prev_url: faker.internet.url(),
-    next_url: faker.internet.url()
-  },
-  transcripts: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-    () => ({
-      id: faker.string.uuid(),
-      resource_url: faker.internet.url(),
-      status: faker.helpers.arrayElement(Object.values(TranscriptStatus)),
-      created: faker.helpers.fromRegExp("^(?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))$"),
-      completed: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-      audio_url: faker.internet.url(),
-      error: faker.helpers.arrayElement([faker.string.alpha(20), null])
-    })
-  ),
-  ...overrideResponse
-})
-
-export const getGetTranscriptResponseAutoHighlightsResultMock = (
-  overrideResponse: Partial<AutoHighlightsResult> = {}
-): AutoHighlightsResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        count: faker.number.int({ min: undefined, max: undefined }),
-        rank: faker.number.float(),
-        text: faker.string.alpha(20),
-        timestamps: Array.from(
-          { length: faker.number.int({ min: 1, max: 10 }) },
-          (_, i) => i + 1
-        ).map(() => ({
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined })
-        }))
-      })
-    )
-  },
-  ...overrideResponse
-})
-
-export const getGetTranscriptResponseContentSafetyLabelsResultMock = (
-  overrideResponse: Partial<ContentSafetyLabelsResult> = {}
-): ContentSafetyLabelsResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        text: faker.string.alpha(20),
-        labels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-          () => ({
-            label: faker.string.alpha(20),
-            confidence: faker.number.float(),
-            severity: faker.number.float()
-          })
-        ),
-        sentences_idx_start: faker.number.int({ min: undefined, max: undefined }),
-        sentences_idx_end: faker.number.int({ min: undefined, max: undefined }),
-        timestamp: {
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined })
-        }
-      })
-    ),
-    summary: {
-      [faker.string.alphanumeric(5)]: faker.number.float()
-    },
-    severity_score_summary: {
-      [faker.string.alphanumeric(5)]: {
-        low: faker.number.float(),
-        medium: faker.number.float(),
-        high: faker.number.float()
-      }
-    }
-  },
-  ...overrideResponse
-})
-
-export const getGetTranscriptResponseTopicDetectionModelResultMock = (
-  overrideResponse: Partial<TopicDetectionModelResult> = {}
-): TopicDetectionModelResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        text: faker.string.alpha(20),
-        labels: faker.helpers.arrayElement([
-          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-            () => ({ relevance: faker.number.float(), label: faker.string.alpha(20) })
-          ),
-          undefined
-        ]),
-        timestamp: faker.helpers.arrayElement([
-          {
-            start: faker.number.int({ min: undefined, max: undefined }),
-            end: faker.number.int({ min: undefined, max: undefined })
-          },
-          undefined
-        ])
-      })
-    ),
-    summary: {
-      [faker.string.alphanumeric(5)]: faker.number.float()
-    }
-  },
-  ...overrideResponse
-})
-
-export const getGetTranscriptResponseMock = (
-  overrideResponse: Partial<Transcript> = {}
-): Transcript => ({
-  id: faker.string.uuid(),
-  audio_url: faker.internet.url(),
-  status: faker.helpers.arrayElement(Object.values(TranscriptStatus)),
-  language_code: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(TranscriptLanguageCode)),
-      faker.string.alpha(20)
-    ]),
-    undefined
-  ]),
-  language_detection: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  language_confidence_threshold: faker.number.float(),
-  language_confidence: faker.number.float(),
-  speech_model: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(Object.values(SpeechModel)),
-    null
-  ]),
-  text: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
-  audio_duration: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  punctuate: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  format_text: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  disfluencies: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  multichannel: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  audio_channels: faker.helpers.arrayElement([
-    faker.number.int({ min: undefined, max: undefined }),
-    undefined
-  ]),
-  webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]),
-  webhook_status_code: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  webhook_auth: faker.datatype.boolean(),
-  webhook_auth_header_name: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  speed_boost: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  auto_highlights: faker.datatype.boolean(),
-  auto_highlights_result: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([{ ...getGetTranscriptResponseAutoHighlightsResultMock() }, null]),
-    undefined
-  ]),
-  audio_start_from: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  audio_end_at: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  word_boost: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  boost_param: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  filter_profanity: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  redact_pii: faker.datatype.boolean(),
-  redact_pii_audio: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  redact_pii_audio_quality: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(RedactPiiAudioQuality)),
-      null
-    ]),
-    undefined
-  ]),
-  redact_pii_policies: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([[], null]),
-    undefined
-  ]),
-  redact_pii_sub: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(Object.values(SubstitutionPolicy)),
-    undefined
-  ]),
-  speaker_labels: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  speakers_expected: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  content_safety: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  content_safety_labels: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getGetTranscriptResponseContentSafetyLabelsResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  iab_categories: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  iab_categories_result: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getGetTranscriptResponseTopicDetectionModelResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  custom_spelling: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  keyterms_prompt: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  prompt: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  auto_chapters: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  summarization: faker.datatype.boolean(),
-  summary_type: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  summary_model: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  summary: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  custom_topics: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  topics: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  sentiment_analysis: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  sentiment_analysis_results: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([[], null]),
-    undefined
-  ]),
-  entity_detection: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  entities: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  speech_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]),
-  throttled: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  error: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  language_model: faker.string.alpha(20),
-  acoustic_model: faker.string.alpha(20),
-  ...overrideResponse
-})
-
-export const getDeleteTranscriptResponseAutoHighlightsResultMock = (
-  overrideResponse: Partial<AutoHighlightsResult> = {}
-): AutoHighlightsResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        count: faker.number.int({ min: undefined, max: undefined }),
-        rank: faker.number.float(),
-        text: faker.string.alpha(20),
-        timestamps: Array.from(
-          { length: faker.number.int({ min: 1, max: 10 }) },
-          (_, i) => i + 1
-        ).map(() => ({
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined })
-        }))
-      })
-    )
-  },
-  ...overrideResponse
-})
-
-export const getDeleteTranscriptResponseContentSafetyLabelsResultMock = (
-  overrideResponse: Partial<ContentSafetyLabelsResult> = {}
-): ContentSafetyLabelsResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        text: faker.string.alpha(20),
-        labels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-          () => ({
-            label: faker.string.alpha(20),
-            confidence: faker.number.float(),
-            severity: faker.number.float()
-          })
-        ),
-        sentences_idx_start: faker.number.int({ min: undefined, max: undefined }),
-        sentences_idx_end: faker.number.int({ min: undefined, max: undefined }),
-        timestamp: {
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined })
-        }
-      })
-    ),
-    summary: {
-      [faker.string.alphanumeric(5)]: faker.number.float()
-    },
-    severity_score_summary: {
-      [faker.string.alphanumeric(5)]: {
-        low: faker.number.float(),
-        medium: faker.number.float(),
-        high: faker.number.float()
-      }
-    }
-  },
-  ...overrideResponse
-})
-
-export const getDeleteTranscriptResponseTopicDetectionModelResultMock = (
-  overrideResponse: Partial<TopicDetectionModelResult> = {}
-): TopicDetectionModelResult => ({
-  ...{
-    status: faker.helpers.arrayElement(Object.values(AudioIntelligenceModelStatus)),
-    results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        text: faker.string.alpha(20),
-        labels: faker.helpers.arrayElement([
-          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-            () => ({ relevance: faker.number.float(), label: faker.string.alpha(20) })
-          ),
-          undefined
-        ]),
-        timestamp: faker.helpers.arrayElement([
-          {
-            start: faker.number.int({ min: undefined, max: undefined }),
-            end: faker.number.int({ min: undefined, max: undefined })
-          },
-          undefined
-        ])
-      })
-    ),
-    summary: {
-      [faker.string.alphanumeric(5)]: faker.number.float()
-    }
-  },
-  ...overrideResponse
-})
-
-export const getDeleteTranscriptResponseMock = (
-  overrideResponse: Partial<Transcript> = {}
-): Transcript => ({
-  id: faker.string.uuid(),
-  audio_url: faker.internet.url(),
-  status: faker.helpers.arrayElement(Object.values(TranscriptStatus)),
-  language_code: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(TranscriptLanguageCode)),
-      faker.string.alpha(20)
-    ]),
-    undefined
-  ]),
-  language_detection: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  language_confidence_threshold: faker.number.float(),
-  language_confidence: faker.number.float(),
-  speech_model: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(Object.values(SpeechModel)),
-    null
-  ]),
-  text: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
-  audio_duration: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  punctuate: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  format_text: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  disfluencies: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  multichannel: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  audio_channels: faker.helpers.arrayElement([
-    faker.number.int({ min: undefined, max: undefined }),
-    undefined
-  ]),
-  webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]),
-  webhook_status_code: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  webhook_auth: faker.datatype.boolean(),
-  webhook_auth_header_name: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  speed_boost: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  auto_highlights: faker.datatype.boolean(),
-  auto_highlights_result: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getDeleteTranscriptResponseAutoHighlightsResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  audio_start_from: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  audio_end_at: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  word_boost: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  boost_param: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  filter_profanity: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  redact_pii: faker.datatype.boolean(),
-  redact_pii_audio: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  redact_pii_audio_quality: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(RedactPiiAudioQuality)),
-      null
-    ]),
-    undefined
-  ]),
-  redact_pii_policies: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([[], null]),
-    undefined
-  ]),
-  redact_pii_sub: faker.helpers.arrayElement([
-    faker.helpers.arrayElement(Object.values(SubstitutionPolicy)),
-    undefined
-  ]),
-  speaker_labels: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  speakers_expected: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null]),
-    undefined
-  ]),
-  content_safety: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  content_safety_labels: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getDeleteTranscriptResponseContentSafetyLabelsResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  iab_categories: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  iab_categories_result: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      { ...getDeleteTranscriptResponseTopicDetectionModelResultMock() },
-      null
-    ]),
-    undefined
-  ]),
-  custom_spelling: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  keyterms_prompt: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  prompt: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  auto_chapters: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  chapters: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  summarization: faker.datatype.boolean(),
-  summary_type: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  summary_model: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  summary: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    undefined
-  ]),
-  custom_topics: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  topics: faker.helpers.arrayElement([
-    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-      faker.string.alpha(20)
-    ),
-    undefined
-  ]),
-  sentiment_analysis: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  sentiment_analysis_results: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([[], null]),
-    undefined
-  ]),
-  entity_detection: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  entities: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
-  speech_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]),
-  throttled: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
-    undefined
-  ]),
-  error: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-  language_model: faker.string.alpha(20),
-  acoustic_model: faker.string.alpha(20),
-  ...overrideResponse
-})
-
-export const getGetSubtitlesResponseMock = (): string => faker.word.sample()
-
-export const getGetTranscriptSentencesResponseMock = (
-  overrideResponse: Partial<SentencesResponse> = {}
-): SentencesResponse => ({
-  id: faker.string.uuid(),
-  confidence: faker.number.float(),
-  audio_duration: faker.number.int({ min: undefined, max: undefined }),
-  sentences: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-    () => ({
-      text: faker.string.alpha(20),
-      start: faker.number.int({ min: undefined, max: undefined }),
-      end: faker.number.int({ min: undefined, max: undefined }),
-      confidence: faker.number.float(),
-      words: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-        () => ({
-          confidence: faker.number.float(),
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined }),
-          text: faker.string.alpha(20),
-          channel: faker.helpers.arrayElement([
-            faker.helpers.arrayElement([faker.string.alpha(20), null]),
-            undefined
-          ]),
-          speaker: faker.helpers.arrayElement([faker.string.alpha(20), null])
-        })
-      ),
-      channel: faker.helpers.arrayElement([
-        faker.helpers.arrayElement([faker.string.alpha(20), null]),
-        undefined
-      ]),
-      speaker: faker.helpers.arrayElement([faker.string.alpha(20), null])
-    })
-  ),
-  ...overrideResponse
-})
-
-export const getGetTranscriptParagraphsResponseMock = (
-  overrideResponse: Partial<ParagraphsResponse> = {}
-): ParagraphsResponse => ({
-  id: faker.string.uuid(),
-  confidence: faker.number.float(),
-  audio_duration: faker.number.int({ min: undefined, max: undefined }),
-  paragraphs: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-    () => ({
-      text: faker.string.alpha(20),
-      start: faker.number.int({ min: undefined, max: undefined }),
-      end: faker.number.int({ min: undefined, max: undefined }),
-      confidence: faker.number.float(),
-      words: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-        () => ({
-          confidence: faker.number.float(),
-          start: faker.number.int({ min: undefined, max: undefined }),
-          end: faker.number.int({ min: undefined, max: undefined }),
-          text: faker.string.alpha(20),
-          channel: faker.helpers.arrayElement([
-            faker.helpers.arrayElement([faker.string.alpha(20), null]),
-            undefined
-          ]),
-          speaker: faker.helpers.arrayElement([faker.string.alpha(20), null])
-        })
-      )
-    })
-  ),
-  ...overrideResponse
-})
-
-export const getWordSearchResponseMock = (
-  overrideResponse: Partial<WordSearchResponse> = {}
-): WordSearchResponse => ({
-  id: faker.string.uuid(),
-  total_count: faker.number.int({ min: undefined, max: undefined }),
-  matches: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-    () => ({
-      text: faker.string.alpha(20),
-      count: faker.number.int({ min: undefined, max: undefined }),
-      timestamps: Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
-        (_, i) => i + 1
-      ).map(() =>
-        Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-          faker.number.int({ min: undefined, max: undefined })
-        )
-      ),
-      indexes: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-        () => faker.number.int({ min: undefined, max: undefined })
-      )
-    })
-  ),
-  ...overrideResponse
-})
-
-export const getGetRedactedAudioResponseMock = (
-  overrideResponse: Partial<RedactedAudioResponse> = {}
-): RedactedAudioResponse => ({
-  status: faker.helpers.arrayElement(Object.values(RedactedAudioStatus)),
-  redacted_audio_url: faker.internet.url(),
-  ...overrideResponse
-})
-
-export const getCreateTemporaryTokenResponseMock = (
-  overrideResponse: Partial<RealtimeTemporaryTokenResponse> = {}
-): RealtimeTemporaryTokenResponse => ({ token: faker.string.alpha(20), ...overrideResponse })
-
-export const getLemurTaskResponseMock = (): LemurTaskResponse => ({
-  ...{
-    ...{ response: faker.string.alpha(20) },
-    ...{
-      request_id: faker.string.uuid(),
-      usage: {
-        input_tokens: faker.number.int({ min: 0, max: undefined }),
-        output_tokens: faker.number.int({ min: 0, max: undefined })
-      }
-    }
-  }
-})
-
-export const getLemurSummaryResponseMock = (): LemurSummaryResponse => ({
-  ...{
-    ...{ response: faker.string.alpha(20) },
-    ...{
-      request_id: faker.string.uuid(),
-      usage: {
-        input_tokens: faker.number.int({ min: 0, max: undefined }),
-        output_tokens: faker.number.int({ min: 0, max: undefined })
-      }
-    }
-  }
-})
-
-export const getLemurQuestionAnswerResponseMock = (): LemurQuestionAnswerResponse => ({
-  ...{
-    request_id: faker.string.uuid(),
-    usage: {
-      input_tokens: faker.number.int({ min: 0, max: undefined }),
-      output_tokens: faker.number.int({ min: 0, max: undefined })
-    }
-  },
-  ...{
-    response: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({ question: faker.string.alpha(20), answer: faker.string.alpha(20) })
-    )
-  }
-})
-
-export const getGetLemurResponseResponseLemurStringResponseMock = (
-  overrideResponse: Partial<LemurStringResponse> = {}
-): LemurStringResponse => ({
-  ...{
-    ...{ response: faker.string.alpha(20) },
-    ...{
-      request_id: faker.string.uuid(),
-      usage: {
-        input_tokens: faker.number.int({ min: 0, max: undefined }),
-        output_tokens: faker.number.int({ min: 0, max: undefined })
-      }
-    }
-  },
-  ...overrideResponse
-})
-
-export const getGetLemurResponseResponseLemurQuestionAnswerResponseMock = (
-  overrideResponse: Partial<LemurQuestionAnswerResponse> = {}
-): LemurQuestionAnswerResponse => ({
-  ...{
-    ...{
-      request_id: faker.string.uuid(),
-      usage: {
-        input_tokens: faker.number.int({ min: 0, max: undefined }),
-        output_tokens: faker.number.int({ min: 0, max: undefined })
-      }
-    },
-    ...{
-      response: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-        () => ({ question: faker.string.alpha(20), answer: faker.string.alpha(20) })
-      )
-    }
-  },
-  ...overrideResponse
-})
-
-export const getGetLemurResponseResponseMock = (): LemurResponse =>
-  faker.helpers.arrayElement([
-    { ...getGetLemurResponseResponseLemurStringResponseMock() },
-    { ...getGetLemurResponseResponseLemurQuestionAnswerResponseMock() }
-  ])
-
-export const getPurgeLemurRequestDataResponseMock = (
-  overrideResponse: Partial<PurgeLemurRequestDataResponse> = {}
-): PurgeLemurRequestDataResponse => ({
-  request_id: faker.string.uuid(),
-  request_id_to_purge: faker.string.uuid(),
-  deleted: faker.datatype.boolean(),
-  ...overrideResponse
-})
-
-export const getUploadFileMockHandler = (
-  overrideResponse?:
-    | UploadedFile
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<UploadedFile> | UploadedFile)
-) => {
-  return http.post("https://api.assemblyai.com/v2/upload", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getUploadFileResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
   })
 }
 
-export const getCreateTranscriptMockHandler = (
-  overrideResponse?:
-    | Transcript
-    | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Transcript> | Transcript)
-) => {
-  return http.post("https://api.assemblyai.com/v2/transcript", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getCreateTranscriptResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
-  })
-}
-
-export const getListTranscriptsMockHandler = (
-  overrideResponse?:
-    | TranscriptList
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<TranscriptList> | TranscriptList)
-) => {
-  return http.get("https://api.assemblyai.com/v2/transcript", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getListTranscriptsResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
-  })
-}
-
-export const getGetTranscriptMockHandler = (
-  overrideResponse?:
-    | Transcript
-    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Transcript> | Transcript)
-) => {
-  return http.get("https://api.assemblyai.com/v2/transcript/:transcriptId", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetTranscriptResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
-  })
-}
-
-export const getDeleteTranscriptMockHandler = (
-  overrideResponse?:
-    | Transcript
-    | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<Transcript> | Transcript)
-) => {
-  return http.delete("https://api.assemblyai.com/v2/transcript/:transcriptId", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getDeleteTranscriptResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
-  })
-}
-
-export const getGetSubtitlesMockHandler = (
-  overrideResponse?:
-    | string
-    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<string> | string)
-) => {
-  return http.get(
-    "https://api.assemblyai.com/v2/transcript/:transcriptId/:subtitleFormat",
-    async (info) => {
-      await delay(1000)
-
-      return new HttpResponse(getGetSubtitlesResponseMock(), {
-        status: 200,
-        headers: { "Content-Type": "text/plain" }
+export const getCreateTranscriptMockHandler = (overrideResponse?: Transcript | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Transcript> | Transcript)) => {
+  return http.post('https://api.assemblyai.com/v2/transcript', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateTranscriptResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
       })
-    }
-  )
-}
-
-export const getGetTranscriptSentencesMockHandler = (
-  overrideResponse?:
-    | SentencesResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<SentencesResponse> | SentencesResponse)
-) => {
-  return http.get(
-    "https://api.assemblyai.com/v2/transcript/:transcriptId/sentences",
-    async (info) => {
-      await delay(1000)
-
-      return new HttpResponse(
-        JSON.stringify(
-          overrideResponse !== undefined
-            ? typeof overrideResponse === "function"
-              ? await overrideResponse(info)
-              : overrideResponse
-            : getGetTranscriptSentencesResponseMock()
-        ),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      )
-    }
-  )
-}
-
-export const getGetTranscriptParagraphsMockHandler = (
-  overrideResponse?:
-    | ParagraphsResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<ParagraphsResponse> | ParagraphsResponse)
-) => {
-  return http.get(
-    "https://api.assemblyai.com/v2/transcript/:transcriptId/paragraphs",
-    async (info) => {
-      await delay(1000)
-
-      return new HttpResponse(
-        JSON.stringify(
-          overrideResponse !== undefined
-            ? typeof overrideResponse === "function"
-              ? await overrideResponse(info)
-              : overrideResponse
-            : getGetTranscriptParagraphsResponseMock()
-        ),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      )
-    }
-  )
-}
-
-export const getWordSearchMockHandler = (
-  overrideResponse?:
-    | WordSearchResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<WordSearchResponse> | WordSearchResponse)
-) => {
-  return http.get(
-    "https://api.assemblyai.com/v2/transcript/:transcriptId/word-search",
-    async (info) => {
-      await delay(1000)
-
-      return new HttpResponse(
-        JSON.stringify(
-          overrideResponse !== undefined
-            ? typeof overrideResponse === "function"
-              ? await overrideResponse(info)
-              : overrideResponse
-            : getWordSearchResponseMock()
-        ),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      )
-    }
-  )
-}
-
-export const getGetRedactedAudioMockHandler = (
-  overrideResponse?:
-    | RedactedAudioResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<RedactedAudioResponse> | RedactedAudioResponse)
-) => {
-  return http.get(
-    "https://api.assemblyai.com/v2/transcript/:transcriptId/redacted-audio",
-    async (info) => {
-      await delay(1000)
-
-      return new HttpResponse(
-        JSON.stringify(
-          overrideResponse !== undefined
-            ? typeof overrideResponse === "function"
-              ? await overrideResponse(info)
-              : overrideResponse
-            : getGetRedactedAudioResponseMock()
-        ),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      )
-    }
-  )
-}
-
-export const getCreateTemporaryTokenMockHandler = (
-  overrideResponse?:
-    | RealtimeTemporaryTokenResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<RealtimeTemporaryTokenResponse> | RealtimeTemporaryTokenResponse)
-) => {
-  return http.post("https://api.assemblyai.com/v2/realtime/token", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getCreateTemporaryTokenResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
   })
 }
 
-export const getLemurTaskMockHandler = (
-  overrideResponse?:
-    | LemurTaskResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<LemurTaskResponse> | LemurTaskResponse)
-) => {
-  return http.post("https://api.assemblyai.com/lemur/v3/generate/task", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getLemurTaskResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getListTranscriptsMockHandler = (overrideResponse?: TranscriptList | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<TranscriptList> | TranscriptList)) => {
+  return http.get('https://api.assemblyai.com/v2/transcript', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getListTranscriptsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getLemurSummaryMockHandler = (
-  overrideResponse?:
-    | LemurSummaryResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<LemurSummaryResponse> | LemurSummaryResponse)
-) => {
-  return http.post("https://api.assemblyai.com/lemur/v3/generate/summary", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getLemurSummaryResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getGetTranscriptMockHandler = (overrideResponse?: Transcript | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Transcript> | Transcript)) => {
+  return http.get('https://api.assemblyai.com/v2/transcript/:transcriptId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetTranscriptResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getLemurQuestionAnswerMockHandler = (
-  overrideResponse?:
-    | LemurQuestionAnswerResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<LemurQuestionAnswerResponse> | LemurQuestionAnswerResponse)
-) => {
-  return http.post("https://api.assemblyai.com/lemur/v3/generate/question-answer", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getLemurQuestionAnswerResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getDeleteTranscriptMockHandler = (overrideResponse?: Transcript | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<Transcript> | Transcript)) => {
+  return http.delete('https://api.assemblyai.com/v2/transcript/:transcriptId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDeleteTranscriptResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getGetLemurResponseMockHandler = (
-  overrideResponse?:
-    | LemurResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<LemurResponse> | LemurResponse)
-) => {
-  return http.get("https://api.assemblyai.com/lemur/v3/:requestId", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetLemurResponseResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getGetSubtitlesMockHandler = (overrideResponse?: string | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<string> | string)) => {
+  return http.get('https://api.assemblyai.com/v2/transcript/:transcriptId/:subtitleFormat', async (info) => {await delay(1000);
+  
+    return new HttpResponse(getGetSubtitlesResponseMock(),
+      { status: 200,
+        headers: { 'Content-Type': 'text/plain' }
+      })
   })
 }
 
-export const getPurgeLemurRequestDataMockHandler = (
-  overrideResponse?:
-    | PurgeLemurRequestDataResponse
-    | ((
-        info: Parameters<Parameters<typeof http.delete>[1]>[0]
-      ) => Promise<PurgeLemurRequestDataResponse> | PurgeLemurRequestDataResponse)
-) => {
-  return http.delete("https://api.assemblyai.com/lemur/v3/:requestId", async (info) => {
-    await delay(1000)
+export const getGetTranscriptSentencesMockHandler = (overrideResponse?: SentencesResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SentencesResponse> | SentencesResponse)) => {
+  return http.get('https://api.assemblyai.com/v2/transcript/:transcriptId/sentences', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetTranscriptSentencesResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
 
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getPurgeLemurRequestDataResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getGetTranscriptParagraphsMockHandler = (overrideResponse?: ParagraphsResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ParagraphsResponse> | ParagraphsResponse)) => {
+  return http.get('https://api.assemblyai.com/v2/transcript/:transcriptId/paragraphs', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetTranscriptParagraphsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getWordSearchMockHandler = (overrideResponse?: WordSearchResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<WordSearchResponse> | WordSearchResponse)) => {
+  return http.get('https://api.assemblyai.com/v2/transcript/:transcriptId/word-search', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getWordSearchResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getGetRedactedAudioMockHandler = (overrideResponse?: RedactedAudioResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<RedactedAudioResponse> | RedactedAudioResponse)) => {
+  return http.get('https://api.assemblyai.com/v2/transcript/:transcriptId/redacted-audio', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetRedactedAudioResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getCreateTemporaryTokenMockHandler = (overrideResponse?: RealtimeTemporaryTokenResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<RealtimeTemporaryTokenResponse> | RealtimeTemporaryTokenResponse)) => {
+  return http.post('https://api.assemblyai.com/v2/realtime/token', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateTemporaryTokenResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getLemurTaskMockHandler = (overrideResponse?: LemurTaskResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<LemurTaskResponse> | LemurTaskResponse)) => {
+  return http.post('https://api.assemblyai.com/lemur/v3/generate/task', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getLemurTaskResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getLemurSummaryMockHandler = (overrideResponse?: LemurSummaryResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<LemurSummaryResponse> | LemurSummaryResponse)) => {
+  return http.post('https://api.assemblyai.com/lemur/v3/generate/summary', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getLemurSummaryResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getLemurQuestionAnswerMockHandler = (overrideResponse?: LemurQuestionAnswerResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<LemurQuestionAnswerResponse> | LemurQuestionAnswerResponse)) => {
+  return http.post('https://api.assemblyai.com/lemur/v3/generate/question-answer', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getLemurQuestionAnswerResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getGetLemurResponseMockHandler = (overrideResponse?: LemurResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<LemurResponse> | LemurResponse)) => {
+  return http.get('https://api.assemblyai.com/lemur/v3/:requestId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetLemurResponseResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getPurgeLemurRequestDataMockHandler = (overrideResponse?: PurgeLemurRequestDataResponse | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<PurgeLemurRequestDataResponse> | PurgeLemurRequestDataResponse)) => {
+  return http.delete('https://api.assemblyai.com/lemur/v3/:requestId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPurgeLemurRequestDataResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 export const getAssemblyAIAPIMock = () => [
@@ -1786,5 +600,4 @@ export const getAssemblyAIAPIMock = () => [
   getLemurSummaryMockHandler(),
   getLemurQuestionAnswerMockHandler(),
   getGetLemurResponseMockHandler(),
-  getPurgeLemurRequestDataMockHandler()
-]
+  getPurgeLemurRequestDataMockHandler()]

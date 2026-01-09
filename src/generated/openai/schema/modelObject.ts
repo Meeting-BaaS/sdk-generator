@@ -9,9 +9,10 @@
 /**
  * The object type, which is always "model".
  */
-export type ModelObject = (typeof ModelObject)[keyof typeof ModelObject]
+export type ModelObject = typeof ModelObject[keyof typeof ModelObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ModelObject = {
-  model: "model"
-} as const
+  model: 'model',
+} as const;

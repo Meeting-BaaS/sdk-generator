@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ConversationResourceObject } from "./conversationResourceObject"
+import type { ConversationResourceObject } from './conversationResourceObject';
 
 export interface ConversationResource {
   /** The unique ID of the conversation. */
-  id: string
+  id: string;
   /** The object type, which is always `conversation`. */
-  object: ConversationResourceObject
+  object: ConversationResourceObject;
   /** Set of 16 key-value pairs that can be attached to an object. This can be         useful for storing additional information about the object in a structured         format, and querying for objects via API or the dashboard.
         Keys are strings with a maximum length of 64 characters. Values are strings         with a maximum length of 512 characters. */
-  metadata: unknown
+  metadata: unknown;
   /** The time at which the conversation was created, measured in seconds since the Unix epoch. */
-  created_at: number
+  created_at: number;
 }

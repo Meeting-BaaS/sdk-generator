@@ -5,24 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ChatCompletionFunctions } from "./chatCompletionFunctions"
-import type { ChatCompletionRequestMessage } from "./chatCompletionRequestMessage"
-import type { ChatCompletionStreamOptions } from "./chatCompletionStreamOptions"
-import type { ChatCompletionToolChoiceOption } from "./chatCompletionToolChoiceOption"
-import type { CreateChatCompletionRequestAllOfAudio } from "./createChatCompletionRequestAllOfAudio"
-import type { CreateChatCompletionRequestAllOfFunctionCall } from "./createChatCompletionRequestAllOfFunctionCall"
-import type { CreateChatCompletionRequestAllOfLogitBias } from "./createChatCompletionRequestAllOfLogitBias"
-import type { CreateChatCompletionRequestAllOfPrediction } from "./createChatCompletionRequestAllOfPrediction"
-import type { CreateChatCompletionRequestAllOfResponseFormat } from "./createChatCompletionRequestAllOfResponseFormat"
-import type { CreateChatCompletionRequestAllOfToolsItem } from "./createChatCompletionRequestAllOfToolsItem"
-import type { CreateChatCompletionRequestAllOfWebSearchOptions } from "./createChatCompletionRequestAllOfWebSearchOptions"
-import type { ModelIdsShared } from "./modelIdsShared"
-import type { ParallelToolCalls } from "./parallelToolCalls"
-import type { ReasoningEffort } from "./reasoningEffort"
-import type { ResponseModalities } from "./responseModalities"
-import type { StopConfiguration } from "./stopConfiguration"
-import type { Verbosity } from "./verbosity"
+import type { ChatCompletionRequestMessage } from './chatCompletionRequestMessage';
+import type { ModelIdsShared } from './modelIdsShared';
+import type { ResponseModalities } from './responseModalities';
+import type { Verbosity } from './verbosity';
+import type { ReasoningEffort } from './reasoningEffort';
+import type { CreateChatCompletionRequestAllOfWebSearchOptions } from './createChatCompletionRequestAllOfWebSearchOptions';
+import type { CreateChatCompletionRequestAllOfResponseFormat } from './createChatCompletionRequestAllOfResponseFormat';
+import type { CreateChatCompletionRequestAllOfAudio } from './createChatCompletionRequestAllOfAudio';
+import type { StopConfiguration } from './stopConfiguration';
+import type { CreateChatCompletionRequestAllOfLogitBias } from './createChatCompletionRequestAllOfLogitBias';
+import type { CreateChatCompletionRequestAllOfPrediction } from './createChatCompletionRequestAllOfPrediction';
+import type { ChatCompletionStreamOptions } from './chatCompletionStreamOptions';
+import type { CreateChatCompletionRequestAllOfToolsItem } from './createChatCompletionRequestAllOfToolsItem';
+import type { ChatCompletionToolChoiceOption } from './chatCompletionToolChoiceOption';
+import type { ParallelToolCalls } from './parallelToolCalls';
+import type { CreateChatCompletionRequestAllOfFunctionCall } from './createChatCompletionRequestAllOfFunctionCall';
+import type { ChatCompletionFunctions } from './chatCompletionFunctions';
 
 export type CreateChatCompletionRequestAllOf = {
   /**
@@ -33,22 +32,22 @@ supported, like [text](https://platform.openai.com/docs/guides/text-generation),
 
    * @minItems 1
    */
-  messages: ChatCompletionRequestMessage[]
+  messages: ChatCompletionRequestMessage[];
   /** Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
 offers a wide range of models with different capabilities, performance
 characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
 to browse and compare available models.
  */
-  model: ModelIdsShared
-  modalities?: ResponseModalities
-  verbosity?: Verbosity
-  reasoning_effort?: ReasoningEffort
+  model: ModelIdsShared;
+  modalities?: ResponseModalities;
+  verbosity?: Verbosity;
+  reasoning_effort?: ReasoningEffort;
   /**
    * An upper bound for the number of tokens that can be generated for a completion, including visible output tokens and [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
 
    * @nullable
    */
-  max_completion_tokens?: number | null
+  max_completion_tokens?: number | null;
   /**
    * Number between -2.0 and 2.0. Positive values penalize new tokens based on
 their existing frequency in the text so far, decreasing the model's
@@ -58,7 +57,7 @@ likelihood to repeat the same line verbatim.
    * @maximum 2
    * @nullable
    */
-  frequency_penalty?: number | null
+  frequency_penalty?: number | null;
   /**
    * Number between -2.0 and 2.0. Positive values penalize new tokens based on
 whether they appear in the text so far, increasing the model's likelihood
@@ -68,11 +67,11 @@ to talk about new topics.
    * @maximum 2
    * @nullable
    */
-  presence_penalty?: number | null
+  presence_penalty?: number | null;
   /** This tool searches the web for relevant results to use in a response.
 Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
  */
-  web_search_options?: CreateChatCompletionRequestAllOfWebSearchOptions
+  web_search_options?: CreateChatCompletionRequestAllOfWebSearchOptions;
   /**
    * An integer between 0 and 20 specifying the number of most likely tokens to
 return at each token position, each with an associated log probability.
@@ -82,7 +81,7 @@ return at each token position, each with an associated log probability.
    * @maximum 20
    * @nullable
    */
-  top_logprobs?: number | null
+  top_logprobs?: number | null;
   /** An object specifying the format that the model must output.
 
 Setting to `{ "type": "json_schema", "json_schema": {...} }` enables
@@ -94,14 +93,14 @@ Setting to `{ "type": "json_object" }` enables the older JSON mode, which
 ensures the message the model generates is valid JSON. Using `json_schema`
 is preferred for models that support it.
  */
-  response_format?: CreateChatCompletionRequestAllOfResponseFormat
+  response_format?: CreateChatCompletionRequestAllOfResponseFormat;
   /**
    * Parameters for audio output. Required when audio output is requested with
 `modalities: ["audio"]`. [Learn more](https://platform.openai.com/docs/guides/audio).
 
    * @nullable
    */
-  audio?: CreateChatCompletionRequestAllOfAudio
+  audio?: CreateChatCompletionRequestAllOfAudio;
   /**
    * Whether or not to store the output of this chat completion request for
 use in our [model distillation](https://platform.openai.com/docs/guides/distillation) or
@@ -111,7 +110,7 @@ Supports text and image inputs. Note: image inputs over 8MB will be dropped.
 
    * @nullable
    */
-  store?: boolean | null
+  store?: boolean | null;
   /**
    * If set to true, the model response data will be streamed to the client
 as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
@@ -121,8 +120,8 @@ guide for more information on how to handle the streaming events.
 
    * @nullable
    */
-  stream?: boolean | null
-  stop?: StopConfiguration
+  stream?: boolean | null;
+  stop?: StopConfiguration;
   /**
    * Modify the likelihood of specified tokens appearing in the completion.
 
@@ -135,7 +134,7 @@ should result in a ban or exclusive selection of the relevant token.
 
    * @nullable
    */
-  logit_bias?: CreateChatCompletionRequestAllOfLogitBias
+  logit_bias?: CreateChatCompletionRequestAllOfLogitBias;
   /**
    * Whether to return log probabilities of the output tokens or not. If true,
 returns the log probabilities of each output token returned in the
@@ -143,7 +142,7 @@ returns the log probabilities of each output token returned in the
 
    * @nullable
    */
-  logprobs?: boolean | null
+  logprobs?: boolean | null;
   /**
    * The maximum number of [tokens](/tokenizer) that can be generated in the
 chat completion. This value can be used to control
@@ -155,14 +154,14 @@ not compatible with [o-series models](https://platform.openai.com/docs/guides/re
    * @deprecated
    * @nullable
    */
-  max_tokens?: number | null
+  max_tokens?: number | null;
   /**
    * How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
    * @minimum 1
    * @maximum 128
    * @nullable
    */
-  n?: number | null
+  n?: number | null;
   /**
    * Configuration for a [Predicted Output](https://platform.openai.com/docs/guides/predicted-outputs),
 which can greatly improve response times when large parts of the model
@@ -171,7 +170,7 @@ regenerating a file with only minor changes to most of the content.
 
    * @nullable
    */
-  prediction?: CreateChatCompletionRequestAllOfPrediction
+  prediction?: CreateChatCompletionRequestAllOfPrediction;
   /**
    * This feature is in Beta.
 If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same `seed` and parameters should return the same result.
@@ -182,15 +181,15 @@ Determinism is not guaranteed, and you should refer to the `system_fingerprint` 
    * @maximum 9223372036854776000
    * @nullable
    */
-  seed?: number | null
-  stream_options?: ChatCompletionStreamOptions
+  seed?: number | null;
+  stream_options?: ChatCompletionStreamOptions;
   /** A list of tools the model may call. You can provide either
 [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools) or
 [function tools](https://platform.openai.com/docs/guides/function-calling).
  */
-  tools?: CreateChatCompletionRequestAllOfToolsItem[]
-  tool_choice?: ChatCompletionToolChoiceOption
-  parallel_tool_calls?: ParallelToolCalls
+  tools?: CreateChatCompletionRequestAllOfToolsItem[];
+  tool_choice?: ChatCompletionToolChoiceOption;
+  parallel_tool_calls?: ParallelToolCalls;
   /**
    * Deprecated in favor of `tool_choice`.
 
@@ -210,7 +209,7 @@ if functions are present.
 
    * @deprecated
    */
-  function_call?: CreateChatCompletionRequestAllOfFunctionCall
+  function_call?: CreateChatCompletionRequestAllOfFunctionCall;
   /**
    * Deprecated in favor of `tools`.
 
@@ -220,5 +219,5 @@ A list of functions the model may generate JSON inputs for.
    * @minItems 1
    * @maxItems 128
    */
-  functions?: ChatCompletionFunctions[]
-}
+  functions?: ChatCompletionFunctions[];
+};

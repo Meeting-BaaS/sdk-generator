@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomToolChatCompletionsCustomFormat } from "./customToolChatCompletionsCustomFormat"
+import type { CustomToolChatCompletionsCustomFormat } from './customToolChatCompletionsCustomFormat';
 
 /**
  * Properties of the custom tool.
@@ -13,11 +13,11 @@ import type { CustomToolChatCompletionsCustomFormat } from "./customToolChatComp
  */
 export type CustomToolChatCompletionsCustom = {
   /** The name of the custom tool, used to identify it in tool calls. */
-  name: string
+  name: string;
   /** Optional description of the custom tool, used to provide more context.
-   */
-  description?: string
+ */
+  description?: string;
   /** The input format for the custom tool. Default is unconstrained text.
-   */
-  format?: CustomToolChatCompletionsCustomFormat
-}
+ */
+  format?: CustomToolChatCompletionsCustomFormat;
+};

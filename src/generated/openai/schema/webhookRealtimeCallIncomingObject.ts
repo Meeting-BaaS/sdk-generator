@@ -10,10 +10,10 @@
  * The object of the event. Always `event`.
 
  */
-export type WebhookRealtimeCallIncomingObject =
-  (typeof WebhookRealtimeCallIncomingObject)[keyof typeof WebhookRealtimeCallIncomingObject]
+export type WebhookRealtimeCallIncomingObject = typeof WebhookRealtimeCallIncomingObject[keyof typeof WebhookRealtimeCallIncomingObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookRealtimeCallIncomingObject = {
-  event: "event"
-} as const
+  event: 'event',
+} as const;

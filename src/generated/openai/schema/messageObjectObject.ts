@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `thread.message`.
  */
-export type MessageObjectObject = (typeof MessageObjectObject)[keyof typeof MessageObjectObject]
+export type MessageObjectObject = typeof MessageObjectObject[keyof typeof MessageObjectObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageObjectObject = {
-  threadmessage: "thread.message"
-} as const
+  threadmessage: 'thread.message',
+} as const;

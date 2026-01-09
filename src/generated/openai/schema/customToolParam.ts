@@ -5,20 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CustomToolParamFormat } from "./customToolParamFormat"
-import type { CustomToolParamType } from "./customToolParamType"
+import type { CustomToolParamType } from './customToolParamType';
+import type { CustomToolParamFormat } from './customToolParamFormat';
 
 /**
  * A custom tool that processes input using a specified format. Learn more about   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
  */
 export interface CustomToolParam {
   /** The type of the custom tool. Always `custom`. */
-  type: CustomToolParamType
+  type: CustomToolParamType;
   /** The name of the custom tool, used to identify it in tool calls. */
-  name: string
+  name: string;
   /** Optional description of the custom tool, used to provide more context. */
-  description?: string
+  description?: string;
   /** The input format for the custom tool. Default is unconstrained text. */
-  format?: CustomToolParamFormat
+  format?: CustomToolParamFormat;
 }

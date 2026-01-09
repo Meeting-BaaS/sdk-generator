@@ -4,17 +4,16 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { CallbackConfig } from "./callbackConfig"
-import type { LanguageConfig } from "./languageConfig"
-import type { MessagesConfig } from "./messagesConfig"
-import type { PostProcessingConfig } from "./postProcessingConfig"
-import type { PreProcessingConfig } from "./preProcessingConfig"
-import type { RealtimeProcessingConfig } from "./realtimeProcessingConfig"
-import type { StreamingSupportedBitDepthEnum } from "./streamingSupportedBitDepthEnum"
-import type { StreamingSupportedEncodingEnum } from "./streamingSupportedEncodingEnum"
-import type { StreamingSupportedModels } from "./streamingSupportedModels"
-import type { StreamingSupportedSampleRateEnum } from "./streamingSupportedSampleRateEnum"
+import type { StreamingSupportedEncodingEnum } from './streamingSupportedEncodingEnum';
+import type { StreamingSupportedBitDepthEnum } from './streamingSupportedBitDepthEnum';
+import type { StreamingSupportedSampleRateEnum } from './streamingSupportedSampleRateEnum';
+import type { StreamingSupportedModels } from './streamingSupportedModels';
+import type { LanguageConfig } from './languageConfig';
+import type { PreProcessingConfig } from './preProcessingConfig';
+import type { RealtimeProcessingConfig } from './realtimeProcessingConfig';
+import type { PostProcessingConfig } from './postProcessingConfig';
+import type { MessagesConfig } from './messagesConfig';
+import type { CallbackConfig } from './callbackConfig';
 
 export interface StreamingRequestParamsResponse {
   /** The encoding format of the audio stream. Supported formats: 
@@ -23,43 +22,43 @@ export interface StreamingRequestParamsResponse {
 - μ-law: 8 bits 
 
 Note: No need to add WAV headers to raw audio as the API supports both formats. */
-  encoding?: StreamingSupportedEncodingEnum
+  encoding?: StreamingSupportedEncodingEnum;
   /** The bit depth of the audio stream */
-  bit_depth?: StreamingSupportedBitDepthEnum
+  bit_depth?: StreamingSupportedBitDepthEnum;
   /** The sample rate of the audio stream */
-  sample_rate?: StreamingSupportedSampleRateEnum
+  sample_rate?: StreamingSupportedSampleRateEnum;
   /**
    * The number of channels of the audio stream
    * @minimum 1
    * @maximum 8
    */
-  channels?: number
+  channels?: number;
   /** The model used to process the audio. "solaria-1" is used by default. */
-  model?: StreamingSupportedModels
+  model?: StreamingSupportedModels;
   /**
    * The endpointing duration in seconds. Endpointing is the duration of silence which will cause an utterance to be considered as finished
    * @minimum 0.01
    * @maximum 10
    */
-  endpointing?: number
+  endpointing?: number;
   /**
    * The maximum duration in seconds without endpointing. If endpointing is not detected after this duration, current utterance will be considered as finished
    * @minimum 5
    * @maximum 60
    */
-  maximum_duration_without_endpointing?: number
+  maximum_duration_without_endpointing?: number;
   /** Specify the language configuration */
-  language_config?: LanguageConfig
+  language_config?: LanguageConfig;
   /** Specify the pre-processing configuration */
-  pre_processing?: PreProcessingConfig
+  pre_processing?: PreProcessingConfig;
   /** Specify the realtime processing configuration */
-  realtime_processing?: RealtimeProcessingConfig
+  realtime_processing?: RealtimeProcessingConfig;
   /** Specify the post-processing configuration */
-  post_processing?: PostProcessingConfig
+  post_processing?: PostProcessingConfig;
   /** Specify the websocket messages configuration */
-  messages_config?: MessagesConfig
+  messages_config?: MessagesConfig;
   /** If true, messages will be sent to configured url. */
-  callback?: boolean
+  callback?: boolean;
   /** Specify the callback configuration */
-  callback_config?: CallbackConfig
+  callback_config?: CallbackConfig;
 }

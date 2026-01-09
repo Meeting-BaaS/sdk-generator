@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `vector_store.search_results.page`
  */
-export type VectorStoreSearchResultsPageObject =
-  (typeof VectorStoreSearchResultsPageObject)[keyof typeof VectorStoreSearchResultsPageObject]
+export type VectorStoreSearchResultsPageObject = typeof VectorStoreSearchResultsPageObject[keyof typeof VectorStoreSearchResultsPageObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreSearchResultsPageObject = {
-  vector_storesearch_resultspage: "vector_store.search_results.page"
-} as const
+  vector_storesearch_resultspage: 'vector_store.search_results.page',
+} as const;

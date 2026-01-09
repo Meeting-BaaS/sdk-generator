@@ -9,9 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.task_group`.
  */
-export type TaskGroupItemType = (typeof TaskGroupItemType)[keyof typeof TaskGroupItemType]
+export type TaskGroupItemType = typeof TaskGroupItemType[keyof typeof TaskGroupItemType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TaskGroupItemType = {
-  chatkittask_group: "chatkit.task_group"
-} as const
+  chatkittask_group: 'chatkit.task_group',
+} as const;

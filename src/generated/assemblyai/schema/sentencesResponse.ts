@@ -5,19 +5,19 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptSentence } from "./transcriptSentence"
+import type { TranscriptSentence } from './transcriptSentence';
 
 export interface SentencesResponse {
   /** The unique identifier for the transcript */
-  id: string
+  id: string;
   /**
    * The confidence score for the transcript
    * @minimum 0
    * @maximum 1
    */
-  confidence: number
+  confidence: number;
   /** The duration of the audio file in seconds */
-  audio_duration: number
+  audio_duration: number;
   /** An array of sentences in the transcript */
-  sentences: TranscriptSentence[]
+  sentences: TranscriptSentence[];
 }

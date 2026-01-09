@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Batch } from "./batch"
-import type { ListBatchesResponseObject } from "./listBatchesResponseObject"
+import type { Batch } from './batch';
+import type { ListBatchesResponseObject } from './listBatchesResponseObject';
 
 export interface ListBatchesResponse {
-  data: Batch[]
-  first_id?: string
-  last_id?: string
-  has_more: boolean
-  object: ListBatchesResponseObject
+  data: Batch[];
+  first_id?: string;
+  last_id?: string;
+  has_more: boolean;
+  object: ListBatchesResponseObject;
 }

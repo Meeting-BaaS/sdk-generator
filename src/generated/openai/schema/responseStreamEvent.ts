@@ -5,111 +5,58 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseAudioDeltaEvent } from "./responseAudioDeltaEvent"
-import type { ResponseAudioDoneEvent } from "./responseAudioDoneEvent"
-import type { ResponseAudioTranscriptDeltaEvent } from "./responseAudioTranscriptDeltaEvent"
-import type { ResponseAudioTranscriptDoneEvent } from "./responseAudioTranscriptDoneEvent"
-import type { ResponseCodeInterpreterCallCodeDeltaEvent } from "./responseCodeInterpreterCallCodeDeltaEvent"
-import type { ResponseCodeInterpreterCallCodeDoneEvent } from "./responseCodeInterpreterCallCodeDoneEvent"
-import type { ResponseCodeInterpreterCallCompletedEvent } from "./responseCodeInterpreterCallCompletedEvent"
-import type { ResponseCodeInterpreterCallInProgressEvent } from "./responseCodeInterpreterCallInProgressEvent"
-import type { ResponseCodeInterpreterCallInterpretingEvent } from "./responseCodeInterpreterCallInterpretingEvent"
-import type { ResponseCompletedEvent } from "./responseCompletedEvent"
-import type { ResponseContentPartAddedEvent } from "./responseContentPartAddedEvent"
-import type { ResponseContentPartDoneEvent } from "./responseContentPartDoneEvent"
-import type { ResponseCreatedEvent } from "./responseCreatedEvent"
-import type { ResponseCustomToolCallInputDeltaEvent } from "./responseCustomToolCallInputDeltaEvent"
-import type { ResponseCustomToolCallInputDoneEvent } from "./responseCustomToolCallInputDoneEvent"
-import type { ResponseErrorEvent } from "./responseErrorEvent"
-import type { ResponseFailedEvent } from "./responseFailedEvent"
-import type { ResponseFileSearchCallCompletedEvent } from "./responseFileSearchCallCompletedEvent"
-import type { ResponseFileSearchCallInProgressEvent } from "./responseFileSearchCallInProgressEvent"
-import type { ResponseFileSearchCallSearchingEvent } from "./responseFileSearchCallSearchingEvent"
-import type { ResponseFunctionCallArgumentsDeltaEvent } from "./responseFunctionCallArgumentsDeltaEvent"
-import type { ResponseFunctionCallArgumentsDoneEvent } from "./responseFunctionCallArgumentsDoneEvent"
-import type { ResponseImageGenCallCompletedEvent } from "./responseImageGenCallCompletedEvent"
-import type { ResponseImageGenCallGeneratingEvent } from "./responseImageGenCallGeneratingEvent"
-import type { ResponseImageGenCallInProgressEvent } from "./responseImageGenCallInProgressEvent"
-import type { ResponseImageGenCallPartialImageEvent } from "./responseImageGenCallPartialImageEvent"
-import type { ResponseIncompleteEvent } from "./responseIncompleteEvent"
-import type { ResponseInProgressEvent } from "./responseInProgressEvent"
-import type { ResponseMCPCallArgumentsDeltaEvent } from "./responseMCPCallArgumentsDeltaEvent"
-import type { ResponseMCPCallArgumentsDoneEvent } from "./responseMCPCallArgumentsDoneEvent"
-import type { ResponseMCPCallCompletedEvent } from "./responseMCPCallCompletedEvent"
-import type { ResponseMCPCallFailedEvent } from "./responseMCPCallFailedEvent"
-import type { ResponseMCPCallInProgressEvent } from "./responseMCPCallInProgressEvent"
-import type { ResponseMCPListToolsCompletedEvent } from "./responseMCPListToolsCompletedEvent"
-import type { ResponseMCPListToolsFailedEvent } from "./responseMCPListToolsFailedEvent"
-import type { ResponseMCPListToolsInProgressEvent } from "./responseMCPListToolsInProgressEvent"
-import type { ResponseOutputItemAddedEvent } from "./responseOutputItemAddedEvent"
-import type { ResponseOutputItemDoneEvent } from "./responseOutputItemDoneEvent"
-import type { ResponseOutputTextAnnotationAddedEvent } from "./responseOutputTextAnnotationAddedEvent"
-import type { ResponseQueuedEvent } from "./responseQueuedEvent"
-import type { ResponseReasoningSummaryPartAddedEvent } from "./responseReasoningSummaryPartAddedEvent"
-import type { ResponseReasoningSummaryPartDoneEvent } from "./responseReasoningSummaryPartDoneEvent"
-import type { ResponseReasoningSummaryTextDeltaEvent } from "./responseReasoningSummaryTextDeltaEvent"
-import type { ResponseReasoningSummaryTextDoneEvent } from "./responseReasoningSummaryTextDoneEvent"
-import type { ResponseReasoningTextDeltaEvent } from "./responseReasoningTextDeltaEvent"
-import type { ResponseReasoningTextDoneEvent } from "./responseReasoningTextDoneEvent"
-import type { ResponseRefusalDeltaEvent } from "./responseRefusalDeltaEvent"
-import type { ResponseRefusalDoneEvent } from "./responseRefusalDoneEvent"
-import type { ResponseTextDeltaEvent } from "./responseTextDeltaEvent"
-import type { ResponseTextDoneEvent } from "./responseTextDoneEvent"
-import type { ResponseWebSearchCallCompletedEvent } from "./responseWebSearchCallCompletedEvent"
-import type { ResponseWebSearchCallInProgressEvent } from "./responseWebSearchCallInProgressEvent"
-import type { ResponseWebSearchCallSearchingEvent } from "./responseWebSearchCallSearchingEvent"
+import type { ResponseAudioDeltaEvent } from './responseAudioDeltaEvent';
+import type { ResponseAudioDoneEvent } from './responseAudioDoneEvent';
+import type { ResponseAudioTranscriptDeltaEvent } from './responseAudioTranscriptDeltaEvent';
+import type { ResponseAudioTranscriptDoneEvent } from './responseAudioTranscriptDoneEvent';
+import type { ResponseCodeInterpreterCallCodeDeltaEvent } from './responseCodeInterpreterCallCodeDeltaEvent';
+import type { ResponseCodeInterpreterCallCodeDoneEvent } from './responseCodeInterpreterCallCodeDoneEvent';
+import type { ResponseCodeInterpreterCallCompletedEvent } from './responseCodeInterpreterCallCompletedEvent';
+import type { ResponseCodeInterpreterCallInProgressEvent } from './responseCodeInterpreterCallInProgressEvent';
+import type { ResponseCodeInterpreterCallInterpretingEvent } from './responseCodeInterpreterCallInterpretingEvent';
+import type { ResponseCompletedEvent } from './responseCompletedEvent';
+import type { ResponseContentPartAddedEvent } from './responseContentPartAddedEvent';
+import type { ResponseContentPartDoneEvent } from './responseContentPartDoneEvent';
+import type { ResponseCreatedEvent } from './responseCreatedEvent';
+import type { ResponseErrorEvent } from './responseErrorEvent';
+import type { ResponseFileSearchCallCompletedEvent } from './responseFileSearchCallCompletedEvent';
+import type { ResponseFileSearchCallInProgressEvent } from './responseFileSearchCallInProgressEvent';
+import type { ResponseFileSearchCallSearchingEvent } from './responseFileSearchCallSearchingEvent';
+import type { ResponseFunctionCallArgumentsDeltaEvent } from './responseFunctionCallArgumentsDeltaEvent';
+import type { ResponseFunctionCallArgumentsDoneEvent } from './responseFunctionCallArgumentsDoneEvent';
+import type { ResponseInProgressEvent } from './responseInProgressEvent';
+import type { ResponseFailedEvent } from './responseFailedEvent';
+import type { ResponseIncompleteEvent } from './responseIncompleteEvent';
+import type { ResponseOutputItemAddedEvent } from './responseOutputItemAddedEvent';
+import type { ResponseOutputItemDoneEvent } from './responseOutputItemDoneEvent';
+import type { ResponseReasoningSummaryPartAddedEvent } from './responseReasoningSummaryPartAddedEvent';
+import type { ResponseReasoningSummaryPartDoneEvent } from './responseReasoningSummaryPartDoneEvent';
+import type { ResponseReasoningSummaryTextDeltaEvent } from './responseReasoningSummaryTextDeltaEvent';
+import type { ResponseReasoningSummaryTextDoneEvent } from './responseReasoningSummaryTextDoneEvent';
+import type { ResponseReasoningTextDeltaEvent } from './responseReasoningTextDeltaEvent';
+import type { ResponseReasoningTextDoneEvent } from './responseReasoningTextDoneEvent';
+import type { ResponseRefusalDeltaEvent } from './responseRefusalDeltaEvent';
+import type { ResponseRefusalDoneEvent } from './responseRefusalDoneEvent';
+import type { ResponseTextDeltaEvent } from './responseTextDeltaEvent';
+import type { ResponseTextDoneEvent } from './responseTextDoneEvent';
+import type { ResponseWebSearchCallCompletedEvent } from './responseWebSearchCallCompletedEvent';
+import type { ResponseWebSearchCallInProgressEvent } from './responseWebSearchCallInProgressEvent';
+import type { ResponseWebSearchCallSearchingEvent } from './responseWebSearchCallSearchingEvent';
+import type { ResponseImageGenCallCompletedEvent } from './responseImageGenCallCompletedEvent';
+import type { ResponseImageGenCallGeneratingEvent } from './responseImageGenCallGeneratingEvent';
+import type { ResponseImageGenCallInProgressEvent } from './responseImageGenCallInProgressEvent';
+import type { ResponseImageGenCallPartialImageEvent } from './responseImageGenCallPartialImageEvent';
+import type { ResponseMCPCallArgumentsDeltaEvent } from './responseMCPCallArgumentsDeltaEvent';
+import type { ResponseMCPCallArgumentsDoneEvent } from './responseMCPCallArgumentsDoneEvent';
+import type { ResponseMCPCallCompletedEvent } from './responseMCPCallCompletedEvent';
+import type { ResponseMCPCallFailedEvent } from './responseMCPCallFailedEvent';
+import type { ResponseMCPCallInProgressEvent } from './responseMCPCallInProgressEvent';
+import type { ResponseMCPListToolsCompletedEvent } from './responseMCPListToolsCompletedEvent';
+import type { ResponseMCPListToolsFailedEvent } from './responseMCPListToolsFailedEvent';
+import type { ResponseMCPListToolsInProgressEvent } from './responseMCPListToolsInProgressEvent';
+import type { ResponseOutputTextAnnotationAddedEvent } from './responseOutputTextAnnotationAddedEvent';
+import type { ResponseQueuedEvent } from './responseQueuedEvent';
+import type { ResponseCustomToolCallInputDeltaEvent } from './responseCustomToolCallInputDeltaEvent';
+import type { ResponseCustomToolCallInputDoneEvent } from './responseCustomToolCallInputDoneEvent';
 
-export type ResponseStreamEvent =
-  | ResponseAudioDeltaEvent
-  | ResponseAudioDoneEvent
-  | ResponseAudioTranscriptDeltaEvent
-  | ResponseAudioTranscriptDoneEvent
-  | ResponseCodeInterpreterCallCodeDeltaEvent
-  | ResponseCodeInterpreterCallCodeDoneEvent
-  | ResponseCodeInterpreterCallCompletedEvent
-  | ResponseCodeInterpreterCallInProgressEvent
-  | ResponseCodeInterpreterCallInterpretingEvent
-  | ResponseCompletedEvent
-  | ResponseContentPartAddedEvent
-  | ResponseContentPartDoneEvent
-  | ResponseCreatedEvent
-  | ResponseErrorEvent
-  | ResponseFileSearchCallCompletedEvent
-  | ResponseFileSearchCallInProgressEvent
-  | ResponseFileSearchCallSearchingEvent
-  | ResponseFunctionCallArgumentsDeltaEvent
-  | ResponseFunctionCallArgumentsDoneEvent
-  | ResponseInProgressEvent
-  | ResponseFailedEvent
-  | ResponseIncompleteEvent
-  | ResponseOutputItemAddedEvent
-  | ResponseOutputItemDoneEvent
-  | ResponseReasoningSummaryPartAddedEvent
-  | ResponseReasoningSummaryPartDoneEvent
-  | ResponseReasoningSummaryTextDeltaEvent
-  | ResponseReasoningSummaryTextDoneEvent
-  | ResponseReasoningTextDeltaEvent
-  | ResponseReasoningTextDoneEvent
-  | ResponseRefusalDeltaEvent
-  | ResponseRefusalDoneEvent
-  | ResponseTextDeltaEvent
-  | ResponseTextDoneEvent
-  | ResponseWebSearchCallCompletedEvent
-  | ResponseWebSearchCallInProgressEvent
-  | ResponseWebSearchCallSearchingEvent
-  | ResponseImageGenCallCompletedEvent
-  | ResponseImageGenCallGeneratingEvent
-  | ResponseImageGenCallInProgressEvent
-  | ResponseImageGenCallPartialImageEvent
-  | ResponseMCPCallArgumentsDeltaEvent
-  | ResponseMCPCallArgumentsDoneEvent
-  | ResponseMCPCallCompletedEvent
-  | ResponseMCPCallFailedEvent
-  | ResponseMCPCallInProgressEvent
-  | ResponseMCPListToolsCompletedEvent
-  | ResponseMCPListToolsFailedEvent
-  | ResponseMCPListToolsInProgressEvent
-  | ResponseOutputTextAnnotationAddedEvent
-  | ResponseQueuedEvent
-  | ResponseCustomToolCallInputDeltaEvent
-  | ResponseCustomToolCallInputDoneEvent
+export type ResponseStreamEvent = ResponseAudioDeltaEvent | ResponseAudioDoneEvent | ResponseAudioTranscriptDeltaEvent | ResponseAudioTranscriptDoneEvent | ResponseCodeInterpreterCallCodeDeltaEvent | ResponseCodeInterpreterCallCodeDoneEvent | ResponseCodeInterpreterCallCompletedEvent | ResponseCodeInterpreterCallInProgressEvent | ResponseCodeInterpreterCallInterpretingEvent | ResponseCompletedEvent | ResponseContentPartAddedEvent | ResponseContentPartDoneEvent | ResponseCreatedEvent | ResponseErrorEvent | ResponseFileSearchCallCompletedEvent | ResponseFileSearchCallInProgressEvent | ResponseFileSearchCallSearchingEvent | ResponseFunctionCallArgumentsDeltaEvent | ResponseFunctionCallArgumentsDoneEvent | ResponseInProgressEvent | ResponseFailedEvent | ResponseIncompleteEvent | ResponseOutputItemAddedEvent | ResponseOutputItemDoneEvent | ResponseReasoningSummaryPartAddedEvent | ResponseReasoningSummaryPartDoneEvent | ResponseReasoningSummaryTextDeltaEvent | ResponseReasoningSummaryTextDoneEvent | ResponseReasoningTextDeltaEvent | ResponseReasoningTextDoneEvent | ResponseRefusalDeltaEvent | ResponseRefusalDoneEvent | ResponseTextDeltaEvent | ResponseTextDoneEvent | ResponseWebSearchCallCompletedEvent | ResponseWebSearchCallInProgressEvent | ResponseWebSearchCallSearchingEvent | ResponseImageGenCallCompletedEvent | ResponseImageGenCallGeneratingEvent | ResponseImageGenCallInProgressEvent | ResponseImageGenCallPartialImageEvent | ResponseMCPCallArgumentsDeltaEvent | ResponseMCPCallArgumentsDoneEvent | ResponseMCPCallCompletedEvent | ResponseMCPCallFailedEvent | ResponseMCPCallInProgressEvent | ResponseMCPListToolsCompletedEvent | ResponseMCPListToolsFailedEvent | ResponseMCPListToolsInProgressEvent | ResponseOutputTextAnnotationAddedEvent | ResponseQueuedEvent | ResponseCustomToolCallInputDeltaEvent | ResponseCustomToolCallInputDoneEvent;

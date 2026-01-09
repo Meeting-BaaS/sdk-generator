@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DoubleClickActionType } from "./doubleClickActionType"
+import type { DoubleClickActionType } from './doubleClickActionType';
 
 /**
  * A double click action.
  */
 export interface DoubleClickAction {
   /** Specifies the event type. For a double click action, this property is always set to `double_click`. */
-  type: DoubleClickActionType
+  type: DoubleClickActionType;
   /** The x-coordinate where the double click occurred. */
-  x: number
+  x: number;
   /** The y-coordinate where the double click occurred. */
-  y: number
+  y: number;
 }

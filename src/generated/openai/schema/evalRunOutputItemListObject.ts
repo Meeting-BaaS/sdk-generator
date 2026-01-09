@@ -10,10 +10,10 @@
  * The type of this object. It is always set to "list".
 
  */
-export type EvalRunOutputItemListObject =
-  (typeof EvalRunOutputItemListObject)[keyof typeof EvalRunOutputItemListObject]
+export type EvalRunOutputItemListObject = typeof EvalRunOutputItemListObject[keyof typeof EvalRunOutputItemListObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalRunOutputItemListObject = {
-  list: "list"
-} as const
+  list: 'list',
+} as const;

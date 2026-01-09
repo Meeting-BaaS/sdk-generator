@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageTimeBucketObject =
-  (typeof UsageTimeBucketObject)[keyof typeof UsageTimeBucketObject]
+export type UsageTimeBucketObject = typeof UsageTimeBucketObject[keyof typeof UsageTimeBucketObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageTimeBucketObject = {
-  bucket: "bucket"
-} as const
+  bucket: 'bucket',
+} as const;

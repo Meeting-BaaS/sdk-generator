@@ -9,4 +9,4 @@
 /**
  * Environment variables to set for the command.
  */
-export type LocalShellExecActionEnv = { [key: string]: string }
+export type LocalShellExecActionEnv = {[key: string]: string};

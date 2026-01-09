@@ -10,10 +10,10 @@
  * The type of the event. Always `batch.cancelled`.
 
  */
-export type WebhookBatchCancelledType =
-  (typeof WebhookBatchCancelledType)[keyof typeof WebhookBatchCancelledType]
+export type WebhookBatchCancelledType = typeof WebhookBatchCancelledType[keyof typeof WebhookBatchCancelledType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookBatchCancelledType = {
-  batchcancelled: "batch.cancelled"
-} as const
+  batchcancelled: 'batch.cancelled',
+} as const;

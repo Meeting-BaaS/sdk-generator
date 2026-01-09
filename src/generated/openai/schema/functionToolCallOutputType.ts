@@ -10,10 +10,10 @@
  * The type of the function tool call output. Always `function_call_output`.
 
  */
-export type FunctionToolCallOutputType =
-  (typeof FunctionToolCallOutputType)[keyof typeof FunctionToolCallOutputType]
+export type FunctionToolCallOutputType = typeof FunctionToolCallOutputType[keyof typeof FunctionToolCallOutputType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionToolCallOutputType = {
-  function_call_output: "function_call_output"
-} as const
+  function_call_output: 'function_call_output',
+} as const;

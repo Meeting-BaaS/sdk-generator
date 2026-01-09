@@ -7,7 +7,7 @@
 
 export interface ErrorDTO {
   /** Error code */
-  code: number
+  code: number;
   /** Error message */
-  message: string
+  message: string;
 }

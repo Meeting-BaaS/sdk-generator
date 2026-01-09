@@ -12,7 +12,7 @@
  */
 export interface EvalApiError {
   /** The error code. */
-  code: string
+  code: string;
   /** The error message. */
-  message: string
+  message: string;
 }

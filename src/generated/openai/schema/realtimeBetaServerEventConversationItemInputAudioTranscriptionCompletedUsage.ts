@@ -5,13 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { TranscriptTextUsageDuration } from "./transcriptTextUsageDuration"
-import type { TranscriptTextUsageTokens } from "./transcriptTextUsageTokens"
+import type { TranscriptTextUsageTokens } from './transcriptTextUsageTokens';
+import type { TranscriptTextUsageDuration } from './transcriptTextUsageDuration';
 
 /**
  * Usage statistics for the transcription.
  */
-export type RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage =
-  | TranscriptTextUsageTokens
-  | TranscriptTextUsageDuration
+export type RealtimeBetaServerEventConversationItemInputAudioTranscriptionCompletedUsage = TranscriptTextUsageTokens | TranscriptTextUsageDuration;

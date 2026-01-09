@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeResponseOutputModalitiesItem =
-  (typeof RealtimeResponseOutputModalitiesItem)[keyof typeof RealtimeResponseOutputModalitiesItem]
+export type RealtimeResponseOutputModalitiesItem = typeof RealtimeResponseOutputModalitiesItem[keyof typeof RealtimeResponseOutputModalitiesItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeResponseOutputModalitiesItem = {
-  text: "text",
-  audio: "audio"
-} as const
+  text: 'text',
+  audio: 'audio',
+} as const;

@@ -9,10 +9,11 @@
 /**
  * Control how much effort the model will exert to match the style and features, especially facial features, of input images. This parameter is only supported for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
  */
-export type InputFidelity = (typeof InputFidelity)[keyof typeof InputFidelity]
+export type InputFidelity = typeof InputFidelity[keyof typeof InputFidelity];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputFidelity = {
-  high: "high",
-  low: "low"
-} as const
+  high: 'high',
+  low: 'low',
+} as const;

@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionModalitiesAnyOfItem } from "./chatCompletionModalitiesAnyOfItem"
+import type { ChatCompletionModalitiesAnyOfItem } from './chatCompletionModalitiesAnyOfItem';
 
-export type ChatCompletionModalities = ChatCompletionModalitiesAnyOfItem[] | null
+export type ChatCompletionModalities = ChatCompletionModalitiesAnyOfItem[] | null;

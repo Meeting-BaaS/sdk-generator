@@ -14,5 +14,5 @@ return at each token position, each with an associated log probability.
    * @minimum 0
    * @maximum 20
    */
-  top_logprobs?: number
-}
+  top_logprobs?: number;
+};

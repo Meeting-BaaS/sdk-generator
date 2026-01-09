@@ -9,6 +9,4 @@
 /**
  * State variable key-value pairs applied when invoking the workflow. Defaults to null when no overrides were provided.
  */
-export type ChatkitWorkflowStateVariablesAnyOf = {
-  [key: string]: string | number | boolean | number
-}
+export type ChatkitWorkflowStateVariablesAnyOf = {[key: string]: string | number | boolean | number};

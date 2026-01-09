@@ -9,10 +9,10 @@
 /**
  * Update an existing file with the provided diff.
  */
-export type ApplyPatchUpdateFileOperationType =
-  (typeof ApplyPatchUpdateFileOperationType)[keyof typeof ApplyPatchUpdateFileOperationType]
+export type ApplyPatchUpdateFileOperationType = typeof ApplyPatchUpdateFileOperationType[keyof typeof ApplyPatchUpdateFileOperationType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchUpdateFileOperationType = {
-  update_file: "update_file"
-} as const
+  update_file: 'update_file',
+} as const;

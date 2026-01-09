@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogUserAddedData } from "./auditLogUserAddedData"
+import type { AuditLogUserAddedData } from './auditLogUserAddedData';
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogUserAdded = {
   /** The user ID. */
-  id?: string
+  id?: string;
   /** The payload used to add the user to the project. */
-  data?: AuditLogUserAddedData
-}
+  data?: AuditLogUserAddedData;
+};

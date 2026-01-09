@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchToolFiltersAnyOf } from "./webSearchToolFiltersAnyOf"
+import type { WebSearchToolFiltersAnyOf } from './webSearchToolFiltersAnyOf';
 
-export type WebSearchToolFilters = WebSearchToolFiltersAnyOf | null
+export type WebSearchToolFilters = WebSearchToolFiltersAnyOf | null;

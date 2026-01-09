@@ -9,11 +9,11 @@
 /**
  * Status values reported for apply_patch tool calls.
  */
-export type ApplyPatchCallStatusParam =
-  (typeof ApplyPatchCallStatusParam)[keyof typeof ApplyPatchCallStatusParam]
+export type ApplyPatchCallStatusParam = typeof ApplyPatchCallStatusParam[keyof typeof ApplyPatchCallStatusParam];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchCallStatusParam = {
-  in_progress: "in_progress",
-  completed: "completed"
-} as const
+  in_progress: 'in_progress',
+  completed: 'completed',
+} as const;

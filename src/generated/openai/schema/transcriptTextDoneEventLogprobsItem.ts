@@ -8,12 +8,12 @@
 
 export type TranscriptTextDoneEventLogprobsItem = {
   /** The token that was used to generate the log probability.
-   */
-  token?: string
+ */
+  token?: string;
   /** The log probability of the token.
-   */
-  logprob?: number
+ */
+  logprob?: number;
   /** The bytes that were used to generate the log probability.
-   */
-  bytes?: number[]
-}
+ */
+  bytes?: number[];
+};

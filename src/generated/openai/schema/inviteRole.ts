@@ -9,10 +9,11 @@
 /**
  * `owner` or `reader`
  */
-export type InviteRole = (typeof InviteRole)[keyof typeof InviteRole]
+export type InviteRole = typeof InviteRole[keyof typeof InviteRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InviteRole = {
-  owner: "owner",
-  reader: "reader"
-} as const
+  owner: 'owner',
+  reader: 'reader',
+} as const;

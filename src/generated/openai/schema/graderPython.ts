@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderPythonType } from "./graderPythonType"
+import type { GraderPythonType } from './graderPythonType';
 
 /**
  * A PythonGrader object that runs a python script on the input.
@@ -13,11 +13,11 @@ import type { GraderPythonType } from "./graderPythonType"
  */
 export interface GraderPython {
   /** The object type, which is always `python`. */
-  type: GraderPythonType
+  type: GraderPythonType;
   /** The name of the grader. */
-  name: string
+  name: string;
   /** The source code of the python script. */
-  source: string
+  source: string;
   /** The image tag to use for the python script. */
-  image_tag?: string
+  image_tag?: string;
 }

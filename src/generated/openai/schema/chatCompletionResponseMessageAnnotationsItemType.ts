@@ -9,10 +9,10 @@
 /**
  * The type of the URL citation. Always `url_citation`.
  */
-export type ChatCompletionResponseMessageAnnotationsItemType =
-  (typeof ChatCompletionResponseMessageAnnotationsItemType)[keyof typeof ChatCompletionResponseMessageAnnotationsItemType]
+export type ChatCompletionResponseMessageAnnotationsItemType = typeof ChatCompletionResponseMessageAnnotationsItemType[keyof typeof ChatCompletionResponseMessageAnnotationsItemType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionResponseMessageAnnotationsItemType = {
-  url_citation: "url_citation"
-} as const
+  url_citation: 'url_citation',
+} as const;

@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { SpeechAudioDoneEventType } from "./speechAudioDoneEventType"
-import type { SpeechAudioDoneEventUsage } from "./speechAudioDoneEventUsage"
+import type { SpeechAudioDoneEventType } from './speechAudioDoneEventType';
+import type { SpeechAudioDoneEventUsage } from './speechAudioDoneEventUsage';
 
 /**
  * Emitted when the speech synthesis is complete and all audio has been streamed.
  */
 export interface SpeechAudioDoneEvent {
   /** The type of the event. Always `speech.audio.done`.
-   */
-  type: SpeechAudioDoneEventType
+ */
+  type: SpeechAudioDoneEventType;
   /** Token usage statistics for the request.
-   */
-  usage: SpeechAudioDoneEventUsage
+ */
+  usage: SpeechAudioDoneEventUsage;
 }

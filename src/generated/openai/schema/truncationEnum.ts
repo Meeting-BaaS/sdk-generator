@@ -6,10 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type TruncationEnum = (typeof TruncationEnum)[keyof typeof TruncationEnum]
+export type TruncationEnum = typeof TruncationEnum[keyof typeof TruncationEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TruncationEnum = {
-  auto: "auto",
-  disabled: "disabled"
-} as const
+  auto: 'auto',
+  disabled: 'disabled',
+} as const;

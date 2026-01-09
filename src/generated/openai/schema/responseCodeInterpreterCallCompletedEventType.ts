@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always `response.code_interpreter_call.completed`.
  */
-export type ResponseCodeInterpreterCallCompletedEventType =
-  (typeof ResponseCodeInterpreterCallCompletedEventType)[keyof typeof ResponseCodeInterpreterCallCompletedEventType]
+export type ResponseCodeInterpreterCallCompletedEventType = typeof ResponseCodeInterpreterCallCompletedEventType[keyof typeof ResponseCodeInterpreterCallCompletedEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCodeInterpreterCallCompletedEventType = {
-  responsecode_interpreter_callcompleted: "response.code_interpreter_call.completed"
-} as const
+  responsecode_interpreter_callcompleted: 'response.code_interpreter_call.completed',
+} as const;

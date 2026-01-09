@@ -5,20 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { Annotation } from "./annotation"
-import type { LogProb } from "./logProb"
-import type { OutputTextContentType } from "./outputTextContentType"
+import type { OutputTextContentType } from './outputTextContentType';
+import type { Annotation } from './annotation';
+import type { LogProb } from './logProb';
 
 /**
  * A text output from the model.
  */
 export interface OutputTextContent {
   /** The type of the output text. Always `output_text`. */
-  type: OutputTextContentType
+  type: OutputTextContentType;
   /** The text output from the model. */
-  text: string
+  text: string;
   /** The annotations of the text output. */
-  annotations: Annotation[]
-  logprobs?: LogProb[]
+  annotations: Annotation[];
+  logprobs?: LogProb[];
 }

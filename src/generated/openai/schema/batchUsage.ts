@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { BatchUsageInputTokensDetails } from "./batchUsageInputTokensDetails"
-import type { BatchUsageOutputTokensDetails } from "./batchUsageOutputTokensDetails"
+import type { BatchUsageInputTokensDetails } from './batchUsageInputTokensDetails';
+import type { BatchUsageOutputTokensDetails } from './batchUsageOutputTokensDetails';
 
 /**
  * Represents token usage details including input tokens, output tokens, a
@@ -16,13 +16,13 @@ batches created after September 7, 2025.
  */
 export type BatchUsage = {
   /** The number of input tokens. */
-  input_tokens: number
+  input_tokens: number;
   /** A detailed breakdown of the input tokens. */
-  input_tokens_details: BatchUsageInputTokensDetails
+  input_tokens_details: BatchUsageInputTokensDetails;
   /** The number of output tokens. */
-  output_tokens: number
+  output_tokens: number;
   /** A detailed breakdown of the output tokens. */
-  output_tokens_details: BatchUsageOutputTokensDetails
+  output_tokens_details: BatchUsageOutputTokensDetails;
   /** The total number of tokens used. */
-  total_tokens: number
-}
+  total_tokens: number;
+};

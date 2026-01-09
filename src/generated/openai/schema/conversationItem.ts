@@ -5,53 +5,30 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ApplyPatchToolCall } from "./applyPatchToolCall"
-import type { ApplyPatchToolCallOutput } from "./applyPatchToolCallOutput"
-import type { CodeInterpreterToolCall } from "./codeInterpreterToolCall"
-import type { ComputerToolCall } from "./computerToolCall"
-import type { ComputerToolCallOutputResource } from "./computerToolCallOutputResource"
-import type { CustomToolCall } from "./customToolCall"
-import type { CustomToolCallOutput } from "./customToolCallOutput"
-import type { FileSearchToolCall } from "./fileSearchToolCall"
-import type { FunctionShellCall } from "./functionShellCall"
-import type { FunctionShellCallOutput } from "./functionShellCallOutput"
-import type { FunctionToolCallOutputResource } from "./functionToolCallOutputResource"
-import type { FunctionToolCallResource } from "./functionToolCallResource"
-import type { ImageGenToolCall } from "./imageGenToolCall"
-import type { LocalShellToolCall } from "./localShellToolCall"
-import type { LocalShellToolCallOutput } from "./localShellToolCallOutput"
-import type { MCPApprovalRequest } from "./mCPApprovalRequest"
-import type { MCPApprovalResponseResource } from "./mCPApprovalResponseResource"
-import type { MCPListTools } from "./mCPListTools"
-import type { MCPToolCall } from "./mCPToolCall"
-import type { Message } from "./message"
-import type { ReasoningItem } from "./reasoningItem"
-import type { WebSearchToolCall } from "./webSearchToolCall"
+import type { Message } from './message';
+import type { FunctionToolCallResource } from './functionToolCallResource';
+import type { FunctionToolCallOutputResource } from './functionToolCallOutputResource';
+import type { FileSearchToolCall } from './fileSearchToolCall';
+import type { WebSearchToolCall } from './webSearchToolCall';
+import type { ImageGenToolCall } from './imageGenToolCall';
+import type { ComputerToolCall } from './computerToolCall';
+import type { ComputerToolCallOutputResource } from './computerToolCallOutputResource';
+import type { ReasoningItem } from './reasoningItem';
+import type { CodeInterpreterToolCall } from './codeInterpreterToolCall';
+import type { LocalShellToolCall } from './localShellToolCall';
+import type { LocalShellToolCallOutput } from './localShellToolCallOutput';
+import type { FunctionShellCall } from './functionShellCall';
+import type { FunctionShellCallOutput } from './functionShellCallOutput';
+import type { ApplyPatchToolCall } from './applyPatchToolCall';
+import type { ApplyPatchToolCallOutput } from './applyPatchToolCallOutput';
+import type { MCPListTools } from './mCPListTools';
+import type { MCPApprovalRequest } from './mCPApprovalRequest';
+import type { MCPApprovalResponseResource } from './mCPApprovalResponseResource';
+import type { MCPToolCall } from './mCPToolCall';
+import type { CustomToolCall } from './customToolCall';
+import type { CustomToolCallOutput } from './customToolCallOutput';
 
 /**
  * A single item within a conversation. The set of possible types are the same as the `output` type of a [Response object](https://platform.openai.com/docs/api-reference/responses/object#responses/object-output).
  */
-export type ConversationItem =
-  | Message
-  | FunctionToolCallResource
-  | FunctionToolCallOutputResource
-  | FileSearchToolCall
-  | WebSearchToolCall
-  | ImageGenToolCall
-  | ComputerToolCall
-  | ComputerToolCallOutputResource
-  | ReasoningItem
-  | CodeInterpreterToolCall
-  | LocalShellToolCall
-  | LocalShellToolCallOutput
-  | FunctionShellCall
-  | FunctionShellCallOutput
-  | ApplyPatchToolCall
-  | ApplyPatchToolCallOutput
-  | MCPListTools
-  | MCPApprovalRequest
-  | MCPApprovalResponseResource
-  | MCPToolCall
-  | CustomToolCall
-  | CustomToolCallOutput
+export type ConversationItem = Message | FunctionToolCallResource | FunctionToolCallOutputResource | FileSearchToolCall | WebSearchToolCall | ImageGenToolCall | ComputerToolCall | ComputerToolCallOutputResource | ReasoningItem | CodeInterpreterToolCall | LocalShellToolCall | LocalShellToolCallOutput | FunctionShellCall | FunctionShellCallOutput | ApplyPatchToolCall | ApplyPatchToolCallOutput | MCPListTools | MCPApprovalRequest | MCPApprovalResponseResource | MCPToolCall | CustomToolCall | CustomToolCallOutput;

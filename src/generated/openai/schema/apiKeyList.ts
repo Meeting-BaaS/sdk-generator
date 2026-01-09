@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AdminApiKey } from "./adminApiKey"
+import type { AdminApiKey } from './adminApiKey';
 
 export interface ApiKeyList {
-  object?: string
-  data?: AdminApiKey[]
-  has_more?: boolean
-  first_id?: string
-  last_id?: string
+  object?: string;
+  data?: AdminApiKey[];
+  has_more?: boolean;
+  first_id?: string;
+  last_id?: string;
 }

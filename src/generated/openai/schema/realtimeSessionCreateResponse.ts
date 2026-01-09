@@ -5,14 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { RealtimeFunctionTool } from "./realtimeFunctionTool"
-import type { RealtimeSessionCreateResponseAudio } from "./realtimeSessionCreateResponseAudio"
-import type { RealtimeSessionCreateResponseIncludeItem } from "./realtimeSessionCreateResponseIncludeItem"
-import type { RealtimeSessionCreateResponseMaxOutputTokens } from "./realtimeSessionCreateResponseMaxOutputTokens"
-import type { RealtimeSessionCreateResponseOutputModalitiesItem } from "./realtimeSessionCreateResponseOutputModalitiesItem"
-import type { RealtimeSessionCreateResponseTracing } from "./realtimeSessionCreateResponseTracing"
-import type { RealtimeSessionCreateResponseTurnDetection } from "./realtimeSessionCreateResponseTurnDetection"
+import type { RealtimeSessionCreateResponseIncludeItem } from './realtimeSessionCreateResponseIncludeItem';
+import type { RealtimeSessionCreateResponseOutputModalitiesItem } from './realtimeSessionCreateResponseOutputModalitiesItem';
+import type { RealtimeSessionCreateResponseAudio } from './realtimeSessionCreateResponseAudio';
+import type { RealtimeSessionCreateResponseTracing } from './realtimeSessionCreateResponseTracing';
+import type { RealtimeSessionCreateResponseTurnDetection } from './realtimeSessionCreateResponseTurnDetection';
+import type { RealtimeFunctionTool } from './realtimeFunctionTool';
+import type { RealtimeSessionCreateResponseMaxOutputTokens } from './realtimeSessionCreateResponseMaxOutputTokens';
 
 /**
  * A Realtime session configuration object.
@@ -20,22 +19,22 @@ import type { RealtimeSessionCreateResponseTurnDetection } from "./realtimeSessi
  */
 export interface RealtimeSessionCreateResponse {
   /** Unique identifier for the session that looks like `sess_1234567890abcdef`.
-   */
-  id?: string
+ */
+  id?: string;
   /** The object type. Always `realtime.session`. */
-  object?: string
+  object?: string;
   /** Expiration timestamp for the session, in seconds since epoch. */
-  expires_at?: number
+  expires_at?: number;
   /** Additional fields to include in server outputs.
 - `item.input_audio_transcription.logprobs`: Include logprobs for input audio transcription.
  */
-  include?: RealtimeSessionCreateResponseIncludeItem[]
+  include?: RealtimeSessionCreateResponseIncludeItem[];
   /** The Realtime model used for this session. */
-  model?: string
+  model?: string;
   /** The set of modalities the model can respond with. To disable audio,
 set this to ["text"].
  */
-  output_modalities?: RealtimeSessionCreateResponseOutputModalitiesItem[]
+  output_modalities?: RealtimeSessionCreateResponseOutputModalitiesItem[];
   /** The default system instructions (i.e. system message) prepended to model
 calls. This field allows the client to guide the model on desired
 responses. The model can be instructed on response content and format,
@@ -49,32 +48,32 @@ Note that the server sets default instructions which will be used if this
 field is not set and are visible in the `session.created` event at the
 start of the session.
  */
-  instructions?: string
+  instructions?: string;
   /** Configuration for input and output audio for the session.
-   */
-  audio?: RealtimeSessionCreateResponseAudio
+ */
+  audio?: RealtimeSessionCreateResponseAudio;
   /** Configuration options for tracing. Set to null to disable tracing. Once
 tracing is enabled for a session, the configuration cannot be modified.
 
 `auto` will create a trace for the session with default values for the
 workflow name, group id, and metadata.
  */
-  tracing?: RealtimeSessionCreateResponseTracing
+  tracing?: RealtimeSessionCreateResponseTracing;
   /** Configuration for turn detection. Can be set to `null` to turn off. Server
 VAD means that the model will detect the start and end of speech based on
 audio volume and respond at the end of user speech.
  */
-  turn_detection?: RealtimeSessionCreateResponseTurnDetection
+  turn_detection?: RealtimeSessionCreateResponseTurnDetection;
   /** Tools (functions) available to the model. */
-  tools?: RealtimeFunctionTool[]
+  tools?: RealtimeFunctionTool[];
   /** How the model chooses tools. Options are `auto`, `none`, `required`, or
 specify a function.
  */
-  tool_choice?: string
+  tool_choice?: string;
   /** Maximum number of output tokens for a single assistant response,
 inclusive of tool calls. Provide an integer between 1 and 4096 to
 limit output tokens, or `inf` for the maximum available tokens for a
 given model. Defaults to `inf`.
  */
-  max_output_tokens?: RealtimeSessionCreateResponseMaxOutputTokens
+  max_output_tokens?: RealtimeSessionCreateResponseMaxOutputTokens;
 }

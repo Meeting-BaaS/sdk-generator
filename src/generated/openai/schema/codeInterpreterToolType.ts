@@ -10,10 +10,10 @@
  * The type of the code interpreter tool. Always `code_interpreter`.
 
  */
-export type CodeInterpreterToolType =
-  (typeof CodeInterpreterToolType)[keyof typeof CodeInterpreterToolType]
+export type CodeInterpreterToolType = typeof CodeInterpreterToolType[keyof typeof CodeInterpreterToolType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterToolType = {
-  code_interpreter: "code_interpreter"
-} as const
+  code_interpreter: 'code_interpreter',
+} as const;

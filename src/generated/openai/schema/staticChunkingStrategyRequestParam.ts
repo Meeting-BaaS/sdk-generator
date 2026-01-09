@@ -5,15 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { StaticChunkingStrategy } from "./staticChunkingStrategy"
-import type { StaticChunkingStrategyRequestParamType } from "./staticChunkingStrategyRequestParamType"
+import type { StaticChunkingStrategyRequestParamType } from './staticChunkingStrategyRequestParamType';
+import type { StaticChunkingStrategy } from './staticChunkingStrategy';
 
 /**
  * Customize your own chunking strategy by setting chunk size and chunk overlap.
  */
 export interface StaticChunkingStrategyRequestParam {
   /** Always `static`. */
-  type: StaticChunkingStrategyRequestParamType
-  static: StaticChunkingStrategy
+  type: StaticChunkingStrategyRequestParamType;
+  static: StaticChunkingStrategy;
 }

@@ -11,5 +11,5 @@
  */
 export interface AutomaticThreadTitlingParam {
   /** Enable automatic thread title generation. Defaults to true. */
-  enabled?: boolean
+  enabled?: boolean;
 }

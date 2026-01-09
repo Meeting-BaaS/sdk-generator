@@ -5,10 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateModelResponseProperties } from "./createModelResponseProperties"
-import type { CreateResponseAllOf } from "./createResponseAllOf"
-import type { ResponseProperties } from "./responseProperties"
+import type { CreateModelResponseProperties } from './createModelResponseProperties';
+import type { ResponseProperties } from './responseProperties';
+import type { CreateResponseAllOf } from './createResponseAllOf';
 
-export type CreateResponse = CreateModelResponseProperties &
-  ResponseProperties &
-  CreateResponseAllOf
+export type CreateResponse = CreateModelResponseProperties & ResponseProperties & CreateResponseAllOf;

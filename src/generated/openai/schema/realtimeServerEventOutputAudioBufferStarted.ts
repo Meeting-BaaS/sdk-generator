@@ -15,9 +15,9 @@ to the response.
  */
 export interface RealtimeServerEventOutputAudioBufferStarted {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `output_audio_buffer.started`. */
-  type: "output_audio_buffer.started"
+  type: 'output_audio_buffer.started';
   /** The unique ID of the response that produced the audio. */
-  response_id: string
+  response_id: string;
 }

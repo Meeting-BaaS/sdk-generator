@@ -5,30 +5,29 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { TokenCountsBodyConversation } from "./tokenCountsBodyConversation"
-import type { TokenCountsBodyInput } from "./tokenCountsBodyInput"
-import type { TokenCountsBodyInstructions } from "./tokenCountsBodyInstructions"
-import type { TokenCountsBodyModel } from "./tokenCountsBodyModel"
-import type { TokenCountsBodyParallelToolCalls } from "./tokenCountsBodyParallelToolCalls"
-import type { TokenCountsBodyPreviousResponseId } from "./tokenCountsBodyPreviousResponseId"
-import type { TokenCountsBodyReasoning } from "./tokenCountsBodyReasoning"
-import type { TokenCountsBodyText } from "./tokenCountsBodyText"
-import type { TokenCountsBodyToolChoice } from "./tokenCountsBodyToolChoice"
-import type { TokenCountsBodyTools } from "./tokenCountsBodyTools"
-import type { TruncationEnum } from "./truncationEnum"
+import type { TokenCountsBodyModel } from './tokenCountsBodyModel';
+import type { TokenCountsBodyInput } from './tokenCountsBodyInput';
+import type { TokenCountsBodyPreviousResponseId } from './tokenCountsBodyPreviousResponseId';
+import type { TokenCountsBodyTools } from './tokenCountsBodyTools';
+import type { TokenCountsBodyText } from './tokenCountsBodyText';
+import type { TokenCountsBodyReasoning } from './tokenCountsBodyReasoning';
+import type { TruncationEnum } from './truncationEnum';
+import type { TokenCountsBodyInstructions } from './tokenCountsBodyInstructions';
+import type { TokenCountsBodyConversation } from './tokenCountsBodyConversation';
+import type { TokenCountsBodyToolChoice } from './tokenCountsBodyToolChoice';
+import type { TokenCountsBodyParallelToolCalls } from './tokenCountsBodyParallelToolCalls';
 
 export interface TokenCountsBody {
-  model?: TokenCountsBodyModel
-  input?: TokenCountsBodyInput
-  previous_response_id?: TokenCountsBodyPreviousResponseId
-  tools?: TokenCountsBodyTools
-  text?: TokenCountsBodyText
-  reasoning?: TokenCountsBodyReasoning
+  model?: TokenCountsBodyModel;
+  input?: TokenCountsBodyInput;
+  previous_response_id?: TokenCountsBodyPreviousResponseId;
+  tools?: TokenCountsBodyTools;
+  text?: TokenCountsBodyText;
+  reasoning?: TokenCountsBodyReasoning;
   /** The truncation strategy to use for the model response. - `auto`: If the input to this Response exceeds the model's context window size, the model will truncate the response to fit the context window by dropping items from the beginning of the conversation. - `disabled` (default): If the input size will exceed the context window size for a model, the request will fail with a 400 error. */
-  truncation?: TruncationEnum
-  instructions?: TokenCountsBodyInstructions
-  conversation?: TokenCountsBodyConversation
-  tool_choice?: TokenCountsBodyToolChoice
-  parallel_tool_calls?: TokenCountsBodyParallelToolCalls
+  truncation?: TruncationEnum;
+  instructions?: TokenCountsBodyInstructions;
+  conversation?: TokenCountsBodyConversation;
+  tool_choice?: TokenCountsBodyToolChoice;
+  parallel_tool_calls?: TokenCountsBodyParallelToolCalls;
 }

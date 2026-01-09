@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `score_model`.
  */
-export type GraderScoreModelType = (typeof GraderScoreModelType)[keyof typeof GraderScoreModelType]
+export type GraderScoreModelType = typeof GraderScoreModelType[keyof typeof GraderScoreModelType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderScoreModelType = {
-  score_model: "score_model"
-} as const
+  score_model: 'score_model',
+} as const;

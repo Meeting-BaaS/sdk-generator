@@ -9,12 +9,12 @@
 /**
  * High level guidance for the amount of context window space to use for the search. One of `low`, `medium`, or `high`. `medium` is the default.
  */
-export type WebSearchToolSearchContextSize =
-  (typeof WebSearchToolSearchContextSize)[keyof typeof WebSearchToolSearchContextSize]
+export type WebSearchToolSearchContextSize = typeof WebSearchToolSearchContextSize[keyof typeof WebSearchToolSearchContextSize];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchToolSearchContextSize = {
-  low: "low",
-  medium: "medium",
-  high: "high"
-} as const
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+} as const;

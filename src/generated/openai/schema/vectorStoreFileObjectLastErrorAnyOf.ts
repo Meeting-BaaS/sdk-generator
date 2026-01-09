@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileObjectLastErrorAnyOfCode } from "./vectorStoreFileObjectLastErrorAnyOfCode"
+import type { VectorStoreFileObjectLastErrorAnyOfCode } from './vectorStoreFileObjectLastErrorAnyOfCode';
 
 /**
  * The last error associated with this vector store file. Will be `null` if there are no errors.
  */
 export type VectorStoreFileObjectLastErrorAnyOf = {
   /** One of `server_error`, `unsupported_file`, or `invalid_file`. */
-  code: VectorStoreFileObjectLastErrorAnyOfCode
+  code: VectorStoreFileObjectLastErrorAnyOfCode;
   /** A human-readable description of the error. */
-  message: string
-}
+  message: string;
+};

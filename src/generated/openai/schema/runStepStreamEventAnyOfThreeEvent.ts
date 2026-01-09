@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunStepStreamEventAnyOfThreeEvent =
-  (typeof RunStepStreamEventAnyOfThreeEvent)[keyof typeof RunStepStreamEventAnyOfThreeEvent]
+export type RunStepStreamEventAnyOfThreeEvent = typeof RunStepStreamEventAnyOfThreeEvent[keyof typeof RunStepStreamEventAnyOfThreeEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepStreamEventAnyOfThreeEvent = {
-  threadrunstepin_progress: "thread.run.step.in_progress"
-} as const
+  threadrunstepin_progress: 'thread.run.step.in_progress',
+} as const;

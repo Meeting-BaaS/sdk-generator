@@ -5,21 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CreateEvalResponsesRunDataSourceSamplingParamsText } from "./createEvalResponsesRunDataSourceSamplingParamsText"
-import type { ReasoningEffort } from "./reasoningEffort"
-import type { Tool } from "./tool"
+import type { ReasoningEffort } from './reasoningEffort';
+import type { Tool } from './tool';
+import type { CreateEvalResponsesRunDataSourceSamplingParamsText } from './createEvalResponsesRunDataSourceSamplingParamsText';
 
 export type CreateEvalResponsesRunDataSourceSamplingParams = {
-  reasoning_effort?: ReasoningEffort
+  reasoning_effort?: ReasoningEffort;
   /** A higher temperature increases randomness in the outputs. */
-  temperature?: number
+  temperature?: number;
   /** The maximum number of tokens in the generated output. */
-  max_completion_tokens?: number
+  max_completion_tokens?: number;
   /** An alternative to temperature for nucleus sampling; 1.0 includes all tokens. */
-  top_p?: number
+  top_p?: number;
   /** A seed value to initialize the randomness, during sampling. */
-  seed?: number
+  seed?: number;
   /** An array of tools the model may call while generating a response. You
 can specify which tool to use by setting the `tool_choice` parameter.
 
@@ -33,11 +32,11 @@ The two categories of tools you can provide the model are:
   enabling the model to call your own code. Learn more about
   [function calling](https://platform.openai.com/docs/guides/function-calling).
  */
-  tools?: Tool[]
+  tools?: Tool[];
   /** Configuration options for a text response from the model. Can be plain
 text or structured JSON data. Learn more:
 - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
 - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
  */
-  text?: CreateEvalResponsesRunDataSourceSamplingParamsText
-}
+  text?: CreateEvalResponsesRunDataSourceSamplingParamsText;
+};

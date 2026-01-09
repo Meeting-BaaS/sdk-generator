@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.image_generation_call.generating'.
  */
-export type ResponseImageGenCallGeneratingEventType =
-  (typeof ResponseImageGenCallGeneratingEventType)[keyof typeof ResponseImageGenCallGeneratingEventType]
+export type ResponseImageGenCallGeneratingEventType = typeof ResponseImageGenCallGeneratingEventType[keyof typeof ResponseImageGenCallGeneratingEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseImageGenCallGeneratingEventType = {
-  responseimage_generation_callgenerating: "response.image_generation_call.generating"
-} as const
+  responseimage_generation_callgenerating: 'response.image_generation_call.generating',
+} as const;

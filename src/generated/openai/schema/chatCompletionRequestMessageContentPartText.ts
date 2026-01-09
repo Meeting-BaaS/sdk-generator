@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestMessageContentPartTextType } from "./chatCompletionRequestMessageContentPartTextType"
+import type { ChatCompletionRequestMessageContentPartTextType } from './chatCompletionRequestMessageContentPartTextType';
 
 /**
  * Learn about [text inputs](https://platform.openai.com/docs/guides/text-generation).
@@ -13,7 +13,7 @@ import type { ChatCompletionRequestMessageContentPartTextType } from "./chatComp
  */
 export interface ChatCompletionRequestMessageContentPartText {
   /** The type of the content part. */
-  type: ChatCompletionRequestMessageContentPartTextType
+  type: ChatCompletionRequestMessageContentPartTextType;
   /** The text content. */
-  text: string
+  text: string;
 }

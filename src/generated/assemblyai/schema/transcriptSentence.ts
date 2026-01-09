@@ -5,28 +5,27 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-
-import type { TranscriptSentenceChannel } from "./transcriptSentenceChannel"
-import type { TranscriptSentenceSpeaker } from "./transcriptSentenceSpeaker"
-import type { TranscriptWord } from "./transcriptWord"
+import type { TranscriptWord } from './transcriptWord';
+import type { TranscriptSentenceChannel } from './transcriptSentenceChannel';
+import type { TranscriptSentenceSpeaker } from './transcriptSentenceSpeaker';
 
 export interface TranscriptSentence {
   /** The transcript of the sentence */
-  text: string
+  text: string;
   /** The starting time, in milliseconds, for the sentence */
-  start: number
+  start: number;
   /** The ending time, in milliseconds, for the sentence */
-  end: number
+  end: number;
   /**
    * The confidence score for the transcript of this sentence
    * @minimum 0
    * @maximum 1
    */
-  confidence: number
+  confidence: number;
   /** An array of words in the sentence */
-  words: TranscriptWord[]
+  words: TranscriptWord[];
   /** The channel of the sentence. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially. */
-  channel?: TranscriptSentenceChannel
+  channel?: TranscriptSentenceChannel;
   /** The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null */
-  speaker: TranscriptSentenceSpeaker
+  speaker: TranscriptSentenceSpeaker;
 }

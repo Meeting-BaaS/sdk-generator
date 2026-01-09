@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.assistant_message`.
  */
-export type AssistantMessageItemType =
-  (typeof AssistantMessageItemType)[keyof typeof AssistantMessageItemType]
+export type AssistantMessageItemType = typeof AssistantMessageItemType[keyof typeof AssistantMessageItemType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AssistantMessageItemType = {
-  chatkitassistant_message: "chatkit.assistant_message"
-} as const
+  chatkitassistant_message: 'chatkit.assistant_message',
+} as const;

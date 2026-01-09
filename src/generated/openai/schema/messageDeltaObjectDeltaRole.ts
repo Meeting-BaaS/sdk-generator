@@ -9,11 +9,11 @@
 /**
  * The entity that produced the message. One of `user` or `assistant`.
  */
-export type MessageDeltaObjectDeltaRole =
-  (typeof MessageDeltaObjectDeltaRole)[keyof typeof MessageDeltaObjectDeltaRole]
+export type MessageDeltaObjectDeltaRole = typeof MessageDeltaObjectDeltaRole[keyof typeof MessageDeltaObjectDeltaRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageDeltaObjectDeltaRole = {
-  user: "user",
-  assistant: "assistant"
-} as const
+  user: 'user',
+  assistant: 'assistant',
+} as const;

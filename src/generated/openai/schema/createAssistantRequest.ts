@@ -5,36 +5,35 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { AssistantTool } from "./assistantTool"
-import type { CreateAssistantRequestDescription } from "./createAssistantRequestDescription"
-import type { CreateAssistantRequestInstructions } from "./createAssistantRequestInstructions"
-import type { CreateAssistantRequestModel } from "./createAssistantRequestModel"
-import type { CreateAssistantRequestName } from "./createAssistantRequestName"
-import type { CreateAssistantRequestResponseFormat } from "./createAssistantRequestResponseFormat"
-import type { CreateAssistantRequestTemperature } from "./createAssistantRequestTemperature"
-import type { CreateAssistantRequestToolResources } from "./createAssistantRequestToolResources"
-import type { CreateAssistantRequestTopP } from "./createAssistantRequestTopP"
-import type { Metadata } from "./metadata"
-import type { ReasoningEffort } from "./reasoningEffort"
+import type { CreateAssistantRequestModel } from './createAssistantRequestModel';
+import type { CreateAssistantRequestName } from './createAssistantRequestName';
+import type { CreateAssistantRequestDescription } from './createAssistantRequestDescription';
+import type { CreateAssistantRequestInstructions } from './createAssistantRequestInstructions';
+import type { ReasoningEffort } from './reasoningEffort';
+import type { AssistantTool } from './assistantTool';
+import type { CreateAssistantRequestToolResources } from './createAssistantRequestToolResources';
+import type { Metadata } from './metadata';
+import type { CreateAssistantRequestTemperature } from './createAssistantRequestTemperature';
+import type { CreateAssistantRequestTopP } from './createAssistantRequestTopP';
+import type { CreateAssistantRequestResponseFormat } from './createAssistantRequestResponseFormat';
 
 export interface CreateAssistantRequest {
   /** ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
-   */
-  model: CreateAssistantRequestModel
-  name?: CreateAssistantRequestName
-  description?: CreateAssistantRequestDescription
-  instructions?: CreateAssistantRequestInstructions
-  reasoning_effort?: ReasoningEffort
+ */
+  model: CreateAssistantRequestModel;
+  name?: CreateAssistantRequestName;
+  description?: CreateAssistantRequestDescription;
+  instructions?: CreateAssistantRequestInstructions;
+  reasoning_effort?: ReasoningEffort;
   /**
    * A list of tool enabled on the assistant. There can be a maximum of 128 tools per assistant. Tools can be of types `code_interpreter`, `file_search`, or `function`.
 
    * @maxItems 128
    */
-  tools?: AssistantTool[]
-  tool_resources?: CreateAssistantRequestToolResources
-  metadata?: Metadata
-  temperature?: CreateAssistantRequestTemperature
-  top_p?: CreateAssistantRequestTopP
-  response_format?: CreateAssistantRequestResponseFormat
+  tools?: AssistantTool[];
+  tool_resources?: CreateAssistantRequestToolResources;
+  metadata?: Metadata;
+  temperature?: CreateAssistantRequestTemperature;
+  top_p?: CreateAssistantRequestTopP;
+  response_format?: CreateAssistantRequestResponseFormat;
 }

@@ -8,6 +8,6 @@
 
 export interface AddUploadPartRequest {
   /** The chunk of bytes for this Part.
-   */
-  data: Blob
+ */
+  data: Blob;
 }

@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { SeverityScoreSummary } from "./severityScoreSummary"
+import type { SeverityScoreSummary } from './severityScoreSummary';
 
 /**
  * A summary of the Content Moderation severity results for the entire audio file
  */
-export type ContentSafetyLabelsResultSeverityScoreSummary = { [key: string]: SeverityScoreSummary }
+export type ContentSafetyLabelsResultSeverityScoreSummary = {[key: string]: SeverityScoreSummary};

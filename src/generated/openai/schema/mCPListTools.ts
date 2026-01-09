@@ -5,10 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { MCPListToolsError } from "./mCPListToolsError"
-import type { MCPListToolsTool } from "./mCPListToolsTool"
-import type { MCPListToolsType } from "./mCPListToolsType"
+import type { MCPListToolsType } from './mCPListToolsType';
+import type { MCPListToolsTool } from './mCPListToolsTool';
+import type { MCPListToolsError } from './mCPListToolsError';
 
 /**
  * A list of tools available on an MCP server.
@@ -16,16 +15,16 @@ import type { MCPListToolsType } from "./mCPListToolsType"
  */
 export interface MCPListTools {
   /** The type of the item. Always `mcp_list_tools`.
-   */
-  type: MCPListToolsType
+ */
+  type: MCPListToolsType;
   /** The unique ID of the list.
-   */
-  id: string
+ */
+  id: string;
   /** The label of the MCP server.
-   */
-  server_label: string
+ */
+  server_label: string;
   /** The tools available on the server.
-   */
-  tools: MCPListToolsTool[]
-  error?: MCPListToolsError
+ */
+  tools: MCPListToolsTool[];
+  error?: MCPListToolsError;
 }

@@ -11,11 +11,11 @@
  */
 export type EvalRunResultCounts = {
   /** Total number of executed output items. */
-  total: number
+  total: number;
   /** Number of output items that resulted in an error. */
-  errored: number
+  errored: number;
   /** Number of output items that failed to pass the evaluation. */
-  failed: number
+  failed: number;
   /** Number of output items that passed the evaluation. */
-  passed: number
-}
+  passed: number;
+};

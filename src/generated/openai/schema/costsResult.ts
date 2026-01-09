@@ -5,19 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CostsResultAmount } from "./costsResultAmount"
-import type { CostsResultLineItem } from "./costsResultLineItem"
-import type { CostsResultObject } from "./costsResultObject"
-import type { CostsResultProjectId } from "./costsResultProjectId"
+import type { CostsResultObject } from './costsResultObject';
+import type { CostsResultAmount } from './costsResultAmount';
+import type { CostsResultLineItem } from './costsResultLineItem';
+import type { CostsResultProjectId } from './costsResultProjectId';
 
 /**
  * The aggregated costs details of the specific time bucket.
  */
 export interface CostsResult {
-  object: CostsResultObject
+  object: CostsResultObject;
   /** The monetary value in its associated currency. */
-  amount?: CostsResultAmount
-  line_item?: CostsResultLineItem
-  project_id?: CostsResultProjectId
+  amount?: CostsResultAmount;
+  line_item?: CostsResultLineItem;
+  project_id?: CostsResultProjectId;
 }

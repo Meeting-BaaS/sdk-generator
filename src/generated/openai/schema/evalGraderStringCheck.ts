@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderStringCheck } from "./graderStringCheck"
+import type { GraderStringCheck } from './graderStringCheck';
 
-export type EvalGraderStringCheck = GraderStringCheck
+export type EvalGraderStringCheck = GraderStringCheck;

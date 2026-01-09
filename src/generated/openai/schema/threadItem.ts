@@ -5,18 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
+import type { UserMessageItem } from './userMessageItem';
+import type { AssistantMessageItem } from './assistantMessageItem';
+import type { WidgetMessageItem } from './widgetMessageItem';
+import type { ClientToolCallItem } from './clientToolCallItem';
+import type { TaskItem } from './taskItem';
+import type { TaskGroupItem } from './taskGroupItem';
 
-import type { AssistantMessageItem } from "./assistantMessageItem"
-import type { ClientToolCallItem } from "./clientToolCallItem"
-import type { TaskGroupItem } from "./taskGroupItem"
-import type { TaskItem } from "./taskItem"
-import type { UserMessageItem } from "./userMessageItem"
-import type { WidgetMessageItem } from "./widgetMessageItem"
-
-export type ThreadItem =
-  | UserMessageItem
-  | AssistantMessageItem
-  | WidgetMessageItem
-  | ClientToolCallItem
-  | TaskItem
-  | TaskGroupItem
+export type ThreadItem = UserMessageItem | AssistantMessageItem | WidgetMessageItem | ClientToolCallItem | TaskItem | TaskGroupItem;

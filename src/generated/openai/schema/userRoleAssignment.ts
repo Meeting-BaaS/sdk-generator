@@ -5,17 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { Role } from "./role"
-import type { User } from "./user"
-import type { UserRoleAssignmentObject } from "./userRoleAssignmentObject"
+import type { UserRoleAssignmentObject } from './userRoleAssignmentObject';
+import type { User } from './user';
+import type { Role } from './role';
 
 /**
  * Role assignment linking a user to a role.
  */
 export interface UserRoleAssignment {
   /** Always `user.role`. */
-  object: UserRoleAssignmentObject
-  user: User
-  role: Role
+  object: UserRoleAssignmentObject;
+  user: User;
+  role: Role;
 }

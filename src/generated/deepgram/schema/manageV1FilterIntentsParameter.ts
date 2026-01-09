@@ -10,4 +10,4 @@
 /**
  * Filter for requests where intents was used
  */
-export type ManageV1FilterIntentsParameter = boolean
+export type ManageV1FilterIntentsParameter = boolean;

@@ -5,26 +5,25 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { FineTuneDPOHyperparametersBatchSize } from "./fineTuneDPOHyperparametersBatchSize"
-import type { FineTuneDPOHyperparametersBeta } from "./fineTuneDPOHyperparametersBeta"
-import type { FineTuneDPOHyperparametersLearningRateMultiplier } from "./fineTuneDPOHyperparametersLearningRateMultiplier"
-import type { FineTuneDPOHyperparametersNEpochs } from "./fineTuneDPOHyperparametersNEpochs"
+import type { FineTuneDPOHyperparametersBeta } from './fineTuneDPOHyperparametersBeta';
+import type { FineTuneDPOHyperparametersBatchSize } from './fineTuneDPOHyperparametersBatchSize';
+import type { FineTuneDPOHyperparametersLearningRateMultiplier } from './fineTuneDPOHyperparametersLearningRateMultiplier';
+import type { FineTuneDPOHyperparametersNEpochs } from './fineTuneDPOHyperparametersNEpochs';
 
 /**
  * The hyperparameters used for the DPO fine-tuning job.
  */
 export interface FineTuneDPOHyperparameters {
   /** The beta value for the DPO method. A higher beta value will increase the weight of the penalty between the policy and reference model.
-   */
-  beta?: FineTuneDPOHyperparametersBeta
+ */
+  beta?: FineTuneDPOHyperparametersBeta;
   /** Number of examples in each batch. A larger batch size means that model parameters are updated less frequently, but with lower variance.
-   */
-  batch_size?: FineTuneDPOHyperparametersBatchSize
+ */
+  batch_size?: FineTuneDPOHyperparametersBatchSize;
   /** Scaling factor for the learning rate. A smaller learning rate may be useful to avoid overfitting.
-   */
-  learning_rate_multiplier?: FineTuneDPOHyperparametersLearningRateMultiplier
+ */
+  learning_rate_multiplier?: FineTuneDPOHyperparametersLearningRateMultiplier;
   /** The number of epochs to train the model for. An epoch refers to one full cycle through the training dataset.
-   */
-  n_epochs?: FineTuneDPOHyperparametersNEpochs
+ */
+  n_epochs?: FineTuneDPOHyperparametersNEpochs;
 }

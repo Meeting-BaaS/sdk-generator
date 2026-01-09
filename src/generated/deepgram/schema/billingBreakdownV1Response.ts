@@ -6,14 +6,14 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { BillingBreakdownV1ResponseResolution } from "./billingBreakdownV1ResponseResolution"
-import type { BillingBreakdownV1ResponseResultsItem } from "./billingBreakdownV1ResponseResultsItem"
+import type { BillingBreakdownV1ResponseResolution } from './billingBreakdownV1ResponseResolution';
+import type { BillingBreakdownV1ResponseResultsItem } from './billingBreakdownV1ResponseResultsItem';
 
 export interface BillingBreakdownV1Response {
   /** Start date of the billing summmary period */
-  start: string
+  start: string;
   /** End date of the billing summary period */
-  end: string
-  resolution: BillingBreakdownV1ResponseResolution
-  results: BillingBreakdownV1ResponseResultsItem[]
+  end: string;
+  resolution: BillingBreakdownV1ResponseResolution;
+  results: BillingBreakdownV1ResponseResultsItem[];
 }

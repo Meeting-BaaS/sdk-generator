@@ -11,5 +11,5 @@
  */
 export type AuditLogApiKeyDeleted = {
   /** The tracking ID of the API key. */
-  id?: string
-}
+  id?: string;
+};

@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatkitWorkflowStateVariablesAnyOf } from "./chatkitWorkflowStateVariablesAnyOf"
+import type { ChatkitWorkflowStateVariablesAnyOf } from './chatkitWorkflowStateVariablesAnyOf';
 
-export type ChatkitWorkflowStateVariables = ChatkitWorkflowStateVariablesAnyOf | null
+export type ChatkitWorkflowStateVariables = ChatkitWorkflowStateVariablesAnyOf | null;

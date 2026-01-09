@@ -10,10 +10,10 @@
  * The type of the event. Always `batch.expired`.
 
  */
-export type WebhookBatchExpiredType =
-  (typeof WebhookBatchExpiredType)[keyof typeof WebhookBatchExpiredType]
+export type WebhookBatchExpiredType = typeof WebhookBatchExpiredType[keyof typeof WebhookBatchExpiredType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookBatchExpiredType = {
-  batchexpired: "batch.expired"
-} as const
+  batchexpired: 'batch.expired',
+} as const;

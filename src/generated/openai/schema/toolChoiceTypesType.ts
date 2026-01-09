@@ -18,14 +18,15 @@ Allowed values are:
 - `image_generation`
 
  */
-export type ToolChoiceTypesType = (typeof ToolChoiceTypesType)[keyof typeof ToolChoiceTypesType]
+export type ToolChoiceTypesType = typeof ToolChoiceTypesType[keyof typeof ToolChoiceTypesType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ToolChoiceTypesType = {
-  file_search: "file_search",
-  web_search_preview: "web_search_preview",
-  computer_use_preview: "computer_use_preview",
-  web_search_preview_2025_03_11: "web_search_preview_2025_03_11",
-  image_generation: "image_generation",
-  code_interpreter: "code_interpreter"
-} as const
+  file_search: 'file_search',
+  web_search_preview: 'web_search_preview',
+  computer_use_preview: 'computer_use_preview',
+  web_search_preview_2025_03_11: 'web_search_preview_2025_03_11',
+  image_generation: 'image_generation',
+  code_interpreter: 'code_interpreter',
+} as const;

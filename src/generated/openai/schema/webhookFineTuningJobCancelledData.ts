@@ -12,6 +12,6 @@
  */
 export type WebhookFineTuningJobCancelledData = {
   /** The unique ID of the fine-tuning job.
-   */
-  id: string
-}
+ */
+  id: string;
+};

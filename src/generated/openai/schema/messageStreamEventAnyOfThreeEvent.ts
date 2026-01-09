@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type MessageStreamEventAnyOfThreeEvent =
-  (typeof MessageStreamEventAnyOfThreeEvent)[keyof typeof MessageStreamEventAnyOfThreeEvent]
+export type MessageStreamEventAnyOfThreeEvent = typeof MessageStreamEventAnyOfThreeEvent[keyof typeof MessageStreamEventAnyOfThreeEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageStreamEventAnyOfThreeEvent = {
-  threadmessagein_progress: "thread.message.in_progress"
-} as const
+  threadmessagein_progress: 'thread.message.in_progress',
+} as const;

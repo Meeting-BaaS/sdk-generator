@@ -9,10 +9,10 @@
 /**
  * The event type identifier.
  */
-export type ResponseCustomToolCallInputDeltaEventType =
-  (typeof ResponseCustomToolCallInputDeltaEventType)[keyof typeof ResponseCustomToolCallInputDeltaEventType]
+export type ResponseCustomToolCallInputDeltaEventType = typeof ResponseCustomToolCallInputDeltaEventType[keyof typeof ResponseCustomToolCallInputDeltaEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCustomToolCallInputDeltaEventType = {
-  responsecustom_tool_call_inputdelta: "response.custom_tool_call_input.delta"
-} as const
+  responsecustom_tool_call_inputdelta: 'response.custom_tool_call_input.delta',
+} as const;

@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseCodeInterpreterCallCodeDeltaEventType } from "./responseCodeInterpreterCallCodeDeltaEventType"
+import type { ResponseCodeInterpreterCallCodeDeltaEventType } from './responseCodeInterpreterCallCodeDeltaEventType';
 
 /**
  * Emitted when a partial code snippet is streamed by the code interpreter.
  */
 export interface ResponseCodeInterpreterCallCodeDeltaEvent {
   /** The type of the event. Always `response.code_interpreter_call_code.delta`. */
-  type: ResponseCodeInterpreterCallCodeDeltaEventType
+  type: ResponseCodeInterpreterCallCodeDeltaEventType;
   /** The index of the output item in the response for which the code is being streamed. */
-  output_index: number
+  output_index: number;
   /** The unique identifier of the code interpreter tool call item. */
-  item_id: string
+  item_id: string;
   /** The partial code snippet being streamed by the code interpreter. */
-  delta: string
+  delta: string;
   /** The sequence number of this event, used to order streaming events. */
-  sequence_number: number
+  sequence_number: number;
 }

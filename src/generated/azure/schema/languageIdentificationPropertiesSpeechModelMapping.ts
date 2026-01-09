@@ -5,10 +5,10 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { EntityReference } from "./entityReference"
+import type { EntityReference } from './entityReference';
 
 /**
  * An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.
 Keys must be locales contained in the candidate locales, values are entities for models of the respective locales.
  */
-export type LanguageIdentificationPropertiesSpeechModelMapping = { [key: string]: EntityReference }
+export type LanguageIdentificationPropertiesSpeechModelMapping = {[key: string]: EntityReference};

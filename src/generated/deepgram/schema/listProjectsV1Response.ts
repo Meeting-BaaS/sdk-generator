@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListProjectsV1ResponseProjectsItem } from "./listProjectsV1ResponseProjectsItem"
+import type { ListProjectsV1ResponseProjectsItem } from './listProjectsV1ResponseProjectsItem';
 
 export interface ListProjectsV1Response {
-  projects?: ListProjectsV1ResponseProjectsItem[]
+  projects?: ListProjectsV1ResponseProjectsItem[];
 }

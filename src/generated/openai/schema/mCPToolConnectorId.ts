@@ -23,16 +23,17 @@ Currently supported `connector_id` values are:
 - SharePoint: `connector_sharepoint`
 
  */
-export type MCPToolConnectorId = (typeof MCPToolConnectorId)[keyof typeof MCPToolConnectorId]
+export type MCPToolConnectorId = typeof MCPToolConnectorId[keyof typeof MCPToolConnectorId];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MCPToolConnectorId = {
-  connector_dropbox: "connector_dropbox",
-  connector_gmail: "connector_gmail",
-  connector_googlecalendar: "connector_googlecalendar",
-  connector_googledrive: "connector_googledrive",
-  connector_microsoftteams: "connector_microsoftteams",
-  connector_outlookcalendar: "connector_outlookcalendar",
-  connector_outlookemail: "connector_outlookemail",
-  connector_sharepoint: "connector_sharepoint"
-} as const
+  connector_dropbox: 'connector_dropbox',
+  connector_gmail: 'connector_gmail',
+  connector_googlecalendar: 'connector_googlecalendar',
+  connector_googledrive: 'connector_googledrive',
+  connector_microsoftteams: 'connector_microsoftteams',
+  connector_outlookcalendar: 'connector_outlookcalendar',
+  connector_outlookemail: 'connector_outlookemail',
+  connector_sharepoint: 'connector_sharepoint',
+} as const;

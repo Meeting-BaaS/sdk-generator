@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { PublicCreateOrganizationRoleBodyDescription } from "./publicCreateOrganizationRoleBodyDescription"
+import type { PublicCreateOrganizationRoleBodyDescription } from './publicCreateOrganizationRoleBodyDescription';
 
 /**
  * Request payload for creating a custom role.
  */
 export interface PublicCreateOrganizationRoleBody {
   /** Unique name for the role. */
-  role_name: string
+  role_name: string;
   /** Permissions to grant to the role. */
-  permissions: string[]
+  permissions: string[];
   /** Optional description of the role. */
-  description?: PublicCreateOrganizationRoleBodyDescription
+  description?: PublicCreateOrganizationRoleBodyDescription;
 }

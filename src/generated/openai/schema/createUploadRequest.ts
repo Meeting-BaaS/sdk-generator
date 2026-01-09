@@ -5,25 +5,25 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateUploadRequestPurpose } from "./createUploadRequestPurpose"
-import type { FileExpirationAfter } from "./fileExpirationAfter"
+import type { CreateUploadRequestPurpose } from './createUploadRequestPurpose';
+import type { FileExpirationAfter } from './fileExpirationAfter';
 
 export interface CreateUploadRequest {
   /** The name of the file to upload.
-   */
-  filename: string
+ */
+  filename: string;
   /** The intended purpose of the uploaded file.
 
 See the [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
  */
-  purpose: CreateUploadRequestPurpose
+  purpose: CreateUploadRequestPurpose;
   /** The number of bytes in the file you are uploading.
-   */
-  bytes: number
+ */
+  bytes: number;
   /** The MIME type of the file.
 
 This must fall within the supported MIME types for your file purpose. See the supported MIME types for assistants and vision.
  */
-  mime_type: string
-  expires_after?: FileExpirationAfter
+  mime_type: string;
+  expires_after?: FileExpirationAfter;
 }

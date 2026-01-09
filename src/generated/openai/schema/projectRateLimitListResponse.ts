@@ -5,14 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { ProjectRateLimit } from "./projectRateLimit"
-import type { ProjectRateLimitListResponseObject } from "./projectRateLimitListResponseObject"
+import type { ProjectRateLimitListResponseObject } from './projectRateLimitListResponseObject';
+import type { ProjectRateLimit } from './projectRateLimit';
 
 export interface ProjectRateLimitListResponse {
-  object: ProjectRateLimitListResponseObject
-  data: ProjectRateLimit[]
-  first_id: string
-  last_id: string
-  has_more: boolean
+  object: ProjectRateLimitListResponseObject;
+  data: ProjectRateLimit[];
+  first_id: string;
+  last_id: string;
+  has_more: boolean;
 }

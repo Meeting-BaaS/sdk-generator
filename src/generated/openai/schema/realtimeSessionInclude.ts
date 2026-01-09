@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionIncludeAnyOfItem } from "./realtimeSessionIncludeAnyOfItem"
+import type { RealtimeSessionIncludeAnyOfItem } from './realtimeSessionIncludeAnyOfItem';
 
-export type RealtimeSessionInclude = RealtimeSessionIncludeAnyOfItem[] | null
+export type RealtimeSessionInclude = RealtimeSessionIncludeAnyOfItem[] | null;

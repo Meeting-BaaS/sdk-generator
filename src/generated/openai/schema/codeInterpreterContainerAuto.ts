@@ -5,20 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { CodeInterpreterContainerAutoMemoryLimit } from "./codeInterpreterContainerAutoMemoryLimit"
-import type { CodeInterpreterContainerAutoType } from "./codeInterpreterContainerAutoType"
+import type { CodeInterpreterContainerAutoType } from './codeInterpreterContainerAutoType';
+import type { CodeInterpreterContainerAutoMemoryLimit } from './codeInterpreterContainerAutoMemoryLimit';
 
 /**
  * Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.
  */
 export interface CodeInterpreterContainerAuto {
   /** Always `auto`. */
-  type: CodeInterpreterContainerAutoType
+  type: CodeInterpreterContainerAutoType;
   /**
    * An optional list of uploaded files to make available to your code.
    * @maxItems 50
    */
-  file_ids?: string[]
-  memory_limit?: CodeInterpreterContainerAutoMemoryLimit
+  file_ids?: string[];
+  memory_limit?: CodeInterpreterContainerAutoMemoryLimit;
 }

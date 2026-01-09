@@ -5,38 +5,37 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { AssignedRoleDetailsCreatedAt } from "./assignedRoleDetailsCreatedAt"
-import type { AssignedRoleDetailsCreatedBy } from "./assignedRoleDetailsCreatedBy"
-import type { AssignedRoleDetailsCreatedByUserObj } from "./assignedRoleDetailsCreatedByUserObj"
-import type { AssignedRoleDetailsDescription } from "./assignedRoleDetailsDescription"
-import type { AssignedRoleDetailsMetadata } from "./assignedRoleDetailsMetadata"
-import type { AssignedRoleDetailsUpdatedAt } from "./assignedRoleDetailsUpdatedAt"
+import type { AssignedRoleDetailsDescription } from './assignedRoleDetailsDescription';
+import type { AssignedRoleDetailsCreatedAt } from './assignedRoleDetailsCreatedAt';
+import type { AssignedRoleDetailsUpdatedAt } from './assignedRoleDetailsUpdatedAt';
+import type { AssignedRoleDetailsCreatedBy } from './assignedRoleDetailsCreatedBy';
+import type { AssignedRoleDetailsCreatedByUserObj } from './assignedRoleDetailsCreatedByUserObj';
+import type { AssignedRoleDetailsMetadata } from './assignedRoleDetailsMetadata';
 
 /**
  * Detailed information about a role assignment entry returned when listing assignments.
  */
 export interface AssignedRoleDetails {
   /** Identifier for the role. */
-  id: string
+  id: string;
   /** Name of the role. */
-  name: string
+  name: string;
   /** Permissions associated with the role. */
-  permissions: string[]
+  permissions: string[];
   /** Resource type the role applies to. */
-  resource_type: string
+  resource_type: string;
   /** Whether the role is predefined by OpenAI. */
-  predefined_role: boolean
+  predefined_role: boolean;
   /** Description of the role. */
-  description: AssignedRoleDetailsDescription
+  description: AssignedRoleDetailsDescription;
   /** When the role was created. */
-  created_at: AssignedRoleDetailsCreatedAt
+  created_at: AssignedRoleDetailsCreatedAt;
   /** When the role was last updated. */
-  updated_at: AssignedRoleDetailsUpdatedAt
+  updated_at: AssignedRoleDetailsUpdatedAt;
   /** Identifier of the actor who created the role. */
-  created_by: AssignedRoleDetailsCreatedBy
+  created_by: AssignedRoleDetailsCreatedBy;
   /** User details for the actor that created the role, when available. */
-  created_by_user_obj: AssignedRoleDetailsCreatedByUserObj
+  created_by_user_obj: AssignedRoleDetailsCreatedByUserObj;
   /** Arbitrary metadata stored on the role. */
-  metadata: AssignedRoleDetailsMetadata
+  metadata: AssignedRoleDetailsMetadata;
 }

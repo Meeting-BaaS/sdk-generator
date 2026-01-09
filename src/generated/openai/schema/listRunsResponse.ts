@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunObject } from "./runObject"
+import type { RunObject } from './runObject';
 
 export interface ListRunsResponse {
-  object: string
-  data: RunObject[]
-  first_id: string
-  last_id: string
-  has_more: boolean
+  object: string;
+  data: RunObject[];
+  first_id: string;
+  last_id: string;
+  has_more: boolean;
 }

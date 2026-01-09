@@ -6,11 +6,12 @@
  * OpenAPI spec version: 1.3.4
  */
 
-export type Sentiment = (typeof Sentiment)[keyof typeof Sentiment]
+export type Sentiment = typeof Sentiment[keyof typeof Sentiment];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Sentiment = {
-  POSITIVE: "POSITIVE",
-  NEUTRAL: "NEUTRAL",
-  NEGATIVE: "NEGATIVE"
-} as const
+  POSITIVE: 'POSITIVE',
+  NEUTRAL: 'NEUTRAL',
+  NEGATIVE: 'NEGATIVE',
+} as const;

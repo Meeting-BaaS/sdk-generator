@@ -11,9 +11,4 @@
 [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
 
  */
-export type CreateFineTuningJobRequestModel =
-  | string
-  | "babbage-002"
-  | "davinci-002"
-  | "gpt-3.5-turbo"
-  | "gpt-4o-mini"
+export type CreateFineTuningJobRequestModel = string | 'babbage-002' | 'davinci-002' | 'gpt-3.5-turbo' | 'gpt-4o-mini';

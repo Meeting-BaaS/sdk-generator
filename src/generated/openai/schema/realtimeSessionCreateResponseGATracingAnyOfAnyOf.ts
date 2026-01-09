@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateResponseGATracingAnyOfAnyOfMetadata } from "./realtimeSessionCreateResponseGATracingAnyOfAnyOfMetadata"
+import type { RealtimeSessionCreateResponseGATracingAnyOfAnyOfMetadata } from './realtimeSessionCreateResponseGATracingAnyOfAnyOfMetadata';
 
 /**
  * Granular configuration for tracing.
@@ -15,13 +15,13 @@ export type RealtimeSessionCreateResponseGATracingAnyOfAnyOf = {
   /** The name of the workflow to attach to this trace. This is used to
 name the trace in the Traces Dashboard.
  */
-  workflow_name?: string
+  workflow_name?: string;
   /** The group id to attach to this trace to enable filtering and
 grouping in the Traces Dashboard.
  */
-  group_id?: string
+  group_id?: string;
   /** The arbitrary metadata to attach to this trace to enable
 filtering in the Traces Dashboard.
  */
-  metadata?: RealtimeSessionCreateResponseGATracingAnyOfAnyOfMetadata
-}
+  metadata?: RealtimeSessionCreateResponseGATracingAnyOfAnyOfMetadata;
+};

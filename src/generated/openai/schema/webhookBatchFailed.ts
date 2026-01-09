@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookBatchFailedData } from "./webhookBatchFailedData"
-import type { WebhookBatchFailedObject } from "./webhookBatchFailedObject"
-import type { WebhookBatchFailedType } from "./webhookBatchFailedType"
+import type { WebhookBatchFailedData } from './webhookBatchFailedData';
+import type { WebhookBatchFailedObject } from './webhookBatchFailedObject';
+import type { WebhookBatchFailedType } from './webhookBatchFailedType';
 
 /**
  * Sent when a batch API request has failed.
@@ -15,18 +15,18 @@ import type { WebhookBatchFailedType } from "./webhookBatchFailedType"
  */
 export interface WebhookBatchFailed {
   /** The Unix timestamp (in seconds) of when the batch API request failed.
-   */
-  created_at: number
+ */
+  created_at: number;
   /** The unique ID of the event.
-   */
-  id: string
+ */
+  id: string;
   /** Event data payload.
-   */
-  data: WebhookBatchFailedData
+ */
+  data: WebhookBatchFailedData;
   /** The object of the event. Always `event`.
-   */
-  object?: WebhookBatchFailedObject
+ */
+  object?: WebhookBatchFailedObject;
   /** The type of the event. Always `batch.failed`.
-   */
-  type: WebhookBatchFailedType
+ */
+  type: WebhookBatchFailedType;
 }

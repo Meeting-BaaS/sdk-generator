@@ -7,6 +7,6 @@
  */
 
 export interface RealtimeConnectParams {
-  model?: string
-  call_id?: string
+  model?: string;
+  call_id?: string;
 }

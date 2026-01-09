@@ -14,11 +14,11 @@ there is no response to cancel, the server will respond with an error.
  */
 export interface RealtimeBetaClientEventResponseCancel {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string
+  event_id?: string;
   /** The event type, must be `response.cancel`. */
-  type: "response.cancel"
+  type: 'response.cancel';
   /** A specific response ID to cancel - if not provided, will cancel an 
 in-progress response in the default conversation.
  */
-  response_id?: string
+  response_id?: string;
 }

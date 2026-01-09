@@ -10,10 +10,10 @@
  * The type of the event. Always `error`.
 
  */
-export type ResponseErrorEventType =
-  (typeof ResponseErrorEventType)[keyof typeof ResponseErrorEventType]
+export type ResponseErrorEventType = typeof ResponseErrorEventType[keyof typeof ResponseErrorEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseErrorEventType = {
-  error: "error"
-} as const
+  error: 'error',
+} as const;

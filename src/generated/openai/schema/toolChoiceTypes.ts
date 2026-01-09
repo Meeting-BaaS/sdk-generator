@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceTypesType } from "./toolChoiceTypesType"
+import type { ToolChoiceTypesType } from './toolChoiceTypesType';
 
 /**
  * Indicates that the model should use a built-in tool to generate a response.
@@ -23,5 +23,5 @@ Allowed values are:
 - `code_interpreter`
 - `image_generation`
  */
-  type: ToolChoiceTypesType
+  type: ToolChoiceTypesType;
 }

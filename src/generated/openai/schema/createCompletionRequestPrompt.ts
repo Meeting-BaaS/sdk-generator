@@ -13,4 +13,4 @@ Note that <|endoftext|> is the document separator that the model sees during tra
 
  * @nullable
  */
-export type CreateCompletionRequestPrompt = string | string[] | number[] | number[][] | null
+export type CreateCompletionRequestPrompt = string | string[] | number[] | number[][] | null;

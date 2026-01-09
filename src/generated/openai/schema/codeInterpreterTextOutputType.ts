@@ -10,10 +10,10 @@
  * The type of the code interpreter text output. Always `logs`.
 
  */
-export type CodeInterpreterTextOutputType =
-  (typeof CodeInterpreterTextOutputType)[keyof typeof CodeInterpreterTextOutputType]
+export type CodeInterpreterTextOutputType = typeof CodeInterpreterTextOutputType[keyof typeof CodeInterpreterTextOutputType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterTextOutputType = {
-  logs: "logs"
-} as const
+  logs: 'logs',
+} as const;

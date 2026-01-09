@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RoleDeletedResourceObject } from "./roleDeletedResourceObject"
+import type { RoleDeletedResourceObject } from './roleDeletedResourceObject';
 
 /**
  * Confirmation payload returned after deleting a role.
  */
 export interface RoleDeletedResource {
   /** Always `role.deleted`. */
-  object: RoleDeletedResourceObject
+  object: RoleDeletedResourceObject;
   /** Identifier of the deleted role. */
-  id: string
+  id: string;
   /** Whether the role was deleted. */
-  deleted: boolean
+  deleted: boolean;
 }

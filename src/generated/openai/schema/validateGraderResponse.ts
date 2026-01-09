@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ValidateGraderResponseGrader } from "./validateGraderResponseGrader"
+import type { ValidateGraderResponseGrader } from './validateGraderResponseGrader';
 
 export interface ValidateGraderResponse {
   /** The grader used for the fine-tuning job. */
-  grader?: ValidateGraderResponseGrader
+  grader?: ValidateGraderResponseGrader;
 }

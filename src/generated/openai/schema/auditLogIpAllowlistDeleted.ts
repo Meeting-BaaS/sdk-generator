@@ -11,9 +11,9 @@
  */
 export type AuditLogIpAllowlistDeleted = {
   /** The ID of the IP allowlist configuration. */
-  id?: string
+  id?: string;
   /** The name of the IP allowlist configuration. */
-  name?: string
+  name?: string;
   /** The IP addresses or CIDR ranges that were in the configuration. */
-  allowed_ips?: string[]
-}
+  allowed_ips?: string[];
+};

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EmbeddingObject } from "./embeddingObject"
+import type { EmbeddingObject } from './embeddingObject';
 
 /**
  * Represents an embedding vector returned by embedding endpoint.
@@ -13,10 +13,10 @@ import type { EmbeddingObject } from "./embeddingObject"
  */
 export interface Embedding {
   /** The index of the embedding in the list of embeddings. */
-  index: number
+  index: number;
   /** The embedding vector, which is a list of floats. The length of vector depends on the model as listed in the [embedding guide](https://platform.openai.com/docs/guides/embeddings).
-   */
-  embedding: number[]
+ */
+  embedding: number[];
   /** The object type, which is always "embedding". */
-  object: EmbeddingObject
+  object: EmbeddingObject;
 }

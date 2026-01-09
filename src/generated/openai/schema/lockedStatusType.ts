@@ -9,9 +9,10 @@
 /**
  * Status discriminator that is always `locked`.
  */
-export type LockedStatusType = (typeof LockedStatusType)[keyof typeof LockedStatusType]
+export type LockedStatusType = typeof LockedStatusType[keyof typeof LockedStatusType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LockedStatusType = {
-  locked: "locked"
-} as const
+  locked: 'locked',
+} as const;

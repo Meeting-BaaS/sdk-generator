@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaResponseCreateParams } from "./realtimeBetaResponseCreateParams"
+import type { RealtimeBetaResponseCreateParams } from './realtimeBetaResponseCreateParams';
 
 /**
  * This event instructs the server to create a Response, which means triggering 
@@ -36,8 +36,8 @@ raw Items and references to existing Items.
  */
 export interface RealtimeBetaClientEventResponseCreate {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string
+  event_id?: string;
   /** The event type, must be `response.create`. */
-  type: "response.create"
-  response?: RealtimeBetaResponseCreateParams
+  type: 'response.create';
+  response?: RealtimeBetaResponseCreateParams;
 }

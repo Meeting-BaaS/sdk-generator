@@ -10,10 +10,10 @@
  * The object of the event. Always `event`.
 
  */
-export type WebhookBatchCancelledObject =
-  (typeof WebhookBatchCancelledObject)[keyof typeof WebhookBatchCancelledObject]
+export type WebhookBatchCancelledObject = typeof WebhookBatchCancelledObject[keyof typeof WebhookBatchCancelledObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookBatchCancelledObject = {
-  event: "event"
-} as const
+  event: 'event',
+} as const;

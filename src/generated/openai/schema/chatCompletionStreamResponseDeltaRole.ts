@@ -9,14 +9,14 @@
 /**
  * The role of the author of this message.
  */
-export type ChatCompletionStreamResponseDeltaRole =
-  (typeof ChatCompletionStreamResponseDeltaRole)[keyof typeof ChatCompletionStreamResponseDeltaRole]
+export type ChatCompletionStreamResponseDeltaRole = typeof ChatCompletionStreamResponseDeltaRole[keyof typeof ChatCompletionStreamResponseDeltaRole];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionStreamResponseDeltaRole = {
-  developer: "developer",
-  system: "system",
-  user: "user",
-  assistant: "assistant",
-  tool: "tool"
-} as const
+  developer: 'developer',
+  system: 'system',
+  user: 'user',
+  assistant: 'assistant',
+  tool: 'tool',
+} as const;

@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type EvalStoredCompletionsSourceCreatedBefore = number | null
+export type EvalStoredCompletionsSourceCreatedBefore = number | null;

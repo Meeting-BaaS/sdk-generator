@@ -9,10 +9,10 @@
 /**
  * Always `auto`.
  */
-export type CodeInterpreterContainerAutoType =
-  (typeof CodeInterpreterContainerAutoType)[keyof typeof CodeInterpreterContainerAutoType]
+export type CodeInterpreterContainerAutoType = typeof CodeInterpreterContainerAutoType[keyof typeof CodeInterpreterContainerAutoType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterContainerAutoType = {
-  auto: "auto"
-} as const
+  auto: 'auto',
+} as const;

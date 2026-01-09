@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TextContentType } from "./textContentType"
+import type { TextContentType } from './textContentType';
 
 /**
  * A text content.
  */
 export interface TextContent {
-  type: TextContentType
-  text: string
+  type: TextContentType;
+  text: string;
 }

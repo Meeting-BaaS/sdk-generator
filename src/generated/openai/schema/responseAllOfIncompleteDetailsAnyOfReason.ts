@@ -9,11 +9,11 @@
 /**
  * The reason why the response is incomplete.
  */
-export type ResponseAllOfIncompleteDetailsAnyOfReason =
-  (typeof ResponseAllOfIncompleteDetailsAnyOfReason)[keyof typeof ResponseAllOfIncompleteDetailsAnyOfReason]
+export type ResponseAllOfIncompleteDetailsAnyOfReason = typeof ResponseAllOfIncompleteDetailsAnyOfReason[keyof typeof ResponseAllOfIncompleteDetailsAnyOfReason];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseAllOfIncompleteDetailsAnyOfReason = {
-  max_output_tokens: "max_output_tokens",
-  content_filter: "content_filter"
-} as const
+  max_output_tokens: 'max_output_tokens',
+  content_filter: 'content_filter',
+} as const;

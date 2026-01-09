@@ -10,4 +10,4 @@
  * The number of training steps between evaluation runs.
 
  */
-export type FineTuneReinforcementHyperparametersEvalInterval = "auto" | number
+export type FineTuneReinforcementHyperparametersEvalInterval = 'auto' | number;

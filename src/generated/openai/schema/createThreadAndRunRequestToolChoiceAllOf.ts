@@ -9,4 +9,4 @@
 /**
  * @nullable
  */
-export type CreateThreadAndRunRequestToolChoiceAllOf = unknown | null
+export type CreateThreadAndRunRequestToolChoiceAllOf = unknown | null;

@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeConversationItemMessageSystemContentItemType } from "./realtimeConversationItemMessageSystemContentItemType"
+import type { RealtimeConversationItemMessageSystemContentItemType } from './realtimeConversationItemMessageSystemContentItemType';
 
 export type RealtimeConversationItemMessageSystemContentItem = {
   /** The content type. Always `input_text` for system messages. */
-  type?: RealtimeConversationItemMessageSystemContentItemType
+  type?: RealtimeConversationItemMessageSystemContentItemType;
   /** The text content. */
-  text?: string
-}
+  text?: string;
+};

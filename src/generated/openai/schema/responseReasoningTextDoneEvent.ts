@@ -5,28 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseReasoningTextDoneEventType } from "./responseReasoningTextDoneEventType"
+import type { ResponseReasoningTextDoneEventType } from './responseReasoningTextDoneEventType';
 
 /**
  * Emitted when a reasoning text is completed.
  */
 export interface ResponseReasoningTextDoneEvent {
   /** The type of the event. Always `response.reasoning_text.done`.
-   */
-  type: ResponseReasoningTextDoneEventType
+ */
+  type: ResponseReasoningTextDoneEventType;
   /** The ID of the item this reasoning text is associated with.
-   */
-  item_id: string
+ */
+  item_id: string;
   /** The index of the output item this reasoning text is associated with.
-   */
-  output_index: number
+ */
+  output_index: number;
   /** The index of the reasoning content part.
-   */
-  content_index: number
+ */
+  content_index: number;
   /** The full text of the completed reasoning content.
-   */
-  text: string
+ */
+  text: string;
   /** The sequence number of this event.
-   */
-  sequence_number: number
+ */
+  sequence_number: number;
 }

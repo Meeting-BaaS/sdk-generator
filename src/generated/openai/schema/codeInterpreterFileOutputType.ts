@@ -10,10 +10,10 @@
  * The type of the code interpreter file output. Always `files`.
 
  */
-export type CodeInterpreterFileOutputType =
-  (typeof CodeInterpreterFileOutputType)[keyof typeof CodeInterpreterFileOutputType]
+export type CodeInterpreterFileOutputType = typeof CodeInterpreterFileOutputType[keyof typeof CodeInterpreterFileOutputType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterFileOutputType = {
-  files: "files"
-} as const
+  files: 'files',
+} as const;

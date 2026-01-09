@@ -11,5 +11,5 @@
  */
 export type AuditLogServiceAccountCreatedData = {
   /** The role of the service account. Is either `owner` or `member`. */
-  role?: string
-}
+  role?: string;
+};

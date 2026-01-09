@@ -9,4 +9,4 @@
 /**
  * @nullable
  */
-export type RunObjectTruncationStrategyAllOf = unknown | null
+export type RunObjectTruncationStrategyAllOf = unknown | null;

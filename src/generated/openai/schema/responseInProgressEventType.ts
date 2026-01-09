@@ -10,10 +10,10 @@
  * The type of the event. Always `response.in_progress`.
 
  */
-export type ResponseInProgressEventType =
-  (typeof ResponseInProgressEventType)[keyof typeof ResponseInProgressEventType]
+export type ResponseInProgressEventType = typeof ResponseInProgressEventType[keyof typeof ResponseInProgressEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseInProgressEventType = {
-  responsein_progress: "response.in_progress"
-} as const
+  responsein_progress: 'response.in_progress',
+} as const;

@@ -5,15 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalLabelModelGrader } from "./createEvalLabelModelGrader"
-import type { EvalGraderPython } from "./evalGraderPython"
-import type { EvalGraderScoreModel } from "./evalGraderScoreModel"
-import type { EvalGraderStringCheck } from "./evalGraderStringCheck"
-import type { EvalGraderTextSimilarity } from "./evalGraderTextSimilarity"
+import type { CreateEvalLabelModelGrader } from './createEvalLabelModelGrader';
+import type { EvalGraderStringCheck } from './evalGraderStringCheck';
+import type { EvalGraderTextSimilarity } from './evalGraderTextSimilarity';
+import type { EvalGraderPython } from './evalGraderPython';
+import type { EvalGraderScoreModel } from './evalGraderScoreModel';
 
-export type CreateEvalRequestTestingCriteriaItem =
-  | CreateEvalLabelModelGrader
-  | EvalGraderStringCheck
-  | EvalGraderTextSimilarity
-  | EvalGraderPython
-  | EvalGraderScoreModel
+export type CreateEvalRequestTestingCriteriaItem = CreateEvalLabelModelGrader | EvalGraderStringCheck | EvalGraderTextSimilarity | EvalGraderPython | EvalGraderScoreModel;

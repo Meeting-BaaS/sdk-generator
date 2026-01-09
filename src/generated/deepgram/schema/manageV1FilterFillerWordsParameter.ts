@@ -10,4 +10,4 @@
 /**
  * Filter for requests where filler words was used
  */
-export type ManageV1FilterFillerWordsParameter = boolean
+export type ManageV1FilterFillerWordsParameter = boolean;

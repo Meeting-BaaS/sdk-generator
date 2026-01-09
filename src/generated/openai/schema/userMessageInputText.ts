@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UserMessageInputTextType } from "./userMessageInputTextType"
+import type { UserMessageInputTextType } from './userMessageInputTextType';
 
 /**
  * Text block that a user contributed to the thread.
  */
 export interface UserMessageInputText {
   /** Type discriminator that is always `input_text`. */
-  type: UserMessageInputTextType
+  type: UserMessageInputTextType;
   /** Plain-text content supplied by the user. */
-  text: string
+  text: string;
 }

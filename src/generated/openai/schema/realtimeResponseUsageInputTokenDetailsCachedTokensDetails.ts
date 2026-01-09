@@ -11,9 +11,9 @@
  */
 export type RealtimeResponseUsageInputTokenDetailsCachedTokensDetails = {
   /** The number of cached text tokens used as input for the Response. */
-  text_tokens?: number
+  text_tokens?: number;
   /** The number of cached image tokens used as input for the Response. */
-  image_tokens?: number
+  image_tokens?: number;
   /** The number of cached audio tokens used as input for the Response. */
-  audio_tokens?: number
-}
+  audio_tokens?: number;
+};

@@ -10,10 +10,10 @@
  * The type of the event. Always `transcript.text.delta`.
 
  */
-export type TranscriptTextDeltaEventType =
-  (typeof TranscriptTextDeltaEventType)[keyof typeof TranscriptTextDeltaEventType]
+export type TranscriptTextDeltaEventType = typeof TranscriptTextDeltaEventType[keyof typeof TranscriptTextDeltaEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptTextDeltaEventType = {
-  transcripttextdelta: "transcript.text.delta"
-} as const
+  transcripttextdelta: 'transcript.text.delta',
+} as const;

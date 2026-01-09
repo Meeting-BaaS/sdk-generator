@@ -8,11 +8,11 @@
 
 export interface DatasetLinks {
   /** The location to get all files of this entity. See operation "Datasets_ListFiles" for more details. */
-  readonly files?: string
+  readonly files?: string;
   /** The location to commit the list of blocks when uploading a dataset using blocks. See operation "Datasets_CommitBlocks" for more details. */
-  readonly commitBlocks?: string
+  readonly commitBlocks?: string;
   /** The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation "Datasets_GetDatasetBlocks" for more details. */
-  readonly listBlocks?: string
+  readonly listBlocks?: string;
   /** The location to upload blocks to when uploading a dataset using blocks. See operation "Datasets_UploadBlock" for more details. */
-  readonly uploadBlocks?: string
+  readonly uploadBlocks?: string;
 }

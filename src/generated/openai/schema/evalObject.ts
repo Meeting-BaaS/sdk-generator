@@ -9,9 +9,10 @@
 /**
  * The object type.
  */
-export type EvalObject = (typeof EvalObject)[keyof typeof EvalObject]
+export type EvalObject = typeof EvalObject[keyof typeof EvalObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalObject = {
-  eval: "eval"
-} as const
+  eval: 'eval',
+} as const;

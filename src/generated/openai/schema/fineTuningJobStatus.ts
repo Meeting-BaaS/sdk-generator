@@ -9,14 +9,15 @@
 /**
  * The current status of the fine-tuning job, which can be either `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
  */
-export type FineTuningJobStatus = (typeof FineTuningJobStatus)[keyof typeof FineTuningJobStatus]
+export type FineTuningJobStatus = typeof FineTuningJobStatus[keyof typeof FineTuningJobStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuningJobStatus = {
-  validating_files: "validating_files",
-  queued: "queued",
-  running: "running",
-  succeeded: "succeeded",
-  failed: "failed",
-  cancelled: "cancelled"
-} as const
+  validating_files: 'validating_files',
+  queued: 'queued',
+  running: 'running',
+  succeeded: 'succeeded',
+  failed: 'failed',
+  cancelled: 'cancelled',
+} as const;

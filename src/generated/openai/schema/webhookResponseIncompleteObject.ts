@@ -10,10 +10,10 @@
  * The object of the event. Always `event`.
 
  */
-export type WebhookResponseIncompleteObject =
-  (typeof WebhookResponseIncompleteObject)[keyof typeof WebhookResponseIncompleteObject]
+export type WebhookResponseIncompleteObject = typeof WebhookResponseIncompleteObject[keyof typeof WebhookResponseIncompleteObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookResponseIncompleteObject = {
-  event: "event"
-} as const
+  event: 'event',
+} as const;

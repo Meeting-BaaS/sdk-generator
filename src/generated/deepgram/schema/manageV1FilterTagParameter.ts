@@ -10,4 +10,4 @@
 /**
  * Filter for requests where a specific tag was used
  */
-export type ManageV1FilterTagParameter = string
+export type ManageV1FilterTagParameter = string;

@@ -9,10 +9,10 @@
 /**
  * The type of data source. Always `logs`.
  */
-export type CreateEvalLogsDataSourceConfigType =
-  (typeof CreateEvalLogsDataSourceConfigType)[keyof typeof CreateEvalLogsDataSourceConfigType]
+export type CreateEvalLogsDataSourceConfigType = typeof CreateEvalLogsDataSourceConfigType[keyof typeof CreateEvalLogsDataSourceConfigType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEvalLogsDataSourceConfigType = {
-  logs: "logs"
-} as const
+  logs: 'logs',
+} as const;

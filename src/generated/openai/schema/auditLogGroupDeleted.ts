@@ -11,5 +11,5 @@
  */
 export type AuditLogGroupDeleted = {
   /** The ID of the group. */
-  id?: string
-}
+  id?: string;
+};

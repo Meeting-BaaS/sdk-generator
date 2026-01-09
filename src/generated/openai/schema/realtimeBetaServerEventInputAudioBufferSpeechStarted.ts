@@ -21,16 +21,16 @@ the audio buffer during VAD activation).
  */
 export interface RealtimeBetaServerEventInputAudioBufferSpeechStarted {
   /** The unique ID of the server event. */
-  event_id: string
+  event_id: string;
   /** The event type, must be `input_audio_buffer.speech_started`. */
-  type: "input_audio_buffer.speech_started"
+  type: 'input_audio_buffer.speech_started';
   /** Milliseconds from the start of all audio written to the buffer during the 
 session when speech was first detected. This will correspond to the 
 beginning of audio sent to the model, and thus includes the 
 `prefix_padding_ms` configured in the Session.
  */
-  audio_start_ms: number
+  audio_start_ms: number;
   /** The ID of the user message item that will be created when speech stops.
-   */
-  item_id: string
+ */
+  item_id: string;
 }

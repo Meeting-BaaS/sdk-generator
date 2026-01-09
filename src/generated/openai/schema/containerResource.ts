@@ -5,27 +5,27 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ContainerResourceExpiresAfter } from "./containerResourceExpiresAfter"
-import type { ContainerResourceMemoryLimit } from "./containerResourceMemoryLimit"
+import type { ContainerResourceExpiresAfter } from './containerResourceExpiresAfter';
+import type { ContainerResourceMemoryLimit } from './containerResourceMemoryLimit';
 
 export interface ContainerResource {
   /** Unique identifier for the container. */
-  id: string
+  id: string;
   /** The type of this object. */
-  object: string
+  object: string;
   /** Name of the container. */
-  name: string
+  name: string;
   /** Unix timestamp (in seconds) when the container was created. */
-  created_at: number
+  created_at: number;
   /** Status of the container (e.g., active, deleted). */
-  status: string
+  status: string;
   /** Unix timestamp (in seconds) when the container was last active. */
-  last_active_at?: number
+  last_active_at?: number;
   /** The container will expire after this time period.
 The anchor is the reference point for the expiration.
 The minutes is the number of minutes after the anchor before the container expires.
  */
-  expires_after?: ContainerResourceExpiresAfter
+  expires_after?: ContainerResourceExpiresAfter;
   /** The memory limit configured for the container. */
-  memory_limit?: ContainerResourceMemoryLimit
+  memory_limit?: ContainerResourceMemoryLimit;
 }

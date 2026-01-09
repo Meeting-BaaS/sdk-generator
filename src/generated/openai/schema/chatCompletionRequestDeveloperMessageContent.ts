@@ -5,11 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestMessageContentPartText } from "./chatCompletionRequestMessageContentPartText"
+import type { ChatCompletionRequestMessageContentPartText } from './chatCompletionRequestMessageContentPartText';
 
 /**
  * The contents of the developer message.
  */
-export type ChatCompletionRequestDeveloperMessageContent =
-  | string
-  | ChatCompletionRequestMessageContentPartText[]
+export type ChatCompletionRequestDeveloperMessageContent = string | ChatCompletionRequestMessageContentPartText[];

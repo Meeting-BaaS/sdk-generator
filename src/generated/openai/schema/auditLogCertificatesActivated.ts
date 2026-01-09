@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogCertificatesActivatedCertificatesItem } from "./auditLogCertificatesActivatedCertificatesItem"
+import type { AuditLogCertificatesActivatedCertificatesItem } from './auditLogCertificatesActivatedCertificatesItem';
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogCertificatesActivated = {
-  certificates?: AuditLogCertificatesActivatedCertificatesItem[]
-}
+  certificates?: AuditLogCertificatesActivatedCertificatesItem[];
+};

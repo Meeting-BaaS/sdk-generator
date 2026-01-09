@@ -5,22 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-
-import type { TranscriptTextUsageTokensInputTokenDetails } from "./transcriptTextUsageTokensInputTokenDetails"
-import type { TranscriptTextUsageTokensType } from "./transcriptTextUsageTokensType"
+import type { TranscriptTextUsageTokensType } from './transcriptTextUsageTokensType';
+import type { TranscriptTextUsageTokensInputTokenDetails } from './transcriptTextUsageTokensInputTokenDetails';
 
 /**
  * Usage statistics for models billed by token usage.
  */
 export interface TranscriptTextUsageTokens {
   /** The type of the usage object. Always `tokens` for this variant. */
-  type: TranscriptTextUsageTokensType
+  type: TranscriptTextUsageTokensType;
   /** Number of input tokens billed for this request. */
-  input_tokens: number
+  input_tokens: number;
   /** Details about the input tokens billed for this request. */
-  input_token_details?: TranscriptTextUsageTokensInputTokenDetails
+  input_token_details?: TranscriptTextUsageTokensInputTokenDetails;
   /** Number of output tokens generated. */
-  output_tokens: number
+  output_tokens: number;
   /** Total number of tokens used (input + output). */
-  total_tokens: number
+  total_tokens: number;
 }

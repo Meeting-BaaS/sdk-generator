@@ -6,13 +6,14 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ClickButtonType = (typeof ClickButtonType)[keyof typeof ClickButtonType]
+export type ClickButtonType = typeof ClickButtonType[keyof typeof ClickButtonType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ClickButtonType = {
-  left: "left",
-  right: "right",
-  wheel: "wheel",
-  back: "back",
-  forward: "forward"
-} as const
+  left: 'left',
+  right: 'right',
+  wheel: 'wheel',
+  back: 'back',
+  forward: 'forward',
+} as const;

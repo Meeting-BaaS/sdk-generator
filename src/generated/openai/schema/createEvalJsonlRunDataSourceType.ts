@@ -9,10 +9,10 @@
 /**
  * The type of data source. Always `jsonl`.
  */
-export type CreateEvalJsonlRunDataSourceType =
-  (typeof CreateEvalJsonlRunDataSourceType)[keyof typeof CreateEvalJsonlRunDataSourceType]
+export type CreateEvalJsonlRunDataSourceType = typeof CreateEvalJsonlRunDataSourceType[keyof typeof CreateEvalJsonlRunDataSourceType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEvalJsonlRunDataSourceType = {
-  jsonl: "jsonl"
-} as const
+  jsonl: 'jsonl',
+} as const;

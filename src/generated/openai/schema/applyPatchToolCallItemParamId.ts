@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ApplyPatchToolCallItemParamId = string | null
+export type ApplyPatchToolCallItemParamId = string | null;

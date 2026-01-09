@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DeletedVideoResourceObject } from "./deletedVideoResourceObject"
+import type { DeletedVideoResourceObject } from './deletedVideoResourceObject';
 
 /**
  * Confirmation payload returned after deleting a video.
  */
 export interface DeletedVideoResource {
   /** The object type that signals the deletion response. */
-  object: DeletedVideoResourceObject
+  object: DeletedVideoResourceObject;
   /** Indicates that the video resource was deleted. */
-  deleted: boolean
+  deleted: boolean;
   /** Identifier of the deleted video. */
-  id: string
+  id: string;
 }
