@@ -3,7 +3,9 @@ import { defineConfig } from "tsup"
 export default defineConfig({
   entry: {
     index: "src/index.ts",
-    constants: "src/constants.ts"
+    constants: "src/constants.ts",
+    "field-configs": "src/field-configs.ts",
+    "provider-metadata": "src/provider-metadata.ts"
   },
   format: ["cjs", "esm"],
   dts: true,

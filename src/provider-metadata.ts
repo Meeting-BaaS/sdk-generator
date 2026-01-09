@@ -27,7 +27,9 @@
  * @packageDocumentation
  */
 
-import type { ProviderCapabilities, TranscriptionProvider } from "./router/types"
+// Re-export core types (browser-safe, no node:crypto dependency)
+export type { ProviderCapabilities, TranscriptionProvider } from "./types/core"
+import type { ProviderCapabilities, TranscriptionProvider } from "./types/core"
 
 // Import language enums from generated types
 import { TranscriptionLanguageCodeEnum } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"

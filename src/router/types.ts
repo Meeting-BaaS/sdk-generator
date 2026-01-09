@@ -214,16 +214,9 @@ export type ProviderExtendedDataMap = {
   speechmatics: Record<string, never> // No extended data
 }
 
-/**
- * Supported transcription providers
- */
-export type TranscriptionProvider =
-  | "gladia"
-  | "assemblyai"
-  | "deepgram"
-  | "azure-stt"
-  | "openai-whisper"
-  | "speechmatics"
+// Re-export core types (browser-safe)
+export type { TranscriptionProvider, ProviderCapabilities, AudioInput } from "../types/core"
+import type { TranscriptionProvider } from "../types/core"
 
 /**
  * Providers that support real-time streaming transcription
@@ -240,35 +233,7 @@ export type BatchOnlyProvider = "azure-stt" | "openai-whisper" | "speechmatics"
  */
 export type SessionStatus = "connecting" | "open" | "closing" | "closed"
 
-/**
- * Provider capabilities - indicates which features each provider supports
- */
-export interface ProviderCapabilities {
-  /** Real-time streaming transcription support */
-  streaming: boolean
-  /** Speaker diarization (identifying different speakers) */
-  diarization: boolean
-  /** Word-level timestamps */
-  wordTimestamps: boolean
-  /** Automatic language detection */
-  languageDetection: boolean
-  /** Custom vocabulary/keyword boosting */
-  customVocabulary: boolean
-  /** Audio summarization */
-  summarization: boolean
-  /** Sentiment analysis */
-  sentimentAnalysis: boolean
-  /** Entity detection */
-  entityDetection: boolean
-  /** PII redaction */
-  piiRedaction: boolean
-  /** List/fetch previous transcriptions */
-  listTranscripts: boolean
-  /** Delete existing transcriptions */
-  deleteTranscript: boolean
-  /** Download original audio file from transcription (only Gladia supports this) */
-  getAudioFile?: boolean
-}
+// ProviderCapabilities is re-exported from ../types/core above
 
 // Provider-specific list params for type-safe passthrough
 import type { ListTranscriptsParams as AssemblyAIListParams } from "../generated/assemblyai/schema/listTranscriptsParams"
@@ -325,13 +290,7 @@ export interface ListTranscriptsOptions {
   deepgram?: Partial<DeepgramListParams>
 }
 
-/**
- * Audio input for transcription
- */
-export type AudioInput =
-  | { type: "url"; url: string }
-  | { type: "file"; file: Buffer | Blob; filename?: string }
-  | { type: "stream"; stream: ReadableStream }
+// AudioInput is re-exported from ../types/core above
 
 /**
  * Common transcription options across all providers
