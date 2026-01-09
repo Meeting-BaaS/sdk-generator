@@ -37,9 +37,7 @@ import {
   transcriptionControllerListV2QueryParams as gladiaListParams
 } from "./generated/gladia/api/gladiaControlAPI.zod"
 
-import {
-  createTranscriptionBody as openaiTranscribeParams
-} from "./generated/openai/api/openAIAPI.zod"
+import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAPI.zod"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Re-export types

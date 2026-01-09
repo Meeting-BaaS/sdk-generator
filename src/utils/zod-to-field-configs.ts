@@ -304,19 +304,13 @@ export function zodToFieldConfigs(schema: z.ZodTypeAny): ZodFieldConfig[] {
 /**
  * Filter field configs to only include specified fields
  */
-export function filterFields(
-  fields: ZodFieldConfig[],
-  include: string[]
-): ZodFieldConfig[] {
+export function filterFields(fields: ZodFieldConfig[], include: string[]): ZodFieldConfig[] {
   return fields.filter((f) => include.includes(f.name))
 }
 
 /**
  * Exclude specific fields from field configs
  */
-export function excludeFields(
-  fields: ZodFieldConfig[],
-  exclude: string[]
-): ZodFieldConfig[] {
+export function excludeFields(fields: ZodFieldConfig[], exclude: string[]): ZodFieldConfig[] {
   return fields.filter((f) => !exclude.includes(f.name))
 }
