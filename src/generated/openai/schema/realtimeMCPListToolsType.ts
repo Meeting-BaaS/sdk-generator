@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `mcp_list_tools`.
  */
-export type RealtimeMCPListToolsType = typeof RealtimeMCPListToolsType[keyof typeof RealtimeMCPListToolsType];
-
+export type RealtimeMCPListToolsType =
+  (typeof RealtimeMCPListToolsType)[keyof typeof RealtimeMCPListToolsType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeMCPListToolsType = {
-  mcp_list_tools: 'mcp_list_tools',
-} as const;
+  mcp_list_tools: "mcp_list_tools"
+} as const

@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type DeleteAssistantResponseObject = typeof DeleteAssistantResponseObject[keyof typeof DeleteAssistantResponseObject];
-
+export type DeleteAssistantResponseObject =
+  (typeof DeleteAssistantResponseObject)[keyof typeof DeleteAssistantResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeleteAssistantResponseObject = {
-  assistantdeleted: 'assistant.deleted',
-} as const;
+  assistantdeleted: "assistant.deleted"
+} as const

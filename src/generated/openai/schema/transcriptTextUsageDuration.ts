@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextUsageDurationType } from './transcriptTextUsageDurationType';
+import type { TranscriptTextUsageDurationType } from "./transcriptTextUsageDurationType"
 
 /**
  * Usage statistics for models billed by audio input duration.
  */
 export interface TranscriptTextUsageDuration {
   /** The type of the usage object. Always `duration` for this variant. */
-  type: TranscriptTextUsageDurationType;
+  type: TranscriptTextUsageDurationType
   /** Duration of the input audio in seconds. */
-  seconds: number;
+  seconds: number
 }

@@ -8,13 +8,13 @@
 /**
  * The bit depth of the audio stream
  */
-export type StreamingSupportedBitDepthEnum = typeof StreamingSupportedBitDepthEnum[keyof typeof StreamingSupportedBitDepthEnum];
-
+export type StreamingSupportedBitDepthEnum =
+  (typeof StreamingSupportedBitDepthEnum)[keyof typeof StreamingSupportedBitDepthEnum]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingSupportedBitDepthEnum = {
   NUMBER_8: 8,
   NUMBER_16: 16,
   NUMBER_24: 24,
-  NUMBER_32: 32,
-} as const;
+  NUMBER_32: 32
+} as const

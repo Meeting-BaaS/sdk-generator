@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GroupUserDeletedResourceObject } from './groupUserDeletedResourceObject';
+import type { GroupUserDeletedResourceObject } from "./groupUserDeletedResourceObject"
 
 /**
  * Confirmation payload returned after removing a user from a group.
  */
 export interface GroupUserDeletedResource {
   /** Always `group.user.deleted`. */
-  object: GroupUserDeletedResourceObject;
+  object: GroupUserDeletedResourceObject
   /** Whether the group membership was removed. */
-  deleted: boolean;
+  deleted: boolean
 }

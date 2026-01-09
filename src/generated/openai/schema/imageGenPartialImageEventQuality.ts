@@ -10,13 +10,13 @@
  * The quality setting for the requested image.
 
  */
-export type ImageGenPartialImageEventQuality = typeof ImageGenPartialImageEventQuality[keyof typeof ImageGenPartialImageEventQuality];
-
+export type ImageGenPartialImageEventQuality =
+  (typeof ImageGenPartialImageEventQuality)[keyof typeof ImageGenPartialImageEventQuality]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenPartialImageEventQuality = {
-  low: 'low',
-  medium: 'medium',
-  high: 'high',
-  auto: 'auto',
-} as const;
+  low: "low",
+  medium: "medium",
+  high: "high",
+  auto: "auto"
+} as const

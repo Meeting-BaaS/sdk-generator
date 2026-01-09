@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogActorApiKeyType } from './auditLogActorApiKeyType';
-import type { AuditLogActorUser } from './auditLogActorUser';
-import type { AuditLogActorServiceAccount } from './auditLogActorServiceAccount';
+import type { AuditLogActorApiKeyType } from "./auditLogActorApiKeyType"
+import type { AuditLogActorUser } from "./auditLogActorUser"
+import type { AuditLogActorServiceAccount } from "./auditLogActorServiceAccount"
 
 /**
  * The API Key used to perform the audit logged action.
  */
 export interface AuditLogActorApiKey {
   /** The tracking id of the API key. */
-  id?: string;
+  id?: string
   /** The type of API key. Can be either `user` or `service_account`. */
-  type?: AuditLogActorApiKeyType;
-  user?: AuditLogActorUser;
-  service_account?: AuditLogActorServiceAccount;
+  type?: AuditLogActorApiKeyType
+  user?: AuditLogActorUser
+  service_account?: AuditLogActorServiceAccount
 }

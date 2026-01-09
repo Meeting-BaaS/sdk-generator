@@ -10,10 +10,10 @@
  * The type of the event. Always `response.reasoning_summary_part.added`.
 
  */
-export type ResponseReasoningSummaryPartAddedEventType = typeof ResponseReasoningSummaryPartAddedEventType[keyof typeof ResponseReasoningSummaryPartAddedEventType];
-
+export type ResponseReasoningSummaryPartAddedEventType =
+  (typeof ResponseReasoningSummaryPartAddedEventType)[keyof typeof ResponseReasoningSummaryPartAddedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseReasoningSummaryPartAddedEventType = {
-  responsereasoning_summary_partadded: 'response.reasoning_summary_part.added',
-} as const;
+  responsereasoning_summary_partadded: "response.reasoning_summary_part.added"
+} as const

@@ -6,10 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UserMessageItemType = typeof UserMessageItemType[keyof typeof UserMessageItemType];
-
+export type UserMessageItemType = (typeof UserMessageItemType)[keyof typeof UserMessageItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserMessageItemType = {
-  chatkituser_message: 'chatkit.user_message',
-} as const;
+  chatkituser_message: "chatkit.user_message"
+} as const

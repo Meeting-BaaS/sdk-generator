@@ -11,12 +11,12 @@
 `opaque`, or `auto`. Default: `auto`.
 
  */
-export type ImageGenToolBackground = typeof ImageGenToolBackground[keyof typeof ImageGenToolBackground];
-
+export type ImageGenToolBackground =
+  (typeof ImageGenToolBackground)[keyof typeof ImageGenToolBackground]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolBackground = {
-  transparent: 'transparent',
-  opaque: 'opaque',
-  auto: 'auto',
-} as const;
+  transparent: "transparent",
+  opaque: "opaque",
+  auto: "auto"
+} as const

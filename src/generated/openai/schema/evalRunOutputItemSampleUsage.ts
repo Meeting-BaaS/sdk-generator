@@ -11,11 +11,11 @@
  */
 export type EvalRunOutputItemSampleUsage = {
   /** The total number of tokens used. */
-  total_tokens: number;
+  total_tokens: number
   /** The number of completion tokens generated. */
-  completion_tokens: number;
+  completion_tokens: number
   /** The number of prompt tokens used. */
-  prompt_tokens: number;
+  prompt_tokens: number
   /** The number of tokens retrieved from cache. */
-  cached_tokens: number;
-};
+  cached_tokens: number
+}

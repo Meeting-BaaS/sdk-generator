@@ -11,4 +11,4 @@
 through the training dataset.
 
  */
-export type FineTuningJobHyperparametersNEpochs = 'auto' | number;
+export type FineTuningJobHyperparametersNEpochs = "auto" | number

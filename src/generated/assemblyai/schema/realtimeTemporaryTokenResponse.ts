@@ -8,5 +8,5 @@
 
 export interface RealtimeTemporaryTokenResponse {
   /** The temporary authentication token for Streaming Speech-to-Text */
-  token: string;
+  token: string
 }

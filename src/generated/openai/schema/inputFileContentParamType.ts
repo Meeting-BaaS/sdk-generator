@@ -9,10 +9,10 @@
 /**
  * The type of the input item. Always `input_file`.
  */
-export type InputFileContentParamType = typeof InputFileContentParamType[keyof typeof InputFileContentParamType];
-
+export type InputFileContentParamType =
+  (typeof InputFileContentParamType)[keyof typeof InputFileContentParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputFileContentParamType = {
-  input_file: 'input_file',
-} as const;
+  input_file: "input_file"
+} as const

@@ -5,33 +5,33 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponsePropertiesPreviousResponseId } from './responsePropertiesPreviousResponseId';
-import type { ModelIdsResponses } from './modelIdsResponses';
-import type { ResponsePropertiesReasoning } from './responsePropertiesReasoning';
-import type { ResponsePropertiesBackground } from './responsePropertiesBackground';
-import type { ResponsePropertiesMaxOutputTokens } from './responsePropertiesMaxOutputTokens';
-import type { ResponsePropertiesMaxToolCalls } from './responsePropertiesMaxToolCalls';
-import type { ResponseTextParam } from './responseTextParam';
-import type { ToolsArray } from './toolsArray';
-import type { ToolChoiceParam } from './toolChoiceParam';
-import type { Prompt } from './prompt';
-import type { ResponsePropertiesTruncation } from './responsePropertiesTruncation';
+import type { ResponsePropertiesPreviousResponseId } from "./responsePropertiesPreviousResponseId"
+import type { ModelIdsResponses } from "./modelIdsResponses"
+import type { ResponsePropertiesReasoning } from "./responsePropertiesReasoning"
+import type { ResponsePropertiesBackground } from "./responsePropertiesBackground"
+import type { ResponsePropertiesMaxOutputTokens } from "./responsePropertiesMaxOutputTokens"
+import type { ResponsePropertiesMaxToolCalls } from "./responsePropertiesMaxToolCalls"
+import type { ResponseTextParam } from "./responseTextParam"
+import type { ToolsArray } from "./toolsArray"
+import type { ToolChoiceParam } from "./toolChoiceParam"
+import type { Prompt } from "./prompt"
+import type { ResponsePropertiesTruncation } from "./responsePropertiesTruncation"
 
 export interface ResponseProperties {
-  previous_response_id?: ResponsePropertiesPreviousResponseId;
+  previous_response_id?: ResponsePropertiesPreviousResponseId
   /** Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
 offers a wide range of models with different capabilities, performance
 characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
 to browse and compare available models.
  */
-  model?: ModelIdsResponses;
-  reasoning?: ResponsePropertiesReasoning;
-  background?: ResponsePropertiesBackground;
-  max_output_tokens?: ResponsePropertiesMaxOutputTokens;
-  max_tool_calls?: ResponsePropertiesMaxToolCalls;
-  text?: ResponseTextParam;
-  tools?: ToolsArray;
-  tool_choice?: ToolChoiceParam;
-  prompt?: Prompt;
-  truncation?: ResponsePropertiesTruncation;
+  model?: ModelIdsResponses
+  reasoning?: ResponsePropertiesReasoning
+  background?: ResponsePropertiesBackground
+  max_output_tokens?: ResponsePropertiesMaxOutputTokens
+  max_tool_calls?: ResponsePropertiesMaxToolCalls
+  text?: ResponseTextParam
+  tools?: ToolsArray
+  tool_choice?: ToolChoiceParam
+  prompt?: Prompt
+  truncation?: ResponsePropertiesTruncation
 }

@@ -11,5 +11,5 @@
  */
 export type AuditLogRateLimitDeleted = {
   /** The rate limit ID */
-  id?: string;
-};
+  id?: string
+}

@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunOutputItemResultSampleAnyOf } from './evalRunOutputItemResultSampleAnyOf';
+import type { EvalRunOutputItemResultSampleAnyOf } from "./evalRunOutputItemResultSampleAnyOf"
 
 /**
  * Optional sample or intermediate data produced by the grader.
  */
-export type EvalRunOutputItemResultSample = EvalRunOutputItemResultSampleAnyOf | null;
+export type EvalRunOutputItemResultSample = EvalRunOutputItemResultSampleAnyOf | null

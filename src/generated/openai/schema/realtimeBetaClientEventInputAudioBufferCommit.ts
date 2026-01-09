@@ -21,7 +21,7 @@ event.
  */
 export interface RealtimeBetaClientEventInputAudioBufferCommit {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `input_audio_buffer.commit`. */
-  type: 'input_audio_buffer.commit';
+  type: "input_audio_buffer.commit"
 }

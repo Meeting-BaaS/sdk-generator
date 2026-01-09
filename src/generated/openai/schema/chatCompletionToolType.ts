@@ -9,10 +9,10 @@
 /**
  * The type of the tool. Currently, only `function` is supported.
  */
-export type ChatCompletionToolType = typeof ChatCompletionToolType[keyof typeof ChatCompletionToolType];
-
+export type ChatCompletionToolType =
+  (typeof ChatCompletionToolType)[keyof typeof ChatCompletionToolType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionToolType = {
-  function: 'function',
-} as const;
+  function: "function"
+} as const

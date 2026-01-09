@@ -14,14 +14,15 @@
 
  * @nullable
  */
-export type CreateChatCompletionStreamResponseChoicesItemFinishReason = typeof CreateChatCompletionStreamResponseChoicesItemFinishReason[keyof typeof CreateChatCompletionStreamResponseChoicesItemFinishReason] | null;
-
+export type CreateChatCompletionStreamResponseChoicesItemFinishReason =
+  | (typeof CreateChatCompletionStreamResponseChoicesItemFinishReason)[keyof typeof CreateChatCompletionStreamResponseChoicesItemFinishReason]
+  | null
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateChatCompletionStreamResponseChoicesItemFinishReason = {
-  stop: 'stop',
-  length: 'length',
-  tool_calls: 'tool_calls',
-  content_filter: 'content_filter',
-  function_call: 'function_call',
-} as const;
+  stop: "stop",
+  length: "length",
+  tool_calls: "tool_calls",
+  content_filter: "content_filter",
+  function_call: "function_call"
+} as const

@@ -9,4 +9,4 @@
 /**
  * Parameters of the function in JSON Schema.
  */
-export type RealtimeBetaResponseCreateParamsToolsItemParameters = { [key: string]: unknown };
+export type RealtimeBetaResponseCreateParamsToolsItemParameters = { [key: string]: unknown }

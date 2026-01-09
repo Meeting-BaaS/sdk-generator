@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ListFilesOrder = typeof ListFilesOrder[keyof typeof ListFilesOrder];
-
+export type ListFilesOrder = (typeof ListFilesOrder)[keyof typeof ListFilesOrder]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListFilesOrder = {
-  asc: 'asc',
-  desc: 'desc',
-} as const;
+  asc: "asc",
+  desc: "desc"
+} as const

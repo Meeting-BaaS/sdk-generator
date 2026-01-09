@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageContentTextAnnotationsFilePathObjectType } from './messageContentTextAnnotationsFilePathObjectType';
-import type { MessageContentTextAnnotationsFilePathObjectFilePath } from './messageContentTextAnnotationsFilePathObjectFilePath';
+import type { MessageContentTextAnnotationsFilePathObjectType } from "./messageContentTextAnnotationsFilePathObjectType"
+import type { MessageContentTextAnnotationsFilePathObjectFilePath } from "./messageContentTextAnnotationsFilePathObjectFilePath"
 
 /**
  * A URL for the file that's generated when the assistant used the `code_interpreter` tool to generate a file.
  */
 export interface MessageContentTextAnnotationsFilePathObject {
   /** Always `file_path`. */
-  type: MessageContentTextAnnotationsFilePathObjectType;
+  type: MessageContentTextAnnotationsFilePathObjectType
   /** The text in the message content that needs to be replaced. */
-  text: string;
-  file_path: MessageContentTextAnnotationsFilePathObjectFilePath;
+  text: string
+  file_path: MessageContentTextAnnotationsFilePathObjectFilePath
   /** @minimum 0 */
-  start_index: number;
+  start_index: number
   /** @minimum 0 */
-  end_index: number;
+  end_index: number
 }

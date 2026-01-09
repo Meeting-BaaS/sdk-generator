@@ -5,11 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ApplyPatchCreateFileOperationParam } from './applyPatchCreateFileOperationParam';
-import type { ApplyPatchDeleteFileOperationParam } from './applyPatchDeleteFileOperationParam';
-import type { ApplyPatchUpdateFileOperationParam } from './applyPatchUpdateFileOperationParam';
+import type { ApplyPatchCreateFileOperationParam } from "./applyPatchCreateFileOperationParam"
+import type { ApplyPatchDeleteFileOperationParam } from "./applyPatchDeleteFileOperationParam"
+import type { ApplyPatchUpdateFileOperationParam } from "./applyPatchUpdateFileOperationParam"
 
 /**
  * One of the create_file, delete_file, or update_file operations supplied to the apply_patch tool.
  */
-export type ApplyPatchOperationParam = ApplyPatchCreateFileOperationParam | ApplyPatchDeleteFileOperationParam | ApplyPatchUpdateFileOperationParam;
+export type ApplyPatchOperationParam =
+  | ApplyPatchCreateFileOperationParam
+  | ApplyPatchDeleteFileOperationParam
+  | ApplyPatchUpdateFileOperationParam

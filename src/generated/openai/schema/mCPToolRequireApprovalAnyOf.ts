@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolRequireApprovalAnyOfAnyOf } from './mCPToolRequireApprovalAnyOfAnyOf';
+import type { MCPToolRequireApprovalAnyOfAnyOf } from "./mCPToolRequireApprovalAnyOfAnyOf"
 
 /**
  * Specify which of the MCP server's tools require approval.
  */
-export type MCPToolRequireApprovalAnyOf = MCPToolRequireApprovalAnyOfAnyOf | 'always' | 'never';
+export type MCPToolRequireApprovalAnyOf = MCPToolRequireApprovalAnyOfAnyOf | "always" | "never"

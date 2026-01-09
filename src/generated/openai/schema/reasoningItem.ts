@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ReasoningItemType } from './reasoningItemType';
-import type { ReasoningItemEncryptedContent } from './reasoningItemEncryptedContent';
-import type { Summary } from './summary';
-import type { ReasoningTextContent } from './reasoningTextContent';
-import type { ReasoningItemStatus } from './reasoningItemStatus';
+import type { ReasoningItemType } from "./reasoningItemType"
+import type { ReasoningItemEncryptedContent } from "./reasoningItemEncryptedContent"
+import type { Summary } from "./summary"
+import type { ReasoningTextContent } from "./reasoningTextContent"
+import type { ReasoningItemStatus } from "./reasoningItemStatus"
 
 /**
  * A description of the chain of thought used by a reasoning model while generating
@@ -20,20 +20,20 @@ for subsequent turns of a conversation if you are manually
  */
 export interface ReasoningItem {
   /** The type of the object. Always `reasoning`.
- */
-  type: ReasoningItemType;
+   */
+  type: ReasoningItemType
   /** The unique identifier of the reasoning content.
- */
-  id: string;
-  encrypted_content?: ReasoningItemEncryptedContent;
+   */
+  id: string
+  encrypted_content?: ReasoningItemEncryptedContent
   /** Reasoning summary content.
- */
-  summary: Summary[];
+   */
+  summary: Summary[]
   /** Reasoning text content.
- */
-  content?: ReasoningTextContent[];
+   */
+  content?: ReasoningTextContent[]
   /** The status of the item. One of `in_progress`, `completed`, or
 `incomplete`. Populated when items are returned via API.
  */
-  status?: ReasoningItemStatus;
+  status?: ReasoningItemStatus
 }

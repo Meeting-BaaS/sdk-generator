@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputMessageType } from './inputMessageType';
-import type { InputMessageRole } from './inputMessageRole';
-import type { InputMessageStatus } from './inputMessageStatus';
-import type { InputMessageContentList } from './inputMessageContentList';
+import type { InputMessageType } from "./inputMessageType"
+import type { InputMessageRole } from "./inputMessageRole"
+import type { InputMessageStatus } from "./inputMessageStatus"
+import type { InputMessageContentList } from "./inputMessageContentList"
 
 /**
  * A message input to the model with a role indicating instruction following
@@ -18,14 +18,14 @@ precedence over instructions given with the `user` role.
  */
 export interface InputMessage {
   /** The type of the message input. Always set to `message`.
- */
-  type?: InputMessageType;
+   */
+  type?: InputMessageType
   /** The role of the message input. One of `user`, `system`, or `developer`.
- */
-  role: InputMessageRole;
+   */
+  role: InputMessageRole
   /** The status of item. One of `in_progress`, `completed`, or
 `incomplete`. Populated when items are returned via API.
  */
-  status?: InputMessageStatus;
-  content: InputMessageContentList;
+  status?: InputMessageStatus
+  content: InputMessageContentList
 }

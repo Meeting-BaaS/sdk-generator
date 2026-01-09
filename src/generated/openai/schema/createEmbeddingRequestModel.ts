@@ -10,4 +10,8 @@
  * ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
 
  */
-export type CreateEmbeddingRequestModel = string | 'text-embedding-ada-002' | 'text-embedding-3-small' | 'text-embedding-3-large';
+export type CreateEmbeddingRequestModel =
+  | string
+  | "text-embedding-ada-002"
+  | "text-embedding-3-small"
+  | "text-embedding-3-large"

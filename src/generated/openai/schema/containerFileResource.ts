@@ -8,17 +8,17 @@
 
 export interface ContainerFileResource {
   /** Unique identifier for the file. */
-  id: string;
+  id: string
   /** The type of this object (`container.file`). */
-  object: 'container.file';
+  object: "container.file"
   /** The container this file belongs to. */
-  container_id: string;
+  container_id: string
   /** Unix timestamp (in seconds) when the file was created. */
-  created_at: number;
+  created_at: number
   /** Size of the file in bytes. */
-  bytes: number;
+  bytes: number
   /** Path of the file in the container. */
-  path: string;
+  path: string
   /** Source of the file (e.g., `user`, `assistant`). */
-  source: string;
+  source: string
 }

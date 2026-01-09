@@ -11,11 +11,11 @@
 `wav`.
 
  */
-export type InputAudioInputAudioFormat = typeof InputAudioInputAudioFormat[keyof typeof InputAudioInputAudioFormat];
-
+export type InputAudioInputAudioFormat =
+  (typeof InputAudioInputAudioFormat)[keyof typeof InputAudioInputAudioFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputAudioInputAudioFormat = {
-  mp3: 'mp3',
-  wav: 'wav',
-} as const;
+  mp3: "mp3",
+  wav: "wav"
+} as const

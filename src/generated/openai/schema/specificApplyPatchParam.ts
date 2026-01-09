@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { SpecificApplyPatchParamType } from './specificApplyPatchParamType';
+import type { SpecificApplyPatchParamType } from "./specificApplyPatchParamType"
 
 /**
  * Forces the model to call the apply_patch tool when executing a tool call.
  */
 export interface SpecificApplyPatchParam {
   /** The tool to call. Always `apply_patch`. */
-  type: SpecificApplyPatchParamType;
+  type: SpecificApplyPatchParamType
 }

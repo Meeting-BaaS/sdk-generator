@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseCustomToolCallInputDeltaEventType } from './responseCustomToolCallInputDeltaEventType';
+import type { ResponseCustomToolCallInputDeltaEventType } from "./responseCustomToolCallInputDeltaEventType"
 
 /**
  * Event representing a delta (partial update) to the input of a custom tool call.
@@ -13,13 +13,13 @@ import type { ResponseCustomToolCallInputDeltaEventType } from './responseCustom
  */
 export interface ResponseCustomToolCallInputDeltaEvent {
   /** The event type identifier. */
-  type: ResponseCustomToolCallInputDeltaEventType;
+  type: ResponseCustomToolCallInputDeltaEventType
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
   /** The index of the output this delta applies to. */
-  output_index: number;
+  output_index: number
   /** Unique identifier for the API item associated with this event. */
-  item_id: string;
+  item_id: string
   /** The incremental input data (delta) for the custom tool call. */
-  delta: string;
+  delta: string
 }

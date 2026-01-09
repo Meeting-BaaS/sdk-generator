@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Error as ErrorType } from './error';
+import type { Error as ErrorType } from "./error"
 
 /**
  * Unauthorized
  */
-export type UnauthorizedResponse = Error;
+export type UnauthorizedResponse = Error

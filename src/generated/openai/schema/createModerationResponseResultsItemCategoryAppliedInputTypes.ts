@@ -5,48 +5,48 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHateItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesHateItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHateThreateningItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesHateThreateningItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentThreateningItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesHarassmentThreateningItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesIllicitItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitViolentItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesIllicitViolentItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmIntentItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmIntentItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmInstructionsItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmInstructionsItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesSexualItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualMinorsItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesSexualMinorsItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesViolenceItem';
-import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceGraphicItem } from './createModerationResponseResultsItemCategoryAppliedInputTypesViolenceGraphicItem';
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHateItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesHateItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHateThreateningItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesHateThreateningItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentThreateningItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesHarassmentThreateningItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesIllicitItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitViolentItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesIllicitViolentItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmIntentItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmIntentItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmInstructionsItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmInstructionsItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesSexualItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualMinorsItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesSexualMinorsItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesViolenceItem"
+import type { CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceGraphicItem } from "./createModerationResponseResultsItemCategoryAppliedInputTypesViolenceGraphicItem"
 
 /**
  * A list of the categories along with the input type(s) that the score applies to.
  */
 export type CreateModerationResponseResultsItemCategoryAppliedInputTypes = {
   /** The applied input type(s) for the category 'hate'. */
-  hate: CreateModerationResponseResultsItemCategoryAppliedInputTypesHateItem[];
+  hate: CreateModerationResponseResultsItemCategoryAppliedInputTypesHateItem[]
   /** The applied input type(s) for the category 'hate/threatening'. */
-  'hate/threatening': CreateModerationResponseResultsItemCategoryAppliedInputTypesHateThreateningItem[];
+  "hate/threatening": CreateModerationResponseResultsItemCategoryAppliedInputTypesHateThreateningItem[]
   /** The applied input type(s) for the category 'harassment'. */
-  harassment: CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem[];
+  harassment: CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentItem[]
   /** The applied input type(s) for the category 'harassment/threatening'. */
-  'harassment/threatening': CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentThreateningItem[];
+  "harassment/threatening": CreateModerationResponseResultsItemCategoryAppliedInputTypesHarassmentThreateningItem[]
   /** The applied input type(s) for the category 'illicit'. */
-  illicit: CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitItem[];
+  illicit: CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitItem[]
   /** The applied input type(s) for the category 'illicit/violent'. */
-  'illicit/violent': CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitViolentItem[];
+  "illicit/violent": CreateModerationResponseResultsItemCategoryAppliedInputTypesIllicitViolentItem[]
   /** The applied input type(s) for the category 'self-harm'. */
-  'self-harm': CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmItem[];
+  "self-harm": CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmItem[]
   /** The applied input type(s) for the category 'self-harm/intent'. */
-  'self-harm/intent': CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmIntentItem[];
+  "self-harm/intent": CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmIntentItem[]
   /** The applied input type(s) for the category 'self-harm/instructions'. */
-  'self-harm/instructions': CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmInstructionsItem[];
+  "self-harm/instructions": CreateModerationResponseResultsItemCategoryAppliedInputTypesSelfHarmInstructionsItem[]
   /** The applied input type(s) for the category 'sexual'. */
-  sexual: CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem[];
+  sexual: CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualItem[]
   /** The applied input type(s) for the category 'sexual/minors'. */
-  'sexual/minors': CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualMinorsItem[];
+  "sexual/minors": CreateModerationResponseResultsItemCategoryAppliedInputTypesSexualMinorsItem[]
   /** The applied input type(s) for the category 'violence'. */
-  violence: CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceItem[];
+  violence: CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceItem[]
   /** The applied input type(s) for the category 'violence/graphic'. */
-  'violence/graphic': CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceGraphicItem[];
-};
+  "violence/graphic": CreateModerationResponseResultsItemCategoryAppliedInputTypesViolenceGraphicItem[]
+}

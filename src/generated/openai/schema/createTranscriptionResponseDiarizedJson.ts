@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateTranscriptionResponseDiarizedJsonTask } from './createTranscriptionResponseDiarizedJsonTask';
-import type { TranscriptionDiarizedSegment } from './transcriptionDiarizedSegment';
-import type { CreateTranscriptionResponseDiarizedJsonUsage } from './createTranscriptionResponseDiarizedJsonUsage';
+import type { CreateTranscriptionResponseDiarizedJsonTask } from "./createTranscriptionResponseDiarizedJsonTask"
+import type { TranscriptionDiarizedSegment } from "./transcriptionDiarizedSegment"
+import type { CreateTranscriptionResponseDiarizedJsonUsage } from "./createTranscriptionResponseDiarizedJsonUsage"
 
 /**
  * Represents a diarized transcription response returned by the model, including the combined transcript and speaker-segment annotations.
@@ -15,13 +15,13 @@ import type { CreateTranscriptionResponseDiarizedJsonUsage } from './createTrans
  */
 export interface CreateTranscriptionResponseDiarizedJson {
   /** The type of task that was run. Always `transcribe`. */
-  task: CreateTranscriptionResponseDiarizedJsonTask;
+  task: CreateTranscriptionResponseDiarizedJsonTask
   /** Duration of the input audio in seconds. */
-  duration: number;
+  duration: number
   /** The concatenated transcript text for the entire audio input. */
-  text: string;
+  text: string
   /** Segments of the transcript annotated with timestamps and speaker labels. */
-  segments: TranscriptionDiarizedSegment[];
+  segments: TranscriptionDiarizedSegment[]
   /** Token or duration usage statistics for the request. */
-  usage?: CreateTranscriptionResponseDiarizedJsonUsage;
+  usage?: CreateTranscriptionResponseDiarizedJsonUsage
 }

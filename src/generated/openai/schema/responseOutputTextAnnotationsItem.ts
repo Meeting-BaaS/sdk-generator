@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileAnnotation } from './fileAnnotation';
-import type { UrlAnnotation } from './urlAnnotation';
+import type { FileAnnotation } from "./fileAnnotation"
+import type { UrlAnnotation } from "./urlAnnotation"
 
 /**
  * Annotation object describing a cited source.
  */
-export type ResponseOutputTextAnnotationsItem = FileAnnotation | UrlAnnotation;
+export type ResponseOutputTextAnnotationsItem = FileAnnotation | UrlAnnotation

@@ -6,10 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type DoneEventData = typeof DoneEventData[keyof typeof DoneEventData];
-
+export type DoneEventData = (typeof DoneEventData)[keyof typeof DoneEventData]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DoneEventData = {
-  '[DONE]': '[DONE]',
-} as const;
+  "[DONE]": "[DONE]"
+} as const

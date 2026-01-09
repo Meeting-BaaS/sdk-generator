@@ -11,5 +11,5 @@
  */
 export interface AuditLogActorServiceAccount {
   /** The service account id. */
-  id?: string;
+  id?: string
 }

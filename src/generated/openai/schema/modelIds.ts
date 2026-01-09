@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModelIdsShared } from './modelIdsShared';
-import type { ModelIdsResponses } from './modelIdsResponses';
+import type { ModelIdsShared } from "./modelIdsShared"
+import type { ModelIdsResponses } from "./modelIdsResponses"
 
-export type ModelIds = ModelIdsShared | ModelIdsResponses;
+export type ModelIds = ModelIdsShared | ModelIdsResponses

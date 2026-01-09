@@ -5,17 +5,17 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { LemurQuestionContext } from './lemurQuestionContext';
+import type { LemurQuestionContext } from "./lemurQuestionContext"
 
 export interface LemurQuestion {
   /** The question you wish to ask. For more complex questions use default model. */
-  question: string;
+  question: string
   /** Any context about the transcripts you wish to provide. This can be a string or any object. */
-  context?: LemurQuestionContext;
+  context?: LemurQuestionContext
   /** How you want the answer to be returned. This can be any text. Can't be used with answer_options. Examples: "short sentence", "bullet points"
- */
-  answer_format?: string;
+   */
+  answer_format?: string
   /** What discrete options to return. Useful for precise responses. Can't be used with answer_format. Example: ["Yes", "No"]
- */
-  answer_options?: string[];
+   */
+  answer_options?: string[]
 }

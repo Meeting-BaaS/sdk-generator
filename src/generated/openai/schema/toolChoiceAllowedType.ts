@@ -9,10 +9,10 @@
 /**
  * Allowed tool configuration type. Always `allowed_tools`.
  */
-export type ToolChoiceAllowedType = typeof ToolChoiceAllowedType[keyof typeof ToolChoiceAllowedType];
-
+export type ToolChoiceAllowedType =
+  (typeof ToolChoiceAllowedType)[keyof typeof ToolChoiceAllowedType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ToolChoiceAllowedType = {
-  allowed_tools: 'allowed_tools',
-} as const;
+  allowed_tools: "allowed_tools"
+} as const

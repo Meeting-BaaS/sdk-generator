@@ -5,31 +5,31 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseTextDeltaEventType } from './responseTextDeltaEventType';
-import type { ResponseLogProb } from './responseLogProb';
+import type { ResponseTextDeltaEventType } from "./responseTextDeltaEventType"
+import type { ResponseLogProb } from "./responseLogProb"
 
 /**
  * Emitted when there is an additional text delta.
  */
 export interface ResponseTextDeltaEvent {
   /** The type of the event. Always `response.output_text.delta`.
- */
-  type: ResponseTextDeltaEventType;
+   */
+  type: ResponseTextDeltaEventType
   /** The ID of the output item that the text delta was added to.
- */
-  item_id: string;
+   */
+  item_id: string
   /** The index of the output item that the text delta was added to.
- */
-  output_index: number;
+   */
+  output_index: number
   /** The index of the content part that the text delta was added to.
- */
-  content_index: number;
+   */
+  content_index: number
   /** The text delta that was added.
- */
-  delta: string;
+   */
+  delta: string
   /** The sequence number for this event. */
-  sequence_number: number;
+  sequence_number: number
   /** The log probabilities of the tokens in the delta.
- */
-  logprobs: ResponseLogProb[];
+   */
+  logprobs: ResponseLogProb[]
 }

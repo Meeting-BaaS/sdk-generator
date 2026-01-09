@@ -9,10 +9,10 @@
 /**
  * The type of the output. Always `logs`.
  */
-export type CodeInterpreterOutputLogsType = typeof CodeInterpreterOutputLogsType[keyof typeof CodeInterpreterOutputLogsType];
-
+export type CodeInterpreterOutputLogsType =
+  (typeof CodeInterpreterOutputLogsType)[keyof typeof CodeInterpreterOutputLogsType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodeInterpreterOutputLogsType = {
-  logs: 'logs',
-} as const;
+  logs: "logs"
+} as const

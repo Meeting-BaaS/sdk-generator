@@ -9,11 +9,11 @@
 /**
  * The status of the transcript. Either completed or error.
  */
-export type TranscriptReadyStatus = typeof TranscriptReadyStatus[keyof typeof TranscriptReadyStatus];
-
+export type TranscriptReadyStatus =
+  (typeof TranscriptReadyStatus)[keyof typeof TranscriptReadyStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptReadyStatus = {
-  completed: 'completed',
-  error: 'error',
-} as const;
+  completed: "completed",
+  error: "error"
+} as const

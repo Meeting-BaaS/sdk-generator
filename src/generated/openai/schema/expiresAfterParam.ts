@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ExpiresAfterParamAnchor } from './expiresAfterParamAnchor';
+import type { ExpiresAfterParamAnchor } from "./expiresAfterParamAnchor"
 
 /**
  * Controls when the session expires relative to an anchor timestamp.
  */
 export interface ExpiresAfterParam {
   /** Base timestamp used to calculate expiration. Currently fixed to `created_at`. */
-  anchor: ExpiresAfterParamAnchor;
+  anchor: ExpiresAfterParamAnchor
   /**
    * Number of seconds after the anchor when the session expires.
    * @minimum 1
    * @maximum 600
    */
-  seconds: number;
+  seconds: number
 }

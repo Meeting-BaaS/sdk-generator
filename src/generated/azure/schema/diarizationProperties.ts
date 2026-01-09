@@ -5,8 +5,8 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { DiarizationSpeakersProperties } from './diarizationSpeakersProperties';
+import type { DiarizationSpeakersProperties } from "./diarizationSpeakersProperties"
 
 export interface DiarizationProperties {
-  speakers: DiarizationSpeakersProperties;
+  speakers: DiarizationSpeakersProperties
 }

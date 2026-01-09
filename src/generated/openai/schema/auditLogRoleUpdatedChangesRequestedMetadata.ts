@@ -9,4 +9,4 @@
 /**
  * Additional metadata stored on the role.
  */
-export type AuditLogRoleUpdatedChangesRequestedMetadata = { [key: string]: unknown };
+export type AuditLogRoleUpdatedChangesRequestedMetadata = { [key: string]: unknown }

@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DeletedThreadResourceObject } from './deletedThreadResourceObject';
+import type { DeletedThreadResourceObject } from "./deletedThreadResourceObject"
 
 /**
  * Confirmation payload returned after deleting a thread.
  */
 export interface DeletedThreadResource {
   /** Identifier of the deleted thread. */
-  id: string;
+  id: string
   /** Type discriminator that is always `chatkit.thread.deleted`. */
-  object: DeletedThreadResourceObject;
+  object: DeletedThreadResourceObject
   /** Indicates that the thread has been deleted. */
-  deleted: boolean;
+  deleted: boolean
 }

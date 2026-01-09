@@ -5,1004 +5,2415 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import {
-  z as zod
-} from 'zod';
+import { z as zod } from "zod"
 
 /**
  * @summary Gets a list of supported locales for datasets.
  */
-export const datasetsListSupportedLocalesResponse = zod.record(zod.string(), zod.array(zod.enum(['Language', 'Acoustic', 'Pronunciation', 'AudioFiles', 'LanguageMarkdown']).describe('Type of data import.')))
-
+export const datasetsListSupportedLocalesResponse = zod.record(
+  zod.string(),
+  zod.array(
+    zod
+      .enum(["Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown"])
+      .describe("Type of data import.")
+  )
+)
 
 /**
  * @summary Gets a list of datasets for the authenticated subscription.
  */
 export const datasetsListQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available datasets.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            -Example:\r\n             filter=createdDateTime gt 2022-02-01T11:00:00Z and displayName eq \'My dataset\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available datasets.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            -Example:\r\n             filter=createdDateTime gt 2022-02-01T11:00:00Z and displayName eq 'My dataset'"
+    )
 })
 
 export const datasetsListResponse = zod.object({
-  "values": zod.array(zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'),
-  "commitBlocks": zod.string().url().optional().describe('The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'),
-  "listBlocks": zod.string().url().optional().describe('The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'),
-  "uploadBlocks": zod.string().url().optional().describe('The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "acceptedLineCount": zod.number().optional().describe('The number of lines accepted for this data set.'),
-  "rejectedLineCount": zod.number().optional().describe('The number of lines rejected for this data set.'),
-  "duration": zod.string().optional().describe('The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "kind": zod.enum(['Language', 'Acoustic', 'Pronunciation', 'AudioFiles', 'LanguageMarkdown']).describe('Type of data import.'),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrl": zod.string().url().optional().describe('The URL of the data for the dataset.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        links: zod
+          .object({
+            files: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+              ),
+            commitBlocks: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+              ),
+            listBlocks: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+              ),
+            uploadBlocks: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            acceptedLineCount: zod
+              .number()
+              .optional()
+              .describe("The number of lines accepted for this data set."),
+            rejectedLineCount: zod
+              .number()
+              .optional()
+              .describe("The number of lines rejected for this data set."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        kind: zod
+          .enum(["Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown"])
+          .describe("Type of data import."),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        contentUrl: zod.string().url().optional().describe("The URL of the data for the dataset."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Uploads and creates a new dataset by getting the data from a specified URL or starts waiting for data blocks to be uploaded.
  */
 export const datasetsCreateBody = zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'),
-  "commitBlocks": zod.string().url().optional().describe('The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'),
-  "listBlocks": zod.string().url().optional().describe('The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'),
-  "uploadBlocks": zod.string().url().optional().describe('The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "acceptedLineCount": zod.number().optional().describe('The number of lines accepted for this data set.'),
-  "rejectedLineCount": zod.number().optional().describe('The number of lines rejected for this data set.'),
-  "duration": zod.string().optional().describe('The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "kind": zod.enum(['Language', 'Acoustic', 'Pronunciation', 'AudioFiles', 'LanguageMarkdown']).describe('Type of data import.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrl": zod.string().url().optional().describe('The URL of the data for the dataset.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.')
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+        ),
+      commitBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+        ),
+      listBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+        ),
+      uploadBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      acceptedLineCount: zod
+        .number()
+        .optional()
+        .describe("The number of lines accepted for this data set."),
+      rejectedLineCount: zod
+        .number()
+        .optional()
+        .describe("The number of lines rejected for this data set."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  kind: zod
+    .enum(["Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown"])
+    .describe("Type of data import."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  contentUrl: zod.string().url().optional().describe("The URL of the data for the dataset."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  locale: zod.string().min(1).describe("The locale of the contained data.")
 })
-
 
 /**
  * @summary Gets the dataset identified by the given ID.
  */
 export const datasetsGetParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.')
+  id: zod.string().uuid().describe("The identifier of the dataset.")
 })
 
 export const datasetsGetResponse = zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'),
-  "commitBlocks": zod.string().url().optional().describe('The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'),
-  "listBlocks": zod.string().url().optional().describe('The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'),
-  "uploadBlocks": zod.string().url().optional().describe('The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "acceptedLineCount": zod.number().optional().describe('The number of lines accepted for this data set.'),
-  "rejectedLineCount": zod.number().optional().describe('The number of lines rejected for this data set.'),
-  "duration": zod.string().optional().describe('The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "kind": zod.enum(['Language', 'Acoustic', 'Pronunciation', 'AudioFiles', 'LanguageMarkdown']).describe('Type of data import.'),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrl": zod.string().url().optional().describe('The URL of the data for the dataset.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+        ),
+      commitBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+        ),
+      listBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+        ),
+      uploadBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      acceptedLineCount: zod
+        .number()
+        .optional()
+        .describe("The number of lines accepted for this data set."),
+      rejectedLineCount: zod
+        .number()
+        .optional()
+        .describe("The number of lines rejected for this data set."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  kind: zod
+    .enum(["Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown"])
+    .describe("Type of data import."),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  contentUrl: zod.string().url().optional().describe("The URL of the data for the dataset."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Updates the mutable details of the dataset identified by its ID.
  */
 export const datasetsUpdateParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.')
+  id: zod.string().uuid().describe("The identifier of the dataset.")
 })
 
 export const datasetsUpdateBody = zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "displayName": zod.string().optional().describe('The name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  displayName: zod.string().optional().describe("The name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
 
 export const datasetsUpdateResponse = zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'),
-  "commitBlocks": zod.string().url().optional().describe('The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'),
-  "listBlocks": zod.string().url().optional().describe('The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'),
-  "uploadBlocks": zod.string().url().optional().describe('The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "acceptedLineCount": zod.number().optional().describe('The number of lines accepted for this data set.'),
-  "rejectedLineCount": zod.number().optional().describe('The number of lines rejected for this data set.'),
-  "duration": zod.string().optional().describe('The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "kind": zod.enum(['Language', 'Acoustic', 'Pronunciation', 'AudioFiles', 'LanguageMarkdown']).describe('Type of data import.'),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrl": zod.string().url().optional().describe('The URL of the data for the dataset.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+        ),
+      commitBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+        ),
+      listBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+        ),
+      uploadBlocks: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      acceptedLineCount: zod
+        .number()
+        .optional()
+        .describe("The number of lines accepted for this data set."),
+      rejectedLineCount: zod
+        .number()
+        .optional()
+        .describe("The number of lines rejected for this data set."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  kind: zod
+    .enum(["Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown"])
+    .describe("Type of data import."),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  contentUrl: zod.string().url().optional().describe("The URL of the data for the dataset."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Deletes the specified dataset.
  */
 export const datasetsDeleteParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.')
+  id: zod.string().uuid().describe("The identifier of the dataset.")
 })
-
 
 /**
  * @summary Gets the list of uploaded blocks for this dataset.
  */
 export const datasetsGetBlocksParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.')
+  id: zod.string().uuid().describe("The identifier of the dataset.")
 })
 
-export const datasetsGetBlocksResponse = zod.object({
-  "committedBlocks": zod.array(zod.object({
-  "name": zod.string().optional().describe('The name of the block.'),
-  "size": zod.number().optional().describe('The size of the block.')
-}).describe('ResponseBlock.')).optional().describe('The block description of blocks already committed.'),
-  "uncommittedBlocks": zod.array(zod.object({
-  "name": zod.string().optional().describe('The name of the block.'),
-  "size": zod.number().optional().describe('The size of the block.')
-}).describe('ResponseBlock.')).optional().describe('The block description of blocks not committed to the blob.')
-}).describe('List of uploaded blocks.')
-
+export const datasetsGetBlocksResponse = zod
+  .object({
+    committedBlocks: zod
+      .array(
+        zod
+          .object({
+            name: zod.string().optional().describe("The name of the block."),
+            size: zod.number().optional().describe("The size of the block.")
+          })
+          .describe("ResponseBlock.")
+      )
+      .optional()
+      .describe("The block description of blocks already committed."),
+    uncommittedBlocks: zod
+      .array(
+        zod
+          .object({
+            name: zod.string().optional().describe("The name of the block."),
+            size: zod.number().optional().describe("The size of the block.")
+          })
+          .describe("ResponseBlock.")
+      )
+      .optional()
+      .describe("The block description of blocks not committed to the blob.")
+  })
+  .describe("List of uploaded blocks.")
 
 /**
  * @summary Upload a block of data for the dataset. The maximum size of the block is 8MiB.
  */
 export const datasetsUploadBlockParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.')
+  id: zod.string().uuid().describe("The identifier of the dataset.")
 })
 
 export const datasetsUploadBlockQueryParams = zod.object({
-  "blockid": zod.string().describe('A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block. Note that the Base64 string must be URL-encoded.')
+  blockid: zod
+    .string()
+    .describe(
+      "A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block. Note that the Base64 string must be URL-encoded."
+    )
 })
-
 
 /**
  * @deprecated
  * @summary Uploads data and creates a new dataset.
  */
 export const datasetsUploadBody = zod.object({
-  "project": zod.string().optional().describe('The optional string representation of the url of a project. If set, the dataset will be associated with that project.'),
-  "displayName": zod.string().describe('The name of this dataset (required).'),
-  "description": zod.string().optional().describe('Optional description of this dataset.'),
-  "locale": zod.string().describe('The locale of this dataset (required).'),
-  "kind": zod.string().describe('The kind of the dataset (required). Possible values are \"Language\", \"Acoustic\", \"Pronunciation\", \"AudioFiles\", \"LanguageMarkdown\".'),
-  "customProperties": zod.string().optional().describe('The optional custom properties of this entity. The maximum allowed key length is 64 characters, the maximum allowed value length is 256 characters and the count of allowed entries is 10.'),
-  "data": zod.instanceof(File).optional().describe('For acoustic datasets, a zip file containing the audio data and a text file containing the transcriptions for the audio data. For language datasets, a text file containing the language or pronunciation data. Required in both cases.'),
-  "email": zod.string().optional().describe('An optional string containing the email address to send email notifications to in case the operation completes. The value will be removed after successfully sending the email.')
+  project: zod
+    .string()
+    .optional()
+    .describe(
+      "The optional string representation of the url of a project. If set, the dataset will be associated with that project."
+    ),
+  displayName: zod.string().describe("The name of this dataset (required)."),
+  description: zod.string().optional().describe("Optional description of this dataset."),
+  locale: zod.string().describe("The locale of this dataset (required)."),
+  kind: zod
+    .string()
+    .describe(
+      'The kind of the dataset (required). Possible values are \"Language\", \"Acoustic\", \"Pronunciation\", \"AudioFiles\", \"LanguageMarkdown\".'
+    ),
+  customProperties: zod
+    .string()
+    .optional()
+    .describe(
+      "The optional custom properties of this entity. The maximum allowed key length is 64 characters, the maximum allowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  data: zod
+    .instanceof(File)
+    .optional()
+    .describe(
+      "For acoustic datasets, a zip file containing the audio data and a text file containing the transcriptions for the audio data. For language datasets, a text file containing the language or pronunciation data. Required in both cases."
+    ),
+  email: zod
+    .string()
+    .optional()
+    .describe(
+      "An optional string containing the email address to send email notifications to in case the operation completes. The value will be removed after successfully sending the email."
+    )
 })
-
 
 /**
  * @summary Commit block list to complete the upload of the dataset.
  */
 export const datasetsCommitBlocksParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.')
+  id: zod.string().uuid().describe("The identifier of the dataset.")
 })
 
-export const datasetsCommitBlocksBodyItem = zod.object({
-  "kind": zod.enum(['Committed', 'Uncommitted', 'Latest']).optional().describe('Type of data block.'),
-  "id": zod.string().optional()
-}).describe('Entry of the commit block list.')
+export const datasetsCommitBlocksBodyItem = zod
+  .object({
+    kind: zod
+      .enum(["Committed", "Uncommitted", "Latest"])
+      .optional()
+      .describe("Type of data block."),
+    id: zod.string().optional()
+  })
+  .describe("Entry of the commit block list.")
 export const datasetsCommitBlocksBody = zod.array(datasetsCommitBlocksBodyItem)
-
 
 /**
  * @summary Gets the files of the dataset identified by the given ID.
  */
 export const datasetsListFilesParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.')
+  id: zod.string().uuid().describe("The identifier of the dataset.")
 })
 
 export const datasetsListFilesQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.'),
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq \'myaudio.wav\' and kind eq \'Audio\'')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    ),
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq 'myaudio.wav' and kind eq 'Audio'"
+    )
 })
 
 export const datasetsListFilesResponse = zod.object({
-  "values": zod.array(zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        kind: zod
+          .enum([
+            "DatasetReport",
+            "Audio",
+            "LanguageData",
+            "PronunciationData",
+            "AcousticDataArchive",
+            "AcousticDataTranscriptionV2",
+            "Transcription",
+            "TranscriptionReport",
+            "EvaluationDetails",
+            "ModelReport"
+          ])
+          .optional()
+          .describe("Type of data."),
+        links: zod
+          .object({
+            contentUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The url to retrieve the content of this file.")
+          })
+          .optional(),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+          ),
+        properties: zod
+          .object({
+            size: zod.number().optional().describe("The size of the data in bytes."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              )
+          })
+          .optional(),
+        name: zod.string().optional().describe("The name of this file."),
+        self: zod.string().url().optional().describe("The location of this entity.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets one specific file (identified with fileId) from a dataset (identified with id).
  */
 export const datasetsGetFileParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the dataset.'),
-  "fileId": zod.string().uuid().describe('The identifier of the file.')
+  id: zod.string().uuid().describe("The identifier of the dataset."),
+  fileId: zod.string().uuid().describe("The identifier of the file.")
 })
 
 export const datasetsGetFileQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const datasetsGetFileResponse = zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
+  kind: zod
+    .enum([
+      "DatasetReport",
+      "Audio",
+      "LanguageData",
+      "PronunciationData",
+      "AcousticDataArchive",
+      "AcousticDataTranscriptionV2",
+      "Transcription",
+      "TranscriptionReport",
+      "EvaluationDetails",
+      "ModelReport"
+    ])
+    .optional()
+    .describe("Type of data."),
+  links: zod
+    .object({
+      contentUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The url to retrieve the content of this file.")
+    })
+    .optional(),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+    ),
+  properties: zod
+    .object({
+      size: zod.number().optional().describe("The size of the data in bytes."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        )
+    })
+    .optional(),
+  name: zod.string().optional().describe("The name of this file."),
+  self: zod.string().url().optional().describe("The location of this entity.")
 })
-
 
 /**
  * @summary Gets a list of supported locales for endpoint creations.
  */
 export const endpointsListSupportedLocalesResponseItem = zod.string()
-export const endpointsListSupportedLocalesResponse = zod.array(endpointsListSupportedLocalesResponseItem)
-
+export const endpointsListSupportedLocalesResponse = zod.array(
+  endpointsListSupportedLocalesResponseItem
+)
 
 /**
  * @summary Gets the list of endpoints for the authenticated subscription.
  */
 export const endpointsListQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available endpoints.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=locale eq \'en-US\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available endpoints.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=locale eq 'en-US'"
+    )
 })
 
 export const endpointsListResponse = zod.object({
-  "values": zod.array(zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "links": zod.object({
-  "restInteractive": zod.string().url().optional().describe('The REST endpoint for short requests up to 15 seconds.'),
-  "restConversation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds.'),
-  "restDictation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks.'),
-  "webSocketInteractive": zod.string().url().optional().describe('The Speech SDK endpoint for short requests up to 15 seconds with a single final result.'),
-  "webSocketConversation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results.'),
-  "webSocketDictation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks.'),
-  "logs": zod.string().url().optional().describe('The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "loggingEnabled": zod.boolean().optional().describe('A value indicating whether content logging (audio & transcriptions) is being used for a deployment.'),
-  "timeToLive": zod.string().optional().describe('How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "text": zod.string().optional().describe('The text used to adapt a language model for this endpoint.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        links: zod
+          .object({
+            restInteractive: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The REST endpoint for short requests up to 15 seconds."),
+            restConversation: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The REST endpoint for requests up to 60 seconds."),
+            restDictation: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks."
+              ),
+            webSocketInteractive: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "The Speech SDK endpoint for short requests up to 15 seconds with a single final result."
+              ),
+            webSocketConversation: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The Speech SDK endpoint for long requests with multiple final results."),
+            webSocketDictation: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks."
+              ),
+            logs: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            loggingEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether content logging (audio & transcriptions) is being used for a deployment."
+              ),
+            timeToLive: zod
+              .string()
+              .optional()
+              .describe(
+                'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        text: zod
+          .string()
+          .optional()
+          .describe("The text used to adapt a language model for this endpoint."),
+        model: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Creates a new endpoint.
  */
 export const endpointsCreateBody = zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "links": zod.object({
-  "restInteractive": zod.string().url().optional().describe('The REST endpoint for short requests up to 15 seconds.'),
-  "restConversation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds.'),
-  "restDictation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks.'),
-  "webSocketInteractive": zod.string().url().optional().describe('The Speech SDK endpoint for short requests up to 15 seconds with a single final result.'),
-  "webSocketConversation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results.'),
-  "webSocketDictation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks.'),
-  "logs": zod.string().url().optional().describe('The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "loggingEnabled": zod.boolean().optional().describe('A value indicating whether content logging (audio & transcriptions) is being used for a deployment.'),
-  "timeToLive": zod.string().optional().describe('How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "text": zod.string().optional().describe('The text used to adapt a language model for this endpoint.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  links: zod
+    .object({
+      restInteractive: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The REST endpoint for short requests up to 15 seconds."),
+      restConversation: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The REST endpoint for requests up to 60 seconds."),
+      restDictation: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks."
+        ),
+      webSocketInteractive: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The Speech SDK endpoint for short requests up to 15 seconds with a single final result."
+        ),
+      webSocketConversation: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The Speech SDK endpoint for long requests with multiple final results."),
+      webSocketDictation: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks."
+        ),
+      logs: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      loggingEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether content logging (audio & transcriptions) is being used for a deployment."
+        ),
+      timeToLive: zod
+        .string()
+        .optional()
+        .describe(
+          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  text: zod
+    .string()
+    .optional()
+    .describe("The text used to adapt a language model for this endpoint."),
+  model: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
-
 
 /**
  * @summary Gets the endpoint identified by the given ID.
  */
 export const endpointsGetParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the endpoint.')
+  id: zod.string().uuid().describe("The identifier of the endpoint.")
 })
 
 export const endpointsGetResponse = zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "links": zod.object({
-  "restInteractive": zod.string().url().optional().describe('The REST endpoint for short requests up to 15 seconds.'),
-  "restConversation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds.'),
-  "restDictation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks.'),
-  "webSocketInteractive": zod.string().url().optional().describe('The Speech SDK endpoint for short requests up to 15 seconds with a single final result.'),
-  "webSocketConversation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results.'),
-  "webSocketDictation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks.'),
-  "logs": zod.string().url().optional().describe('The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "loggingEnabled": zod.boolean().optional().describe('A value indicating whether content logging (audio & transcriptions) is being used for a deployment.'),
-  "timeToLive": zod.string().optional().describe('How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "text": zod.string().optional().describe('The text used to adapt a language model for this endpoint.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  links: zod
+    .object({
+      restInteractive: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The REST endpoint for short requests up to 15 seconds."),
+      restConversation: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The REST endpoint for requests up to 60 seconds."),
+      restDictation: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks."
+        ),
+      webSocketInteractive: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The Speech SDK endpoint for short requests up to 15 seconds with a single final result."
+        ),
+      webSocketConversation: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The Speech SDK endpoint for long requests with multiple final results."),
+      webSocketDictation: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks."
+        ),
+      logs: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      loggingEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether content logging (audio & transcriptions) is being used for a deployment."
+        ),
+      timeToLive: zod
+        .string()
+        .optional()
+        .describe(
+          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  text: zod
+    .string()
+    .optional()
+    .describe("The text used to adapt a language model for this endpoint."),
+  model: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Deletes the endpoint identified by the given ID.
  */
 export const endpointsDeleteParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the endpoint.')
+  id: zod.string().uuid().describe("The identifier of the endpoint.")
 })
-
 
 /**
  * @summary Updates the metadata of the endpoint identified by the given ID.
  */
 export const endpointsUpdateParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the endpoint.')
+  id: zod.string().uuid().describe("The identifier of the endpoint.")
 })
 
 export const endpointsUpdateBody = zod.object({
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "properties": zod.object({
-  "contentLoggingEnabled": zod.boolean().optional().describe('A value indicating whether content logging (audio & transcriptions)\r\nis being used for a deployment.')
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "displayName": zod.string().optional().describe('The name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  model: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  properties: zod
+    .object({
+      contentLoggingEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether content logging (audio & transcriptions)\r\nis being used for a deployment."
+        )
+    })
+    .optional(),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  displayName: zod.string().optional().describe("The name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
 
 export const endpointsUpdateResponse = zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "links": zod.object({
-  "restInteractive": zod.string().url().optional().describe('The REST endpoint for short requests up to 15 seconds.'),
-  "restConversation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds.'),
-  "restDictation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks.'),
-  "webSocketInteractive": zod.string().url().optional().describe('The Speech SDK endpoint for short requests up to 15 seconds with a single final result.'),
-  "webSocketConversation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results.'),
-  "webSocketDictation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks.'),
-  "logs": zod.string().url().optional().describe('The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "loggingEnabled": zod.boolean().optional().describe('A value indicating whether content logging (audio & transcriptions) is being used for a deployment.'),
-  "timeToLive": zod.string().optional().describe('How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "text": zod.string().optional().describe('The text used to adapt a language model for this endpoint.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  links: zod
+    .object({
+      restInteractive: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The REST endpoint for short requests up to 15 seconds."),
+      restConversation: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The REST endpoint for requests up to 60 seconds."),
+      restDictation: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks."
+        ),
+      webSocketInteractive: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The Speech SDK endpoint for short requests up to 15 seconds with a single final result."
+        ),
+      webSocketConversation: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The Speech SDK endpoint for long requests with multiple final results."),
+      webSocketDictation: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          "The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks."
+        ),
+      logs: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      loggingEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether content logging (audio & transcriptions) is being used for a deployment."
+        ),
+      timeToLive: zod
+        .string()
+        .optional()
+        .describe(
+          'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  text: zod
+    .string()
+    .optional()
+    .describe("The text used to adapt a language model for this endpoint."),
+  model: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Gets the list of audio and transcription logs that have been stored for a given endpoint.
  */
 export const endpointsListLogsParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the endpoint.')
+  id: zod.string().uuid().describe("The identifier of the endpoint.")
 })
 
 export const endpointsListLogsQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.'),
-  "skipToken": zod.string().optional().describe('Token to skip logs that were already retrieved in previous requests. Pagination starts from beginning when not defined.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    ),
+  skipToken: zod
+    .string()
+    .optional()
+    .describe(
+      "Token to skip logs that were already retrieved in previous requests. Pagination starts from beginning when not defined."
+    ),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping.")
 })
 
 export const endpointsListLogsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        kind: zod
+          .enum([
+            "DatasetReport",
+            "Audio",
+            "LanguageData",
+            "PronunciationData",
+            "AcousticDataArchive",
+            "AcousticDataTranscriptionV2",
+            "Transcription",
+            "TranscriptionReport",
+            "EvaluationDetails",
+            "ModelReport"
+          ])
+          .optional()
+          .describe("Type of data."),
+        links: zod
+          .object({
+            contentUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The url to retrieve the content of this file.")
+          })
+          .optional(),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+          ),
+        properties: zod
+          .object({
+            size: zod.number().optional().describe("The size of the data in bytes."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              )
+          })
+          .optional(),
+        name: zod.string().optional().describe("The name of this file."),
+        self: zod.string().url().optional().describe("The location of this entity.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * The deletion process is done asynchronously and can take up to one day depending on the amount of log files.
  * @summary Deletes the specified audio and transcription logs that have been stored for a given endpoint. It deletes all logs before (and including) a specific day.
  */
 export const endpointsDeleteLogsParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the endpoint.')
+  id: zod.string().uuid().describe("The identifier of the endpoint.")
 })
 
 export const endpointsDeleteLogsQueryParams = zod.object({
-  "endDate": zod.string().optional().describe('The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: \"yyyy-mm-dd\". For instance, \"2019-09-20\" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.')
+  endDate: zod
+    .string()
+    .optional()
+    .describe(
+      'The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: \"yyyy-mm-dd\". For instance, \"2019-09-20\" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.'
+    )
 })
-
 
 /**
  * @summary Gets a specific audio or transcription log for a given endpoint.
  */
 export const endpointsGetLogParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the endpoint.'),
-  "logId": zod.string().describe('The identifier of the log.')
+  id: zod.string().uuid().describe("The identifier of the endpoint."),
+  logId: zod.string().describe("The identifier of the log.")
 })
 
 export const endpointsGetLogQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const endpointsGetLogResponse = zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
+  kind: zod
+    .enum([
+      "DatasetReport",
+      "Audio",
+      "LanguageData",
+      "PronunciationData",
+      "AcousticDataArchive",
+      "AcousticDataTranscriptionV2",
+      "Transcription",
+      "TranscriptionReport",
+      "EvaluationDetails",
+      "ModelReport"
+    ])
+    .optional()
+    .describe("Type of data."),
+  links: zod
+    .object({
+      contentUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The url to retrieve the content of this file.")
+    })
+    .optional(),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+    ),
+  properties: zod
+    .object({
+      size: zod.number().optional().describe("The size of the data in bytes."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        )
+    })
+    .optional(),
+  name: zod.string().optional().describe("The name of this file."),
+  self: zod.string().url().optional().describe("The location of this entity.")
 })
-
 
 /**
  * @summary Deletes one audio or transcription log that have been stored for a given endpoint.
  */
 export const endpointsDeleteLogParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the endpoint.'),
-  "logId": zod.string().describe('The identifier of the log.')
+  id: zod.string().uuid().describe("The identifier of the endpoint."),
+  logId: zod.string().describe("The identifier of the log.")
 })
-
 
 /**
  * @summary Gets the list of audio and transcription logs that have been stored when using the default base model of a given language.
  */
 export const endpointsListBaseModelLogsParams = zod.object({
-  "locale": zod.string().describe('The language used to select the default base model.')
+  locale: zod.string().describe("The language used to select the default base model.")
 })
 
 export const endpointsListBaseModelLogsQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.'),
-  "skipToken": zod.string().optional().describe('Token to skip logs that were already retrieved in previous requests. Pagination starts from beginning when not defined.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    ),
+  skipToken: zod
+    .string()
+    .optional()
+    .describe(
+      "Token to skip logs that were already retrieved in previous requests. Pagination starts from beginning when not defined."
+    ),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping.")
 })
 
 export const endpointsListBaseModelLogsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        kind: zod
+          .enum([
+            "DatasetReport",
+            "Audio",
+            "LanguageData",
+            "PronunciationData",
+            "AcousticDataArchive",
+            "AcousticDataTranscriptionV2",
+            "Transcription",
+            "TranscriptionReport",
+            "EvaluationDetails",
+            "ModelReport"
+          ])
+          .optional()
+          .describe("Type of data."),
+        links: zod
+          .object({
+            contentUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The url to retrieve the content of this file.")
+          })
+          .optional(),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+          ),
+        properties: zod
+          .object({
+            size: zod.number().optional().describe("The size of the data in bytes."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              )
+          })
+          .optional(),
+        name: zod.string().optional().describe("The name of this file."),
+        self: zod.string().url().optional().describe("The location of this entity.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * Deletion process is done asynchronously and can take up to one day depending on the amount of log files.
  * @summary Deletes the specified audio and transcription logs that have been stored when using the default base model of a given language. It deletes all logs before (and including) a specific day.
  */
 export const endpointsDeleteBaseModelLogsParams = zod.object({
-  "locale": zod.string().describe('The language used to select the default base model.')
+  locale: zod.string().describe("The language used to select the default base model.")
 })
 
 export const endpointsDeleteBaseModelLogsQueryParams = zod.object({
-  "endDate": zod.string().optional().describe('The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: \"yyyy-mm-dd\". For instance, \"2019-09-20\" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.')
+  endDate: zod
+    .string()
+    .optional()
+    .describe(
+      'The end date of the audio logs deletion (specific day, UTC).\r\n            Expected format: \"yyyy-mm-dd\". For instance, \"2019-09-20\" results in deleting all logs on September 20h, 2019 and before.\r\n            Deletes all existing logs when date is not specified.'
+    )
 })
-
 
 /**
  * @summary Gets a specific audio or transcription log for the default base model in a given language.
  */
 export const endpointsGetBaseModelLogParams = zod.object({
-  "locale": zod.string().describe('The language used to select the default base model.'),
-  "logId": zod.string().describe('The identifier of the log.')
+  locale: zod.string().describe("The language used to select the default base model."),
+  logId: zod.string().describe("The identifier of the log.")
 })
 
 export const endpointsGetBaseModelLogQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const endpointsGetBaseModelLogResponse = zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
+  kind: zod
+    .enum([
+      "DatasetReport",
+      "Audio",
+      "LanguageData",
+      "PronunciationData",
+      "AcousticDataArchive",
+      "AcousticDataTranscriptionV2",
+      "Transcription",
+      "TranscriptionReport",
+      "EvaluationDetails",
+      "ModelReport"
+    ])
+    .optional()
+    .describe("Type of data."),
+  links: zod
+    .object({
+      contentUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The url to retrieve the content of this file.")
+    })
+    .optional(),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+    ),
+  properties: zod
+    .object({
+      size: zod.number().optional().describe("The size of the data in bytes."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        )
+    })
+    .optional(),
+  name: zod.string().optional().describe("The name of this file."),
+  self: zod.string().url().optional().describe("The location of this entity.")
 })
-
 
 /**
  * @summary Deletes one audio or transcription log that have been stored when using the default base model of a given language.
  */
 export const endpointsDeleteBaseModelLogParams = zod.object({
-  "locale": zod.string().describe('The language used to select the default base model.'),
-  "logId": zod.string().describe('The identifier of the log.')
+  locale: zod.string().describe("The language used to select the default base model."),
+  logId: zod.string().describe("The identifier of the log.")
 })
-
 
 /**
  * @summary Gets a list of supported locales for evaluations.
  */
 export const evaluationsListSupportedLocalesResponseItem = zod.string()
-export const evaluationsListSupportedLocalesResponse = zod.array(evaluationsListSupportedLocalesResponseItem)
-
+export const evaluationsListSupportedLocalesResponse = zod.array(
+  evaluationsListSupportedLocalesResponseItem
+)
 
 /**
  * @summary Gets the list of evaluations for the authenticated subscription.
  */
 export const evaluationsListQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available evaluations.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status and locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=displayName eq \'My evaluation\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available evaluations.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status and locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=displayName eq 'My evaluation'"
+    )
 })
 
 export const evaluationsListResponse = zod.object({
-  "values": zod.array(zod.object({
-  "model1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "model2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "transcription1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "transcription2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "wordErrorRate2": zod.number().optional().describe('The word error rate of recognition with model2.'),
-  "wordErrorRate1": zod.number().optional().describe('The word error rate of recognition with model1.'),
-  "sentenceErrorRate2": zod.number().optional().describe('The sentence error rate of recognition with model2.'),
-  "sentenceCount2": zod.number().optional().describe('The number of processed sentences by model2.'),
-  "wordCount2": zod.number().optional().describe('The number of processed words by model2.'),
-  "correctWordCount2": zod.number().optional().describe('The number of correctly recognized words by model2.'),
-  "wordSubstitutionCount2": zod.number().optional().describe('The number of recognized words by model2, that are substitutions.'),
-  "wordDeletionCount2": zod.number().optional().describe('The number of recognized words by model2, that are deletions.'),
-  "wordInsertionCount2": zod.number().optional().describe('The number of recognized words by model2, that are insertions.'),
-  "sentenceErrorRate1": zod.number().optional().describe('The sentence error rate of recognition with model1.'),
-  "sentenceCount1": zod.number().optional().describe('The number of processed sentences by model1.'),
-  "wordCount1": zod.number().optional().describe('The number of processed words by model1.'),
-  "correctWordCount1": zod.number().optional().describe('The number of correctly recognized words by model1.'),
-  "wordSubstitutionCount1": zod.number().optional().describe('The number of recognized words by model1, that are substitutions.'),
-  "wordDeletionCount1": zod.number().optional().describe('The number of recognized words by model1, that are deletions.'),
-  "wordInsertionCount1": zod.number().optional().describe('The number of recognized words by model1, that are insertions.'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        model1: zod.object({
+          self: zod.string().url().describe("The location of the referenced entity.")
+        }),
+        model2: zod.object({
+          self: zod.string().url().describe("The location of the referenced entity.")
+        }),
+        transcription1: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        transcription2: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        dataset: zod.object({
+          self: zod.string().url().describe("The location of the referenced entity.")
+        }),
+        links: zod
+          .object({
+            files: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            wordErrorRate2: zod
+              .number()
+              .optional()
+              .describe("The word error rate of recognition with model2."),
+            wordErrorRate1: zod
+              .number()
+              .optional()
+              .describe("The word error rate of recognition with model1."),
+            sentenceErrorRate2: zod
+              .number()
+              .optional()
+              .describe("The sentence error rate of recognition with model2."),
+            sentenceCount2: zod
+              .number()
+              .optional()
+              .describe("The number of processed sentences by model2."),
+            wordCount2: zod
+              .number()
+              .optional()
+              .describe("The number of processed words by model2."),
+            correctWordCount2: zod
+              .number()
+              .optional()
+              .describe("The number of correctly recognized words by model2."),
+            wordSubstitutionCount2: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model2, that are substitutions."),
+            wordDeletionCount2: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model2, that are deletions."),
+            wordInsertionCount2: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model2, that are insertions."),
+            sentenceErrorRate1: zod
+              .number()
+              .optional()
+              .describe("The sentence error rate of recognition with model1."),
+            sentenceCount1: zod
+              .number()
+              .optional()
+              .describe("The number of processed sentences by model1."),
+            wordCount1: zod
+              .number()
+              .optional()
+              .describe("The number of processed words by model1."),
+            correctWordCount1: zod
+              .number()
+              .optional()
+              .describe("The number of correctly recognized words by model1."),
+            wordSubstitutionCount1: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model1, that are substitutions."),
+            wordDeletionCount1: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model1, that are deletions."),
+            wordInsertionCount1: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model1, that are insertions."),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        locale: zod.string().min(1).describe("The locale of the contained data.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Creates a new evaluation.
  */
 export const evaluationsCreateBody = zod.object({
-  "model1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "model2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "transcription1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "transcription2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "wordErrorRate2": zod.number().optional().describe('The word error rate of recognition with model2.'),
-  "wordErrorRate1": zod.number().optional().describe('The word error rate of recognition with model1.'),
-  "sentenceErrorRate2": zod.number().optional().describe('The sentence error rate of recognition with model2.'),
-  "sentenceCount2": zod.number().optional().describe('The number of processed sentences by model2.'),
-  "wordCount2": zod.number().optional().describe('The number of processed words by model2.'),
-  "correctWordCount2": zod.number().optional().describe('The number of correctly recognized words by model2.'),
-  "wordSubstitutionCount2": zod.number().optional().describe('The number of recognized words by model2, that are substitutions.'),
-  "wordDeletionCount2": zod.number().optional().describe('The number of recognized words by model2, that are deletions.'),
-  "wordInsertionCount2": zod.number().optional().describe('The number of recognized words by model2, that are insertions.'),
-  "sentenceErrorRate1": zod.number().optional().describe('The sentence error rate of recognition with model1.'),
-  "sentenceCount1": zod.number().optional().describe('The number of processed sentences by model1.'),
-  "wordCount1": zod.number().optional().describe('The number of processed words by model1.'),
-  "correctWordCount1": zod.number().optional().describe('The number of correctly recognized words by model1.'),
-  "wordSubstitutionCount1": zod.number().optional().describe('The number of recognized words by model1, that are substitutions.'),
-  "wordDeletionCount1": zod.number().optional().describe('The number of recognized words by model1, that are deletions.'),
-  "wordInsertionCount1": zod.number().optional().describe('The number of recognized words by model1, that are insertions.'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.')
+  model1: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  model2: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  transcription1: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  transcription2: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  dataset: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      wordErrorRate2: zod
+        .number()
+        .optional()
+        .describe("The word error rate of recognition with model2."),
+      wordErrorRate1: zod
+        .number()
+        .optional()
+        .describe("The word error rate of recognition with model1."),
+      sentenceErrorRate2: zod
+        .number()
+        .optional()
+        .describe("The sentence error rate of recognition with model2."),
+      sentenceCount2: zod
+        .number()
+        .optional()
+        .describe("The number of processed sentences by model2."),
+      wordCount2: zod.number().optional().describe("The number of processed words by model2."),
+      correctWordCount2: zod
+        .number()
+        .optional()
+        .describe("The number of correctly recognized words by model2."),
+      wordSubstitutionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are substitutions."),
+      wordDeletionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are deletions."),
+      wordInsertionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are insertions."),
+      sentenceErrorRate1: zod
+        .number()
+        .optional()
+        .describe("The sentence error rate of recognition with model1."),
+      sentenceCount1: zod
+        .number()
+        .optional()
+        .describe("The number of processed sentences by model1."),
+      wordCount1: zod.number().optional().describe("The number of processed words by model1."),
+      correctWordCount1: zod
+        .number()
+        .optional()
+        .describe("The number of correctly recognized words by model1."),
+      wordSubstitutionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are substitutions."),
+      wordDeletionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are deletions."),
+      wordInsertionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are insertions."),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  locale: zod.string().min(1).describe("The locale of the contained data.")
 })
-
 
 /**
  * @summary Gets the files of the evaluation identified by the given ID.
  */
 export const evaluationsListFilesParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the evaluation.')
+  id: zod.string().uuid().describe("The identifier of the evaluation.")
 })
 
 export const evaluationsListFilesQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.'),
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq \'myaudio.wav\' and kind eq \'Audio\'')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    ),
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq 'myaudio.wav' and kind eq 'Audio'"
+    )
 })
 
 export const evaluationsListFilesResponse = zod.object({
-  "values": zod.array(zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        kind: zod
+          .enum([
+            "DatasetReport",
+            "Audio",
+            "LanguageData",
+            "PronunciationData",
+            "AcousticDataArchive",
+            "AcousticDataTranscriptionV2",
+            "Transcription",
+            "TranscriptionReport",
+            "EvaluationDetails",
+            "ModelReport"
+          ])
+          .optional()
+          .describe("Type of data."),
+        links: zod
+          .object({
+            contentUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The url to retrieve the content of this file.")
+          })
+          .optional(),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+          ),
+        properties: zod
+          .object({
+            size: zod.number().optional().describe("The size of the data in bytes."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              )
+          })
+          .optional(),
+        name: zod.string().optional().describe("The name of this file."),
+        self: zod.string().url().optional().describe("The location of this entity.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets one specific file (identified with fileId) from an evaluation (identified with id).
  */
 export const evaluationsGetFileParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the evaluation.'),
-  "fileId": zod.string().uuid().describe('The identifier of the file.')
+  id: zod.string().uuid().describe("The identifier of the evaluation."),
+  fileId: zod.string().uuid().describe("The identifier of the file.")
 })
 
 export const evaluationsGetFileQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const evaluationsGetFileResponse = zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
+  kind: zod
+    .enum([
+      "DatasetReport",
+      "Audio",
+      "LanguageData",
+      "PronunciationData",
+      "AcousticDataArchive",
+      "AcousticDataTranscriptionV2",
+      "Transcription",
+      "TranscriptionReport",
+      "EvaluationDetails",
+      "ModelReport"
+    ])
+    .optional()
+    .describe("Type of data."),
+  links: zod
+    .object({
+      contentUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The url to retrieve the content of this file.")
+    })
+    .optional(),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+    ),
+  properties: zod
+    .object({
+      size: zod.number().optional().describe("The size of the data in bytes."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        )
+    })
+    .optional(),
+  name: zod.string().optional().describe("The name of this file."),
+  self: zod.string().url().optional().describe("The location of this entity.")
 })
-
 
 /**
  * @summary Gets the evaluation identified by the given ID.
  */
 export const evaluationsGetParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the evaluation.')
+  id: zod.string().uuid().describe("The identifier of the evaluation.")
 })
 
 export const evaluationsGetResponse = zod.object({
-  "model1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "model2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "transcription1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "transcription2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "wordErrorRate2": zod.number().optional().describe('The word error rate of recognition with model2.'),
-  "wordErrorRate1": zod.number().optional().describe('The word error rate of recognition with model1.'),
-  "sentenceErrorRate2": zod.number().optional().describe('The sentence error rate of recognition with model2.'),
-  "sentenceCount2": zod.number().optional().describe('The number of processed sentences by model2.'),
-  "wordCount2": zod.number().optional().describe('The number of processed words by model2.'),
-  "correctWordCount2": zod.number().optional().describe('The number of correctly recognized words by model2.'),
-  "wordSubstitutionCount2": zod.number().optional().describe('The number of recognized words by model2, that are substitutions.'),
-  "wordDeletionCount2": zod.number().optional().describe('The number of recognized words by model2, that are deletions.'),
-  "wordInsertionCount2": zod.number().optional().describe('The number of recognized words by model2, that are insertions.'),
-  "sentenceErrorRate1": zod.number().optional().describe('The sentence error rate of recognition with model1.'),
-  "sentenceCount1": zod.number().optional().describe('The number of processed sentences by model1.'),
-  "wordCount1": zod.number().optional().describe('The number of processed words by model1.'),
-  "correctWordCount1": zod.number().optional().describe('The number of correctly recognized words by model1.'),
-  "wordSubstitutionCount1": zod.number().optional().describe('The number of recognized words by model1, that are substitutions.'),
-  "wordDeletionCount1": zod.number().optional().describe('The number of recognized words by model1, that are deletions.'),
-  "wordInsertionCount1": zod.number().optional().describe('The number of recognized words by model1, that are insertions.'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.')
+  model1: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  model2: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  transcription1: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  transcription2: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  dataset: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      wordErrorRate2: zod
+        .number()
+        .optional()
+        .describe("The word error rate of recognition with model2."),
+      wordErrorRate1: zod
+        .number()
+        .optional()
+        .describe("The word error rate of recognition with model1."),
+      sentenceErrorRate2: zod
+        .number()
+        .optional()
+        .describe("The sentence error rate of recognition with model2."),
+      sentenceCount2: zod
+        .number()
+        .optional()
+        .describe("The number of processed sentences by model2."),
+      wordCount2: zod.number().optional().describe("The number of processed words by model2."),
+      correctWordCount2: zod
+        .number()
+        .optional()
+        .describe("The number of correctly recognized words by model2."),
+      wordSubstitutionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are substitutions."),
+      wordDeletionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are deletions."),
+      wordInsertionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are insertions."),
+      sentenceErrorRate1: zod
+        .number()
+        .optional()
+        .describe("The sentence error rate of recognition with model1."),
+      sentenceCount1: zod
+        .number()
+        .optional()
+        .describe("The number of processed sentences by model1."),
+      wordCount1: zod.number().optional().describe("The number of processed words by model1."),
+      correctWordCount1: zod
+        .number()
+        .optional()
+        .describe("The number of correctly recognized words by model1."),
+      wordSubstitutionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are substitutions."),
+      wordDeletionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are deletions."),
+      wordInsertionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are insertions."),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  locale: zod.string().min(1).describe("The locale of the contained data.")
 })
-
 
 /**
  * @summary Updates the mutable details of the evaluation identified by its id.
  */
 export const evaluationsUpdateParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the evaluation.')
+  id: zod.string().uuid().describe("The identifier of the evaluation.")
 })
 
 export const evaluationsUpdateBody = zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "displayName": zod.string().optional().describe('The name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  displayName: zod.string().optional().describe("The name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
 
 export const evaluationsUpdateResponse = zod.object({
-  "model1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "model2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "transcription1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "transcription2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "wordErrorRate2": zod.number().optional().describe('The word error rate of recognition with model2.'),
-  "wordErrorRate1": zod.number().optional().describe('The word error rate of recognition with model1.'),
-  "sentenceErrorRate2": zod.number().optional().describe('The sentence error rate of recognition with model2.'),
-  "sentenceCount2": zod.number().optional().describe('The number of processed sentences by model2.'),
-  "wordCount2": zod.number().optional().describe('The number of processed words by model2.'),
-  "correctWordCount2": zod.number().optional().describe('The number of correctly recognized words by model2.'),
-  "wordSubstitutionCount2": zod.number().optional().describe('The number of recognized words by model2, that are substitutions.'),
-  "wordDeletionCount2": zod.number().optional().describe('The number of recognized words by model2, that are deletions.'),
-  "wordInsertionCount2": zod.number().optional().describe('The number of recognized words by model2, that are insertions.'),
-  "sentenceErrorRate1": zod.number().optional().describe('The sentence error rate of recognition with model1.'),
-  "sentenceCount1": zod.number().optional().describe('The number of processed sentences by model1.'),
-  "wordCount1": zod.number().optional().describe('The number of processed words by model1.'),
-  "correctWordCount1": zod.number().optional().describe('The number of correctly recognized words by model1.'),
-  "wordSubstitutionCount1": zod.number().optional().describe('The number of recognized words by model1, that are substitutions.'),
-  "wordDeletionCount1": zod.number().optional().describe('The number of recognized words by model1, that are deletions.'),
-  "wordInsertionCount1": zod.number().optional().describe('The number of recognized words by model1, that are insertions.'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.')
+  model1: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  model2: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  transcription1: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  transcription2: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  dataset: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      wordErrorRate2: zod
+        .number()
+        .optional()
+        .describe("The word error rate of recognition with model2."),
+      wordErrorRate1: zod
+        .number()
+        .optional()
+        .describe("The word error rate of recognition with model1."),
+      sentenceErrorRate2: zod
+        .number()
+        .optional()
+        .describe("The sentence error rate of recognition with model2."),
+      sentenceCount2: zod
+        .number()
+        .optional()
+        .describe("The number of processed sentences by model2."),
+      wordCount2: zod.number().optional().describe("The number of processed words by model2."),
+      correctWordCount2: zod
+        .number()
+        .optional()
+        .describe("The number of correctly recognized words by model2."),
+      wordSubstitutionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are substitutions."),
+      wordDeletionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are deletions."),
+      wordInsertionCount2: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model2, that are insertions."),
+      sentenceErrorRate1: zod
+        .number()
+        .optional()
+        .describe("The sentence error rate of recognition with model1."),
+      sentenceCount1: zod
+        .number()
+        .optional()
+        .describe("The number of processed sentences by model1."),
+      wordCount1: zod.number().optional().describe("The number of processed words by model1."),
+      correctWordCount1: zod
+        .number()
+        .optional()
+        .describe("The number of correctly recognized words by model1."),
+      wordSubstitutionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are substitutions."),
+      wordDeletionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are deletions."),
+      wordInsertionCount1: zod
+        .number()
+        .optional()
+        .describe("The number of recognized words by model1, that are insertions."),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  locale: zod.string().min(1).describe("The locale of the contained data.")
 })
-
 
 /**
  * @summary Deletes the evaluation identified by the given ID.
  */
 export const evaluationsDeleteParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the evaluation.')
+  id: zod.string().uuid().describe("The identifier of the evaluation.")
 })
-
 
 /**
  * @summary Gets a list of supported locales for model adaptation.
@@ -1010,137 +2421,262 @@ export const evaluationsDeleteParams = zod.object({
 export const modelsListSupportedLocalesResponseItem = zod.string()
 export const modelsListSupportedLocalesResponse = zod.array(modelsListSupportedLocalesResponseItem)
 
-
 /**
  * @summary Gets the list of custom models for the authenticated subscription.
  */
 export const modelsListCustomModelsQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available models.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=status eq \'NotStarted\' or status eq \'Running\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available models.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=status eq 'NotStarted' or status eq 'Running'"
+    )
 })
 
 export const modelsListCustomModelsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        self: zod.string().url().optional().describe("The location of this entity."),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Creates a new model.
  */
 export const modelsCreateBody = zod.object({
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  self: zod.string().url().optional().describe("The location of this entity."),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Gets the list of base models for the authenticated subscription.
  */
 export const modelsListBaseModelsQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available base models.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=status eq \'NotStarted\' or status eq \'Running\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available base models.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=status eq 'NotStarted' or status eq 'Running'"
+    )
 })
 
 export const modelsListBaseModelsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        self: zod.string().url().optional().describe("The location of this entity."),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets the model identified by the given ID.
  */
 export const modelsGetCustomModelParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the model.')
+  id: zod.string().uuid().describe("The identifier of the model.")
 })
 
 export const modelsGetCustomModelResponse = zod.object({
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  self: zod.string().url().optional().describe("The location of this entity."),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Updates the metadata of the model identified by the given ID.
  */
 export const modelsUpdateParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the model.')
+  id: zod.string().uuid().describe("The identifier of the model.")
 })
 
 export const modelsUpdateBody = zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "displayName": zod.string().optional().describe('The name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  displayName: zod.string().optional().describe("The name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
 
 export const modelsUpdateResponse = zod.object({
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  self: zod.string().url().optional().describe("The location of this entity."),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Deletes the model identified by the given ID.
  */
 export const modelsDeleteParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the model.')
+  id: zod.string().uuid().describe("The identifier of the model.")
 })
-
 
 /**
  * @summary Gets the base model identified by the given ID.
  */
 export const modelsGetBaseModelParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the base model.')
+  id: zod.string().uuid().describe("The identifier of the base model.")
 })
 
 export const modelsGetBaseModelResponse = zod.object({
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  self: zod.string().url().optional().describe("The location of this entity."),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * This method can be used to copy a model from one location to another. If the target subscription
@@ -1149,921 +2685,2450 @@ Only adapted models are allowed to copy to another subscription.
  * @summary Copies a model from one subscription to another.
  */
 export const modelsCopyToParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the model that will be copied.')
+  id: zod.string().uuid().describe("The identifier of the model that will be copied.")
 })
 
 export const modelsCopyToBody = zod.object({
-  "targetSubscriptionKey": zod.string().min(1).describe('The subscription key of the subscription that is the target of the copy operation.')
+  targetSubscriptionKey: zod
+    .string()
+    .min(1)
+    .describe("The subscription key of the subscription that is the target of the copy operation.")
 })
-
 
 /**
  * @summary Returns an manifest for this model which can be used in an on-premise container.
  */
 export const modelsGetCustomModelManifestParams = zod.object({
-  "id": zod.string().uuid().describe('The ID of the model to generate a manifest for.')
+  id: zod.string().uuid().describe("The ID of the model to generate a manifest for.")
 })
 
 export const modelsGetCustomModelManifestQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const modelsGetCustomModelManifestResponse = zod.object({
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "modelFiles": zod.array(zod.object({
-  "name": zod.string().optional().describe('The name of this file.'),
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-})).describe('The model files of this model.'),
-  "properties": zod.record(zod.string(), zod.object({
-
-})).describe('The configuration for running this model in a container.')
+  model: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  modelFiles: zod
+    .array(
+      zod.object({
+        name: zod.string().optional().describe("The name of this file."),
+        contentUrl: zod
+          .string()
+          .url()
+          .optional()
+          .describe("The url to retrieve the content of this file.")
+      })
+    )
+    .describe("The model files of this model."),
+  properties: zod
+    .record(zod.string(), zod.object({}))
+    .describe("The configuration for running this model in a container.")
 })
-
 
 /**
  * @summary Returns an manifest for this base model which can be used in an on-premise container.
  */
 export const modelsGetBaseModelManifestParams = zod.object({
-  "id": zod.string().uuid().describe('The ID of the model to generate a manifest for.')
+  id: zod.string().uuid().describe("The ID of the model to generate a manifest for.")
 })
 
 export const modelsGetBaseModelManifestQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const modelsGetBaseModelManifestResponse = zod.object({
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "modelFiles": zod.array(zod.object({
-  "name": zod.string().optional().describe('The name of this file.'),
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-})).describe('The model files of this model.'),
-  "properties": zod.record(zod.string(), zod.object({
-
-})).describe('The configuration for running this model in a container.')
+  model: zod.object({
+    self: zod.string().url().describe("The location of the referenced entity.")
+  }),
+  modelFiles: zod
+    .array(
+      zod.object({
+        name: zod.string().optional().describe("The name of this file."),
+        contentUrl: zod
+          .string()
+          .url()
+          .optional()
+          .describe("The url to retrieve the content of this file.")
+      })
+    )
+    .describe("The model files of this model."),
+  properties: zod
+    .record(zod.string(), zod.object({}))
+    .describe("The configuration for running this model in a container.")
 })
-
 
 /**
  * @summary Gets the files of the model identified by the given ID.
  */
 export const modelsListFilesParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the model.')
+  id: zod.string().uuid().describe("The identifier of the model.")
 })
 
 export const modelsListFilesQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.'),
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq \'myaudio.wav\' and kind eq \'Audio\'')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    ),
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq 'myaudio.wav' and kind eq 'Audio'"
+    )
 })
 
 export const modelsListFilesResponse = zod.object({
-  "values": zod.array(zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        kind: zod
+          .enum([
+            "DatasetReport",
+            "Audio",
+            "LanguageData",
+            "PronunciationData",
+            "AcousticDataArchive",
+            "AcousticDataTranscriptionV2",
+            "Transcription",
+            "TranscriptionReport",
+            "EvaluationDetails",
+            "ModelReport"
+          ])
+          .optional()
+          .describe("Type of data."),
+        links: zod
+          .object({
+            contentUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The url to retrieve the content of this file.")
+          })
+          .optional(),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+          ),
+        properties: zod
+          .object({
+            size: zod.number().optional().describe("The size of the data in bytes."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              )
+          })
+          .optional(),
+        name: zod.string().optional().describe("The name of this file."),
+        self: zod.string().url().optional().describe("The location of this entity.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets one specific file (identified with fileId) from a model (identified with id).
  */
 export const modelsGetFileParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the model.'),
-  "fileId": zod.string().uuid().describe('The identifier of the file.')
+  id: zod.string().uuid().describe("The identifier of the model."),
+  fileId: zod.string().uuid().describe("The identifier of the file.")
 })
 
 export const modelsGetFileQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const modelsGetFileResponse = zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
+  kind: zod
+    .enum([
+      "DatasetReport",
+      "Audio",
+      "LanguageData",
+      "PronunciationData",
+      "AcousticDataArchive",
+      "AcousticDataTranscriptionV2",
+      "Transcription",
+      "TranscriptionReport",
+      "EvaluationDetails",
+      "ModelReport"
+    ])
+    .optional()
+    .describe("Type of data."),
+  links: zod
+    .object({
+      contentUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The url to retrieve the content of this file.")
+    })
+    .optional(),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+    ),
+  properties: zod
+    .object({
+      size: zod.number().optional().describe("The size of the data in bytes."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        )
+    })
+    .optional(),
+  name: zod.string().optional().describe("The name of this file."),
+  self: zod.string().url().optional().describe("The location of this entity.")
 })
-
 
 /**
  * @summary Gets the list of supported locales.
  */
 export const projectsListSupportedLocalesResponseItem = zod.string()
-export const projectsListSupportedLocalesResponse = zod.array(projectsListSupportedLocalesResponseItem)
-
+export const projectsListSupportedLocalesResponse = zod.array(
+  projectsListSupportedLocalesResponseItem
+)
 
 /**
  * @summary Gets the list of projects for the authenticated subscription.
  */
 export const projectsListQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available projects.\r\n            - Supported properties: displayName, description, createdDateTime, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=displayName eq \'My test\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available projects.\r\n            - Supported properties: displayName, description, createdDateTime, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=displayName eq 'My test'"
+    )
 })
 
 export const projectsListResponse = zod.object({
-  "values": zod.array(zod.object({
-  "links": zod.object({
-  "evaluations": zod.string().url().optional().describe('The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'),
-  "datasets": zod.string().url().optional().describe('The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'),
-  "models": zod.string().url().optional().describe('The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'),
-  "endpoints": zod.string().url().optional().describe('The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'),
-  "transcriptions": zod.string().url().optional().describe('The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "datasetCount": zod.number().optional().describe('The number of datasets associated to this project.'),
-  "evaluationCount": zod.number().optional().describe('The number of evaluations associated to this project.'),
-  "modelCount": zod.number().optional().describe('The number of models associated to this project.'),
-  "transcriptionCount": zod.number().optional().describe('The number of transcriptions associated to this project.'),
-  "endpointCount": zod.number().optional().describe('The number of endpoints associated to this project.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        links: zod
+          .object({
+            evaluations: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+              ),
+            datasets: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+              ),
+            models: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+              ),
+            endpoints: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+              ),
+            transcriptions: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            datasetCount: zod
+              .number()
+              .optional()
+              .describe("The number of datasets associated to this project."),
+            evaluationCount: zod
+              .number()
+              .optional()
+              .describe("The number of evaluations associated to this project."),
+            modelCount: zod
+              .number()
+              .optional()
+              .describe("The number of models associated to this project."),
+            transcriptionCount: zod
+              .number()
+              .optional()
+              .describe("The number of transcriptions associated to this project."),
+            endpointCount: zod
+              .number()
+              .optional()
+              .describe("The number of endpoints associated to this project.")
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Creates a new project.
  */
 export const projectsCreateBody = zod.object({
-  "links": zod.object({
-  "evaluations": zod.string().url().optional().describe('The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'),
-  "datasets": zod.string().url().optional().describe('The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'),
-  "models": zod.string().url().optional().describe('The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'),
-  "endpoints": zod.string().url().optional().describe('The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'),
-  "transcriptions": zod.string().url().optional().describe('The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "datasetCount": zod.number().optional().describe('The number of datasets associated to this project.'),
-  "evaluationCount": zod.number().optional().describe('The number of evaluations associated to this project.'),
-  "modelCount": zod.number().optional().describe('The number of models associated to this project.'),
-  "transcriptionCount": zod.number().optional().describe('The number of transcriptions associated to this project.'),
-  "endpointCount": zod.number().optional().describe('The number of endpoints associated to this project.')
-}).optional(),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  links: zod
+    .object({
+      evaluations: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+        ),
+      datasets: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+        ),
+      models: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+        ),
+      endpoints: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+        ),
+      transcriptions: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      datasetCount: zod
+        .number()
+        .optional()
+        .describe("The number of datasets associated to this project."),
+      evaluationCount: zod
+        .number()
+        .optional()
+        .describe("The number of evaluations associated to this project."),
+      modelCount: zod
+        .number()
+        .optional()
+        .describe("The number of models associated to this project."),
+      transcriptionCount: zod
+        .number()
+        .optional()
+        .describe("The number of transcriptions associated to this project."),
+      endpointCount: zod
+        .number()
+        .optional()
+        .describe("The number of endpoints associated to this project.")
+    })
+    .optional(),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
-
 
 /**
  * @summary Gets the project identified by the given ID.
  */
 export const projectsGetParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
 
 export const projectsGetResponse = zod.object({
-  "links": zod.object({
-  "evaluations": zod.string().url().optional().describe('The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'),
-  "datasets": zod.string().url().optional().describe('The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'),
-  "models": zod.string().url().optional().describe('The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'),
-  "endpoints": zod.string().url().optional().describe('The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'),
-  "transcriptions": zod.string().url().optional().describe('The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "datasetCount": zod.number().optional().describe('The number of datasets associated to this project.'),
-  "evaluationCount": zod.number().optional().describe('The number of evaluations associated to this project.'),
-  "modelCount": zod.number().optional().describe('The number of models associated to this project.'),
-  "transcriptionCount": zod.number().optional().describe('The number of transcriptions associated to this project.'),
-  "endpointCount": zod.number().optional().describe('The number of endpoints associated to this project.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  links: zod
+    .object({
+      evaluations: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+        ),
+      datasets: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+        ),
+      models: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+        ),
+      endpoints: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+        ),
+      transcriptions: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      datasetCount: zod
+        .number()
+        .optional()
+        .describe("The number of datasets associated to this project."),
+      evaluationCount: zod
+        .number()
+        .optional()
+        .describe("The number of evaluations associated to this project."),
+      modelCount: zod
+        .number()
+        .optional()
+        .describe("The number of models associated to this project."),
+      transcriptionCount: zod
+        .number()
+        .optional()
+        .describe("The number of transcriptions associated to this project."),
+      endpointCount: zod
+        .number()
+        .optional()
+        .describe("The number of endpoints associated to this project.")
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Updates the project identified by the given ID.
  */
 export const projectsUpdateParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
 
 export const projectsUpdateBody = zod.object({
-  "displayName": zod.string().optional().describe('The name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  displayName: zod.string().optional().describe("The name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
 
 export const projectsUpdateResponse = zod.object({
-  "links": zod.object({
-  "evaluations": zod.string().url().optional().describe('The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'),
-  "datasets": zod.string().url().optional().describe('The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'),
-  "models": zod.string().url().optional().describe('The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'),
-  "endpoints": zod.string().url().optional().describe('The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'),
-  "transcriptions": zod.string().url().optional().describe('The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "datasetCount": zod.number().optional().describe('The number of datasets associated to this project.'),
-  "evaluationCount": zod.number().optional().describe('The number of evaluations associated to this project.'),
-  "modelCount": zod.number().optional().describe('The number of models associated to this project.'),
-  "transcriptionCount": zod.number().optional().describe('The number of transcriptions associated to this project.'),
-  "endpointCount": zod.number().optional().describe('The number of endpoints associated to this project.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
+  links: zod
+    .object({
+      evaluations: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all evaluations of this project. See operation \"Projects_ListEvaluations\" for more details.'
+        ),
+      datasets: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all datasets of this project. See operation \"Projects_ListDatasets\" for more details.'
+        ),
+      models: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all models of this project. See operation \"Projects_ListModels\" for more details.'
+        ),
+      endpoints: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all endpoints of this project. See operation \"Projects_ListEndpoints\" for more details.'
+        ),
+      transcriptions: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get a list of all transcriptions of this project. See operation \"Projects_ListTranscriptions\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      datasetCount: zod
+        .number()
+        .optional()
+        .describe("The number of datasets associated to this project."),
+      evaluationCount: zod
+        .number()
+        .optional()
+        .describe("The number of evaluations associated to this project."),
+      modelCount: zod
+        .number()
+        .optional()
+        .describe("The number of models associated to this project."),
+      transcriptionCount: zod
+        .number()
+        .optional()
+        .describe("The number of transcriptions associated to this project."),
+      endpointCount: zod
+        .number()
+        .optional()
+        .describe("The number of endpoints associated to this project.")
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  locale: zod.string().min(1).describe("The locale of the contained data."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-
 
 /**
  * @summary Deletes the project identified by the given ID.
  */
 export const projectsDeleteParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
-
 
 /**
  * @summary Gets the list of evaluations for specified project.
  */
 export const projectsListEvaluationsParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
 
 export const projectsListEvaluationsQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available evaluations.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status and locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example\r\n              filter=displayName eq \'My evaluation\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available evaluations.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status and locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example\r\n              filter=displayName eq 'My evaluation'"
+    )
 })
 
 export const projectsListEvaluationsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "model1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "model2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "transcription1": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "transcription2": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}),
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "wordErrorRate2": zod.number().optional().describe('The word error rate of recognition with model2.'),
-  "wordErrorRate1": zod.number().optional().describe('The word error rate of recognition with model1.'),
-  "sentenceErrorRate2": zod.number().optional().describe('The sentence error rate of recognition with model2.'),
-  "sentenceCount2": zod.number().optional().describe('The number of processed sentences by model2.'),
-  "wordCount2": zod.number().optional().describe('The number of processed words by model2.'),
-  "correctWordCount2": zod.number().optional().describe('The number of correctly recognized words by model2.'),
-  "wordSubstitutionCount2": zod.number().optional().describe('The number of recognized words by model2, that are substitutions.'),
-  "wordDeletionCount2": zod.number().optional().describe('The number of recognized words by model2, that are deletions.'),
-  "wordInsertionCount2": zod.number().optional().describe('The number of recognized words by model2, that are insertions.'),
-  "sentenceErrorRate1": zod.number().optional().describe('The sentence error rate of recognition with model1.'),
-  "sentenceCount1": zod.number().optional().describe('The number of processed sentences by model1.'),
-  "wordCount1": zod.number().optional().describe('The number of processed words by model1.'),
-  "correctWordCount1": zod.number().optional().describe('The number of correctly recognized words by model1.'),
-  "wordSubstitutionCount1": zod.number().optional().describe('The number of recognized words by model1, that are substitutions.'),
-  "wordDeletionCount1": zod.number().optional().describe('The number of recognized words by model1, that are deletions.'),
-  "wordInsertionCount1": zod.number().optional().describe('The number of recognized words by model1, that are insertions.'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        model1: zod.object({
+          self: zod.string().url().describe("The location of the referenced entity.")
+        }),
+        model2: zod.object({
+          self: zod.string().url().describe("The location of the referenced entity.")
+        }),
+        transcription1: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        transcription2: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        dataset: zod.object({
+          self: zod.string().url().describe("The location of the referenced entity.")
+        }),
+        links: zod
+          .object({
+            files: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get all files of this entity. See operation \"Evaluations_ListFiles\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            wordErrorRate2: zod
+              .number()
+              .optional()
+              .describe("The word error rate of recognition with model2."),
+            wordErrorRate1: zod
+              .number()
+              .optional()
+              .describe("The word error rate of recognition with model1."),
+            sentenceErrorRate2: zod
+              .number()
+              .optional()
+              .describe("The sentence error rate of recognition with model2."),
+            sentenceCount2: zod
+              .number()
+              .optional()
+              .describe("The number of processed sentences by model2."),
+            wordCount2: zod
+              .number()
+              .optional()
+              .describe("The number of processed words by model2."),
+            correctWordCount2: zod
+              .number()
+              .optional()
+              .describe("The number of correctly recognized words by model2."),
+            wordSubstitutionCount2: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model2, that are substitutions."),
+            wordDeletionCount2: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model2, that are deletions."),
+            wordInsertionCount2: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model2, that are insertions."),
+            sentenceErrorRate1: zod
+              .number()
+              .optional()
+              .describe("The sentence error rate of recognition with model1."),
+            sentenceCount1: zod
+              .number()
+              .optional()
+              .describe("The number of processed sentences by model1."),
+            wordCount1: zod
+              .number()
+              .optional()
+              .describe("The number of processed words by model1."),
+            correctWordCount1: zod
+              .number()
+              .optional()
+              .describe("The number of correctly recognized words by model1."),
+            wordSubstitutionCount1: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model1, that are substitutions."),
+            wordDeletionCount1: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model1, that are deletions."),
+            wordInsertionCount1: zod
+              .number()
+              .optional()
+              .describe("The number of recognized words by model1, that are insertions."),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        locale: zod.string().min(1).describe("The locale of the contained data.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets the list of datasets for specified project.
  */
 export const projectsListDatasetsParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
 
 export const projectsListDatasetsQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available datasets.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=createdDateTime gt 2022-02-01T11:00:00Z')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available datasets.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=createdDateTime gt 2022-02-01T11:00:00Z"
+    )
 })
 
 export const projectsListDatasetsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'),
-  "commitBlocks": zod.string().url().optional().describe('The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'),
-  "listBlocks": zod.string().url().optional().describe('The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'),
-  "uploadBlocks": zod.string().url().optional().describe('The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "acceptedLineCount": zod.number().optional().describe('The number of lines accepted for this data set.'),
-  "rejectedLineCount": zod.number().optional().describe('The number of lines rejected for this data set.'),
-  "duration": zod.string().optional().describe('The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "kind": zod.enum(['Language', 'Acoustic', 'Pronunciation', 'AudioFiles', 'LanguageMarkdown']).describe('Type of data import.'),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrl": zod.string().url().optional().describe('The URL of the data for the dataset.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        links: zod
+          .object({
+            files: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get all files of this entity. See operation \"Datasets_ListFiles\" for more details.'
+              ),
+            commitBlocks: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to commit the list of blocks when uploading a dataset using blocks. See operation \"Datasets_CommitBlocks\" for more details.'
+              ),
+            listBlocks: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to list the already uploaded blocks of this entity when uploading a dataset using blocks. See operation \"Datasets_GetDatasetBlocks\" for more details.'
+              ),
+            uploadBlocks: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to upload blocks to when uploading a dataset using blocks. See operation \"Datasets_UploadBlock\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            acceptedLineCount: zod
+              .number()
+              .optional()
+              .describe("The number of lines accepted for this data set."),
+            rejectedLineCount: zod
+              .number()
+              .optional()
+              .describe("The number of lines rejected for this data set."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        kind: zod
+          .enum(["Language", "Acoustic", "Pronunciation", "AudioFiles", "LanguageMarkdown"])
+          .describe("Type of data import."),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        contentUrl: zod.string().url().optional().describe("The URL of the data for the dataset."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets the list of endpoints for specified project.
  */
 export const projectsListEndpointsParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
 
 export const projectsListEndpointsQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available endpoints.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=locale eq \'en-US\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available endpoints.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=locale eq 'en-US'"
+    )
 })
 
 export const projectsListEndpointsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "links": zod.object({
-  "restInteractive": zod.string().url().optional().describe('The REST endpoint for short requests up to 15 seconds.'),
-  "restConversation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds.'),
-  "restDictation": zod.string().url().optional().describe('The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks.'),
-  "webSocketInteractive": zod.string().url().optional().describe('The Speech SDK endpoint for short requests up to 15 seconds with a single final result.'),
-  "webSocketConversation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results.'),
-  "webSocketDictation": zod.string().url().optional().describe('The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks.'),
-  "logs": zod.string().url().optional().describe('The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "loggingEnabled": zod.boolean().optional().describe('A value indicating whether content logging (audio & transcriptions) is being used for a deployment.'),
-  "timeToLive": zod.string().optional().describe('How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "text": zod.string().optional().describe('The text used to adapt a language model for this endpoint.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        links: zod
+          .object({
+            restInteractive: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The REST endpoint for short requests up to 15 seconds."),
+            restConversation: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The REST endpoint for requests up to 60 seconds."),
+            restDictation: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks."
+              ),
+            webSocketInteractive: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "The Speech SDK endpoint for short requests up to 15 seconds with a single final result."
+              ),
+            webSocketConversation: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The Speech SDK endpoint for long requests with multiple final results."),
+            webSocketDictation: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "The Speech SDK endpoint for long requests with multiple final results, supporting dictation of\r\npunctuation marks."
+              ),
+            logs: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The audio and transcription logs for this endpoint.  See operation \"Endpoints_ListLogs\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            loggingEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether content logging (audio & transcriptions) is being used for a deployment."
+              ),
+            timeToLive: zod
+              .string()
+              .optional()
+              .describe(
+                'How long the endpoint will be kept in the system. Once the endpoint reaches the time to live\r\nafter completion (successful or failed) it will be automatically deleted. Not setting this value or setting\r\nto 0 will disable automatic deletion. The longest supported duration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        text: zod
+          .string()
+          .optional()
+          .describe("The text used to adapt a language model for this endpoint."),
+        model: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets the list of models for specified project.
  */
 export const projectsListModelsParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
 
 export const projectsListModelsQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available models.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n              - Operators:\r\n                - eq, ne are supported for all properties.\r\n                - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n                - and, or, not are supported.\r\n            - Example:\r\n              filter=status eq \'NotStarted\' or status eq \'Running\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available models.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n              - Operators:\r\n                - eq, ne are supported for all properties.\r\n                - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n                - and, or, not are supported.\r\n            - Example:\r\n              filter=status eq 'NotStarted' or status eq 'Running'"
+    )
 })
 
 export const projectsListModelsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        self: zod.string().url().optional().describe("The location of this entity."),
+        locale: zod.string().min(1).describe("The locale of the contained data."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets the list of transcriptions for specified project.
  */
 export const projectsListTranscriptionsParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the project.')
+  id: zod.string().uuid().describe("The identifier of the project.")
 })
 
 export const projectsListTranscriptionsQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available transcriptions.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=createdDateTime gt 2022-02-01T11:00:00Z')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available transcriptions.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=createdDateTime gt 2022-02-01T11:00:00Z"
+    )
 })
 
 export const projectsListTranscriptionsResponse = zod.object({
-  "values": zod.array(zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "diarizationEnabled": zod.boolean().optional().describe('A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed.'),
-  "wordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps are requested. The default value is\r\n`false`.'),
-  "displayFormWordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps for the display form are requested. The default value is `false`.'),
-  "duration": zod.string().optional().describe('The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "channels": zod.array(zod.number()).optional().describe('A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered.'),
-  "destinationContainerUrl": zod.string().url().optional().describe('The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'),
-  "punctuationMode": zod.enum(['None', 'Dictated', 'Automatic', 'DictatedAndAutomatic']).optional().describe('The mode used for punctuation.'),
-  "profanityFilterMode": zod.enum(['None', 'Removed', 'Tags', 'Masked']).optional().describe('Mode of profanity filtering.'),
-  "timeToLive": zod.string().optional().describe('How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "diarization": zod.object({
-  "speakers": zod.object({
-  "minCount": zod.number().min(1).optional().describe('A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property.'),
-  "maxCount": zod.number().min(1).optional().describe('The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property.')
+  values: zod
+    .array(
+      zod.object({
+        links: zod
+          .object({
+            files: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            diarizationEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed."
+              ),
+            wordLevelTimestampsEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether word level timestamps are requested. The default value is\r\n`false`."
+              ),
+            displayFormWordLevelTimestampsEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether word level timestamps for the display form are requested. The default value is `false`."
+              ),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            channels: zod
+              .array(zod.number())
+              .optional()
+              .describe(
+                "A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered."
+              ),
+            destinationContainerUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+              ),
+            punctuationMode: zod
+              .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
+              .optional()
+              .describe("The mode used for punctuation."),
+            profanityFilterMode: zod
+              .enum(["None", "Removed", "Tags", "Masked"])
+              .optional()
+              .describe("Mode of profanity filtering."),
+            timeToLive: zod
+              .string()
+              .optional()
+              .describe(
+                'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            diarization: zod
+              .object({
+                speakers: zod.object({
+                  minCount: zod
+                    .number()
+                    .min(1)
+                    .optional()
+                    .describe(
+                      "A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property."
+                    ),
+                  maxCount: zod
+                    .number()
+                    .min(1)
+                    .optional()
+                    .describe(
+                      "The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property."
+                    )
+                })
+              })
+              .optional(),
+            languageIdentification: zod
+              .object({
+                candidateLocales: zod
+                  .array(zod.string())
+                  .describe(
+                    'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+                  ),
+                speechModelMapping: zod
+                  .record(
+                    zod.string(),
+                    zod.object({
+                      self: zod.string().url().describe("The location of the referenced entity.")
+                    })
+                  )
+                  .optional()
+                  .describe(
+                    "An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales."
+                  )
+              })
+              .optional(),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        model: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        dataset: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        contentUrls: zod
+          .array(zod.string().url())
+          .optional()
+          .describe(
+            "A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response."
+          ),
+        contentContainerUrl: zod
+          .string()
+          .url()
+          .optional()
+          .describe(
+            "A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain 'r' (read) and 'l' (list) permissions.\r\nThis property will not be returned in a response."
+          ),
+        locale: zod
+          .string()
+          .min(1)
+          .describe(
+            "The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected."
+          ),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-}).optional(),
-  "languageIdentification": zod.object({
-  "candidateLocales": zod.array(zod.string()).describe('The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'),
-  "speechModelMapping": zod.record(zod.string(), zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-})).optional().describe('An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales.')
-}).optional(),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrls": zod.array(zod.string().url()).optional().describe('A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response.'),
-  "contentContainerUrl": zod.string().url().optional().describe('A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain \'r\' (read) and \'l\' (list) permissions.\r\nThis property will not be returned in a response.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
-})
-
 
 /**
  * @summary Gets a list of supported locales for offline transcriptions.
  */
 export const transcriptionsListSupportedLocalesResponseItem = zod.string()
-export const transcriptionsListSupportedLocalesResponse = zod.array(transcriptionsListSupportedLocalesResponseItem)
-
+export const transcriptionsListSupportedLocalesResponse = zod.array(
+  transcriptionsListSupportedLocalesResponseItem
+)
 
 /**
  * @summary Gets a list of transcriptions for the authenticated subscription.
  */
 export const transcriptionsListQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available transcriptions.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=createdDateTime gt 2022-02-01T11:00:00Z')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available transcriptions.\r\n            - Supported properties: displayName, description, createdDateTime, lastActionDateTime, status, locale.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=createdDateTime gt 2022-02-01T11:00:00Z"
+    )
 })
 
 export const transcriptionsListResponse = zod.object({
-  "values": zod.array(zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "diarizationEnabled": zod.boolean().optional().describe('A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed.'),
-  "wordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps are requested. The default value is\r\n`false`.'),
-  "displayFormWordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps for the display form are requested. The default value is `false`.'),
-  "duration": zod.string().optional().describe('The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "channels": zod.array(zod.number()).optional().describe('A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered.'),
-  "destinationContainerUrl": zod.string().url().optional().describe('The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'),
-  "punctuationMode": zod.enum(['None', 'Dictated', 'Automatic', 'DictatedAndAutomatic']).optional().describe('The mode used for punctuation.'),
-  "profanityFilterMode": zod.enum(['None', 'Removed', 'Tags', 'Masked']).optional().describe('Mode of profanity filtering.'),
-  "timeToLive": zod.string().optional().describe('How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "diarization": zod.object({
-  "speakers": zod.object({
-  "minCount": zod.number().min(1).optional().describe('A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property.'),
-  "maxCount": zod.number().min(1).optional().describe('The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property.')
+  values: zod
+    .array(
+      zod.object({
+        links: zod
+          .object({
+            files: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            diarizationEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed."
+              ),
+            wordLevelTimestampsEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether word level timestamps are requested. The default value is\r\n`false`."
+              ),
+            displayFormWordLevelTimestampsEnabled: zod
+              .boolean()
+              .optional()
+              .describe(
+                "A value indicating whether word level timestamps for the display form are requested. The default value is `false`."
+              ),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            channels: zod
+              .array(zod.number())
+              .optional()
+              .describe(
+                "A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered."
+              ),
+            destinationContainerUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+              ),
+            punctuationMode: zod
+              .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
+              .optional()
+              .describe("The mode used for punctuation."),
+            profanityFilterMode: zod
+              .enum(["None", "Removed", "Tags", "Masked"])
+              .optional()
+              .describe("Mode of profanity filtering."),
+            timeToLive: zod
+              .string()
+              .optional()
+              .describe(
+                'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              ),
+            diarization: zod
+              .object({
+                speakers: zod.object({
+                  minCount: zod
+                    .number()
+                    .min(1)
+                    .optional()
+                    .describe(
+                      "A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property."
+                    ),
+                  maxCount: zod
+                    .number()
+                    .min(1)
+                    .optional()
+                    .describe(
+                      "The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property."
+                    )
+                })
+              })
+              .optional(),
+            languageIdentification: zod
+              .object({
+                candidateLocales: zod
+                  .array(zod.string())
+                  .describe(
+                    'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+                  ),
+                speechModelMapping: zod
+                  .record(
+                    zod.string(),
+                    zod.object({
+                      self: zod.string().url().describe("The location of the referenced entity.")
+                    })
+                  )
+                  .optional()
+                  .describe(
+                    "An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales."
+                  )
+              })
+              .optional(),
+            email: zod
+              .string()
+              .optional()
+              .describe(
+                "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+              ),
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional()
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        model: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        project: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        dataset: zod
+          .object({
+            self: zod.string().url().describe("The location of the referenced entity.")
+          })
+          .optional(),
+        contentUrls: zod
+          .array(zod.string().url())
+          .optional()
+          .describe(
+            "A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response."
+          ),
+        contentContainerUrl: zod
+          .string()
+          .url()
+          .optional()
+          .describe(
+            "A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain 'r' (read) and 'l' (list) permissions.\r\nThis property will not be returned in a response."
+          ),
+        locale: zod
+          .string()
+          .min(1)
+          .describe(
+            "The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected."
+          ),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          ),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-}).optional(),
-  "languageIdentification": zod.object({
-  "candidateLocales": zod.array(zod.string()).describe('The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'),
-  "speechModelMapping": zod.record(zod.string(), zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-})).optional().describe('An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales.')
-}).optional(),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrls": zod.array(zod.string().url()).optional().describe('A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response.'),
-  "contentContainerUrl": zod.string().url().optional().describe('A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain \'r\' (read) and \'l\' (list) permissions.\r\nThis property will not be returned in a response.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
-})
-
 
 /**
  * @summary Creates a new transcription.
  */
 export const transcriptionsCreateBody = zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "diarizationEnabled": zod.boolean().optional().describe('A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed.'),
-  "wordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps are requested. The default value is\r\n`false`.'),
-  "displayFormWordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps for the display form are requested. The default value is `false`.'),
-  "duration": zod.string().optional().describe('The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "channels": zod.array(zod.number()).optional().describe('A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered.'),
-  "destinationContainerUrl": zod.string().url().optional().describe('The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'),
-  "punctuationMode": zod.enum(['None', 'Dictated', 'Automatic', 'DictatedAndAutomatic']).optional().describe('The mode used for punctuation.'),
-  "profanityFilterMode": zod.enum(['None', 'Removed', 'Tags', 'Masked']).optional().describe('Mode of profanity filtering.'),
-  "timeToLive": zod.string().optional().describe('How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "diarization": zod.object({
-  "speakers": zod.object({
-  "minCount": zod.number().min(1).optional().describe('A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property.'),
-  "maxCount": zod.number().min(1).optional().describe('The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property.')
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      diarizationEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed."
+        ),
+      wordLevelTimestampsEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether word level timestamps are requested. The default value is\r\n`false`."
+        ),
+      displayFormWordLevelTimestampsEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether word level timestamps for the display form are requested. The default value is `false`."
+        ),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      channels: zod
+        .array(zod.number())
+        .optional()
+        .describe(
+          "A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered."
+        ),
+      destinationContainerUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+        ),
+      punctuationMode: zod
+        .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
+        .optional()
+        .describe("The mode used for punctuation."),
+      profanityFilterMode: zod
+        .enum(["None", "Removed", "Tags", "Masked"])
+        .optional()
+        .describe("Mode of profanity filtering."),
+      timeToLive: zod
+        .string()
+        .optional()
+        .describe(
+          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      diarization: zod
+        .object({
+          speakers: zod.object({
+            minCount: zod
+              .number()
+              .min(1)
+              .optional()
+              .describe(
+                "A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property."
+              ),
+            maxCount: zod
+              .number()
+              .min(1)
+              .optional()
+              .describe(
+                "The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property."
+              )
+          })
+        })
+        .optional(),
+      languageIdentification: zod
+        .object({
+          candidateLocales: zod
+            .array(zod.string())
+            .describe(
+              'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+            ),
+          speechModelMapping: zod
+            .record(
+              zod.string(),
+              zod.object({
+                self: zod.string().url().describe("The location of the referenced entity.")
+              })
+            )
+            .optional()
+            .describe(
+              "An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales."
+            )
+        })
+        .optional(),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  model: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  dataset: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  contentUrls: zod
+    .array(zod.string().url())
+    .optional()
+    .describe(
+      "A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response."
+    ),
+  contentContainerUrl: zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain 'r' (read) and 'l' (list) permissions.\r\nThis property will not be returned in a response."
+    ),
+  locale: zod
+    .string()
+    .min(1)
+    .describe(
+      "The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected."
+    ),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
-}).optional(),
-  "languageIdentification": zod.object({
-  "candidateLocales": zod.array(zod.string()).describe('The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'),
-  "speechModelMapping": zod.record(zod.string(), zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-})).optional().describe('An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales.')
-}).optional(),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrls": zod.array(zod.string().url()).optional().describe('A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response.'),
-  "contentContainerUrl": zod.string().url().optional().describe('A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain \'r\' (read) and \'l\' (list) permissions.\r\nThis property will not be returned in a response.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
-})
-
 
 /**
  * @summary Gets the transcription identified by the given ID.
  */
 export const transcriptionsGetParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the transcription.')
+  id: zod.string().uuid().describe("The identifier of the transcription.")
 })
 
 export const transcriptionsGetResponse = zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "diarizationEnabled": zod.boolean().optional().describe('A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed.'),
-  "wordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps are requested. The default value is\r\n`false`.'),
-  "displayFormWordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps for the display form are requested. The default value is `false`.'),
-  "duration": zod.string().optional().describe('The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "channels": zod.array(zod.number()).optional().describe('A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered.'),
-  "destinationContainerUrl": zod.string().url().optional().describe('The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'),
-  "punctuationMode": zod.enum(['None', 'Dictated', 'Automatic', 'DictatedAndAutomatic']).optional().describe('The mode used for punctuation.'),
-  "profanityFilterMode": zod.enum(['None', 'Removed', 'Tags', 'Masked']).optional().describe('Mode of profanity filtering.'),
-  "timeToLive": zod.string().optional().describe('How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "diarization": zod.object({
-  "speakers": zod.object({
-  "minCount": zod.number().min(1).optional().describe('A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property.'),
-  "maxCount": zod.number().min(1).optional().describe('The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property.')
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      diarizationEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed."
+        ),
+      wordLevelTimestampsEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether word level timestamps are requested. The default value is\r\n`false`."
+        ),
+      displayFormWordLevelTimestampsEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether word level timestamps for the display form are requested. The default value is `false`."
+        ),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      channels: zod
+        .array(zod.number())
+        .optional()
+        .describe(
+          "A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered."
+        ),
+      destinationContainerUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+        ),
+      punctuationMode: zod
+        .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
+        .optional()
+        .describe("The mode used for punctuation."),
+      profanityFilterMode: zod
+        .enum(["None", "Removed", "Tags", "Masked"])
+        .optional()
+        .describe("Mode of profanity filtering."),
+      timeToLive: zod
+        .string()
+        .optional()
+        .describe(
+          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      diarization: zod
+        .object({
+          speakers: zod.object({
+            minCount: zod
+              .number()
+              .min(1)
+              .optional()
+              .describe(
+                "A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property."
+              ),
+            maxCount: zod
+              .number()
+              .min(1)
+              .optional()
+              .describe(
+                "The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property."
+              )
+          })
+        })
+        .optional(),
+      languageIdentification: zod
+        .object({
+          candidateLocales: zod
+            .array(zod.string())
+            .describe(
+              'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+            ),
+          speechModelMapping: zod
+            .record(
+              zod.string(),
+              zod.object({
+                self: zod.string().url().describe("The location of the referenced entity.")
+              })
+            )
+            .optional()
+            .describe(
+              "An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales."
+            )
+        })
+        .optional(),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  model: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  dataset: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  contentUrls: zod
+    .array(zod.string().url())
+    .optional()
+    .describe(
+      "A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response."
+    ),
+  contentContainerUrl: zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain 'r' (read) and 'l' (list) permissions.\r\nThis property will not be returned in a response."
+    ),
+  locale: zod
+    .string()
+    .min(1)
+    .describe(
+      "The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected."
+    ),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-}).optional(),
-  "languageIdentification": zod.object({
-  "candidateLocales": zod.array(zod.string()).describe('The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'),
-  "speechModelMapping": zod.record(zod.string(), zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-})).optional().describe('An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales.')
-}).optional(),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrls": zod.array(zod.string().url()).optional().describe('A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response.'),
-  "contentContainerUrl": zod.string().url().optional().describe('A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain \'r\' (read) and \'l\' (list) permissions.\r\nThis property will not be returned in a response.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})
-
 
 /**
  * @summary Updates the mutable details of the transcription identified by its ID.
  */
 export const transcriptionsUpdateParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the transcription.')
+  id: zod.string().uuid().describe("The identifier of the transcription.")
 })
 
 export const transcriptionsUpdateBody = zod.object({
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "displayName": zod.string().optional().describe('The name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  displayName: zod.string().optional().describe("The name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
 
 export const transcriptionsUpdateResponse = zod.object({
-  "links": zod.object({
-  "files": zod.string().url().optional().describe('The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "diarizationEnabled": zod.boolean().optional().describe('A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed.'),
-  "wordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps are requested. The default value is\r\n`false`.'),
-  "displayFormWordLevelTimestampsEnabled": zod.boolean().optional().describe('A value indicating whether word level timestamps for the display form are requested. The default value is `false`.'),
-  "duration": zod.string().optional().describe('The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "channels": zod.array(zod.number()).optional().describe('A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered.'),
-  "destinationContainerUrl": zod.string().url().optional().describe('The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'),
-  "punctuationMode": zod.enum(['None', 'Dictated', 'Automatic', 'DictatedAndAutomatic']).optional().describe('The mode used for punctuation.'),
-  "profanityFilterMode": zod.enum(['None', 'Removed', 'Tags', 'Masked']).optional().describe('Mode of profanity filtering.'),
-  "timeToLive": zod.string().optional().describe('How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'),
-  "diarization": zod.object({
-  "speakers": zod.object({
-  "minCount": zod.number().min(1).optional().describe('A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property.'),
-  "maxCount": zod.number().min(1).optional().describe('The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property.')
+  links: zod
+    .object({
+      files: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The location to get all files of this entity. See operation \"Transcriptions_ListFiles\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      diarizationEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether diarization (speaker identification) is requested. The default value\r\nis `false`.\r\nIf this field is set to true and the improved diarization system is configured by specifying\r\n`DiarizationProperties`, the improved diarization system will provide diarization for a configurable\r\nrange of speakers.\r\nIf this field is set to true and the improved diarization system is not enabled (not specifying\r\n`DiarizationProperties`), the basic diarization system will distinguish between up to two speakers.\r\nNo extra charges are applied for the basic diarization.\r\n            \r\nThe basic diarization system is deprecated and will be removed in the next major version of the API.\r\nThis `diarizationEnabled` setting will also be removed."
+        ),
+      wordLevelTimestampsEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether word level timestamps are requested. The default value is\r\n`false`."
+        ),
+      displayFormWordLevelTimestampsEnabled: zod
+        .boolean()
+        .optional()
+        .describe(
+          "A value indicating whether word level timestamps for the display form are requested. The default value is `false`."
+        ),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration of the transcription. The duration is encoded as ISO 8601 duration\r\n(\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      channels: zod
+        .array(zod.number())
+        .optional()
+        .describe(
+          "A collection of the requested channel numbers.\r\nIn the default case, the channels 0 and 1 are considered."
+        ),
+      destinationContainerUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The requested destination container.\r\n### Remarks ###\r\nWhen a destination container is used in combination with a `timeToLive`, the metadata of a\r\ntranscription will be deleted normally, but the data stored in the destination container, including\r\ntranscription results, will remain untouched, because no delete permissions are required for this\r\ncontainer.<br />\r\nTo support automatic cleanup, either configure blob lifetimes on the container, or use \"Bring your own Storage (BYOS)\"\r\ninstead of `destinationContainerUrl`, where blobs can be cleaned up.'
+        ),
+      punctuationMode: zod
+        .enum(["None", "Dictated", "Automatic", "DictatedAndAutomatic"])
+        .optional()
+        .describe("The mode used for punctuation."),
+      profanityFilterMode: zod
+        .enum(["None", "Removed", "Tags", "Masked"])
+        .optional()
+        .describe("Mode of profanity filtering."),
+      timeToLive: zod
+        .string()
+        .optional()
+        .describe(
+          'How long the transcription will be kept in the system after it has completed. Once the\r\ntranscription reaches the time to live after completion (successful or failed) it will be automatically\r\ndeleted. Not setting this value or setting it to 0 will disable automatic deletion. The longest supported\r\nduration is 31 days.\r\nThe duration is encoded as ISO 8601 duration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        ),
+      diarization: zod
+        .object({
+          speakers: zod.object({
+            minCount: zod
+              .number()
+              .min(1)
+              .optional()
+              .describe(
+                "A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property."
+              ),
+            maxCount: zod
+              .number()
+              .min(1)
+              .optional()
+              .describe(
+                "The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property."
+              )
+          })
+        })
+        .optional(),
+      languageIdentification: zod
+        .object({
+          candidateLocales: zod
+            .array(zod.string())
+            .describe(
+              'The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'
+            ),
+          speechModelMapping: zod
+            .record(
+              zod.string(),
+              zod.object({
+                self: zod.string().url().describe("The location of the referenced entity.")
+              })
+            )
+            .optional()
+            .describe(
+              "An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales."
+            )
+        })
+        .optional(),
+      email: zod
+        .string()
+        .optional()
+        .describe(
+          "The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email."
+        ),
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional()
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  model: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  project: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  dataset: zod
+    .object({
+      self: zod.string().url().describe("The location of the referenced entity.")
+    })
+    .optional(),
+  contentUrls: zod
+    .array(zod.string().url())
+    .optional()
+    .describe(
+      "A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response."
+    ),
+  contentContainerUrl: zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain 'r' (read) and 'l' (list) permissions.\r\nThis property will not be returned in a response."
+    ),
+  locale: zod
+    .string()
+    .min(1)
+    .describe(
+      "The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected."
+    ),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    ),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    )
 })
-}).optional(),
-  "languageIdentification": zod.object({
-  "candidateLocales": zod.array(zod.string()).describe('The candidate locales for language identification (example [\"en-US\", \"de-DE\", \"es-ES\"]). A minimum of 2 and a maximum of 10 candidate locales, including the main locale for the transcription, is supported.'),
-  "speechModelMapping": zod.record(zod.string(), zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-})).optional().describe('An optional mapping of locales to speech model entities. If no model is given for a locale, the default base model is used.\r\nKeys must be locales contained in the candidate locales, values are entities for models of the respective locales.')
-}).optional(),
-  "email": zod.string().optional().describe('The email address to send email notifications to in case the operation completes.\r\nThe value will be removed after successfully sending the email.'),
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional()
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "model": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "project": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "dataset": zod.object({
-  "self": zod.string().url().describe('The location of the referenced entity.')
-}).optional(),
-  "contentUrls": zod.array(zod.string().url()).optional().describe('A list of content urls to get audio files to transcribe. Up to 1000 urls are allowed.\r\nThis property will not be returned in a response.'),
-  "contentContainerUrl": zod.string().url().optional().describe('A URL for an Azure blob container that contains the audio files. A container is allowed to have a maximum size of 5GB and a maximum number of 10000 blobs.\r\nThe maximum size for a blob is 2.5GB.\r\nContainer SAS should contain \'r\' (read) and \'l\' (list) permissions.\r\nThis property will not be returned in a response.'),
-  "locale": zod.string().min(1).describe('The locale of the contained data. If Language Identification is used, this locale is used to transcribe speech for which no language could be detected.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).')
-})
-
 
 /**
  * @summary Deletes the specified transcription task.
  */
 export const transcriptionsDeleteParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the transcription.')
+  id: zod.string().uuid().describe("The identifier of the transcription.")
 })
-
 
 /**
  * @summary Gets the files of the transcription identified by the given ID.
  */
 export const transcriptionsListFilesParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the transcription.')
+  id: zod.string().uuid().describe("The identifier of the transcription.")
 })
 
 export const transcriptionsListFilesQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.'),
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq \'myaudio.wav.json\' and kind eq \'Transcription\'')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    ),
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available files.\r\n            - Supported properties: name, createdDateTime, kind.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=name eq 'myaudio.wav.json' and kind eq 'Transcription'"
+    )
 })
 
 export const transcriptionsListFilesResponse = zod.object({
-  "values": zod.array(zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        kind: zod
+          .enum([
+            "DatasetReport",
+            "Audio",
+            "LanguageData",
+            "PronunciationData",
+            "AcousticDataArchive",
+            "AcousticDataTranscriptionV2",
+            "Transcription",
+            "TranscriptionReport",
+            "EvaluationDetails",
+            "ModelReport"
+          ])
+          .optional()
+          .describe("Type of data."),
+        links: zod
+          .object({
+            contentUrl: zod
+              .string()
+              .url()
+              .optional()
+              .describe("The url to retrieve the content of this file.")
+          })
+          .optional(),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+          ),
+        properties: zod
+          .object({
+            size: zod.number().optional().describe("The size of the data in bytes."),
+            duration: zod
+              .string()
+              .optional()
+              .describe(
+                'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+              )
+          })
+          .optional(),
+        name: zod.string().optional().describe("The name of this file."),
+        self: zod.string().url().optional().describe("The location of this entity.")
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * @summary Gets one specific file (identified with fileId) from a transcription (identified with id).
  */
 export const transcriptionsGetFileParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the transcription.'),
-  "fileId": zod.string().uuid().describe('The identifier of the file.')
+  id: zod.string().uuid().describe("The identifier of the transcription."),
+  fileId: zod.string().uuid().describe("The identifier of the file.")
 })
 
 export const transcriptionsGetFileQueryParams = zod.object({
-  "sasValidityInSeconds": zod.number().optional().describe('The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.')
+  sasValidityInSeconds: zod
+    .number()
+    .optional()
+    .describe(
+      "The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated."
+    )
 })
 
 export const transcriptionsGetFileResponse = zod.object({
-  "kind": zod.enum(['DatasetReport', 'Audio', 'LanguageData', 'PronunciationData', 'AcousticDataArchive', 'AcousticDataTranscriptionV2', 'Transcription', 'TranscriptionReport', 'EvaluationDetails', 'ModelReport']).optional().describe('Type of data.'),
-  "links": zod.object({
-  "contentUrl": zod.string().url().optional().describe('The url to retrieve the content of this file.')
-}).optional(),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "properties": zod.object({
-  "size": zod.number().optional().describe('The size of the data in bytes.'),
-  "duration": zod.string().optional().describe('The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).')
-}).optional(),
-  "name": zod.string().optional().describe('The name of this file.'),
-  "self": zod.string().url().optional().describe('The location of this entity.')
+  kind: zod
+    .enum([
+      "DatasetReport",
+      "Audio",
+      "LanguageData",
+      "PronunciationData",
+      "AcousticDataArchive",
+      "AcousticDataTranscriptionV2",
+      "Transcription",
+      "TranscriptionReport",
+      "EvaluationDetails",
+      "ModelReport"
+    ])
+    .optional()
+    .describe("Type of data."),
+  links: zod
+    .object({
+      contentUrl: zod
+        .string()
+        .url()
+        .optional()
+        .describe("The url to retrieve the content of this file.")
+    })
+    .optional(),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      "The creation time of this file.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations)."
+    ),
+  properties: zod
+    .object({
+      size: zod.number().optional().describe("The size of the data in bytes."),
+      duration: zod
+        .string()
+        .optional()
+        .describe(
+          'The duration in case this file is an audio file. The duration is encoded as ISO 8601\r\nduration (\"PnYnMnDTnHnMnS\", see https://en.wikipedia.org/wiki/ISO_8601#Durations).'
+        )
+    })
+    .optional(),
+  name: zod.string().optional().describe("The name of this file."),
+  self: zod.string().url().optional().describe("The location of this entity.")
 })
-
 
 /**
  * @summary Gets the list of web hooks for the authenticated subscription.
  */
 export const webHooksListQueryParams = zod.object({
-  "skip": zod.number().optional().describe('Number of datasets that will be skipped.'),
-  "top": zod.number().optional().describe('Number of datasets that will be included after skipping.'),
-  "filter": zod.string().optional().describe('A filtering expression for selecting a subset of the available hooks.\r\n            Supported properties: displayName, description, createdDateTime, lastActionDateTime, status and webUrl.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=displayName eq \'test\'')
+  skip: zod.number().optional().describe("Number of datasets that will be skipped."),
+  top: zod.number().optional().describe("Number of datasets that will be included after skipping."),
+  filter: zod
+    .string()
+    .optional()
+    .describe(
+      "A filtering expression for selecting a subset of the available hooks.\r\n            Supported properties: displayName, description, createdDateTime, lastActionDateTime, status and webUrl.\r\n            - Operators:\r\n              - eq, ne are supported for all properties.\r\n              - gt, ge, lt, le are supported for createdDateTime and lastActionDateTime.\r\n              - and, or, not are supported.\r\n            - Example:\r\n              filter=displayName eq 'test'"
+    )
 })
 
 export const webHooksListResponse = zod.object({
-  "values": zod.array(zod.object({
-  "webUrl": zod.string().url().describe('The registered URL that will be used to send the POST requests for the registered events to.'),
-  "links": zod.object({
-  "ping": zod.string().url().optional().describe('The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'),
-  "test": zod.string().url().optional().describe('The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional(),
-  "apiVersion": zod.string().optional().describe('The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled.'),
-  "secret": zod.string().optional().describe('A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "events": zod.object({
-  "datasetCreation": zod.boolean().optional(),
-  "datasetProcessing": zod.boolean().optional(),
-  "datasetCompletion": zod.boolean().optional(),
-  "datasetDeletion": zod.boolean().optional(),
-  "modelCreation": zod.boolean().optional(),
-  "modelProcessing": zod.boolean().optional(),
-  "modelCompletion": zod.boolean().optional(),
-  "modelDeletion": zod.boolean().optional(),
-  "evaluationCreation": zod.boolean().optional(),
-  "evaluationProcessing": zod.boolean().optional(),
-  "evaluationCompletion": zod.boolean().optional(),
-  "evaluationDeletion": zod.boolean().optional(),
-  "transcriptionCreation": zod.boolean().optional(),
-  "transcriptionProcessing": zod.boolean().optional(),
-  "transcriptionCompletion": zod.boolean().optional(),
-  "transcriptionDeletion": zod.boolean().optional(),
-  "endpointCreation": zod.boolean().optional(),
-  "endpointProcessing": zod.boolean().optional(),
-  "endpointCompletion": zod.boolean().optional(),
-  "endpointDeletion": zod.boolean().optional(),
-  "ping": zod.boolean().optional(),
-  "challenge": zod.boolean().optional()
-}),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
-})).optional().describe('A list of entities limited by either the passed query parameters \'skip\' and \'top\' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt\'s recommended to build a list on the client and delete after the fetching of the complete list.'),
-  "@nextLink": zod.string().url().optional().describe('A link to the next set of paginated results if there are more entities available; otherwise null.')
+  values: zod
+    .array(
+      zod.object({
+        webUrl: zod
+          .string()
+          .url()
+          .describe(
+            "The registered URL that will be used to send the POST requests for the registered events to."
+          ),
+        links: zod
+          .object({
+            ping: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+              ),
+            test: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+              )
+          })
+          .optional(),
+        properties: zod
+          .object({
+            error: zod
+              .object({
+                code: zod.string().optional().describe("The code of this error."),
+                message: zod.string().optional().describe("The message for this error.")
+              })
+              .optional(),
+            apiVersion: zod
+              .string()
+              .optional()
+              .describe(
+                "The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled."
+              ),
+            secret: zod
+              .string()
+              .optional()
+              .describe(
+                "A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL."
+              )
+          })
+          .optional(),
+        self: zod.string().url().optional().describe("The location of this entity."),
+        displayName: zod.string().min(1).describe("The display name of the object."),
+        description: zod.string().optional().describe("The description of the object."),
+        events: zod.object({
+          datasetCreation: zod.boolean().optional(),
+          datasetProcessing: zod.boolean().optional(),
+          datasetCompletion: zod.boolean().optional(),
+          datasetDeletion: zod.boolean().optional(),
+          modelCreation: zod.boolean().optional(),
+          modelProcessing: zod.boolean().optional(),
+          modelCompletion: zod.boolean().optional(),
+          modelDeletion: zod.boolean().optional(),
+          evaluationCreation: zod.boolean().optional(),
+          evaluationProcessing: zod.boolean().optional(),
+          evaluationCompletion: zod.boolean().optional(),
+          evaluationDeletion: zod.boolean().optional(),
+          transcriptionCreation: zod.boolean().optional(),
+          transcriptionProcessing: zod.boolean().optional(),
+          transcriptionCompletion: zod.boolean().optional(),
+          transcriptionDeletion: zod.boolean().optional(),
+          endpointCreation: zod.boolean().optional(),
+          endpointProcessing: zod.boolean().optional(),
+          endpointCompletion: zod.boolean().optional(),
+          endpointDeletion: zod.boolean().optional(),
+          ping: zod.boolean().optional(),
+          challenge: zod.boolean().optional()
+        }),
+        createdDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        lastActionDateTime: zod
+          .string()
+          .datetime({})
+          .optional()
+          .describe(
+            'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+          ),
+        status: zod
+          .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+          .optional()
+          .describe("Describe the current state of the API"),
+        customProperties: zod
+          .record(zod.string(), zod.string())
+          .optional()
+          .describe(
+            "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+          )
+      })
+    )
+    .optional()
+    .describe(
+      "A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.\r\n            \r\nWhen iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.\r\nIt's recommended to build a list on the client and delete after the fetching of the complete list."
+    ),
+  "@nextLink": zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "A link to the next set of paginated results if there are more entities available; otherwise null."
+    )
 })
-
 
 /**
  * If the property secret in the configuration is present and contains a non-empty string, it will be used to create a SHA256 hash of the payload with
@@ -2078,103 +5143,192 @@ query parameter as the response body. When the challenge/response is successfull
  * @summary Creates a new web hook.
  */
 export const webHooksCreateBody = zod.object({
-  "webUrl": zod.string().url().describe('The registered URL that will be used to send the POST requests for the registered events to.'),
-  "links": zod.object({
-  "ping": zod.string().url().optional().describe('The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'),
-  "test": zod.string().url().optional().describe('The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional(),
-  "apiVersion": zod.string().optional().describe('The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled.'),
-  "secret": zod.string().optional().describe('A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL.')
-}).optional(),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "events": zod.object({
-  "datasetCreation": zod.boolean().optional(),
-  "datasetProcessing": zod.boolean().optional(),
-  "datasetCompletion": zod.boolean().optional(),
-  "datasetDeletion": zod.boolean().optional(),
-  "modelCreation": zod.boolean().optional(),
-  "modelProcessing": zod.boolean().optional(),
-  "modelCompletion": zod.boolean().optional(),
-  "modelDeletion": zod.boolean().optional(),
-  "evaluationCreation": zod.boolean().optional(),
-  "evaluationProcessing": zod.boolean().optional(),
-  "evaluationCompletion": zod.boolean().optional(),
-  "evaluationDeletion": zod.boolean().optional(),
-  "transcriptionCreation": zod.boolean().optional(),
-  "transcriptionProcessing": zod.boolean().optional(),
-  "transcriptionCompletion": zod.boolean().optional(),
-  "transcriptionDeletion": zod.boolean().optional(),
-  "endpointCreation": zod.boolean().optional(),
-  "endpointProcessing": zod.boolean().optional(),
-  "endpointCompletion": zod.boolean().optional(),
-  "endpointDeletion": zod.boolean().optional(),
-  "ping": zod.boolean().optional(),
-  "challenge": zod.boolean().optional()
-}),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  webUrl: zod
+    .string()
+    .url()
+    .describe(
+      "The registered URL that will be used to send the POST requests for the registered events to."
+    ),
+  links: zod
+    .object({
+      ping: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+        ),
+      test: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional(),
+      apiVersion: zod
+        .string()
+        .optional()
+        .describe(
+          "The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled."
+        ),
+      secret: zod
+        .string()
+        .optional()
+        .describe(
+          "A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL."
+        )
+    })
+    .optional(),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  events: zod.object({
+    datasetCreation: zod.boolean().optional(),
+    datasetProcessing: zod.boolean().optional(),
+    datasetCompletion: zod.boolean().optional(),
+    datasetDeletion: zod.boolean().optional(),
+    modelCreation: zod.boolean().optional(),
+    modelProcessing: zod.boolean().optional(),
+    modelCompletion: zod.boolean().optional(),
+    modelDeletion: zod.boolean().optional(),
+    evaluationCreation: zod.boolean().optional(),
+    evaluationProcessing: zod.boolean().optional(),
+    evaluationCompletion: zod.boolean().optional(),
+    evaluationDeletion: zod.boolean().optional(),
+    transcriptionCreation: zod.boolean().optional(),
+    transcriptionProcessing: zod.boolean().optional(),
+    transcriptionCompletion: zod.boolean().optional(),
+    transcriptionDeletion: zod.boolean().optional(),
+    endpointCreation: zod.boolean().optional(),
+    endpointProcessing: zod.boolean().optional(),
+    endpointCompletion: zod.boolean().optional(),
+    endpointDeletion: zod.boolean().optional(),
+    ping: zod.boolean().optional(),
+    challenge: zod.boolean().optional()
+  }),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
-
 
 /**
  * @summary Gets the web hook identified by the given ID.
  */
 export const webHooksGetParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the web hook.')
+  id: zod.string().uuid().describe("The identifier of the web hook.")
 })
 
 export const webHooksGetResponse = zod.object({
-  "webUrl": zod.string().url().describe('The registered URL that will be used to send the POST requests for the registered events to.'),
-  "links": zod.object({
-  "ping": zod.string().url().optional().describe('The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'),
-  "test": zod.string().url().optional().describe('The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional(),
-  "apiVersion": zod.string().optional().describe('The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled.'),
-  "secret": zod.string().optional().describe('A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "events": zod.object({
-  "datasetCreation": zod.boolean().optional(),
-  "datasetProcessing": zod.boolean().optional(),
-  "datasetCompletion": zod.boolean().optional(),
-  "datasetDeletion": zod.boolean().optional(),
-  "modelCreation": zod.boolean().optional(),
-  "modelProcessing": zod.boolean().optional(),
-  "modelCompletion": zod.boolean().optional(),
-  "modelDeletion": zod.boolean().optional(),
-  "evaluationCreation": zod.boolean().optional(),
-  "evaluationProcessing": zod.boolean().optional(),
-  "evaluationCompletion": zod.boolean().optional(),
-  "evaluationDeletion": zod.boolean().optional(),
-  "transcriptionCreation": zod.boolean().optional(),
-  "transcriptionProcessing": zod.boolean().optional(),
-  "transcriptionCompletion": zod.boolean().optional(),
-  "transcriptionDeletion": zod.boolean().optional(),
-  "endpointCreation": zod.boolean().optional(),
-  "endpointProcessing": zod.boolean().optional(),
-  "endpointCompletion": zod.boolean().optional(),
-  "endpointDeletion": zod.boolean().optional(),
-  "ping": zod.boolean().optional(),
-  "challenge": zod.boolean().optional()
-}),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  webUrl: zod
+    .string()
+    .url()
+    .describe(
+      "The registered URL that will be used to send the POST requests for the registered events to."
+    ),
+  links: zod
+    .object({
+      ping: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+        ),
+      test: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional(),
+      apiVersion: zod
+        .string()
+        .optional()
+        .describe(
+          "The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled."
+        ),
+      secret: zod
+        .string()
+        .optional()
+        .describe(
+          "A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL."
+        )
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  events: zod.object({
+    datasetCreation: zod.boolean().optional(),
+    datasetProcessing: zod.boolean().optional(),
+    datasetCompletion: zod.boolean().optional(),
+    datasetDeletion: zod.boolean().optional(),
+    modelCreation: zod.boolean().optional(),
+    modelProcessing: zod.boolean().optional(),
+    modelCompletion: zod.boolean().optional(),
+    modelDeletion: zod.boolean().optional(),
+    evaluationCreation: zod.boolean().optional(),
+    evaluationProcessing: zod.boolean().optional(),
+    evaluationCompletion: zod.boolean().optional(),
+    evaluationDeletion: zod.boolean().optional(),
+    transcriptionCreation: zod.boolean().optional(),
+    transcriptionProcessing: zod.boolean().optional(),
+    transcriptionCompletion: zod.boolean().optional(),
+    transcriptionDeletion: zod.boolean().optional(),
+    endpointCreation: zod.boolean().optional(),
+    endpointProcessing: zod.boolean().optional(),
+    endpointCompletion: zod.boolean().optional(),
+    endpointDeletion: zod.boolean().optional(),
+    ping: zod.boolean().optional(),
+    challenge: zod.boolean().optional()
+  }),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
-
 
 /**
  * If the property secret in the configuration is omitted or contains an empty string, future callbacks won't contain X-MicrosoftSpeechServices-Signature
@@ -2188,98 +5342,169 @@ is successfully completed, the web hook will begin receiving events.
  * @summary Updates the web hook identified by the given ID.
  */
 export const webHooksUpdateParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the web hook.')
+  id: zod.string().uuid().describe("The identifier of the web hook.")
 })
 
 export const webHooksUpdateBody = zod.object({
-  "webUrl": zod.string().url().optional().describe('The registered URL that will be used to send the POST requests for the registered events to.'),
-  "properties": zod.object({
-  "secret": zod.string().optional().describe('A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL.')
-}).optional(),
-  "events": zod.object({
-  "datasetCreation": zod.boolean().optional(),
-  "datasetProcessing": zod.boolean().optional(),
-  "datasetCompletion": zod.boolean().optional(),
-  "datasetDeletion": zod.boolean().optional(),
-  "modelCreation": zod.boolean().optional(),
-  "modelProcessing": zod.boolean().optional(),
-  "modelCompletion": zod.boolean().optional(),
-  "modelDeletion": zod.boolean().optional(),
-  "evaluationCreation": zod.boolean().optional(),
-  "evaluationProcessing": zod.boolean().optional(),
-  "evaluationCompletion": zod.boolean().optional(),
-  "evaluationDeletion": zod.boolean().optional(),
-  "transcriptionCreation": zod.boolean().optional(),
-  "transcriptionProcessing": zod.boolean().optional(),
-  "transcriptionCompletion": zod.boolean().optional(),
-  "transcriptionDeletion": zod.boolean().optional(),
-  "endpointCreation": zod.boolean().optional(),
-  "endpointProcessing": zod.boolean().optional(),
-  "endpointCompletion": zod.boolean().optional(),
-  "endpointDeletion": zod.boolean().optional(),
-  "ping": zod.boolean().optional(),
-  "challenge": zod.boolean().optional()
-}).optional(),
-  "displayName": zod.string().optional().describe('The name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  webUrl: zod
+    .string()
+    .url()
+    .optional()
+    .describe(
+      "The registered URL that will be used to send the POST requests for the registered events to."
+    ),
+  properties: zod
+    .object({
+      secret: zod
+        .string()
+        .optional()
+        .describe(
+          "A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL."
+        )
+    })
+    .optional(),
+  events: zod
+    .object({
+      datasetCreation: zod.boolean().optional(),
+      datasetProcessing: zod.boolean().optional(),
+      datasetCompletion: zod.boolean().optional(),
+      datasetDeletion: zod.boolean().optional(),
+      modelCreation: zod.boolean().optional(),
+      modelProcessing: zod.boolean().optional(),
+      modelCompletion: zod.boolean().optional(),
+      modelDeletion: zod.boolean().optional(),
+      evaluationCreation: zod.boolean().optional(),
+      evaluationProcessing: zod.boolean().optional(),
+      evaluationCompletion: zod.boolean().optional(),
+      evaluationDeletion: zod.boolean().optional(),
+      transcriptionCreation: zod.boolean().optional(),
+      transcriptionProcessing: zod.boolean().optional(),
+      transcriptionCompletion: zod.boolean().optional(),
+      transcriptionDeletion: zod.boolean().optional(),
+      endpointCreation: zod.boolean().optional(),
+      endpointProcessing: zod.boolean().optional(),
+      endpointCompletion: zod.boolean().optional(),
+      endpointDeletion: zod.boolean().optional(),
+      ping: zod.boolean().optional(),
+      challenge: zod.boolean().optional()
+    })
+    .optional(),
+  displayName: zod.string().optional().describe("The name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
 
 export const webHooksUpdateResponse = zod.object({
-  "webUrl": zod.string().url().describe('The registered URL that will be used to send the POST requests for the registered events to.'),
-  "links": zod.object({
-  "ping": zod.string().url().optional().describe('The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'),
-  "test": zod.string().url().optional().describe('The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.')
-}).optional(),
-  "properties": zod.object({
-  "error": zod.object({
-  "code": zod.string().optional().describe('The code of this error.'),
-  "message": zod.string().optional().describe('The message for this error.')
-}).optional(),
-  "apiVersion": zod.string().optional().describe('The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled.'),
-  "secret": zod.string().optional().describe('A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL.')
-}).optional(),
-  "self": zod.string().url().optional().describe('The location of this entity.'),
-  "displayName": zod.string().min(1).describe('The display name of the object.'),
-  "description": zod.string().optional().describe('The description of the object.'),
-  "events": zod.object({
-  "datasetCreation": zod.boolean().optional(),
-  "datasetProcessing": zod.boolean().optional(),
-  "datasetCompletion": zod.boolean().optional(),
-  "datasetDeletion": zod.boolean().optional(),
-  "modelCreation": zod.boolean().optional(),
-  "modelProcessing": zod.boolean().optional(),
-  "modelCompletion": zod.boolean().optional(),
-  "modelDeletion": zod.boolean().optional(),
-  "evaluationCreation": zod.boolean().optional(),
-  "evaluationProcessing": zod.boolean().optional(),
-  "evaluationCompletion": zod.boolean().optional(),
-  "evaluationDeletion": zod.boolean().optional(),
-  "transcriptionCreation": zod.boolean().optional(),
-  "transcriptionProcessing": zod.boolean().optional(),
-  "transcriptionCompletion": zod.boolean().optional(),
-  "transcriptionDeletion": zod.boolean().optional(),
-  "endpointCreation": zod.boolean().optional(),
-  "endpointProcessing": zod.boolean().optional(),
-  "endpointCompletion": zod.boolean().optional(),
-  "endpointDeletion": zod.boolean().optional(),
-  "ping": zod.boolean().optional(),
-  "challenge": zod.boolean().optional()
-}),
-  "createdDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "lastActionDateTime": zod.string().datetime({}).optional().describe('The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'),
-  "status": zod.enum(['NotStarted', 'Running', 'Succeeded', 'Failed']).optional().describe('Describe the current state of the API'),
-  "customProperties": zod.record(zod.string(), zod.string()).optional().describe('The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10.')
+  webUrl: zod
+    .string()
+    .url()
+    .describe(
+      "The registered URL that will be used to send the POST requests for the registered events to."
+    ),
+  links: zod
+    .object({
+      ping: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The URL that can be used to trigger the sending of a ping event to the registered URL of a web hook registration. See operation \"WebHooks_Ping\" for more details.'
+        ),
+      test: zod
+        .string()
+        .url()
+        .optional()
+        .describe(
+          'The URL that can be used sending test events to the registered URL of a web hook registration. See operation \"WebHooks_Test\" for more details.'
+        )
+    })
+    .optional(),
+  properties: zod
+    .object({
+      error: zod
+        .object({
+          code: zod.string().optional().describe("The code of this error."),
+          message: zod.string().optional().describe("The message for this error.")
+        })
+        .optional(),
+      apiVersion: zod
+        .string()
+        .optional()
+        .describe(
+          "The API version the web hook was created in. This defines the shape of the payload in the callbacks.\r\nIf the payload type is not supported anymore, because the shape changed and the API version using it is removed (after deprecation),\r\nthe web hook will be disabled."
+        ),
+      secret: zod
+        .string()
+        .optional()
+        .describe(
+          "A secret that will be used to create a SHA256 hash of the payload with the secret as HMAC key.\r\nThis hash will be set as X-MicrosoftSpeechServices-Signature header when calling back into the registered URL."
+        )
+    })
+    .optional(),
+  self: zod.string().url().optional().describe("The location of this entity."),
+  displayName: zod.string().min(1).describe("The display name of the object."),
+  description: zod.string().optional().describe("The description of the object."),
+  events: zod.object({
+    datasetCreation: zod.boolean().optional(),
+    datasetProcessing: zod.boolean().optional(),
+    datasetCompletion: zod.boolean().optional(),
+    datasetDeletion: zod.boolean().optional(),
+    modelCreation: zod.boolean().optional(),
+    modelProcessing: zod.boolean().optional(),
+    modelCompletion: zod.boolean().optional(),
+    modelDeletion: zod.boolean().optional(),
+    evaluationCreation: zod.boolean().optional(),
+    evaluationProcessing: zod.boolean().optional(),
+    evaluationCompletion: zod.boolean().optional(),
+    evaluationDeletion: zod.boolean().optional(),
+    transcriptionCreation: zod.boolean().optional(),
+    transcriptionProcessing: zod.boolean().optional(),
+    transcriptionCompletion: zod.boolean().optional(),
+    transcriptionDeletion: zod.boolean().optional(),
+    endpointCreation: zod.boolean().optional(),
+    endpointProcessing: zod.boolean().optional(),
+    endpointCompletion: zod.boolean().optional(),
+    endpointDeletion: zod.boolean().optional(),
+    ping: zod.boolean().optional(),
+    challenge: zod.boolean().optional()
+  }),
+  createdDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the object was created.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  lastActionDateTime: zod
+    .string()
+    .datetime({})
+    .optional()
+    .describe(
+      'The time-stamp when the current status was entered.\r\nThe time stamp is encoded as ISO 8601 date and time format\r\n(\"YYYY-MM-DDThh:mm:ssZ\", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations).'
+    ),
+  status: zod
+    .enum(["NotStarted", "Running", "Succeeded", "Failed"])
+    .optional()
+    .describe("Describe the current state of the API"),
+  customProperties: zod
+    .record(zod.string(), zod.string())
+    .optional()
+    .describe(
+      "The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum\r\nallowed value length is 256 characters and the count of allowed entries is 10."
+    )
 })
-
 
 /**
  * @summary Deletes the web hook identified by the given ID.
  */
 export const webHooksDeleteParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the web hook.')
+  id: zod.string().uuid().describe("The identifier of the web hook.")
 })
-
 
 /**
  * The request body of the POST request sent to the registered web hook URL is of the same shape as in the GET request for a specific hook.
@@ -2291,9 +5516,8 @@ the secret as HMAC key. The hash is base64 encoded.
  * @summary Sends a ping event to the registered URL.
  */
 export const webHooksPingParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the web hook to ping.')
+  id: zod.string().uuid().describe("The identifier of the web hook to ping.")
 })
-
 
 /**
  * The payload will be generated from the last entity that would have invoked the web hook. If no entity is present for none of the registered event types,
@@ -2304,20 +5528,36 @@ the secret as HMAC key. The hash is base64 encoded.
  * @summary Sends a request for each registered event type to the registered URL.
  */
 export const webHooksTestParams = zod.object({
-  "id": zod.string().uuid().describe('The identifier of the web hook to ping.')
+  id: zod.string().uuid().describe("The identifier of the web hook to ping.")
 })
-
 
 /**
  * @summary Returns the overall health of the service and optionally of the different subcomponents.
  */
 export const serviceHealthGetResponse = zod.object({
-  "status": zod.enum(['Unhealthy', 'Degraded', 'Healthy']).optional().describe('Health status of the service.'),
-  "message": zod.string().optional().describe('Additional messages about the current service health.'),
-  "components": zod.array(zod.object({
-  "message": zod.string().optional().describe('Additional messages about the current service health.'),
-  "name": zod.string().optional().describe('The name of the component.'),
-  "status": zod.enum(['Unhealthy', 'Degraded', 'Healthy']).optional().describe('Health status of the service.'),
-  "type": zod.string().optional().describe('The type of this component.')
-})).optional().describe('Optional subcomponents of this service and their status.')
+  status: zod
+    .enum(["Unhealthy", "Degraded", "Healthy"])
+    .optional()
+    .describe("Health status of the service."),
+  message: zod
+    .string()
+    .optional()
+    .describe("Additional messages about the current service health."),
+  components: zod
+    .array(
+      zod.object({
+        message: zod
+          .string()
+          .optional()
+          .describe("Additional messages about the current service health."),
+        name: zod.string().optional().describe("The name of the component."),
+        status: zod
+          .enum(["Unhealthy", "Degraded", "Healthy"])
+          .optional()
+          .describe("Health status of the service."),
+        type: zod.string().optional().describe("The type of this component.")
+      })
+    )
+    .optional()
+    .describe("Optional subcomponents of this service and their status.")
 })

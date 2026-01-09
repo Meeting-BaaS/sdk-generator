@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PreRecordedRequestParamsResponse } from './preRecordedRequestParamsResponse';
+import type { PreRecordedRequestParamsResponse } from "./preRecordedRequestParamsResponse"
 
 /**
  * Parameters used for this pre-recorded transcription. Can be null if status is "error"
  * @nullable
  */
-export type PreRecordedResponseRequestParams = PreRecordedRequestParamsResponse | null;
+export type PreRecordedResponseRequestParams = PreRecordedRequestParamsResponse | null

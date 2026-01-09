@@ -10,10 +10,10 @@
  * The type of the event. Always `image_edit.completed`.
 
  */
-export type ImageEditCompletedEventType = typeof ImageEditCompletedEventType[keyof typeof ImageEditCompletedEventType];
-
+export type ImageEditCompletedEventType =
+  (typeof ImageEditCompletedEventType)[keyof typeof ImageEditCompletedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditCompletedEventType = {
-  image_editcompleted: 'image_edit.completed',
-} as const;
+  image_editcompleted: "image_edit.completed"
+} as const

@@ -15,5 +15,5 @@ export interface UpdateGroupBody {
    * @minLength 1
    * @maxLength 255
    */
-  name: string;
+  name: string
 }

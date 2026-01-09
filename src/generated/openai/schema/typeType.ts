@@ -11,10 +11,9 @@
 always set to `type`.
 
  */
-export type TypeType = typeof TypeType[keyof typeof TypeType];
-
+export type TypeType = (typeof TypeType)[keyof typeof TypeType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TypeType = {
-  type: 'type',
-} as const;
+  type: "type"
+} as const

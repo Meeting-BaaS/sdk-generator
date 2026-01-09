@@ -9,10 +9,10 @@
 /**
  * Always `message_creation`.
  */
-export type RunStepDeltaStepDetailsMessageCreationObjectType = typeof RunStepDeltaStepDetailsMessageCreationObjectType[keyof typeof RunStepDeltaStepDetailsMessageCreationObjectType];
-
+export type RunStepDeltaStepDetailsMessageCreationObjectType =
+  (typeof RunStepDeltaStepDetailsMessageCreationObjectType)[keyof typeof RunStepDeltaStepDetailsMessageCreationObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDeltaStepDetailsMessageCreationObjectType = {
-  message_creation: 'message_creation',
-} as const;
+  message_creation: "message_creation"
+} as const

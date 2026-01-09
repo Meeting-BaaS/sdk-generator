@@ -5,11 +5,11 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { RedactPiiAudioQuality } from './redactPiiAudioQuality';
+import type { RedactPiiAudioQuality } from "./redactPiiAudioQuality"
 
 /**
  * The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.
 See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
 
  */
-export type TranscriptRedactPiiAudioQuality = RedactPiiAudioQuality | null;
+export type TranscriptRedactPiiAudioQuality = RedactPiiAudioQuality | null

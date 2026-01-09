@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TranscriptMessageType = typeof TranscriptMessageType[keyof typeof TranscriptMessageType];
-
+export type TranscriptMessageType =
+  (typeof TranscriptMessageType)[keyof typeof TranscriptMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptMessageType = {
-  transcript: 'transcript',
-} as const;
+  transcript: "transcript"
+} as const

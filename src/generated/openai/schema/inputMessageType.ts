@@ -10,10 +10,9 @@
  * The type of the message input. Always set to `message`.
 
  */
-export type InputMessageType = typeof InputMessageType[keyof typeof InputMessageType];
-
+export type InputMessageType = (typeof InputMessageType)[keyof typeof InputMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputMessageType = {
-  message: 'message',
-} as const;
+  message: "message"
+} as const

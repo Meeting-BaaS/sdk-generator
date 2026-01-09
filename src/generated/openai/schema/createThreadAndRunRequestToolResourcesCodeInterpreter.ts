@@ -12,5 +12,5 @@ export type CreateThreadAndRunRequestToolResourcesCodeInterpreter = {
 
    * @maxItems 20
    */
-  file_ids?: string[];
-};
+  file_ids?: string[]
+}

@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.widget`.
  */
-export type WidgetMessageItemType = typeof WidgetMessageItemType[keyof typeof WidgetMessageItemType];
-
+export type WidgetMessageItemType =
+  (typeof WidgetMessageItemType)[keyof typeof WidgetMessageItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WidgetMessageItemType = {
-  chatkitwidget: 'chatkit.widget',
-} as const;
+  chatkitwidget: "chatkit.widget"
+} as const

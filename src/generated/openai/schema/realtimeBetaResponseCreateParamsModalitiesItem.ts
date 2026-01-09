@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeBetaResponseCreateParamsModalitiesItem = typeof RealtimeBetaResponseCreateParamsModalitiesItem[keyof typeof RealtimeBetaResponseCreateParamsModalitiesItem];
-
+export type RealtimeBetaResponseCreateParamsModalitiesItem =
+  (typeof RealtimeBetaResponseCreateParamsModalitiesItem)[keyof typeof RealtimeBetaResponseCreateParamsModalitiesItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeBetaResponseCreateParamsModalitiesItem = {
-  text: 'text',
-  audio: 'audio',
-} as const;
+  text: "text",
+  audio: "audio"
+} as const

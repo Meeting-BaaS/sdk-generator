@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchActionSearchSourcesItemType } from './webSearchActionSearchSourcesItemType';
+import type { WebSearchActionSearchSourcesItemType } from "./webSearchActionSearchSourcesItemType"
 
 /**
  * A source used in the search.
@@ -13,9 +13,9 @@ import type { WebSearchActionSearchSourcesItemType } from './webSearchActionSear
  */
 export type WebSearchActionSearchSourcesItem = {
   /** The type of source. Always `url`.
- */
-  type: WebSearchActionSearchSourcesItemType;
+   */
+  type: WebSearchActionSearchSourcesItemType
   /** The URL of the source.
- */
-  url: string;
-};
+   */
+  url: string
+}

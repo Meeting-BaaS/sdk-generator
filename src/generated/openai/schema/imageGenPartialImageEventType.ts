@@ -10,10 +10,10 @@
  * The type of the event. Always `image_generation.partial_image`.
 
  */
-export type ImageGenPartialImageEventType = typeof ImageGenPartialImageEventType[keyof typeof ImageGenPartialImageEventType];
-
+export type ImageGenPartialImageEventType =
+  (typeof ImageGenPartialImageEventType)[keyof typeof ImageGenPartialImageEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenPartialImageEventType = {
-  image_generationpartial_image: 'image_generation.partial_image',
-} as const;
+  image_generationpartial_image: "image_generation.partial_image"
+} as const

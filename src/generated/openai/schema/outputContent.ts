@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { OutputTextContent } from './outputTextContent';
-import type { RefusalContent } from './refusalContent';
-import type { ReasoningTextContent } from './reasoningTextContent';
+import type { OutputTextContent } from "./outputTextContent"
+import type { RefusalContent } from "./refusalContent"
+import type { ReasoningTextContent } from "./reasoningTextContent"
 
-export type OutputContent = OutputTextContent | RefusalContent | ReasoningTextContent;
+export type OutputContent = OutputTextContent | RefusalContent | ReasoningTextContent

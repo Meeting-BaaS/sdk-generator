@@ -15,4 +15,4 @@ Keys are strings with a maximum length of 64 characters. Values are strings
 with a maximum length of 512 characters.
 
  */
-export type MetadataAnyOf = {[key: string]: string};
+export type MetadataAnyOf = { [key: string]: string }

@@ -10,10 +10,10 @@
  * The type of the file search tool call. Always `file_search_call`.
 
  */
-export type FileSearchToolCallType = typeof FileSearchToolCallType[keyof typeof FileSearchToolCallType];
-
+export type FileSearchToolCallType =
+  (typeof FileSearchToolCallType)[keyof typeof FileSearchToolCallType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileSearchToolCallType = {
-  file_search_call: 'file_search_call',
-} as const;
+  file_search_call: "file_search_call"
+} as const

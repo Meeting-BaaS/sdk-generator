@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputMessage } from './inputMessage';
-import type { InputMessageResourceAllOf } from './inputMessageResourceAllOf';
+import type { InputMessage } from "./inputMessage"
+import type { InputMessageResourceAllOf } from "./inputMessageResourceAllOf"
 
-export type InputMessageResource = InputMessage & InputMessageResourceAllOf;
+export type InputMessageResource = InputMessage & InputMessageResourceAllOf

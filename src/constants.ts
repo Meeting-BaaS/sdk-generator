@@ -665,7 +665,8 @@ export type DeepgramTTSModelType = (typeof DeepgramTTSModel)[keyof typeof Deepgr
 export type DeepgramTTSEncodingType = (typeof DeepgramTTSEncoding)[keyof typeof DeepgramTTSEncoding]
 
 /** Deepgram TTS container type derived from const object */
-export type DeepgramTTSContainerType = (typeof DeepgramTTSContainer)[keyof typeof DeepgramTTSContainer]
+export type DeepgramTTSContainerType =
+  (typeof DeepgramTTSContainer)[keyof typeof DeepgramTTSContainer]
 
 /** Deepgram TTS sample rate type derived from const object */
 export type DeepgramTTSSampleRateType =

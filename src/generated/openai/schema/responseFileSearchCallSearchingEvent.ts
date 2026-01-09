@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFileSearchCallSearchingEventType } from './responseFileSearchCallSearchingEventType';
+import type { ResponseFileSearchCallSearchingEventType } from "./responseFileSearchCallSearchingEventType"
 
 /**
  * Emitted when a file search is currently searching.
  */
 export interface ResponseFileSearchCallSearchingEvent {
   /** The type of the event. Always `response.file_search_call.searching`.
- */
-  type: ResponseFileSearchCallSearchingEventType;
+   */
+  type: ResponseFileSearchCallSearchingEventType
   /** The index of the output item that the file search call is searching.
- */
-  output_index: number;
+   */
+  output_index: number
   /** The ID of the output item that the file search call is initiated.
- */
-  item_id: string;
+   */
+  item_id: string
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
 }

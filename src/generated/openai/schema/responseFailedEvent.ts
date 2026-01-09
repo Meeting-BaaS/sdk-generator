@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFailedEventType } from './responseFailedEventType';
-import type { Response } from './response';
+import type { ResponseFailedEventType } from "./responseFailedEventType"
+import type { Response } from "./response"
 
 /**
  * An event that is emitted when a response fails.
@@ -14,11 +14,11 @@ import type { Response } from './response';
  */
 export interface ResponseFailedEvent {
   /** The type of the event. Always `response.failed`.
- */
-  type: ResponseFailedEventType;
+   */
+  type: ResponseFailedEventType
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
   /** The response that failed.
- */
-  response: Response;
+   */
+  response: Response
 }

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageEditCompletedEventType } from './imageEditCompletedEventType';
-import type { ImageEditCompletedEventSize } from './imageEditCompletedEventSize';
-import type { ImageEditCompletedEventQuality } from './imageEditCompletedEventQuality';
-import type { ImageEditCompletedEventBackground } from './imageEditCompletedEventBackground';
-import type { ImageEditCompletedEventOutputFormat } from './imageEditCompletedEventOutputFormat';
-import type { ImagesUsage } from './imagesUsage';
+import type { ImageEditCompletedEventType } from "./imageEditCompletedEventType"
+import type { ImageEditCompletedEventSize } from "./imageEditCompletedEventSize"
+import type { ImageEditCompletedEventQuality } from "./imageEditCompletedEventQuality"
+import type { ImageEditCompletedEventBackground } from "./imageEditCompletedEventBackground"
+import type { ImageEditCompletedEventOutputFormat } from "./imageEditCompletedEventOutputFormat"
+import type { ImagesUsage } from "./imagesUsage"
 
 /**
  * Emitted when image editing has completed and the final image is available.
@@ -18,25 +18,25 @@ import type { ImagesUsage } from './imagesUsage';
  */
 export interface ImageEditCompletedEvent {
   /** The type of the event. Always `image_edit.completed`.
- */
-  type: ImageEditCompletedEventType;
+   */
+  type: ImageEditCompletedEventType
   /** Base64-encoded final edited image data, suitable for rendering as an image.
- */
-  b64_json: string;
+   */
+  b64_json: string
   /** The Unix timestamp when the event was created.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The size of the edited image.
- */
-  size: ImageEditCompletedEventSize;
+   */
+  size: ImageEditCompletedEventSize
   /** The quality setting for the edited image.
- */
-  quality: ImageEditCompletedEventQuality;
+   */
+  quality: ImageEditCompletedEventQuality
   /** The background setting for the edited image.
- */
-  background: ImageEditCompletedEventBackground;
+   */
+  background: ImageEditCompletedEventBackground
   /** The output format for the edited image.
- */
-  output_format: ImageEditCompletedEventOutputFormat;
-  usage: ImagesUsage;
+   */
+  output_format: ImageEditCompletedEventOutputFormat
+  usage: ImagesUsage
 }

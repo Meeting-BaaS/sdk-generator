@@ -9,10 +9,10 @@
 /**
  * Always `logs`.
  */
-export type RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType = typeof RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType[keyof typeof RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType];
-
+export type RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType =
+  (typeof RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType)[keyof typeof RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDeltaStepDetailsToolCallsCodeOutputLogsObjectType = {
-  logs: 'logs',
-} as const;
+  logs: "logs"
+} as const

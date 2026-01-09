@@ -9,12 +9,12 @@
 /**
  * The log level of the event.
  */
-export type FineTuningJobEventLevel = typeof FineTuningJobEventLevel[keyof typeof FineTuningJobEventLevel];
-
+export type FineTuningJobEventLevel =
+  (typeof FineTuningJobEventLevel)[keyof typeof FineTuningJobEventLevel]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuningJobEventLevel = {
-  info: 'info',
-  warn: 'warn',
-  error: 'error',
-} as const;
+  info: "info",
+  warn: "warn",
+  error: "error"
+} as const

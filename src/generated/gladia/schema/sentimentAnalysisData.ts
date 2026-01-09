@@ -4,14 +4,14 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { UtteranceDTO } from './utteranceDTO';
-import type { SentimentAnalysisResult } from './sentimentAnalysisResult';
+import type { UtteranceDTO } from "./utteranceDTO"
+import type { SentimentAnalysisResult } from "./sentimentAnalysisResult"
 
 export interface SentimentAnalysisData {
   /** Id of the utterance used for this result */
-  utterance_id: string;
+  utterance_id: string
   /** The transcribed utterance */
-  utterance: UtteranceDTO;
+  utterance: UtteranceDTO
   /** The sentiment analysis results */
-  results: SentimentAnalysisResult[];
+  results: SentimentAnalysisResult[]
 }

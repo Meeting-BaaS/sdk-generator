@@ -9,10 +9,10 @@
 /**
  * Always `group.user.deleted`.
  */
-export type GroupUserDeletedResourceObject = typeof GroupUserDeletedResourceObject[keyof typeof GroupUserDeletedResourceObject];
-
+export type GroupUserDeletedResourceObject =
+  (typeof GroupUserDeletedResourceObject)[keyof typeof GroupUserDeletedResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupUserDeletedResourceObject = {
-  groupuserdeleted: 'group.user.deleted',
-} as const;
+  groupuserdeleted: "group.user.deleted"
+} as const

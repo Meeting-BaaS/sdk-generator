@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuneSupervisedHyperparameters } from './fineTuneSupervisedHyperparameters';
+import type { FineTuneSupervisedHyperparameters } from "./fineTuneSupervisedHyperparameters"
 
 /**
  * Configuration for the supervised fine-tuning method.
  */
 export interface FineTuneSupervisedMethod {
-  hyperparameters?: FineTuneSupervisedHyperparameters;
+  hyperparameters?: FineTuneSupervisedHyperparameters
 }

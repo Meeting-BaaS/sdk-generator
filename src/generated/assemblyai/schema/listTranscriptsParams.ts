@@ -5,36 +5,36 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Limit } from './limit';
-import type { TranscriptStatus } from './transcriptStatus';
-import type { CreatedOn } from './createdOn';
-import type { BeforeId } from './beforeId';
-import type { AfterId } from './afterId';
-import type { ThrottledOnly } from './throttledOnly';
+import type { Limit } from "./limit"
+import type { TranscriptStatus } from "./transcriptStatus"
+import type { CreatedOn } from "./createdOn"
+import type { BeforeId } from "./beforeId"
+import type { AfterId } from "./afterId"
+import type { ThrottledOnly } from "./throttledOnly"
 
 export type ListTranscriptsParams = {
-/**
- * Maximum amount of transcripts to retrieve
- */
-limit?: Limit;
-/**
- * Filter by transcript status
- */
-status?: TranscriptStatus;
-/**
- * Only get transcripts created on this date
- */
-created_on?: CreatedOn;
-/**
- * Get transcripts that were created before this transcript ID
- */
-before_id?: BeforeId;
-/**
- * Get transcripts that were created after this transcript ID
- */
-after_id?: AfterId;
-/**
- * Only get throttled transcripts, overrides the status filter
- */
-throttled_only?: ThrottledOnly;
-};
+  /**
+   * Maximum amount of transcripts to retrieve
+   */
+  limit?: Limit
+  /**
+   * Filter by transcript status
+   */
+  status?: TranscriptStatus
+  /**
+   * Only get transcripts created on this date
+   */
+  created_on?: CreatedOn
+  /**
+   * Get transcripts that were created before this transcript ID
+   */
+  before_id?: BeforeId
+  /**
+   * Get transcripts that were created after this transcript ID
+   */
+  after_id?: AfterId
+  /**
+   * Only get throttled transcripts, overrides the status filter
+   */
+  throttled_only?: ThrottledOnly
+}

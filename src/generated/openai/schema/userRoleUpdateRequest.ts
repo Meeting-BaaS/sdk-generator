@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UserRoleUpdateRequestRole } from './userRoleUpdateRequestRole';
+import type { UserRoleUpdateRequestRole } from "./userRoleUpdateRequestRole"
 
 export interface UserRoleUpdateRequest {
   /** `owner` or `reader` */
-  role: UserRoleUpdateRequestRole;
+  role: UserRoleUpdateRequestRole
 }

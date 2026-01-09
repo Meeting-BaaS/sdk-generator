@@ -10,11 +10,12 @@
  * The style of the generated images. This parameter is only supported for `dall-e-3`. Must be one of `vivid` or `natural`. Vivid causes the model to lean towards generating hyper-real and dramatic images. Natural causes the model to produce more natural, less hyper-real looking images.
  * @nullable
  */
-export type CreateImageRequestStyle = typeof CreateImageRequestStyle[keyof typeof CreateImageRequestStyle] | null;
-
+export type CreateImageRequestStyle =
+  | (typeof CreateImageRequestStyle)[keyof typeof CreateImageRequestStyle]
+  | null
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageRequestStyle = {
-  vivid: 'vivid',
-  natural: 'natural',
-} as const;
+  vivid: "vivid",
+  natural: "natural"
+} as const

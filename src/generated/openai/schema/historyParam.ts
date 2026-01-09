@@ -11,10 +11,10 @@
  */
 export interface HistoryParam {
   /** Enables chat users to access previous ChatKit threads. Defaults to true. */
-  enabled?: boolean;
+  enabled?: boolean
   /**
    * Number of recent ChatKit threads users have access to. Defaults to unlimited when unset.
    * @minimum 1
    */
-  recent_threads?: number;
+  recent_threads?: number
 }

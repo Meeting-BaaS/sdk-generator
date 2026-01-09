@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ListFineTuningJobEventsResponseObject = typeof ListFineTuningJobEventsResponseObject[keyof typeof ListFineTuningJobEventsResponseObject];
-
+export type ListFineTuningJobEventsResponseObject =
+  (typeof ListFineTuningJobEventsResponseObject)[keyof typeof ListFineTuningJobEventsResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListFineTuningJobEventsResponseObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

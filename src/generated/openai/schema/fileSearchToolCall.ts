@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileSearchToolCallType } from './fileSearchToolCallType';
-import type { FileSearchToolCallStatus } from './fileSearchToolCallStatus';
-import type { FileSearchToolCallResults } from './fileSearchToolCallResults';
+import type { FileSearchToolCallType } from "./fileSearchToolCallType"
+import type { FileSearchToolCallStatus } from "./fileSearchToolCallStatus"
+import type { FileSearchToolCallResults } from "./fileSearchToolCallResults"
 
 /**
  * The results of a file search tool call. See the
@@ -16,17 +16,17 @@ import type { FileSearchToolCallResults } from './fileSearchToolCallResults';
  */
 export interface FileSearchToolCall {
   /** The unique ID of the file search tool call.
- */
-  id: string;
+   */
+  id: string
   /** The type of the file search tool call. Always `file_search_call`.
- */
-  type: FileSearchToolCallType;
+   */
+  type: FileSearchToolCallType
   /** The status of the file search tool call. One of `in_progress`,
 `searching`, `incomplete` or `failed`,
  */
-  status: FileSearchToolCallStatus;
+  status: FileSearchToolCallStatus
   /** The queries used to search for files.
- */
-  queries: string[];
-  results?: FileSearchToolCallResults;
+   */
+  queries: string[]
+  results?: FileSearchToolCallResults
 }

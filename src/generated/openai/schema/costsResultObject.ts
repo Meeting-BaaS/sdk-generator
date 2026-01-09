@@ -6,10 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type CostsResultObject = typeof CostsResultObject[keyof typeof CostsResultObject];
-
+export type CostsResultObject = (typeof CostsResultObject)[keyof typeof CostsResultObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CostsResultObject = {
-  organizationcostsresult: 'organization.costs.result',
-} as const;
+  organizationcostsresult: "organization.costs.result"
+} as const

@@ -4,24 +4,24 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { NamedEntityRecognitionMessageError } from './namedEntityRecognitionMessageError';
-import type { NamedEntityRecognitionMessageType } from './namedEntityRecognitionMessageType';
-import type { NamedEntityRecognitionMessageData } from './namedEntityRecognitionMessageData';
+import type { NamedEntityRecognitionMessageError } from "./namedEntityRecognitionMessageError"
+import type { NamedEntityRecognitionMessageType } from "./namedEntityRecognitionMessageType"
+import type { NamedEntityRecognitionMessageData } from "./namedEntityRecognitionMessageData"
 
 export interface NamedEntityRecognitionMessage {
   /** Id of the live session */
-  session_id: string;
+  session_id: string
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string;
+  created_at: string
   /**
    * Error message if the addon failed
    * @nullable
    */
-  error: NamedEntityRecognitionMessageError;
-  type: NamedEntityRecognitionMessageType;
+  error: NamedEntityRecognitionMessageError
+  type: NamedEntityRecognitionMessageType
   /**
    * The message data. "null" if the addon failed
    * @nullable
    */
-  data: NamedEntityRecognitionMessageData;
+  data: NamedEntityRecognitionMessageData
 }

@@ -9,12 +9,11 @@
 /**
  * How much to boost specified words
  */
-export type TranscriptBoostParam = typeof TranscriptBoostParam[keyof typeof TranscriptBoostParam];
-
+export type TranscriptBoostParam = (typeof TranscriptBoostParam)[keyof typeof TranscriptBoostParam]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptBoostParam = {
-  low: 'low',
-  default: 'default',
-  high: 'high',
-} as const;
+  low: "low",
+  default: "default",
+  high: "high"
+} as const

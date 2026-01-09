@@ -5,8 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModelResponseProperties } from './modelResponseProperties';
-import type { ResponseProperties } from './responseProperties';
-import type { ResponseAllOf } from './responseAllOf';
+import type { ModelResponseProperties } from "./modelResponseProperties"
+import type { ResponseProperties } from "./responseProperties"
+import type { ResponseAllOf } from "./responseAllOf"
 
-export type Response = ModelResponseProperties & ResponseProperties & ResponseAllOf & Required<Pick<ModelResponseProperties & ResponseProperties & ResponseAllOf, 'model' | 'tools' | 'metadata' | 'tool_choice' | 'temperature' | 'top_p'>>;
+export type Response = ModelResponseProperties &
+  ResponseProperties &
+  ResponseAllOf &
+  Required<
+    Pick<
+      ModelResponseProperties & ResponseProperties & ResponseAllOf,
+      "model" | "tools" | "metadata" | "tool_choice" | "temperature" | "top_p"
+    >
+  >

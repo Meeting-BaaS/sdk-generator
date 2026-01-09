@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunGraderResponseMetadataErrorsPythonGraderServerErrorType } from './runGraderResponseMetadataErrorsPythonGraderServerErrorType';
-import type { RunGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails } from './runGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails';
-import type { RunGraderResponseMetadataErrorsModelGraderServerErrorDetails } from './runGraderResponseMetadataErrorsModelGraderServerErrorDetails';
+import type { RunGraderResponseMetadataErrorsPythonGraderServerErrorType } from "./runGraderResponseMetadataErrorsPythonGraderServerErrorType"
+import type { RunGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails } from "./runGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails"
+import type { RunGraderResponseMetadataErrorsModelGraderServerErrorDetails } from "./runGraderResponseMetadataErrorsModelGraderServerErrorDetails"
 
 export type RunGraderResponseMetadataErrors = {
-  formula_parse_error: boolean;
-  sample_parse_error: boolean;
-  truncated_observation_error: boolean;
-  unresponsive_reward_error: boolean;
-  invalid_variable_error: boolean;
-  other_error: boolean;
-  python_grader_server_error: boolean;
-  python_grader_server_error_type: RunGraderResponseMetadataErrorsPythonGraderServerErrorType;
-  python_grader_runtime_error: boolean;
-  python_grader_runtime_error_details: RunGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails;
-  model_grader_server_error: boolean;
-  model_grader_refusal_error: boolean;
-  model_grader_parse_error: boolean;
-  model_grader_server_error_details: RunGraderResponseMetadataErrorsModelGraderServerErrorDetails;
-};
+  formula_parse_error: boolean
+  sample_parse_error: boolean
+  truncated_observation_error: boolean
+  unresponsive_reward_error: boolean
+  invalid_variable_error: boolean
+  other_error: boolean
+  python_grader_server_error: boolean
+  python_grader_server_error_type: RunGraderResponseMetadataErrorsPythonGraderServerErrorType
+  python_grader_runtime_error: boolean
+  python_grader_runtime_error_details: RunGraderResponseMetadataErrorsPythonGraderRuntimeErrorDetails
+  model_grader_server_error: boolean
+  model_grader_refusal_error: boolean
+  model_grader_parse_error: boolean
+  model_grader_server_error_details: RunGraderResponseMetadataErrorsModelGraderServerErrorDetails
+}

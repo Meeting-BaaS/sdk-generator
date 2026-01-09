@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModerationTextInputType } from './moderationTextInputType';
+import type { ModerationTextInputType } from "./moderationTextInputType"
 
 /**
  * An object describing text to classify.
  */
 export interface ModerationTextInput {
   /** Always `text`. */
-  type: ModerationTextInputType;
+  type: ModerationTextInputType
   /** A string of text to classify. */
-  text: string;
+  text: string
 }

@@ -10,10 +10,10 @@
  * The type of the event. Always `response.content_part.done`.
 
  */
-export type ResponseContentPartDoneEventType = typeof ResponseContentPartDoneEventType[keyof typeof ResponseContentPartDoneEventType];
-
+export type ResponseContentPartDoneEventType =
+  (typeof ResponseContentPartDoneEventType)[keyof typeof ResponseContentPartDoneEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseContentPartDoneEventType = {
-  responsecontent_partdone: 'response.content_part.done',
-} as const;
+  responsecontent_partdone: "response.content_part.done"
+} as const

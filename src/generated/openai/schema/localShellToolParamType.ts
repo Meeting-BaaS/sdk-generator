@@ -9,10 +9,10 @@
 /**
  * The type of the local shell tool. Always `local_shell`.
  */
-export type LocalShellToolParamType = typeof LocalShellToolParamType[keyof typeof LocalShellToolParamType];
-
+export type LocalShellToolParamType =
+  (typeof LocalShellToolParamType)[keyof typeof LocalShellToolParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LocalShellToolParamType = {
-  local_shell: 'local_shell',
-} as const;
+  local_shell: "local_shell"
+} as const

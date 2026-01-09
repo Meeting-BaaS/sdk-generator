@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CodeInterpreterToolType } from './codeInterpreterToolType';
-import type { CodeInterpreterToolContainer } from './codeInterpreterToolContainer';
+import type { CodeInterpreterToolType } from "./codeInterpreterToolType"
+import type { CodeInterpreterToolContainer } from "./codeInterpreterToolContainer"
 
 /**
  * A tool that runs Python code to help generate a response to a prompt.
@@ -14,11 +14,11 @@ import type { CodeInterpreterToolContainer } from './codeInterpreterToolContaine
  */
 export interface CodeInterpreterTool {
   /** The type of the code interpreter tool. Always `code_interpreter`.
- */
-  type: CodeInterpreterToolType;
+   */
+  type: CodeInterpreterToolType
   /** The code interpreter container. Can be a container ID or an object that
 specifies uploaded file IDs to make available to your code, along with an
 optional `memory_limit` setting.
  */
-  container: CodeInterpreterToolContainer;
+  container: CodeInterpreterToolContainer
 }

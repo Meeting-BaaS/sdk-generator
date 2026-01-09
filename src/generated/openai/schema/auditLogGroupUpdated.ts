@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogGroupUpdatedChangesRequested } from './auditLogGroupUpdatedChangesRequested';
+import type { AuditLogGroupUpdatedChangesRequested } from "./auditLogGroupUpdatedChangesRequested"
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogGroupUpdated = {
   /** The ID of the group. */
-  id?: string;
+  id?: string
   /** The payload used to update the group. */
-  changes_requested?: AuditLogGroupUpdatedChangesRequested;
-};
+  changes_requested?: AuditLogGroupUpdatedChangesRequested
+}

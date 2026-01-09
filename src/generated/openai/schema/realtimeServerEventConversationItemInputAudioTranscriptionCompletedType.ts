@@ -11,10 +11,11 @@
 `conversation.item.input_audio_transcription.completed`.
 
  */
-export type RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType = typeof RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType[keyof typeof RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType];
-
+export type RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType =
+  (typeof RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType)[keyof typeof RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeServerEventConversationItemInputAudioTranscriptionCompletedType = {
-  conversationiteminput_audio_transcriptioncompleted: 'conversation.item.input_audio_transcription.completed',
-} as const;
+  conversationiteminput_audio_transcriptioncompleted:
+    "conversation.item.input_audio_transcription.completed"
+} as const

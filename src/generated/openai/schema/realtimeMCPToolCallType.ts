@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `mcp_call`.
  */
-export type RealtimeMCPToolCallType = typeof RealtimeMCPToolCallType[keyof typeof RealtimeMCPToolCallType];
-
+export type RealtimeMCPToolCallType =
+  (typeof RealtimeMCPToolCallType)[keyof typeof RealtimeMCPToolCallType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeMCPToolCallType = {
-  mcp_call: 'mcp_call',
-} as const;
+  mcp_call: "mcp_call"
+} as const

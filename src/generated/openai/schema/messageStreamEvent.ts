@@ -5,10 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageStreamEventAnyOf } from './messageStreamEventAnyOf';
-import type { MessageStreamEventAnyOfThree } from './messageStreamEventAnyOfThree';
-import type { MessageStreamEventAnyOfFive } from './messageStreamEventAnyOfFive';
-import type { MessageStreamEventAnyOfSeven } from './messageStreamEventAnyOfSeven';
-import type { MessageStreamEventAnyOfNine } from './messageStreamEventAnyOfNine';
+import type { MessageStreamEventAnyOf } from "./messageStreamEventAnyOf"
+import type { MessageStreamEventAnyOfThree } from "./messageStreamEventAnyOfThree"
+import type { MessageStreamEventAnyOfFive } from "./messageStreamEventAnyOfFive"
+import type { MessageStreamEventAnyOfSeven } from "./messageStreamEventAnyOfSeven"
+import type { MessageStreamEventAnyOfNine } from "./messageStreamEventAnyOfNine"
 
-export type MessageStreamEvent = MessageStreamEventAnyOf | MessageStreamEventAnyOfThree | MessageStreamEventAnyOfFive | MessageStreamEventAnyOfSeven | MessageStreamEventAnyOfNine;
+export type MessageStreamEvent =
+  | MessageStreamEventAnyOf
+  | MessageStreamEventAnyOfThree
+  | MessageStreamEventAnyOfFive
+  | MessageStreamEventAnyOfSeven
+  | MessageStreamEventAnyOfNine

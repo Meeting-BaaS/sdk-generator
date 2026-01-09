@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type AttachmentType = typeof AttachmentType[keyof typeof AttachmentType];
-
+export type AttachmentType = (typeof AttachmentType)[keyof typeof AttachmentType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AttachmentType = {
-  image: 'image',
-  file: 'file',
-} as const;
+  image: "image",
+  file: "file"
+} as const

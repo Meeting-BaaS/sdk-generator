@@ -4,11 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { WordDTO } from './wordDTO';
+import type { WordDTO } from "./wordDTO"
 
 export interface ChapterizationSentence {
-  sentence: string;
-  start: number;
-  end: number;
-  words: WordDTO[];
+  sentence: string
+  start: number
+  end: number
+  words: WordDTO[]
 }

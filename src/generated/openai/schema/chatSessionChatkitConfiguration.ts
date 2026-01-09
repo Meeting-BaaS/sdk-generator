@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatSessionAutomaticThreadTitling } from './chatSessionAutomaticThreadTitling';
-import type { ChatSessionFileUpload } from './chatSessionFileUpload';
-import type { ChatSessionHistory } from './chatSessionHistory';
+import type { ChatSessionAutomaticThreadTitling } from "./chatSessionAutomaticThreadTitling"
+import type { ChatSessionFileUpload } from "./chatSessionFileUpload"
+import type { ChatSessionHistory } from "./chatSessionHistory"
 
 /**
  * ChatKit configuration for the session.
  */
 export interface ChatSessionChatkitConfiguration {
   /** Automatic thread titling preferences. */
-  automatic_thread_titling: ChatSessionAutomaticThreadTitling;
+  automatic_thread_titling: ChatSessionAutomaticThreadTitling
   /** Upload settings for the session. */
-  file_upload: ChatSessionFileUpload;
+  file_upload: ChatSessionFileUpload
   /** History retention configuration. */
-  history: ChatSessionHistory;
+  history: ChatSessionHistory
 }

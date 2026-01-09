@@ -8,7 +8,7 @@
 
 export interface BaseModelDeprecationDates {
   /** The date when adaptation becomes deprecated. */
-  readonly adaptationDateTime?: string;
+  readonly adaptationDateTime?: string
   /** The date when transcription becomes deprecated. */
-  readonly transcriptionDateTime?: string;
+  readonly transcriptionDateTime?: string
 }

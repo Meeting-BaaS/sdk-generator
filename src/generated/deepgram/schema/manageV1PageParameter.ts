@@ -10,4 +10,4 @@
 /**
  * Navigate and return the results to retrieve specific portions of information of the response
  */
-export type ManageV1PageParameter = number;
+export type ManageV1PageParameter = number

@@ -9,4 +9,4 @@
 /**
  * Optional description of the role.
  */
-export type PublicCreateOrganizationRoleBodyDescription = string | null;
+export type PublicCreateOrganizationRoleBodyDescription = string | null

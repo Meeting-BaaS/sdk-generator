@@ -8,7 +8,7 @@
 
 export type AuditLogIpAllowlistConfigDeactivatedConfigsItem = {
   /** The ID of the IP allowlist configuration. */
-  id?: string;
+  id?: string
   /** The name of the IP allowlist configuration. */
-  name?: string;
-};
+  name?: string
+}

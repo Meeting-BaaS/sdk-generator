@@ -9,10 +9,10 @@
 /**
  * Anchor timestamp after which the expiration policy applies. Supported anchors: `created_at`.
  */
-export type FileExpirationAfterAnchor = typeof FileExpirationAfterAnchor[keyof typeof FileExpirationAfterAnchor];
-
+export type FileExpirationAfterAnchor =
+  (typeof FileExpirationAfterAnchor)[keyof typeof FileExpirationAfterAnchor]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileExpirationAfterAnchor = {
-  created_at: 'created_at',
-} as const;
+  created_at: "created_at"
+} as const

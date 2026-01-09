@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputAudioInputAudioFormat } from './inputAudioInputAudioFormat';
+import type { InputAudioInputAudioFormat } from "./inputAudioInputAudioFormat"
 
 export type InputAudioInputAudio = {
   /** Base64-encoded audio data.
- */
-  data: string;
+   */
+  data: string
   /** The format of the audio data. Currently supported formats are `mp3` and
 `wav`.
  */
-  format: InputAudioInputAudioFormat;
-};
+  format: InputAudioInputAudioFormat
+}

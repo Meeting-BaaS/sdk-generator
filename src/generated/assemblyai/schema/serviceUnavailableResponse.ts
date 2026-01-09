@@ -9,4 +9,4 @@
 /**
  * Service unavailable
  */
-export type ServiceUnavailableResponse = void;
+export type ServiceUnavailableResponse = void

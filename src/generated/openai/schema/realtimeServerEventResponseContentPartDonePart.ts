@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventResponseContentPartDonePartType } from './realtimeServerEventResponseContentPartDonePartType';
+import type { RealtimeServerEventResponseContentPartDonePartType } from "./realtimeServerEventResponseContentPartDonePartType"
 
 /**
  * The content part that is done.
  */
 export type RealtimeServerEventResponseContentPartDonePart = {
   /** The content type ("text", "audio"). */
-  type?: RealtimeServerEventResponseContentPartDonePartType;
+  type?: RealtimeServerEventResponseContentPartDonePartType
   /** The text content (if type is "text"). */
-  text?: string;
+  text?: string
   /** Base64-encoded audio data (if type is "audio"). */
-  audio?: string;
+  audio?: string
   /** The transcript of the audio (if type is "audio"). */
-  transcript?: string;
-};
+  transcript?: string
+}

@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputItem } from './inputItem';
+import type { InputItem } from "./inputItem"
 
 /**
  * Text, image, or file inputs to the model, used to generate a response
  */
-export type CompactResponseMethodPublicBodyInputAnyOf = string | InputItem[];
+export type CompactResponseMethodPublicBodyInputAnyOf = string | InputItem[]

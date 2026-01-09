@@ -7,6 +7,6 @@
  */
 
 export interface Error2 {
-  code: string;
-  message: string;
+  code: string
+  message: string
 }

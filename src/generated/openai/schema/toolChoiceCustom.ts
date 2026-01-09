@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceCustomType } from './toolChoiceCustomType';
+import type { ToolChoiceCustomType } from "./toolChoiceCustomType"
 
 /**
  * Use this option to force the model to call a specific custom tool.
@@ -13,7 +13,7 @@ import type { ToolChoiceCustomType } from './toolChoiceCustomType';
  */
 export interface ToolChoiceCustom {
   /** For custom tool calling, the type is always `custom`. */
-  type: ToolChoiceCustomType;
+  type: ToolChoiceCustomType
   /** The name of the custom tool to call. */
-  name: string;
+  name: string
 }

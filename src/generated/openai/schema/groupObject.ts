@@ -9,10 +9,9 @@
 /**
  * Always `group`.
  */
-export type GroupObject = typeof GroupObject[keyof typeof GroupObject];
-
+export type GroupObject = (typeof GroupObject)[keyof typeof GroupObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupObject = {
-  group: 'group',
-} as const;
+  group: "group"
+} as const

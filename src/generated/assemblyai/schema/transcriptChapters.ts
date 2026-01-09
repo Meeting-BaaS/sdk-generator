@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Chapter } from './chapter';
+import type { Chapter } from "./chapter"
 
 /**
  * An array of temporally sequential chapters for the audio file
  */
-export type TranscriptChapters = Chapter[] | null;
+export type TranscriptChapters = Chapter[] | null

@@ -11,15 +11,15 @@ export interface SeverityScoreSummary {
    * @minimum 0
    * @maximum 1
    */
-  low: number;
+  low: number
   /**
    * @minimum 0
    * @maximum 1
    */
-  medium: number;
+  medium: number
   /**
    * @minimum 0
    * @maximum 1
    */
-  high: number;
+  high: number
 }

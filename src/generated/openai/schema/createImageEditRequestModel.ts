@@ -10,4 +10,9 @@
  * The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1` is used.
  * @nullable
  */
-export type CreateImageEditRequestModel = string | 'dall-e-2' | 'gpt-image-1' | 'gpt-image-1-mini' | null;
+export type CreateImageEditRequestModel =
+  | string
+  | "dall-e-2"
+  | "gpt-image-1"
+  | "gpt-image-1-mini"
+  | null

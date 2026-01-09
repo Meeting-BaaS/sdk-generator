@@ -5,14 +5,14 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { Project } from './project';
+import type { Project } from "./project"
 
 export interface PaginatedProjects {
   /** A list of entities limited by either the passed query parameters 'skip' and 'top' or their default values.
             
 When iterating through a list using pagination and deleting entities in parallel, some entities will be skipped in the results.
 It's recommended to build a list on the client and delete after the fetching of the complete list. */
-  readonly values?: readonly Project[];
+  readonly values?: readonly Project[]
   /** A link to the next set of paginated results if there are more entities available; otherwise null. */
-  readonly '@nextLink'?: string;
+  readonly "@nextLink"?: string
 }

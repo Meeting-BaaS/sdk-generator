@@ -5,37 +5,37 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { WebHookLinks } from './webHookLinks';
-import type { WebHookProperties } from './webHookProperties';
-import type { WebHookEvents } from './webHookEvents';
-import type { Status } from './status';
-import type { WebHookCustomProperties } from './webHookCustomProperties';
+import type { WebHookLinks } from "./webHookLinks"
+import type { WebHookProperties } from "./webHookProperties"
+import type { WebHookEvents } from "./webHookEvents"
+import type { Status } from "./status"
+import type { WebHookCustomProperties } from "./webHookCustomProperties"
 
 export interface WebHook {
   /** The registered URL that will be used to send the POST requests for the registered events to. */
-  webUrl: string;
-  links?: WebHookLinks;
-  properties?: WebHookProperties;
+  webUrl: string
+  links?: WebHookLinks
+  properties?: WebHookProperties
   /** The location of this entity. */
-  readonly self?: string;
+  readonly self?: string
   /**
    * The display name of the object.
    * @minLength 1
    */
-  displayName: string;
+  displayName: string
   /** The description of the object. */
-  description?: string;
-  events: WebHookEvents;
+  description?: string
+  events: WebHookEvents
   /** The time-stamp when the object was created.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly createdDateTime?: string;
+  readonly createdDateTime?: string
   /** The time-stamp when the current status was entered.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly lastActionDateTime?: string;
-  status?: Status;
+  readonly lastActionDateTime?: string
+  status?: Status
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: WebHookCustomProperties;
+  customProperties?: WebHookCustomProperties
 }

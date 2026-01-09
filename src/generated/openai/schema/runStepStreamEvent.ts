@@ -5,12 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepStreamEventAnyOf } from './runStepStreamEventAnyOf';
-import type { RunStepStreamEventAnyOfThree } from './runStepStreamEventAnyOfThree';
-import type { RunStepStreamEventAnyOfFive } from './runStepStreamEventAnyOfFive';
-import type { RunStepStreamEventAnyOfSeven } from './runStepStreamEventAnyOfSeven';
-import type { RunStepStreamEventAnyOfNine } from './runStepStreamEventAnyOfNine';
-import type { RunStepStreamEventAnyOfOneone } from './runStepStreamEventAnyOfOneone';
-import type { RunStepStreamEventAnyOfOnethree } from './runStepStreamEventAnyOfOnethree';
+import type { RunStepStreamEventAnyOf } from "./runStepStreamEventAnyOf"
+import type { RunStepStreamEventAnyOfThree } from "./runStepStreamEventAnyOfThree"
+import type { RunStepStreamEventAnyOfFive } from "./runStepStreamEventAnyOfFive"
+import type { RunStepStreamEventAnyOfSeven } from "./runStepStreamEventAnyOfSeven"
+import type { RunStepStreamEventAnyOfNine } from "./runStepStreamEventAnyOfNine"
+import type { RunStepStreamEventAnyOfOneone } from "./runStepStreamEventAnyOfOneone"
+import type { RunStepStreamEventAnyOfOnethree } from "./runStepStreamEventAnyOfOnethree"
 
-export type RunStepStreamEvent = RunStepStreamEventAnyOf | RunStepStreamEventAnyOfThree | RunStepStreamEventAnyOfFive | RunStepStreamEventAnyOfSeven | RunStepStreamEventAnyOfNine | RunStepStreamEventAnyOfOneone | RunStepStreamEventAnyOfOnethree;
+export type RunStepStreamEvent =
+  | RunStepStreamEventAnyOf
+  | RunStepStreamEventAnyOfThree
+  | RunStepStreamEventAnyOfFive
+  | RunStepStreamEventAnyOfSeven
+  | RunStepStreamEventAnyOfNine
+  | RunStepStreamEventAnyOfOneone
+  | RunStepStreamEventAnyOfOnethree

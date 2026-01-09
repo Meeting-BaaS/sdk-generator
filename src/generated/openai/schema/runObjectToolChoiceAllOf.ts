@@ -9,4 +9,4 @@
 /**
  * @nullable
  */
-export type RunObjectToolChoiceAllOf = unknown | null;
+export type RunObjectToolChoiceAllOf = unknown | null

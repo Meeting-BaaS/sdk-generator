@@ -9,10 +9,10 @@
 /**
  * The operation type. Always `create_file`.
  */
-export type ApplyPatchCreateFileOperationParamType = typeof ApplyPatchCreateFileOperationParamType[keyof typeof ApplyPatchCreateFileOperationParamType];
-
+export type ApplyPatchCreateFileOperationParamType =
+  (typeof ApplyPatchCreateFileOperationParamType)[keyof typeof ApplyPatchCreateFileOperationParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchCreateFileOperationParamType = {
-  create_file: 'create_file',
-} as const;
+  create_file: "create_file"
+} as const

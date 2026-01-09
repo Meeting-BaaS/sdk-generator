@@ -6,10 +6,9 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type TextContentType = typeof TextContentType[keyof typeof TextContentType];
-
+export type TextContentType = (typeof TextContentType)[keyof typeof TextContentType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TextContentType = {
-  text: 'text',
-} as const;
+  text: "text"
+} as const

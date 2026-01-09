@@ -9,10 +9,10 @@
 /**
  * The type of the content.
  */
-export type RunStepDetailsToolCallsFileSearchResultObjectContentItemType = typeof RunStepDetailsToolCallsFileSearchResultObjectContentItemType[keyof typeof RunStepDetailsToolCallsFileSearchResultObjectContentItemType];
-
+export type RunStepDetailsToolCallsFileSearchResultObjectContentItemType =
+  (typeof RunStepDetailsToolCallsFileSearchResultObjectContentItemType)[keyof typeof RunStepDetailsToolCallsFileSearchResultObjectContentItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDetailsToolCallsFileSearchResultObjectContentItemType = {
-  text: 'text',
-} as const;
+  text: "text"
+} as const

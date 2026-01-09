@@ -9,4 +9,4 @@
 /**
  * The header value to send back with the transcript completed or failed webhook requests for added security
  */
-export type TranscriptOptionalParamsWebhookAuthHeaderValue = string | null;
+export type TranscriptOptionalParamsWebhookAuthHeaderValue = string | null

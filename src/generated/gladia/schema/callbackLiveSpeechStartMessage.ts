@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveSpeechStartMessageEvent } from './callbackLiveSpeechStartMessageEvent';
-import type { SpeechStartMessage } from './speechStartMessage';
+import type { CallbackLiveSpeechStartMessageEvent } from "./callbackLiveSpeechStartMessageEvent"
+import type { SpeechStartMessage } from "./speechStartMessage"
 
 export interface CallbackLiveSpeechStartMessage {
   /** Id of the job */
-  id: string;
-  event: CallbackLiveSpeechStartMessageEvent;
+  id: string
+  event: CallbackLiveSpeechStartMessageEvent
   /** The live message payload as sent to the WebSocket */
-  payload: SpeechStartMessage;
+  payload: SpeechStartMessage
 }

@@ -9,12 +9,11 @@
 /**
  * The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
  */
-export type FineTuneMethodType = typeof FineTuneMethodType[keyof typeof FineTuneMethodType];
-
+export type FineTuneMethodType = (typeof FineTuneMethodType)[keyof typeof FineTuneMethodType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuneMethodType = {
-  supervised: 'supervised',
-  dpo: 'dpo',
-  reinforcement: 'reinforcement',
-} as const;
+  supervised: "supervised",
+  dpo: "dpo",
+  reinforcement: "reinforcement"
+} as const

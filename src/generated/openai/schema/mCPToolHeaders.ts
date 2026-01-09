@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolHeadersAnyOf } from './mCPToolHeadersAnyOf';
+import type { MCPToolHeadersAnyOf } from "./mCPToolHeadersAnyOf"
 
-export type MCPToolHeaders = MCPToolHeadersAnyOf | null;
+export type MCPToolHeaders = MCPToolHeadersAnyOf | null

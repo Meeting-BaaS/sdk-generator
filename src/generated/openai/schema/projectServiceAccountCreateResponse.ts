@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectServiceAccountCreateResponseObject } from './projectServiceAccountCreateResponseObject';
-import type { ProjectServiceAccountCreateResponseRole } from './projectServiceAccountCreateResponseRole';
-import type { ProjectServiceAccountApiKey } from './projectServiceAccountApiKey';
+import type { ProjectServiceAccountCreateResponseObject } from "./projectServiceAccountCreateResponseObject"
+import type { ProjectServiceAccountCreateResponseRole } from "./projectServiceAccountCreateResponseRole"
+import type { ProjectServiceAccountApiKey } from "./projectServiceAccountApiKey"
 
 export interface ProjectServiceAccountCreateResponse {
-  object: ProjectServiceAccountCreateResponseObject;
-  id: string;
-  name: string;
+  object: ProjectServiceAccountCreateResponseObject
+  id: string
+  name: string
   /** Service accounts can only have one role of type `member` */
-  role: ProjectServiceAccountCreateResponseRole;
-  created_at: number;
-  api_key: ProjectServiceAccountApiKey;
+  role: ProjectServiceAccountCreateResponseRole
+  created_at: number
+  api_key: ProjectServiceAccountApiKey
 }

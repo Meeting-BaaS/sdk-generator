@@ -10,5 +10,5 @@ export type LemurActionItemsParamsAllOf = {
   /** How you want the action items to be returned. This can be any text.
 Defaults to "Bullet Points".
  */
-  answer_format?: string;
-};
+  answer_format?: string
+}

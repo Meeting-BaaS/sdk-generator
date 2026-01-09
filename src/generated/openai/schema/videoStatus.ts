@@ -6,13 +6,12 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VideoStatus = typeof VideoStatus[keyof typeof VideoStatus];
-
+export type VideoStatus = (typeof VideoStatus)[keyof typeof VideoStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoStatus = {
-  queued: 'queued',
-  in_progress: 'in_progress',
-  completed: 'completed',
-  failed: 'failed',
-} as const;
+  queued: "queued",
+  in_progress: "in_progress",
+  completed: "completed",
+  failed: "failed"
+} as const

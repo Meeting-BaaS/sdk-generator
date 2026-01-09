@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ItemReferenceParamType = 'item_reference' | null;
+export type ItemReferenceParamType = "item_reference" | null

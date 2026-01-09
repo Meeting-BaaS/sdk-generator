@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookEvalRunSucceededData } from './webhookEvalRunSucceededData';
-import type { WebhookEvalRunSucceededObject } from './webhookEvalRunSucceededObject';
-import type { WebhookEvalRunSucceededType } from './webhookEvalRunSucceededType';
+import type { WebhookEvalRunSucceededData } from "./webhookEvalRunSucceededData"
+import type { WebhookEvalRunSucceededObject } from "./webhookEvalRunSucceededObject"
+import type { WebhookEvalRunSucceededType } from "./webhookEvalRunSucceededType"
 
 /**
  * Sent when an eval run has succeeded.
@@ -15,18 +15,18 @@ import type { WebhookEvalRunSucceededType } from './webhookEvalRunSucceededType'
  */
 export interface WebhookEvalRunSucceeded {
   /** The Unix timestamp (in seconds) of when the eval run succeeded.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookEvalRunSucceededData;
+   */
+  data: WebhookEvalRunSucceededData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookEvalRunSucceededObject;
+   */
+  object?: WebhookEvalRunSucceededObject
   /** The type of the event. Always `eval.run.succeeded`.
- */
-  type: WebhookEvalRunSucceededType;
+   */
+  type: WebhookEvalRunSucceededType
 }

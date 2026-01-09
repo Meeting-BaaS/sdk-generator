@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderScoreModelType } from './graderScoreModelType';
-import type { GraderScoreModelSamplingParams } from './graderScoreModelSamplingParams';
-import type { EvalItem } from './evalItem';
+import type { GraderScoreModelType } from "./graderScoreModelType"
+import type { GraderScoreModelSamplingParams } from "./graderScoreModelSamplingParams"
+import type { EvalItem } from "./evalItem"
 
 /**
  * A ScoreModelGrader object that uses a model to assign a score to the input.
@@ -15,15 +15,15 @@ import type { EvalItem } from './evalItem';
  */
 export interface GraderScoreModel {
   /** The object type, which is always `score_model`. */
-  type: GraderScoreModelType;
+  type: GraderScoreModelType
   /** The name of the grader. */
-  name: string;
+  name: string
   /** The model to use for the evaluation. */
-  model: string;
+  model: string
   /** The sampling parameters for the model. */
-  sampling_params?: GraderScoreModelSamplingParams;
+  sampling_params?: GraderScoreModelSamplingParams
   /** The input text. This may include template strings. */
-  input: EvalItem[];
+  input: EvalItem[]
   /** The range of the score. Defaults to `[0, 1]`. */
-  range?: number[];
+  range?: number[]
 }

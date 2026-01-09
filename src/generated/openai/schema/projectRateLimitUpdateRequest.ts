@@ -8,15 +8,15 @@
 
 export interface ProjectRateLimitUpdateRequest {
   /** The maximum requests per minute. */
-  max_requests_per_1_minute?: number;
+  max_requests_per_1_minute?: number
   /** The maximum tokens per minute. */
-  max_tokens_per_1_minute?: number;
+  max_tokens_per_1_minute?: number
   /** The maximum images per minute. Only relevant for certain models. */
-  max_images_per_1_minute?: number;
+  max_images_per_1_minute?: number
   /** The maximum audio megabytes per minute. Only relevant for certain models. */
-  max_audio_megabytes_per_1_minute?: number;
+  max_audio_megabytes_per_1_minute?: number
   /** The maximum requests per day. Only relevant for certain models. */
-  max_requests_per_1_day?: number;
+  max_requests_per_1_day?: number
   /** The maximum batch input tokens per day. Only relevant for certain models. */
-  batch_1_day_max_input_tokens?: number;
+  batch_1_day_max_input_tokens?: number
 }

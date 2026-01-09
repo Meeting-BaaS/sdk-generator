@@ -5,9 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionCallOutputItemParamOutputAnyOfItem } from './functionCallOutputItemParamOutputAnyOfItem';
+import type { FunctionCallOutputItemParamOutputAnyOfItem } from "./functionCallOutputItemParamOutputAnyOfItem"
 
 /**
  * Text, image, or file output of the function tool call.
  */
-export type FunctionCallOutputItemParamOutput = string | FunctionCallOutputItemParamOutputAnyOfItem[];
+export type FunctionCallOutputItemParamOutput =
+  | string
+  | FunctionCallOutputItemParamOutputAnyOfItem[]

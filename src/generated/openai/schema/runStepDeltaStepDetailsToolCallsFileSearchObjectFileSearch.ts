@@ -9,4 +9,4 @@
 /**
  * For now, this is always going to be an empty object.
  */
-export type RunStepDeltaStepDetailsToolCallsFileSearchObjectFileSearch = { [key: string]: unknown };
+export type RunStepDeltaStepDetailsToolCallsFileSearchObjectFileSearch = { [key: string]: unknown }

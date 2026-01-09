@@ -12,5 +12,5 @@ export type ThreadObjectToolResourcesAnyOfFileSearch = {
 
    * @maxItems 1
    */
-  vector_store_ids?: string[];
-};
+  vector_store_ids?: string[]
+}

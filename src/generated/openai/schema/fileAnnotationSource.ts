@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileAnnotationSourceType } from './fileAnnotationSourceType';
+import type { FileAnnotationSourceType } from "./fileAnnotationSourceType"
 
 /**
  * Attachment source referenced by an annotation.
  */
 export interface FileAnnotationSource {
   /** Type discriminator that is always `file`. */
-  type: FileAnnotationSourceType;
+  type: FileAnnotationSourceType
   /** Filename referenced by the annotation. */
-  filename: string;
+  filename: string
 }

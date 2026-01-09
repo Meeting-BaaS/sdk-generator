@@ -9,4 +9,4 @@
  * Custom metadata given in the initial request
  * @nullable
  */
-export type CallbackTranscriptionSuccessPayloadCustomMetadata = { [key: string]: unknown } | null;
+export type CallbackTranscriptionSuccessPayloadCustomMetadata = { [key: string]: unknown } | null

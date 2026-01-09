@@ -8,5 +8,5 @@
 
 export type ChatCompletionNamedToolChoiceCustomCustom = {
   /** The name of the custom tool to call. */
-  name: string;
-};
+  name: string
+}

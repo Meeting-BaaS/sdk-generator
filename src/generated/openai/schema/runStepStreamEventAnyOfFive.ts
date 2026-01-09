@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepStreamEventAnyOfFiveEvent } from './runStepStreamEventAnyOfFiveEvent';
-import type { RunStepDeltaObject } from './runStepDeltaObject';
+import type { RunStepStreamEventAnyOfFiveEvent } from "./runStepStreamEventAnyOfFiveEvent"
+import type { RunStepDeltaObject } from "./runStepDeltaObject"
 
 /**
  * Occurs when parts of a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) are being streamed.
  */
 export type RunStepStreamEventAnyOfFive = {
-  event: RunStepStreamEventAnyOfFiveEvent;
-  data: RunStepDeltaObject;
-};
+  event: RunStepStreamEventAnyOfFiveEvent
+  data: RunStepDeltaObject
+}

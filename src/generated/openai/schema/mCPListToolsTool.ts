@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPListToolsToolDescription } from './mCPListToolsToolDescription';
-import type { MCPListToolsToolInputSchema } from './mCPListToolsToolInputSchema';
-import type { MCPListToolsToolAnnotations } from './mCPListToolsToolAnnotations';
+import type { MCPListToolsToolDescription } from "./mCPListToolsToolDescription"
+import type { MCPListToolsToolInputSchema } from "./mCPListToolsToolInputSchema"
+import type { MCPListToolsToolAnnotations } from "./mCPListToolsToolAnnotations"
 
 /**
  * A tool available on an MCP server.
@@ -15,11 +15,11 @@ import type { MCPListToolsToolAnnotations } from './mCPListToolsToolAnnotations'
  */
 export interface MCPListToolsTool {
   /** The name of the tool.
- */
-  name: string;
-  description?: MCPListToolsToolDescription;
+   */
+  name: string
+  description?: MCPListToolsToolDescription
   /** The JSON schema describing the tool's input.
- */
-  input_schema: MCPListToolsToolInputSchema;
-  annotations?: MCPListToolsToolAnnotations;
+   */
+  input_schema: MCPListToolsToolInputSchema
+  annotations?: MCPListToolsToolAnnotations
 }

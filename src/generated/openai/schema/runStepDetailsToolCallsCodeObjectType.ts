@@ -9,10 +9,10 @@
 /**
  * The type of tool call. This is always going to be `code_interpreter` for this type of tool call.
  */
-export type RunStepDetailsToolCallsCodeObjectType = typeof RunStepDetailsToolCallsCodeObjectType[keyof typeof RunStepDetailsToolCallsCodeObjectType];
-
+export type RunStepDetailsToolCallsCodeObjectType =
+  (typeof RunStepDetailsToolCallsCodeObjectType)[keyof typeof RunStepDetailsToolCallsCodeObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDetailsToolCallsCodeObjectType = {
-  code_interpreter: 'code_interpreter',
-} as const;
+  code_interpreter: "code_interpreter"
+} as const

@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestMessageContentPartImageImageUrlDetail } from './chatCompletionRequestMessageContentPartImageImageUrlDetail';
+import type { ChatCompletionRequestMessageContentPartImageImageUrlDetail } from "./chatCompletionRequestMessageContentPartImageImageUrlDetail"
 
 export type ChatCompletionRequestMessageContentPartImageImageUrl = {
   /** Either a URL of the image or the base64 encoded image data. */
-  url: string;
+  url: string
   /** Specifies the detail level of the image. Learn more in the [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding). */
-  detail?: ChatCompletionRequestMessageContentPartImageImageUrlDetail;
-};
+  detail?: ChatCompletionRequestMessageContentPartImageImageUrlDetail
+}

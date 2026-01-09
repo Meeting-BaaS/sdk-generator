@@ -5,14 +5,14 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { ResponseBlock } from './responseBlock';
+import type { ResponseBlock } from "./responseBlock"
 
 /**
  * List of uploaded blocks.
  */
 export interface UploadedBlocks {
   /** The block description of blocks already committed. */
-  committedBlocks?: ResponseBlock[];
+  committedBlocks?: ResponseBlock[]
   /** The block description of blocks not committed to the blob. */
-  uncommittedBlocks?: ResponseBlock[];
+  uncommittedBlocks?: ResponseBlock[]
 }

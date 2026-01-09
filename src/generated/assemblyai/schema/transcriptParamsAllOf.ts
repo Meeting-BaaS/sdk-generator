@@ -8,5 +8,5 @@
 
 export type TranscriptParamsAllOf = {
   /** The URL of the audio or video file to transcribe. */
-  audio_url: string;
-};
+  audio_url: string
+}

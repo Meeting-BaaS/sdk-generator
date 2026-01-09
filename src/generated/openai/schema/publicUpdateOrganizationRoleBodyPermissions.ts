@@ -9,4 +9,4 @@
 /**
  * Updated set of permissions for the role.
  */
-export type PublicUpdateOrganizationRoleBodyPermissions = string[] | null;
+export type PublicUpdateOrganizationRoleBodyPermissions = string[] | null

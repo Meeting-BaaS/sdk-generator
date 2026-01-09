@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type MessageStreamEventAnyOfEvent = typeof MessageStreamEventAnyOfEvent[keyof typeof MessageStreamEventAnyOfEvent];
-
+export type MessageStreamEventAnyOfEvent =
+  (typeof MessageStreamEventAnyOfEvent)[keyof typeof MessageStreamEventAnyOfEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageStreamEventAnyOfEvent = {
-  threadmessagecreated: 'thread.message.created',
-} as const;
+  threadmessagecreated: "thread.message.created"
+} as const

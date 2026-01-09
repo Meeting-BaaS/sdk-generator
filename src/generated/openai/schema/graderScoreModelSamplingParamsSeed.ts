@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type GraderScoreModelSamplingParamsSeed = number | null;
+export type GraderScoreModelSamplingParamsSeed = number | null

@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreFileAttributesAnyOf } from './vectorStoreFileAttributesAnyOf';
+import type { VectorStoreFileAttributesAnyOf } from "./vectorStoreFileAttributesAnyOf"
 
-export type VectorStoreFileAttributes = VectorStoreFileAttributesAnyOf | null;
+export type VectorStoreFileAttributes = VectorStoreFileAttributesAnyOf | null

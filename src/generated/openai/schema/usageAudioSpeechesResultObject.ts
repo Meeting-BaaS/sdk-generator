@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageAudioSpeechesResultObject = typeof UsageAudioSpeechesResultObject[keyof typeof UsageAudioSpeechesResultObject];
-
+export type UsageAudioSpeechesResultObject =
+  (typeof UsageAudioSpeechesResultObject)[keyof typeof UsageAudioSpeechesResultObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UsageAudioSpeechesResultObject = {
-  organizationusageaudio_speechesresult: 'organization.usage.audio_speeches.result',
-} as const;
+  organizationusageaudio_speechesresult: "organization.usage.audio_speeches.result"
+} as const

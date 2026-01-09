@@ -9,4 +9,4 @@
 /**
  * The configuration for running this model in a container.
  */
-export type ModelManifestProperties = {[key: string]: { [key: string]: unknown }};
+export type ModelManifestProperties = { [key: string]: { [key: string]: unknown } }

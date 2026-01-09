@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateResponseGAType } from './realtimeTranscriptionSessionCreateResponseGAType';
-import type { RealtimeTranscriptionSessionCreateResponseGAIncludeItem } from './realtimeTranscriptionSessionCreateResponseGAIncludeItem';
-import type { RealtimeTranscriptionSessionCreateResponseGAAudio } from './realtimeTranscriptionSessionCreateResponseGAAudio';
+import type { RealtimeTranscriptionSessionCreateResponseGAType } from "./realtimeTranscriptionSessionCreateResponseGAType"
+import type { RealtimeTranscriptionSessionCreateResponseGAIncludeItem } from "./realtimeTranscriptionSessionCreateResponseGAIncludeItem"
+import type { RealtimeTranscriptionSessionCreateResponseGAAudio } from "./realtimeTranscriptionSessionCreateResponseGAAudio"
 
 /**
  * A Realtime transcription session configuration object.
@@ -15,20 +15,20 @@ import type { RealtimeTranscriptionSessionCreateResponseGAAudio } from './realti
  */
 export interface RealtimeTranscriptionSessionCreateResponseGA {
   /** The type of session. Always `transcription` for transcription sessions.
- */
-  type: RealtimeTranscriptionSessionCreateResponseGAType;
+   */
+  type: RealtimeTranscriptionSessionCreateResponseGAType
   /** Unique identifier for the session that looks like `sess_1234567890abcdef`.
- */
-  id: string;
+   */
+  id: string
   /** The object type. Always `realtime.transcription_session`. */
-  object: string;
+  object: string
   /** Expiration timestamp for the session, in seconds since epoch. */
-  expires_at?: number;
+  expires_at?: number
   /** Additional fields to include in server outputs.
 - `item.input_audio_transcription.logprobs`: Include logprobs for input audio transcription.
  */
-  include?: RealtimeTranscriptionSessionCreateResponseGAIncludeItem[];
+  include?: RealtimeTranscriptionSessionCreateResponseGAIncludeItem[]
   /** Configuration for input audio for the session.
- */
-  audio?: RealtimeTranscriptionSessionCreateResponseGAAudio;
+   */
+  audio?: RealtimeTranscriptionSessionCreateResponseGAAudio
 }

@@ -9,12 +9,12 @@
 /**
  * The detail level of the image (for `input_image`). `auto` will default to `high`.
  */
-export type RealtimeConversationItemMessageUserContentItemDetail = typeof RealtimeConversationItemMessageUserContentItemDetail[keyof typeof RealtimeConversationItemMessageUserContentItemDetail];
-
+export type RealtimeConversationItemMessageUserContentItemDetail =
+  (typeof RealtimeConversationItemMessageUserContentItemDetail)[keyof typeof RealtimeConversationItemMessageUserContentItemDetail]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageUserContentItemDetail = {
-  auto: 'auto',
-  low: 'low',
-  high: 'high',
-} as const;
+  auto: "auto",
+  low: "low",
+  high: "high"
+} as const

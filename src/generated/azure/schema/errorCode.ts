@@ -9,23 +9,22 @@
 /**
  * High level error codes.
  */
-export type ErrorCode = typeof ErrorCode[keyof typeof ErrorCode];
-
+export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ErrorCode = {
-  InvalidRequest: 'InvalidRequest',
-  InvalidArgument: 'InvalidArgument',
-  InternalServerError: 'InternalServerError',
-  ServiceUnavailable: 'ServiceUnavailable',
-  NotFound: 'NotFound',
-  PipelineError: 'PipelineError',
-  Conflict: 'Conflict',
-  InternalCommunicationFailed: 'InternalCommunicationFailed',
-  Forbidden: 'Forbidden',
-  NotAllowed: 'NotAllowed',
-  Unauthorized: 'Unauthorized',
-  UnsupportedMediaType: 'UnsupportedMediaType',
-  TooManyRequests: 'TooManyRequests',
-  UnprocessableEntity: 'UnprocessableEntity',
-} as const;
+  InvalidRequest: "InvalidRequest",
+  InvalidArgument: "InvalidArgument",
+  InternalServerError: "InternalServerError",
+  ServiceUnavailable: "ServiceUnavailable",
+  NotFound: "NotFound",
+  PipelineError: "PipelineError",
+  Conflict: "Conflict",
+  InternalCommunicationFailed: "InternalCommunicationFailed",
+  Forbidden: "Forbidden",
+  NotAllowed: "NotAllowed",
+  Unauthorized: "Unauthorized",
+  UnsupportedMediaType: "UnsupportedMediaType",
+  TooManyRequests: "TooManyRequests",
+  UnprocessableEntity: "UnprocessableEntity"
+} as const

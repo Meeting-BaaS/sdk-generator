@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `label_model`.
  */
-export type GraderLabelModelType = typeof GraderLabelModelType[keyof typeof GraderLabelModelType];
-
+export type GraderLabelModelType = (typeof GraderLabelModelType)[keyof typeof GraderLabelModelType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderLabelModelType = {
-  label_model: 'label_model',
-} as const;
+  label_model: "label_model"
+} as const

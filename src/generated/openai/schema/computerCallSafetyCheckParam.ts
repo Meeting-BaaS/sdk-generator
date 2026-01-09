@@ -5,15 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComputerCallSafetyCheckParamCode } from './computerCallSafetyCheckParamCode';
-import type { ComputerCallSafetyCheckParamMessage } from './computerCallSafetyCheckParamMessage';
+import type { ComputerCallSafetyCheckParamCode } from "./computerCallSafetyCheckParamCode"
+import type { ComputerCallSafetyCheckParamMessage } from "./computerCallSafetyCheckParamMessage"
 
 /**
  * A pending safety check for the computer call.
  */
 export interface ComputerCallSafetyCheckParam {
   /** The ID of the pending safety check. */
-  id: string;
-  code?: ComputerCallSafetyCheckParamCode;
-  message?: ComputerCallSafetyCheckParamMessage;
+  id: string
+  code?: ComputerCallSafetyCheckParamCode
+  message?: ComputerCallSafetyCheckParamMessage
 }

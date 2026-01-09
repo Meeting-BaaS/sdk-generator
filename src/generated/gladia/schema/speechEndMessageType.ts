@@ -5,10 +5,9 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SpeechEndMessageType = typeof SpeechEndMessageType[keyof typeof SpeechEndMessageType];
-
+export type SpeechEndMessageType = (typeof SpeechEndMessageType)[keyof typeof SpeechEndMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeechEndMessageType = {
-  speech_end: 'speech_end',
-} as const;
+  speech_end: "speech_end"
+} as const

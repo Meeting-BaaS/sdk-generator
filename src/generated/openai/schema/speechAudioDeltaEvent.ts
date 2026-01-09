@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { SpeechAudioDeltaEventType } from './speechAudioDeltaEventType';
+import type { SpeechAudioDeltaEventType } from "./speechAudioDeltaEventType"
 
 /**
  * Emitted for each chunk of audio data generated during speech synthesis.
  */
 export interface SpeechAudioDeltaEvent {
   /** The type of the event. Always `speech.audio.delta`.
- */
-  type: SpeechAudioDeltaEventType;
+   */
+  type: SpeechAudioDeltaEventType
   /** A chunk of Base64-encoded audio data.
- */
-  audio: string;
+   */
+  audio: string
 }

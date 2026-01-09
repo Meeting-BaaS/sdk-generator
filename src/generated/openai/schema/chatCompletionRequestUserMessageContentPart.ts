@@ -5,9 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestMessageContentPartText } from './chatCompletionRequestMessageContentPartText';
-import type { ChatCompletionRequestMessageContentPartImage } from './chatCompletionRequestMessageContentPartImage';
-import type { ChatCompletionRequestMessageContentPartAudio } from './chatCompletionRequestMessageContentPartAudio';
-import type { ChatCompletionRequestMessageContentPartFile } from './chatCompletionRequestMessageContentPartFile';
+import type { ChatCompletionRequestMessageContentPartText } from "./chatCompletionRequestMessageContentPartText"
+import type { ChatCompletionRequestMessageContentPartImage } from "./chatCompletionRequestMessageContentPartImage"
+import type { ChatCompletionRequestMessageContentPartAudio } from "./chatCompletionRequestMessageContentPartAudio"
+import type { ChatCompletionRequestMessageContentPartFile } from "./chatCompletionRequestMessageContentPartFile"
 
-export type ChatCompletionRequestUserMessageContentPart = ChatCompletionRequestMessageContentPartText | ChatCompletionRequestMessageContentPartImage | ChatCompletionRequestMessageContentPartAudio | ChatCompletionRequestMessageContentPartFile;
+export type ChatCompletionRequestUserMessageContentPart =
+  | ChatCompletionRequestMessageContentPartText
+  | ChatCompletionRequestMessageContentPartImage
+  | ChatCompletionRequestMessageContentPartAudio
+  | ChatCompletionRequestMessageContentPartFile

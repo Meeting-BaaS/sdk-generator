@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputContent } from './inputContent';
-import type { OutputContent } from './outputContent';
+import type { InputContent } from "./inputContent"
+import type { OutputContent } from "./outputContent"
 
 /**
  * Multi-modal input and output contents.
 
  */
-export type Content = InputContent | OutputContent;
+export type Content = InputContent | OutputContent

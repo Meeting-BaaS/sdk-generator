@@ -9,10 +9,10 @@
 /**
  * The object type. Always `realtime.session`.
  */
-export type RealtimeSessionObject = typeof RealtimeSessionObject[keyof typeof RealtimeSessionObject];
-
+export type RealtimeSessionObject =
+  (typeof RealtimeSessionObject)[keyof typeof RealtimeSessionObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeSessionObject = {
-  realtimesession: 'realtime.session',
-} as const;
+  realtimesession: "realtime.session"
+} as const

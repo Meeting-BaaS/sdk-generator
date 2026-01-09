@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunStreamEventAnyOfFiveEvent = typeof RunStreamEventAnyOfFiveEvent[keyof typeof RunStreamEventAnyOfFiveEvent];
-
+export type RunStreamEventAnyOfFiveEvent =
+  (typeof RunStreamEventAnyOfFiveEvent)[keyof typeof RunStreamEventAnyOfFiveEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStreamEventAnyOfFiveEvent = {
-  threadrunin_progress: 'thread.run.in_progress',
-} as const;
+  threadrunin_progress: "thread.run.in_progress"
+} as const

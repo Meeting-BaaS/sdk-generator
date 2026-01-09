@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepStreamEventAnyOfThreeEvent } from './runStepStreamEventAnyOfThreeEvent';
-import type { RunStepObject } from './runStepObject';
+import type { RunStepStreamEventAnyOfThreeEvent } from "./runStepStreamEventAnyOfThreeEvent"
+import type { RunStepObject } from "./runStepObject"
 
 /**
  * Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) moves to an `in_progress` state.
  */
 export type RunStepStreamEventAnyOfThree = {
-  event: RunStepStreamEventAnyOfThreeEvent;
-  data: RunStepObject;
-};
+  event: RunStepStreamEventAnyOfThreeEvent
+  data: RunStepObject
+}

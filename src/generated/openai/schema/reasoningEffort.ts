@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ReasoningEffort = 'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh' | null;
+export type ReasoningEffort = "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | null

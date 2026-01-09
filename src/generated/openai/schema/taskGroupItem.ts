@@ -5,24 +5,24 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TaskGroupItemObject } from './taskGroupItemObject';
-import type { TaskGroupItemType } from './taskGroupItemType';
-import type { TaskGroupTask } from './taskGroupTask';
+import type { TaskGroupItemObject } from "./taskGroupItemObject"
+import type { TaskGroupItemType } from "./taskGroupItemType"
+import type { TaskGroupTask } from "./taskGroupTask"
 
 /**
  * Collection of workflow tasks grouped together in the thread.
  */
 export interface TaskGroupItem {
   /** Identifier of the thread item. */
-  id: string;
+  id: string
   /** Type discriminator that is always `chatkit.thread_item`. */
-  object: TaskGroupItemObject;
+  object: TaskGroupItemObject
   /** Unix timestamp (in seconds) for when the item was created. */
-  created_at: number;
+  created_at: number
   /** Identifier of the parent thread. */
-  thread_id: string;
+  thread_id: string
   /** Type discriminator that is always `chatkit.task_group`. */
-  type: TaskGroupItemType;
+  type: TaskGroupItemType
   /** Tasks included in the group. */
-  tasks: TaskGroupTask[];
+  tasks: TaskGroupTask[]
 }

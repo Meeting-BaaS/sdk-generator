@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceOptions } from './toolChoiceOptions';
-import type { ToolChoiceAllowed } from './toolChoiceAllowed';
-import type { ToolChoiceTypes } from './toolChoiceTypes';
-import type { ToolChoiceFunction } from './toolChoiceFunction';
-import type { ToolChoiceMCP } from './toolChoiceMCP';
-import type { ToolChoiceCustom } from './toolChoiceCustom';
-import type { SpecificApplyPatchParam } from './specificApplyPatchParam';
-import type { SpecificFunctionShellParam } from './specificFunctionShellParam';
+import type { ToolChoiceOptions } from "./toolChoiceOptions"
+import type { ToolChoiceAllowed } from "./toolChoiceAllowed"
+import type { ToolChoiceTypes } from "./toolChoiceTypes"
+import type { ToolChoiceFunction } from "./toolChoiceFunction"
+import type { ToolChoiceMCP } from "./toolChoiceMCP"
+import type { ToolChoiceCustom } from "./toolChoiceCustom"
+import type { SpecificApplyPatchParam } from "./specificApplyPatchParam"
+import type { SpecificFunctionShellParam } from "./specificFunctionShellParam"
 
 /**
  * How the model should select which tool (or tools) to use when generating
@@ -20,4 +20,12 @@ a response. See the `tools` parameter to see how to specify which tools
 the model can call.
 
  */
-export type ToolChoiceParam = ToolChoiceOptions | ToolChoiceAllowed | ToolChoiceTypes | ToolChoiceFunction | ToolChoiceMCP | ToolChoiceCustom | SpecificApplyPatchParam | SpecificFunctionShellParam;
+export type ToolChoiceParam =
+  | ToolChoiceOptions
+  | ToolChoiceAllowed
+  | ToolChoiceTypes
+  | ToolChoiceFunction
+  | ToolChoiceMCP
+  | ToolChoiceCustom
+  | SpecificApplyPatchParam
+  | SpecificFunctionShellParam

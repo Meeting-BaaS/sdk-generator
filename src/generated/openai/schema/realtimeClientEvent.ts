@@ -5,20 +5,31 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeClientEventConversationItemCreate } from './realtimeClientEventConversationItemCreate';
-import type { RealtimeClientEventConversationItemDelete } from './realtimeClientEventConversationItemDelete';
-import type { RealtimeClientEventConversationItemRetrieve } from './realtimeClientEventConversationItemRetrieve';
-import type { RealtimeClientEventConversationItemTruncate } from './realtimeClientEventConversationItemTruncate';
-import type { RealtimeClientEventInputAudioBufferAppend } from './realtimeClientEventInputAudioBufferAppend';
-import type { RealtimeClientEventInputAudioBufferClear } from './realtimeClientEventInputAudioBufferClear';
-import type { RealtimeClientEventOutputAudioBufferClear } from './realtimeClientEventOutputAudioBufferClear';
-import type { RealtimeClientEventInputAudioBufferCommit } from './realtimeClientEventInputAudioBufferCommit';
-import type { RealtimeClientEventResponseCancel } from './realtimeClientEventResponseCancel';
-import type { RealtimeClientEventResponseCreate } from './realtimeClientEventResponseCreate';
-import type { RealtimeClientEventSessionUpdate } from './realtimeClientEventSessionUpdate';
+import type { RealtimeClientEventConversationItemCreate } from "./realtimeClientEventConversationItemCreate"
+import type { RealtimeClientEventConversationItemDelete } from "./realtimeClientEventConversationItemDelete"
+import type { RealtimeClientEventConversationItemRetrieve } from "./realtimeClientEventConversationItemRetrieve"
+import type { RealtimeClientEventConversationItemTruncate } from "./realtimeClientEventConversationItemTruncate"
+import type { RealtimeClientEventInputAudioBufferAppend } from "./realtimeClientEventInputAudioBufferAppend"
+import type { RealtimeClientEventInputAudioBufferClear } from "./realtimeClientEventInputAudioBufferClear"
+import type { RealtimeClientEventOutputAudioBufferClear } from "./realtimeClientEventOutputAudioBufferClear"
+import type { RealtimeClientEventInputAudioBufferCommit } from "./realtimeClientEventInputAudioBufferCommit"
+import type { RealtimeClientEventResponseCancel } from "./realtimeClientEventResponseCancel"
+import type { RealtimeClientEventResponseCreate } from "./realtimeClientEventResponseCreate"
+import type { RealtimeClientEventSessionUpdate } from "./realtimeClientEventSessionUpdate"
 
 /**
  * A realtime client event.
 
  */
-export type RealtimeClientEvent = RealtimeClientEventConversationItemCreate | RealtimeClientEventConversationItemDelete | RealtimeClientEventConversationItemRetrieve | RealtimeClientEventConversationItemTruncate | RealtimeClientEventInputAudioBufferAppend | RealtimeClientEventInputAudioBufferClear | RealtimeClientEventOutputAudioBufferClear | RealtimeClientEventInputAudioBufferCommit | RealtimeClientEventResponseCancel | RealtimeClientEventResponseCreate | RealtimeClientEventSessionUpdate;
+export type RealtimeClientEvent =
+  | RealtimeClientEventConversationItemCreate
+  | RealtimeClientEventConversationItemDelete
+  | RealtimeClientEventConversationItemRetrieve
+  | RealtimeClientEventConversationItemTruncate
+  | RealtimeClientEventInputAudioBufferAppend
+  | RealtimeClientEventInputAudioBufferClear
+  | RealtimeClientEventOutputAudioBufferClear
+  | RealtimeClientEventInputAudioBufferCommit
+  | RealtimeClientEventResponseCancel
+  | RealtimeClientEventResponseCreate
+  | RealtimeClientEventSessionUpdate

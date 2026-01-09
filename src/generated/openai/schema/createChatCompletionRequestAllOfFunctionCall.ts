@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionFunctionCallOption } from './chatCompletionFunctionCallOption';
+import type { ChatCompletionFunctionCallOption } from "./chatCompletionFunctionCallOption"
 
 /**
  * Deprecated in favor of `tool_choice`.
@@ -26,4 +26,7 @@ if functions are present.
 
  * @deprecated
  */
-export type CreateChatCompletionRequestAllOfFunctionCall = 'none' | 'auto' | ChatCompletionFunctionCallOption;
+export type CreateChatCompletionRequestAllOfFunctionCall =
+  | "none"
+  | "auto"
+  | ChatCompletionFunctionCallOption

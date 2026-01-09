@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseMCPCallArgumentsDeltaEventType } from './responseMCPCallArgumentsDeltaEventType';
+import type { ResponseMCPCallArgumentsDeltaEventType } from "./responseMCPCallArgumentsDeltaEventType"
 
 /**
  * Emitted when there is a delta (partial update) to the arguments of an MCP tool call.
@@ -13,14 +13,14 @@ import type { ResponseMCPCallArgumentsDeltaEventType } from './responseMCPCallAr
  */
 export interface ResponseMCPCallArgumentsDeltaEvent {
   /** The type of the event. Always 'response.mcp_call_arguments.delta'. */
-  type: ResponseMCPCallArgumentsDeltaEventType;
+  type: ResponseMCPCallArgumentsDeltaEventType
   /** The index of the output item in the response's output array. */
-  output_index: number;
+  output_index: number
   /** The unique identifier of the MCP tool call item being processed. */
-  item_id: string;
+  item_id: string
   /** A JSON string containing the partial update to the arguments for the MCP tool call.
- */
-  delta: string;
+   */
+  delta: string
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
 }

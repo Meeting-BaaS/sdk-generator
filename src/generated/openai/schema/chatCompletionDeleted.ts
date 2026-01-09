@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionDeletedObject } from './chatCompletionDeletedObject';
+import type { ChatCompletionDeletedObject } from "./chatCompletionDeletedObject"
 
 export interface ChatCompletionDeleted {
   /** The type of object being deleted. */
-  object: ChatCompletionDeletedObject;
+  object: ChatCompletionDeletedObject
   /** The ID of the chat completion that was deleted. */
-  id: string;
+  id: string
   /** Whether the chat completion was deleted. */
-  deleted: boolean;
+  deleted: boolean
 }

@@ -5,12 +5,12 @@
  * OpenAPI spec version: 1.0
  */
 
-export type VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour = typeof VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour[keyof typeof VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour];
-
+export type VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour =
+  (typeof VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour)[keyof typeof VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoToTextControllerVideoTranscriptionBodyLanguageBehaviour = {
-  automatic_single_language: 'automatic single language',
-  automatic_multiple_languages: 'automatic multiple languages',
-  manual: 'manual',
-} as const;
+  automatic_single_language: "automatic single language",
+  automatic_multiple_languages: "automatic multiple languages",
+  manual: "manual"
+} as const

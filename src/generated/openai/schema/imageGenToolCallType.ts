@@ -10,10 +10,9 @@
  * The type of the image generation call. Always `image_generation_call`.
 
  */
-export type ImageGenToolCallType = typeof ImageGenToolCallType[keyof typeof ImageGenToolCallType];
-
+export type ImageGenToolCallType = (typeof ImageGenToolCallType)[keyof typeof ImageGenToolCallType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenToolCallType = {
-  image_generation_call: 'image_generation_call',
-} as const;
+  image_generation_call: "image_generation_call"
+} as const

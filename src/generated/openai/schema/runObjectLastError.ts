@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunObjectLastErrorCode } from './runObjectLastErrorCode';
+import type { RunObjectLastErrorCode } from "./runObjectLastErrorCode"
 
 /**
  * The last error associated with this run. Will be `null` if there are no errors.
@@ -13,7 +13,7 @@ import type { RunObjectLastErrorCode } from './runObjectLastErrorCode';
  */
 export type RunObjectLastError = {
   /** One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`. */
-  code: RunObjectLastErrorCode;
+  code: RunObjectLastErrorCode
   /** A human-readable description of the error. */
-  message: string;
-} | null;
+  message: string
+} | null

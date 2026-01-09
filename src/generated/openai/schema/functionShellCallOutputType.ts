@@ -9,10 +9,10 @@
 /**
  * The type of the shell call output. Always `shell_call_output`.
  */
-export type FunctionShellCallOutputType = typeof FunctionShellCallOutputType[keyof typeof FunctionShellCallOutputType];
-
+export type FunctionShellCallOutputType =
+  (typeof FunctionShellCallOutputType)[keyof typeof FunctionShellCallOutputType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionShellCallOutputType = {
-  shell_call_output: 'shell_call_output',
-} as const;
+  shell_call_output: "shell_call_output"
+} as const

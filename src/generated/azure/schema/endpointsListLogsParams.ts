@@ -5,20 +5,20 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { SasValidityQueryParameterParameter } from './sasValidityQueryParameterParameter';
-import type { TopQueryParameterParameter } from './topQueryParameterParameter';
+import type { SasValidityQueryParameterParameter } from "./sasValidityQueryParameterParameter"
+import type { TopQueryParameterParameter } from "./topQueryParameterParameter"
 
 export type EndpointsListLogsParams = {
-/**
- * The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.
- */
-sasValidityInSeconds?: SasValidityQueryParameterParameter;
-/**
- * Token to skip logs that were already retrieved in previous requests. Pagination starts from beginning when not defined.
- */
-skipToken?: string;
-/**
- * Number of datasets that will be included after skipping.
- */
-top?: TopQueryParameterParameter;
-};
+  /**
+   * The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.
+   */
+  sasValidityInSeconds?: SasValidityQueryParameterParameter
+  /**
+   * Token to skip logs that were already retrieved in previous requests. Pagination starts from beginning when not defined.
+   */
+  skipToken?: string
+  /**
+   * Number of datasets that will be included after skipping.
+   */
+  top?: TopQueryParameterParameter
+}

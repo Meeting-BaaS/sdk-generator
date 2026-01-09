@@ -6,12 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type SearchContextSize = typeof SearchContextSize[keyof typeof SearchContextSize];
-
+export type SearchContextSize = (typeof SearchContextSize)[keyof typeof SearchContextSize]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SearchContextSize = {
-  low: 'low',
-  medium: 'medium',
-  high: 'high',
-} as const;
+  low: "low",
+  medium: "medium",
+  high: "high"
+} as const

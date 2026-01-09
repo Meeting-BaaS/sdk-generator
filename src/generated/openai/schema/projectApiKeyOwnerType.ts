@@ -9,11 +9,11 @@
 /**
  * `user` or `service_account`
  */
-export type ProjectApiKeyOwnerType = typeof ProjectApiKeyOwnerType[keyof typeof ProjectApiKeyOwnerType];
-
+export type ProjectApiKeyOwnerType =
+  (typeof ProjectApiKeyOwnerType)[keyof typeof ProjectApiKeyOwnerType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectApiKeyOwnerType = {
-  user: 'user',
-  service_account: 'service_account',
-} as const;
+  user: "user",
+  service_account: "service_account"
+} as const

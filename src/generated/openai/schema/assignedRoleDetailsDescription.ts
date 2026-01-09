@@ -9,4 +9,4 @@
 /**
  * Description of the role.
  */
-export type AssignedRoleDetailsDescription = string | null;
+export type AssignedRoleDetailsDescription = string | null

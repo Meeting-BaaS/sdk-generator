@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RunGraderResponseMetadataErrorsModelGraderServerErrorDetails = string | null;
+export type RunGraderResponseMetadataErrorsModelGraderServerErrorDetails = string | null

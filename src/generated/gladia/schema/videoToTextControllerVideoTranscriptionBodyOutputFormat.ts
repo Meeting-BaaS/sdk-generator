@@ -5,14 +5,14 @@
  * OpenAPI spec version: 1.0
  */
 
-export type VideoToTextControllerVideoTranscriptionBodyOutputFormat = typeof VideoToTextControllerVideoTranscriptionBodyOutputFormat[keyof typeof VideoToTextControllerVideoTranscriptionBodyOutputFormat];
-
+export type VideoToTextControllerVideoTranscriptionBodyOutputFormat =
+  (typeof VideoToTextControllerVideoTranscriptionBodyOutputFormat)[keyof typeof VideoToTextControllerVideoTranscriptionBodyOutputFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoToTextControllerVideoTranscriptionBodyOutputFormat = {
-  json: 'json',
-  srt: 'srt',
-  vtt: 'vtt',
-  plain: 'plain',
-  txt: 'txt',
-} as const;
+  json: "json",
+  srt: "srt",
+  vtt: "vtt",
+  plain: "plain",
+  txt: "txt"
+} as const

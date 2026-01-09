@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type DeleteVectorStoreResponseObject = typeof DeleteVectorStoreResponseObject[keyof typeof DeleteVectorStoreResponseObject];
-
+export type DeleteVectorStoreResponseObject =
+  (typeof DeleteVectorStoreResponseObject)[keyof typeof DeleteVectorStoreResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeleteVectorStoreResponseObject = {
-  vector_storedeleted: 'vector_store.deleted',
-} as const;
+  vector_storedeleted: "vector_store.deleted"
+} as const

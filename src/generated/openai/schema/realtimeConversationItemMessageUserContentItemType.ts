@@ -9,12 +9,12 @@
 /**
  * The content type (`input_text`, `input_audio`, or `input_image`).
  */
-export type RealtimeConversationItemMessageUserContentItemType = typeof RealtimeConversationItemMessageUserContentItemType[keyof typeof RealtimeConversationItemMessageUserContentItemType];
-
+export type RealtimeConversationItemMessageUserContentItemType =
+  (typeof RealtimeConversationItemMessageUserContentItemType)[keyof typeof RealtimeConversationItemMessageUserContentItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageUserContentItemType = {
-  input_text: 'input_text',
-  input_audio: 'input_audio',
-  input_image: 'input_image',
-} as const;
+  input_text: "input_text",
+  input_audio: "input_audio",
+  input_image: "input_image"
+} as const

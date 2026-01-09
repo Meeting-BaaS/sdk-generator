@@ -4,9 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PostChapterizationResult } from './postChapterizationResult';
+import type { PostChapterizationResult } from "./postChapterizationResult"
 
 export interface PostChapterizationMessageData {
   /** The chapters */
-  results: PostChapterizationResult[];
+  results: PostChapterizationResult[]
 }

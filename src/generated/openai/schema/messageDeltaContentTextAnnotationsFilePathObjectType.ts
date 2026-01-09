@@ -9,10 +9,10 @@
 /**
  * Always `file_path`.
  */
-export type MessageDeltaContentTextAnnotationsFilePathObjectType = typeof MessageDeltaContentTextAnnotationsFilePathObjectType[keyof typeof MessageDeltaContentTextAnnotationsFilePathObjectType];
-
+export type MessageDeltaContentTextAnnotationsFilePathObjectType =
+  (typeof MessageDeltaContentTextAnnotationsFilePathObjectType)[keyof typeof MessageDeltaContentTextAnnotationsFilePathObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageDeltaContentTextAnnotationsFilePathObjectType = {
-  file_path: 'file_path',
-} as const;
+  file_path: "file_path"
+} as const

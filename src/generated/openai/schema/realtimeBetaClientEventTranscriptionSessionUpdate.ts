@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateRequest } from './realtimeTranscriptionSessionCreateRequest';
+import type { RealtimeTranscriptionSessionCreateRequest } from "./realtimeTranscriptionSessionCreateRequest"
 
 /**
  * Send this event to update a transcription session.
@@ -13,8 +13,8 @@ import type { RealtimeTranscriptionSessionCreateRequest } from './realtimeTransc
  */
 export interface RealtimeBetaClientEventTranscriptionSessionUpdate {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `transcription_session.update`. */
-  type: 'transcription_session.update';
-  session: RealtimeTranscriptionSessionCreateRequest;
+  type: "transcription_session.update"
+  session: RealtimeTranscriptionSessionCreateRequest
 }

@@ -9,10 +9,9 @@
 /**
  * The type of the file search tool. Always `file_search`.
  */
-export type FileSearchToolType = typeof FileSearchToolType[keyof typeof FileSearchToolType];
-
+export type FileSearchToolType = (typeof FileSearchToolType)[keyof typeof FileSearchToolType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileSearchToolType = {
-  file_search: 'file_search',
-} as const;
+  file_search: "file_search"
+} as const

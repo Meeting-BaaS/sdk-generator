@@ -5,71 +5,71 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptStatus } from './transcriptStatus';
-import type { TranscriptLanguageCodeProperty } from './transcriptLanguageCodeProperty';
-import type { TranscriptLanguageDetection } from './transcriptLanguageDetection';
-import type { TranscriptLanguageConfidenceThreshold } from './transcriptLanguageConfidenceThreshold';
-import type { TranscriptLanguageConfidence } from './transcriptLanguageConfidence';
-import type { TranscriptSpeechModel } from './transcriptSpeechModel';
-import type { TranscriptText } from './transcriptText';
-import type { TranscriptWords } from './transcriptWords';
-import type { TranscriptUtterances } from './transcriptUtterances';
-import type { TranscriptConfidence } from './transcriptConfidence';
-import type { TranscriptAudioDuration } from './transcriptAudioDuration';
-import type { TranscriptPunctuate } from './transcriptPunctuate';
-import type { TranscriptFormatText } from './transcriptFormatText';
-import type { TranscriptDisfluencies } from './transcriptDisfluencies';
-import type { TranscriptMultichannel } from './transcriptMultichannel';
-import type { TranscriptWebhookUrl } from './transcriptWebhookUrl';
-import type { TranscriptWebhookStatusCode } from './transcriptWebhookStatusCode';
-import type { TranscriptWebhookAuthHeaderName } from './transcriptWebhookAuthHeaderName';
-import type { TranscriptSpeedBoost } from './transcriptSpeedBoost';
-import type { TranscriptAutoHighlightsResult } from './transcriptAutoHighlightsResult';
-import type { TranscriptAudioStartFrom } from './transcriptAudioStartFrom';
-import type { TranscriptAudioEndAt } from './transcriptAudioEndAt';
-import type { TranscriptBoostParamProperty } from './transcriptBoostParamProperty';
-import type { TranscriptFilterProfanity } from './transcriptFilterProfanity';
-import type { TranscriptRedactPiiAudio } from './transcriptRedactPiiAudio';
-import type { TranscriptRedactPiiAudioQuality } from './transcriptRedactPiiAudioQuality';
-import type { TranscriptRedactPiiPolicies } from './transcriptRedactPiiPolicies';
-import type { SubstitutionPolicy } from './substitutionPolicy';
-import type { TranscriptSpeakerLabels } from './transcriptSpeakerLabels';
-import type { TranscriptSpeakersExpected } from './transcriptSpeakersExpected';
-import type { TranscriptContentSafety } from './transcriptContentSafety';
-import type { TranscriptContentSafetyLabels } from './transcriptContentSafetyLabels';
-import type { TranscriptIabCategories } from './transcriptIabCategories';
-import type { TranscriptIabCategoriesResult } from './transcriptIabCategoriesResult';
-import type { TranscriptCustomSpellingProperty } from './transcriptCustomSpellingProperty';
-import type { TranscriptAutoChapters } from './transcriptAutoChapters';
-import type { TranscriptChapters } from './transcriptChapters';
-import type { TranscriptSummaryType } from './transcriptSummaryType';
-import type { TranscriptSummaryModel } from './transcriptSummaryModel';
-import type { TranscriptSummary } from './transcriptSummary';
-import type { TranscriptCustomTopics } from './transcriptCustomTopics';
-import type { TranscriptSentimentAnalysis } from './transcriptSentimentAnalysis';
-import type { TranscriptSentimentAnalysisResults } from './transcriptSentimentAnalysisResults';
-import type { TranscriptEntityDetection } from './transcriptEntityDetection';
-import type { TranscriptEntities } from './transcriptEntities';
-import type { TranscriptSpeechThreshold } from './transcriptSpeechThreshold';
-import type { TranscriptThrottled } from './transcriptThrottled';
+import type { TranscriptStatus } from "./transcriptStatus"
+import type { TranscriptLanguageCodeProperty } from "./transcriptLanguageCodeProperty"
+import type { TranscriptLanguageDetection } from "./transcriptLanguageDetection"
+import type { TranscriptLanguageConfidenceThreshold } from "./transcriptLanguageConfidenceThreshold"
+import type { TranscriptLanguageConfidence } from "./transcriptLanguageConfidence"
+import type { TranscriptSpeechModel } from "./transcriptSpeechModel"
+import type { TranscriptText } from "./transcriptText"
+import type { TranscriptWords } from "./transcriptWords"
+import type { TranscriptUtterances } from "./transcriptUtterances"
+import type { TranscriptConfidence } from "./transcriptConfidence"
+import type { TranscriptAudioDuration } from "./transcriptAudioDuration"
+import type { TranscriptPunctuate } from "./transcriptPunctuate"
+import type { TranscriptFormatText } from "./transcriptFormatText"
+import type { TranscriptDisfluencies } from "./transcriptDisfluencies"
+import type { TranscriptMultichannel } from "./transcriptMultichannel"
+import type { TranscriptWebhookUrl } from "./transcriptWebhookUrl"
+import type { TranscriptWebhookStatusCode } from "./transcriptWebhookStatusCode"
+import type { TranscriptWebhookAuthHeaderName } from "./transcriptWebhookAuthHeaderName"
+import type { TranscriptSpeedBoost } from "./transcriptSpeedBoost"
+import type { TranscriptAutoHighlightsResult } from "./transcriptAutoHighlightsResult"
+import type { TranscriptAudioStartFrom } from "./transcriptAudioStartFrom"
+import type { TranscriptAudioEndAt } from "./transcriptAudioEndAt"
+import type { TranscriptBoostParamProperty } from "./transcriptBoostParamProperty"
+import type { TranscriptFilterProfanity } from "./transcriptFilterProfanity"
+import type { TranscriptRedactPiiAudio } from "./transcriptRedactPiiAudio"
+import type { TranscriptRedactPiiAudioQuality } from "./transcriptRedactPiiAudioQuality"
+import type { TranscriptRedactPiiPolicies } from "./transcriptRedactPiiPolicies"
+import type { SubstitutionPolicy } from "./substitutionPolicy"
+import type { TranscriptSpeakerLabels } from "./transcriptSpeakerLabels"
+import type { TranscriptSpeakersExpected } from "./transcriptSpeakersExpected"
+import type { TranscriptContentSafety } from "./transcriptContentSafety"
+import type { TranscriptContentSafetyLabels } from "./transcriptContentSafetyLabels"
+import type { TranscriptIabCategories } from "./transcriptIabCategories"
+import type { TranscriptIabCategoriesResult } from "./transcriptIabCategoriesResult"
+import type { TranscriptCustomSpellingProperty } from "./transcriptCustomSpellingProperty"
+import type { TranscriptAutoChapters } from "./transcriptAutoChapters"
+import type { TranscriptChapters } from "./transcriptChapters"
+import type { TranscriptSummaryType } from "./transcriptSummaryType"
+import type { TranscriptSummaryModel } from "./transcriptSummaryModel"
+import type { TranscriptSummary } from "./transcriptSummary"
+import type { TranscriptCustomTopics } from "./transcriptCustomTopics"
+import type { TranscriptSentimentAnalysis } from "./transcriptSentimentAnalysis"
+import type { TranscriptSentimentAnalysisResults } from "./transcriptSentimentAnalysisResults"
+import type { TranscriptEntityDetection } from "./transcriptEntityDetection"
+import type { TranscriptEntities } from "./transcriptEntities"
+import type { TranscriptSpeechThreshold } from "./transcriptSpeechThreshold"
+import type { TranscriptThrottled } from "./transcriptThrottled"
 
 /**
  * A transcript object
  */
 export interface Transcript {
   /** The unique identifier of your transcript */
-  id: string;
+  id: string
   /** The URL of the media that was transcribed */
-  audio_url: string;
+  audio_url: string
   /** The status of your transcript. Possible values are queued, processing, completed, or error. */
-  status: TranscriptStatus;
+  status: TranscriptStatus
   /** The language of your audio file.
 Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
 The default value is 'en_us'.
  */
-  language_code?: TranscriptLanguageCodeProperty;
+  language_code?: TranscriptLanguageCodeProperty
   /** Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false */
-  language_detection?: TranscriptLanguageDetection;
+  language_detection?: TranscriptLanguageDetection
   /**
    * The confidence threshold for the automatically detected language.
 An error will be returned if the language confidence is below this threshold.
@@ -77,153 +77,153 @@ An error will be returned if the language confidence is below this threshold.
    * @minimum 0
    * @maximum 1
    */
-  language_confidence_threshold: TranscriptLanguageConfidenceThreshold;
+  language_confidence_threshold: TranscriptLanguageConfidenceThreshold
   /**
    * The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
    * @minimum 0
    * @maximum 1
    */
-  language_confidence: TranscriptLanguageConfidence;
+  language_confidence: TranscriptLanguageConfidence
   /** The speech model used for the transcription. When `null`, the default model is used. */
-  speech_model: TranscriptSpeechModel;
+  speech_model: TranscriptSpeechModel
   /** The textual transcript of your media file */
-  text?: TranscriptText;
+  text?: TranscriptText
   /** An array of temporally-sequential word objects, one for each word in the transcript.
 See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
  */
-  words?: TranscriptWords;
+  words?: TranscriptWords
   /** When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
 See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
  */
-  utterances?: TranscriptUtterances;
+  utterances?: TranscriptUtterances
   /**
    * The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
    * @minimum 0
    * @maximum 1
    */
-  confidence?: TranscriptConfidence;
+  confidence?: TranscriptConfidence
   /** The duration of this transcript object's media file, in seconds */
-  audio_duration?: TranscriptAudioDuration;
+  audio_duration?: TranscriptAudioDuration
   /** Whether Automatic Punctuation is enabled, either true or false */
-  punctuate?: TranscriptPunctuate;
+  punctuate?: TranscriptPunctuate
   /** Whether Text Formatting is enabled, either true or false */
-  format_text?: TranscriptFormatText;
+  format_text?: TranscriptFormatText
   /** Transcribe Filler Words, like "umm", in your media file; can be true or false */
-  disfluencies?: TranscriptDisfluencies;
+  disfluencies?: TranscriptDisfluencies
   /** Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false */
-  multichannel?: TranscriptMultichannel;
+  multichannel?: TranscriptMultichannel
   /** The number of audio channels in the audio file. This is only present when multichannel is enabled. */
-  audio_channels?: number;
+  audio_channels?: number
   /** The URL to which we send webhook requests.
 We sends two different types of webhook requests.
 One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
  */
-  webhook_url?: TranscriptWebhookUrl;
+  webhook_url?: TranscriptWebhookUrl
   /** The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided */
-  webhook_status_code?: TranscriptWebhookStatusCode;
+  webhook_status_code?: TranscriptWebhookStatusCode
   /** Whether webhook authentication details were provided */
-  webhook_auth: boolean;
+  webhook_auth: boolean
   /** The header name to be sent with the transcript completed or failed webhook requests */
-  webhook_auth_header_name?: TranscriptWebhookAuthHeaderName;
+  webhook_auth_header_name?: TranscriptWebhookAuthHeaderName
   /**
    * Whether speed boost is enabled
    * @deprecated
    */
-  speed_boost?: TranscriptSpeedBoost;
+  speed_boost?: TranscriptSpeedBoost
   /** Whether Key Phrases is enabled, either true or false */
-  auto_highlights: boolean;
+  auto_highlights: boolean
   /** An array of results for the Key Phrases model, if it is enabled.
 See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
  */
-  auto_highlights_result?: TranscriptAutoHighlightsResult;
+  auto_highlights_result?: TranscriptAutoHighlightsResult
   /** The point in time, in milliseconds, in the file at which the transcription was started */
-  audio_start_from?: TranscriptAudioStartFrom;
+  audio_start_from?: TranscriptAudioStartFrom
   /** The point in time, in milliseconds, in the file at which the transcription was terminated */
-  audio_end_at?: TranscriptAudioEndAt;
+  audio_end_at?: TranscriptAudioEndAt
   /**
    * The list of custom vocabulary to boost transcription probability for
    * @deprecated
    */
-  word_boost?: string[];
+  word_boost?: string[]
   /** The word boost parameter value */
-  boost_param?: TranscriptBoostParamProperty;
+  boost_param?: TranscriptBoostParamProperty
   /** Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false */
-  filter_profanity?: TranscriptFilterProfanity;
+  filter_profanity?: TranscriptFilterProfanity
   /** Whether [PII Redaction](https://www.assemblyai.com/docs/models/pii-redaction) is enabled, either true or false */
-  redact_pii: boolean;
+  redact_pii: boolean
   /** Whether a redacted version of the audio file was generated,
 either true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
  */
-  redact_pii_audio?: TranscriptRedactPiiAudio;
+  redact_pii_audio?: TranscriptRedactPiiAudio
   /** The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.
 See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
  */
-  redact_pii_audio_quality?: TranscriptRedactPiiAudioQuality;
+  redact_pii_audio_quality?: TranscriptRedactPiiAudioQuality
   /** The list of PII Redaction policies that were enabled, if PII Redaction is enabled.
 See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
  */
-  redact_pii_policies?: TranscriptRedactPiiPolicies;
+  redact_pii_policies?: TranscriptRedactPiiPolicies
   /** The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details. */
-  redact_pii_sub?: SubstitutionPolicy;
+  redact_pii_sub?: SubstitutionPolicy
   /** Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false */
-  speaker_labels?: TranscriptSpeakerLabels;
+  speaker_labels?: TranscriptSpeakerLabels
   /** Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details. */
-  speakers_expected?: TranscriptSpeakersExpected;
+  speakers_expected?: TranscriptSpeakersExpected
   /** Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false */
-  content_safety?: TranscriptContentSafety;
+  content_safety?: TranscriptContentSafety
   /** An array of results for the Content Moderation model, if it is enabled.
 See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
  */
-  content_safety_labels?: TranscriptContentSafetyLabels;
+  content_safety_labels?: TranscriptContentSafetyLabels
   /** Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false */
-  iab_categories?: TranscriptIabCategories;
+  iab_categories?: TranscriptIabCategories
   /** The result of the Topic Detection model, if it is enabled.
 See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
  */
-  iab_categories_result?: TranscriptIabCategoriesResult;
+  iab_categories_result?: TranscriptIabCategoriesResult
   /** Customize how words are spelled and formatted using to and from values */
-  custom_spelling?: TranscriptCustomSpellingProperty;
+  custom_spelling?: TranscriptCustomSpellingProperty
   /** Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
- */
-  keyterms_prompt?: string[];
+   */
+  keyterms_prompt?: string[]
   /**
    * This parameter does not currently have any functionality attached to it.
    * @deprecated
    */
-  prompt?: string;
+  prompt?: string
   /** Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false */
-  auto_chapters?: TranscriptAutoChapters;
+  auto_chapters?: TranscriptAutoChapters
   /** An array of temporally sequential chapters for the audio file */
-  chapters?: TranscriptChapters;
+  chapters?: TranscriptChapters
   /** Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false */
-  summarization: boolean;
+  summarization: boolean
   /** The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled */
-  summary_type?: TranscriptSummaryType;
+  summary_type?: TranscriptSummaryType
   /** The Summarization model used to generate the summary,
 if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
  */
-  summary_model?: TranscriptSummaryModel;
+  summary_model?: TranscriptSummaryModel
   /** The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled */
-  summary?: TranscriptSummary;
+  summary?: TranscriptSummary
   /**
    * Whether custom topics is enabled, either true or false
    * @deprecated
    */
-  custom_topics?: TranscriptCustomTopics;
+  custom_topics?: TranscriptCustomTopics
   /** The list of custom topics provided if custom topics is enabled */
-  topics?: string[];
+  topics?: string[]
   /** Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false */
-  sentiment_analysis?: TranscriptSentimentAnalysis;
+  sentiment_analysis?: TranscriptSentimentAnalysis
   /** An array of results for the Sentiment Analysis model, if it is enabled.
 See [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) for more information.
  */
-  sentiment_analysis_results?: TranscriptSentimentAnalysisResults;
+  sentiment_analysis_results?: TranscriptSentimentAnalysisResults
   /** Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false */
-  entity_detection?: TranscriptEntityDetection;
+  entity_detection?: TranscriptEntityDetection
   /** An array of results for the Entity Detection model, if it is enabled.
 See [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.
  */
-  entities?: TranscriptEntities;
+  entities?: TranscriptEntities
   /**
    * Defaults to null. Reject audio files that contain less than this fraction of speech.
 Valid values are in the range [0, 1] inclusive.
@@ -231,19 +231,19 @@ Valid values are in the range [0, 1] inclusive.
    * @minimum 0
    * @maximum 1
    */
-  speech_threshold?: TranscriptSpeechThreshold;
+  speech_threshold?: TranscriptSpeechThreshold
   /** True while a request is throttled and false when a request is no longer throttled */
-  throttled?: TranscriptThrottled;
+  throttled?: TranscriptThrottled
   /** Error message of why the transcript failed */
-  error?: string;
+  error?: string
   /**
    * The language model that was used for the transcript
    * @deprecated
    */
-  language_model: string;
+  language_model: string
   /**
    * The acoustic model that was used for the transcript
    * @deprecated
    */
-  acoustic_model: string;
+  acoustic_model: string
 }

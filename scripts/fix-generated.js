@@ -573,7 +573,7 @@ function fixMismatchedDefaultTypes(content, filePath) {
   // Replace with: export const fooDefault = <value>
   content = content.replace(
     /export const (\w+):\s*\([^)]+\)\[\]\s*=\s*([\d.]+|"[^"]*"|'[^']*'|true|false)(?=;)/g,
-    'export const $1 = $2'
+    "export const $1 = $2"
   )
 
   if (content !== before) {

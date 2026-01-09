@@ -9,12 +9,12 @@
 /**
  * Status values reported for shell tool calls.
  */
-export type FunctionShellCallItemStatus = typeof FunctionShellCallItemStatus[keyof typeof FunctionShellCallItemStatus];
-
+export type FunctionShellCallItemStatus =
+  (typeof FunctionShellCallItemStatus)[keyof typeof FunctionShellCallItemStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FunctionShellCallItemStatus = {
-  in_progress: 'in_progress',
-  completed: 'completed',
-  incomplete: 'incomplete',
-} as const;
+  in_progress: "in_progress",
+  completed: "completed",
+  incomplete: "incomplete"
+} as const

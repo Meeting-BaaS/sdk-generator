@@ -19,5 +19,5 @@ of overhead to the data stream. You can set `include_obfuscation` to
 false to optimize for bandwidth if you trust the network links between
 your application and the OpenAI API.
  */
-  include_obfuscation?: boolean;
-};
+  include_obfuscation?: boolean
+}

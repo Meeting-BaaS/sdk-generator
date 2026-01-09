@@ -9,10 +9,10 @@
 /**
  * The type of the content part.
  */
-export type ChatCompletionRequestMessageContentPartTextType = typeof ChatCompletionRequestMessageContentPartTextType[keyof typeof ChatCompletionRequestMessageContentPartTextType];
-
+export type ChatCompletionRequestMessageContentPartTextType =
+  (typeof ChatCompletionRequestMessageContentPartTextType)[keyof typeof ChatCompletionRequestMessageContentPartTextType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestMessageContentPartTextType = {
-  text: 'text',
-} as const;
+  text: "text"
+} as const

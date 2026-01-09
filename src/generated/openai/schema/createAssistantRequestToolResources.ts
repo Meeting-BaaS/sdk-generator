@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateAssistantRequestToolResourcesAnyOf } from './createAssistantRequestToolResourcesAnyOf';
+import type { CreateAssistantRequestToolResourcesAnyOf } from "./createAssistantRequestToolResourcesAnyOf"
 
-export type CreateAssistantRequestToolResources = CreateAssistantRequestToolResourcesAnyOf | null;
+export type CreateAssistantRequestToolResources = CreateAssistantRequestToolResourcesAnyOf | null

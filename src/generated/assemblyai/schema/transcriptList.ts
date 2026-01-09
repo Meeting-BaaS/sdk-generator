@@ -5,15 +5,15 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { PageDetails } from './pageDetails';
-import type { TranscriptListItem } from './transcriptListItem';
+import type { PageDetails } from "./pageDetails"
+import type { TranscriptListItem } from "./transcriptListItem"
 
 /**
  * A list of transcripts. Transcripts are sorted from newest to oldest. The previous URL always points to a page with older transcripts.
  */
 export interface TranscriptList {
   /** Details of the transcript page */
-  page_details: PageDetails;
+  page_details: PageDetails
   /** An array of transcripts */
-  transcripts: TranscriptListItem[];
+  transcripts: TranscriptListItem[]
 }

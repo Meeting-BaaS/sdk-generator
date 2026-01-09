@@ -9,10 +9,10 @@
 /**
  * The type of the input item. Always `input_text`.
  */
-export type InputTextContentParamType = typeof InputTextContentParamType[keyof typeof InputTextContentParamType];
-
+export type InputTextContentParamType =
+  (typeof InputTextContentParamType)[keyof typeof InputTextContentParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputTextContentParamType = {
-  input_text: 'input_text',
-} as const;
+  input_text: "input_text"
+} as const

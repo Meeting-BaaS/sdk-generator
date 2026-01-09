@@ -5,27 +5,27 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { UsageImagesResultObject } from './usageImagesResultObject';
-import type { UsageImagesResultSource } from './usageImagesResultSource';
-import type { UsageImagesResultSize } from './usageImagesResultSize';
-import type { UsageImagesResultProjectId } from './usageImagesResultProjectId';
-import type { UsageImagesResultUserId } from './usageImagesResultUserId';
-import type { UsageImagesResultApiKeyId } from './usageImagesResultApiKeyId';
-import type { UsageImagesResultModel } from './usageImagesResultModel';
+import type { UsageImagesResultObject } from "./usageImagesResultObject"
+import type { UsageImagesResultSource } from "./usageImagesResultSource"
+import type { UsageImagesResultSize } from "./usageImagesResultSize"
+import type { UsageImagesResultProjectId } from "./usageImagesResultProjectId"
+import type { UsageImagesResultUserId } from "./usageImagesResultUserId"
+import type { UsageImagesResultApiKeyId } from "./usageImagesResultApiKeyId"
+import type { UsageImagesResultModel } from "./usageImagesResultModel"
 
 /**
  * The aggregated images usage details of the specific time bucket.
  */
 export interface UsageImagesResult {
-  object: UsageImagesResultObject;
+  object: UsageImagesResultObject
   /** The number of images processed. */
-  images: number;
+  images: number
   /** The count of requests made to the model. */
-  num_model_requests: number;
-  source?: UsageImagesResultSource;
-  size?: UsageImagesResultSize;
-  project_id?: UsageImagesResultProjectId;
-  user_id?: UsageImagesResultUserId;
-  api_key_id?: UsageImagesResultApiKeyId;
-  model?: UsageImagesResultModel;
+  num_model_requests: number
+  source?: UsageImagesResultSource
+  size?: UsageImagesResultSize
+  project_id?: UsageImagesResultProjectId
+  user_id?: UsageImagesResultUserId
+  api_key_id?: UsageImagesResultApiKeyId
+  model?: UsageImagesResultModel
 }

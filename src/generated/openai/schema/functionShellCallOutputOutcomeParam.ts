@@ -5,10 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallOutputTimeoutOutcomeParam } from './functionShellCallOutputTimeoutOutcomeParam';
-import type { FunctionShellCallOutputExitOutcomeParam } from './functionShellCallOutputExitOutcomeParam';
+import type { FunctionShellCallOutputTimeoutOutcomeParam } from "./functionShellCallOutputTimeoutOutcomeParam"
+import type { FunctionShellCallOutputExitOutcomeParam } from "./functionShellCallOutputExitOutcomeParam"
 
 /**
  * The exit or timeout outcome associated with this shell call.
  */
-export type FunctionShellCallOutputOutcomeParam = FunctionShellCallOutputTimeoutOutcomeParam | FunctionShellCallOutputExitOutcomeParam;
+export type FunctionShellCallOutputOutcomeParam =
+  | FunctionShellCallOutputTimeoutOutcomeParam
+  | FunctionShellCallOutputExitOutcomeParam

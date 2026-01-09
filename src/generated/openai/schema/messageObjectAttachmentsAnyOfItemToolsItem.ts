@@ -5,7 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AssistantToolsCode } from './assistantToolsCode';
-import type { AssistantToolsFileSearchTypeOnly } from './assistantToolsFileSearchTypeOnly';
+import type { AssistantToolsCode } from "./assistantToolsCode"
+import type { AssistantToolsFileSearchTypeOnly } from "./assistantToolsFileSearchTypeOnly"
 
-export type MessageObjectAttachmentsAnyOfItemToolsItem = AssistantToolsCode | AssistantToolsFileSearchTypeOnly;
+export type MessageObjectAttachmentsAnyOfItemToolsItem =
+  | AssistantToolsCode
+  | AssistantToolsFileSearchTypeOnly

@@ -9,4 +9,4 @@
 /**
  * The duration of this transcript object's media file, in seconds
  */
-export type TranscriptAudioDuration = number | null;
+export type TranscriptAudioDuration = number | null

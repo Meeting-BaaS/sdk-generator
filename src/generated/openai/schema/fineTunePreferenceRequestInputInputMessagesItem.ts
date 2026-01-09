@@ -5,10 +5,15 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestSystemMessage } from './chatCompletionRequestSystemMessage';
-import type { ChatCompletionRequestUserMessage } from './chatCompletionRequestUserMessage';
-import type { FineTuneChatCompletionRequestAssistantMessage } from './fineTuneChatCompletionRequestAssistantMessage';
-import type { ChatCompletionRequestToolMessage } from './chatCompletionRequestToolMessage';
-import type { ChatCompletionRequestFunctionMessage } from './chatCompletionRequestFunctionMessage';
+import type { ChatCompletionRequestSystemMessage } from "./chatCompletionRequestSystemMessage"
+import type { ChatCompletionRequestUserMessage } from "./chatCompletionRequestUserMessage"
+import type { FineTuneChatCompletionRequestAssistantMessage } from "./fineTuneChatCompletionRequestAssistantMessage"
+import type { ChatCompletionRequestToolMessage } from "./chatCompletionRequestToolMessage"
+import type { ChatCompletionRequestFunctionMessage } from "./chatCompletionRequestFunctionMessage"
 
-export type FineTunePreferenceRequestInputInputMessagesItem = ChatCompletionRequestSystemMessage | ChatCompletionRequestUserMessage | FineTuneChatCompletionRequestAssistantMessage | ChatCompletionRequestToolMessage | ChatCompletionRequestFunctionMessage;
+export type FineTunePreferenceRequestInputInputMessagesItem =
+  | ChatCompletionRequestSystemMessage
+  | ChatCompletionRequestUserMessage
+  | FineTuneChatCompletionRequestAssistantMessage
+  | ChatCompletionRequestToolMessage
+  | ChatCompletionRequestFunctionMessage

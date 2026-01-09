@@ -9,4 +9,4 @@
 /**
  * Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
  */
-export type TranscriptIabCategories = boolean | null;
+export type TranscriptIabCategories = boolean | null

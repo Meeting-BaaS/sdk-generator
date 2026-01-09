@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ListFineTuningCheckpointPermissionResponseFirstId = string | null;
+export type ListFineTuningCheckpointPermissionResponseFirstId = string | null

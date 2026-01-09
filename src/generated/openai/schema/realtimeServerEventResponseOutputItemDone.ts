@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeConversationItem } from './realtimeConversationItem';
+import type { RealtimeConversationItem } from "./realtimeConversationItem"
 
 /**
  * Returned when an Item is done streaming. Also emitted when a Response is 
@@ -14,12 +14,12 @@ interrupted, incomplete, or cancelled.
  */
 export interface RealtimeServerEventResponseOutputItemDone {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `response.output_item.done`. */
-  type: 'response.output_item.done';
+  type: "response.output_item.done"
   /** The ID of the Response to which the item belongs. */
-  response_id: string;
+  response_id: string
   /** The index of the output item in the Response. */
-  output_index: number;
-  item: RealtimeConversationItem;
+  output_index: number
+  item: RealtimeConversationItem
 }

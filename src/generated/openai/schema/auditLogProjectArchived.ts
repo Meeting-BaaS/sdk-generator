@@ -11,5 +11,5 @@
  */
 export type AuditLogProjectArchived = {
   /** The project ID. */
-  id?: string;
-};
+  id?: string
+}

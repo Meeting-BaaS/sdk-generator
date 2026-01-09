@@ -5,14 +5,14 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { EntityReference } from './entityReference';
-import type { ModelFile } from './modelFile';
-import type { ModelManifestProperties } from './modelManifestProperties';
+import type { EntityReference } from "./entityReference"
+import type { ModelFile } from "./modelFile"
+import type { ModelManifestProperties } from "./modelManifestProperties"
 
 export interface ModelManifest {
-  model: EntityReference;
+  model: EntityReference
   /** The model files of this model. */
-  modelFiles: ModelFile[];
+  modelFiles: ModelFile[]
   /** The configuration for running this model in a container. */
-  properties: ModelManifestProperties;
+  properties: ModelManifestProperties
 }

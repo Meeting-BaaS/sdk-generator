@@ -12,13 +12,13 @@ with the `status` field (`completed`, `cancelled`, `incomplete`,
 `failed`).
 
  */
-export type RealtimeBetaResponseStatusDetailsType = typeof RealtimeBetaResponseStatusDetailsType[keyof typeof RealtimeBetaResponseStatusDetailsType];
-
+export type RealtimeBetaResponseStatusDetailsType =
+  (typeof RealtimeBetaResponseStatusDetailsType)[keyof typeof RealtimeBetaResponseStatusDetailsType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeBetaResponseStatusDetailsType = {
-  completed: 'completed',
-  cancelled: 'cancelled',
-  incomplete: 'incomplete',
-  failed: 'failed',
-} as const;
+  completed: "completed",
+  cancelled: "cancelled",
+  incomplete: "incomplete",
+  failed: "failed"
+} as const

@@ -9,10 +9,10 @@
 /**
  * The type of the content part.
  */
-export type ChatCompletionRequestMessageContentPartRefusalType = typeof ChatCompletionRequestMessageContentPartRefusalType[keyof typeof ChatCompletionRequestMessageContentPartRefusalType];
-
+export type ChatCompletionRequestMessageContentPartRefusalType =
+  (typeof ChatCompletionRequestMessageContentPartRefusalType)[keyof typeof ChatCompletionRequestMessageContentPartRefusalType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionRequestMessageContentPartRefusalType = {
-  refusal: 'refusal',
-} as const;
+  refusal: "refusal"
+} as const

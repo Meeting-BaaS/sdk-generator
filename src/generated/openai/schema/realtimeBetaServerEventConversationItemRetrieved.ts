@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeConversationItem } from './realtimeConversationItem';
+import type { RealtimeConversationItem } from "./realtimeConversationItem"
 
 /**
  * Returned when a conversation item is retrieved with `conversation.item.retrieve`.
@@ -13,8 +13,8 @@ import type { RealtimeConversationItem } from './realtimeConversationItem';
  */
 export interface RealtimeBetaServerEventConversationItemRetrieved {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `conversation.item.retrieved`. */
-  type: 'conversation.item.retrieved';
-  item: RealtimeConversationItem;
+  type: "conversation.item.retrieved"
+  item: RealtimeConversationItem
 }

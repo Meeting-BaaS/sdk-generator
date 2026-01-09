@@ -11,4 +11,4 @@
 if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
 
  */
-export type TranscriptSummaryModel = string | null;
+export type TranscriptSummaryModel = string | null

@@ -5,45 +5,45 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { EntityReference } from './entityReference';
-import type { EvaluationLinks } from './evaluationLinks';
-import type { EvaluationProperties } from './evaluationProperties';
-import type { Status } from './status';
-import type { EvaluationCustomProperties } from './evaluationCustomProperties';
+import type { EntityReference } from "./entityReference"
+import type { EvaluationLinks } from "./evaluationLinks"
+import type { EvaluationProperties } from "./evaluationProperties"
+import type { Status } from "./status"
+import type { EvaluationCustomProperties } from "./evaluationCustomProperties"
 
 export interface Evaluation {
-  model1: EntityReference;
-  model2: EntityReference;
-  transcription1?: EntityReference;
-  transcription2?: EntityReference;
-  dataset: EntityReference;
-  links?: EvaluationLinks;
-  properties?: EvaluationProperties;
-  project?: EntityReference;
+  model1: EntityReference
+  model2: EntityReference
+  transcription1?: EntityReference
+  transcription2?: EntityReference
+  dataset: EntityReference
+  links?: EvaluationLinks
+  properties?: EvaluationProperties
+  project?: EntityReference
   /** The location of this entity. */
-  readonly self?: string;
+  readonly self?: string
   /** The time-stamp when the current status was entered.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly lastActionDateTime?: string;
-  status?: Status;
+  readonly lastActionDateTime?: string
+  status?: Status
   /** The time-stamp when the object was created.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly createdDateTime?: string;
+  readonly createdDateTime?: string
   /**
    * The display name of the object.
    * @minLength 1
    */
-  displayName: string;
+  displayName: string
   /** The description of the object. */
-  description?: string;
+  description?: string
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: EvaluationCustomProperties;
+  customProperties?: EvaluationCustomProperties
   /**
    * The locale of the contained data.
    * @minLength 1
    */
-  locale: string;
+  locale: string
 }

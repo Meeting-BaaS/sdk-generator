@@ -9,11 +9,11 @@
 /**
  * Controls whether the assistant message is trained against (0 or 1)
  */
-export type FineTuneChatCompletionRequestAssistantMessageAllOfWeight = typeof FineTuneChatCompletionRequestAssistantMessageAllOfWeight[keyof typeof FineTuneChatCompletionRequestAssistantMessageAllOfWeight];
-
+export type FineTuneChatCompletionRequestAssistantMessageAllOfWeight =
+  (typeof FineTuneChatCompletionRequestAssistantMessageAllOfWeight)[keyof typeof FineTuneChatCompletionRequestAssistantMessageAllOfWeight]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FineTuneChatCompletionRequestAssistantMessageAllOfWeight = {
   NUMBER_0: 0,
-  NUMBER_1: 1,
-} as const;
+  NUMBER_1: 1
+} as const

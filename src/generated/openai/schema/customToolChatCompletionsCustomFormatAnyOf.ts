@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CustomToolChatCompletionsCustomFormatAnyOfType } from './customToolChatCompletionsCustomFormatAnyOfType';
+import type { CustomToolChatCompletionsCustomFormatAnyOfType } from "./customToolChatCompletionsCustomFormatAnyOfType"
 
 /**
  * Unconstrained free-form text.
  */
 export type CustomToolChatCompletionsCustomFormatAnyOf = {
   /** Unconstrained text format. Always `text`. */
-  type: CustomToolChatCompletionsCustomFormatAnyOfType;
-};
+  type: CustomToolChatCompletionsCustomFormatAnyOfType
+}

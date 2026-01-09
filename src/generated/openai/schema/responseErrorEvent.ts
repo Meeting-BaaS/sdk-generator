@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseErrorEventType } from './responseErrorEventType';
-import type { ResponseErrorEventCode } from './responseErrorEventCode';
-import type { ResponseErrorEventParam } from './responseErrorEventParam';
+import type { ResponseErrorEventType } from "./responseErrorEventType"
+import type { ResponseErrorEventCode } from "./responseErrorEventCode"
+import type { ResponseErrorEventParam } from "./responseErrorEventParam"
 
 /**
  * Emitted when an error occurs.
  */
 export interface ResponseErrorEvent {
   /** The type of the event. Always `error`.
- */
-  type: ResponseErrorEventType;
-  code: ResponseErrorEventCode;
+   */
+  type: ResponseErrorEventType
+  code: ResponseErrorEventCode
   /** The error message.
- */
-  message: string;
-  param: ResponseErrorEventParam;
+   */
+  message: string
+  param: ResponseErrorEventParam
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
 }

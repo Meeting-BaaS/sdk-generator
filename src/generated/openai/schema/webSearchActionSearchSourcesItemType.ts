@@ -10,10 +10,10 @@
  * The type of source. Always `url`.
 
  */
-export type WebSearchActionSearchSourcesItemType = typeof WebSearchActionSearchSourcesItemType[keyof typeof WebSearchActionSearchSourcesItemType];
-
+export type WebSearchActionSearchSourcesItemType =
+  (typeof WebSearchActionSearchSourcesItemType)[keyof typeof WebSearchActionSearchSourcesItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebSearchActionSearchSourcesItemType = {
-  url: 'url',
-} as const;
+  url: "url"
+} as const

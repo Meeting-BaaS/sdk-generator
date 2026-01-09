@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_list_tools.completed'.
  */
-export type ResponseMCPListToolsCompletedEventType = typeof ResponseMCPListToolsCompletedEventType[keyof typeof ResponseMCPListToolsCompletedEventType];
-
+export type ResponseMCPListToolsCompletedEventType =
+  (typeof ResponseMCPListToolsCompletedEventType)[keyof typeof ResponseMCPListToolsCompletedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPListToolsCompletedEventType = {
-  responsemcp_list_toolscompleted: 'response.mcp_list_tools.completed',
-} as const;
+  responsemcp_list_toolscompleted: "response.mcp_list_tools.completed"
+} as const

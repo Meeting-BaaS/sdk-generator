@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogInviteSentData } from './auditLogInviteSentData';
+import type { AuditLogInviteSentData } from "./auditLogInviteSentData"
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogInviteSent = {
   /** The ID of the invite. */
-  id?: string;
+  id?: string
   /** The payload used to create the invite. */
-  data?: AuditLogInviteSentData;
-};
+  data?: AuditLogInviteSentData
+}

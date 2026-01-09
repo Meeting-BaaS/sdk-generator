@@ -5,15 +5,25 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStreamEventAnyOf } from './runStreamEventAnyOf';
-import type { RunStreamEventAnyOfThree } from './runStreamEventAnyOfThree';
-import type { RunStreamEventAnyOfFive } from './runStreamEventAnyOfFive';
-import type { RunStreamEventAnyOfSeven } from './runStreamEventAnyOfSeven';
-import type { RunStreamEventAnyOfNine } from './runStreamEventAnyOfNine';
-import type { RunStreamEventAnyOfOneone } from './runStreamEventAnyOfOneone';
-import type { RunStreamEventAnyOfOnethree } from './runStreamEventAnyOfOnethree';
-import type { RunStreamEventAnyOfOnefive } from './runStreamEventAnyOfOnefive';
-import type { RunStreamEventAnyOfOneseven } from './runStreamEventAnyOfOneseven';
-import type { RunStreamEventAnyOfOnenine } from './runStreamEventAnyOfOnenine';
+import type { RunStreamEventAnyOf } from "./runStreamEventAnyOf"
+import type { RunStreamEventAnyOfThree } from "./runStreamEventAnyOfThree"
+import type { RunStreamEventAnyOfFive } from "./runStreamEventAnyOfFive"
+import type { RunStreamEventAnyOfSeven } from "./runStreamEventAnyOfSeven"
+import type { RunStreamEventAnyOfNine } from "./runStreamEventAnyOfNine"
+import type { RunStreamEventAnyOfOneone } from "./runStreamEventAnyOfOneone"
+import type { RunStreamEventAnyOfOnethree } from "./runStreamEventAnyOfOnethree"
+import type { RunStreamEventAnyOfOnefive } from "./runStreamEventAnyOfOnefive"
+import type { RunStreamEventAnyOfOneseven } from "./runStreamEventAnyOfOneseven"
+import type { RunStreamEventAnyOfOnenine } from "./runStreamEventAnyOfOnenine"
 
-export type RunStreamEvent = RunStreamEventAnyOf | RunStreamEventAnyOfThree | RunStreamEventAnyOfFive | RunStreamEventAnyOfSeven | RunStreamEventAnyOfNine | RunStreamEventAnyOfOneone | RunStreamEventAnyOfOnethree | RunStreamEventAnyOfOnefive | RunStreamEventAnyOfOneseven | RunStreamEventAnyOfOnenine;
+export type RunStreamEvent =
+  | RunStreamEventAnyOf
+  | RunStreamEventAnyOfThree
+  | RunStreamEventAnyOfFive
+  | RunStreamEventAnyOfSeven
+  | RunStreamEventAnyOfNine
+  | RunStreamEventAnyOfOneone
+  | RunStreamEventAnyOfOnethree
+  | RunStreamEventAnyOfOnefive
+  | RunStreamEventAnyOfOneseven
+  | RunStreamEventAnyOfOnenine

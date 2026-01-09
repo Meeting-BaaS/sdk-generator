@@ -5,8 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputTextContentParam } from './inputTextContentParam';
-import type { InputImageContentParamAutoParam } from './inputImageContentParamAutoParam';
-import type { InputFileContentParam } from './inputFileContentParam';
+import type { InputTextContentParam } from "./inputTextContentParam"
+import type { InputImageContentParamAutoParam } from "./inputImageContentParamAutoParam"
+import type { InputFileContentParam } from "./inputFileContentParam"
 
-export type FunctionCallOutputItemParamOutputAnyOfItem = InputTextContentParam | InputImageContentParamAutoParam | InputFileContentParam;
+export type FunctionCallOutputItemParamOutputAnyOfItem =
+  | InputTextContentParam
+  | InputImageContentParamAutoParam
+  | InputFileContentParam

@@ -11,7 +11,7 @@
  */
 export interface TranscriptCustomSpelling {
   /** Words or phrases to replace */
-  from: string[];
+  from: string[]
   /** Word to replace with */
-  to: string;
+  to: string
 }

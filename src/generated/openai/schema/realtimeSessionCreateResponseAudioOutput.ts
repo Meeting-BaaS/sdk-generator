@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormats } from './realtimeAudioFormats';
-import type { VoiceIdsShared } from './voiceIdsShared';
+import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
+import type { VoiceIdsShared } from "./voiceIdsShared"
 
 export type RealtimeSessionCreateResponseAudioOutput = {
-  format?: RealtimeAudioFormats;
-  voice?: VoiceIdsShared;
-  speed?: number;
-};
+  format?: RealtimeAudioFormats
+  voice?: VoiceIdsShared
+  speed?: number
+}

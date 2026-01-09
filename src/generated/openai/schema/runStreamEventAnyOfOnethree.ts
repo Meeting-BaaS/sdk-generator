@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStreamEventAnyOfOnethreeEvent } from './runStreamEventAnyOfOnethreeEvent';
-import type { RunObject } from './runObject';
+import type { RunStreamEventAnyOfOnethreeEvent } from "./runStreamEventAnyOfOnethreeEvent"
+import type { RunObject } from "./runObject"
 
 /**
  * Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object) fails.
  */
 export type RunStreamEventAnyOfOnethree = {
-  event: RunStreamEventAnyOfOnethreeEvent;
-  data: RunObject;
-};
+  event: RunStreamEventAnyOfOnethreeEvent
+  data: RunObject
+}

@@ -11,5 +11,5 @@
  */
 export interface Conversation2 {
   /** The unique ID of the conversation. */
-  id: string;
+  id: string
 }

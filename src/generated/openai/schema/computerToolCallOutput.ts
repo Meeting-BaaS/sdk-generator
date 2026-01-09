@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ComputerToolCallOutputType } from './computerToolCallOutputType';
-import type { ComputerCallSafetyCheckParam } from './computerCallSafetyCheckParam';
-import type { ComputerScreenshotImage } from './computerScreenshotImage';
-import type { ComputerToolCallOutputStatus } from './computerToolCallOutputStatus';
+import type { ComputerToolCallOutputType } from "./computerToolCallOutputType"
+import type { ComputerCallSafetyCheckParam } from "./computerCallSafetyCheckParam"
+import type { ComputerScreenshotImage } from "./computerScreenshotImage"
+import type { ComputerToolCallOutputStatus } from "./computerToolCallOutputStatus"
 
 /**
  * The output of a computer tool call.
@@ -16,21 +16,21 @@ import type { ComputerToolCallOutputStatus } from './computerToolCallOutputStatu
  */
 export interface ComputerToolCallOutput {
   /** The type of the computer tool call output. Always `computer_call_output`.
- */
-  type: ComputerToolCallOutputType;
+   */
+  type: ComputerToolCallOutputType
   /** The ID of the computer tool call output.
- */
-  id?: string;
+   */
+  id?: string
   /** The ID of the computer tool call that produced the output.
- */
-  call_id: string;
+   */
+  call_id: string
   /** The safety checks reported by the API that have been acknowledged by the
 developer.
  */
-  acknowledged_safety_checks?: ComputerCallSafetyCheckParam[];
-  output: ComputerScreenshotImage;
+  acknowledged_safety_checks?: ComputerCallSafetyCheckParam[]
+  output: ComputerScreenshotImage
   /** The status of the message input. One of `in_progress`, `completed`, or
 `incomplete`. Populated when input items are returned via API.
  */
-  status?: ComputerToolCallOutputStatus;
+  status?: ComputerToolCallOutputStatus
 }

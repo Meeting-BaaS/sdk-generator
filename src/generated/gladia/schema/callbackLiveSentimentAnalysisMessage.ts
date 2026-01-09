@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveSentimentAnalysisMessageEvent } from './callbackLiveSentimentAnalysisMessageEvent';
-import type { SentimentAnalysisMessage } from './sentimentAnalysisMessage';
+import type { CallbackLiveSentimentAnalysisMessageEvent } from "./callbackLiveSentimentAnalysisMessageEvent"
+import type { SentimentAnalysisMessage } from "./sentimentAnalysisMessage"
 
 export interface CallbackLiveSentimentAnalysisMessage {
   /** Id of the job */
-  id: string;
-  event: CallbackLiveSentimentAnalysisMessageEvent;
+  id: string
+  event: CallbackLiveSentimentAnalysisMessageEvent
   /** The live message payload as sent to the WebSocket */
-  payload: SentimentAnalysisMessage;
+  payload: SentimentAnalysisMessage
 }

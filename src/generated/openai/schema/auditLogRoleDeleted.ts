@@ -11,5 +11,5 @@
  */
 export type AuditLogRoleDeleted = {
   /** The role ID. */
-  id?: string;
-};
+  id?: string
+}

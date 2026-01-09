@@ -9,12 +9,12 @@
 /**
  * One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
  */
-export type RunObjectLastErrorCode = typeof RunObjectLastErrorCode[keyof typeof RunObjectLastErrorCode];
-
+export type RunObjectLastErrorCode =
+  (typeof RunObjectLastErrorCode)[keyof typeof RunObjectLastErrorCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunObjectLastErrorCode = {
-  server_error: 'server_error',
-  rate_limit_exceeded: 'rate_limit_exceeded',
-  invalid_prompt: 'invalid_prompt',
-} as const;
+  server_error: "server_error",
+  rate_limit_exceeded: "rate_limit_exceeded",
+  invalid_prompt: "invalid_prompt"
+} as const

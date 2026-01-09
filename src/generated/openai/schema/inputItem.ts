@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EasyInputMessage } from './easyInputMessage';
-import type { Item } from './item';
-import type { ItemReferenceParam } from './itemReferenceParam';
+import type { EasyInputMessage } from "./easyInputMessage"
+import type { Item } from "./item"
+import type { ItemReferenceParam } from "./itemReferenceParam"
 
-export type InputItem = EasyInputMessage | Item | ItemReferenceParam;
+export type InputItem = EasyInputMessage | Item | ItemReferenceParam

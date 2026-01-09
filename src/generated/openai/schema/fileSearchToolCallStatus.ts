@@ -11,14 +11,14 @@
 `searching`, `incomplete` or `failed`,
 
  */
-export type FileSearchToolCallStatus = typeof FileSearchToolCallStatus[keyof typeof FileSearchToolCallStatus];
-
+export type FileSearchToolCallStatus =
+  (typeof FileSearchToolCallStatus)[keyof typeof FileSearchToolCallStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileSearchToolCallStatus = {
-  in_progress: 'in_progress',
-  searching: 'searching',
-  completed: 'completed',
-  incomplete: 'incomplete',
-  failed: 'failed',
-} as const;
+  in_progress: "in_progress",
+  searching: "searching",
+  completed: "completed",
+  incomplete: "incomplete",
+  failed: "failed"
+} as const

@@ -5,11 +5,11 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TranscriptionControllerListV2KindItem = typeof TranscriptionControllerListV2KindItem[keyof typeof TranscriptionControllerListV2KindItem];
-
+export type TranscriptionControllerListV2KindItem =
+  (typeof TranscriptionControllerListV2KindItem)[keyof typeof TranscriptionControllerListV2KindItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptionControllerListV2KindItem = {
-  'pre-recorded': 'pre-recorded',
-  live: 'live',
-} as const;
+  "pre-recorded": "pre-recorded",
+  live: "live"
+} as const

@@ -10,13 +10,13 @@
  * The size of the requested image.
 
  */
-export type ImageGenPartialImageEventSize = typeof ImageGenPartialImageEventSize[keyof typeof ImageGenPartialImageEventSize];
-
+export type ImageGenPartialImageEventSize =
+  (typeof ImageGenPartialImageEventSize)[keyof typeof ImageGenPartialImageEventSize]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenPartialImageEventSize = {
-  '1024x1024': '1024x1024',
-  '1024x1536': '1024x1536',
-  '1536x1024': '1536x1024',
-  auto: 'auto',
-} as const;
+  "1024x1024": "1024x1024",
+  "1024x1536": "1024x1536",
+  "1536x1024": "1536x1024",
+  auto: "auto"
+} as const

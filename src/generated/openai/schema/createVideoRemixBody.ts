@@ -15,5 +15,5 @@ export interface CreateVideoRemixBody {
    * @minLength 1
    * @maxLength 32000
    */
-  prompt: string;
+  prompt: string
 }

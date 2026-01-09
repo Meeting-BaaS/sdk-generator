@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeServerEventErrorErrorCode } from './realtimeServerEventErrorErrorCode';
-import type { RealtimeServerEventErrorErrorParam } from './realtimeServerEventErrorErrorParam';
-import type { RealtimeServerEventErrorErrorEventId } from './realtimeServerEventErrorErrorEventId';
+import type { RealtimeServerEventErrorErrorCode } from "./realtimeServerEventErrorErrorCode"
+import type { RealtimeServerEventErrorErrorParam } from "./realtimeServerEventErrorErrorParam"
+import type { RealtimeServerEventErrorErrorEventId } from "./realtimeServerEventErrorErrorEventId"
 
 /**
  * Details of the error.
  */
 export type RealtimeServerEventErrorError = {
   /** The type of error (e.g., "invalid_request_error", "server_error").
- */
-  type: string;
-  code?: RealtimeServerEventErrorErrorCode;
+   */
+  type: string
+  code?: RealtimeServerEventErrorErrorCode
   /** A human-readable error message. */
-  message: string;
-  param?: RealtimeServerEventErrorErrorParam;
-  event_id?: RealtimeServerEventErrorErrorEventId;
-};
+  message: string
+  param?: RealtimeServerEventErrorErrorParam
+  event_id?: RealtimeServerEventErrorErrorEventId
+}

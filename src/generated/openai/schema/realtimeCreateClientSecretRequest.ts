@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeCreateClientSecretRequestExpiresAfter } from './realtimeCreateClientSecretRequestExpiresAfter';
-import type { RealtimeCreateClientSecretRequestSession } from './realtimeCreateClientSecretRequestSession';
+import type { RealtimeCreateClientSecretRequestExpiresAfter } from "./realtimeCreateClientSecretRequestExpiresAfter"
+import type { RealtimeCreateClientSecretRequestSession } from "./realtimeCreateClientSecretRequestSession"
 
 /**
  * Create a session and client secret for the Realtime API. The request can specify
@@ -20,9 +20,9 @@ a client secret will no longer be valid for creating sessions. The session itsel
 continue after that time once started. A secret can be used to create multiple sessions
 until it expires.
  */
-  expires_after?: RealtimeCreateClientSecretRequestExpiresAfter;
+  expires_after?: RealtimeCreateClientSecretRequestExpiresAfter
   /** Session configuration to use for the client secret. Choose either a realtime
 session or a transcription session.
  */
-  session?: RealtimeCreateClientSecretRequestSession;
+  session?: RealtimeCreateClientSecretRequestSession
 }

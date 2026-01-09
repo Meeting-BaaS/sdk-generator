@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImagesUsageInputTokensDetails } from './imagesUsageInputTokensDetails';
+import type { ImagesUsageInputTokensDetails } from "./imagesUsageInputTokensDetails"
 
 /**
  * For `gpt-image-1` only, the token usage information for the image generation.
@@ -13,12 +13,12 @@ import type { ImagesUsageInputTokensDetails } from './imagesUsageInputTokensDeta
  */
 export interface ImagesUsage {
   /** The total number of tokens (images and text) used for the image generation.
- */
-  total_tokens: number;
+   */
+  total_tokens: number
   /** The number of tokens (images and text) in the input prompt. */
-  input_tokens: number;
+  input_tokens: number
   /** The number of image tokens in the output image. */
-  output_tokens: number;
+  output_tokens: number
   /** The input tokens detailed information for the image generation. */
-  input_tokens_details: ImagesUsageInputTokensDetails;
+  input_tokens_details: ImagesUsageInputTokensDetails
 }

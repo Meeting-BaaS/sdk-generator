@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageDeltaContentTextAnnotationsFileCitationObjectType } from './messageDeltaContentTextAnnotationsFileCitationObjectType';
-import type { MessageDeltaContentTextAnnotationsFileCitationObjectFileCitation } from './messageDeltaContentTextAnnotationsFileCitationObjectFileCitation';
+import type { MessageDeltaContentTextAnnotationsFileCitationObjectType } from "./messageDeltaContentTextAnnotationsFileCitationObjectType"
+import type { MessageDeltaContentTextAnnotationsFileCitationObjectFileCitation } from "./messageDeltaContentTextAnnotationsFileCitationObjectFileCitation"
 
 /**
  * A citation within the message that points to a specific quote from a specific File associated with the assistant or the message. Generated when the assistant uses the "file_search" tool to search files.
  */
 export interface MessageDeltaContentTextAnnotationsFileCitationObject {
   /** The index of the annotation in the text content part. */
-  index: number;
+  index: number
   /** Always `file_citation`. */
-  type: MessageDeltaContentTextAnnotationsFileCitationObjectType;
+  type: MessageDeltaContentTextAnnotationsFileCitationObjectType
   /** The text in the message content that needs to be replaced. */
-  text?: string;
-  file_citation?: MessageDeltaContentTextAnnotationsFileCitationObjectFileCitation;
+  text?: string
+  file_citation?: MessageDeltaContentTextAnnotationsFileCitationObjectFileCitation
   /** @minimum 0 */
-  start_index?: number;
+  start_index?: number
   /** @minimum 0 */
-  end_index?: number;
+  end_index?: number
 }

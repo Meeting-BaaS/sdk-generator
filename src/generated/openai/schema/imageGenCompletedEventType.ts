@@ -10,10 +10,10 @@
  * The type of the event. Always `image_generation.completed`.
 
  */
-export type ImageGenCompletedEventType = typeof ImageGenCompletedEventType[keyof typeof ImageGenCompletedEventType];
-
+export type ImageGenCompletedEventType =
+  (typeof ImageGenCompletedEventType)[keyof typeof ImageGenCompletedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageGenCompletedEventType = {
-  image_generationcompleted: 'image_generation.completed',
-} as const;
+  image_generationcompleted: "image_generation.completed"
+} as const

@@ -9,4 +9,4 @@
 /**
  * Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
  */
-export type TranscriptAutoChapters = boolean | null;
+export type TranscriptAutoChapters = boolean | null

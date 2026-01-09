@@ -9,10 +9,10 @@
 /**
  * Always `refusal`.
  */
-export type MessageContentRefusalObjectType = typeof MessageContentRefusalObjectType[keyof typeof MessageContentRefusalObjectType];
-
+export type MessageContentRefusalObjectType =
+  (typeof MessageContentRefusalObjectType)[keyof typeof MessageContentRefusalObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageContentRefusalObjectType = {
-  refusal: 'refusal',
-} as const;
+  refusal: "refusal"
+} as const

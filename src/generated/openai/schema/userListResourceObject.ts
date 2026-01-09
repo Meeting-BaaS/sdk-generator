@@ -9,10 +9,10 @@
 /**
  * Always `list`.
  */
-export type UserListResourceObject = typeof UserListResourceObject[keyof typeof UserListResourceObject];
-
+export type UserListResourceObject =
+  (typeof UserListResourceObject)[keyof typeof UserListResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserListResourceObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

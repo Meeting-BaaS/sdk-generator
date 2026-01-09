@@ -10,4 +10,4 @@
  * A tool definition that the model should be allowed to call.
 
  */
-export type ToolChoiceAllowedToolsItem = { [key: string]: unknown };
+export type ToolChoiceAllowedToolsItem = { [key: string]: unknown }

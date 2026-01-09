@@ -10,4 +10,4 @@
  * Additional annotations about the tool.
 
  */
-export type MCPListToolsToolAnnotationsAnyOf = { [key: string]: unknown };
+export type MCPListToolsToolAnnotationsAnyOf = { [key: string]: unknown }

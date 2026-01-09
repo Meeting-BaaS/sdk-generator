@@ -11,9 +11,9 @@
  */
 export type RunCompletionUsageAnyOf = {
   /** Number of completion tokens used over the course of the run. */
-  completion_tokens: number;
+  completion_tokens: number
   /** Number of prompt tokens used over the course of the run. */
-  prompt_tokens: number;
+  prompt_tokens: number
   /** Total number of tokens used (prompt + completion). */
-  total_tokens: number;
-};
+  total_tokens: number
+}

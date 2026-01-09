@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { RedactedAudioResponse } from './redactedAudioResponse';
+import type { RedactedAudioResponse } from "./redactedAudioResponse"
 
 /**
  * The notification when the redacted audio is ready.
  */
-export type RedactedAudioNotification = RedactedAudioResponse;
+export type RedactedAudioNotification = RedactedAudioResponse

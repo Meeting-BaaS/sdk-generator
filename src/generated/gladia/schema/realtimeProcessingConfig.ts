@@ -4,25 +4,25 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CustomVocabularyConfigDTO } from './customVocabularyConfigDTO';
-import type { CustomSpellingConfigDTO } from './customSpellingConfigDTO';
-import type { TranslationConfigDTO } from './translationConfigDTO';
+import type { CustomVocabularyConfigDTO } from "./customVocabularyConfigDTO"
+import type { CustomSpellingConfigDTO } from "./customSpellingConfigDTO"
+import type { TranslationConfigDTO } from "./translationConfigDTO"
 
 export interface RealtimeProcessingConfig {
   /** If true, enable custom vocabulary for the transcription. */
-  custom_vocabulary?: boolean;
+  custom_vocabulary?: boolean
   /** Custom vocabulary configuration, if `custom_vocabulary` is enabled */
-  custom_vocabulary_config?: CustomVocabularyConfigDTO;
+  custom_vocabulary_config?: CustomVocabularyConfigDTO
   /** If true, enable custom spelling for the transcription. */
-  custom_spelling?: boolean;
+  custom_spelling?: boolean
   /** Custom spelling configuration, if `custom_spelling` is enabled */
-  custom_spelling_config?: CustomSpellingConfigDTO;
+  custom_spelling_config?: CustomSpellingConfigDTO
   /** If true, enable translation for the transcription */
-  translation?: boolean;
+  translation?: boolean
   /** Translation configuration, if `translation` is enabled */
-  translation_config?: TranslationConfigDTO;
+  translation_config?: TranslationConfigDTO
   /** If true, enable named entity recognition for the transcription. */
-  named_entity_recognition?: boolean;
+  named_entity_recognition?: boolean
   /** If true, enable sentiment analysis for the transcription. */
-  sentiment_analysis?: boolean;
+  sentiment_analysis?: boolean
 }

@@ -10,10 +10,10 @@
  * The type of the local shell tool call output. Always `local_shell_call_output`.
 
  */
-export type LocalShellToolCallOutputType = typeof LocalShellToolCallOutputType[keyof typeof LocalShellToolCallOutputType];
-
+export type LocalShellToolCallOutputType =
+  (typeof LocalShellToolCallOutputType)[keyof typeof LocalShellToolCallOutputType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LocalShellToolCallOutputType = {
-  local_shell_call_output: 'local_shell_call_output',
-} as const;
+  local_shell_call_output: "local_shell_call_output"
+} as const

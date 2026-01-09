@@ -14,15 +14,15 @@ export interface WebSearchLocation {
 [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of the user,
 e.g. `US`.
  */
-  country?: string;
+  country?: string
   /** Free text input for the region of the user, e.g. `California`.
- */
-  region?: string;
+   */
+  region?: string
   /** Free text input for the city of the user, e.g. `San Francisco`.
- */
-  city?: string;
+   */
+  city?: string
   /** The [IANA timezone](https://timeapi.io/documentation/iana-timezones) 
 of the user, e.g. `America/Los_Angeles`.
  */
-  timezone?: string;
+  timezone?: string
 }

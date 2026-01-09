@@ -9,4 +9,4 @@
 /**
  * Cursor to fetch the next page of results, or `null` when there are no more assignments.
  */
-export type RoleListResourceNext = string | null;
+export type RoleListResourceNext = string | null

@@ -12,12 +12,12 @@
 or `content_filter` if content was omitted due to a flag from our content filters.
 
  */
-export type CreateCompletionResponseChoicesItemFinishReason = typeof CreateCompletionResponseChoicesItemFinishReason[keyof typeof CreateCompletionResponseChoicesItemFinishReason];
-
+export type CreateCompletionResponseChoicesItemFinishReason =
+  (typeof CreateCompletionResponseChoicesItemFinishReason)[keyof typeof CreateCompletionResponseChoicesItemFinishReason]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateCompletionResponseChoicesItemFinishReason = {
-  stop: 'stop',
-  length: 'length',
-  content_filter: 'content_filter',
-} as const;
+  stop: "stop",
+  length: "length",
+  content_filter: "content_filter"
+} as const

@@ -10,13 +10,13 @@
  * The type of the item (`message`, `function_call`, `function_call_output`, `item_reference`).
 
  */
-export type RealtimeConversationItemWithReferenceType = typeof RealtimeConversationItemWithReferenceType[keyof typeof RealtimeConversationItemWithReferenceType];
-
+export type RealtimeConversationItemWithReferenceType =
+  (typeof RealtimeConversationItemWithReferenceType)[keyof typeof RealtimeConversationItemWithReferenceType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemWithReferenceType = {
-  message: 'message',
-  function_call: 'function_call',
-  function_call_output: 'function_call_output',
-  item_reference: 'item_reference',
-} as const;
+  message: "message",
+  function_call: "function_call",
+  function_call_output: "function_call_output",
+  item_reference: "item_reference"
+} as const

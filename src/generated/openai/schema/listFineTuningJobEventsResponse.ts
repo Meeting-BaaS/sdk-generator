@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTuningJobEvent } from './fineTuningJobEvent';
-import type { ListFineTuningJobEventsResponseObject } from './listFineTuningJobEventsResponseObject';
+import type { FineTuningJobEvent } from "./fineTuningJobEvent"
+import type { ListFineTuningJobEventsResponseObject } from "./listFineTuningJobEventsResponseObject"
 
 export interface ListFineTuningJobEventsResponse {
-  data: FineTuningJobEvent[];
-  object: ListFineTuningJobEventsResponseObject;
-  has_more: boolean;
+  data: FineTuningJobEvent[]
+  object: ListFineTuningJobEventsResponseObject
+  has_more: boolean
 }

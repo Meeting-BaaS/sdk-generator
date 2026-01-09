@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageGenPartialImageEventType } from './imageGenPartialImageEventType';
-import type { ImageGenPartialImageEventSize } from './imageGenPartialImageEventSize';
-import type { ImageGenPartialImageEventQuality } from './imageGenPartialImageEventQuality';
-import type { ImageGenPartialImageEventBackground } from './imageGenPartialImageEventBackground';
-import type { ImageGenPartialImageEventOutputFormat } from './imageGenPartialImageEventOutputFormat';
+import type { ImageGenPartialImageEventType } from "./imageGenPartialImageEventType"
+import type { ImageGenPartialImageEventSize } from "./imageGenPartialImageEventSize"
+import type { ImageGenPartialImageEventQuality } from "./imageGenPartialImageEventQuality"
+import type { ImageGenPartialImageEventBackground } from "./imageGenPartialImageEventBackground"
+import type { ImageGenPartialImageEventOutputFormat } from "./imageGenPartialImageEventOutputFormat"
 
 /**
  * Emitted when a partial image is available during image generation streaming.
@@ -17,27 +17,27 @@ import type { ImageGenPartialImageEventOutputFormat } from './imageGenPartialIma
  */
 export interface ImageGenPartialImageEvent {
   /** The type of the event. Always `image_generation.partial_image`.
- */
-  type: ImageGenPartialImageEventType;
+   */
+  type: ImageGenPartialImageEventType
   /** Base64-encoded partial image data, suitable for rendering as an image.
- */
-  b64_json: string;
+   */
+  b64_json: string
   /** The Unix timestamp when the event was created.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The size of the requested image.
- */
-  size: ImageGenPartialImageEventSize;
+   */
+  size: ImageGenPartialImageEventSize
   /** The quality setting for the requested image.
- */
-  quality: ImageGenPartialImageEventQuality;
+   */
+  quality: ImageGenPartialImageEventQuality
   /** The background setting for the requested image.
- */
-  background: ImageGenPartialImageEventBackground;
+   */
+  background: ImageGenPartialImageEventBackground
   /** The output format for the requested image.
- */
-  output_format: ImageGenPartialImageEventOutputFormat;
+   */
+  output_format: ImageGenPartialImageEventOutputFormat
   /** 0-based index for the partial image (streaming).
- */
-  partial_image_index: number;
+   */
+  partial_image_index: number
 }

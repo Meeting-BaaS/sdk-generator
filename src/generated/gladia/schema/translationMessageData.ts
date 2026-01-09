@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranslationData } from './translationData';
+import type { TranslationData } from "./translationData"
 
 /**
  * The message data. "null" if the addon failed
  * @nullable
  */
-export type TranslationMessageData = TranslationData | null;
+export type TranslationMessageData = TranslationData | null

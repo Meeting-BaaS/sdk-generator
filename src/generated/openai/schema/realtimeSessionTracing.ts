@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionTracingAnyOf } from './realtimeSessionTracingAnyOf';
+import type { RealtimeSessionTracingAnyOf } from "./realtimeSessionTracingAnyOf"
 
-export type RealtimeSessionTracing = RealtimeSessionTracingAnyOf | null;
+export type RealtimeSessionTracing = RealtimeSessionTracingAnyOf | null

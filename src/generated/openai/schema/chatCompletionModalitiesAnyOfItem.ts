@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ChatCompletionModalitiesAnyOfItem = typeof ChatCompletionModalitiesAnyOfItem[keyof typeof ChatCompletionModalitiesAnyOfItem];
-
+export type ChatCompletionModalitiesAnyOfItem =
+  (typeof ChatCompletionModalitiesAnyOfItem)[keyof typeof ChatCompletionModalitiesAnyOfItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionModalitiesAnyOfItem = {
-  text: 'text',
-  audio: 'audio',
-} as const;
+  text: "text",
+  audio: "audio"
+} as const

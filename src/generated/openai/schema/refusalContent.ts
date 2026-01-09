@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RefusalContentType } from './refusalContentType';
+import type { RefusalContentType } from "./refusalContentType"
 
 /**
  * A refusal from the model.
  */
 export interface RefusalContent {
   /** The type of the refusal. Always `refusal`. */
-  type: RefusalContentType;
+  type: RefusalContentType
   /** The refusal explanation from the model. */
-  refusal: string;
+  refusal: string
 }

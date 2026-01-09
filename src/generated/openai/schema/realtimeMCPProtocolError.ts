@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeMCPProtocolErrorType } from './realtimeMCPProtocolErrorType';
+import type { RealtimeMCPProtocolErrorType } from "./realtimeMCPProtocolErrorType"
 
 export interface RealtimeMCPProtocolError {
-  type: RealtimeMCPProtocolErrorType;
-  code: number;
-  message: string;
+  type: RealtimeMCPProtocolErrorType
+  code: number
+  message: string
 }

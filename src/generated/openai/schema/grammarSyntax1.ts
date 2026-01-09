@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type GrammarSyntax1 = typeof GrammarSyntax1[keyof typeof GrammarSyntax1];
-
+export type GrammarSyntax1 = (typeof GrammarSyntax1)[keyof typeof GrammarSyntax1]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GrammarSyntax1 = {
-  lark: 'lark',
-  regex: 'regex',
-} as const;
+  lark: "lark",
+  regex: "regex"
+} as const

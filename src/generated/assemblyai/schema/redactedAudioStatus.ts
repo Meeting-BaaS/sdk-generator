@@ -9,10 +9,9 @@
 /**
  * The status of the redacted audio
  */
-export type RedactedAudioStatus = typeof RedactedAudioStatus[keyof typeof RedactedAudioStatus];
-
+export type RedactedAudioStatus = (typeof RedactedAudioStatus)[keyof typeof RedactedAudioStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RedactedAudioStatus = {
-  redacted_audio_ready: 'redacted_audio_ready',
-} as const;
+  redacted_audio_ready: "redacted_audio_ready"
+} as const

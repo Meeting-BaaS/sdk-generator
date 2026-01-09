@@ -9,10 +9,10 @@
 /**
  * The type of the item. Always `message`.
  */
-export type RealtimeConversationItemMessageUserType = typeof RealtimeConversationItemMessageUserType[keyof typeof RealtimeConversationItemMessageUserType];
-
+export type RealtimeConversationItemMessageUserType =
+  (typeof RealtimeConversationItemMessageUserType)[keyof typeof RealtimeConversationItemMessageUserType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemMessageUserType = {
-  message: 'message',
-} as const;
+  message: "message"
+} as const

@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionAllowedToolsChoice } from './chatCompletionAllowedToolsChoice';
-import type { ChatCompletionNamedToolChoice } from './chatCompletionNamedToolChoice';
-import type { ChatCompletionNamedToolChoiceCustom } from './chatCompletionNamedToolChoiceCustom';
+import type { ChatCompletionAllowedToolsChoice } from "./chatCompletionAllowedToolsChoice"
+import type { ChatCompletionNamedToolChoice } from "./chatCompletionNamedToolChoice"
+import type { ChatCompletionNamedToolChoiceCustom } from "./chatCompletionNamedToolChoiceCustom"
 
 /**
  * Controls which (if any) tool is called by the model.
@@ -19,4 +19,10 @@ Specifying a particular tool via `{"type": "function", "function": {"name": "my_
 `none` is the default when no tools are present. `auto` is the default if tools are present.
 
  */
-export type ChatCompletionToolChoiceOption = 'none' | 'auto' | 'required' | ChatCompletionAllowedToolsChoice | ChatCompletionNamedToolChoice | ChatCompletionNamedToolChoiceCustom;
+export type ChatCompletionToolChoiceOption =
+  | "none"
+  | "auto"
+  | "required"
+  | ChatCompletionAllowedToolsChoice
+  | ChatCompletionNamedToolChoice
+  | ChatCompletionNamedToolChoiceCustom

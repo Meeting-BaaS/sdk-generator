@@ -5,7 +5,7 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptStatus } from './transcriptStatus';
+import type { TranscriptStatus } from "./transcriptStatus"
 
 export interface ListTranscriptParams {
   /**
@@ -13,15 +13,15 @@ export interface ListTranscriptParams {
    * @minimum 1
    * @maximum 200
    */
-  limit?: number;
+  limit?: number
   /** Filter by transcript status */
-  status?: TranscriptStatus;
+  status?: TranscriptStatus
   /** Only get transcripts created on this date */
-  created_on?: string;
+  created_on?: string
   /** Get transcripts that were created before this transcript ID */
-  before_id?: string;
+  before_id?: string
   /** Get transcripts that were created after this transcript ID */
-  after_id?: string;
+  after_id?: string
   /** Only get throttled transcripts, overrides the status filter */
-  throttled_only?: boolean;
+  throttled_only?: boolean
 }

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionTokenLogprob } from './chatCompletionTokenLogprob';
+import type { ChatCompletionTokenLogprob } from "./chatCompletionTokenLogprob"
 
 /**
  * Log probability information for the choice.
@@ -16,10 +16,10 @@ export type CreateChatCompletionStreamResponseChoicesItemLogprobs = {
    * A list of message content tokens with log probability information.
    * @nullable
    */
-  content: ChatCompletionTokenLogprob[] | null;
+  content: ChatCompletionTokenLogprob[] | null
   /**
    * A list of message refusal tokens with log probability information.
    * @nullable
    */
-  refusal: ChatCompletionTokenLogprob[] | null;
-} | null;
+  refusal: ChatCompletionTokenLogprob[] | null
+} | null

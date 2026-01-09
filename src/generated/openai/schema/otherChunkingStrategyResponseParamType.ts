@@ -9,10 +9,10 @@
 /**
  * Always `other`.
  */
-export type OtherChunkingStrategyResponseParamType = typeof OtherChunkingStrategyResponseParamType[keyof typeof OtherChunkingStrategyResponseParamType];
-
+export type OtherChunkingStrategyResponseParamType =
+  (typeof OtherChunkingStrategyResponseParamType)[keyof typeof OtherChunkingStrategyResponseParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OtherChunkingStrategyResponseParamType = {
-  other: 'other',
-} as const;
+  other: "other"
+} as const

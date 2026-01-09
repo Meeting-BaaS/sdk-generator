@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { SpeechModel } from './speechModel';
+import type { SpeechModel } from "./speechModel"
 
 /**
  * The speech model used for the transcription. When `null`, the default model is used.
  */
-export type TranscriptSpeechModel = SpeechModel | null;
+export type TranscriptSpeechModel = SpeechModel | null

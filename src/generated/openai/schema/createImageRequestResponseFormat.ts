@@ -10,11 +10,12 @@
  * The format in which generated images with `dall-e-2` and `dall-e-3` are returned. Must be one of `url` or `b64_json`. URLs are only valid for 60 minutes after the image has been generated. This parameter isn't supported for `gpt-image-1` which will always return base64-encoded images.
  * @nullable
  */
-export type CreateImageRequestResponseFormat = typeof CreateImageRequestResponseFormat[keyof typeof CreateImageRequestResponseFormat] | null;
-
+export type CreateImageRequestResponseFormat =
+  | (typeof CreateImageRequestResponseFormat)[keyof typeof CreateImageRequestResponseFormat]
+  | null
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateImageRequestResponseFormat = {
-  url: 'url',
-  b64_json: 'b64_json',
-} as const;
+  url: "url",
+  b64_json: "b64_json"
+} as const

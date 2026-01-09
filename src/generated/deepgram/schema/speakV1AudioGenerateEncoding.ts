@@ -7,16 +7,16 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SpeakV1AudioGenerateEncoding = typeof SpeakV1AudioGenerateEncoding[keyof typeof SpeakV1AudioGenerateEncoding];
-
+export type SpeakV1AudioGenerateEncoding =
+  (typeof SpeakV1AudioGenerateEncoding)[keyof typeof SpeakV1AudioGenerateEncoding]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeakV1AudioGenerateEncoding = {
-  linear16: 'linear16',
-  aac: 'aac',
-  opus: 'opus',
-  mp3: 'mp3',
-  flac: 'flac',
-  mulaw: 'mulaw',
-  alaw: 'alaw',
-} as const;
+  linear16: "linear16",
+  aac: "aac",
+  opus: "opus",
+  mp3: "mp3",
+  flac: "flac",
+  mulaw: "mulaw",
+  alaw: "alaw"
+} as const

@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ScreenshotType } from './screenshotType';
+import type { ScreenshotType } from "./screenshotType"
 
 /**
  * A screenshot action.
@@ -15,5 +15,5 @@ export interface Screenshot {
   /** Specifies the event type. For a screenshot action, this property is 
 always set to `screenshot`.
  */
-  type: ScreenshotType;
+  type: ScreenshotType
 }

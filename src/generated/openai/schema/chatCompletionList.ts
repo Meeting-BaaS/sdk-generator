@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionListObject } from './chatCompletionListObject';
-import type { CreateChatCompletionResponse } from './createChatCompletionResponse';
+import type { ChatCompletionListObject } from "./chatCompletionListObject"
+import type { CreateChatCompletionResponse } from "./createChatCompletionResponse"
 
 /**
  * An object representing a list of Chat Completions.
@@ -14,15 +14,15 @@ import type { CreateChatCompletionResponse } from './createChatCompletionRespons
  */
 export interface ChatCompletionList {
   /** The type of this object. It is always set to "list".
- */
-  object: ChatCompletionListObject;
+   */
+  object: ChatCompletionListObject
   /** An array of chat completion objects.
- */
-  data: CreateChatCompletionResponse[];
+   */
+  data: CreateChatCompletionResponse[]
   /** The identifier of the first chat completion in the data array. */
-  first_id: string;
+  first_id: string
   /** The identifier of the last chat completion in the data array. */
-  last_id: string;
+  last_id: string
   /** Indicates whether there are more Chat Completions available. */
-  has_more: boolean;
+  has_more: boolean
 }

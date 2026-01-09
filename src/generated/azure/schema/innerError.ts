@@ -5,21 +5,21 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { DetailedErrorCode } from './detailedErrorCode';
-import type { InnerErrorDetails } from './innerErrorDetails';
+import type { DetailedErrorCode } from "./detailedErrorCode"
+import type { InnerErrorDetails } from "./innerErrorDetails"
 
 /**
  * New Inner Error format which conforms to Cognitive Services API Guidelines which is available at https://microsoft.sharepoint.com/%3Aw%3A/t/CognitiveServicesPMO/EUoytcrjuJdKpeOKIK_QRC8BPtUYQpKBi8JsWyeDMRsWlQ?e=CPq8ow.
 This contains required properties ErrorCode, message and optional properties target, details(key value pair), inner error(this can be nested).
  */
 export interface InnerError {
-  code?: DetailedErrorCode;
+  code?: DetailedErrorCode
   /** Additional supportive details regarding the error and/or expected policies. */
-  details?: InnerErrorDetails;
+  details?: InnerErrorDetails
   /** High level error message. */
-  message?: string;
+  message?: string
   /** The source of the error.
 For example it would be "documents" or "document id" in case of invalid document. */
-  target?: string;
-  innerError?: InnerError;
+  target?: string
+  innerError?: InnerError
 }

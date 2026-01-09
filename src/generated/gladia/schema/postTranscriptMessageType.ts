@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PostTranscriptMessageType = typeof PostTranscriptMessageType[keyof typeof PostTranscriptMessageType];
-
+export type PostTranscriptMessageType =
+  (typeof PostTranscriptMessageType)[keyof typeof PostTranscriptMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostTranscriptMessageType = {
-  post_transcript: 'post_transcript',
-} as const;
+  post_transcript: "post_transcript"
+} as const

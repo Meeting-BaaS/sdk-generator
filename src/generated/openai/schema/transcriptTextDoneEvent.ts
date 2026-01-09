@@ -5,22 +5,22 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextDoneEventType } from './transcriptTextDoneEventType';
-import type { TranscriptTextDoneEventLogprobsItem } from './transcriptTextDoneEventLogprobsItem';
-import type { TranscriptTextUsageTokens } from './transcriptTextUsageTokens';
+import type { TranscriptTextDoneEventType } from "./transcriptTextDoneEventType"
+import type { TranscriptTextDoneEventLogprobsItem } from "./transcriptTextDoneEventLogprobsItem"
+import type { TranscriptTextUsageTokens } from "./transcriptTextUsageTokens"
 
 /**
  * Emitted when the transcription is complete. Contains the complete transcription text. Only emitted when you [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription) with the `Stream` parameter set to `true`.
  */
 export interface TranscriptTextDoneEvent {
   /** The type of the event. Always `transcript.text.done`.
- */
-  type: TranscriptTextDoneEventType;
+   */
+  type: TranscriptTextDoneEventType
   /** The text that was transcribed.
- */
-  text: string;
+   */
+  text: string
   /** The log probabilities of the individual tokens in the transcription. Only included if you [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription) with the `include[]` parameter set to `logprobs`.
- */
-  logprobs?: TranscriptTextDoneEventLogprobsItem[];
-  usage?: TranscriptTextUsageTokens;
+   */
+  logprobs?: TranscriptTextDoneEventLogprobsItem[]
+  usage?: TranscriptTextUsageTokens
 }

@@ -5,7 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VectorStoreExpirationAfter } from './vectorStoreExpirationAfter';
-import type { UpdateVectorStoreRequestExpiresAfterAllOf } from './updateVectorStoreRequestExpiresAfterAllOf';
+import type { VectorStoreExpirationAfter } from "./vectorStoreExpirationAfter"
+import type { UpdateVectorStoreRequestExpiresAfterAllOf } from "./updateVectorStoreRequestExpiresAfterAllOf"
 
-export type UpdateVectorStoreRequestExpiresAfter = VectorStoreExpirationAfter & UpdateVectorStoreRequestExpiresAfterAllOf;
+export type UpdateVectorStoreRequestExpiresAfter = VectorStoreExpirationAfter &
+  UpdateVectorStoreRequestExpiresAfterAllOf

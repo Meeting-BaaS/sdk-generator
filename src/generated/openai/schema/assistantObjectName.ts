@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type AssistantObjectName = string | null;
+export type AssistantObjectName = string | null

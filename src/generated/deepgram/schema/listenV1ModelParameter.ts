@@ -7,4 +7,34 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ListenV1ModelParameter = 'nova-3' | 'nova-3-general' | 'nova-3-medical' | 'nova-2' | 'nova-2-general' | 'nova-2-meeting' | 'nova-2-finance' | 'nova-2-conversationalai' | 'nova-2-voicemail' | 'nova-2-video' | 'nova-2-medical' | 'nova-2-drivethru' | 'nova-2-automotive' | 'nova' | 'nova-general' | 'nova-phonecall' | 'nova-medical' | 'enhanced' | 'enhanced-general' | 'enhanced-meeting' | 'enhanced-phonecall' | 'enhanced-finance' | 'base' | 'meeting' | 'phonecall' | 'finance' | 'conversationalai' | 'voicemail' | 'video' | string;
+export type ListenV1ModelParameter =
+  | "nova-3"
+  | "nova-3-general"
+  | "nova-3-medical"
+  | "nova-2"
+  | "nova-2-general"
+  | "nova-2-meeting"
+  | "nova-2-finance"
+  | "nova-2-conversationalai"
+  | "nova-2-voicemail"
+  | "nova-2-video"
+  | "nova-2-medical"
+  | "nova-2-drivethru"
+  | "nova-2-automotive"
+  | "nova"
+  | "nova-general"
+  | "nova-phonecall"
+  | "nova-medical"
+  | "enhanced"
+  | "enhanced-general"
+  | "enhanced-meeting"
+  | "enhanced-phonecall"
+  | "enhanced-finance"
+  | "base"
+  | "meeting"
+  | "phonecall"
+  | "finance"
+  | "conversationalai"
+  | "voicemail"
+  | "video"
+  | string

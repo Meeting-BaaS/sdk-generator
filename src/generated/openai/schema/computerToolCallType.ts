@@ -9,10 +9,9 @@
 /**
  * The type of the computer call. Always `computer_call`.
  */
-export type ComputerToolCallType = typeof ComputerToolCallType[keyof typeof ComputerToolCallType];
-
+export type ComputerToolCallType = (typeof ComputerToolCallType)[keyof typeof ComputerToolCallType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerToolCallType = {
-  computer_call: 'computer_call',
-} as const;
+  computer_call: "computer_call"
+} as const

@@ -10,10 +10,10 @@
  * The type of the event. Always `response.audio.transcript.delta`.
 
  */
-export type ResponseAudioTranscriptDeltaEventType = typeof ResponseAudioTranscriptDeltaEventType[keyof typeof ResponseAudioTranscriptDeltaEventType];
-
+export type ResponseAudioTranscriptDeltaEventType =
+  (typeof ResponseAudioTranscriptDeltaEventType)[keyof typeof ResponseAudioTranscriptDeltaEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseAudioTranscriptDeltaEventType = {
-  responseaudiotranscriptdelta: 'response.audio.transcript.delta',
-} as const;
+  responseaudiotranscriptdelta: "response.audio.transcript.delta"
+} as const

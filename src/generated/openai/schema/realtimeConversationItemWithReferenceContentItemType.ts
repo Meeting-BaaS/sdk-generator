@@ -10,13 +10,13 @@
  * The content type (`input_text`, `input_audio`, `item_reference`, `text`).
 
  */
-export type RealtimeConversationItemWithReferenceContentItemType = typeof RealtimeConversationItemWithReferenceContentItemType[keyof typeof RealtimeConversationItemWithReferenceContentItemType];
-
+export type RealtimeConversationItemWithReferenceContentItemType =
+  (typeof RealtimeConversationItemWithReferenceContentItemType)[keyof typeof RealtimeConversationItemWithReferenceContentItemType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeConversationItemWithReferenceContentItemType = {
-  input_text: 'input_text',
-  input_audio: 'input_audio',
-  item_reference: 'item_reference',
-  text: 'text',
-} as const;
+  input_text: "input_text",
+  input_audio: "input_audio",
+  item_reference: "item_reference",
+  text: "text"
+} as const

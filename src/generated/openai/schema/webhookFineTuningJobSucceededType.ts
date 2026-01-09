@@ -10,10 +10,10 @@
  * The type of the event. Always `fine_tuning.job.succeeded`.
 
  */
-export type WebhookFineTuningJobSucceededType = typeof WebhookFineTuningJobSucceededType[keyof typeof WebhookFineTuningJobSucceededType];
-
+export type WebhookFineTuningJobSucceededType =
+  (typeof WebhookFineTuningJobSucceededType)[keyof typeof WebhookFineTuningJobSucceededType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookFineTuningJobSucceededType = {
-  fine_tuningjobsucceeded: 'fine_tuning.job.succeeded',
-} as const;
+  fine_tuningjobsucceeded: "fine_tuning.job.succeeded"
+} as const

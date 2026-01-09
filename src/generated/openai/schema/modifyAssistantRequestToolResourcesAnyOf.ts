@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ModifyAssistantRequestToolResourcesAnyOfCodeInterpreter } from './modifyAssistantRequestToolResourcesAnyOfCodeInterpreter';
-import type { ModifyAssistantRequestToolResourcesAnyOfFileSearch } from './modifyAssistantRequestToolResourcesAnyOfFileSearch';
+import type { ModifyAssistantRequestToolResourcesAnyOfCodeInterpreter } from "./modifyAssistantRequestToolResourcesAnyOfCodeInterpreter"
+import type { ModifyAssistantRequestToolResourcesAnyOfFileSearch } from "./modifyAssistantRequestToolResourcesAnyOfFileSearch"
 
 /**
  * A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
 
  */
 export type ModifyAssistantRequestToolResourcesAnyOf = {
-  code_interpreter?: ModifyAssistantRequestToolResourcesAnyOfCodeInterpreter;
-  file_search?: ModifyAssistantRequestToolResourcesAnyOfFileSearch;
-};
+  code_interpreter?: ModifyAssistantRequestToolResourcesAnyOfCodeInterpreter
+  file_search?: ModifyAssistantRequestToolResourcesAnyOfFileSearch
+}

@@ -12,6 +12,6 @@
  */
 export type WebhookEvalRunCanceledData = {
   /** The unique ID of the eval run.
- */
-  id: string;
-};
+   */
+  id: string
+}

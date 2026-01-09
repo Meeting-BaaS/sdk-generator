@@ -4,24 +4,24 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SentimentAnalysisMessageError } from './sentimentAnalysisMessageError';
-import type { SentimentAnalysisMessageType } from './sentimentAnalysisMessageType';
-import type { SentimentAnalysisMessageData } from './sentimentAnalysisMessageData';
+import type { SentimentAnalysisMessageError } from "./sentimentAnalysisMessageError"
+import type { SentimentAnalysisMessageType } from "./sentimentAnalysisMessageType"
+import type { SentimentAnalysisMessageData } from "./sentimentAnalysisMessageData"
 
 export interface SentimentAnalysisMessage {
   /** Id of the live session */
-  session_id: string;
+  session_id: string
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string;
+  created_at: string
   /**
    * Error message if the addon failed
    * @nullable
    */
-  error: SentimentAnalysisMessageError;
-  type: SentimentAnalysisMessageType;
+  error: SentimentAnalysisMessageError
+  type: SentimentAnalysisMessageType
   /**
    * The message data. "null" if the addon failed
    * @nullable
    */
-  data: SentimentAnalysisMessageData;
+  data: SentimentAnalysisMessageData
 }

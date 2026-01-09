@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StreamingRequestParamsResponse } from './streamingRequestParamsResponse';
+import type { StreamingRequestParamsResponse } from "./streamingRequestParamsResponse"
 
 /**
  * Parameters used for this live transcription. Can be null if status is "error"
  * @nullable
  */
-export type StreamingResponseRequestParams = StreamingRequestParamsResponse | null;
+export type StreamingResponseRequestParams = StreamingRequestParamsResponse | null

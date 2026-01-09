@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SummarizationConfigDTO } from './summarizationConfigDTO';
+import type { SummarizationConfigDTO } from "./summarizationConfigDTO"
 
 export interface PostProcessingConfig {
   /** If true, generates summarization for the whole transcription. */
-  summarization?: boolean;
+  summarization?: boolean
   /** Summarization configuration, if `summarization` is enabled */
-  summarization_config?: SummarizationConfigDTO;
+  summarization_config?: SummarizationConfigDTO
   /** If true, generates chapters for the whole transcription. */
-  chapterization?: boolean;
+  chapterization?: boolean
 }

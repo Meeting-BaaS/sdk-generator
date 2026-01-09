@@ -9,4 +9,4 @@
 /**
  * Transcribe Filler Words, like "umm", in your media file; can be true or false
  */
-export type TranscriptDisfluencies = boolean | null;
+export type TranscriptDisfluencies = boolean | null

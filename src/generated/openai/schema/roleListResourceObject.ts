@@ -9,10 +9,10 @@
 /**
  * Always `list`.
  */
-export type RoleListResourceObject = typeof RoleListResourceObject[keyof typeof RoleListResourceObject];
-
+export type RoleListResourceObject =
+  (typeof RoleListResourceObject)[keyof typeof RoleListResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RoleListResourceObject = {
-  list: 'list',
-} as const;
+  list: "list"
+} as const

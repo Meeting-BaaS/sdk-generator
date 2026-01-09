@@ -9,10 +9,10 @@
 /**
  * The type of tool call. This is always going to be `function` for this type of tool call.
  */
-export type RunStepDetailsToolCallsFunctionObjectType = typeof RunStepDetailsToolCallsFunctionObjectType[keyof typeof RunStepDetailsToolCallsFunctionObjectType];
-
+export type RunStepDetailsToolCallsFunctionObjectType =
+  (typeof RunStepDetailsToolCallsFunctionObjectType)[keyof typeof RunStepDetailsToolCallsFunctionObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDetailsToolCallsFunctionObjectType = {
-  function: 'function',
-} as const;
+  function: "function"
+} as const

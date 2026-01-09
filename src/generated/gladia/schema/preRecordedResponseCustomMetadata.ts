@@ -8,4 +8,4 @@
 /**
  * Custom metadata given in the initial request
  */
-export type PreRecordedResponseCustomMetadata = { [key: string]: unknown };
+export type PreRecordedResponseCustomMetadata = { [key: string]: unknown }

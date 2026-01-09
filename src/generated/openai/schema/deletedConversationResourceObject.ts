@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type DeletedConversationResourceObject = typeof DeletedConversationResourceObject[keyof typeof DeletedConversationResourceObject];
-
+export type DeletedConversationResourceObject =
+  (typeof DeletedConversationResourceObject)[keyof typeof DeletedConversationResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeletedConversationResourceObject = {
-  conversationdeleted: 'conversation.deleted',
-} as const;
+  conversationdeleted: "conversation.deleted"
+} as const

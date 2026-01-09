@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Metadata } from './metadata';
+import type { Metadata } from "./metadata"
 
 export interface ModifyMessageRequest {
-  metadata?: Metadata;
+  metadata?: Metadata
 }

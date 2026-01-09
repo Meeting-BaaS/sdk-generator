@@ -9,10 +9,9 @@
 /**
  * The type of the message. Always set to `message`.
  */
-export type MessageType = typeof MessageType[keyof typeof MessageType];
-
+export type MessageType = (typeof MessageType)[keyof typeof MessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageType = {
-  message: 'message',
-} as const;
+  message: "message"
+} as const

@@ -9,12 +9,11 @@
 /**
  * The speech model to use for the transcription.
  */
-export type SpeechModel = typeof SpeechModel[keyof typeof SpeechModel];
-
+export type SpeechModel = (typeof SpeechModel)[keyof typeof SpeechModel]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeechModel = {
-  best: 'best',
-  'slam-1': 'slam-1',
-  universal: 'universal',
-} as const;
+  best: "best",
+  "slam-1": "slam-1",
+  universal: "universal"
+} as const

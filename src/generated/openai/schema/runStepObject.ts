@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepObjectObject } from './runStepObjectObject';
-import type { RunStepObjectType } from './runStepObjectType';
-import type { RunStepObjectStatus } from './runStepObjectStatus';
-import type { RunStepObjectStepDetails } from './runStepObjectStepDetails';
-import type { RunStepObjectLastError } from './runStepObjectLastError';
-import type { RunStepObjectExpiredAt } from './runStepObjectExpiredAt';
-import type { RunStepObjectCancelledAt } from './runStepObjectCancelledAt';
-import type { RunStepObjectFailedAt } from './runStepObjectFailedAt';
-import type { RunStepObjectCompletedAt } from './runStepObjectCompletedAt';
-import type { Metadata } from './metadata';
-import type { RunStepCompletionUsage } from './runStepCompletionUsage';
+import type { RunStepObjectObject } from "./runStepObjectObject"
+import type { RunStepObjectType } from "./runStepObjectType"
+import type { RunStepObjectStatus } from "./runStepObjectStatus"
+import type { RunStepObjectStepDetails } from "./runStepObjectStepDetails"
+import type { RunStepObjectLastError } from "./runStepObjectLastError"
+import type { RunStepObjectExpiredAt } from "./runStepObjectExpiredAt"
+import type { RunStepObjectCancelledAt } from "./runStepObjectCancelledAt"
+import type { RunStepObjectFailedAt } from "./runStepObjectFailedAt"
+import type { RunStepObjectCompletedAt } from "./runStepObjectCompletedAt"
+import type { Metadata } from "./metadata"
+import type { RunStepCompletionUsage } from "./runStepCompletionUsage"
 
 /**
  * Represents a step in execution of a run.
@@ -23,28 +23,28 @@ import type { RunStepCompletionUsage } from './runStepCompletionUsage';
  */
 export interface RunStepObject {
   /** The identifier of the run step, which can be referenced in API endpoints. */
-  id: string;
+  id: string
   /** The object type, which is always `thread.run.step`. */
-  object: RunStepObjectObject;
+  object: RunStepObjectObject
   /** The Unix timestamp (in seconds) for when the run step was created. */
-  created_at: number;
+  created_at: number
   /** The ID of the [assistant](https://platform.openai.com/docs/api-reference/assistants) associated with the run step. */
-  assistant_id: string;
+  assistant_id: string
   /** The ID of the [thread](https://platform.openai.com/docs/api-reference/threads) that was run. */
-  thread_id: string;
+  thread_id: string
   /** The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that this run step is a part of. */
-  run_id: string;
+  run_id: string
   /** The type of run step, which can be either `message_creation` or `tool_calls`. */
-  type: RunStepObjectType;
+  type: RunStepObjectType
   /** The status of the run step, which can be either `in_progress`, `cancelled`, `failed`, `completed`, or `expired`. */
-  status: RunStepObjectStatus;
+  status: RunStepObjectStatus
   /** The details of the run step. */
-  step_details: RunStepObjectStepDetails;
-  last_error: RunStepObjectLastError;
-  expired_at: RunStepObjectExpiredAt;
-  cancelled_at: RunStepObjectCancelledAt;
-  failed_at: RunStepObjectFailedAt;
-  completed_at: RunStepObjectCompletedAt;
-  metadata: Metadata;
-  usage: RunStepCompletionUsage;
+  step_details: RunStepObjectStepDetails
+  last_error: RunStepObjectLastError
+  expired_at: RunStepObjectExpiredAt
+  cancelled_at: RunStepObjectCancelledAt
+  failed_at: RunStepObjectFailedAt
+  completed_at: RunStepObjectCompletedAt
+  metadata: Metadata
+  usage: RunStepCompletionUsage
 }

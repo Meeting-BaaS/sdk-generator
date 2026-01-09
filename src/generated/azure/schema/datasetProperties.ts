@@ -5,18 +5,18 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { EntityError } from './entityError';
+import type { EntityError } from "./entityError"
 
 export interface DatasetProperties {
   /** The number of lines accepted for this data set. */
-  readonly acceptedLineCount?: number;
+  readonly acceptedLineCount?: number
   /** The number of lines rejected for this data set. */
-  readonly rejectedLineCount?: number;
+  readonly rejectedLineCount?: number
   /** The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration
 ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations). */
-  readonly duration?: string;
+  readonly duration?: string
   /** The email address to send email notifications to in case the operation completes.
 The value will be removed after successfully sending the email. */
-  email?: string;
-  error?: EntityError;
+  email?: string
+  error?: EntityError
 }

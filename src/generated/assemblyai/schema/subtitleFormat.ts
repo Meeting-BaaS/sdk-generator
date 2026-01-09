@@ -9,11 +9,10 @@
 /**
  * Format of the subtitles
  */
-export type SubtitleFormat = typeof SubtitleFormat[keyof typeof SubtitleFormat];
-
+export type SubtitleFormat = (typeof SubtitleFormat)[keyof typeof SubtitleFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SubtitleFormat = {
-  srt: 'srt',
-  vtt: 'vtt',
-} as const;
+  srt: "srt",
+  vtt: "vtt"
+} as const

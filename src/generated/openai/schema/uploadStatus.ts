@@ -9,13 +9,12 @@
 /**
  * The status of the Upload.
  */
-export type UploadStatus = typeof UploadStatus[keyof typeof UploadStatus];
-
+export type UploadStatus = (typeof UploadStatus)[keyof typeof UploadStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UploadStatus = {
-  pending: 'pending',
-  completed: 'completed',
-  cancelled: 'cancelled',
-  expired: 'expired',
-} as const;
+  pending: "pending",
+  completed: "completed",
+  cancelled: "cancelled",
+  expired: "expired"
+} as const

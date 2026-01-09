@@ -9,11 +9,11 @@
 /**
  * `owner` or `member`
  */
-export type ProjectUserUpdateRequestRole = typeof ProjectUserUpdateRequestRole[keyof typeof ProjectUserUpdateRequestRole];
-
+export type ProjectUserUpdateRequestRole =
+  (typeof ProjectUserUpdateRequestRole)[keyof typeof ProjectUserUpdateRequestRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectUserUpdateRequestRole = {
-  owner: 'owner',
-  member: 'member',
-} as const;
+  owner: "owner",
+  member: "member"
+} as const

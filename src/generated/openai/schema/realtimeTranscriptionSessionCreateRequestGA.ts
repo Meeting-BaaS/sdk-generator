@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateRequestGAType } from './realtimeTranscriptionSessionCreateRequestGAType';
-import type { RealtimeTranscriptionSessionCreateRequestGAAudio } from './realtimeTranscriptionSessionCreateRequestGAAudio';
-import type { RealtimeTranscriptionSessionCreateRequestGAIncludeItem } from './realtimeTranscriptionSessionCreateRequestGAIncludeItem';
+import type { RealtimeTranscriptionSessionCreateRequestGAType } from "./realtimeTranscriptionSessionCreateRequestGAType"
+import type { RealtimeTranscriptionSessionCreateRequestGAAudio } from "./realtimeTranscriptionSessionCreateRequestGAAudio"
+import type { RealtimeTranscriptionSessionCreateRequestGAIncludeItem } from "./realtimeTranscriptionSessionCreateRequestGAIncludeItem"
 
 /**
  * Realtime transcription session object configuration.
  */
 export interface RealtimeTranscriptionSessionCreateRequestGA {
   /** The type of session to create. Always `transcription` for transcription sessions.
- */
-  type: RealtimeTranscriptionSessionCreateRequestGAType;
+   */
+  type: RealtimeTranscriptionSessionCreateRequestGAType
   /** Configuration for input and output audio.
- */
-  audio?: RealtimeTranscriptionSessionCreateRequestGAAudio;
+   */
+  audio?: RealtimeTranscriptionSessionCreateRequestGAAudio
   /** Additional fields to include in server outputs.
 
 `item.input_audio_transcription.logprobs`: Include logprobs for input audio transcription.
  */
-  include?: RealtimeTranscriptionSessionCreateRequestGAIncludeItem[];
+  include?: RealtimeTranscriptionSessionCreateRequestGAIncludeItem[]
 }

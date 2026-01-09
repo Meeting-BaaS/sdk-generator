@@ -9,13 +9,12 @@
 /**
  * Describe the current state of the API
  */
-export type Status = typeof Status[keyof typeof Status];
-
+export type Status = (typeof Status)[keyof typeof Status]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Status = {
-  NotStarted: 'NotStarted',
-  Running: 'Running',
-  Succeeded: 'Succeeded',
-  Failed: 'Failed',
-} as const;
+  NotStarted: "NotStarted",
+  Running: "Running",
+  Succeeded: "Succeeded",
+  Failed: "Failed"
+} as const

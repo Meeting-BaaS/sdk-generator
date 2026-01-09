@@ -4,24 +4,24 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranslationMessageError } from './translationMessageError';
-import type { TranslationMessageType } from './translationMessageType';
-import type { TranslationMessageData } from './translationMessageData';
+import type { TranslationMessageError } from "./translationMessageError"
+import type { TranslationMessageType } from "./translationMessageType"
+import type { TranslationMessageData } from "./translationMessageData"
 
 export interface TranslationMessage {
   /** Id of the live session */
-  session_id: string;
+  session_id: string
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string;
+  created_at: string
   /**
    * Error message if the addon failed
    * @nullable
    */
-  error: TranslationMessageError;
-  type: TranslationMessageType;
+  error: TranslationMessageError
+  type: TranslationMessageType
   /**
    * The message data. "null" if the addon failed
    * @nullable
    */
-  data: TranslationMessageData;
+  data: TranslationMessageData
 }

@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TruncationObjectType } from './truncationObjectType';
-import type { TruncationObjectLastMessages } from './truncationObjectLastMessages';
+import type { TruncationObjectType } from "./truncationObjectType"
+import type { TruncationObjectLastMessages } from "./truncationObjectLastMessages"
 
 /**
  * Controls for how a thread will be truncated prior to the run. Use this to control the initial context window of the run.
  */
 export interface TruncationObject {
   /** The truncation strategy to use for the thread. The default is `auto`. If set to `last_messages`, the thread will be truncated to the n most recent messages in the thread. When set to `auto`, messages in the middle of the thread will be dropped to fit the context length of the model, `max_prompt_tokens`. */
-  type: TruncationObjectType;
-  last_messages?: TruncationObjectLastMessages;
+  type: TruncationObjectType
+  last_messages?: TruncationObjectLastMessages
 }

@@ -5,11 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType } from './createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType';
-import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeStatic } from './createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeStatic';
+import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType } from "./createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType"
+import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeStatic } from "./createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeStatic"
 
-export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree = {
-  /** Always `static`. */
-  type: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType;
-  static: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeStatic;
-};
+export type CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThree =
+  {
+    /** Always `static`. */
+    type: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeType
+    static: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfThreeStatic
+  }

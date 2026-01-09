@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateEvalCompletionsRunDataSourceType } from './createEvalCompletionsRunDataSourceType';
-import type { CreateEvalCompletionsRunDataSourceInputMessages } from './createEvalCompletionsRunDataSourceInputMessages';
-import type { CreateEvalCompletionsRunDataSourceSamplingParams } from './createEvalCompletionsRunDataSourceSamplingParams';
-import type { CreateEvalCompletionsRunDataSourceSource } from './createEvalCompletionsRunDataSourceSource';
+import type { CreateEvalCompletionsRunDataSourceType } from "./createEvalCompletionsRunDataSourceType"
+import type { CreateEvalCompletionsRunDataSourceInputMessages } from "./createEvalCompletionsRunDataSourceInputMessages"
+import type { CreateEvalCompletionsRunDataSourceSamplingParams } from "./createEvalCompletionsRunDataSourceSamplingParams"
+import type { CreateEvalCompletionsRunDataSourceSource } from "./createEvalCompletionsRunDataSourceSource"
 
 /**
  * A CompletionsRunDataSource object describing a model sampling configuration.
@@ -16,12 +16,12 @@ import type { CreateEvalCompletionsRunDataSourceSource } from './createEvalCompl
  */
 export interface CreateEvalCompletionsRunDataSource {
   /** The type of run data source. Always `completions`. */
-  type: CreateEvalCompletionsRunDataSourceType;
+  type: CreateEvalCompletionsRunDataSourceType
   /** Used when sampling from a model. Dictates the structure of the messages passed into the model. Can either be a reference to a prebuilt trajectory (ie, `item.input_trajectory`), or a template with variable references to the `item` namespace. */
-  input_messages?: CreateEvalCompletionsRunDataSourceInputMessages;
-  sampling_params?: CreateEvalCompletionsRunDataSourceSamplingParams;
+  input_messages?: CreateEvalCompletionsRunDataSourceInputMessages
+  sampling_params?: CreateEvalCompletionsRunDataSourceSamplingParams
   /** The name of the model to use for generating completions (e.g. "o3-mini"). */
-  model?: string;
+  model?: string
   /** Determines what populates the `item` namespace in this run's data source. */
-  source: CreateEvalCompletionsRunDataSourceSource;
+  source: CreateEvalCompletionsRunDataSourceSource
 }

@@ -8,5 +8,5 @@
 
 export type MessageContentTextAnnotationsFileCitationObjectFileCitation = {
   /** The ID of the specific File the citation is from. */
-  file_id: string;
-};
+  file_id: string
+}

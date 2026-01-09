@@ -9,10 +9,10 @@
 /**
  * Create a new file with the provided diff.
  */
-export type ApplyPatchCreateFileOperationType = typeof ApplyPatchCreateFileOperationType[keyof typeof ApplyPatchCreateFileOperationType];
-
+export type ApplyPatchCreateFileOperationType =
+  (typeof ApplyPatchCreateFileOperationType)[keyof typeof ApplyPatchCreateFileOperationType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchCreateFileOperationType = {
-  create_file: 'create_file',
-} as const;
+  create_file: "create_file"
+} as const

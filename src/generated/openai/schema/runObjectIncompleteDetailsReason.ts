@@ -9,11 +9,11 @@
 /**
  * The reason why the run is incomplete. This will point to which specific token limit was reached over the course of the run.
  */
-export type RunObjectIncompleteDetailsReason = typeof RunObjectIncompleteDetailsReason[keyof typeof RunObjectIncompleteDetailsReason];
-
+export type RunObjectIncompleteDetailsReason =
+  (typeof RunObjectIncompleteDetailsReason)[keyof typeof RunObjectIncompleteDetailsReason]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunObjectIncompleteDetailsReason = {
-  max_completion_tokens: 'max_completion_tokens',
-  max_prompt_tokens: 'max_prompt_tokens',
-} as const;
+  max_completion_tokens: "max_completion_tokens",
+  max_prompt_tokens: "max_prompt_tokens"
+} as const

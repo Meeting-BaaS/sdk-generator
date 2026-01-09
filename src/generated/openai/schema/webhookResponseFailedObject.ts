@@ -10,10 +10,10 @@
  * The object of the event. Always `event`.
 
  */
-export type WebhookResponseFailedObject = typeof WebhookResponseFailedObject[keyof typeof WebhookResponseFailedObject];
-
+export type WebhookResponseFailedObject =
+  (typeof WebhookResponseFailedObject)[keyof typeof WebhookResponseFailedObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookResponseFailedObject = {
-  event: 'event',
-} as const;
+  event: "event"
+} as const

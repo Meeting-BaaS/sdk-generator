@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `python`.
  */
-export type GraderPythonType = typeof GraderPythonType[keyof typeof GraderPythonType];
-
+export type GraderPythonType = (typeof GraderPythonType)[keyof typeof GraderPythonType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GraderPythonType = {
-  python: 'python',
-} as const;
+  python: "python"
+} as const

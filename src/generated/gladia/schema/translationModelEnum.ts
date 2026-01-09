@@ -8,11 +8,10 @@
 /**
  * Model you want the translation model to use to translate
  */
-export type TranslationModelEnum = typeof TranslationModelEnum[keyof typeof TranslationModelEnum];
-
+export type TranslationModelEnum = (typeof TranslationModelEnum)[keyof typeof TranslationModelEnum]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranslationModelEnum = {
-  base: 'base',
-  enhanced: 'enhanced',
-} as const;
+  base: "base",
+  enhanced: "enhanced"
+} as const

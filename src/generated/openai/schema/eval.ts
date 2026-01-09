@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalObject } from './evalObject';
-import type { EvalDataSourceConfig } from './evalDataSourceConfig';
-import type { EvalTestingCriteriaItem } from './evalTestingCriteriaItem';
-import type { Metadata } from './metadata';
+import type { EvalObject } from "./evalObject"
+import type { EvalDataSourceConfig } from "./evalDataSourceConfig"
+import type { EvalTestingCriteriaItem } from "./evalTestingCriteriaItem"
+import type { Metadata } from "./metadata"
 
 /**
  * An Eval object with a data source config and testing criteria.
@@ -21,16 +21,16 @@ Like:
  */
 export interface Eval {
   /** The object type. */
-  object: EvalObject;
+  object: EvalObject
   /** Unique identifier for the evaluation. */
-  id: string;
+  id: string
   /** The name of the evaluation. */
-  name: string;
+  name: string
   /** Configuration of data sources used in runs of the evaluation. */
-  data_source_config: EvalDataSourceConfig;
+  data_source_config: EvalDataSourceConfig
   /** A list of testing criteria. */
-  testing_criteria: EvalTestingCriteriaItem[];
+  testing_criteria: EvalTestingCriteriaItem[]
   /** The Unix timestamp (in seconds) for when the eval was created. */
-  created_at: number;
-  metadata: Metadata;
+  created_at: number
+  metadata: Metadata
 }

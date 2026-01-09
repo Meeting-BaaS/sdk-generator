@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FileCitationBodyType } from './fileCitationBodyType';
+import type { FileCitationBodyType } from "./fileCitationBodyType"
 
 /**
  * A citation to a file.
  */
 export interface FileCitationBody {
   /** The type of the file citation. Always `file_citation`. */
-  type: FileCitationBodyType;
+  type: FileCitationBodyType
   /** The ID of the file. */
-  file_id: string;
+  file_id: string
   /** The index of the file in the list of files. */
-  index: number;
+  index: number
   /** The filename of the file cited. */
-  filename: string;
+  filename: string
 }

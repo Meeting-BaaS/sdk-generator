@@ -10,10 +10,10 @@
  * The type of the event. Always `response.incomplete`.
 
  */
-export type WebhookResponseIncompleteType = typeof WebhookResponseIncompleteType[keyof typeof WebhookResponseIncompleteType];
-
+export type WebhookResponseIncompleteType =
+  (typeof WebhookResponseIncompleteType)[keyof typeof WebhookResponseIncompleteType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookResponseIncompleteType = {
-  responseincomplete: 'response.incomplete',
-} as const;
+  responseincomplete: "response.incomplete"
+} as const

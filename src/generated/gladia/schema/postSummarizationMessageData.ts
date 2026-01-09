@@ -7,5 +7,5 @@
 
 export interface PostSummarizationMessageData {
   /** The summarization */
-  results: string;
+  results: string
 }

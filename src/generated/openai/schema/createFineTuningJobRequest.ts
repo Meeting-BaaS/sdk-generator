@@ -5,17 +5,17 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateFineTuningJobRequestModel } from './createFineTuningJobRequestModel';
-import type { CreateFineTuningJobRequestHyperparameters } from './createFineTuningJobRequestHyperparameters';
-import type { CreateFineTuningJobRequestIntegrationsItem } from './createFineTuningJobRequestIntegrationsItem';
-import type { FineTuneMethod } from './fineTuneMethod';
-import type { Metadata } from './metadata';
+import type { CreateFineTuningJobRequestModel } from "./createFineTuningJobRequestModel"
+import type { CreateFineTuningJobRequestHyperparameters } from "./createFineTuningJobRequestHyperparameters"
+import type { CreateFineTuningJobRequestIntegrationsItem } from "./createFineTuningJobRequestIntegrationsItem"
+import type { FineTuneMethod } from "./fineTuneMethod"
+import type { Metadata } from "./metadata"
 
 export interface CreateFineTuningJobRequest {
   /** The name of the model to fine-tune. You can select one of the
 [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
  */
-  model: CreateFineTuningJobRequestModel;
+  model: CreateFineTuningJobRequestModel
   /** The ID of an uploaded file that contains training data.
 
 See [upload file](https://platform.openai.com/docs/api-reference/files/create) for how to upload a file.
@@ -26,14 +26,14 @@ The contents of the file should differ depending on if the model uses the [chat]
 
 See the [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization) for more details.
  */
-  training_file: string;
+  training_file: string
   /**
    * The hyperparameters used for the fine-tuning job.
 This value is now deprecated in favor of `method`, and should be passed in under the `method` parameter.
 
    * @deprecated
    */
-  hyperparameters?: CreateFineTuningJobRequestHyperparameters;
+  hyperparameters?: CreateFineTuningJobRequestHyperparameters
   /**
    * A string of up to 64 characters that will be added to your fine-tuned model name.
 
@@ -43,7 +43,7 @@ For example, a `suffix` of "custom-model-name" would produce a model name like `
    * @maxLength 64
    * @nullable
    */
-  suffix?: string | null;
+  suffix?: string | null
   /**
    * The ID of an uploaded file that contains validation data.
 
@@ -58,12 +58,12 @@ See the [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimi
 
    * @nullable
    */
-  validation_file?: string | null;
+  validation_file?: string | null
   /**
    * A list of integrations to enable for your fine-tuning job.
    * @nullable
    */
-  integrations?: CreateFineTuningJobRequestIntegrationsItem[] | null;
+  integrations?: CreateFineTuningJobRequestIntegrationsItem[] | null
   /**
    * The seed controls the reproducibility of the job. Passing in the same seed and job parameters should produce the same results, but may differ in rare cases.
 If a seed is not specified, one will be generated for you.
@@ -72,7 +72,7 @@ If a seed is not specified, one will be generated for you.
    * @maximum 2147483647
    * @nullable
    */
-  seed?: number | null;
-  method?: FineTuneMethod;
-  metadata?: Metadata;
+  seed?: number | null
+  method?: FineTuneMethod
+  metadata?: Metadata
 }

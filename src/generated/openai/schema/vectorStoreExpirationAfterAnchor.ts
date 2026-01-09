@@ -9,10 +9,10 @@
 /**
  * Anchor timestamp after which the expiration policy applies. Supported anchors: `last_active_at`.
  */
-export type VectorStoreExpirationAfterAnchor = typeof VectorStoreExpirationAfterAnchor[keyof typeof VectorStoreExpirationAfterAnchor];
-
+export type VectorStoreExpirationAfterAnchor =
+  (typeof VectorStoreExpirationAfterAnchor)[keyof typeof VectorStoreExpirationAfterAnchor]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VectorStoreExpirationAfterAnchor = {
-  last_active_at: 'last_active_at',
-} as const;
+  last_active_at: "last_active_at"
+} as const

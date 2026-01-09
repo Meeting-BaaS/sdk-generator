@@ -9,10 +9,10 @@
 /**
  * Specifies the event type. For a computer screenshot, this property is always set to `computer_screenshot`.
  */
-export type ComputerScreenshotContentType = typeof ComputerScreenshotContentType[keyof typeof ComputerScreenshotContentType];
-
+export type ComputerScreenshotContentType =
+  (typeof ComputerScreenshotContentType)[keyof typeof ComputerScreenshotContentType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ComputerScreenshotContentType = {
-  computer_screenshot: 'computer_screenshot',
-} as const;
+  computer_screenshot: "computer_screenshot"
+} as const

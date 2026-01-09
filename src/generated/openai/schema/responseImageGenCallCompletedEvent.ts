@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseImageGenCallCompletedEventType } from './responseImageGenCallCompletedEventType';
+import type { ResponseImageGenCallCompletedEventType } from "./responseImageGenCallCompletedEventType"
 
 /**
  * Emitted when an image generation tool call has completed and the final image is available.
@@ -13,11 +13,11 @@ import type { ResponseImageGenCallCompletedEventType } from './responseImageGenC
  */
 export interface ResponseImageGenCallCompletedEvent {
   /** The type of the event. Always 'response.image_generation_call.completed'. */
-  type: ResponseImageGenCallCompletedEventType;
+  type: ResponseImageGenCallCompletedEventType
   /** The index of the output item in the response's output array. */
-  output_index: number;
+  output_index: number
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
   /** The unique identifier of the image generation item being processed. */
-  item_id: string;
+  item_id: string
 }

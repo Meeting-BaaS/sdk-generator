@@ -5,7 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionResponseMessage } from './chatCompletionResponseMessage';
-import type { ChatCompletionMessageListDataItemAllOf } from './chatCompletionMessageListDataItemAllOf';
+import type { ChatCompletionResponseMessage } from "./chatCompletionResponseMessage"
+import type { ChatCompletionMessageListDataItemAllOf } from "./chatCompletionMessageListDataItemAllOf"
 
-export type ChatCompletionMessageListDataItem = ChatCompletionResponseMessage & ChatCompletionMessageListDataItemAllOf;
+export type ChatCompletionMessageListDataItem = ChatCompletionResponseMessage &
+  ChatCompletionMessageListDataItemAllOf

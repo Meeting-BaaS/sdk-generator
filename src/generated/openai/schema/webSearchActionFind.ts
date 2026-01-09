@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebSearchActionFindType } from './webSearchActionFindType';
+import type { WebSearchActionFindType } from "./webSearchActionFindType"
 
 /**
  * Action type "find": Searches for a pattern within a loaded page.
@@ -13,12 +13,12 @@ import type { WebSearchActionFindType } from './webSearchActionFindType';
  */
 export interface WebSearchActionFind {
   /** The action type.
- */
-  type: WebSearchActionFindType;
+   */
+  type: WebSearchActionFindType
   /** The URL of the page searched for the pattern.
- */
-  url: string;
+   */
+  url: string
   /** The pattern or text to search for within the page.
- */
-  pattern: string;
+   */
+  pattern: string
 }

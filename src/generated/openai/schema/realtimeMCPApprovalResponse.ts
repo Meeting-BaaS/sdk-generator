@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeMCPApprovalResponseType } from './realtimeMCPApprovalResponseType';
-import type { RealtimeMCPApprovalResponseReason } from './realtimeMCPApprovalResponseReason';
+import type { RealtimeMCPApprovalResponseType } from "./realtimeMCPApprovalResponseType"
+import type { RealtimeMCPApprovalResponseReason } from "./realtimeMCPApprovalResponseReason"
 
 /**
  * A Realtime item responding to an MCP approval request.
@@ -14,12 +14,12 @@ import type { RealtimeMCPApprovalResponseReason } from './realtimeMCPApprovalRes
  */
 export interface RealtimeMCPApprovalResponse {
   /** The type of the item. Always `mcp_approval_response`. */
-  type: RealtimeMCPApprovalResponseType;
+  type: RealtimeMCPApprovalResponseType
   /** The unique ID of the approval response. */
-  id: string;
+  id: string
   /** The ID of the approval request being answered. */
-  approval_request_id: string;
+  approval_request_id: string
   /** Whether the request was approved. */
-  approve: boolean;
-  reason?: RealtimeMCPApprovalResponseReason;
+  approve: boolean
+  reason?: RealtimeMCPApprovalResponseReason
 }

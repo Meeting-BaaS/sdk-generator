@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type AudioChunkAckMessageType = typeof AudioChunkAckMessageType[keyof typeof AudioChunkAckMessageType];
-
+export type AudioChunkAckMessageType =
+  (typeof AudioChunkAckMessageType)[keyof typeof AudioChunkAckMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AudioChunkAckMessageType = {
-  audio_chunk: 'audio_chunk',
-} as const;
+  audio_chunk: "audio_chunk"
+} as const

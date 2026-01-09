@@ -5,12 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType } from './createAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType';
+import type { CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType } from "./createAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType"
 
 /**
  * The default strategy. This strategy currently uses a `max_chunk_size_tokens` of `800` and `chunk_overlap_tokens` of `400`.
  */
-export type CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf = {
-  /** Always `auto`. */
-  type: CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType;
-};
+export type CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOf =
+  {
+    /** Always `auto`. */
+    type: CreateAssistantRequestToolResourcesAnyOfFileSearchVectorStoresItemChunkingStrategyAnyOfType
+  }

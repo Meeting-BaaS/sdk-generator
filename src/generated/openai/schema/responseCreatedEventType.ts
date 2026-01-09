@@ -10,10 +10,10 @@
  * The type of the event. Always `response.created`.
 
  */
-export type ResponseCreatedEventType = typeof ResponseCreatedEventType[keyof typeof ResponseCreatedEventType];
-
+export type ResponseCreatedEventType =
+  (typeof ResponseCreatedEventType)[keyof typeof ResponseCreatedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseCreatedEventType = {
-  responsecreated: 'response.created',
-} as const;
+  responsecreated: "response.created"
+} as const

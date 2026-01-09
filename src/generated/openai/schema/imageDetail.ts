@@ -6,12 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type ImageDetail = typeof ImageDetail[keyof typeof ImageDetail];
-
+export type ImageDetail = (typeof ImageDetail)[keyof typeof ImageDetail]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageDetail = {
-  low: 'low',
-  high: 'high',
-  auto: 'auto',
-} as const;
+  low: "low",
+  high: "high",
+  auto: "auto"
+} as const

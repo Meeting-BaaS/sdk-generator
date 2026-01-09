@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type VideoResourcePrompt = string | null;
+export type VideoResourcePrompt = string | null

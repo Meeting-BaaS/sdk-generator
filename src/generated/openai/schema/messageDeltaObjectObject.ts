@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `thread.message.delta`.
  */
-export type MessageDeltaObjectObject = typeof MessageDeltaObjectObject[keyof typeof MessageDeltaObjectObject];
-
+export type MessageDeltaObjectObject =
+  (typeof MessageDeltaObjectObject)[keyof typeof MessageDeltaObjectObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageDeltaObjectObject = {
-  threadmessagedelta: 'thread.message.delta',
-} as const;
+  threadmessagedelta: "thread.message.delta"
+} as const

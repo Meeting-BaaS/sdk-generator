@@ -8,5 +8,5 @@
 
 export type ChatCompletionNamedToolChoiceFunction = {
   /** The name of the function to call. */
-  name: string;
-};
+  name: string
+}

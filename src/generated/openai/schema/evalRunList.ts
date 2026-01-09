@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunListObject } from './evalRunListObject';
-import type { EvalRun } from './evalRun';
+import type { EvalRunListObject } from "./evalRunListObject"
+import type { EvalRun } from "./evalRun"
 
 /**
  * An object representing a list of runs for an evaluation.
@@ -14,15 +14,15 @@ import type { EvalRun } from './evalRun';
  */
 export interface EvalRunList {
   /** The type of this object. It is always set to "list".
- */
-  object: EvalRunListObject;
+   */
+  object: EvalRunListObject
   /** An array of eval run objects.
- */
-  data: EvalRun[];
+   */
+  data: EvalRun[]
   /** The identifier of the first eval run in the data array. */
-  first_id: string;
+  first_id: string
   /** The identifier of the last eval run in the data array. */
-  last_id: string;
+  last_id: string
   /** Indicates whether there are more evals available. */
-  has_more: boolean;
+  has_more: boolean
 }

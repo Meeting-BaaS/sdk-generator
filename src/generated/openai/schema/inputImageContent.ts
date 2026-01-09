@@ -5,19 +5,19 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputImageContentType } from './inputImageContentType';
-import type { InputImageContentImageUrl } from './inputImageContentImageUrl';
-import type { InputImageContentFileId } from './inputImageContentFileId';
-import type { ImageDetail } from './imageDetail';
+import type { InputImageContentType } from "./inputImageContentType"
+import type { InputImageContentImageUrl } from "./inputImageContentImageUrl"
+import type { InputImageContentFileId } from "./inputImageContentFileId"
+import type { ImageDetail } from "./imageDetail"
 
 /**
  * An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
  */
 export interface InputImageContent {
   /** The type of the input item. Always `input_image`. */
-  type: InputImageContentType;
-  image_url?: InputImageContentImageUrl;
-  file_id?: InputImageContentFileId;
+  type: InputImageContentType
+  image_url?: InputImageContentImageUrl
+  file_id?: InputImageContentFileId
   /** The detail level of the image to be sent to the model. One of `high`, `low`, or `auto`. Defaults to `auto`. */
-  detail: ImageDetail;
+  detail: ImageDetail
 }

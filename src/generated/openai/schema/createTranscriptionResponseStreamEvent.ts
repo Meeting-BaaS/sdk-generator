@@ -5,8 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextSegmentEvent } from './transcriptTextSegmentEvent';
-import type { TranscriptTextDeltaEvent } from './transcriptTextDeltaEvent';
-import type { TranscriptTextDoneEvent } from './transcriptTextDoneEvent';
+import type { TranscriptTextSegmentEvent } from "./transcriptTextSegmentEvent"
+import type { TranscriptTextDeltaEvent } from "./transcriptTextDeltaEvent"
+import type { TranscriptTextDoneEvent } from "./transcriptTextDoneEvent"
 
-export type CreateTranscriptionResponseStreamEvent = TranscriptTextSegmentEvent | TranscriptTextDeltaEvent | TranscriptTextDoneEvent;
+export type CreateTranscriptionResponseStreamEvent =
+  | TranscriptTextSegmentEvent
+  | TranscriptTextDeltaEvent
+  | TranscriptTextDoneEvent

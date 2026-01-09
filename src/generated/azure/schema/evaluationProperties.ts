@@ -5,43 +5,43 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { EntityError } from './entityError';
+import type { EntityError } from "./entityError"
 
 export interface EvaluationProperties {
   /** The word error rate of recognition with model2. */
-  readonly wordErrorRate2?: number;
+  readonly wordErrorRate2?: number
   /** The word error rate of recognition with model1. */
-  readonly wordErrorRate1?: number;
+  readonly wordErrorRate1?: number
   /** The sentence error rate of recognition with model2. */
-  readonly sentenceErrorRate2?: number;
+  readonly sentenceErrorRate2?: number
   /** The number of processed sentences by model2. */
-  readonly sentenceCount2?: number;
+  readonly sentenceCount2?: number
   /** The number of processed words by model2. */
-  readonly wordCount2?: number;
+  readonly wordCount2?: number
   /** The number of correctly recognized words by model2. */
-  readonly correctWordCount2?: number;
+  readonly correctWordCount2?: number
   /** The number of recognized words by model2, that are substitutions. */
-  readonly wordSubstitutionCount2?: number;
+  readonly wordSubstitutionCount2?: number
   /** The number of recognized words by model2, that are deletions. */
-  readonly wordDeletionCount2?: number;
+  readonly wordDeletionCount2?: number
   /** The number of recognized words by model2, that are insertions. */
-  readonly wordInsertionCount2?: number;
+  readonly wordInsertionCount2?: number
   /** The sentence error rate of recognition with model1. */
-  readonly sentenceErrorRate1?: number;
+  readonly sentenceErrorRate1?: number
   /** The number of processed sentences by model1. */
-  readonly sentenceCount1?: number;
+  readonly sentenceCount1?: number
   /** The number of processed words by model1. */
-  readonly wordCount1?: number;
+  readonly wordCount1?: number
   /** The number of correctly recognized words by model1. */
-  readonly correctWordCount1?: number;
+  readonly correctWordCount1?: number
   /** The number of recognized words by model1, that are substitutions. */
-  readonly wordSubstitutionCount1?: number;
+  readonly wordSubstitutionCount1?: number
   /** The number of recognized words by model1, that are deletions. */
-  readonly wordDeletionCount1?: number;
+  readonly wordDeletionCount1?: number
   /** The number of recognized words by model1, that are insertions. */
-  readonly wordInsertionCount1?: number;
+  readonly wordInsertionCount1?: number
   /** The email address to send email notifications to in case the operation completes.
 The value will be removed after successfully sending the email. */
-  email?: string;
-  error?: EntityError;
+  email?: string
+  error?: EntityError
 }

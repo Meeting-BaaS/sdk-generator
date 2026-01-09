@@ -5,32 +5,34 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem } from './createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem';
+import type { CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem } from "./createThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem"
 
-export type CreateThreadRequestToolResourcesAnyOfFileSearch = (unknown & {
-  /**
+export type CreateThreadRequestToolResourcesAnyOfFileSearch =
+  | (unknown & {
+      /**
    * The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object) attached to this thread. There can be a maximum of 1 vector store attached to the thread.
 
    * @maxItems 1
    */
-  vector_store_ids?: string[];
-  /**
+      vector_store_ids?: string[]
+      /**
    * A helper to create a [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object) with file_ids and attach it to this thread. There can be a maximum of 1 vector store attached to the thread.
 
    * @maxItems 1
    */
-  vector_stores?: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem[];
-}) | (unknown & {
-  /**
+      vector_stores?: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem[]
+    })
+  | (unknown & {
+      /**
    * The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object) attached to this thread. There can be a maximum of 1 vector store attached to the thread.
 
    * @maxItems 1
    */
-  vector_store_ids?: string[];
-  /**
+      vector_store_ids?: string[]
+      /**
    * A helper to create a [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object) with file_ids and attach it to this thread. There can be a maximum of 1 vector store attached to the thread.
 
    * @maxItems 1
    */
-  vector_stores?: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem[];
-});
+      vector_stores?: CreateThreadRequestToolResourcesAnyOfFileSearchVectorStoresItem[]
+    })

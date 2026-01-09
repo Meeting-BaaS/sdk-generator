@@ -10,10 +10,10 @@
  * The type of the item. Always `mcp_approval_response`.
 
  */
-export type MCPApprovalResponseResourceType = typeof MCPApprovalResponseResourceType[keyof typeof MCPApprovalResponseResourceType];
-
+export type MCPApprovalResponseResourceType =
+  (typeof MCPApprovalResponseResourceType)[keyof typeof MCPApprovalResponseResourceType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MCPApprovalResponseResourceType = {
-  mcp_approval_response: 'mcp_approval_response',
-} as const;
+  mcp_approval_response: "mcp_approval_response"
+} as const

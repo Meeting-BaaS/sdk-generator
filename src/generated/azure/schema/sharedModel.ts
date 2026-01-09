@@ -5,30 +5,30 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { Status } from './status';
+import type { Status } from "./status"
 
 export interface SharedModel {
   /** The location of this entity. */
-  readonly self?: string;
+  readonly self?: string
   /**
    * The locale of the contained data.
    * @minLength 1
    */
-  locale: string;
+  locale: string
   /**
    * The display name of the object.
    * @minLength 1
    */
-  displayName: string;
+  displayName: string
   /** The description of the object. */
-  description?: string;
+  description?: string
   /** The time-stamp when the current status was entered.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly lastActionDateTime?: string;
-  status?: Status;
+  readonly lastActionDateTime?: string
+  status?: Status
   /** The time-stamp when the object was created.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly createdDateTime?: string;
+  readonly createdDateTime?: string
 }

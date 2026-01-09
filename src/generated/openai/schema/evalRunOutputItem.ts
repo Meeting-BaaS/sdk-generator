@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { EvalRunOutputItemObject } from './evalRunOutputItemObject';
-import type { EvalRunOutputItemDatasourceItem } from './evalRunOutputItemDatasourceItem';
-import type { EvalRunOutputItemResult } from './evalRunOutputItemResult';
-import type { EvalRunOutputItemSample } from './evalRunOutputItemSample';
+import type { EvalRunOutputItemObject } from "./evalRunOutputItemObject"
+import type { EvalRunOutputItemDatasourceItem } from "./evalRunOutputItemDatasourceItem"
+import type { EvalRunOutputItemResult } from "./evalRunOutputItemResult"
+import type { EvalRunOutputItemSample } from "./evalRunOutputItemSample"
 
 /**
  * A schema representing an evaluation run output item.
@@ -16,23 +16,23 @@ import type { EvalRunOutputItemSample } from './evalRunOutputItemSample';
  */
 export interface EvalRunOutputItem {
   /** The type of the object. Always "eval.run.output_item". */
-  object: EvalRunOutputItemObject;
+  object: EvalRunOutputItemObject
   /** Unique identifier for the evaluation run output item. */
-  id: string;
+  id: string
   /** The identifier of the evaluation run associated with this output item. */
-  run_id: string;
+  run_id: string
   /** The identifier of the evaluation group. */
-  eval_id: string;
+  eval_id: string
   /** Unix timestamp (in seconds) when the evaluation run was created. */
-  created_at: number;
+  created_at: number
   /** The status of the evaluation run. */
-  status: string;
+  status: string
   /** The identifier for the data source item. */
-  datasource_item_id: number;
+  datasource_item_id: number
   /** Details of the input data source item. */
-  datasource_item: EvalRunOutputItemDatasourceItem;
+  datasource_item: EvalRunOutputItemDatasourceItem
   /** A list of grader results for this output item. */
-  results: EvalRunOutputItemResult[];
+  results: EvalRunOutputItemResult[]
   /** A sample containing the input and output of the evaluation run. */
-  sample: EvalRunOutputItemSample;
+  sample: EvalRunOutputItemSample
 }

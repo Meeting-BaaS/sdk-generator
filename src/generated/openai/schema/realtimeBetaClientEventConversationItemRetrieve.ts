@@ -15,9 +15,9 @@ server will respond with an error.
  */
 export interface RealtimeBetaClientEventConversationItemRetrieve {
   /** Optional client-generated ID used to identify this event. */
-  event_id?: string;
+  event_id?: string
   /** The event type, must be `conversation.item.retrieve`. */
-  type: 'conversation.item.retrieve';
+  type: "conversation.item.retrieve"
   /** The ID of the item to retrieve. */
-  item_id: string;
+  item_id: string
 }

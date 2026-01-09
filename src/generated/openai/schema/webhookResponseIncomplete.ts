@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookResponseIncompleteData } from './webhookResponseIncompleteData';
-import type { WebhookResponseIncompleteObject } from './webhookResponseIncompleteObject';
-import type { WebhookResponseIncompleteType } from './webhookResponseIncompleteType';
+import type { WebhookResponseIncompleteData } from "./webhookResponseIncompleteData"
+import type { WebhookResponseIncompleteObject } from "./webhookResponseIncompleteObject"
+import type { WebhookResponseIncompleteType } from "./webhookResponseIncompleteType"
 
 /**
  * Sent when a background response has been interrupted.
@@ -15,18 +15,18 @@ import type { WebhookResponseIncompleteType } from './webhookResponseIncompleteT
  */
 export interface WebhookResponseIncomplete {
   /** The Unix timestamp (in seconds) of when the model response was interrupted.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookResponseIncompleteData;
+   */
+  data: WebhookResponseIncompleteData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookResponseIncompleteObject;
+   */
+  object?: WebhookResponseIncompleteObject
   /** The type of the event. Always `response.incomplete`.
- */
-  type: WebhookResponseIncompleteType;
+   */
+  type: WebhookResponseIncompleteType
 }

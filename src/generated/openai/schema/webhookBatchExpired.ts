@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { WebhookBatchExpiredData } from './webhookBatchExpiredData';
-import type { WebhookBatchExpiredObject } from './webhookBatchExpiredObject';
-import type { WebhookBatchExpiredType } from './webhookBatchExpiredType';
+import type { WebhookBatchExpiredData } from "./webhookBatchExpiredData"
+import type { WebhookBatchExpiredObject } from "./webhookBatchExpiredObject"
+import type { WebhookBatchExpiredType } from "./webhookBatchExpiredType"
 
 /**
  * Sent when a batch API request has expired.
@@ -15,18 +15,18 @@ import type { WebhookBatchExpiredType } from './webhookBatchExpiredType';
  */
 export interface WebhookBatchExpired {
   /** The Unix timestamp (in seconds) of when the batch API request expired.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The unique ID of the event.
- */
-  id: string;
+   */
+  id: string
   /** Event data payload.
- */
-  data: WebhookBatchExpiredData;
+   */
+  data: WebhookBatchExpiredData
   /** The object of the event. Always `event`.
- */
-  object?: WebhookBatchExpiredObject;
+   */
+  object?: WebhookBatchExpiredObject
   /** The type of the event. Always `batch.expired`.
- */
-  type: WebhookBatchExpiredType;
+   */
+  type: WebhookBatchExpiredType
 }

@@ -8,7 +8,7 @@
 
 export interface EntityError {
   /** The code of this error. */
-  readonly code?: string;
+  readonly code?: string
   /** The message for this error. */
-  readonly message?: string;
+  readonly message?: string
 }

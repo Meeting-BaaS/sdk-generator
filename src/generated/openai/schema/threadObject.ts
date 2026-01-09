@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadObjectObject } from './threadObjectObject';
-import type { ThreadObjectToolResources } from './threadObjectToolResources';
-import type { Metadata } from './metadata';
+import type { ThreadObjectObject } from "./threadObjectObject"
+import type { ThreadObjectToolResources } from "./threadObjectToolResources"
+import type { Metadata } from "./metadata"
 
 /**
  * Represents a thread that contains [messages](https://platform.openai.com/docs/api-reference/messages).
  */
 export interface ThreadObject {
   /** The identifier, which can be referenced in API endpoints. */
-  id: string;
+  id: string
   /** The object type, which is always `thread`. */
-  object: ThreadObjectObject;
+  object: ThreadObjectObject
   /** The Unix timestamp (in seconds) for when the thread was created. */
-  created_at: number;
-  tool_resources: ThreadObjectToolResources;
-  metadata: Metadata;
+  created_at: number
+  tool_resources: ThreadObjectToolResources
+  metadata: Metadata
 }

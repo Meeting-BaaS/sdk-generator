@@ -5,15 +5,15 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { WordSearchTimestamp } from './wordSearchTimestamp';
+import type { WordSearchTimestamp } from "./wordSearchTimestamp"
 
 export interface WordSearchMatch {
   /** The matched word */
-  text: string;
+  text: string
   /** The total amount of times the word is in the transcript */
-  count: number;
+  count: number
   /** An array of timestamps */
-  timestamps: WordSearchTimestamp[];
+  timestamps: WordSearchTimestamp[]
   /** An array of all index locations for that word within the `words` array of the completed transcript */
-  indexes: number[];
+  indexes: number[]
 }

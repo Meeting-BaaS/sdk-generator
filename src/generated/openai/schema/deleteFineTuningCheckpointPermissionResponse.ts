@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { DeleteFineTuningCheckpointPermissionResponseObject } from './deleteFineTuningCheckpointPermissionResponseObject';
+import type { DeleteFineTuningCheckpointPermissionResponseObject } from "./deleteFineTuningCheckpointPermissionResponseObject"
 
 export interface DeleteFineTuningCheckpointPermissionResponse {
   /** The ID of the fine-tuned model checkpoint permission that was deleted. */
-  id: string;
+  id: string
   /** The object type, which is always "checkpoint.permission". */
-  object: DeleteFineTuningCheckpointPermissionResponseObject;
+  object: DeleteFineTuningCheckpointPermissionResponseObject
   /** Whether the fine-tuned model checkpoint permission was successfully deleted. */
-  deleted: boolean;
+  deleted: boolean
 }

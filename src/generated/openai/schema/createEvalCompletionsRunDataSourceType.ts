@@ -9,10 +9,10 @@
 /**
  * The type of run data source. Always `completions`.
  */
-export type CreateEvalCompletionsRunDataSourceType = typeof CreateEvalCompletionsRunDataSourceType[keyof typeof CreateEvalCompletionsRunDataSourceType];
-
+export type CreateEvalCompletionsRunDataSourceType =
+  (typeof CreateEvalCompletionsRunDataSourceType)[keyof typeof CreateEvalCompletionsRunDataSourceType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEvalCompletionsRunDataSourceType = {
-  completions: 'completions',
-} as const;
+  completions: "completions"
+} as const

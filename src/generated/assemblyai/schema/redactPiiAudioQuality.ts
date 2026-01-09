@@ -9,11 +9,11 @@
 /**
  * Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
  */
-export type RedactPiiAudioQuality = typeof RedactPiiAudioQuality[keyof typeof RedactPiiAudioQuality];
-
+export type RedactPiiAudioQuality =
+  (typeof RedactPiiAudioQuality)[keyof typeof RedactPiiAudioQuality]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RedactPiiAudioQuality = {
-  mp3: 'mp3',
-  wav: 'wav',
-} as const;
+  mp3: "mp3",
+  wav: "wav"
+} as const

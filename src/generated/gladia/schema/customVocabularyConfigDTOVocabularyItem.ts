@@ -4,6 +4,6 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CustomVocabularyEntryDTO } from './customVocabularyEntryDTO';
+import type { CustomVocabularyEntryDTO } from "./customVocabularyEntryDTO"
 
-export type CustomVocabularyConfigDTOVocabularyItem = CustomVocabularyEntryDTO | string;
+export type CustomVocabularyConfigDTOVocabularyItem = CustomVocabularyEntryDTO | string

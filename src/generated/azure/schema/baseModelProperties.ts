@@ -5,10 +5,10 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { BaseModelDeprecationDates } from './baseModelDeprecationDates';
-import type { BaseModelFeatures } from './baseModelFeatures';
+import type { BaseModelDeprecationDates } from "./baseModelDeprecationDates"
+import type { BaseModelFeatures } from "./baseModelFeatures"
 
 export interface BaseModelProperties {
-  deprecationDates?: BaseModelDeprecationDates;
-  features?: BaseModelFeatures;
+  deprecationDates?: BaseModelDeprecationDates
+  features?: BaseModelFeatures
 }

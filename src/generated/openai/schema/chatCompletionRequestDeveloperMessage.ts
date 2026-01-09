@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestDeveloperMessageContent } from './chatCompletionRequestDeveloperMessageContent';
-import type { ChatCompletionRequestDeveloperMessageRole } from './chatCompletionRequestDeveloperMessageRole';
+import type { ChatCompletionRequestDeveloperMessageContent } from "./chatCompletionRequestDeveloperMessageContent"
+import type { ChatCompletionRequestDeveloperMessageRole } from "./chatCompletionRequestDeveloperMessageRole"
 
 /**
  * Developer-provided instructions that the model should follow, regardless of
@@ -16,9 +16,9 @@ replace the previous `system` messages.
  */
 export interface ChatCompletionRequestDeveloperMessage {
   /** The contents of the developer message. */
-  content: ChatCompletionRequestDeveloperMessageContent;
+  content: ChatCompletionRequestDeveloperMessageContent
   /** The role of the messages author, in this case `developer`. */
-  role: ChatCompletionRequestDeveloperMessageRole;
+  role: ChatCompletionRequestDeveloperMessageRole
   /** An optional name for the participant. Provides the model information to differentiate between participants of the same role. */
-  name?: string;
+  name?: string
 }

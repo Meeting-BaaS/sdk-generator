@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateThreadRequestToolResourcesAnyOfCodeInterpreter } from './createThreadRequestToolResourcesAnyOfCodeInterpreter';
-import type { CreateThreadRequestToolResourcesAnyOfFileSearch } from './createThreadRequestToolResourcesAnyOfFileSearch';
+import type { CreateThreadRequestToolResourcesAnyOfCodeInterpreter } from "./createThreadRequestToolResourcesAnyOfCodeInterpreter"
+import type { CreateThreadRequestToolResourcesAnyOfFileSearch } from "./createThreadRequestToolResourcesAnyOfFileSearch"
 
 /**
  * A set of resources that are made available to the assistant's tools in this thread. The resources are specific to the type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
 
  */
 export type CreateThreadRequestToolResourcesAnyOf = {
-  code_interpreter?: CreateThreadRequestToolResourcesAnyOfCodeInterpreter;
-  file_search?: CreateThreadRequestToolResourcesAnyOfFileSearch;
-};
+  code_interpreter?: CreateThreadRequestToolResourcesAnyOfCodeInterpreter
+  file_search?: CreateThreadRequestToolResourcesAnyOfFileSearch
+}

@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateResponseClientSecret } from './realtimeTranscriptionSessionCreateResponseClientSecret';
-import type { RealtimeTranscriptionSessionCreateResponseModalitiesItem } from './realtimeTranscriptionSessionCreateResponseModalitiesItem';
-import type { AudioTranscription } from './audioTranscription';
-import type { RealtimeTranscriptionSessionCreateResponseTurnDetection } from './realtimeTranscriptionSessionCreateResponseTurnDetection';
+import type { RealtimeTranscriptionSessionCreateResponseClientSecret } from "./realtimeTranscriptionSessionCreateResponseClientSecret"
+import type { RealtimeTranscriptionSessionCreateResponseModalitiesItem } from "./realtimeTranscriptionSessionCreateResponseModalitiesItem"
+import type { AudioTranscription } from "./audioTranscription"
+import type { RealtimeTranscriptionSessionCreateResponseTurnDetection } from "./realtimeTranscriptionSessionCreateResponseTurnDetection"
 
 /**
  * A new Realtime transcription session configuration.
@@ -22,20 +22,20 @@ export interface RealtimeTranscriptionSessionCreateResponse {
   /** Ephemeral key returned by the API. Only present when the session is
 created on the server via REST API.
  */
-  client_secret: RealtimeTranscriptionSessionCreateResponseClientSecret;
+  client_secret: RealtimeTranscriptionSessionCreateResponseClientSecret
   /** The set of modalities the model can respond with. To disable audio,
 set this to ["text"].
  */
-  modalities?: RealtimeTranscriptionSessionCreateResponseModalitiesItem[];
+  modalities?: RealtimeTranscriptionSessionCreateResponseModalitiesItem[]
   /** The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
- */
-  input_audio_format?: string;
+   */
+  input_audio_format?: string
   /** Configuration of the transcription model.
- */
-  input_audio_transcription?: AudioTranscription;
+   */
+  input_audio_transcription?: AudioTranscription
   /** Configuration for turn detection. Can be set to `null` to turn off. Server
 VAD means that the model will detect the start and end of speech based on
 audio volume and respond at the end of user speech.
  */
-  turn_detection?: RealtimeTranscriptionSessionCreateResponseTurnDetection;
+  turn_detection?: RealtimeTranscriptionSessionCreateResponseTurnDetection
 }

@@ -9,10 +9,10 @@
 /**
  * The operation type. Always `update_file`.
  */
-export type ApplyPatchUpdateFileOperationParamType = typeof ApplyPatchUpdateFileOperationParamType[keyof typeof ApplyPatchUpdateFileOperationParamType];
-
+export type ApplyPatchUpdateFileOperationParamType =
+  (typeof ApplyPatchUpdateFileOperationParamType)[keyof typeof ApplyPatchUpdateFileOperationParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchUpdateFileOperationParamType = {
-  update_file: 'update_file',
-} as const;
+  update_file: "update_file"
+} as const

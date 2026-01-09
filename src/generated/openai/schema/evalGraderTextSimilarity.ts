@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GraderTextSimilarity } from './graderTextSimilarity';
-import type { EvalGraderTextSimilarityAllOf } from './evalGraderTextSimilarityAllOf';
+import type { GraderTextSimilarity } from "./graderTextSimilarity"
+import type { EvalGraderTextSimilarityAllOf } from "./evalGraderTextSimilarityAllOf"
 
-export type EvalGraderTextSimilarity = GraderTextSimilarity & EvalGraderTextSimilarityAllOf;
+export type EvalGraderTextSimilarity = GraderTextSimilarity & EvalGraderTextSimilarityAllOf

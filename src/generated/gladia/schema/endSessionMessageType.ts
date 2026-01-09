@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type EndSessionMessageType = typeof EndSessionMessageType[keyof typeof EndSessionMessageType];
-
+export type EndSessionMessageType =
+  (typeof EndSessionMessageType)[keyof typeof EndSessionMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EndSessionMessageType = {
-  end_session: 'end_session',
-} as const;
+  end_session: "end_session"
+} as const

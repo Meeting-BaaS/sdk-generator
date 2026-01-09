@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AudioTranscriptionModel } from './audioTranscriptionModel';
+import type { AudioTranscriptionModel } from "./audioTranscriptionModel"
 
 export interface AudioTranscription {
   /** The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
- */
-  model?: AudioTranscriptionModel;
+   */
+  model?: AudioTranscriptionModel
   /** The language of the input audio. Supplying the input language in
 [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
 will improve accuracy and latency.
  */
-  language?: string;
+  language?: string
   /** An optional text to guide the model's style or continue a previous audio
 segment.
 For `whisper-1`, the [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).
 For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".
  */
-  prompt?: string;
+  prompt?: string
 }

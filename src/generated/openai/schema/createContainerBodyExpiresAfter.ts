@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateContainerBodyExpiresAfterAnchor } from './createContainerBodyExpiresAfterAnchor';
+import type { CreateContainerBodyExpiresAfterAnchor } from "./createContainerBodyExpiresAfterAnchor"
 
 /**
  * Container expiration time in seconds relative to the 'anchor' time.
  */
 export type CreateContainerBodyExpiresAfter = {
   /** Time anchor for the expiration time. Currently only 'last_active_at' is supported. */
-  anchor: CreateContainerBodyExpiresAfterAnchor;
-  minutes: number;
-};
+  anchor: CreateContainerBodyExpiresAfterAnchor
+  minutes: number
+}

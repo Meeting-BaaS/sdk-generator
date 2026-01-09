@@ -9,10 +9,10 @@
 /**
  * The type of data source. Always `stored_completions`.
  */
-export type EvalStoredCompletionsDataSourceConfigType = typeof EvalStoredCompletionsDataSourceConfigType[keyof typeof EvalStoredCompletionsDataSourceConfigType];
-
+export type EvalStoredCompletionsDataSourceConfigType =
+  (typeof EvalStoredCompletionsDataSourceConfigType)[keyof typeof EvalStoredCompletionsDataSourceConfigType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalStoredCompletionsDataSourceConfigType = {
-  stored_completions: 'stored_completions',
-} as const;
+  stored_completions: "stored_completions"
+} as const

@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InviteRequestRole } from './inviteRequestRole';
-import type { InviteRequestProjectsItem } from './inviteRequestProjectsItem';
+import type { InviteRequestRole } from "./inviteRequestRole"
+import type { InviteRequestProjectsItem } from "./inviteRequestProjectsItem"
 
 export interface InviteRequest {
   /** Send an email to this address */
-  email: string;
+  email: string
   /** `owner` or `reader` */
-  role: InviteRequestRole;
+  role: InviteRequestRole
   /** An array of projects to which membership is granted at the same time the org invite is accepted. If omitted, the user will be invited to the default project for compatibility with legacy behavior. */
-  projects?: InviteRequestProjectsItem[];
+  projects?: InviteRequestProjectsItem[]
 }

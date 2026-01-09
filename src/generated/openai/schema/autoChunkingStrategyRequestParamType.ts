@@ -9,10 +9,10 @@
 /**
  * Always `auto`.
  */
-export type AutoChunkingStrategyRequestParamType = typeof AutoChunkingStrategyRequestParamType[keyof typeof AutoChunkingStrategyRequestParamType];
-
+export type AutoChunkingStrategyRequestParamType =
+  (typeof AutoChunkingStrategyRequestParamType)[keyof typeof AutoChunkingStrategyRequestParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AutoChunkingStrategyRequestParamType = {
-  auto: 'auto',
-} as const;
+  auto: "auto"
+} as const

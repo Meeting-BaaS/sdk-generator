@@ -10,12 +10,12 @@
  * The background setting for the edited image.
 
  */
-export type ImageEditCompletedEventBackground = typeof ImageEditCompletedEventBackground[keyof typeof ImageEditCompletedEventBackground];
-
+export type ImageEditCompletedEventBackground =
+  (typeof ImageEditCompletedEventBackground)[keyof typeof ImageEditCompletedEventBackground]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditCompletedEventBackground = {
-  transparent: 'transparent',
-  opaque: 'opaque',
-  auto: 'auto',
-} as const;
+  transparent: "transparent",
+  opaque: "opaque",
+  auto: "auto"
+} as const

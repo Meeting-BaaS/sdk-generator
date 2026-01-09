@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type DeleteFileResponseObject = typeof DeleteFileResponseObject[keyof typeof DeleteFileResponseObject];
-
+export type DeleteFileResponseObject =
+  (typeof DeleteFileResponseObject)[keyof typeof DeleteFileResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeleteFileResponseObject = {
-  file: 'file',
-} as const;
+  file: "file"
+} as const

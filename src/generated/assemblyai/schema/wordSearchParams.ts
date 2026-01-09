@@ -7,8 +7,8 @@
  */
 
 export type WordSearchParams = {
-/**
- * Keywords to search for
- */
-words: string[];
-};
+  /**
+   * Keywords to search for
+   */
+  words: string[]
+}

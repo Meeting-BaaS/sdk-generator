@@ -1549,4 +1549,8 @@ export type {
 // Enum constants for validation
 export { TranscriptionControllerListV2StatusItem }
 export { StreamingSupportedSampleRateEnum, StreamingSupportedBitDepthEnum }
-export type { StreamingSupportedEncodingEnum, StreamingSupportedModels, TranscriptionLanguageCodeEnum }
+export type {
+  StreamingSupportedEncodingEnum,
+  StreamingSupportedModels,
+  TranscriptionLanguageCodeEnum
+}

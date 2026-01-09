@@ -11,13 +11,13 @@
  */
 export type AuditLogRoleAssignmentCreated = {
   /** The identifier of the role assignment. */
-  id?: string;
+  id?: string
   /** The principal (user or group) that received the role. */
-  principal_id?: string;
+  principal_id?: string
   /** The type of principal (user or group) that received the role. */
-  principal_type?: string;
+  principal_type?: string
   /** The resource the role assignment is scoped to. */
-  resource_id?: string;
+  resource_id?: string
   /** The type of resource the role assignment is scoped to. */
-  resource_type?: string;
-};
+  resource_type?: string
+}

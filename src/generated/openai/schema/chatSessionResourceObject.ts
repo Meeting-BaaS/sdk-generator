@@ -9,10 +9,10 @@
 /**
  * Type discriminator that is always `chatkit.session`.
  */
-export type ChatSessionResourceObject = typeof ChatSessionResourceObject[keyof typeof ChatSessionResourceObject];
-
+export type ChatSessionResourceObject =
+  (typeof ChatSessionResourceObject)[keyof typeof ChatSessionResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatSessionResourceObject = {
-  chatkitsession: 'chatkit.session',
-} as const;
+  chatkitsession: "chatkit.session"
+} as const

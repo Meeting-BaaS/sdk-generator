@@ -5,19 +5,19 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptParagraph } from './transcriptParagraph';
+import type { TranscriptParagraph } from "./transcriptParagraph"
 
 export interface ParagraphsResponse {
   /** The unique identifier of your transcript */
-  id: string;
+  id: string
   /**
    * The confidence score for the transcript
    * @minimum 0
    * @maximum 1
    */
-  confidence: number;
+  confidence: number
   /** The duration of the audio file in seconds */
-  audio_duration: number;
+  audio_duration: number
   /** An array of paragraphs in the transcript */
-  paragraphs: TranscriptParagraph[];
+  paragraphs: TranscriptParagraph[]
 }

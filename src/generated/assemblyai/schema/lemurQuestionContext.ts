@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { LemurQuestionContextOneOf } from './lemurQuestionContextOneOf';
+import type { LemurQuestionContextOneOf } from "./lemurQuestionContextOneOf"
 
 /**
  * Any context about the transcripts you wish to provide. This can be a string or any object.
  */
-export type LemurQuestionContext = string | LemurQuestionContextOneOf;
+export type LemurQuestionContext = string | LemurQuestionContextOneOf

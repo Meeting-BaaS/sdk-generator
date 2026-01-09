@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ThreadObjectToolResourcesAnyOf } from './threadObjectToolResourcesAnyOf';
+import type { ThreadObjectToolResourcesAnyOf } from "./threadObjectToolResourcesAnyOf"
 
-export type ThreadObjectToolResources = ThreadObjectToolResourcesAnyOf | null;
+export type ThreadObjectToolResources = ThreadObjectToolResourcesAnyOf | null

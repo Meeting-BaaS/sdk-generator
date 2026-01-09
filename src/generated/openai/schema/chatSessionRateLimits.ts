@@ -11,5 +11,5 @@
  */
 export interface ChatSessionRateLimits {
   /** Maximum allowed requests per one-minute window. */
-  max_requests_per_1_minute: number;
+  max_requests_per_1_minute: number
 }

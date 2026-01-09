@@ -5,28 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TaskItemObject } from './taskItemObject';
-import type { TaskItemType } from './taskItemType';
-import type { TaskType } from './taskType';
-import type { TaskItemHeading } from './taskItemHeading';
-import type { TaskItemSummary } from './taskItemSummary';
+import type { TaskItemObject } from "./taskItemObject"
+import type { TaskItemType } from "./taskItemType"
+import type { TaskType } from "./taskType"
+import type { TaskItemHeading } from "./taskItemHeading"
+import type { TaskItemSummary } from "./taskItemSummary"
 
 /**
  * Task emitted by the workflow to show progress and status updates.
  */
 export interface TaskItem {
   /** Identifier of the thread item. */
-  id: string;
+  id: string
   /** Type discriminator that is always `chatkit.thread_item`. */
-  object: TaskItemObject;
+  object: TaskItemObject
   /** Unix timestamp (in seconds) for when the item was created. */
-  created_at: number;
+  created_at: number
   /** Identifier of the parent thread. */
-  thread_id: string;
+  thread_id: string
   /** Type discriminator that is always `chatkit.task`. */
-  type: TaskItemType;
+  type: TaskItemType
   /** Subtype for the task. */
-  task_type: TaskType;
-  heading: TaskItemHeading;
-  summary: TaskItemSummary;
+  task_type: TaskType
+  heading: TaskItemHeading
+  summary: TaskItemSummary
 }

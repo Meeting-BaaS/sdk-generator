@@ -9,10 +9,10 @@
 /**
  * Always `image_file`.
  */
-export type MessageDeltaContentImageFileObjectType = typeof MessageDeltaContentImageFileObjectType[keyof typeof MessageDeltaContentImageFileObjectType];
-
+export type MessageDeltaContentImageFileObjectType =
+  (typeof MessageDeltaContentImageFileObjectType)[keyof typeof MessageDeltaContentImageFileObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageDeltaContentImageFileObjectType = {
-  image_file: 'image_file',
-} as const;
+  image_file: "image_file"
+} as const

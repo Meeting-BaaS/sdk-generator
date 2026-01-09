@@ -9,10 +9,10 @@
 /**
  * The object type, which is always "checkpoint.permission".
  */
-export type DeleteFineTuningCheckpointPermissionResponseObject = typeof DeleteFineTuningCheckpointPermissionResponseObject[keyof typeof DeleteFineTuningCheckpointPermissionResponseObject];
-
+export type DeleteFineTuningCheckpointPermissionResponseObject =
+  (typeof DeleteFineTuningCheckpointPermissionResponseObject)[keyof typeof DeleteFineTuningCheckpointPermissionResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeleteFineTuningCheckpointPermissionResponseObject = {
-  checkpointpermission: 'checkpoint.permission',
-} as const;
+  checkpointpermission: "checkpoint.permission"
+} as const

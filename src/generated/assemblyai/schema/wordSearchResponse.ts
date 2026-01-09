@@ -5,13 +5,13 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { WordSearchMatch } from './wordSearchMatch';
+import type { WordSearchMatch } from "./wordSearchMatch"
 
 export interface WordSearchResponse {
   /** The ID of the transcript */
-  id: string;
+  id: string
   /** The total count of all matched instances. For e.g., word 1 matched 2 times, and word 2 matched 3 times, `total_count` will equal 5. */
-  total_count: number;
+  total_count: number
   /** The matches of the search */
-  matches: WordSearchMatch[];
+  matches: WordSearchMatch[]
 }

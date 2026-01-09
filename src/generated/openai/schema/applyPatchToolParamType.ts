@@ -9,10 +9,10 @@
 /**
  * The type of the tool. Always `apply_patch`.
  */
-export type ApplyPatchToolParamType = typeof ApplyPatchToolParamType[keyof typeof ApplyPatchToolParamType];
-
+export type ApplyPatchToolParamType =
+  (typeof ApplyPatchToolParamType)[keyof typeof ApplyPatchToolParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApplyPatchToolParamType = {
-  apply_patch: 'apply_patch',
-} as const;
+  apply_patch: "apply_patch"
+} as const

@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always 'response.mcp_call.completed'.
  */
-export type ResponseMCPCallCompletedEventType = typeof ResponseMCPCallCompletedEventType[keyof typeof ResponseMCPCallCompletedEventType];
-
+export type ResponseMCPCallCompletedEventType =
+  (typeof ResponseMCPCallCompletedEventType)[keyof typeof ResponseMCPCallCompletedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseMCPCallCompletedEventType = {
-  responsemcp_callcompleted: 'response.mcp_call.completed',
-} as const;
+  responsemcp_callcompleted: "response.mcp_call.completed"
+} as const

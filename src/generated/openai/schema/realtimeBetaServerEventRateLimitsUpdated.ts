@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItem } from './realtimeBetaServerEventRateLimitsUpdatedRateLimitsItem';
+import type { RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItem } from "./realtimeBetaServerEventRateLimitsUpdatedRateLimitsItem"
 
 /**
  * Emitted at the beginning of a Response to indicate the updated rate limits. 
@@ -16,9 +16,9 @@ adjusted accordingly once the Response is completed.
  */
 export interface RealtimeBetaServerEventRateLimitsUpdated {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `rate_limits.updated`. */
-  type: 'rate_limits.updated';
+  type: "rate_limits.updated"
   /** List of rate limit information. */
-  rate_limits: RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItem[];
+  rate_limits: RealtimeBetaServerEventRateLimitsUpdatedRateLimitsItem[]
 }

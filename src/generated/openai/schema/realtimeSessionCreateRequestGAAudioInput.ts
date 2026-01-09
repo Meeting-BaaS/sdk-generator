@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormats } from './realtimeAudioFormats';
-import type { AudioTranscription } from './audioTranscription';
-import type { RealtimeSessionCreateRequestGAAudioInputNoiseReduction } from './realtimeSessionCreateRequestGAAudioInputNoiseReduction';
-import type { RealtimeTurnDetection } from './realtimeTurnDetection';
+import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
+import type { AudioTranscription } from "./audioTranscription"
+import type { RealtimeSessionCreateRequestGAAudioInputNoiseReduction } from "./realtimeSessionCreateRequestGAAudioInputNoiseReduction"
+import type { RealtimeTurnDetection } from "./realtimeTurnDetection"
 
 export type RealtimeSessionCreateRequestGAAudioInput = {
   /** The format of the input audio. */
-  format?: RealtimeAudioFormats;
+  format?: RealtimeAudioFormats
   /** Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](https://platform.openai.com/docs/api-reference/audio/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
- */
-  transcription?: AudioTranscription;
+   */
+  transcription?: AudioTranscription
   /** Configuration for input audio noise reduction. This can be set to `null` to turn off.
 Noise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.
 Filtering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.
  */
-  noise_reduction?: RealtimeSessionCreateRequestGAAudioInputNoiseReduction;
-  turn_detection?: RealtimeTurnDetection;
-};
+  noise_reduction?: RealtimeSessionCreateRequestGAAudioInputNoiseReduction
+  turn_detection?: RealtimeTurnDetection
+}

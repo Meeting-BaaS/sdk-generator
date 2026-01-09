@@ -5,7 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { MessageContentTextAnnotationsFileCitationObject } from './messageContentTextAnnotationsFileCitationObject';
-import type { MessageContentTextAnnotationsFilePathObject } from './messageContentTextAnnotationsFilePathObject';
+import type { MessageContentTextAnnotationsFileCitationObject } from "./messageContentTextAnnotationsFileCitationObject"
+import type { MessageContentTextAnnotationsFilePathObject } from "./messageContentTextAnnotationsFilePathObject"
 
-export type TextAnnotation = MessageContentTextAnnotationsFileCitationObject | MessageContentTextAnnotationsFilePathObject;
+export type TextAnnotation =
+  | MessageContentTextAnnotationsFileCitationObject
+  | MessageContentTextAnnotationsFilePathObject

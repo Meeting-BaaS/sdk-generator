@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type NamedEntityRecognitionMessageType = typeof NamedEntityRecognitionMessageType[keyof typeof NamedEntityRecognitionMessageType];
-
+export type NamedEntityRecognitionMessageType =
+  (typeof NamedEntityRecognitionMessageType)[keyof typeof NamedEntityRecognitionMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NamedEntityRecognitionMessageType = {
-  named_entity_recognition: 'named_entity_recognition',
-} as const;
+  named_entity_recognition: "named_entity_recognition"
+} as const

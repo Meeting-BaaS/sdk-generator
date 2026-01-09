@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AuditLogServiceAccountUpdatedChangesRequested } from './auditLogServiceAccountUpdatedChangesRequested';
+import type { AuditLogServiceAccountUpdatedChangesRequested } from "./auditLogServiceAccountUpdatedChangesRequested"
 
 /**
  * The details for events with this `type`.
  */
 export type AuditLogServiceAccountUpdated = {
   /** The service account ID. */
-  id?: string;
+  id?: string
   /** The payload used to updated the service account. */
-  changes_requested?: AuditLogServiceAccountUpdatedChangesRequested;
-};
+  changes_requested?: AuditLogServiceAccountUpdatedChangesRequested
+}

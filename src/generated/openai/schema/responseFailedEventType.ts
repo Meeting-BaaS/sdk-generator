@@ -10,10 +10,10 @@
  * The type of the event. Always `response.failed`.
 
  */
-export type ResponseFailedEventType = typeof ResponseFailedEventType[keyof typeof ResponseFailedEventType];
-
+export type ResponseFailedEventType =
+  (typeof ResponseFailedEventType)[keyof typeof ResponseFailedEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFailedEventType = {
-  responsefailed: 'response.failed',
-} as const;
+  responsefailed: "response.failed"
+} as const

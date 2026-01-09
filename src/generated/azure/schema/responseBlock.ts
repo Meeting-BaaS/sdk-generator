@@ -11,7 +11,7 @@
  */
 export interface ResponseBlock {
   /** The name of the block. */
-  name?: string;
+  name?: string
   /** The size of the block. */
-  size?: number;
+  size?: number
 }

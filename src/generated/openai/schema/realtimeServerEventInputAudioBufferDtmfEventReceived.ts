@@ -15,10 +15,10 @@ that the server received the event.
  */
 export interface RealtimeServerEventInputAudioBufferDtmfEventReceived {
   /** The event type, must be `input_audio_buffer.dtmf_event_received`. */
-  type: 'input_audio_buffer.dtmf_event_received';
+  type: "input_audio_buffer.dtmf_event_received"
   /** The telephone keypad that was pressed by the user. */
-  event: string;
+  event: string
   /** UTC Unix Timestamp when DTMF Event was received by server.
- */
-  received_at: number;
+   */
+  received_at: number
 }

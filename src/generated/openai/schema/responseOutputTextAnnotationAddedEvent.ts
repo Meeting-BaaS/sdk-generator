@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseOutputTextAnnotationAddedEventType } from './responseOutputTextAnnotationAddedEventType';
-import type { ResponseOutputTextAnnotationAddedEventAnnotation } from './responseOutputTextAnnotationAddedEventAnnotation';
+import type { ResponseOutputTextAnnotationAddedEventType } from "./responseOutputTextAnnotationAddedEventType"
+import type { ResponseOutputTextAnnotationAddedEventAnnotation } from "./responseOutputTextAnnotationAddedEventAnnotation"
 
 /**
  * Emitted when an annotation is added to output text content.
@@ -14,17 +14,17 @@ import type { ResponseOutputTextAnnotationAddedEventAnnotation } from './respons
  */
 export interface ResponseOutputTextAnnotationAddedEvent {
   /** The type of the event. Always 'response.output_text.annotation.added'. */
-  type: ResponseOutputTextAnnotationAddedEventType;
+  type: ResponseOutputTextAnnotationAddedEventType
   /** The unique identifier of the item to which the annotation is being added. */
-  item_id: string;
+  item_id: string
   /** The index of the output item in the response's output array. */
-  output_index: number;
+  output_index: number
   /** The index of the content part within the output item. */
-  content_index: number;
+  content_index: number
   /** The index of the annotation within the content part. */
-  annotation_index: number;
+  annotation_index: number
   /** The sequence number of this event. */
-  sequence_number: number;
+  sequence_number: number
   /** The annotation object being added. (See annotation schema for details.) */
-  annotation: ResponseOutputTextAnnotationAddedEventAnnotation;
+  annotation: ResponseOutputTextAnnotationAddedEventAnnotation
 }

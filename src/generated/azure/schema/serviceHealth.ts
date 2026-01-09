@@ -5,13 +5,13 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { HealthStatus } from './healthStatus';
-import type { Component } from './component';
+import type { HealthStatus } from "./healthStatus"
+import type { Component } from "./component"
 
 export interface ServiceHealth {
-  status?: HealthStatus;
+  status?: HealthStatus
   /** Additional messages about the current service health. */
-  readonly message?: string;
+  readonly message?: string
   /** Optional subcomponents of this service and their status. */
-  readonly components?: readonly Component[];
+  readonly components?: readonly Component[]
 }

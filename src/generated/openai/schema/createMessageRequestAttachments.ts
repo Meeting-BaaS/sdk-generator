@@ -5,6 +5,6 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateMessageRequestAttachmentsAnyOfItem } from './createMessageRequestAttachmentsAnyOfItem';
+import type { CreateMessageRequestAttachmentsAnyOfItem } from "./createMessageRequestAttachmentsAnyOfItem"
 
-export type CreateMessageRequestAttachments = CreateMessageRequestAttachmentsAnyOfItem[] | null;
+export type CreateMessageRequestAttachments = CreateMessageRequestAttachmentsAnyOfItem[] | null

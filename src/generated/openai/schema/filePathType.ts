@@ -10,10 +10,9 @@
  * The type of the file path. Always `file_path`.
 
  */
-export type FilePathType = typeof FilePathType[keyof typeof FilePathType];
-
+export type FilePathType = (typeof FilePathType)[keyof typeof FilePathType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FilePathType = {
-  file_path: 'file_path',
-} as const;
+  file_path: "file_path"
+} as const

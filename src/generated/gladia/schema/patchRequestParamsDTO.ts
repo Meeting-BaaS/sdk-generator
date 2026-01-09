@@ -5,4 +5,6 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface PatchRequestParamsDTO { [key: string]: unknown }
+export interface PatchRequestParamsDTO {
+  [key: string]: unknown
+}

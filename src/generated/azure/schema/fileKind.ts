@@ -9,19 +9,18 @@
 /**
  * Type of data.
  */
-export type FileKind = typeof FileKind[keyof typeof FileKind];
-
+export type FileKind = (typeof FileKind)[keyof typeof FileKind]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileKind = {
-  DatasetReport: 'DatasetReport',
-  Audio: 'Audio',
-  LanguageData: 'LanguageData',
-  PronunciationData: 'PronunciationData',
-  AcousticDataArchive: 'AcousticDataArchive',
-  AcousticDataTranscriptionV2: 'AcousticDataTranscriptionV2',
-  Transcription: 'Transcription',
-  TranscriptionReport: 'TranscriptionReport',
-  EvaluationDetails: 'EvaluationDetails',
-  ModelReport: 'ModelReport',
-} as const;
+  DatasetReport: "DatasetReport",
+  Audio: "Audio",
+  LanguageData: "LanguageData",
+  PronunciationData: "PronunciationData",
+  AcousticDataArchive: "AcousticDataArchive",
+  AcousticDataTranscriptionV2: "AcousticDataTranscriptionV2",
+  Transcription: "Transcription",
+  TranscriptionReport: "TranscriptionReport",
+  EvaluationDetails: "EvaluationDetails",
+  ModelReport: "ModelReport"
+} as const

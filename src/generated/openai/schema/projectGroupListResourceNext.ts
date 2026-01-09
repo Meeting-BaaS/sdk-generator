@@ -9,4 +9,4 @@
 /**
  * Cursor to fetch the next page of results, or `null` when there are no more results.
  */
-export type ProjectGroupListResourceNext = string | null;
+export type ProjectGroupListResourceNext = string | null

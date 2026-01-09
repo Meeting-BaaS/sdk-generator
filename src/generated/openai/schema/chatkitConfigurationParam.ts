@@ -5,18 +5,18 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AutomaticThreadTitlingParam } from './automaticThreadTitlingParam';
-import type { FileUploadParam } from './fileUploadParam';
-import type { HistoryParam } from './historyParam';
+import type { AutomaticThreadTitlingParam } from "./automaticThreadTitlingParam"
+import type { FileUploadParam } from "./fileUploadParam"
+import type { HistoryParam } from "./historyParam"
 
 /**
  * Optional per-session configuration settings for ChatKit behavior.
  */
 export interface ChatkitConfigurationParam {
   /** Configuration for automatic thread titling. When omitted, automatic thread titling is enabled by default. */
-  automatic_thread_titling?: AutomaticThreadTitlingParam;
+  automatic_thread_titling?: AutomaticThreadTitlingParam
   /** Configuration for upload enablement and limits. When omitted, uploads are disabled by default (max_files 10, max_file_size 512 MB). */
-  file_upload?: FileUploadParam;
+  file_upload?: FileUploadParam
   /** Configuration for chat history retention. When omitted, history is enabled by default with no limit on recent_threads (null). */
-  history?: HistoryParam;
+  history?: HistoryParam
 }

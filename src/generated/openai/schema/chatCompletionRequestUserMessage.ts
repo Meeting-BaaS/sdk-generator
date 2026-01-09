@@ -5,8 +5,8 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestUserMessageContent } from './chatCompletionRequestUserMessageContent';
-import type { ChatCompletionRequestUserMessageRole } from './chatCompletionRequestUserMessageRole';
+import type { ChatCompletionRequestUserMessageContent } from "./chatCompletionRequestUserMessageContent"
+import type { ChatCompletionRequestUserMessageRole } from "./chatCompletionRequestUserMessageRole"
 
 /**
  * Messages sent by an end user, containing prompts or additional context
@@ -15,10 +15,10 @@ information.
  */
 export interface ChatCompletionRequestUserMessage {
   /** The contents of the user message.
- */
-  content: ChatCompletionRequestUserMessageContent;
+   */
+  content: ChatCompletionRequestUserMessageContent
   /** The role of the messages author, in this case `user`. */
-  role: ChatCompletionRequestUserMessageRole;
+  role: ChatCompletionRequestUserMessageRole
   /** An optional name for the participant. Provides the model information to differentiate between participants of the same role. */
-  name?: string;
+  name?: string
 }

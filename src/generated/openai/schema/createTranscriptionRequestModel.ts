@@ -10,4 +10,9 @@
  * ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.
 
  */
-export type CreateTranscriptionRequestModel = string | 'whisper-1' | 'gpt-4o-transcribe' | 'gpt-4o-mini-transcribe' | 'gpt-4o-transcribe-diarize';
+export type CreateTranscriptionRequestModel =
+  | string
+  | "whisper-1"
+  | "gpt-4o-transcribe"
+  | "gpt-4o-mini-transcribe"
+  | "gpt-4o-transcribe-diarize"

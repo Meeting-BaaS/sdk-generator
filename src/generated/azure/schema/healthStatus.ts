@@ -9,12 +9,11 @@
 /**
  * Health status of the service.
  */
-export type HealthStatus = typeof HealthStatus[keyof typeof HealthStatus];
-
+export type HealthStatus = (typeof HealthStatus)[keyof typeof HealthStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HealthStatus = {
-  Unhealthy: 'Unhealthy',
-  Degraded: 'Degraded',
-  Healthy: 'Healthy',
-} as const;
+  Unhealthy: "Unhealthy",
+  Degraded: "Degraded",
+  Healthy: "Healthy"
+} as const

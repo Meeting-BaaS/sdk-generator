@@ -15,9 +15,9 @@ data has been sent to the client (`response.done`).
  */
 export interface RealtimeServerEventOutputAudioBufferStopped {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `output_audio_buffer.stopped`. */
-  type: 'output_audio_buffer.stopped';
+  type: "output_audio_buffer.stopped"
   /** The unique ID of the response that produced the audio. */
-  response_id: string;
+  response_id: string
 }

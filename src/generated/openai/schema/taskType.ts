@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type TaskType = typeof TaskType[keyof typeof TaskType];
-
+export type TaskType = (typeof TaskType)[keyof typeof TaskType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TaskType = {
-  custom: 'custom',
-  thought: 'thought',
-} as const;
+  custom: "custom",
+  thought: "thought"
+} as const

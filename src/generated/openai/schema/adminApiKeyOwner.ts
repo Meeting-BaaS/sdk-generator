@@ -8,15 +8,15 @@
 
 export type AdminApiKeyOwner = {
   /** Always `user` */
-  type?: string;
+  type?: string
   /** The object type, which is always organization.user */
-  object?: string;
+  object?: string
   /** The identifier, which can be referenced in API endpoints */
-  id?: string;
+  id?: string
   /** The name of the user */
-  name?: string;
+  name?: string
   /** The Unix timestamp (in seconds) of when the user was created */
-  created_at?: number;
+  created_at?: number
   /** Always `owner` */
-  role?: string;
-};
+  role?: string
+}

@@ -11,5 +11,5 @@
  */
 export interface PublicAssignOrganizationGroupRoleBody {
   /** Identifier of the role to assign. */
-  role_id: string;
+  role_id: string
 }

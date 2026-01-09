@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StreamingResponseKind = typeof StreamingResponseKind[keyof typeof StreamingResponseKind];
-
+export type StreamingResponseKind =
+  (typeof StreamingResponseKind)[keyof typeof StreamingResponseKind]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingResponseKind = {
-  live: 'live',
-} as const;
+  live: "live"
+} as const

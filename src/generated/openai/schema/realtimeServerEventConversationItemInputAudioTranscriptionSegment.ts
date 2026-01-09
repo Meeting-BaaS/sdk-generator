@@ -11,21 +11,21 @@
  */
 export interface RealtimeServerEventConversationItemInputAudioTranscriptionSegment {
   /** The unique ID of the server event. */
-  event_id: string;
+  event_id: string
   /** The event type, must be `conversation.item.input_audio_transcription.segment`. */
-  type: 'conversation.item.input_audio_transcription.segment';
+  type: "conversation.item.input_audio_transcription.segment"
   /** The ID of the item containing the input audio content. */
-  item_id: string;
+  item_id: string
   /** The index of the input audio content part within the item. */
-  content_index: number;
+  content_index: number
   /** The text for this segment. */
-  text: string;
+  text: string
   /** The segment identifier. */
-  id: string;
+  id: string
   /** The detected speaker label for this segment. */
-  speaker: string;
+  speaker: string
   /** Start time of the segment in seconds. */
-  start: number;
+  start: number
   /** End time of the segment in seconds. */
-  end: number;
+  end: number
 }

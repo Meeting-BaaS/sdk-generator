@@ -9,11 +9,10 @@
 /**
  * The replacement logic for detected PII, can be "entity_name" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
  */
-export type SubstitutionPolicy = typeof SubstitutionPolicy[keyof typeof SubstitutionPolicy];
-
+export type SubstitutionPolicy = (typeof SubstitutionPolicy)[keyof typeof SubstitutionPolicy]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SubstitutionPolicy = {
-  entity_name: 'entity_name',
-  hash: 'hash',
-} as const;
+  entity_name: "entity_name",
+  hash: "hash"
+} as const

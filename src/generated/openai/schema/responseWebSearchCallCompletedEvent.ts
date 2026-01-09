@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseWebSearchCallCompletedEventType } from './responseWebSearchCallCompletedEventType';
+import type { ResponseWebSearchCallCompletedEventType } from "./responseWebSearchCallCompletedEventType"
 
 /**
  * Emitted when a web search call is completed.
  */
 export interface ResponseWebSearchCallCompletedEvent {
   /** The type of the event. Always `response.web_search_call.completed`.
- */
-  type: ResponseWebSearchCallCompletedEventType;
+   */
+  type: ResponseWebSearchCallCompletedEventType
   /** The index of the output item that the web search call is associated with.
- */
-  output_index: number;
+   */
+  output_index: number
   /** Unique ID for the output item associated with the web search call.
- */
-  item_id: string;
+   */
+  item_id: string
   /** The sequence number of the web search call being processed. */
-  sequence_number: number;
+  sequence_number: number
 }

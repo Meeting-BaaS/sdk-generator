@@ -5,10 +5,10 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { TextAnnotation } from './textAnnotation';
+import type { TextAnnotation } from "./textAnnotation"
 
 export type MessageContentTextObjectText = {
   /** The data that makes up the text. */
-  value: string;
-  annotations: TextAnnotation[];
-};
+  value: string
+  annotations: TextAnnotation[]
+}

@@ -5,14 +5,14 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FineTunePreferenceRequestInputInputMessagesItem } from './fineTunePreferenceRequestInputInputMessagesItem';
-import type { ChatCompletionTool } from './chatCompletionTool';
-import type { ParallelToolCalls } from './parallelToolCalls';
+import type { FineTunePreferenceRequestInputInputMessagesItem } from "./fineTunePreferenceRequestInputInputMessagesItem"
+import type { ChatCompletionTool } from "./chatCompletionTool"
+import type { ParallelToolCalls } from "./parallelToolCalls"
 
 export type FineTunePreferenceRequestInputInput = {
   /** @minItems 1 */
-  messages?: FineTunePreferenceRequestInputInputMessagesItem[];
+  messages?: FineTunePreferenceRequestInputInputMessagesItem[]
   /** A list of tools the model may generate JSON inputs for. */
-  tools?: ChatCompletionTool[];
-  parallel_tool_calls?: ParallelToolCalls;
-};
+  tools?: ChatCompletionTool[]
+  parallel_tool_calls?: ParallelToolCalls
+}

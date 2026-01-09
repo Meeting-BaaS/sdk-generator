@@ -5,29 +5,29 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptStatus } from './transcriptStatus';
-import type { TranscriptListItemCompleted } from './transcriptListItemCompleted';
-import type { TranscriptListItemError } from './transcriptListItemError';
+import type { TranscriptStatus } from "./transcriptStatus"
+import type { TranscriptListItemCompleted } from "./transcriptListItemCompleted"
+import type { TranscriptListItemError } from "./transcriptListItemError"
 
 export interface TranscriptListItem {
   /** The unique identifier for the transcript */
-  id: string;
+  id: string
   /** The URL to retrieve the transcript */
-  resource_url: string;
+  resource_url: string
   /** The status of the transcript */
-  status: TranscriptStatus;
+  status: TranscriptStatus
   /**
    * The date and time the transcript was created
    * @pattern ^(?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))$
    */
-  created: string;
+  created: string
   /**
    * The date and time the transcript was completed
    * @pattern ^(?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))$
    */
-  completed: TranscriptListItemCompleted;
+  completed: TranscriptListItemCompleted
   /** The URL to the audio file */
-  audio_url: string;
+  audio_url: string
   /** Error message of why the transcript failed */
-  error: TranscriptListItemError;
+  error: TranscriptListItemError
 }

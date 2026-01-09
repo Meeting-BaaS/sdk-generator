@@ -5,20 +5,20 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputFileContentParamType } from './inputFileContentParamType';
-import type { InputFileContentParamFileId } from './inputFileContentParamFileId';
-import type { InputFileContentParamFilename } from './inputFileContentParamFilename';
-import type { InputFileContentParamFileData } from './inputFileContentParamFileData';
-import type { InputFileContentParamFileUrl } from './inputFileContentParamFileUrl';
+import type { InputFileContentParamType } from "./inputFileContentParamType"
+import type { InputFileContentParamFileId } from "./inputFileContentParamFileId"
+import type { InputFileContentParamFilename } from "./inputFileContentParamFilename"
+import type { InputFileContentParamFileData } from "./inputFileContentParamFileData"
+import type { InputFileContentParamFileUrl } from "./inputFileContentParamFileUrl"
 
 /**
  * A file input to the model.
  */
 export interface InputFileContentParam {
   /** The type of the input item. Always `input_file`. */
-  type: InputFileContentParamType;
-  file_id?: InputFileContentParamFileId;
-  filename?: InputFileContentParamFilename;
-  file_data?: InputFileContentParamFileData;
-  file_url?: InputFileContentParamFileUrl;
+  type: InputFileContentParamType
+  file_id?: InputFileContentParamFileId
+  filename?: InputFileContentParamFilename
+  file_data?: InputFileContentParamFileData
+  file_url?: InputFileContentParamFileUrl
 }

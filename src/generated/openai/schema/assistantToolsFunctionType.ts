@@ -9,10 +9,10 @@
 /**
  * The type of tool being defined: `function`
  */
-export type AssistantToolsFunctionType = typeof AssistantToolsFunctionType[keyof typeof AssistantToolsFunctionType];
-
+export type AssistantToolsFunctionType =
+  (typeof AssistantToolsFunctionType)[keyof typeof AssistantToolsFunctionType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AssistantToolsFunctionType = {
-  function: 'function',
-} as const;
+  function: "function"
+} as const

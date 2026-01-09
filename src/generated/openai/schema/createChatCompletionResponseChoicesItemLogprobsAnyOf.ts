@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateChatCompletionResponseChoicesItemLogprobsAnyOfContent } from './createChatCompletionResponseChoicesItemLogprobsAnyOfContent';
-import type { CreateChatCompletionResponseChoicesItemLogprobsAnyOfRefusal } from './createChatCompletionResponseChoicesItemLogprobsAnyOfRefusal';
+import type { CreateChatCompletionResponseChoicesItemLogprobsAnyOfContent } from "./createChatCompletionResponseChoicesItemLogprobsAnyOfContent"
+import type { CreateChatCompletionResponseChoicesItemLogprobsAnyOfRefusal } from "./createChatCompletionResponseChoicesItemLogprobsAnyOfRefusal"
 
 /**
  * Log probability information for the choice.
  */
 export type CreateChatCompletionResponseChoicesItemLogprobsAnyOf = {
-  content: CreateChatCompletionResponseChoicesItemLogprobsAnyOfContent;
-  refusal: CreateChatCompletionResponseChoicesItemLogprobsAnyOfRefusal;
-};
+  content: CreateChatCompletionResponseChoicesItemLogprobsAnyOfContent
+  refusal: CreateChatCompletionResponseChoicesItemLogprobsAnyOfRefusal
+}

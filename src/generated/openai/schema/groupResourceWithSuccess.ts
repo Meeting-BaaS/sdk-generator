@@ -11,11 +11,11 @@
  */
 export interface GroupResourceWithSuccess {
   /** Identifier for the group. */
-  id: string;
+  id: string
   /** Updated display name for the group. */
-  name: string;
+  name: string
   /** Unix timestamp (in seconds) when the group was created. */
-  created_at: number;
+  created_at: number
   /** Whether the group is managed through SCIM and controlled by your identity provider. */
-  is_scim_managed: boolean;
+  is_scim_managed: boolean
 }

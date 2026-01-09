@@ -12,13 +12,13 @@
 See the [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
 
  */
-export type CreateUploadRequestPurpose = typeof CreateUploadRequestPurpose[keyof typeof CreateUploadRequestPurpose];
-
+export type CreateUploadRequestPurpose =
+  (typeof CreateUploadRequestPurpose)[keyof typeof CreateUploadRequestPurpose]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateUploadRequestPurpose = {
-  assistants: 'assistants',
-  batch: 'batch',
-  'fine-tune': 'fine-tune',
-  vision: 'vision',
-} as const;
+  assistants: "assistants",
+  batch: "batch",
+  "fine-tune": "fine-tune",
+  vision: "vision"
+} as const

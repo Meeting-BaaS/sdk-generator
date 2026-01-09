@@ -7,5 +7,5 @@
  */
 
 export interface CreateTranslationResponseJson {
-  text: string;
+  text: string
 }

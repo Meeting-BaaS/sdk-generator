@@ -11,11 +11,11 @@ export interface AudioChunkAckData {
    * @minItems 2
    * @maxItems 2
    */
-  byte_range: number[];
+  byte_range: number[]
   /**
    * Range in seconds of the audio chunk (relative to the whole session)
    * @minItems 2
    * @maxItems 2
    */
-  time_range: number[];
+  time_range: number[]
 }

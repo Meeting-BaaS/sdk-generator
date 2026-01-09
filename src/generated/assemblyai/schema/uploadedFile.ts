@@ -8,6 +8,6 @@
 
 export interface UploadedFile {
   /** A URL that points to your audio file, accessible only by AssemblyAI's servers
- */
-  upload_url: string;
+   */
+  upload_url: string
 }

@@ -9,10 +9,10 @@
 /**
  * The tool to call. Always `shell`.
  */
-export type SpecificFunctionShellParamType = typeof SpecificFunctionShellParamType[keyof typeof SpecificFunctionShellParamType];
-
+export type SpecificFunctionShellParamType =
+  (typeof SpecificFunctionShellParamType)[keyof typeof SpecificFunctionShellParamType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpecificFunctionShellParamType = {
-  shell: 'shell',
-} as const;
+  shell: "shell"
+} as const

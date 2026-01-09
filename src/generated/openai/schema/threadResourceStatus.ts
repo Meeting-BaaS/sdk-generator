@@ -5,11 +5,11 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ActiveStatus } from './activeStatus';
-import type { LockedStatus } from './lockedStatus';
-import type { ClosedStatus } from './closedStatus';
+import type { ActiveStatus } from "./activeStatus"
+import type { LockedStatus } from "./lockedStatus"
+import type { ClosedStatus } from "./closedStatus"
 
 /**
  * Current status for the thread. Defaults to `active` for newly created threads.
  */
-export type ThreadResourceStatus = ActiveStatus | LockedStatus | ClosedStatus;
+export type ThreadResourceStatus = ActiveStatus | LockedStatus | ClosedStatus

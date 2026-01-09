@@ -5,11 +5,11 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { SentimentAnalysisResult } from './sentimentAnalysisResult';
+import type { SentimentAnalysisResult } from "./sentimentAnalysisResult"
 
 /**
  * An array of results for the Sentiment Analysis model, if it is enabled.
 See [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) for more information.
 
  */
-export type TranscriptSentimentAnalysisResults = SentimentAnalysisResult[] | null;
+export type TranscriptSentimentAnalysisResults = SentimentAnalysisResult[] | null

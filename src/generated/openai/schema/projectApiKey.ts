@@ -5,24 +5,24 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ProjectApiKeyObject } from './projectApiKeyObject';
-import type { ProjectApiKeyOwner } from './projectApiKeyOwner';
+import type { ProjectApiKeyObject } from "./projectApiKeyObject"
+import type { ProjectApiKeyOwner } from "./projectApiKeyOwner"
 
 /**
  * Represents an individual API key in a project.
  */
 export interface ProjectApiKey {
   /** The object type, which is always `organization.project.api_key` */
-  object: ProjectApiKeyObject;
+  object: ProjectApiKeyObject
   /** The redacted value of the API key */
-  redacted_value: string;
+  redacted_value: string
   /** The name of the API key */
-  name: string;
+  name: string
   /** The Unix timestamp (in seconds) of when the API key was created */
-  created_at: number;
+  created_at: number
   /** The Unix timestamp (in seconds) of when the API key was last used. */
-  last_used_at: number;
+  last_used_at: number
   /** The identifier, which can be referenced in API endpoints */
-  id: string;
-  owner: ProjectApiKeyOwner;
+  id: string
+  owner: ProjectApiKeyOwner
 }

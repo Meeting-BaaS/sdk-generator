@@ -9,12 +9,11 @@
 /**
  * The model to summarize the transcript
  */
-export type SummaryModel = typeof SummaryModel[keyof typeof SummaryModel];
-
+export type SummaryModel = (typeof SummaryModel)[keyof typeof SummaryModel]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummaryModel = {
-  informative: 'informative',
-  conversational: 'conversational',
-  catchy: 'catchy',
-} as const;
+  informative: "informative",
+  conversational: "conversational",
+  catchy: "catchy"
+} as const

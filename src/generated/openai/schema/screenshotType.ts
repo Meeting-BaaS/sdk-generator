@@ -11,10 +11,9 @@
 always set to `screenshot`.
 
  */
-export type ScreenshotType = typeof ScreenshotType[keyof typeof ScreenshotType];
-
+export type ScreenshotType = (typeof ScreenshotType)[keyof typeof ScreenshotType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ScreenshotType = {
-  screenshot: 'screenshot',
-} as const;
+  screenshot: "screenshot"
+} as const

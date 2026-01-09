@@ -9,10 +9,10 @@
 /**
  * The object type, which is always `chat.completion`.
  */
-export type CreateChatCompletionResponseObject = typeof CreateChatCompletionResponseObject[keyof typeof CreateChatCompletionResponseObject];
-
+export type CreateChatCompletionResponseObject =
+  (typeof CreateChatCompletionResponseObject)[keyof typeof CreateChatCompletionResponseObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateChatCompletionResponseObject = {
-  chatcompletion: 'chat.completion',
-} as const;
+  chatcompletion: "chat.completion"
+} as const

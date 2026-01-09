@@ -9,4 +9,4 @@
 /**
  * The data associated with the event.
  */
-export type FineTuningJobEventData = { [key: string]: unknown };
+export type FineTuningJobEventData = { [key: string]: unknown }

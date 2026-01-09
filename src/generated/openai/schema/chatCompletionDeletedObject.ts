@@ -9,10 +9,10 @@
 /**
  * The type of object being deleted.
  */
-export type ChatCompletionDeletedObject = typeof ChatCompletionDeletedObject[keyof typeof ChatCompletionDeletedObject];
-
+export type ChatCompletionDeletedObject =
+  (typeof ChatCompletionDeletedObject)[keyof typeof ChatCompletionDeletedObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChatCompletionDeletedObject = {
-  chatcompletiondeleted: 'chat.completion.deleted',
-} as const;
+  chatcompletiondeleted: "chat.completion.deleted"
+} as const

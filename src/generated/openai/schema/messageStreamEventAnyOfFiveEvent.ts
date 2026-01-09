@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type MessageStreamEventAnyOfFiveEvent = typeof MessageStreamEventAnyOfFiveEvent[keyof typeof MessageStreamEventAnyOfFiveEvent];
-
+export type MessageStreamEventAnyOfFiveEvent =
+  (typeof MessageStreamEventAnyOfFiveEvent)[keyof typeof MessageStreamEventAnyOfFiveEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MessageStreamEventAnyOfFiveEvent = {
-  threadmessagedelta: 'thread.message.delta',
-} as const;
+  threadmessagedelta: "thread.message.delta"
+} as const

@@ -11,13 +11,13 @@
  */
 export type AuditLogRoleAssignmentDeleted = {
   /** The identifier of the role assignment. */
-  id?: string;
+  id?: string
   /** The principal (user or group) that had the role removed. */
-  principal_id?: string;
+  principal_id?: string
   /** The type of principal (user or group) that had the role removed. */
-  principal_type?: string;
+  principal_type?: string
   /** The resource the role assignment was scoped to. */
-  resource_id?: string;
+  resource_id?: string
   /** The type of resource the role assignment was scoped to. */
-  resource_type?: string;
-};
+  resource_type?: string
+}

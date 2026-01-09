@@ -9,4 +9,4 @@
 /**
  * Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false
  */
-export type TranscriptSentimentAnalysis = boolean | null;
+export type TranscriptSentimentAnalysis = boolean | null

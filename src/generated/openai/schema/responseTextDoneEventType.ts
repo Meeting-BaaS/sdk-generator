@@ -10,10 +10,10 @@
  * The type of the event. Always `response.output_text.done`.
 
  */
-export type ResponseTextDoneEventType = typeof ResponseTextDoneEventType[keyof typeof ResponseTextDoneEventType];
-
+export type ResponseTextDoneEventType =
+  (typeof ResponseTextDoneEventType)[keyof typeof ResponseTextDoneEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseTextDoneEventType = {
-  responseoutput_textdone: 'response.output_text.done',
-} as const;
+  responseoutput_textdone: "response.output_text.done"
+} as const

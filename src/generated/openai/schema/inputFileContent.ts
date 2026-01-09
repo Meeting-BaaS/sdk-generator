@@ -5,21 +5,21 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { InputFileContentType } from './inputFileContentType';
-import type { InputFileContentFileId } from './inputFileContentFileId';
+import type { InputFileContentType } from "./inputFileContentType"
+import type { InputFileContentFileId } from "./inputFileContentFileId"
 
 /**
  * A file input to the model.
  */
 export interface InputFileContent {
   /** The type of the input item. Always `input_file`. */
-  type: InputFileContentType;
-  file_id?: InputFileContentFileId;
+  type: InputFileContentType
+  file_id?: InputFileContentFileId
   /** The name of the file to be sent to the model. */
-  filename?: string;
+  filename?: string
   /** The URL of the file to be sent to the model. */
-  file_url?: string;
+  file_url?: string
   /** The content of the file to be sent to the model.
- */
-  file_data?: string;
+   */
+  file_data?: string
 }

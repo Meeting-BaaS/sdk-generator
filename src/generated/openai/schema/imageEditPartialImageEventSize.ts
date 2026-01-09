@@ -10,13 +10,13 @@
  * The size of the requested edited image.
 
  */
-export type ImageEditPartialImageEventSize = typeof ImageEditPartialImageEventSize[keyof typeof ImageEditPartialImageEventSize];
-
+export type ImageEditPartialImageEventSize =
+  (typeof ImageEditPartialImageEventSize)[keyof typeof ImageEditPartialImageEventSize]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageEditPartialImageEventSize = {
-  '1024x1024': '1024x1024',
-  '1024x1536': '1024x1536',
-  '1536x1024': '1536x1024',
-  auto: 'auto',
-} as const;
+  "1024x1024": "1024x1024",
+  "1024x1536": "1024x1536",
+  "1536x1024": "1536x1024",
+  auto: "auto"
+} as const

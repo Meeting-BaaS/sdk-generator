@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { LemurQuestion } from './lemurQuestion';
+import type { LemurQuestion } from "./lemurQuestion"
 
 export type LemurQuestionAnswerParamsAllOf = {
   /** A list of questions to ask */
-  questions: LemurQuestion[];
-};
+  questions: LemurQuestion[]
+}

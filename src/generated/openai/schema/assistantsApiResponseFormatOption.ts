@@ -5,9 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseFormatText } from './responseFormatText';
-import type { ResponseFormatJsonObject } from './responseFormatJsonObject';
-import type { ResponseFormatJsonSchema } from './responseFormatJsonSchema';
+import type { ResponseFormatText } from "./responseFormatText"
+import type { ResponseFormatJsonObject } from "./responseFormatJsonObject"
+import type { ResponseFormatJsonSchema } from "./responseFormatJsonSchema"
 
 /**
  * Specifies the format that the model must output. Compatible with [GPT-4o](https://platform.openai.com/docs/models#gpt-4o), [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4), and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
@@ -19,4 +19,8 @@ Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the mess
 **Important:** when using JSON mode, you **must** also instruct the model to produce JSON yourself via a system or user message. Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request. Also note that the message content may be partially cut off if `finish_reason="length"`, which indicates the generation exceeded `max_tokens` or the conversation exceeded the max context length.
 
  */
-export type AssistantsApiResponseFormatOption = 'auto' | ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema;
+export type AssistantsApiResponseFormatOption =
+  | "auto"
+  | ResponseFormatText
+  | ResponseFormatJsonObject
+  | ResponseFormatJsonSchema

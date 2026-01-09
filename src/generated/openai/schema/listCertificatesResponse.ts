@@ -5,13 +5,13 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { Certificate } from './certificate';
-import type { ListCertificatesResponseObject } from './listCertificatesResponseObject';
+import type { Certificate } from "./certificate"
+import type { ListCertificatesResponseObject } from "./listCertificatesResponseObject"
 
 export interface ListCertificatesResponse {
-  data: Certificate[];
-  first_id?: string;
-  last_id?: string;
-  has_more: boolean;
-  object: ListCertificatesResponseObject;
+  data: Certificate[]
+  first_id?: string
+  last_id?: string
+  has_more: boolean
+  object: ListCertificatesResponseObject
 }

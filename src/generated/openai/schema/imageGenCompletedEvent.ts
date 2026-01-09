@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ImageGenCompletedEventType } from './imageGenCompletedEventType';
-import type { ImageGenCompletedEventSize } from './imageGenCompletedEventSize';
-import type { ImageGenCompletedEventQuality } from './imageGenCompletedEventQuality';
-import type { ImageGenCompletedEventBackground } from './imageGenCompletedEventBackground';
-import type { ImageGenCompletedEventOutputFormat } from './imageGenCompletedEventOutputFormat';
-import type { ImagesUsage } from './imagesUsage';
+import type { ImageGenCompletedEventType } from "./imageGenCompletedEventType"
+import type { ImageGenCompletedEventSize } from "./imageGenCompletedEventSize"
+import type { ImageGenCompletedEventQuality } from "./imageGenCompletedEventQuality"
+import type { ImageGenCompletedEventBackground } from "./imageGenCompletedEventBackground"
+import type { ImageGenCompletedEventOutputFormat } from "./imageGenCompletedEventOutputFormat"
+import type { ImagesUsage } from "./imagesUsage"
 
 /**
  * Emitted when image generation has completed and the final image is available.
@@ -18,25 +18,25 @@ import type { ImagesUsage } from './imagesUsage';
  */
 export interface ImageGenCompletedEvent {
   /** The type of the event. Always `image_generation.completed`.
- */
-  type: ImageGenCompletedEventType;
+   */
+  type: ImageGenCompletedEventType
   /** Base64-encoded image data, suitable for rendering as an image.
- */
-  b64_json: string;
+   */
+  b64_json: string
   /** The Unix timestamp when the event was created.
- */
-  created_at: number;
+   */
+  created_at: number
   /** The size of the generated image.
- */
-  size: ImageGenCompletedEventSize;
+   */
+  size: ImageGenCompletedEventSize
   /** The quality setting for the generated image.
- */
-  quality: ImageGenCompletedEventQuality;
+   */
+  quality: ImageGenCompletedEventQuality
   /** The background setting for the generated image.
- */
-  background: ImageGenCompletedEventBackground;
+   */
+  background: ImageGenCompletedEventBackground
   /** The output format for the generated image.
- */
-  output_format: ImageGenCompletedEventOutputFormat;
-  usage: ImagesUsage;
+   */
+  output_format: ImageGenCompletedEventOutputFormat
+  usage: ImagesUsage
 }

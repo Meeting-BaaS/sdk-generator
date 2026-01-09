@@ -4,24 +4,24 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PostSummarizationMessageError } from './postSummarizationMessageError';
-import type { PostSummarizationMessageType } from './postSummarizationMessageType';
-import type { PostSummarizationMessageDataProperty } from './postSummarizationMessageDataProperty';
+import type { PostSummarizationMessageError } from "./postSummarizationMessageError"
+import type { PostSummarizationMessageType } from "./postSummarizationMessageType"
+import type { PostSummarizationMessageDataProperty } from "./postSummarizationMessageDataProperty"
 
 export interface PostSummarizationMessage {
   /** Id of the live session */
-  session_id: string;
+  session_id: string
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string;
+  created_at: string
   /**
    * Error message if the addon failed
    * @nullable
    */
-  error: PostSummarizationMessageError;
-  type: PostSummarizationMessageType;
+  error: PostSummarizationMessageError
+  type: PostSummarizationMessageType
   /**
    * The message data. "null" if the addon failed
    * @nullable
    */
-  data: PostSummarizationMessageDataProperty;
+  data: PostSummarizationMessageDataProperty
 }

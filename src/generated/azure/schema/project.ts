@@ -5,32 +5,32 @@
  * Speech Services API v3.1.
  * OpenAPI spec version: v3.1
  */
-import type { ProjectLinks } from './projectLinks';
-import type { ProjectProperties } from './projectProperties';
-import type { ProjectCustomProperties } from './projectCustomProperties';
+import type { ProjectLinks } from "./projectLinks"
+import type { ProjectProperties } from "./projectProperties"
+import type { ProjectCustomProperties } from "./projectCustomProperties"
 
 export interface Project {
-  links?: ProjectLinks;
-  properties?: ProjectProperties;
+  links?: ProjectLinks
+  properties?: ProjectProperties
   /** The location of this entity. */
-  readonly self?: string;
+  readonly self?: string
   /**
    * The display name of the object.
    * @minLength 1
    */
-  displayName: string;
+  displayName: string
   /** The description of the object. */
-  description?: string;
+  description?: string
   /**
    * The locale of the contained data.
    * @minLength 1
    */
-  locale: string;
+  locale: string
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: ProjectCustomProperties;
+  customProperties?: ProjectCustomProperties
   /** The time-stamp when the object was created.
 The time stamp is encoded as ISO 8601 date and time format
 ("YYYY-MM-DDThh:mm:ssZ", see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations). */
-  readonly createdDateTime?: string;
+  readonly createdDateTime?: string
 }

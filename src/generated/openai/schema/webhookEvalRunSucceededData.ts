@@ -12,6 +12,6 @@
  */
 export type WebhookEvalRunSucceededData = {
   /** The unique ID of the eval run.
- */
-  id: string;
-};
+   */
+  id: string
+}

@@ -5,16 +5,16 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { GroupRoleAssignmentObject } from './groupRoleAssignmentObject';
-import type { Group } from './group';
-import type { Role } from './role';
+import type { GroupRoleAssignmentObject } from "./groupRoleAssignmentObject"
+import type { Group } from "./group"
+import type { Role } from "./role"
 
 /**
  * Role assignment linking a group to a role.
  */
 export interface GroupRoleAssignment {
   /** Always `group.role`. */
-  object: GroupRoleAssignmentObject;
-  group: Group;
-  role: Role;
+  object: GroupRoleAssignmentObject
+  group: Group
+  role: Role
 }

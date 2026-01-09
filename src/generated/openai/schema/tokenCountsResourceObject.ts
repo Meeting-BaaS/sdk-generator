@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type TokenCountsResourceObject = typeof TokenCountsResourceObject[keyof typeof TokenCountsResourceObject];
-
+export type TokenCountsResourceObject =
+  (typeof TokenCountsResourceObject)[keyof typeof TokenCountsResourceObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TokenCountsResourceObject = {
-  responseinput_tokens: 'response.input_tokens',
-} as const;
+  responseinput_tokens: "response.input_tokens"
+} as const

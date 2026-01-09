@@ -10,10 +10,9 @@
  * The type of the input item. Always `input_audio`.
 
  */
-export type InputAudioType = typeof InputAudioType[keyof typeof InputAudioType];
-
+export type InputAudioType = (typeof InputAudioType)[keyof typeof InputAudioType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputAudioType = {
-  input_audio: 'input_audio',
-} as const;
+  input_audio: "input_audio"
+} as const

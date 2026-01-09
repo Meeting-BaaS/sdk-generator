@@ -9,17 +9,17 @@
 /**
  * Create the project with the specified data residency region. Your organization must have access to Data residency functionality in order to use. See [data residency controls](https://platform.openai.com/docs/guides/your-data#data-residency-controls) to review the functionality and limitations of setting this field.
  */
-export type ProjectCreateRequestGeography = typeof ProjectCreateRequestGeography[keyof typeof ProjectCreateRequestGeography];
-
+export type ProjectCreateRequestGeography =
+  (typeof ProjectCreateRequestGeography)[keyof typeof ProjectCreateRequestGeography]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProjectCreateRequestGeography = {
-  US: 'US',
-  EU: 'EU',
-  JP: 'JP',
-  IN: 'IN',
-  KR: 'KR',
-  CA: 'CA',
-  AU: 'AU',
-  SG: 'SG',
-} as const;
+  US: "US",
+  EU: "EU",
+  JP: "JP",
+  IN: "IN",
+  KR: "KR",
+  CA: "CA",
+  AU: "AU",
+  SG: "SG"
+} as const

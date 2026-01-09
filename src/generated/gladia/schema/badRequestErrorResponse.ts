@@ -7,15 +7,15 @@
 
 export interface BadRequestErrorResponse {
   /** Date of when the error occurred */
-  timestamp: string;
+  timestamp: string
   /** Path to the API endpoint */
-  path: string;
+  path: string
   /** Debug id */
-  request_id: string;
+  request_id: string
   /** HTTP status code of the error */
-  statusCode: number;
+  statusCode: number
   /** Error message */
-  message: string;
+  message: string
   /** List of validation errors, if any */
-  validation_errors?: string[];
+  validation_errors?: string[]
 }

@@ -14,5 +14,5 @@ export interface RateLimitsParam {
    * Maximum number of requests allowed per minute for the session. Defaults to 10.
    * @minimum 1
    */
-  max_requests_per_1_minute?: number;
+  max_requests_per_1_minute?: number
 }

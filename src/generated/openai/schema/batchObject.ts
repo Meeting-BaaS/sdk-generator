@@ -9,10 +9,9 @@
 /**
  * The object type, which is always `batch`.
  */
-export type BatchObject = typeof BatchObject[keyof typeof BatchObject];
-
+export type BatchObject = (typeof BatchObject)[keyof typeof BatchObject]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BatchObject = {
-  batch: 'batch',
-} as const;
+  batch: "batch"
+} as const

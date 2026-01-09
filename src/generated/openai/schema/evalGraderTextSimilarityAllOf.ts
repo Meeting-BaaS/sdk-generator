@@ -8,5 +8,5 @@
 
 export type EvalGraderTextSimilarityAllOf = {
   /** The threshold for the score. */
-  pass_threshold: number;
-};
+  pass_threshold: number
+}

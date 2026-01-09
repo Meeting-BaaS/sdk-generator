@@ -11,16 +11,16 @@
  */
 export interface FileUploadParam {
   /** Enable uploads for this session. Defaults to false. */
-  enabled?: boolean;
+  enabled?: boolean
   /**
    * Maximum size in megabytes for each uploaded file. Defaults to 512 MB, which is the maximum allowable size.
    * @minimum 1
    * @maximum 512
    */
-  max_file_size?: number;
+  max_file_size?: number
   /**
    * Maximum number of files that can be uploaded to the session. Defaults to 10.
    * @minimum 1
    */
-  max_files?: number;
+  max_files?: number
 }

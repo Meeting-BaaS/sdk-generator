@@ -11,7 +11,7 @@
  */
 export type CostsResultAmount = {
   /** The numeric value of the cost. */
-  value?: number;
+  value?: number
   /** Lowercase ISO-4217 currency e.g. "usd" */
-  currency?: string;
-};
+  currency?: string
+}

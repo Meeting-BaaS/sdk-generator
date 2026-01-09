@@ -11,5 +11,5 @@
  */
 export type AuditLogUserAddedData = {
   /** The role of the user. Is either `owner` or `member`. */
-  role?: string;
-};
+  role?: string
+}

@@ -5,12 +5,12 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { FunctionShellCallOutputTimeoutOutcomeParamType } from './functionShellCallOutputTimeoutOutcomeParamType';
+import type { FunctionShellCallOutputTimeoutOutcomeParamType } from "./functionShellCallOutputTimeoutOutcomeParamType"
 
 /**
  * Indicates that the shell call exceeded its configured time limit.
  */
 export interface FunctionShellCallOutputTimeoutOutcomeParam {
   /** The outcome type. Always `timeout`. */
-  type: FunctionShellCallOutputTimeoutOutcomeParamType;
+  type: FunctionShellCallOutputTimeoutOutcomeParamType
 }

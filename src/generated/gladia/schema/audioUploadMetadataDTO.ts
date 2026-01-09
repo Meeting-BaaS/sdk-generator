@@ -7,17 +7,17 @@
 
 export interface AudioUploadMetadataDTO {
   /** Uploaded audio file ID */
-  id: string;
+  id: string
   /** Uploaded audio filename */
-  filename: string;
+  filename: string
   /** Uploaded audio source */
-  source?: string;
+  source?: string
   /** Uploaded audio detected extension */
-  extension: string;
+  extension: string
   /** Uploaded audio size */
-  size: number;
+  size: number
   /** Uploaded audio duration */
-  audio_duration: number;
+  audio_duration: number
   /** Uploaded audio channel numbers */
-  number_of_channels: number;
+  number_of_channels: number
 }

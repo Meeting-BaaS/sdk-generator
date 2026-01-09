@@ -9,13 +9,12 @@
 /**
  * The mode used for punctuation.
  */
-export type PunctuationMode = typeof PunctuationMode[keyof typeof PunctuationMode];
-
+export type PunctuationMode = (typeof PunctuationMode)[keyof typeof PunctuationMode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PunctuationMode = {
-  None: 'None',
-  Dictated: 'Dictated',
-  Automatic: 'Automatic',
-  DictatedAndAutomatic: 'DictatedAndAutomatic',
-} as const;
+  None: "None",
+  Dictated: "Dictated",
+  Automatic: "Automatic",
+  DictatedAndAutomatic: "DictatedAndAutomatic"
+} as const

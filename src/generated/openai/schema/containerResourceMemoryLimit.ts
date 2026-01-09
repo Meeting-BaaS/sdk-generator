@@ -9,13 +9,13 @@
 /**
  * The memory limit configured for the container.
  */
-export type ContainerResourceMemoryLimit = typeof ContainerResourceMemoryLimit[keyof typeof ContainerResourceMemoryLimit];
-
+export type ContainerResourceMemoryLimit =
+  (typeof ContainerResourceMemoryLimit)[keyof typeof ContainerResourceMemoryLimit]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ContainerResourceMemoryLimit = {
-  '1g': '1g',
-  '4g': '4g',
-  '16g': '16g',
-  '64g': '64g',
-} as const;
+  "1g": "1g",
+  "4g": "4g",
+  "16g": "16g",
+  "64g": "64g"
+} as const

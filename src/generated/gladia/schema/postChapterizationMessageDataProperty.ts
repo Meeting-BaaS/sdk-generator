@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PostChapterizationMessageData } from './postChapterizationMessageData';
+import type { PostChapterizationMessageData } from "./postChapterizationMessageData"
 
 /**
  * The message data. "null" if the addon failed
  * @nullable
  */
-export type PostChapterizationMessageDataProperty = PostChapterizationMessageData | null;
+export type PostChapterizationMessageDataProperty = PostChapterizationMessageData | null

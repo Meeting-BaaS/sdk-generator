@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type UsageImagesResultUserId = string | null;
+export type UsageImagesResultUserId = string | null

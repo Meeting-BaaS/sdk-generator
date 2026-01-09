@@ -5,25 +5,25 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { AdminApiKeyLastUsedAt } from './adminApiKeyLastUsedAt';
-import type { AdminApiKeyOwner } from './adminApiKeyOwner';
+import type { AdminApiKeyLastUsedAt } from "./adminApiKeyLastUsedAt"
+import type { AdminApiKeyOwner } from "./adminApiKeyOwner"
 
 /**
  * Represents an individual Admin API key in an org.
  */
 export interface AdminApiKey {
   /** The object type, which is always `organization.admin_api_key` */
-  object: string;
+  object: string
   /** The identifier, which can be referenced in API endpoints */
-  id: string;
+  id: string
   /** The name of the API key */
-  name: string;
+  name: string
   /** The redacted value of the API key */
-  redacted_value: string;
+  redacted_value: string
   /** The value of the API key. Only shown on create. */
-  value?: string;
+  value?: string
   /** The Unix timestamp (in seconds) of when the API key was created */
-  created_at: number;
-  last_used_at: AdminApiKeyLastUsedAt;
-  owner: AdminApiKeyOwner;
+  created_at: number
+  last_used_at: AdminApiKeyLastUsedAt
+  owner: AdminApiKeyOwner
 }

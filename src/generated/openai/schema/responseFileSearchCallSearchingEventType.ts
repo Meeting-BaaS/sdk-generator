@@ -10,10 +10,10 @@
  * The type of the event. Always `response.file_search_call.searching`.
 
  */
-export type ResponseFileSearchCallSearchingEventType = typeof ResponseFileSearchCallSearchingEventType[keyof typeof ResponseFileSearchCallSearchingEventType];
-
+export type ResponseFileSearchCallSearchingEventType =
+  (typeof ResponseFileSearchCallSearchingEventType)[keyof typeof ResponseFileSearchCallSearchingEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ResponseFileSearchCallSearchingEventType = {
-  responsefile_search_callsearching: 'response.file_search_call.searching',
-} as const;
+  responsefile_search_callsearching: "response.file_search_call.searching"
+} as const

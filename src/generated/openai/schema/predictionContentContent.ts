@@ -5,7 +5,7 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ChatCompletionRequestMessageContentPartText } from './chatCompletionRequestMessageContentPartText';
+import type { ChatCompletionRequestMessageContentPartText } from "./chatCompletionRequestMessageContentPartText"
 
 /**
  * The content that should be matched when generating a model response.
@@ -13,4 +13,4 @@ If generated tokens would match this content, the entire model response
 can be returned much more quickly.
 
  */
-export type PredictionContentContent = string | ChatCompletionRequestMessageContentPartText[];
+export type PredictionContentContent = string | ChatCompletionRequestMessageContentPartText[]

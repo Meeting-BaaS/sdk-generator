@@ -9,10 +9,10 @@
 /**
  * Always `tool_calls`.
  */
-export type RunStepDeltaStepDetailsToolCallsObjectType = typeof RunStepDeltaStepDetailsToolCallsObjectType[keyof typeof RunStepDeltaStepDetailsToolCallsObjectType];
-
+export type RunStepDeltaStepDetailsToolCallsObjectType =
+  (typeof RunStepDeltaStepDetailsToolCallsObjectType)[keyof typeof RunStepDeltaStepDetailsToolCallsObjectType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RunStepDeltaStepDetailsToolCallsObjectType = {
-  tool_calls: 'tool_calls',
-} as const;
+  tool_calls: "tool_calls"
+} as const

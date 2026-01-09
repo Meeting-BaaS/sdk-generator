@@ -5,28 +5,28 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { ResponseReasoningSummaryTextDeltaEventType } from './responseReasoningSummaryTextDeltaEventType';
+import type { ResponseReasoningSummaryTextDeltaEventType } from "./responseReasoningSummaryTextDeltaEventType"
 
 /**
  * Emitted when a delta is added to a reasoning summary text.
  */
 export interface ResponseReasoningSummaryTextDeltaEvent {
   /** The type of the event. Always `response.reasoning_summary_text.delta`.
- */
-  type: ResponseReasoningSummaryTextDeltaEventType;
+   */
+  type: ResponseReasoningSummaryTextDeltaEventType
   /** The ID of the item this summary text delta is associated with.
- */
-  item_id: string;
+   */
+  item_id: string
   /** The index of the output item this summary text delta is associated with.
- */
-  output_index: number;
+   */
+  output_index: number
   /** The index of the summary part within the reasoning summary.
- */
-  summary_index: number;
+   */
+  summary_index: number
   /** The text delta that was added to the summary.
- */
-  delta: string;
+   */
+  delta: string
   /** The sequence number of this event.
- */
-  sequence_number: number;
+   */
+  sequence_number: number
 }

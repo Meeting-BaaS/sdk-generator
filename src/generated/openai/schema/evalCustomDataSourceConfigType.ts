@@ -9,10 +9,10 @@
 /**
  * The type of data source. Always `custom`.
  */
-export type EvalCustomDataSourceConfigType = typeof EvalCustomDataSourceConfigType[keyof typeof EvalCustomDataSourceConfigType];
-
+export type EvalCustomDataSourceConfigType =
+  (typeof EvalCustomDataSourceConfigType)[keyof typeof EvalCustomDataSourceConfigType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EvalCustomDataSourceConfigType = {
-  custom: 'custom',
-} as const;
+  custom: "custom"
+} as const

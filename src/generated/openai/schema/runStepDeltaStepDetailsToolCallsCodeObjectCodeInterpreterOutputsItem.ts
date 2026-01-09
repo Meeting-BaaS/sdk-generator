@@ -5,7 +5,9 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { RunStepDeltaStepDetailsToolCallsCodeOutputLogsObject } from './runStepDeltaStepDetailsToolCallsCodeOutputLogsObject';
-import type { RunStepDeltaStepDetailsToolCallsCodeOutputImageObject } from './runStepDeltaStepDetailsToolCallsCodeOutputImageObject';
+import type { RunStepDeltaStepDetailsToolCallsCodeOutputLogsObject } from "./runStepDeltaStepDetailsToolCallsCodeOutputLogsObject"
+import type { RunStepDeltaStepDetailsToolCallsCodeOutputImageObject } from "./runStepDeltaStepDetailsToolCallsCodeOutputImageObject"
 
-export type RunStepDeltaStepDetailsToolCallsCodeObjectCodeInterpreterOutputsItem = RunStepDeltaStepDetailsToolCallsCodeOutputLogsObject | RunStepDeltaStepDetailsToolCallsCodeOutputImageObject;
+export type RunStepDeltaStepDetailsToolCallsCodeObjectCodeInterpreterOutputsItem =
+  | RunStepDeltaStepDetailsToolCallsCodeOutputLogsObject
+  | RunStepDeltaStepDetailsToolCallsCodeOutputImageObject

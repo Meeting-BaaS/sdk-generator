@@ -10,4 +10,4 @@
  * The ready File object after the Upload is completed.
  * @nullable
  */
-export type UploadFileAllOf = unknown | null;
+export type UploadFileAllOf = unknown | null

@@ -5,23 +5,23 @@
  * The OpenAI REST API. Please see https://platform.openai.com/docs/api-reference for more details.
  * OpenAPI spec version: 2.3.0
  */
-import type { VadConfigType } from './vadConfigType';
+import type { VadConfigType } from "./vadConfigType"
 
 export interface VadConfig {
   /** Must be set to `server_vad` to enable manual chunking using server side VAD. */
-  type: VadConfigType;
+  type: VadConfigType
   /** Amount of audio to include before the VAD detected speech (in 
 milliseconds).
  */
-  prefix_padding_ms?: number;
+  prefix_padding_ms?: number
   /** Duration of silence to detect speech stop (in milliseconds).
 With shorter values the model will respond more quickly, 
 but may jump in on short pauses from the user.
  */
-  silence_duration_ms?: number;
+  silence_duration_ms?: number
   /** Sensitivity threshold (0.0 to 1.0) for voice activity detection. A 
 higher threshold will require louder audio to activate the model, and 
 thus might perform better in noisy environments.
  */
-  threshold?: number;
+  threshold?: number
 }
