@@ -36,7 +36,7 @@ export const createSpeechBody = zod.object({
  * Transcribes audio into the input language.
  * @summary Create transcription
  */
-export const createTranscriptionBodyResponseFormatDefault: ('json' | 'text' | 'srt' | 'verbose_json' | 'vtt' | 'diarized_json')[] = "json";export const createTranscriptionBodyTemperatureDefault = 0;export const createTranscriptionBodyTimestampGranularitiesDefault: ('word' | 'segment')[] = ["segment"];export const createTranscriptionBodyStreamDefaultOne = false;export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto";export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault: ('server_vad')[] = 300;export const createTranscriptionBodyChunkingStrategySilenceDurationMsDefault = 200;export const createTranscriptionBodyChunkingStrategyThresholdDefault = 0.5;export const createTranscriptionBodyKnownSpeakerNamesMax = 4;
+export const createTranscriptionBodyResponseFormatDefault = "json";export const createTranscriptionBodyTemperatureDefault = 0;export const createTranscriptionBodyTimestampGranularitiesDefault: ('word' | 'segment')[] = ["segment"];export const createTranscriptionBodyStreamDefaultOne = false;export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto";export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault = 300;export const createTranscriptionBodyChunkingStrategySilenceDurationMsDefault = 200;export const createTranscriptionBodyChunkingStrategyThresholdDefault = 0.5;export const createTranscriptionBodyKnownSpeakerNamesMax = 4;
 export const createTranscriptionBodyKnownSpeakerReferencesMax = 4;
 
 
@@ -60,7 +60,7 @@ export const createTranscriptionBody = zod.object({
   "known_speaker_references": zod.array(zod.string()).max(createTranscriptionBodyKnownSpeakerReferencesMax).optional().describe('Optional list of audio samples (as [data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs)) that contain known speaker references matching `known_speaker_names[]`. Each sample must be between 2 and 10 seconds, and can use any of the same input audio formats supported by `file`.\n')
 })
 
-export const createTranscriptionResponse = zod.discriminatedUnion('task', [zod.object({
+export const createTranscriptionResponse = zod.union([zod.object({
   "text": zod.string().describe('The transcribed text.'),
   "logprobs": zod.array(zod.object({
   "token": zod.string().optional().describe('The token in the transcription.'),

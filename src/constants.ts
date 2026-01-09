@@ -589,3 +589,131 @@ export type SpeechmaticsRegionType = (typeof SpeechmaticsRegion)[keyof typeof Sp
 
 /** Deepgram region type derived from const object */
 export type DeepgramRegionType = (typeof DeepgramRegion)[keyof typeof DeepgramRegion]
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Deepgram TTS (Text-to-Speech) Constants
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { SpeakV1ModelParameter } from "./generated/deepgram/schema/speakV1ModelParameter"
+import { SpeakV1EncodingParameter } from "./generated/deepgram/schema/speakV1EncodingParameter"
+import { SpeakV1ContainerParameter } from "./generated/deepgram/schema/speakV1ContainerParameter"
+import { SpeakV1SampleRateParameter } from "./generated/deepgram/schema/speakV1SampleRateParameter"
+
+/**
+ * Deepgram TTS voice models
+ *
+ * Aura 2 voices offer improved quality with support for English and Spanish.
+ * Use the voice name to select a specific voice persona.
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramTTSModel } from 'voice-router-dev/constants'
+ *
+ * { model: DeepgramTTSModel["aura-2-athena-en"] }
+ * { model: DeepgramTTSModel["aura-2-sirio-es"] }
+ * ```
+ */
+export const DeepgramTTSModel = SpeakV1ModelParameter
+
+/**
+ * Deepgram TTS audio encoding formats
+ *
+ * Values: `linear16`, `aac`, `opus`, `mp3`, `flac`, `mulaw`, `alaw`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramTTSEncoding } from 'voice-router-dev/constants'
+ *
+ * { encoding: DeepgramTTSEncoding.mp3 }
+ * { encoding: DeepgramTTSEncoding.opus }
+ * ```
+ */
+export const DeepgramTTSEncoding = SpeakV1EncodingParameter
+
+/**
+ * Deepgram TTS audio container formats
+ *
+ * Values: `none`, `wav`, `ogg`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramTTSContainer } from 'voice-router-dev/constants'
+ *
+ * { container: DeepgramTTSContainer.wav }
+ * ```
+ */
+export const DeepgramTTSContainer = SpeakV1ContainerParameter
+
+/**
+ * Deepgram TTS sample rates (Hz)
+ *
+ * Values: `8000`, `16000`, `22050`, `24000`, `32000`, `48000`
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramTTSSampleRate } from 'voice-router-dev/constants'
+ *
+ * { sampleRate: DeepgramTTSSampleRate.NUMBER_24000 }
+ * ```
+ */
+export const DeepgramTTSSampleRate = SpeakV1SampleRateParameter
+
+/** Deepgram TTS model type derived from const object */
+export type DeepgramTTSModelType = (typeof DeepgramTTSModel)[keyof typeof DeepgramTTSModel]
+
+/** Deepgram TTS encoding type derived from const object */
+export type DeepgramTTSEncodingType = (typeof DeepgramTTSEncoding)[keyof typeof DeepgramTTSEncoding]
+
+/** Deepgram TTS container type derived from const object */
+export type DeepgramTTSContainerType = (typeof DeepgramTTSContainer)[keyof typeof DeepgramTTSContainer]
+
+/** Deepgram TTS sample rate type derived from const object */
+export type DeepgramTTSSampleRateType =
+  (typeof DeepgramTTSSampleRate)[keyof typeof DeepgramTTSSampleRate]
+
+// ─────────────────────────────────────────────────────────────────────────────
+// OpenAI Constants
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { AudioTranscriptionModel } from "./generated/openai/schema/audioTranscriptionModel"
+import { AudioResponseFormat } from "./generated/openai/schema/audioResponseFormat"
+
+/**
+ * OpenAI Whisper transcription models
+ *
+ * Values: `whisper-1`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-transcribe-diarize`
+ *
+ * @example
+ * ```typescript
+ * import { OpenAIModel } from 'voice-router-dev/constants'
+ *
+ * { model: OpenAIModel["whisper-1"] }
+ * { model: OpenAIModel["gpt-4o-transcribe"] }
+ * ```
+ */
+export const OpenAIModel = AudioTranscriptionModel
+
+/**
+ * OpenAI transcription response formats
+ *
+ * Values: `json`, `text`, `srt`, `verbose_json`, `vtt`, `diarized_json`
+ *
+ * Note: `diarized_json` is only available with `gpt-4o-transcribe-diarize` model.
+ * GPT-4o transcribe models only support `json` format.
+ *
+ * @example
+ * ```typescript
+ * import { OpenAIResponseFormat } from 'voice-router-dev/constants'
+ *
+ * { responseFormat: OpenAIResponseFormat.verbose_json }
+ * { responseFormat: OpenAIResponseFormat.srt }
+ * ```
+ */
+export const OpenAIResponseFormat = AudioResponseFormat
+
+/** OpenAI model type derived from const object */
+export type OpenAIModelType = (typeof OpenAIModel)[keyof typeof OpenAIModel]
+
+/** OpenAI response format type derived from const object */
+export type OpenAIResponseFormatType =
+  (typeof OpenAIResponseFormat)[keyof typeof OpenAIResponseFormat]

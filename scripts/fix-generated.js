@@ -422,48 +422,6 @@ function fixArrayDefaults(content, filePath) {
     fixes.push(`Added type annotations to array defaults in ${filePath} (${fixCount} constants)`)
   }
 
-  // Fallback: For any remaining .default(arrayConstant) without type annotation, use 'as any'
-  // This catches constants that are too far from their enum definition
-  // Handle both single-line and multi-line .default() calls
-  let fallbackCount = 0
-
-  // Single-line: .default(constantName)
-  content = content.replace(/\.default\(([a-zA-Z]\w*Default)\)/g, (match, constantName) => {
-    // Check if this constant is an array that doesn't have a type annotation yet
-    const hasTypeAnnotation = new RegExp(`export const ${constantName}:[^=]+=`).test(content)
-    const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(
-      content
-    )
-
-    if (!hasTypeAnnotation && isArrayConstant) {
-      fallbackCount++
-      return `.default(${constantName} as any)`
-    }
-    return match
-  })
-
-  // Multi-line: .default(\n      constantName\n    )
-  content = content.replace(
-    /\.default\(\s*\n\s*([a-zA-Z]\w*Default)\s*\n\s*\)/g,
-    (match, constantName) => {
-      // Check if this constant is an array that doesn't have a type annotation yet
-      const hasTypeAnnotation = new RegExp(`export const ${constantName}:[^=]+=`).test(content)
-      const isArrayConstant = new RegExp(`export const ${constantName} =[\\s\\S]{0,20}\\[`).test(
-        content
-      )
-
-      if (!hasTypeAnnotation && isArrayConstant) {
-        fallbackCount++
-        return `.default(${constantName} as any)`
-      }
-      return match
-    }
-  )
-
-  if (fallbackCount > 0) {
-    fixes.push(`Added 'as any' fallback for ${fallbackCount} array defaults in ${filePath}`)
-  }
-
   return content
 }
 
@@ -498,14 +456,19 @@ function fixFormDataObjectAppend(content, filePath) {
 function fixDiscriminatedUnionMissingField(content, filePath) {
   const before = content
 
-  // Find problematic discriminated unions where the discriminator appears after some objects
-  // Pattern: zod.discriminatedUnion("task", [
-  //   zod.object({ no task field }),
-  //   zod.object({ task: ... })
+  // Find problematic discriminated unions where the first object doesn't have the discriminator
+  // Pattern: zod.discriminatedUnion("task", [zod.object({
+  // where the object doesn't start with "task":
   // Replace discriminatedUnion with union for these cases
   content = content.replace(
-    /zod\.discriminatedUnion\("task",\s*\[\s*zod\s*\.object\(\{\s*text:/g,
-    "zod.union([\n  zod.object({\n      text:"
+    /zod\.discriminatedUnion\('task',\s*\[zod\.object\(\{/g,
+    "zod.union([zod.object({"
+  )
+
+  // Also handle double-quoted version
+  content = content.replace(
+    /zod\.discriminatedUnion\("task",\s*\[zod\.object\(\{/g,
+    "zod.union([zod.object({"
   )
 
   if (content !== before) {
@@ -534,6 +497,62 @@ function fixEmptyZodArrayCalls(content, filePath) {
 }
 
 /**
+ * Fix Deepgram mock data where provider values must match the discriminated union
+ * The type is a discriminated union where each model type has a specific provider:
+ * - OpenAI models (gpt-*) -> 'open_ai'
+ * - Anthropic models (claude-*) -> 'anthropic'
+ * - Google models (gemini-*) -> 'google'
+ * - Groq models (openai/gpt-oss-*) -> 'groq'
+ * - Custom models (any string) -> 'aws_bedrock'
+ */
+function fixDeepgramMockProvider(content, filePath) {
+  if (!filePath.includes("deepgram") || !filePath.includes("APISpecification.ts")) {
+    return content
+  }
+
+  const before = content
+
+  // Fix each model variant with the correct provider
+  // Pattern: {id: faker.helpers.arrayElement(['model-ids'...] as const), name: ..., provider: {}}
+
+  // OpenAI models (gpt-5, gpt-4o, etc.) -> 'open_ai'
+  content = content.replace(
+    /\{id: faker\.helpers\.arrayElement\(\['gpt-5','gpt-5-mini','gpt-5-nano','gpt-4\.1','gpt-4\.1-mini','gpt-4\.1-nano','gpt-4o','gpt-4o-mini'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
+    "{id: faker.helpers.arrayElement(['gpt-5','gpt-5-mini','gpt-5-nano','gpt-4.1','gpt-4.1-mini','gpt-4.1-nano','gpt-4o','gpt-4o-mini'] as const), name: faker.string.alpha(20), provider: 'open_ai'}"
+  )
+
+  // Anthropic models (claude-*) -> 'anthropic'
+  content = content.replace(
+    /\{id: faker\.helpers\.arrayElement\(\['claude-3-5-haiku-latest','claude-sonnet-4-20250514'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
+    "{id: faker.helpers.arrayElement(['claude-3-5-haiku-latest','claude-sonnet-4-20250514'] as const), name: faker.string.alpha(20), provider: 'anthropic'}"
+  )
+
+  // Google models (gemini-*) -> 'google'
+  content = content.replace(
+    /\{id: faker\.helpers\.arrayElement\(\['gemini-2\.5-flash','gemini-2\.0-flash','gemini-2\.0-flash-lite'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
+    "{id: faker.helpers.arrayElement(['gemini-2.5-flash','gemini-2.0-flash','gemini-2.0-flash-lite'] as const), name: faker.string.alpha(20), provider: 'google'}"
+  )
+
+  // Groq models (openai/gpt-oss-*) -> 'groq'
+  content = content.replace(
+    /\{id: faker\.helpers\.arrayElement\(\['openai\/gpt-oss-20b'\] as const\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
+    "{id: faker.helpers.arrayElement(['openai/gpt-oss-20b'] as const), name: faker.string.alpha(20), provider: 'groq'}"
+  )
+
+  // Custom models (any string id) -> 'aws_bedrock'
+  content = content.replace(
+    /\{id: faker\.string\.alpha\(20\), name: faker\.string\.alpha\(20\), provider: (\{\}|"[^"]*")\}/g,
+    "{id: faker.string.alpha(20), name: faker.string.alpha(20), provider: 'aws_bedrock'}"
+  )
+
+  if (content !== before) {
+    fixes.push(`Fixed mock provider types in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
  * Fix mismatched default type annotations
  * Orval sometimes generates wrong type annotations for default constants, e.g.:
  *   export const fooDefault: ('a' | 'b')[] = 0.6;  // number assigned to array type
@@ -549,17 +568,13 @@ function fixMismatchedDefaultTypes(content, filePath) {
   const before = content
 
   // Fix: array type annotation with non-array value (number, string, boolean)
-  // Pattern: export const fooDefault: (...)[] = <non-array-value>;
-  // Replace with: export const fooDefault = <value>;
+  // Pattern: export const fooDefault: (...)[] = <non-array-value>
+  // The value might be followed by ; or ;export (all on one line)
+  // Replace with: export const fooDefault = <value>
   content = content.replace(
-    /export const (\w+Default):\s*\([^)]+\)\[\]\s*=\s*([\d.]+|"[^"]*"|'[^']*'|true|false);/g,
-    'export const $1 = $2;'
+    /export const (\w+):\s*\([^)]+\)\[\]\s*=\s*([\d.]+|"[^"]*"|'[^']*'|true|false)(?=;)/g,
+    'export const $1 = $2'
   )
-
-  // Fix: enum type annotation with array value when it should be single value
-  // Pattern: export const fooDefault: ('a' | 'b')[] = ["value"];
-  // This is actually correct for arrays, but we need to handle when Orval
-  // incorrectly chains the wrong default constant
 
   if (content !== before) {
     fixes.push(`Fixed mismatched default type annotations in ${filePath}`)
@@ -576,15 +591,19 @@ function processFile(filePath) {
   const original = content
 
   // Apply all fixes
+  // Order matters! fixArrayDefaults must run BEFORE fixMismatchedDefaultTypes
+  // because fixArrayDefaults may add type annotations that fixMismatchedDefaultTypes
+  // then needs to remove for non-array values
   content = fixExtraCommas(content, filePath)
   content = fixDeepgramParameters(content, filePath)
   content = fixUnterminatedStrings(content, filePath)
   content = fixErrorTypeShadowing(content, filePath)
-  content = fixMismatchedDefaultTypes(content, filePath)
   content = fixArrayDefaults(content, filePath)
+  content = fixMismatchedDefaultTypes(content, filePath)
   content = fixFormDataObjectAppend(content, filePath)
   content = fixDiscriminatedUnionMissingField(content, filePath)
   content = fixEmptyZodArrayCalls(content, filePath)
+  content = fixDeepgramMockProvider(content, filePath)
 
   // Only write if changed
   if (content !== original) {
