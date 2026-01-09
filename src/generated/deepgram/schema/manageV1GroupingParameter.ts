@@ -15,10 +15,6 @@
 /**
  * ManageV1GroupingParameter type definition
  */
-
-/**
- * ManageV1GroupingParameter type definition
- */
 export type ManageV1GroupingParameter = typeof ManageV1GroupingParameter[keyof typeof ManageV1GroupingParameter];
 
 export const ManageV1GroupingParameter = {

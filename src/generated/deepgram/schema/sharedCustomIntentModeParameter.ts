@@ -15,10 +15,6 @@
 /**
  * SharedCustomIntentModeParameter type definition
  */
-
-/**
- * SharedCustomIntentModeParameter type definition
- */
 export type SharedCustomIntentModeParameter = typeof SharedCustomIntentModeParameter[keyof typeof SharedCustomIntentModeParameter];
 
 export const SharedCustomIntentModeParameter = {
