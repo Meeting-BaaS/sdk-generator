@@ -1,7 +1,14 @@
 /**
  * Deepgram Streaming Zod Schemas
- * Streaming-specific params not in OpenAPI spec
- * Combined with batch transcription params for complete streaming config
+ *
+ * NOTE: These streaming-specific params are NOT in Deepgram's OpenAPI spec.
+ * They are documented only at: https://developers.deepgram.com/docs/live-streaming-api
+ *
+ * Unlike AssemblyAI (which has SDK types we can sync), Deepgram's streaming
+ * params must be maintained manually based on their documentation.
+ *
+ * Batch params come from Orval (OpenAPI) - see deepgramAPISpecification.zod.ts
+ * Streaming-only params below are maintained manually.
  */
 
 import { z as zod } from "zod"

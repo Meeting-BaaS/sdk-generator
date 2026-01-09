@@ -1,18 +1,16 @@
 /**
  * AssemblyAI Streaming Zod Schemas
- * Derived from streaming-types.ts for field config extraction
+ * Auto-generated from streaming-types.ts
+ * DO NOT EDIT MANUALLY - regenerate with: pnpm openapi:sync-assemblyai-streaming
  */
 
 import { z as zod } from "zod"
 
 /**
- * AssemblyAI streaming params Zod schema
- * Used for extracting field configs
+ * AssemblyAI streaming transcriber params Zod schema
  */
 export const streamingTranscriberParams = zod.object({
-  sampleRate: zod
-    .number()
-    .describe("Audio sample rate in Hz (e.g., 16000)"),
+  sampleRate: zod.number().describe("Audio sample rate in Hz (e.g., 16000)"),
   encoding: zod
     .enum(["pcm_s16le", "pcm_mulaw"])
     .optional()
@@ -56,7 +54,7 @@ export const streamingTranscriberParams = zod.object({
   keyterms: zod
     .array(zod.string())
     .optional()
-    .describe("Key terms to boost in recognition (comma-separated)"),
+    .describe("Key terms to boost in recognition"),
   keytermsPrompt: zod
     .array(zod.string())
     .optional()
