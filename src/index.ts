@@ -13,6 +13,9 @@ export * from "./webhooks"
 // Field configurations for UI rendering
 export * from "./field-configs"
 
+// Provider metadata (capabilities, languages, display names)
+export * from "./provider-metadata"
+
 // Provider-specific generated types (for advanced usage)
 export * as GladiaTypes from "./generated/gladia/schema"
 export * as AssemblyAITypes from "./generated/assemblyai/schema"
