@@ -7,6 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
+/**
+ * SelfHostedV1ParamsDistributionProviderParameter type definition
+ */
+
+/**
+ * SelfHostedV1ParamsDistributionProviderParameter type definition
+ */
 
 /**
  * SelfHostedV1ParamsDistributionProviderParameter type definition

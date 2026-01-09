@@ -62,11 +62,7 @@ export interface ProviderCapabilities {
 /**
  * Unified transcript status across all providers
  */
-export type TranscriptStatus =
-  | "queued"
-  | "processing"
-  | "completed"
-  | "error"
+export type TranscriptStatus = "queued" | "processing" | "completed" | "error"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Audio Input Types

@@ -596,12 +596,22 @@ export const DeepgramListFilterFields = [
   }
 ] as const satisfies readonly FieldConfig[]
 
+// Import schema-derived streaming fields (single source of truth)
+import {
+  DeepgramStreamingFields,
+  AssemblyAIStreamingFields
+} from "./streaming-field-schemas"
+
+// Re-export for convenience
+export { DeepgramStreamingFields, AssemblyAIStreamingFields }
+
 /**
  * Complete Deepgram field configurations
  */
 export const DeepgramFieldConfigs: ProviderFieldConfigs = {
   provider: "deepgram",
   transcription: DeepgramTranscriptionFields,
+  streaming: DeepgramStreamingFields,
   listFilters: DeepgramListFilterFields
 } as const
 
@@ -852,6 +862,7 @@ export const AssemblyAIListFilterFields = [
 export const AssemblyAIFieldConfigs: ProviderFieldConfigs = {
   provider: "assemblyai",
   transcription: AssemblyAITranscriptionFields,
+  streaming: AssemblyAIStreamingFields,
   listFilters: AssemblyAIListFilterFields
 } as const
 

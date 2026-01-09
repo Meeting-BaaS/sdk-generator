@@ -1410,12 +1410,7 @@
             {
               "text": "wildfires",
               "count": 4,
-              "timestamps": [
-                [1668, 2346],
-                [33852, 34546],
-                [50118, 51110],
-                [231356, 232354]
-              ],
+              "timestamps": [[1668, 2346], [33852, 34546], [50118, 51110], [231356, 232354]],
               "indexes": [4, 90, 140, 716]
             }
           ]
@@ -1822,10 +1817,7 @@
           "redact_pii": true,
           "redact_pii_audio": true,
           "redact_pii_audio_quality": "mp3",
-          "redact_pii_policies": [
-            "us_social_security_number",
-            "credit_card_number"
-          ],
+          "redact_pii_policies": ["us_social_security_number", "credit_card_number"],
           "redact_pii_sub": "hash",
           "speaker_labels": true,
           "speakers_expected": 2,
@@ -1889,10 +1881,7 @@
           "redact_pii": true,
           "redact_pii_audio": true,
           "redact_pii_audio_quality": "mp3",
-          "redact_pii_policies": [
-            "us_social_security_number",
-            "credit_card_number"
-          ],
+          "redact_pii_policies": ["us_social_security_number", "credit_card_number"],
           "redact_pii_sub": "hash",
           "speaker_labels": true,
           "speakers_expected": 2,
@@ -3923,10 +3912,7 @@
           "redact_pii": true,
           "redact_pii_audio": true,
           "redact_pii_audio_quality": "mp3",
-          "redact_pii_policies": [
-            "us_social_security_number",
-            "credit_card_number"
-          ],
+          "redact_pii_policies": ["us_social_security_number", "credit_card_number"],
           "redact_pii_sub": "hash",
           "speaker_labels": true,
           "content_safety": true,
@@ -4745,14 +4731,7 @@
         "x-fern-sdk-group-name": "transcripts",
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "text",
-          "start",
-          "end",
-          "sentiment",
-          "confidence",
-          "speaker"
-        ],
+        "required": ["text", "start", "end", "sentiment", "confidence", "speaker"],
         "properties": {
           "text": {
             "x-label": "Text",
@@ -4952,13 +4931,7 @@
         "type": "object",
         "x-fern-sdk-group-name": "transcripts",
         "additionalProperties": false,
-        "required": [
-          "text",
-          "labels",
-          "sentences_idx_start",
-          "sentences_idx_end",
-          "timestamp"
-        ],
+        "required": ["text", "labels", "sentences_idx_start", "sentences_idx_end", "timestamp"],
         "properties": {
           "text": {
             "x-label": "Text",
@@ -5775,13 +5748,7 @@
         "type": "object",
         "x-fern-sdk-group-name": "transcripts",
         "additionalProperties": false,
-        "required": [
-          "limit",
-          "result_count",
-          "current_url",
-          "prev_url",
-          "next_url"
-        ],
+        "required": ["limit", "result_count", "current_url", "prev_url", "next_url"],
         "properties": {
           "limit": {
             "x-label": "Limit",
@@ -5879,15 +5846,7 @@
         "type": "object",
         "x-fern-sdk-group-name": "transcripts",
         "additionalProperties": false,
-        "required": [
-          "id",
-          "resource_url",
-          "status",
-          "created",
-          "completed",
-          "audio_url",
-          "error"
-        ],
+        "required": ["id", "resource_url", "status", "created", "completed", "audio_url", "error"],
         "properties": {
           "id": {
             "x-label": "ID",

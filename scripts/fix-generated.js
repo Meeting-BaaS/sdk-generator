@@ -572,7 +572,7 @@ function fixDeepgramScopesDefault(content, filePath) {
   // Add type cast to scopes default
   content = content.replace(
     /export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault = \[/g,
-    "export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: (\"self-hosted:products\" | \"self-hosted:product:api\" | \"self-hosted:product:engine\" | \"self-hosted:product:license-proxy\" | \"self-hosted:product:dgtools\" | \"self-hosted:product:billing\" | \"self-hosted:product:hotpepper\" | \"self-hosted:product:metrics-server\")[] = ["
+    'export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: ("self-hosted:products" | "self-hosted:product:api" | "self-hosted:product:engine" | "self-hosted:product:license-proxy" | "self-hosted:product:dgtools" | "self-hosted:product:billing" | "self-hosted:product:hotpepper" | "self-hosted:product:metrics-server")[] = ['
   )
 
   if (content !== before) {
