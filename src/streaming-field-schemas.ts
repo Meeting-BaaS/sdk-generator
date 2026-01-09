@@ -165,6 +165,18 @@ const DeepgramStreamingSchema: SchemaMap<DeepgramStreamingOptions> = {
     min: 0
   },
 
+  // Additional Processing
+  version: {
+    type: "string",
+    description: "Model version (e.g., 'latest')",
+    example: "latest"
+  },
+  paragraphs: {
+    type: "boolean",
+    description: "Enable paragraph formatting",
+    default: false
+  },
+
   // Advanced Analysis
   sentiment: {
     type: "boolean",
@@ -181,6 +193,10 @@ const DeepgramStreamingSchema: SchemaMap<DeepgramStreamingOptions> = {
     description: "Enable topic detection",
     default: false
   },
+  customTopic: {
+    type: "array",
+    description: "Custom topic definitions"
+  },
   customTopicMode: {
     type: "select",
     description: "Topic detection mode",
@@ -191,10 +207,29 @@ const DeepgramStreamingSchema: SchemaMap<DeepgramStreamingOptions> = {
     description: "Enable intent recognition",
     default: false
   },
+  customIntent: {
+    type: "array",
+    description: "Custom intent definitions"
+  },
+  customIntentMode: {
+    type: "select",
+    description: "Intent detection mode",
+    options: Object.values(DeepgramTopicMode)
+  },
   summarize: {
     type: "boolean",
     description: "Enable summarization",
     default: false
+  },
+
+  // Vocabulary Options
+  keywords: {
+    type: "array",
+    description: "Keywords for boosting recognition"
+  },
+  keyterm: {
+    type: "array",
+    description: "Key term prompting (Nova-3 only)"
   },
 
   // Endpoint Configuration
@@ -294,6 +329,23 @@ const AssemblyAIStreamingSchema: SchemaMap<AssemblyAIStreamingOptions> = {
     type: "boolean",
     description: "Filter profanity in real-time transcription",
     default: false
+  },
+
+  // Custom Vocabulary
+  keyterms: {
+    type: "array",
+    description: "Key terms to boost in recognition"
+  },
+  keytermsPrompt: {
+    type: "array",
+    description: "Context hints for key terms"
+  },
+
+  // Session Configuration
+  inactivityTimeout: {
+    type: "number",
+    description: "Session timeout in ms if no audio received",
+    min: 0
   }
 } as const
 

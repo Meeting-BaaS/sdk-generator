@@ -260,6 +260,27 @@ export const GladiaStreamingFields = [
     options: Object.values(TranscriptionLanguageCodeEnum),
     example: "en",
     stability: "stable"
+  },
+  {
+    name: "endpointing",
+    type: "number",
+    description: "Silence duration in seconds to end utterance (0.01-10)",
+    min: 0.01,
+    max: 10,
+    stability: "stable"
+  },
+  {
+    name: "interimResults",
+    type: "boolean",
+    description: "Enable partial transcripts before final",
+    default: true,
+    stability: "stable"
+  },
+  {
+    name: "languageConfig",
+    type: "object",
+    description: "Language configuration (languages array, code switching)",
+    stability: "stable"
   }
 ] as const satisfies readonly FieldConfig[]
 
@@ -597,10 +618,7 @@ export const DeepgramListFilterFields = [
 ] as const satisfies readonly FieldConfig[]
 
 // Import schema-derived streaming fields (single source of truth)
-import {
-  DeepgramStreamingFields,
-  AssemblyAIStreamingFields
-} from "./streaming-field-schemas"
+import { DeepgramStreamingFields, AssemblyAIStreamingFields } from "./streaming-field-schemas"
 
 // Re-export for convenience
 export { DeepgramStreamingFields, AssemblyAIStreamingFields }
