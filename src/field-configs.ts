@@ -27,6 +27,8 @@ import {
   manageV1ProjectsRequestsListQueryParams as deepgramListParams
 } from "./generated/deepgram/api/deepgramAPISpecification.zod"
 
+import { deepgramStreamingOnlyParams } from "./generated/deepgram/streaming-types.zod"
+
 import {
   createTranscriptBody as assemblyaiTranscribeParams,
   listTranscriptsQueryParams as assemblyaiListParams
@@ -119,11 +121,13 @@ export function getDeepgramListFilterFields(): ZodFieldConfig[] {
 }
 
 /**
- * Get Deepgram streaming fields (same as transcription - Deepgram uses same params)
+ * Get Deepgram streaming fields (batch params + streaming-specific params)
  */
 export function getDeepgramStreamingFields(): ZodFieldConfig[] {
-  // Deepgram streaming uses the same query params as batch transcription
-  return zodToFieldConfigs(deepgramTranscribeParams)
+  // Combine batch transcription params with streaming-only params
+  const batchFields = zodToFieldConfigs(deepgramTranscribeParams)
+  const streamingFields = zodToFieldConfigs(deepgramStreamingOnlyParams)
+  return [...batchFields, ...streamingFields]
 }
 
 /**

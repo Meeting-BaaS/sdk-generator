@@ -82,6 +82,10 @@
 /**
  * ManageV1FilterStatusParameter type definition
  */
+
+/**
+ * ManageV1FilterStatusParameter type definition
+ */
 export type ManageV1FilterStatusParameter = typeof ManageV1FilterStatusParameter[keyof typeof ManageV1FilterStatusParameter];
 
 export const ManageV1FilterStatusParameter = {
