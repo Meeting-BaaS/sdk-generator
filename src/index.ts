@@ -10,6 +10,9 @@ export * from "./adapters"
 // Webhook normalization exports
 export * from "./webhooks"
 
+// Field configurations for UI rendering
+export * from "./field-configs"
+
 // Provider-specific generated types (for advanced usage)
 export * as GladiaTypes from "./generated/gladia/schema"
 export * as AssemblyAITypes from "./generated/assemblyai/schema"
