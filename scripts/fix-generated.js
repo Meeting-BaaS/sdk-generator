@@ -289,17 +289,23 @@ ${normalizedProps.join(",\n")}
  * Examples:
  *   opus', → 'opus',
  *   'key': value', → 'key': 'value',
+ *   'transcript.'txt' → 'transcript.txt'
  *
- * NOTE: This fix is only needed for specific Speechmatics files
- * Most Deepgram and AssemblyAI files have properly quoted strings
+ * NOTE: This fix is needed for Speechmatics files where Orval mangles
+ * enum values that contain dots (e.g., "transcript.txt" becomes "transcript.'txt'")
  */
 function fixUnterminatedStrings(content, filePath) {
   // Only apply to Speechmatics zod files - other providers are mostly correct
-  if (!filePath.includes("/speechmatics/") || !filePath.includes(".zod.ts")) {
+  if (!filePath.includes("speechmatics") || !filePath.includes(".zod.ts")) {
     return content
   }
 
   const before = content
+
+  // Fix mangled enum values: 'transcript.'txt' -> 'transcript.txt'
+  // Orval sometimes inserts extra quotes after dots in enum values
+  // Use a more permissive pattern that handles various word characters
+  content = content.replace(/'(\w+)\.'(\w+)'/g, "'$1.$2'")
 
   // Only fix simple standalone enum values
   // Match: word', (not after a colon or quote) and replace with: 'word',
@@ -470,11 +476,12 @@ function fixFormDataObjectAppend(content, filePath) {
 
   // Find FormData.append calls with chunking_strategy (which can be an object)
   // Only match if not already wrapped with typeof check
+  // Handle both double quotes and backticks
   // Replace: formData.append("chunking_strategy", value)
-  // With: formData.append("chunking_strategy", typeof value === 'object' ? JSON.stringify(value) : value)
+  // With: formData.append("chunking_strategy", typeof value === 'object' ? JSON.stringify(value) : String(value))
   content = content.replace(
-    /formData\.append\("chunking_strategy",\s+(?!typeof\s)([a-zA-Z._\[\]]+)\)/g,
-    "formData.append(\"chunking_strategy\", typeof $1 === 'object' ? JSON.stringify($1) : $1)"
+    /formData\.append\(["`]chunking_strategy["`],\s+(?!typeof\s)([a-zA-Z._\[\]]+)\)/g,
+    'formData.append("chunking_strategy", typeof $1 === "object" ? JSON.stringify($1) : String($1))'
   )
 
   if (content !== before) {
@@ -527,6 +534,41 @@ function fixEmptyZodArrayCalls(content, filePath) {
 }
 
 /**
+ * Fix mismatched default type annotations
+ * Orval sometimes generates wrong type annotations for default constants, e.g.:
+ *   export const fooDefault: ('a' | 'b')[] = 0.6;  // number assigned to array type
+ *   export const barDefault: ('json' | 'text')[] = "json";  // string assigned to array type
+ *
+ * Fix: Remove the incorrect type annotation and let TypeScript infer the type
+ */
+function fixMismatchedDefaultTypes(content, filePath) {
+  if (!filePath.includes(".zod.ts")) {
+    return content
+  }
+
+  const before = content
+
+  // Fix: array type annotation with non-array value (number, string, boolean)
+  // Pattern: export const fooDefault: (...)[] = <non-array-value>;
+  // Replace with: export const fooDefault = <value>;
+  content = content.replace(
+    /export const (\w+Default):\s*\([^)]+\)\[\]\s*=\s*([\d.]+|"[^"]*"|'[^']*'|true|false);/g,
+    'export const $1 = $2;'
+  )
+
+  // Fix: enum type annotation with array value when it should be single value
+  // Pattern: export const fooDefault: ('a' | 'b')[] = ["value"];
+  // This is actually correct for arrays, but we need to handle when Orval
+  // incorrectly chains the wrong default constant
+
+  if (content !== before) {
+    fixes.push(`Fixed mismatched default type annotations in ${filePath}`)
+  }
+
+  return content
+}
+
+/**
  * Process a single file
  */
 function processFile(filePath) {
@@ -538,6 +580,7 @@ function processFile(filePath) {
   content = fixDeepgramParameters(content, filePath)
   content = fixUnterminatedStrings(content, filePath)
   content = fixErrorTypeShadowing(content, filePath)
+  content = fixMismatchedDefaultTypes(content, filePath)
   content = fixArrayDefaults(content, filePath)
   content = fixFormDataObjectAppend(content, filePath)
   content = fixDiscriminatedUnionMissingField(content, filePath)
