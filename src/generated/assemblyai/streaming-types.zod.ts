@@ -66,3 +66,34 @@ export const streamingTranscriberParams = zod.object({
     .optional()
     .describe("Session timeout in ms if no audio received")
 })
+
+/**
+ * AssemblyAI streaming update configuration params
+ * These can be sent mid-stream to adjust VAD/turn detection
+ */
+export const streamingUpdateConfigParams = zod.object({
+  end_of_turn_confidence_threshold: zod
+    .number()
+    .min(0)
+    .max(1)
+    .optional()
+    .describe("Confidence threshold for end-of-turn detection (0-1)"),
+  min_end_of_turn_silence_when_confident: zod
+    .number()
+    .optional()
+    .describe("Minimum silence in ms to trigger end-of-turn when confident"),
+  max_turn_silence: zod
+    .number()
+    .optional()
+    .describe("Maximum silence in ms before forcing end-of-turn"),
+  vad_threshold: zod
+    .number()
+    .min(0)
+    .max(1)
+    .optional()
+    .describe("Voice activity detection threshold (0-1)"),
+  format_turns: zod
+    .boolean()
+    .optional()
+    .describe("Enable real-time text formatting of turns")
+})

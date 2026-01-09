@@ -34,7 +34,10 @@ import {
   listTranscriptsQueryParams as assemblyaiListParams
 } from "./generated/assemblyai/api/assemblyAIAPI.zod"
 
-import { streamingTranscriberParams as assemblyaiStreamingParams } from "./generated/assemblyai/streaming-types.zod"
+import {
+  streamingTranscriberParams as assemblyaiStreamingParams,
+  streamingUpdateConfigParams as assemblyaiUpdateConfigParams
+} from "./generated/assemblyai/streaming-types.zod"
 
 import {
   transcriptionControllerInitPreRecordedJobV2Body as gladiaTranscribeParams,
@@ -61,6 +64,8 @@ export interface ProviderFieldConfigs {
   transcription: ZodFieldConfig[]
   /** Streaming request fields (if supported) */
   streaming?: ZodFieldConfig[]
+  /** Streaming update config fields (for mid-stream updates) */
+  streamingUpdate?: ZodFieldConfig[]
   /** List transcripts filter fields */
   listFilters?: ZodFieldConfig[]
 }
@@ -168,6 +173,13 @@ export function getAssemblyAIStreamingFields(): ZodFieldConfig[] {
 }
 
 /**
+ * Get AssemblyAI streaming update config fields (for mid-stream updates)
+ */
+export function getAssemblyAIStreamingUpdateFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(assemblyaiUpdateConfigParams)
+}
+
+/**
  * Get all AssemblyAI field configs
  */
 export function getAssemblyAIFieldConfigs(): ProviderFieldConfigs {
@@ -175,6 +187,7 @@ export function getAssemblyAIFieldConfigs(): ProviderFieldConfigs {
     provider: "assemblyai",
     transcription: getAssemblyAITranscriptionFields(),
     streaming: getAssemblyAIStreamingFields(),
+    streamingUpdate: getAssemblyAIStreamingUpdateFields(),
     listFilters: getAssemblyAIListFilterFields()
   }
 }
