@@ -14,8 +14,9 @@
 import { z as zod } from "zod"
 
 /**
- * Deepgram streaming-specific params Zod schema
- * These params are only available for streaming (not in batch OpenAPI spec)
+ * Deepgram streaming-only params used in deepgram-adapter.ts
+ * These are real Deepgram params but not in their OpenAPI spec
+ * @see deepgram-adapter.ts buildStreamingUrl() for usage
  */
 export const deepgramStreamingOnlyParams = zod.object({
   sample_rate: zod
@@ -37,15 +38,7 @@ export const deepgramStreamingOnlyParams = zod.object({
   vad_events: zod
     .boolean()
     .optional()
-    .describe("Enable voice activity detection events"),
-  utterance_end_ms: zod
-    .number()
-    .optional()
-    .describe("Duration of silence in ms to mark utterance end"),
-  no_delay: zod
-    .boolean()
-    .optional()
-    .describe("Disable Deepgram's smart buffering for lowest latency")
+    .describe("Enable voice activity detection events")
 })
 
 /**
