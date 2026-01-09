@@ -938,9 +938,10 @@ export class GladiaAdapter extends BaseAdapter {
     const streamingRequest = this.buildStreamingRequest(options)
 
     // Use generated API client function - FULLY TYPED!
+    // Pass region as query parameter if provided
     const initResponse = await streamingControllerInitStreamingSessionV2(
       streamingRequest,
-      undefined, // no params
+      options?.region ? { region: options.region } : undefined,
       this.getAxiosConfig()
     )
 

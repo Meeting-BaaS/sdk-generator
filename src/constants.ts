@@ -184,6 +184,7 @@ import { StreamingSupportedEncodingEnum } from "./generated/gladia/schema/stream
 import { StreamingSupportedSampleRateEnum } from "./generated/gladia/schema/streamingSupportedSampleRateEnum"
 import { StreamingSupportedBitDepthEnum } from "./generated/gladia/schema/streamingSupportedBitDepthEnum"
 import { StreamingSupportedModels } from "./generated/gladia/schema/streamingSupportedModels"
+import { StreamingSupportedRegions } from "./generated/gladia/schema/streamingSupportedRegions"
 import { TranscriptionLanguageCodeEnum } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"
 import { TranslationLanguageCodeEnum } from "./generated/gladia/schema/translationLanguageCodeEnum"
 
@@ -271,6 +272,25 @@ export const GladiaLanguage = TranscriptionLanguageCodeEnum
  * ```
  */
 export const GladiaTranslationLanguage = TranslationLanguageCodeEnum
+
+/**
+ * Gladia streaming regions for low-latency processing
+ *
+ * Values: `us-west`, `eu-west`
+ *
+ * Use the region closest to your users for optimal latency.
+ * Region selection is only available for streaming transcription.
+ *
+ * @example
+ * ```typescript
+ * import { GladiaRegion } from 'voice-router-dev/constants'
+ *
+ * await adapter.transcribeStream({
+ *   region: GladiaRegion["us-west"]
+ * })
+ * ```
+ */
+export const GladiaRegion = StreamingSupportedRegions
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AssemblyAI Constants
@@ -460,6 +480,9 @@ export type GladiaLanguageType = (typeof GladiaLanguage)[keyof typeof GladiaLang
 export type GladiaTranslationLanguageType =
   (typeof GladiaTranslationLanguage)[keyof typeof GladiaTranslationLanguage]
 
+/** Gladia region type derived from const object */
+export type GladiaRegionType = (typeof GladiaRegion)[keyof typeof GladiaRegion]
+
 /** AssemblyAI encoding type derived from const object */
 export type AssemblyAIEncodingType = (typeof AssemblyAIEncoding)[keyof typeof AssemblyAIEncoding]
 
@@ -482,3 +505,87 @@ export type AzureStatusType = (typeof AzureStatus)[keyof typeof AzureStatus]
 
 /** Deepgram status type derived from const object */
 export type DeepgramStatusType = (typeof DeepgramStatus)[keyof typeof DeepgramStatus]
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Region Constants
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Speechmatics regional endpoints
+ *
+ * Speechmatics offers multiple regional endpoints for data residency and latency optimization.
+ * EU2 and US2 are enterprise-only for high availability and failover.
+ *
+ * | Region | Endpoint | Availability |
+ * |--------|----------|--------------|
+ * | EU1 | eu1.asr.api.speechmatics.com | All customers |
+ * | EU2 | eu2.asr.api.speechmatics.com | Enterprise only |
+ * | US1 | us1.asr.api.speechmatics.com | All customers |
+ * | US2 | us2.asr.api.speechmatics.com | Enterprise only |
+ * | AU1 | au1.asr.api.speechmatics.com | All customers |
+ *
+ * @example
+ * ```typescript
+ * import { SpeechmaticsRegion } from 'voice-router-dev/constants'
+ *
+ * const adapter = new SpeechmaticsAdapter()
+ * adapter.initialize({
+ *   apiKey: process.env.SPEECHMATICS_API_KEY,
+ *   region: SpeechmaticsRegion.eu1
+ * })
+ * ```
+ *
+ * @see https://docs.speechmatics.com/get-started/authentication#supported-endpoints
+ */
+export const SpeechmaticsRegion = {
+  /** Europe (default, all customers) */
+  eu1: "eu1",
+  /** Europe (enterprise only - HA/failover) */
+  eu2: "eu2",
+  /** USA (all customers) */
+  us1: "us1",
+  /** USA (enterprise only - HA/failover) */
+  us2: "us2",
+  /** Australia (all customers) */
+  au1: "au1"
+} as const
+
+/**
+ * Deepgram regional endpoints
+ *
+ * Deepgram offers regional endpoints for EU data residency.
+ * The EU endpoint keeps all processing within the European Union.
+ *
+ * | Region | API Endpoint | WebSocket Endpoint |
+ * |--------|--------------|-------------------|
+ * | Global | api.deepgram.com | wss://api.deepgram.com |
+ * | EU | api.eu.deepgram.com | wss://api.eu.deepgram.com |
+ *
+ * **Note:** Deepgram also supports Dedicated endpoints (`{SHORT_UID}.{REGION}.api.deepgram.com`)
+ * and self-hosted deployments. Use `baseUrl` in config for custom endpoints.
+ *
+ * @example
+ * ```typescript
+ * import { DeepgramRegion } from 'voice-router-dev/constants'
+ *
+ * const adapter = new DeepgramAdapter()
+ * adapter.initialize({
+ *   apiKey: process.env.DEEPGRAM_API_KEY,
+ *   region: DeepgramRegion.eu
+ * })
+ * ```
+ *
+ * @see https://developers.deepgram.com/reference/custom-endpoints - Official custom endpoints docs
+ */
+export const DeepgramRegion = {
+  /** Global endpoint (default) */
+  global: "global",
+  /** European Union endpoint */
+  eu: "eu"
+} as const
+
+/** Speechmatics region type derived from const object */
+export type SpeechmaticsRegionType = (typeof SpeechmaticsRegion)[keyof typeof SpeechmaticsRegion]
+
+/** Deepgram region type derived from const object */
+export type DeepgramRegionType = (typeof DeepgramRegion)[keyof typeof DeepgramRegion]

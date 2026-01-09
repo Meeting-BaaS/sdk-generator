@@ -550,6 +550,57 @@ function processFile(filePath) {
 }
 
 /**
+ * Restore manual Deepgram type files
+ *
+ * Orval cannot properly generate certain Deepgram parameter types due to
+ * duplicate definitions in the OpenAPI spec. We maintain manual versions
+ * of these files and copy them after generation.
+ *
+ * Files restored:
+ * - speakV1ContainerParameter.ts
+ * - speakV1EncodingParameter.ts
+ * - speakV1SampleRateParameter.ts
+ */
+function restoreManualDeepgramFiles() {
+  const manualDir = path.join(__dirname, "manual-types", "deepgram")
+  const targetDir = path.join(__dirname, "..", "src", "generated", "deepgram", "schema")
+
+  if (!fs.existsSync(manualDir)) {
+    console.log("⚠️  Manual Deepgram types directory not found, skipping restore")
+    return
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    console.log("⚠️  Deepgram schema directory not found, skipping restore")
+    return
+  }
+
+  const manualFiles = [
+    "speakV1ContainerParameter.ts",
+    "speakV1EncodingParameter.ts",
+    "speakV1SampleRateParameter.ts"
+  ]
+
+  let restored = 0
+  for (const file of manualFiles) {
+    const srcPath = path.join(manualDir, file)
+    const destPath = path.join(targetDir, file)
+
+    if (fs.existsSync(srcPath)) {
+      fs.copyFileSync(srcPath, destPath)
+      restored++
+      fixes.push(`Restored manual Deepgram file: ${file}`)
+    } else {
+      console.log(`⚠️  Manual file not found: ${file}`)
+    }
+  }
+
+  if (restored > 0) {
+    console.log(`\n📦 Restored ${restored} manual Deepgram type files`)
+  }
+}
+
+/**
  * Main function
  */
 function main() {
@@ -569,6 +620,9 @@ function main() {
       console.error(`❌ Error processing ${file}:`, error.message)
     }
   }
+
+  // Restore manual Deepgram files after processing
+  restoreManualDeepgramFiles()
 
   if (fixes.length > 0) {
     console.log("\n✅ Fixes applied:")

@@ -5,6 +5,113 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.7] - 2026-01-09
+
+### Added
+
+#### Region Support for Multiple Providers
+
+Region support for data residency, compliance, and latency optimization:
+
+**Deepgram EU Region** (GA Jan 2026):
+
+```typescript
+import { createDeepgramAdapter, DeepgramRegion } from 'voice-router-dev'
+
+const adapter = createDeepgramAdapter({
+  apiKey: process.env.DEEPGRAM_API_KEY,
+  region: DeepgramRegion.eu  // All processing in EU
+})
+```
+
+**Speechmatics Regional Endpoints** (EU, US, AU):
+
+```typescript
+import { createSpeechmaticsAdapter, SpeechmaticsRegion } from 'voice-router-dev'
+
+const adapter = createSpeechmaticsAdapter({
+  apiKey: process.env.SPEECHMATICS_API_KEY,
+  region: SpeechmaticsRegion.us1  // USA endpoint
+})
+```
+
+| Region | Endpoint | Availability |
+|--------|----------|--------------|
+| `eu1` | eu1.asr.api.speechmatics.com | All customers |
+| `eu2` | eu2.asr.api.speechmatics.com | Enterprise only |
+| `us1` | us1.asr.api.speechmatics.com | All customers |
+| `us2` | us2.asr.api.speechmatics.com | Enterprise only |
+| `au1` | au1.asr.api.speechmatics.com | All customers |
+
+**Gladia Streaming Regions**:
+
+```typescript
+import { GladiaRegion } from 'voice-router-dev/constants'
+
+await adapter.transcribeStream({
+  region: GladiaRegion["us-west"]  // or "eu-west"
+})
+```
+
+**Dynamic region switching** for debugging and testing:
+
+```typescript
+// Switch regions on the fly without reinitializing
+adapter.setRegion(DeepgramRegion.eu)
+await adapter.transcribe(audio)
+
+// Check current region
+console.log(adapter.getRegion())
+// Deepgram: { api: "https://api.eu.deepgram.com/v1", websocket: "wss://api.eu.deepgram.com/v1/listen" }
+// Speechmatics: "https://us1.asr.api.speechmatics.com/v2"
+```
+
+**Region support summary:**
+
+| Provider | Regions | Config Level | Dynamic Switch |
+|----------|---------|--------------|----------------|
+| **Deepgram** | `global`, `eu` | Adapter init | `setRegion()` |
+| **Speechmatics** | `eu1`, `eu2`*, `us1`, `us2`*, `au1` | Adapter init | `setRegion()` |
+| **Gladia** | `us-west`, `eu-west` | Streaming options | Per-request |
+| **Azure** | Via `speechConfig` | Adapter init | Reinitialize |
+
+\* Enterprise only
+
+#### OpenAPI Spec Sync
+
+New unified spec management system for syncing provider OpenAPI specs from official sources:
+
+```bash
+# Sync all specs from remote sources
+pnpm openapi:sync
+
+# Sync specific providers
+pnpm openapi:sync:gladia
+pnpm openapi:sync:deepgram
+pnpm openapi:sync:assemblyai
+
+# Full rebuild with fresh specs
+pnpm openapi:rebuild
+```
+
+**Spec sources:**
+- Gladia: https://api.gladia.io/openapi.json
+- AssemblyAI: https://github.com/AssemblyAI/assemblyai-api-spec
+- Deepgram: https://github.com/deepgram/deepgram-api-specs
+
+All specs are now stored locally in `./specs/` for reproducible builds.
+
+### Fixed
+
+- Deepgram spec regeneration now works correctly with Orval input transformer
+- Manual Deepgram parameter files (SpeakV1Container, SpeakV1Encoding, SpeakV1SampleRate) are preserved during regeneration
+
+### Changed
+
+- `prepublishOnly` now syncs and validates specs before publishing
+
+---
+
 ## [0.3.3] - 2026-01-08
 
 ### Added

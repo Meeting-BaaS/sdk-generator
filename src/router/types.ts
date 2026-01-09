@@ -36,6 +36,7 @@ import type { CreateTranscriptionRequest } from "../generated/openai/schema/crea
 
 // Streaming request types for type-safe streaming options
 import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
+import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
 import type {
   DeepgramStreamingOptions,
   AssemblyAIStreamingOptions
@@ -1052,6 +1053,26 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    * ```
    */
   assemblyaiStreaming?: AssemblyAIStreamingOptions
+
+  /**
+   * Regional endpoint for streaming (Gladia only)
+   *
+   * Gladia supports regional streaming endpoints for lower latency:
+   * - `us-west`: US West Coast
+   * - `eu-west`: EU West (Ireland)
+   *
+   * @example
+   * ```typescript
+   * import { GladiaRegion } from 'voice-router-dev/constants'
+   *
+   * await adapter.transcribeStream({
+   *   region: GladiaRegion["us-west"]
+   * })
+   * ```
+   *
+   * @see https://docs.gladia.io/api-reference/v2/live
+   */
+  region?: StreamingSupportedRegions
 }
 
 /**

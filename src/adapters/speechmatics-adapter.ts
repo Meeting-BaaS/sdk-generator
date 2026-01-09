@@ -11,6 +11,26 @@ import type {
   UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+import type { SpeechmaticsRegionType } from "../constants"
+
+/**
+ * Speechmatics-specific configuration options
+ */
+export interface SpeechmaticsConfig extends ProviderConfig {
+  /**
+   * Regional endpoint for data residency and latency optimization
+   *
+   * Available regions:
+   * - `eu1` - Europe (default, all customers)
+   * - `eu2` - Europe (enterprise only - HA/failover)
+   * - `us1` - USA (all customers)
+   * - `us2` - USA (enterprise only - HA/failover)
+   * - `au1` - Australia (all customers)
+   *
+   * @see https://docs.speechmatics.com/get-started/authentication#supported-endpoints
+   */
+  region?: SpeechmaticsRegionType
+}
 
 // Import Speechmatics types (manual definitions - OpenAPI spec doesn't match actual API)
 import type {
@@ -55,6 +75,17 @@ import type {
  * });
  *
  * console.log(result.data.text);
+ * ```
+ *
+ * @example With regional endpoint (US)
+ * ```typescript
+ * import { SpeechmaticsAdapter, SpeechmaticsRegion } from '@meeting-baas/sdk';
+ *
+ * const adapter = new SpeechmaticsAdapter();
+ * adapter.initialize({
+ *   apiKey: process.env.SPEECHMATICS_API_KEY,
+ *   region: SpeechmaticsRegion.us1  // USA endpoint
+ * });
  * ```
  *
  * @example With enhanced accuracy and diarization
@@ -118,12 +149,25 @@ export class SpeechmaticsAdapter extends BaseAdapter {
   }
 
   private client?: AxiosInstance
-  protected baseUrl = "https://asr.api.speechmatics.com/v2"
+  protected baseUrl = "https://eu1.asr.api.speechmatics.com/v2"
 
-  initialize(config: ProviderConfig): void {
+  /**
+   * Build base URL from region
+   *
+   * @param region - Regional endpoint identifier
+   * @returns Full base URL for the API
+   */
+  private getRegionalBaseUrl(region?: SpeechmaticsRegionType): string {
+    // Default to eu1 if no region specified
+    const regionPrefix = region || "eu1"
+    return `https://${regionPrefix}.asr.api.speechmatics.com/v2`
+  }
+
+  initialize(config: SpeechmaticsConfig): void {
     super.initialize(config)
 
-    this.baseUrl = config.baseUrl || this.baseUrl
+    // Use explicit baseUrl if provided, otherwise derive from region
+    this.baseUrl = config.baseUrl || this.getRegionalBaseUrl(config.region)
 
     this.client = axios.create({
       baseURL: this.baseUrl,
@@ -133,6 +177,52 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         ...config.headers
       }
     })
+  }
+
+  /**
+   * Change the regional endpoint dynamically
+   *
+   * Useful for testing different regions or switching based on user location.
+   * Preserves all other configuration (apiKey, timeout, headers).
+   *
+   * @param region - New regional endpoint to use
+   *
+   * @example Switch to US region
+   * ```typescript
+   * import { SpeechmaticsRegion } from 'voice-router-dev/constants'
+   *
+   * // Test EU endpoint
+   * adapter.setRegion(SpeechmaticsRegion.eu1)
+   * await adapter.transcribe(audio)
+   *
+   * // Switch to US for comparison
+   * adapter.setRegion(SpeechmaticsRegion.us1)
+   * await adapter.transcribe(audio)
+   * ```
+   */
+  setRegion(region: SpeechmaticsRegionType): void {
+    this.validateConfig()
+
+    this.baseUrl = this.getRegionalBaseUrl(region)
+
+    // Recreate client with new base URL but preserve existing config
+    this.client = axios.create({
+      baseURL: this.baseUrl,
+      timeout: this.config!.timeout || 120000,
+      headers: {
+        Authorization: `Bearer ${this.config!.apiKey}`,
+        ...this.config!.headers
+      }
+    })
+  }
+
+  /**
+   * Get the current regional endpoint being used
+   *
+   * @returns The current base URL
+   */
+  getRegion(): string {
+    return this.baseUrl
   }
 
   /**
@@ -477,8 +567,18 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
 /**
  * Factory function to create a Speechmatics adapter
+ *
+ * @example With region
+ * ```typescript
+ * import { createSpeechmaticsAdapter, SpeechmaticsRegion } from 'voice-router-dev'
+ *
+ * const adapter = createSpeechmaticsAdapter({
+ *   apiKey: process.env.SPEECHMATICS_API_KEY,
+ *   region: SpeechmaticsRegion.us1
+ * })
+ * ```
  */
-export function createSpeechmaticsAdapter(config: ProviderConfig): SpeechmaticsAdapter {
+export function createSpeechmaticsAdapter(config: SpeechmaticsConfig): SpeechmaticsAdapter {
   const adapter = new SpeechmaticsAdapter()
   adapter.initialize(config)
   return adapter

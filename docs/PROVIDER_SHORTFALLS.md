@@ -275,6 +275,7 @@ Gladia has the most complete OpenAPI spec. All constants are direct re-exports:
 | `GladiaBitDepth` | `StreamingSupportedBitDepthEnum` | ✅ |
 | `GladiaModel` | `StreamingSupportedModels` | ✅ |
 | `GladiaLanguage` | `TranscriptionLanguageCodeEnum` | ✅ |
+| `GladiaRegion` | `StreamingSupportedRegions` | ✅ |
 | `GladiaStatus` | `TranscriptionControllerListV2StatusItem` | ✅ |
 
 ---
@@ -415,9 +416,141 @@ const result: UnifiedTranscriptResponse<'assemblyai'> = await adapter.transcribe
 | `GladiaBitDepth` | Gladia | ✅ OpenAPI | `StreamingSupportedBitDepthEnum` |
 | `GladiaModel` | Gladia | ✅ OpenAPI | `StreamingSupportedModels` |
 | `GladiaLanguage` | Gladia | ✅ OpenAPI | `TranscriptionLanguageCodeEnum` |
+| `GladiaRegion` | Gladia | ✅ OpenAPI | `StreamingSupportedRegions` |
 | `GladiaStatus` | Gladia | ✅ OpenAPI | `TranscriptionControllerListV2StatusItem` |
 | `AssemblyAIEncoding` | AssemblyAI | ⚠️ Type-checked | Spec has union type |
 | `AssemblyAISpeechModel` | AssemblyAI | ⚠️ Type-checked | Spec has union type |
 | `AssemblyAISampleRate` | AssemblyAI | ❌ Unchecked | Spec uses `number` |
 | `AssemblyAIStatus` | AssemblyAI | ✅ OpenAPI | `TranscriptStatus` |
 | `AzureStatus` | Azure | ✅ OpenAPI | `Status` |
+
+---
+
+## OpenAPI Spec Sources
+
+All specs are stored locally in `./specs/` and can be synced from their authoritative sources.
+
+| Provider | Source URL | Format | Sync Command |
+|----------|-----------|--------|--------------|
+| Gladia | https://api.gladia.io/openapi.json | JSON | `pnpm openapi:sync:gladia` |
+| AssemblyAI | https://github.com/AssemblyAI/assemblyai-api-spec/blob/main/openapi.json | JSON | `pnpm openapi:sync:assemblyai` |
+| AssemblyAI AsyncAPI | https://github.com/AssemblyAI/assemblyai-api-spec/blob/main/asyncapi.json | JSON | `pnpm openapi:sync:assemblyai` |
+| Deepgram | https://github.com/deepgram/deepgram-api-specs/blob/main/openapi.yml | YAML | `pnpm openapi:sync:deepgram` |
+| OpenAI Whisper | Manual (no official spec) | YAML | - |
+| Azure STT | Manual (no official spec) | JSON | - |
+| Speechmatics | Manual (spec has validation errors) | YAML | - |
+
+### Syncing Specs
+
+```bash
+# Sync all specs from remote sources
+pnpm openapi:sync
+
+# Sync specific provider
+pnpm openapi:sync:gladia
+pnpm openapi:sync:deepgram
+pnpm openapi:sync:assemblyai
+
+# Validate all local specs
+pnpm openapi:validate
+
+# Full rebuild with fresh specs
+pnpm openapi:rebuild
+```
+
+### Known Spec Issues
+
+| Provider | Issue | Workaround |
+|----------|-------|------------|
+| Deepgram | Duplicate parameter names cause Orval type conflicts | Input transformer in `orval.config.ts` inlines conflicting parameters |
+| OpenAI | No official Whisper OpenAPI spec | Manual spec maintained in `specs/openai-whisper-openapi.yml` |
+| Azure | No official STT OpenAPI spec | Manual spec based on Azure SDK types |
+| Speechmatics | Official Swagger 2.0 spec has validation errors | Manual spec with fixes in `specs/speechmatics-batch.yaml` |
+
+---
+
+## Regional Endpoints
+
+Regional endpoint support for data residency, compliance, and latency optimization.
+
+### Official Documentation Links
+
+| Provider | Documentation |
+|----------|--------------|
+| **Deepgram** | https://developers.deepgram.com/reference/custom-endpoints |
+| **Speechmatics** | https://docs.speechmatics.com/get-started/authentication#supported-endpoints |
+| **Gladia** | Streaming regions via OpenAPI spec (`StreamingSupportedRegions`) |
+
+### Regional Endpoint Summary
+
+| Provider | Regions | Config Level | Dynamic Switch |
+|----------|---------|--------------|----------------|
+| **Deepgram** | `global`, `eu` | Adapter init | `setRegion()` |
+| **Speechmatics** | `eu1`, `eu2`*, `us1`, `us2`*, `au1` | Adapter init | `setRegion()` |
+| **Gladia** | `us-west`, `eu-west` | Streaming options | Per-request |
+| **Azure** | Via `speechConfig` | Adapter init | Reinitialize |
+
+\* Enterprise only
+
+### Deepgram Endpoints
+
+| Region | REST API | WebSocket |
+|--------|----------|-----------|
+| Global (default) | `api.deepgram.com` | `wss://api.deepgram.com` |
+| EU | `api.eu.deepgram.com` | `wss://api.eu.deepgram.com` |
+| Dedicated | `{SHORT_UID}.{REGION}.api.deepgram.com` | Use `baseUrl` |
+| Self-hosted | Custom | Use `baseUrl` |
+
+```typescript
+import { createDeepgramAdapter, DeepgramRegion } from 'voice-router-dev'
+
+// EU endpoint
+const adapter = createDeepgramAdapter({
+  apiKey: process.env.DEEPGRAM_API_KEY,
+  region: DeepgramRegion.eu
+})
+
+// Dedicated or self-hosted - use baseUrl
+const dedicated = createDeepgramAdapter({
+  apiKey: process.env.DEEPGRAM_API_KEY,
+  baseUrl: 'https://abc123.eu-west-1.api.deepgram.com/v1'
+})
+```
+
+### Speechmatics Endpoints
+
+| Region | Endpoint | Availability |
+|--------|----------|--------------|
+| `eu1` | `eu1.asr.api.speechmatics.com` | All customers |
+| `eu2` | `eu2.asr.api.speechmatics.com` | Enterprise only |
+| `us1` | `us1.asr.api.speechmatics.com` | All customers |
+| `us2` | `us2.asr.api.speechmatics.com` | Enterprise only |
+| `au1` | `au1.asr.api.speechmatics.com` | All customers |
+
+```typescript
+import { createSpeechmaticsAdapter, SpeechmaticsRegion } from 'voice-router-dev'
+
+const adapter = createSpeechmaticsAdapter({
+  apiKey: process.env.SPEECHMATICS_API_KEY,
+  region: SpeechmaticsRegion.us1
+})
+
+// Switch regions dynamically for testing
+adapter.setRegion(SpeechmaticsRegion.au1)
+```
+
+### Dynamic Region Switching
+
+Both Deepgram and Speechmatics support changing regions without reinitializing:
+
+```typescript
+// Test different regions
+adapter.setRegion(DeepgramRegion.eu)
+const euResult = await adapter.transcribe(audio)
+
+adapter.setRegion(DeepgramRegion.global)
+const globalResult = await adapter.transcribe(audio)
+
+// Check current region
+console.log(adapter.getRegion())
+```

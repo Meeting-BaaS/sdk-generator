@@ -17,6 +17,35 @@ import type {
   SpeechEvent
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+import type { DeepgramRegionType } from "../constants"
+
+/**
+ * Deepgram-specific configuration options
+ *
+ * @see https://developers.deepgram.com/reference/custom-endpoints - Official custom endpoints documentation
+ */
+export interface DeepgramConfig extends ProviderConfig {
+  /**
+   * Project ID for accessing request history via listTranscripts/getTranscript
+   */
+  projectId?: string
+
+  /**
+   * Regional endpoint for EU data residency
+   *
+   * Available regions:
+   * - `global` - Global endpoint (default): api.deepgram.com
+   * - `eu` - European Union endpoint: api.eu.deepgram.com
+   *
+   * The EU endpoint keeps all processing within the European Union.
+   *
+   * For Dedicated endpoints (`{SHORT_UID}.{REGION}.api.deepgram.com`) or
+   * self-hosted deployments, use `baseUrl` instead.
+   *
+   * @see https://developers.deepgram.com/reference/custom-endpoints
+   */
+  region?: DeepgramRegionType
+}
 
 // Import Deepgram generated types
 import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
@@ -150,6 +179,17 @@ type DeepgramRealtimeMessage =
  * console.log(result.data.speakers);
  * ```
  *
+ * @example With EU region (data residency)
+ * ```typescript
+ * import { DeepgramAdapter, DeepgramRegion } from '@meeting-baas/sdk';
+ *
+ * const adapter = new DeepgramAdapter();
+ * adapter.initialize({
+ *   apiKey: process.env.DEEPGRAM_API_KEY,
+ *   region: DeepgramRegion.eu  // EU endpoint for data residency
+ * });
+ * ```
+ *
  * @example With advanced features
  * ```typescript
  * const result = await adapter.transcribe(audio, {
@@ -186,12 +226,30 @@ export class DeepgramAdapter extends BaseAdapter {
   private wsBaseUrl = "wss://api.deepgram.com/v1/listen"
   private projectId?: string
 
-  initialize(config: ProviderConfig & { projectId?: string }): void {
+  /**
+   * Get API host based on region
+   *
+   * @param region - Regional endpoint identifier
+   * @returns API host (without protocol or path)
+   */
+  private getRegionalHost(region?: DeepgramRegionType): string {
+    if (region === "eu") {
+      return "api.eu.deepgram.com"
+    }
+    return "api.deepgram.com"
+  }
+
+  initialize(config: DeepgramConfig): void {
     super.initialize(config)
     this.projectId = config.projectId
 
+    // Set URLs based on region (unless explicit baseUrl is provided)
+    const host = this.getRegionalHost(config.region)
+    this.baseUrl = config.baseUrl || `https://${host}/v1`
+    this.wsBaseUrl = `wss://${host}/v1/listen`
+
     this.client = axios.create({
-      baseURL: config.baseUrl || this.baseUrl,
+      baseURL: this.baseUrl,
       timeout: config.timeout || 60000,
       headers: {
         Authorization: `Token ${config.apiKey}`,
@@ -199,6 +257,59 @@ export class DeepgramAdapter extends BaseAdapter {
         ...config.headers
       }
     })
+  }
+
+  /**
+   * Change the regional endpoint dynamically
+   *
+   * Useful for testing different regions or switching based on user location.
+   * Preserves all other configuration (apiKey, projectId, timeout, headers).
+   * Affects both REST API and WebSocket streaming endpoints.
+   *
+   * @param region - New regional endpoint to use (`global` or `eu`)
+   *
+   * @example Switch to EU region
+   * ```typescript
+   * import { DeepgramRegion } from 'voice-router-dev/constants'
+   *
+   * // Test global endpoint
+   * adapter.setRegion(DeepgramRegion.global)
+   * await adapter.transcribe(audio)
+   *
+   * // Switch to EU for data residency testing
+   * adapter.setRegion(DeepgramRegion.eu)
+   * await adapter.transcribe(audio)
+   * ```
+   */
+  setRegion(region: DeepgramRegionType): void {
+    this.validateConfig()
+
+    const host = this.getRegionalHost(region)
+    this.baseUrl = `https://${host}/v1`
+    this.wsBaseUrl = `wss://${host}/v1/listen`
+
+    // Recreate client with new base URL but preserve existing config
+    this.client = axios.create({
+      baseURL: this.baseUrl,
+      timeout: this.config!.timeout || 60000,
+      headers: {
+        Authorization: `Token ${this.config!.apiKey}`,
+        "Content-Type": "application/json",
+        ...this.config!.headers
+      }
+    })
+  }
+
+  /**
+   * Get the current regional endpoints being used
+   *
+   * @returns Object with REST API and WebSocket URLs
+   */
+  getRegion(): { api: string; websocket: string } {
+    return {
+      api: this.baseUrl,
+      websocket: this.wsBaseUrl
+    }
   }
 
   /**
@@ -1194,8 +1305,28 @@ export class DeepgramAdapter extends BaseAdapter {
 
 /**
  * Factory function to create a Deepgram adapter
+ *
+ * @example Basic usage
+ * ```typescript
+ * import { createDeepgramAdapter } from 'voice-router-dev'
+ *
+ * const adapter = createDeepgramAdapter({
+ *   apiKey: process.env.DEEPGRAM_API_KEY
+ * })
+ * ```
+ *
+ * @example With EU region
+ * ```typescript
+ * import { createDeepgramAdapter, DeepgramRegion } from 'voice-router-dev'
+ *
+ * const adapter = createDeepgramAdapter({
+ *   apiKey: process.env.DEEPGRAM_API_KEY,
+ *   region: DeepgramRegion.eu,
+ *   projectId: process.env.DEEPGRAM_PROJECT_ID  // Optional, for listTranscripts
+ * })
+ * ```
  */
-export function createDeepgramAdapter(config: ProviderConfig): DeepgramAdapter {
+export function createDeepgramAdapter(config: DeepgramConfig): DeepgramAdapter {
   const adapter = new DeepgramAdapter()
   adapter.initialize(config)
   return adapter

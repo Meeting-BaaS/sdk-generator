@@ -419,6 +419,26 @@ components:
                           end:
                             type: number
                             format: float
+                entities:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      label:
+                        type: string
+                      value:
+                        type: string
+                      raw_value:
+                        type: string
+                      confidence:
+                        type: number
+                        format: float
+                      start_word:
+                        type: number
+                        format: float
+                      end_word:
+                        type: number
+                        format: float
                 summaries:
                   type: array
                   items:
