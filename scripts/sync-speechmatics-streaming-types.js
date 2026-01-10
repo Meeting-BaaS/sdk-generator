@@ -66,7 +66,9 @@ function jsonSchemaToZod(schema, indent = "  ", refs = {}) {
           const isRequired = schema.required?.includes(key)
           let zodType = jsonSchemaToZod(propSchema, indent + "  ", refs)
           if (!isRequired) zodType += ".optional()"
-          const desc = propSchema.description ? `.describe(${JSON.stringify(propSchema.description.replace(/\n/g, " ").trim())})` : ""
+          const desc = propSchema.description
+            ? `.describe(${JSON.stringify(propSchema.description.replace(/\n/g, " ").trim())})`
+            : ""
           return `${indent}  ${key}: ${zodType}${desc}`
         })
         .join(",\n")
@@ -208,7 +210,12 @@ export const speechmaticsAudioFilteringConfigSchema = ${zodSchema}`)
 
     for (const [key, prop] of Object.entries(props)) {
       // Skip complex nested objects for flattened version
-      if (prop.$ref && !["RawAudioEncodingEnum", "MaxDelayModeConfig", "OperatingPoint"].includes(prop.$ref.split("/").pop())) {
+      if (
+        prop.$ref &&
+        !["RawAudioEncodingEnum", "MaxDelayModeConfig", "OperatingPoint"].includes(
+          prop.$ref.split("/").pop()
+        )
+      ) {
         continue
       }
 

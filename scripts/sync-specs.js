@@ -18,7 +18,8 @@
  *   - Gladia: https://api.gladia.io/openapi.json
  *   - AssemblyAI: https://github.com/AssemblyAI/assemblyai-api-spec
  *   - Deepgram: https://github.com/deepgram/deepgram-api-specs
- *   - OpenAI, Azure, Speechmatics: Manual specs (no official OpenAPI)
+ *   - Speechmatics: https://github.com/speechmatics/speechmatics-js-sdk
+ *   - OpenAI, Azure: Manual specs (no official OpenAPI)
  */
 
 const fs = require("fs")
@@ -59,9 +60,9 @@ const SPEC_SOURCES = {
     note: "No official OpenAPI spec available"
   },
   speechmatics: {
-    manual: true,
-    output: "specs/speechmatics-batch.yaml",
-    note: "Batch API only - streaming synced via speechmaticsAsync"
+    url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/batch-client/schema/batch.yml",
+    output: "specs/speechmatics-batch.yml",
+    format: "yaml"
   },
   speechmaticsAsync: {
     url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/real-time-client/schema/realtime.yml",

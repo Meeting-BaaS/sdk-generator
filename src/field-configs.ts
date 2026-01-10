@@ -255,7 +255,12 @@ export function getSpeechmaticsFieldConfigs(): ProviderFieldConfigs {
 // All Providers
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type FieldConfigProvider = "gladia" | "deepgram" | "assemblyai" | "openai-whisper" | "speechmatics"
+export type FieldConfigProvider =
+  | "gladia"
+  | "deepgram"
+  | "assemblyai"
+  | "openai-whisper"
+  | "speechmatics"
 
 /**
  * Get field configs for a specific provider

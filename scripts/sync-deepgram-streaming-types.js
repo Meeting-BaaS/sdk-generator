@@ -54,7 +54,8 @@ function parseTypeScriptInterface(content, interfaceName) {
   //    * @see url
   //    */
   //   fieldName?: type;
-  const fieldPattern = /\/\*\*[\s\S]*?@see\s+(https?:\/\/[^\s*]+)[\s\S]*?\*\/\s*(\w+)(\?)?:\s*([^;]+);/g
+  const fieldPattern =
+    /\/\*\*[\s\S]*?@see\s+(https?:\/\/[^\s*]+)[\s\S]*?\*\/\s*(\w+)(\?)?:\s*([^;]+);/g
 
   let match
   while ((match = fieldPattern.exec(fieldsBlock)) !== null) {
