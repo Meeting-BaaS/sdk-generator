@@ -1,97 +1,39 @@
 /**
  * AssemblyAI Streaming Zod Schemas
- * Auto-generated from streaming-types.ts
- * DO NOT EDIT MANUALLY - regenerate with: pnpm openapi:sync-assemblyai-streaming
+ * AUTO-GENERATED from AsyncAPI spec - DO NOT EDIT MANUALLY
+ *
+ * @source specs/assemblyai-asyncapi.json
+ * @version 1.1.2
+ * @see https://www.assemblyai.com/docs/speech-to-text/streaming
+ *
+ * Regenerate with: pnpm openapi:sync-assemblyai-streaming
  */
 
 import { z as zod } from "zod"
 
 /**
- * AssemblyAI streaming transcriber params Zod schema
+ * AssemblyAI audio encoding formats
+ * @source AudioEncoding from AsyncAPI spec
+ */
+export const assemblyaiAudioEncodingSchema = zod.enum(["pcm_s16le", "pcm_mulaw"])
+
+/**
+ * AssemblyAI streaming transcriber params
+ * @source WebSocket query bindings from AsyncAPI spec
  */
 export const streamingTranscriberParams = zod.object({
-  sampleRate: zod.number().describe("Audio sample rate in Hz (e.g., 16000)"),
-  encoding: zod
-    .enum(["pcm_s16le", "pcm_mulaw"])
-    .optional()
-    .describe("Audio encoding format"),
-  speechModel: zod
-    .enum(["universal-streaming-english", "universal-streaming-multilingual"])
-    .optional()
-    .describe("Speech recognition model to use"),
-  languageDetection: zod
-    .boolean()
-    .optional()
-    .describe("Enable automatic language detection"),
-  endOfTurnConfidenceThreshold: zod
-    .number()
-    .min(0)
-    .max(1)
-    .optional()
-    .describe("Confidence threshold for end-of-turn detection (0-1)"),
-  minEndOfTurnSilenceWhenConfident: zod
-    .number()
-    .optional()
-    .describe("Minimum silence in ms to trigger end-of-turn when confident"),
-  maxTurnSilence: zod
-    .number()
-    .optional()
-    .describe("Maximum silence in ms before forcing end-of-turn"),
-  vadThreshold: zod
-    .number()
-    .min(0)
-    .max(1)
-    .optional()
-    .describe("Voice activity detection threshold (0-1)"),
-  formatTurns: zod
-    .boolean()
-    .optional()
-    .describe("Enable real-time text formatting of turns"),
-  filterProfanity: zod
-    .boolean()
-    .optional()
-    .describe("Filter profanity in real-time transcription"),
-  keyterms: zod
-    .array(zod.string())
-    .optional()
-    .describe("Key terms to boost in recognition"),
-  keytermsPrompt: zod
-    .array(zod.string())
-    .optional()
-    .describe("Context hints for key terms"),
-  inactivityTimeout: zod
-    .number()
-    .optional()
-    .describe("Session timeout in ms if no audio received")
+  sampleRate: zod.number().describe("The sample rate of the streamed audio"),
+  wordBoost: zod.string().optional().describe("Add up to 2500 characters of custom vocabulary. The parameter value must be a JSON encoded array of strings. The JSON must be URL encoded like other query string parameters."),
+  encoding: zod.enum(["pcm_s16le", "pcm_mulaw"]).optional().describe("The encoding of the audio data"),
+  disablePartialTranscripts: zod.boolean().optional().describe("Set to true to not receive partial transcripts. Defaults to false."),
+  enableExtraSessionInformation: zod.boolean().optional().describe("Set to true to receive the SessionInformation message before the session ends. Defaults to false.")
 })
 
 /**
- * AssemblyAI streaming update configuration params
- * These can be sent mid-stream to adjust VAD/turn detection
+ * AssemblyAI streaming update config params
+ * For mid-session updates via ConfigureEndUtteranceSilenceThreshold message
+ * @source ConfigureEndUtteranceSilenceThreshold schema from AsyncAPI spec
  */
 export const streamingUpdateConfigParams = zod.object({
-  end_of_turn_confidence_threshold: zod
-    .number()
-    .min(0)
-    .max(1)
-    .optional()
-    .describe("Confidence threshold for end-of-turn detection (0-1)"),
-  min_end_of_turn_silence_when_confident: zod
-    .number()
-    .optional()
-    .describe("Minimum silence in ms to trigger end-of-turn when confident"),
-  max_turn_silence: zod
-    .number()
-    .optional()
-    .describe("Maximum silence in ms before forcing end-of-turn"),
-  vad_threshold: zod
-    .number()
-    .min(0)
-    .max(1)
-    .optional()
-    .describe("Voice activity detection threshold (0-1)"),
-  format_turns: zod
-    .boolean()
-    .optional()
-    .describe("Enable real-time text formatting of turns")
+  end_utterance_silence_threshold: zod.number().min(0).max(20000).optional().describe("The duration threshold in milliseconds")
 })

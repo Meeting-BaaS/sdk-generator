@@ -47,6 +47,11 @@ import {
 
 import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAPI.zod"
 
+import {
+  streamingTranscriberParams as speechmaticsStreamingParams,
+  streamingUpdateConfigParams as speechmaticsUpdateConfigParams
+} from "./generated/speechmatics/streaming-types.zod"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Re-export types
 // ─────────────────────────────────────────────────────────────────────────────
@@ -214,10 +219,43 @@ export function getOpenAIFieldConfigs(): ProviderFieldConfigs {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Speechmatics - Derived from Zod schemas (synced from SDK)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Get Speechmatics streaming fields (derived from SDK types)
+ * @see https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/real-time-client/models
+ */
+export function getSpeechmaticsStreamingFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(speechmaticsStreamingParams)
+}
+
+/**
+ * Get Speechmatics streaming update config fields (for mid-stream updates)
+ * @see MidSessionTranscriptionConfig in Speechmatics SDK
+ */
+export function getSpeechmaticsStreamingUpdateFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(speechmaticsUpdateConfigParams)
+}
+
+/**
+ * Get all Speechmatics field configs
+ * Note: Speechmatics batch transcription uses a separate API with different params
+ */
+export function getSpeechmaticsFieldConfigs(): ProviderFieldConfigs {
+  return {
+    provider: "speechmatics",
+    transcription: [], // Batch uses different API structure
+    streaming: getSpeechmaticsStreamingFields(),
+    streamingUpdate: getSpeechmaticsStreamingUpdateFields()
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // All Providers
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type FieldConfigProvider = "gladia" | "deepgram" | "assemblyai" | "openai-whisper"
+export type FieldConfigProvider = "gladia" | "deepgram" | "assemblyai" | "openai-whisper" | "speechmatics"
 
 /**
  * Get field configs for a specific provider
@@ -232,6 +270,8 @@ export function getProviderFieldConfigs(provider: FieldConfigProvider): Provider
       return getAssemblyAIFieldConfigs()
     case "openai-whisper":
       return getOpenAIFieldConfigs()
+    case "speechmatics":
+      return getSpeechmaticsFieldConfigs()
   }
 }
 
@@ -243,6 +283,7 @@ export function getAllFieldConfigs(): Record<FieldConfigProvider, ProviderFieldC
     gladia: getGladiaFieldConfigs(),
     deepgram: getDeepgramFieldConfigs(),
     assemblyai: getAssemblyAIFieldConfigs(),
-    "openai-whisper": getOpenAIFieldConfigs()
+    "openai-whisper": getOpenAIFieldConfigs(),
+    speechmatics: getSpeechmaticsFieldConfigs()
   }
 }

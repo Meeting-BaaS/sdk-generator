@@ -62,6 +62,16 @@ const SPEC_SOURCES = {
     manual: true,
     output: "specs/speechmatics-batch.yaml",
     note: "Official Swagger 2.0 spec has validation errors"
+  },
+  speechmaticsAsync: {
+    url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/real-time-client/schema/realtime.yml",
+    output: "specs/speechmatics-asyncapi.yml",
+    format: "yaml"
+  },
+  deepgramStreaming: {
+    url: "https://raw.githubusercontent.com/deepgram/deepgram-js-sdk/main/src/lib/types/TranscriptionSchema.ts",
+    output: "specs/deepgram-streaming-sdk.ts",
+    format: "typescript"
   }
 }
 
@@ -109,12 +119,18 @@ function validateSpec(content, format) {
       }
       return { valid: true, version: parsed.openapi || parsed.asyncapi || parsed.swagger }
     } else if (format === "yaml") {
-      // Basic YAML validation - check for openapi field
-      if (!content.includes("openapi:") && !content.includes("swagger:")) {
-        return { valid: false, error: "Missing openapi/swagger version field" }
+      // Basic YAML validation - check for openapi/asyncapi field
+      if (!content.includes("openapi:") && !content.includes("swagger:") && !content.includes("asyncapi:")) {
+        return { valid: false, error: "Missing openapi/asyncapi/swagger version field" }
       }
-      const versionMatch = content.match(/openapi:\s*['"]?([^'"\s]+)['"]?/)
+      const versionMatch = content.match(/(?:openapi|asyncapi):\s*['"]?([^'"\s]+)['"]?/)
       return { valid: true, version: versionMatch ? versionMatch[1] : "unknown" }
+    } else if (format === "typescript") {
+      // TypeScript SDK file - check for expected exports
+      if (!content.includes("interface") && !content.includes("type")) {
+        return { valid: false, error: "Missing TypeScript interface/type definitions" }
+      }
+      return { valid: true, version: "sdk" }
     }
     return { valid: false, error: "Unknown format" }
   } catch (e) {

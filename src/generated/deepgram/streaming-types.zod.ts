@@ -1,13 +1,14 @@
 /**
  * Deepgram Streaming Zod Schemas
- * Auto-synced from Deepgram JS SDK LiveSchema
- * @see https://github.com/deepgram/deepgram-js-sdk/blob/main/src/lib/types/TranscriptionSchema.ts
+ * AUTO-GENERATED from Deepgram JS SDK - DO NOT EDIT MANUALLY
+ *
+ * @source /run/media/lazrossi/KINGSTON/code/sdk-generator/specs/deepgram-streaming-sdk.ts
  * @see https://developers.deepgram.com/docs/sdk-feature-matrix
  *
- * DO NOT EDIT MANUALLY - regenerate with: pnpm openapi:sync-deepgram-streaming
- *
  * Batch params come from Orval (OpenAPI) - see deepgramAPISpecification.zod.ts
- * Streaming-only params below are synced from Deepgram SDK.
+ * Streaming-only params below are extracted from LiveSchema in the SDK.
+ *
+ * Regenerate with: pnpm openapi:sync-deepgram-streaming
  */
 
 import { z as zod } from "zod"
@@ -17,24 +18,14 @@ import { z as zod } from "zod"
  * These extend the batch TranscriptionSchema params
  */
 export const deepgramStreamingOnlyParams = zod.object({
-  channels: zod.number().optional()
-    .describe("Number of audio channels (1 for mono, 2 for stereo)"),
-  sample_rate: zod.number().optional()
-    .describe("Audio sample rate in Hz (e.g., 16000, 48000)"),
-  encoding: zod.string().optional()
-    .describe("Audio encoding format (linear16, mulaw, flac, etc.)"),
-  interim_results: zod.boolean().optional()
-    .describe("Enable interim/partial transcription results"),
-  endpointing: zod.union([zod.number(), zod.literal(false)]).optional()
-    .describe("VAD endpointing: silence duration in ms, or false to disable"),
-  utterance_end_ms: zod.number().optional()
-    .describe("Duration of silence in ms to mark utterance end"),
-  vad_events: zod.boolean().optional()
-    .describe("Enable voice activity detection events"),
-  no_delay: zod.boolean().optional()
-    .describe("Disable Deepgram buffering for lowest latency"),
-  diarize_version: zod.string().optional()
-    .describe("Diarization model version to use"),
+  channels: zod.number().optional().describe("channels - see https://developers.deepgram.com/docs/channels"),
+  encoding: zod.string().optional().describe("encoding - see https://developers.deepgram.com/docs/encoding"),
+  sample_rate: zod.number().optional().describe("sample rate - see https://developers.deepgram.com/docs/sample-rate"),
+  endpointing: zod.union([zod.literal(false), zod.number()]).optional().describe("endpointing - see https://developers.deepgram.com/docs/endpointing"),
+  interim_results: zod.boolean().optional().describe("interim results - see https://developers.deepgram.com/docs/interim-results"),
+  no_delay: zod.boolean().optional().describe("smart format#using no delay - see https://developers.deepgram.com/docs/smart-format#using-no-delay"),
+  utterance_end_ms: zod.number().optional().describe("understanding end of speech detection - see https://developers.deepgram.com/docs/understanding-end-of-speech-detection"),
+  vad_events: zod.boolean().optional().describe("start of speech detection - see https://developers.deepgram.com/docs/start-of-speech-detection")
 })
 
 /**
