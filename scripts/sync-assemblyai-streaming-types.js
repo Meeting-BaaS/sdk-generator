@@ -1,15 +1,104 @@
 /**
  * Sync AssemblyAI Streaming Types
- * Parses the local AsyncAPI spec and generates Zod schemas dynamically
- * @see specs/assemblyai-asyncapi.json
+ * Parses the local AsyncAPI spec AND SDK TypeScript types to generate complete Zod schemas
+ *
+ * Sources:
+ * - AsyncAPI spec: specs/assemblyai-asyncapi.json (legacy WebSocket API)
+ * - SDK types: src/generated/assemblyai/streaming-types.ts (SDK v3 fields)
+ *
+ * The SDK types include fields not in AsyncAPI: keyterms, keytermsPrompt, speechModel, etc.
+ * This script merges both sources to provide complete field coverage.
+ *
+ * @see https://www.assemblyai.com/docs/speech-to-text/streaming
  */
 
 const fs = require("fs")
 const path = require("path")
 
 const ASYNCAPI_SPEC = path.join(__dirname, "../specs/assemblyai-asyncapi.json")
+const SDK_TYPES = path.join(__dirname, "../src/generated/assemblyai/streaming-types.ts")
 const OUTPUT_DIR = path.join(__dirname, "../src/generated/assemblyai")
 const STREAMING_ZOD_OUTPUT = path.join(OUTPUT_DIR, "streaming-types.zod.ts")
+
+/**
+ * Parse TypeScript type definition and extract fields
+ * @param {string} content - TypeScript file content
+ * @param {string} typeName - Name of the type to extract (e.g., "StreamingTranscriberParams")
+ * @returns {Object} Map of field name to { tsType, optional }
+ */
+function parseTypeScriptType(content, typeName) {
+  const fields = {}
+
+  // Match the type definition block
+  const typeRegex = new RegExp(`export type ${typeName}\\s*=\\s*\\{([^}]+)\\}`, "s")
+  const match = content.match(typeRegex)
+  if (!match) return fields
+
+  const body = match[1]
+
+  // Match each field: fieldName?: Type or fieldName: Type
+  const fieldRegex = /(\w+)(\?)?:\s*([^;\n]+)/g
+  let fieldMatch
+  while ((fieldMatch = fieldRegex.exec(body)) !== null) {
+    const [, name, optional, tsType] = fieldMatch
+    fields[name] = {
+      tsType: tsType.trim(),
+      optional: !!optional
+    }
+  }
+
+  return fields
+}
+
+/**
+ * Convert TypeScript type to Zod schema string
+ */
+function tsTypeToZod(tsType, optional = false) {
+  let zodType
+
+  // Handle union types with literals (e.g., "universal-streaming-english" | "universal-streaming-multilingual")
+  if (tsType.includes("|") && tsType.includes('"')) {
+    const literals = tsType.match(/"[^"]+"/g)
+    if (literals) {
+      zodType = `zod.enum([${literals.join(", ")}])`
+    } else {
+      zodType = "zod.string()"
+    }
+  }
+  // Handle string[]
+  else if (tsType === "string[]") {
+    zodType = "zod.array(zod.string())"
+  }
+  // Handle number
+  else if (tsType === "number") {
+    zodType = "zod.number()"
+  }
+  // Handle boolean
+  else if (tsType === "boolean") {
+    zodType = "zod.boolean()"
+  }
+  // Handle string
+  else if (tsType === "string") {
+    zodType = "zod.string()"
+  }
+  // Handle specific known types
+  else if (tsType === "AudioEncoding") {
+    zodType = 'zod.enum(["pcm_s16le", "pcm_mulaw"])'
+  }
+  else if (tsType === "StreamingSpeechModel") {
+    zodType = 'zod.enum(["universal-streaming-english", "universal-streaming-multilingual"])'
+  }
+  // Default fallback
+  else {
+    zodType = "zod.unknown()"
+  }
+
+  if (optional) {
+    zodType += ".optional()"
+  }
+
+  return zodType
+}
 
 /**
  * Convert JSON Schema type to Zod type string
@@ -75,6 +164,7 @@ function generateZodFromAsyncAPI(specPath) {
 
   // Generate streaming transcriber params from query bindings
   const streamingParams = []
+  const addedKeys = new Set()
 
   for (const [key, prop] of Object.entries(queryParams)) {
     // Skip auth-related params
@@ -91,10 +181,27 @@ function generateZodFromAsyncAPI(specPath) {
     // Convert snake_case to camelCase for JS conventions
     const camelKey = key.replace(/_([a-z])/g, (_, c) => c.toUpperCase())
     streamingParams.push(`  ${camelKey}: ${zodType}${desc}`)
+    addedKeys.add(camelKey)
+  }
+
+  // Add SDK v3 fields from streaming-types.ts (not present in AsyncAPI spec)
+  if (fs.existsSync(SDK_TYPES)) {
+    const sdkContent = fs.readFileSync(SDK_TYPES, "utf-8")
+    const sdkFields = parseTypeScriptType(sdkContent, "StreamingTranscriberParams")
+
+    for (const [key, field] of Object.entries(sdkFields)) {
+      // Skip fields already added from AsyncAPI, and skip internal fields
+      if (addedKeys.has(key)) continue
+      if (["websocketBaseUrl", "apiKey", "token"].includes(key)) continue
+
+      const zodType = tsTypeToZod(field.tsType, field.optional)
+      streamingParams.push(`  ${key}: ${zodType}.describe("From SDK v3")`)
+    }
   }
 
   // Generate mid-session update params from ConfigureEndUtteranceSilenceThreshold
   const updateParams = []
+  const updateAddedKeys = new Set()
   const configSchema = schemas.ConfigureEndUtteranceSilenceThreshold
   if (configSchema?.properties) {
     for (const [key, prop] of Object.entries(configSchema.properties)) {
@@ -106,12 +213,32 @@ function generateZodFromAsyncAPI(specPath) {
         : ""
 
       updateParams.push(`  ${key}: ${zodType}${desc}`)
+      updateAddedKeys.add(key)
+    }
+  }
+
+  // Add SDK v3 update config fields from streaming-types.ts
+  if (fs.existsSync(SDK_TYPES)) {
+    const sdkContent = fs.readFileSync(SDK_TYPES, "utf-8")
+    const sdkUpdateFields = parseTypeScriptType(sdkContent, "StreamingUpdateConfiguration")
+
+    for (const [key, field] of Object.entries(sdkUpdateFields)) {
+      // Skip 'type' field and already added fields
+      if (key === "type") continue
+      if (updateAddedKeys.has(key)) continue
+
+      const zodType = tsTypeToZod(field.tsType, field.optional)
+      updateParams.push(`  ${key}: ${zodType}.describe("From SDK v3")`)
     }
   }
 
   return `/**
  * AssemblyAI Streaming Zod Schemas
- * AUTO-GENERATED from AsyncAPI spec - DO NOT EDIT MANUALLY
+ * AUTO-GENERATED from AsyncAPI spec + SDK types - DO NOT EDIT MANUALLY
+ *
+ * Sources merged:
+ * - AsyncAPI: ${ASYNCAPI_SPEC.replace(process.cwd() + "/", "")} (legacy WebSocket API)
+ * - SDK types: ${SDK_TYPES.replace(process.cwd() + "/", "")} (v3 streaming fields)
  *
  * @source ${ASYNCAPI_SPEC.replace(process.cwd() + "/", "")}
  * @version ${info.version || "unknown"}

@@ -154,6 +154,7 @@ const transcriptionFields = zodToFieldConfigs(SonioxApiZodSchemas.createTranscri
 
 - Speechmatics batch field configs now work (was returning empty array)
 - Speechmatics webhook handler now uses generated `RetrieveTranscriptResponse` type
+- **AssemblyAI streaming field configs** now include SDK v3 fields (`keyterms`, `keytermsPrompt`, `speechModel`, `languageDetection`, etc.) - sync script parses both AsyncAPI spec and SDK TypeScript types
 
 ---
 

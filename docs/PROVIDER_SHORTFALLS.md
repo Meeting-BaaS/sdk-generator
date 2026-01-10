@@ -467,6 +467,53 @@ pnpm openapi:rebuild
 | Azure | No official STT OpenAPI spec | Manual spec based on Azure SDK types |
 | Speechmatics | Official Swagger 2.0 spec has validation errors | Manual spec with fixes in `specs/speechmatics-batch.yaml` |
 
+### Field Config Type Discrepancies
+
+Some provider specs have type definitions that don't match their documentation or actual API behavior.
+
+#### Gladia: `custom_vocabulary` Misleading Type
+
+**Issue:** The `custom_vocabulary` field is typed as `boolean`, but the description says:
+> "Can be either boolean...or an array with specific vocabulary list"
+
+**Reality:** Gladia's API uses **two separate fields**:
+- `custom_vocabulary: boolean` - Enables/disables the feature
+- `custom_vocabulary_config: { vocabulary: [...] }` - Contains the actual vocabulary array
+
+**Impact on Field Configs:**
+```typescript
+const fields = getGladiaTranscriptionFields()
+// custom_vocabulary → type: "boolean" ✓ (correct)
+// custom_vocabulary_config → type: "object" with nestedFields ✓ (correct)
+```
+
+**Workaround:** None needed. The types are correct, only the description is misleading.
+
+#### AssemblyAI: Streaming SDK vs AsyncAPI Mismatch (RESOLVED)
+
+**Issue:** The Node SDK streaming types differ from the AsyncAPI spec:
+
+| SDK Type (`streaming-types.ts`) | AsyncAPI Zod (`streaming-types.zod.ts`) |
+|--------------------------------|----------------------------------------|
+| `keyterms?: string[]` | ✅ Now merged |
+| `keytermsPrompt?: string[]` | ✅ Now merged |
+| `speechModel?: StreamingSpeechModel` | ✅ Now merged |
+| `languageDetection?: boolean` | ✅ Now merged |
+| Not present | `wordBoost: string` (JSON-encoded, legacy) |
+
+**Solution:** The sync script (`scripts/sync-assemblyai-streaming-types.js`) now:
+1. Parses AsyncAPI spec for legacy WebSocket fields
+2. Parses SDK TypeScript types (`streaming-types.ts`) for v3 fields
+3. Merges both sources into the Zod output
+
+**Result:** Field configs now include all SDK v3 fields:
+```typescript
+const fields = getAssemblyAIStreamingFields()
+// Now includes: keyterms, keytermsPrompt, speechModel, languageDetection, etc.
+```
+
+Fields marked with `.describe("From SDK v3")` indicate they were extracted from the SDK types rather than the AsyncAPI spec.
+
 ---
 
 ## Regional Endpoints
