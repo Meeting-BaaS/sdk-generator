@@ -37,6 +37,12 @@ import type { JobConfig } from "../generated/speechmatics/schema/jobConfig"
 import type { CreateJobResponse } from "../generated/speechmatics/schema/createJobResponse"
 import type { RetrieveJobResponse } from "../generated/speechmatics/schema/retrieveJobResponse"
 import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+// Import generated enums/constants (avoid hardcoding values)
+import { OperatingPoint } from "../generated/speechmatics/schema/operatingPoint"
+import { TranscriptionConfigDiarization } from "../generated/speechmatics/schema/transcriptionConfigDiarization"
+import { SummarizationConfigSummaryType } from "../generated/speechmatics/schema/summarizationConfigSummaryType"
+import { SummarizationConfigSummaryLength } from "../generated/speechmatics/schema/summarizationConfigSummaryLength"
+import { JobDetailsStatus } from "../generated/speechmatics/schema/jobDetailsStatus"
 
 /**
  * Speechmatics transcription provider adapter
@@ -241,10 +247,8 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
     try {
       // Build job config
-      // Model maps to operating_point: 'standard' or 'enhanced'
-      // SpeechmaticsOperatingPoint is part of TranscriptionModel union
-      const operatingPoint: "standard" | "enhanced" =
-        (options?.model as "standard" | "enhanced") || "standard"
+      // Model maps to operating_point from generated OperatingPoint enum
+      const operatingPoint = (options?.model as OperatingPoint) || OperatingPoint.standard
 
       const jobConfig: JobConfig = {
         type: "transcription",
@@ -256,7 +260,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
       // Add diarization if requested
       if (options?.diarization) {
-        jobConfig.transcription_config!.diarization = "speaker"
+        jobConfig.transcription_config!.diarization = TranscriptionConfigDiarization.speaker
         // Speaker sensitivity can be set via metadata if needed
         if (options.speakersExpected) {
           jobConfig.transcription_config!.speaker_diarization_config = {
@@ -274,8 +278,8 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       // Add summarization (at job level, not transcription_config)
       if (options?.summarization) {
         jobConfig.summarization_config = {
-          summary_type: "bullets",
-          summary_length: "brief"
+          summary_type: SummarizationConfigSummaryType.bullets,
+          summary_length: SummarizationConfigSummaryLength.brief
         }
       }
 
@@ -426,15 +430,17 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
   /**
    * Normalize Speechmatics status to unified status
+   * Uses generated JobDetailsStatus enum values
    */
   private normalizeStatus(status: string): "queued" | "processing" | "completed" | "error" {
     switch (status) {
-      case "running":
+      case JobDetailsStatus.running:
         return "processing"
-      case "done":
+      case JobDetailsStatus.done:
         return "completed"
-      case "rejected":
-      case "expired":
+      case JobDetailsStatus.rejected:
+      case JobDetailsStatus.expired:
+      case JobDetailsStatus.deleted:
         return "error"
       default:
         return "queued"
