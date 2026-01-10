@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type GetJobsJobidAlignmentTags = typeof GetJobsJobidAlignmentTags[keyof typeof GetJobsJobidAlignmentTags];
-
+export type GetJobsJobidAlignmentTags =
+  (typeof GetJobsJobidAlignmentTags)[keyof typeof GetJobsJobidAlignmentTags]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetJobsJobidAlignmentTags = {
-  word_start_and_end: 'word_start_and_end',
-  one_per_line: 'one_per_line',
-} as const;
+  word_start_and_end: "word_start_and_end",
+  one_per_line: "one_per_line"
+} as const

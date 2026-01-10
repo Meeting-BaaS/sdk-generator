@@ -10,5 +10,5 @@
  * Summary of the transcript, configured using `summarization_config`.
  */
 export interface SummarizationResult {
-  content?: string;
+  content?: string
 }

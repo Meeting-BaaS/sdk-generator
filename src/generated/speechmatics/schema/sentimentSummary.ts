@@ -5,17 +5,18 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { SentimentSummaryDetail } from './sentimentSummaryDetail';
-import type { SentimentSpeakerSummary } from './sentimentSpeakerSummary';
-import type { SentimentChannelSummary } from './sentimentChannelSummary';
+
+import type { SentimentChannelSummary } from "./sentimentChannelSummary"
+import type { SentimentSpeakerSummary } from "./sentimentSpeakerSummary"
+import type { SentimentSummaryDetail } from "./sentimentSummaryDetail"
 
 /**
  * Holds overall sentiment information, as well as detailed per-speaker and per-channel sentiment data.
  */
 export interface SentimentSummary {
-  overall?: SentimentSummaryDetail;
+  overall?: SentimentSummaryDetail
   /** An array of objects that represent sentiment data for a specific speaker. */
-  speakers?: SentimentSpeakerSummary[];
+  speakers?: SentimentSpeakerSummary[]
   /** An array of objects that represent sentiment data for a specific channel. */
-  channels?: SentimentChannelSummary[];
+  channels?: SentimentChannelSummary[]
 }

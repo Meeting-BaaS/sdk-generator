@@ -5,31 +5,32 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { JobInfo } from './jobInfo';
-import type { RecognitionMetadata } from './recognitionMetadata';
-import type { RecognitionResult } from './recognitionResult';
-import type { RetrieveTranscriptResponseTranslations } from './retrieveTranscriptResponseTranslations';
-import type { SummarizationResult } from './summarizationResult';
-import type { SentimentAnalysisResult } from './sentimentAnalysisResult';
-import type { TopicDetectionResult } from './topicDetectionResult';
-import type { AutoChaptersResult } from './autoChaptersResult';
-import type { AudioEventItem } from './audioEventItem';
-import type { RetrieveTranscriptResponseAudioEventSummary } from './retrieveTranscriptResponseAudioEventSummary';
+
+import type { AudioEventItem } from "./audioEventItem"
+import type { AutoChaptersResult } from "./autoChaptersResult"
+import type { JobInfo } from "./jobInfo"
+import type { RecognitionMetadata } from "./recognitionMetadata"
+import type { RecognitionResult } from "./recognitionResult"
+import type { RetrieveTranscriptResponseAudioEventSummary } from "./retrieveTranscriptResponseAudioEventSummary"
+import type { RetrieveTranscriptResponseTranslations } from "./retrieveTranscriptResponseTranslations"
+import type { SentimentAnalysisResult } from "./sentimentAnalysisResult"
+import type { SummarizationResult } from "./summarizationResult"
+import type { TopicDetectionResult } from "./topicDetectionResult"
 
 export interface RetrieveTranscriptResponse {
   /** Speechmatics JSON transcript format version number. */
-  format: string;
-  job: JobInfo;
-  metadata: RecognitionMetadata;
-  results: RecognitionResult[];
+  format: string
+  job: JobInfo
+  metadata: RecognitionMetadata
+  results: RecognitionResult[]
   /** Translations of the transcript into other languages. It is a map of ISO language codes to arrays of translated sentences. Configured using `translation_config`. */
-  translations?: RetrieveTranscriptResponseTranslations;
-  summary?: SummarizationResult;
-  sentiment_analysis?: SentimentAnalysisResult;
-  topics?: TopicDetectionResult;
-  chapters?: AutoChaptersResult;
+  translations?: RetrieveTranscriptResponseTranslations
+  summary?: SummarizationResult
+  sentiment_analysis?: SentimentAnalysisResult
+  topics?: TopicDetectionResult
+  chapters?: AutoChaptersResult
   /** Timestamped audio events, only set if `audio_events_config` is in the config */
-  audio_events?: AudioEventItem[];
+  audio_events?: AudioEventItem[]
   /** Summary statistics per event type, keyed by `type`, e.g. music */
-  audio_event_summary?: RetrieveTranscriptResponseAudioEventSummary;
+  audio_event_summary?: RetrieveTranscriptResponseAudioEventSummary
 }

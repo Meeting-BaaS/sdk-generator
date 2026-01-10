@@ -23,6 +23,7 @@ export * as DeepgramTypes from "./generated/deepgram/schema"
 export * as OpenAITypes from "./generated/openai/schema"
 export * as AzureTypes from "./generated/azure/schema"
 export * as SpeechmaticsTypes from "./generated/speechmatics/schema"
+export * as SonioxTypes from "./generated/soniox/schema"
 export * as SonioxStreamingTypes from "./generated/soniox/streaming-types.zod"
 
 // Zod schemas for runtime field config extraction
@@ -31,7 +32,8 @@ export * as DeepgramZodSchemas from "./generated/deepgram/api/deepgramAPISpecifi
 export * as AssemblyAIZodSchemas from "./generated/assemblyai/api/assemblyAIAPI.zod"
 export * as OpenAIZodSchemas from "./generated/openai/api/openAIAPI.zod"
 export * as SpeechmaticsZodSchemas from "./generated/speechmatics/api/speechmaticsASRRESTAPI.zod"
-export * as SonioxZodSchemas from "./generated/soniox/streaming-types.zod"
+export * as SonioxApiZodSchemas from "./generated/soniox/api/sonioxPublicAPI.zod"
+export * as SonioxStreamingZodSchemas from "./generated/soniox/streaming-types.zod"
 
 // Zod-to-field-configs utility
 export { zodToFieldConfigs, filterFields, excludeFields } from "./utils/zod-to-field-configs"

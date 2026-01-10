@@ -7,8 +7,8 @@
  */
 
 export interface Chapter {
-  title?: string;
-  summary?: string;
-  start_time?: number;
-  end_time?: number;
+  title?: string
+  summary?: string
+  start_time?: number
+  end_time?: number
 }

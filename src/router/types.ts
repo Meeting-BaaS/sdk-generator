@@ -212,6 +212,7 @@ export type ProviderExtendedDataMap = {
   "openai-whisper": Record<string, never> // No extended data
   "azure-stt": Record<string, never> // No extended data
   speechmatics: Record<string, never> // No extended data
+  soniox: Record<string, never> // Extended data via streaming types
 }
 
 // Re-export core types (browser-safe)
@@ -221,7 +222,7 @@ import type { TranscriptionProvider } from "../types/core"
 /**
  * Providers that support real-time streaming transcription
  */
-export type StreamingProvider = "gladia" | "deepgram" | "assemblyai"
+export type StreamingProvider = "gladia" | "deepgram" | "assemblyai" | "soniox"
 
 /**
  * Providers that only support batch/async transcription
@@ -601,6 +602,7 @@ export type ProviderRawResponseMap = {
   assemblyai: AssemblyAITranscript
   "azure-stt": AzureTranscription
   speechmatics: unknown // No generated type available yet
+  soniox: unknown // Uses streaming types
 }
 
 /**

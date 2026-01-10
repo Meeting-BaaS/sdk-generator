@@ -44,10 +44,7 @@ export const preRecordedControllerInitPreRecordedJobV2BodyCodeSwitchingConfigLan
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -1001,10 +998,8 @@ export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestPa
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -3287,10 +3282,8 @@ export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallba
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -5488,10 +5481,7 @@ export const transcriptionControllerInitPreRecordedJobV2BodyCodeSwitchingConfigL
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -6456,10 +6446,8 @@ export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallback
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -10449,10 +10437,8 @@ export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallback
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesDefault = false
-export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -14842,10 +14828,8 @@ export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackDef
 export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5

@@ -6,19 +6,19 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type NotificationConfigContentsItem = typeof NotificationConfigContentsItem[keyof typeof NotificationConfigContentsItem];
-
+export type NotificationConfigContentsItem =
+  (typeof NotificationConfigContentsItem)[keyof typeof NotificationConfigContentsItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NotificationConfigContentsItem = {
-  jobinfo: 'jobinfo',
-  transcript: 'transcript',
-  'transcriptjson-v2': 'transcript.json-v2',
-  transcripttxt: 'transcript.txt',
-  transcriptsrt: 'transcript.srt',
-  alignment: 'alignment',
-  alignmentword_start_and_end: 'alignment.word_start_and_end',
-  alignmentone_per_line: 'alignment.one_per_line',
-  data: 'data',
-  text: 'text',
-} as const;
+  jobinfo: "jobinfo",
+  transcript: "transcript",
+  "transcriptjson-v2": "transcript.json-v2",
+  transcripttxt: "transcript.txt",
+  transcriptsrt: "transcript.srt",
+  alignment: "alignment",
+  alignmentword_start_and_end: "alignment.word_start_and_end",
+  alignmentone_per_line: "alignment.one_per_line",
+  data: "data",
+  text: "text"
+} as const

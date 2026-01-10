@@ -9,13 +9,13 @@
 /**
  * Attachment direction of the punctuation mark. This only applies to punctuation marks. This information can be used to produce a well-formed text representation by placing the `word_delimiter` from `language_pack_info` on the correct side of the punctuation mark.
  */
-export type RecognitionResultAttachesTo = typeof RecognitionResultAttachesTo[keyof typeof RecognitionResultAttachesTo];
-
+export type RecognitionResultAttachesTo =
+  (typeof RecognitionResultAttachesTo)[keyof typeof RecognitionResultAttachesTo]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RecognitionResultAttachesTo = {
-  previous: 'previous',
-  next: 'next',
-  both: 'both',
-  none: 'none',
-} as const;
+  previous: "previous",
+  next: "next",
+  both: "both",
+  none: "none"
+} as const

@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type SentimentAnalysisErrorType = typeof SentimentAnalysisErrorType[keyof typeof SentimentAnalysisErrorType];
-
+export type SentimentAnalysisErrorType =
+  (typeof SentimentAnalysisErrorType)[keyof typeof SentimentAnalysisErrorType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SentimentAnalysisErrorType = {
-  sentiment_analysis_failed: 'sentiment_analysis_failed',
-  unsupported_language: 'unsupported_language',
-} as const;
+  sentiment_analysis_failed: "sentiment_analysis_failed",
+  unsupported_language: "unsupported_language"
+} as const

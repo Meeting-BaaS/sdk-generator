@@ -9,11 +9,11 @@
 /**
  * Whether or not to enable flexible endpointing and allow the entity to continue to be spoken.
  */
-export type TranscriptionConfigMaxDelayMode = typeof TranscriptionConfigMaxDelayMode[keyof typeof TranscriptionConfigMaxDelayMode];
-
+export type TranscriptionConfigMaxDelayMode =
+  (typeof TranscriptionConfigMaxDelayMode)[keyof typeof TranscriptionConfigMaxDelayMode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptionConfigMaxDelayMode = {
-  fixed: 'fixed',
-  flexible: 'flexible',
-} as const;
+  fixed: "fixed",
+  flexible: "flexible"
+} as const

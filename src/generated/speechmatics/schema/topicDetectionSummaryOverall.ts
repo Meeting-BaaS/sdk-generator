@@ -9,4 +9,6 @@
 /**
  * Holds the count of topics detected.
  */
-export interface TopicDetectionSummaryOverall {[key: string]: number}
+export interface TopicDetectionSummaryOverall {
+  [key: string]: number
+}

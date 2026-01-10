@@ -21,6 +21,7 @@ export type TranscriptionProvider =
   | "openai-whisper"
   | "azure-stt"
   | "speechmatics"
+  | "soniox"
 
 /**
  * Provider capability flags

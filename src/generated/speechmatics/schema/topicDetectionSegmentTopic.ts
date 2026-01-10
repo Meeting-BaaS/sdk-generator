@@ -10,5 +10,5 @@
  * Represents a topic and its associated information.
  */
 export interface TopicDetectionSegmentTopic {
-  topic?: string;
+  topic?: string
 }

@@ -35,6 +35,15 @@ import type { ProviderCapabilities, TranscriptionProvider } from "./types/core"
 import { TranscriptionLanguageCodeEnum } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"
 import { TranscriptLanguageCode } from "./generated/assemblyai/schema/transcriptLanguageCode"
 
+// Import Soniox languages from generated file (derived from OpenAPI spec)
+export {
+  SonioxLanguageCodes,
+  SonioxLanguages,
+  SonioxLanguageLabels,
+  type SonioxLanguageCode
+} from "./generated/soniox/languages"
+import { SonioxLanguageCodes } from "./generated/soniox/languages"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Provider Capabilities (Runtime)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -143,6 +152,23 @@ export const SpeechmaticsCapabilities: ProviderCapabilities = {
 } as const
 
 /**
+ * Soniox provider capabilities
+ */
+export const SonioxCapabilities: ProviderCapabilities = {
+  streaming: true,
+  diarization: true,
+  wordTimestamps: true,
+  languageDetection: true,
+  customVocabulary: true, // Via context parameter
+  summarization: false,
+  sentimentAnalysis: false,
+  entityDetection: false,
+  piiRedaction: false,
+  listTranscripts: false,
+  deleteTranscript: false
+} as const
+
+/**
  * All provider capabilities in a single map
  *
  * @example
@@ -168,7 +194,8 @@ export const ProviderCapabilitiesMap: Record<TranscriptionProvider, ProviderCapa
   deepgram: DeepgramCapabilities,
   "openai-whisper": OpenAICapabilities,
   "azure-stt": AzureCapabilities,
-  speechmatics: SpeechmaticsCapabilities
+  speechmatics: SpeechmaticsCapabilities,
+  soniox: SonioxCapabilities
 } as const
 
 /**
@@ -457,6 +484,10 @@ export const OpenAILanguageCodes = [
   "fa"
 ] as const
 
+// Soniox language codes are imported and re-exported from generated file
+// See: ./generated/soniox/languages.ts (derived from OpenAPI spec)
+// Use SonioxAdapter.getModels() or getLanguagesForModel() for runtime API data
+
 /**
  * All language codes per provider
  *
@@ -483,7 +514,8 @@ export const AllLanguageCodes = {
   deepgram: DeepgramLanguageCodes,
   "openai-whisper": OpenAILanguageCodes,
   "azure-stt": [] as readonly string[], // Azure uses locale codes, configured per region
-  speechmatics: [] as readonly string[] // Speechmatics uses different config
+  speechmatics: [] as readonly string[], // Speechmatics uses different config
+  soniox: SonioxLanguageCodes
 } as const
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -499,7 +531,8 @@ export const ProviderDisplayNames: Record<TranscriptionProvider, string> = {
   deepgram: "Deepgram",
   "openai-whisper": "OpenAI Whisper",
   "azure-stt": "Azure Speech",
-  speechmatics: "Speechmatics"
+  speechmatics: "Speechmatics",
+  soniox: "Soniox"
 } as const
 
 /**
@@ -511,7 +544,8 @@ export const ProviderWebsites: Record<TranscriptionProvider, string> = {
   deepgram: "https://deepgram.com",
   "openai-whisper": "https://openai.com",
   "azure-stt": "https://azure.microsoft.com/services/cognitive-services/speech-to-text/",
-  speechmatics: "https://speechmatics.com"
+  speechmatics: "https://speechmatics.com",
+  soniox: "https://soniox.com"
 } as const
 
 /**
@@ -523,7 +557,8 @@ export const ProviderDocs: Record<TranscriptionProvider, string> = {
   deepgram: "https://developers.deepgram.com/docs",
   "openai-whisper": "https://platform.openai.com/docs/guides/speech-to-text",
   "azure-stt": "https://learn.microsoft.com/azure/cognitive-services/speech-service/",
-  speechmatics: "https://docs.speechmatics.com"
+  speechmatics: "https://docs.speechmatics.com",
+  soniox: "https://soniox.com/docs/stt/"
 } as const
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -539,7 +574,8 @@ export const AllProviders: readonly TranscriptionProvider[] = [
   "deepgram",
   "openai-whisper",
   "azure-stt",
-  "speechmatics"
+  "speechmatics",
+  "soniox"
 ] as const
 
 /**

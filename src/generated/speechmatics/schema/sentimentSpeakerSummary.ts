@@ -10,8 +10,8 @@
  * Holds sentiment information for a specific speaker.
  */
 export interface SentimentSpeakerSummary {
-  speaker?: string;
-  positive_count?: number;
-  negative_count?: number;
-  neutral_count?: number;
+  speaker?: string
+  positive_count?: number
+  negative_count?: number
+  neutral_count?: number
 }

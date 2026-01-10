@@ -7,5 +7,5 @@
  */
 
 export interface AlignmentConfig {
-  language: string;
+  language: string
 }

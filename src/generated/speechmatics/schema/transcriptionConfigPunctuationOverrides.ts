@@ -15,7 +15,7 @@ export type TranscriptionConfigPunctuationOverrides = {
    * @minimum 0
    * @maximum 1
    */
-  sensitivity?: number;
+  sensitivity?: number
   /** The punctuation marks which the client is prepared to accept in transcription output, or the special value 'all' (the default). Unsupported marks are ignored. This value is used to guide the transcription process. */
-  permitted_marks?: string[];
-};
+  permitted_marks?: string[]
+}

@@ -5,6 +5,87 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-01-10
+
+### Added
+
+#### Soniox Provider Support
+
+New adapter for Soniox speech-to-text with batch and streaming support:
+
+```typescript
+import { createSonioxAdapter, SonioxLanguages } from 'voice-router-dev'
+
+const adapter = createSonioxAdapter({
+  apiKey: process.env.SONIOX_API_KEY
+})
+
+// Batch transcription
+const result = await adapter.transcribe({
+  type: 'url',
+  url: 'https://example.com/audio.mp3'
+}, {
+  language: 'en',
+  diarization: true
+})
+
+// Real-time streaming
+const session = await adapter.transcribeStream({
+  language: 'en',
+  sampleRate: 16000
+}, {
+  onTranscript: (event) => console.log(event.text),
+  onError: (error) => console.error(error)
+})
+```
+
+**Features:**
+- Batch transcription via URL or file upload
+- Real-time WebSocket streaming
+- Speaker diarization
+- Language identification
+- Translation support (one-way and bidirectional)
+- 60+ supported languages (derived from OpenAPI spec)
+
+**Generated types from OpenAPI spec:**
+- `SonioxLanguages` - Array of {code, name} for all 60 languages
+- `SonioxLanguageCodes` - ISO 639-1 language codes
+- `SonioxLanguageLabels` - Code-to-name mapping
+- All request/response types generated via Orval
+
+#### Speechmatics Batch API Type Generation
+
+Full type generation from Speechmatics SDK batch spec:
+
+```typescript
+import type { JobConfig, RetrieveTranscriptResponse } from 'voice-router-dev'
+import { OperatingPoint, TranscriptionConfigDiarization } from 'voice-router-dev'
+
+// Use generated enums instead of hardcoded strings
+const config: JobConfig = {
+  type: 'transcription',
+  transcription_config: {
+    language: 'en',
+    operating_point: OperatingPoint.enhanced,
+    diarization: TranscriptionConfigDiarization.speaker
+  }
+}
+```
+
+**Generated from specs:**
+- 100+ TypeScript types from `speechmatics-batch.yml`
+- Enums: `OperatingPoint`, `TranscriptionConfigDiarization`, `SummarizationConfigSummaryType`, `SummarizationConfigSummaryLength`, `JobDetailsStatus`
+- Batch field configs via Zod schemas
+
+### Changed
+
+- **Speechmatics adapter** now uses generated enums instead of hardcoded string values
+- **Soniox language codes** are now generated from OpenAPI spec (60 languages vs 28 hardcoded)
+- OpenAPI sync scripts now include Speechmatics batch spec
+- Added `openapi:generate:speechmatics` and `openapi:clean:speechmatics` scripts
+
+---
+
 ## [0.3.7] - 2026-01-09
 
 ### Added

@@ -688,7 +688,7 @@ export const getAgentV1SettingsThinkModelsListResponseMock = (
           "gpt-4o-mini"
         ] as const),
         name: faker.string.alpha(20),
-        provider: "open_ai"
+        provider: 'open_ai'
       },
       {
         id: faker.helpers.arrayElement([
@@ -696,7 +696,7 @@ export const getAgentV1SettingsThinkModelsListResponseMock = (
           "claude-sonnet-4-20250514"
         ] as const),
         name: faker.string.alpha(20),
-        provider: "anthropic"
+        provider: 'anthropic'
       },
       {
         id: faker.helpers.arrayElement([
@@ -705,14 +705,14 @@ export const getAgentV1SettingsThinkModelsListResponseMock = (
           "gemini-2.0-flash-lite"
         ] as const),
         name: faker.string.alpha(20),
-        provider: "google"
+        provider: 'google'
       },
       {
         id: faker.helpers.arrayElement(["openai/gpt-oss-20b"] as const),
         name: faker.string.alpha(20),
-        provider: "groq"
+        provider: 'groq'
       },
-      { id: faker.string.alpha(20), name: faker.string.alpha(20), provider: "aws_bedrock" }
+      { id: faker.string.alpha(20), name: faker.string.alpha(20), provider: 'aws_bedrock' }
     ])
   ),
   ...overrideResponse

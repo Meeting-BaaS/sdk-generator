@@ -9,10 +9,10 @@
 /**
  * What kind of object this is. See #/Definitions/RecognitionResult for definitions of the enums.
  */
-export type WrittenFormRecognitionResultType = typeof WrittenFormRecognitionResultType[keyof typeof WrittenFormRecognitionResultType];
-
+export type WrittenFormRecognitionResultType =
+  (typeof WrittenFormRecognitionResultType)[keyof typeof WrittenFormRecognitionResultType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WrittenFormRecognitionResultType = {
-  word: 'word',
-} as const;
+  word: "word"
+} as const

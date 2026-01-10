@@ -9,4 +9,4 @@
 /**
  * Early Access Release Tag
  */
-export type EARTagParameter = string;
+export type EARTagParameter = string

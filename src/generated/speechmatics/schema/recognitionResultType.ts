@@ -9,12 +9,12 @@
 /**
  * New types of items may appear without being requested; unrecognized item types can be ignored.
  */
-export type RecognitionResultType = typeof RecognitionResultType[keyof typeof RecognitionResultType];
-
+export type RecognitionResultType =
+  (typeof RecognitionResultType)[keyof typeof RecognitionResultType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RecognitionResultType = {
-  word: 'word',
-  punctuation: 'punctuation',
-  entity: 'entity',
-} as const;
+  word: "word",
+  punctuation: "punctuation",
+  entity: "entity"
+} as const

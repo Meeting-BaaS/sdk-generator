@@ -5,11 +5,11 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { GetJobsJobidAlignmentTags } from './getJobsJobidAlignmentTags';
+import type { GetJobsJobidAlignmentTags } from "./getJobsJobidAlignmentTags"
 
 export type GetJobsJobidAlignmentParams = {
-/**
- * Control how timing information is added to the text file provided as input to the alignment job. If set to `word_start_and_end`, SGML tags are inserted at the start and end of each word, for example <time=0.41>. If set to `one_per_line` square bracket tags are inserted at the start of each line, for example `[00:00:00.4] `. The default is `word_start_and_end`.
- */
-tags?: GetJobsJobidAlignmentTags;
-};
+  /**
+   * Control how timing information is added to the text file provided as input to the alignment job. If set to `word_start_and_end`, SGML tags are inserted at the start and end of each word, for example <time=0.41>. If set to `one_per_line` square bracket tags are inserted at the start of each line, for example `[00:00:00.4] `. The default is `word_start_and_end`.
+   */
+  tags?: GetJobsJobidAlignmentTags
+}

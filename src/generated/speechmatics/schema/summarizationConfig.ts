@@ -5,12 +5,12 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { SummarizationConfigContentType } from './summarizationConfigContentType';
-import type { SummarizationConfigSummaryLength } from './summarizationConfigSummaryLength';
-import type { SummarizationConfigSummaryType } from './summarizationConfigSummaryType';
+import type { SummarizationConfigContentType } from "./summarizationConfigContentType"
+import type { SummarizationConfigSummaryLength } from "./summarizationConfigSummaryLength"
+import type { SummarizationConfigSummaryType } from "./summarizationConfigSummaryType"
 
 export interface SummarizationConfig {
-  content_type?: SummarizationConfigContentType;
-  summary_length?: SummarizationConfigSummaryLength;
-  summary_type?: SummarizationConfigSummaryType;
+  content_type?: SummarizationConfigContentType
+  summary_length?: SummarizationConfigSummaryLength
+  summary_type?: SummarizationConfigSummaryType
 }
