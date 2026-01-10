@@ -32,13 +32,11 @@ export interface SpeechmaticsConfig extends ProviderConfig {
   region?: SpeechmaticsRegionType
 }
 
-// Import Speechmatics types (manual definitions - OpenAPI spec doesn't match actual API)
-import type {
-  JobConfig,
-  JobSubmitResponse,
-  JobDetailsResponse,
-  TranscriptionResponse
-} from "../types/speechmatics"
+// Import Speechmatics types from generated schema
+import type { JobConfig } from "../generated/speechmatics/schema/jobConfig"
+import type { CreateJobResponse } from "../generated/speechmatics/schema/createJobResponse"
+import type { RetrieveJobResponse } from "../generated/speechmatics/schema/retrieveJobResponse"
+import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
 
 /**
  * Speechmatics transcription provider adapter
@@ -52,8 +50,8 @@ import type {
  * - Summarization
  * - Custom vocabulary
  *
- * Note: Types are manually defined due to validation errors in the official OpenAPI spec.
- * See src/generated/speechmatics/schema/index.ts for type definitions.
+ * Types are generated from the Speechmatics SDK batch spec.
+ * @see src/generated/speechmatics/schema for type definitions
  *
  * @see https://docs.speechmatics.com/ Speechmatics Documentation
  * @see https://docs.speechmatics.com/introduction/batch-guide Batch API Guide
@@ -258,42 +256,35 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
       // Add diarization if requested
       if (options?.diarization) {
-        if (!jobConfig.transcription_config) {
-          jobConfig.transcription_config = {}
-        }
-        jobConfig.transcription_config.diarization = "speaker"
+        jobConfig.transcription_config!.diarization = "speaker"
+        // Speaker sensitivity can be set via metadata if needed
         if (options.speakersExpected) {
-          jobConfig.transcription_config.speaker_diarization_config = {
-            max_speakers: options.speakersExpected
+          jobConfig.transcription_config!.speaker_diarization_config = {
+            // Higher sensitivity = more speakers detected
+            speaker_sensitivity: Math.min(1, options.speakersExpected / 10)
           }
         }
       }
 
-      // Add sentiment analysis
+      // Add sentiment analysis (at job level, not transcription_config)
       if (options?.sentimentAnalysis) {
-        if (!jobConfig.transcription_config) {
-          jobConfig.transcription_config = {}
-        }
-        jobConfig.transcription_config.enable_sentiment_analysis = true
+        jobConfig.sentiment_analysis_config = {}
       }
 
-      // Add summarization (defaults to bullets/medium when enabled)
+      // Add summarization (at job level, not transcription_config)
       if (options?.summarization) {
-        if (!jobConfig.transcription_config) {
-          jobConfig.transcription_config = {}
-        }
-        jobConfig.transcription_config.summarization_config = {
-          type: "bullets",
-          length: "medium"
+        jobConfig.summarization_config = {
+          summary_type: "bullets",
+          summary_length: "brief"
         }
       }
 
       // Add custom vocabulary
       if (options?.customVocabulary && options.customVocabulary.length > 0) {
-        if (!jobConfig.transcription_config) {
-          jobConfig.transcription_config = {}
-        }
-        jobConfig.transcription_config.additional_vocab = options.customVocabulary
+        // Convert string array to TranscriptionConfigAdditionalVocabItem format
+        jobConfig.transcription_config!.additional_vocab = options.customVocabulary.map((word) => ({
+          content: word
+        }))
       }
 
       // Handle audio input
@@ -326,7 +317,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       }
 
       // Submit job
-      const response = await this.client!.post<JobSubmitResponse>("/jobs", requestBody, { headers })
+      const response = await this.client!.post<CreateJobResponse>("/jobs", requestBody, { headers })
 
       return {
         success: true,
@@ -334,8 +325,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         data: {
           id: response.data.id,
           text: "",
-          status: "queued",
-          createdAt: response.data.created_at
+          status: "queued"
         },
         raw: response.data
       }
@@ -357,7 +347,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
     try {
       // Check job status first
-      const statusResponse = await this.client!.get<JobDetailsResponse>(`/jobs/${transcriptId}`)
+      const statusResponse = await this.client!.get<RetrieveJobResponse>(`/jobs/${transcriptId}`)
 
       const status = this.normalizeStatus(statusResponse.data.job.status)
 
@@ -376,7 +366,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       }
 
       // Get transcript if completed
-      const transcriptResponse = await this.client!.get<TranscriptionResponse>(
+      const transcriptResponse = await this.client!.get<RetrieveTranscriptResponse>(
         `/jobs/${transcriptId}/transcript`
       )
 
@@ -454,7 +444,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
   /**
    * Normalize Speechmatics response to unified format
    */
-  private normalizeResponse(response: TranscriptionResponse): UnifiedTranscriptResponse {
+  private normalizeResponse(response: RetrieveTranscriptResponse): UnifiedTranscriptResponse {
     // Extract full text from results
     const text = response.results
       .filter((r) => r.type === "word" && r.alternatives)

@@ -5,2077 +5,724 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import { z as zod } from "zod"
+import {
+  z as zod
+} from 'zod';
 
 /**
- * @summary Create a new job
+ * @summary Create a new job.
  */
 export const postJobsBody = zod.object({
-  config: zod
-    .string()
-    .describe(
-      "JSON containing a [`JobConfig`](/speech-to-text/batch/input#jobconfig-schema) model indicating the type and parameters for the recognition job."
-    ),
-  data_file: zod
-    .instanceof(File)
-    .optional()
-    .describe(
-      "The data file to be processed. Alternatively the data file can be fetched from a url specified in `JobConfig`."
-    ),
-  text_file: zod
-    .instanceof(File)
-    .optional()
-    .describe("For alignment jobs, the text file that the data file should be aligned to.")
+  "config": zod.string().describe('JSON containing a `JobConfig` model indicating the type and parameters for the recognition job.'),
+  "data_file": zod.instanceof(File).optional().describe('The data file to be processed. Alternatively the data file can be fetched from a url specified in `JobConfig`.'),
+  "text_file": zod.instanceof(File).optional().describe('For alignment jobs, the text file that the data file should be aligned to.')
 })
 
+
 /**
- * @summary List all jobs
+ * @summary List all jobs.
  */
-export const getJobsQueryLimitMax = 100
+export const getJobsQueryLimitMax = 100;
+
 
 export const getJobsQueryParams = zod.object({
-  created_before: zod
-    .string()
-    .datetime({})
-    .optional()
-    .describe(
-      "UTC Timestamp cursor for paginating request response. Filters jobs based on creation time to the nearest millisecond. Accepts up to nanosecond precision, truncating to millisecond precision. By default, the response will start with the most recent job."
-    ),
-  limit: zod
-    .number()
-    .min(1)
-    .max(getJobsQueryLimitMax)
-    .optional()
-    .describe("Limit for paginating the request response. Defaults to 100."),
-  include_deleted: zod
-    .boolean()
-    .optional()
-    .describe(
-      "Specifies whether deleted jobs should be included in the response. Defaults to false."
-    )
+  "created_before": zod.string().datetime({}).optional().describe('UTC Timestamp cursor for paginating request response. Filters jobs based on creation time to the nearest millisecond. Accepts up to nanosecond precision, truncating to millisecond precision. By default, the response will start with the most recent job.'),
+  "limit": zod.number().min(1).max(getJobsQueryLimitMax).optional().describe('Limit for paginating the request response. Defaults to 100.'),
+  "include_deleted": zod.boolean().optional().describe('Specifies whether deleted jobs should be included in the response. Defaults to false.')
 })
 
-export const getJobsResponseJobsItemDurationMin = 0
-export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMin = 0
+export const getJobsResponseJobsItemDurationMin = 0;
+export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMin = 0;
 
-export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1
-export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  /^(.|all)$/
-export const getJobsResponseJobsItemConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  /^[A-Za-z0-9._]+$/
-export const getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1;
+export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp = new RegExp('^(.|all)$');
+export const getJobsResponseJobsItemConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp = new RegExp('^[A-Za-z0-9._]+$');
+export const getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0;
 
-export const getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
-export const getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
+export const getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1;
+export const getJobsResponseJobsItemConfigTranslationConfigTargetLanguagesMax = 5;
 
-export const getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
-export const getJobsResponseJobsItemConfigTranslationConfigTargetLanguagesMax = 5
-export const getJobsResponseJobsItemConfigSummarizationConfigContentTypeDefault = "auto"
-export const getJobsResponseJobsItemConfigSummarizationConfigSummaryLengthDefault = "brief"
 
 export const getJobsResponse = zod.object({
-  jobs: zod.array(
-    zod
-      .object({
-        created_at: zod.string().datetime({}).describe("The UTC date time the job was created."),
-        data_name: zod.string().describe("Name of the data file submitted for job."),
-        text_name: zod
-          .string()
-          .optional()
-          .describe("Name of the text file submitted to be aligned to audio."),
-        duration: zod
-          .number()
-          .min(getJobsResponseJobsItemDurationMin)
-          .optional()
-          .describe("The file duration (in seconds). May be missing for fetch URL jobs."),
-        id: zod.string().describe("The unique id assigned to the job."),
-        status: zod
-          .enum(["running", "done", "rejected", "deleted", "expired"])
-          .describe(
-            "The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time."
-          ),
-        config: zod
-          .object({
-            type: zod.enum(["alignment", "transcription"]),
-            fetch_data: zod
-              .object({
-                url: zod.string(),
-                auth_headers: zod
-                  .array(zod.string())
-                  .optional()
-                  .describe(
-                    "A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                  )
-              })
-              .optional(),
-            fetch_text: zod
-              .object({
-                url: zod.string(),
-                auth_headers: zod
-                  .array(zod.string())
-                  .optional()
-                  .describe(
-                    "A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                  )
-              })
-              .optional(),
-            alignment_config: zod
-              .object({
-                language: zod.string()
-              })
-              .optional(),
-            transcription_config: zod
-              .object({
-                language: zod
-                  .string()
-                  .describe(
-                    "Language model to process the audio input, normally specified as an ISO language code"
-                  ),
-                domain: zod
-                  .string()
-                  .optional()
-                  .describe(
-                    'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
-                  ),
-                output_locale: zod
-                  .string()
-                  .optional()
-                  .describe(
-                    "Language locale to be used when generating the transcription output, normally specified as an ISO language code"
-                  ),
-                operating_point: zod.enum(["standard", "enhanced"]).optional(),
-                additional_vocab: zod
-                  .array(
-                    zod.object({
-                      content: zod.string(),
-                      sounds_like: zod.array(zod.string()).optional()
-                    })
-                  )
-                  .optional()
-                  .describe(
-                    "List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition."
-                  ),
-                punctuation_overrides: zod
-                  .object({
-                    sensitivity: zod
-                      .number()
-                      .min(
-                        getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMin
-                      )
-                      .max(
-                        getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMax
-                      )
-                      .optional()
-                      .describe(
-                        "Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5."
-                      ),
-                    permitted_marks: zod
-                      .array(
-                        zod
-                          .string()
-                          .regex(
-                            getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp
-                          )
-                      )
-                      .optional()
-                      .describe(
-                        "The punctuation marks which the client is prepared to accept in transcription output, or the special value 'all' (the default). Unsupported marks are ignored. This value is used to guide the transcription process."
-                      )
-                  })
-                  .optional()
-                  .describe("Control punctuation settings."),
-                diarization: zod
-                  .enum(["none", "speaker", "channel"])
-                  .optional()
-                  .describe(
-                    "Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript."
-                  ),
-                channel_diarization_labels: zod
-                  .array(
-                    zod
-                      .string()
-                      .regex(
-                        getJobsResponseJobsItemConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp
-                      )
-                  )
-                  .optional()
-                  .describe(
-                    "Transcript labels to use when using collating separate input channels."
-                  ),
-                enable_entities: zod
-                  .boolean()
-                  .optional()
-                  .describe(
-                    "Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million')."
-                  ),
-                max_delay_mode: zod
-                  .enum(["fixed", "flexible"])
-                  .optional()
-                  .describe(
-                    "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
-                  ),
-                audio_filtering_config: zod
-                  .object({
-                    volume_threshold: zod
-                      .number()
-                      .min(
-                        getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
-                      )
-                      .max(
-                        getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
-                      )
-                      .optional()
-                      .describe(
-                        "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
-                      )
-                  })
-                  .optional()
-                  .describe("Configuration for limiting the transcription of quiet audio."),
-                transcript_filtering_config: zod
-                  .object({
-                    remove_disfluencies: zod
-                      .boolean()
-                      .optional()
-                      .describe(
-                        "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
-                      ),
-                    replacements: zod
-                      .array(
-                        zod.object({
-                          from: zod.string(),
-                          to: zod.string()
-                        })
-                      )
-                      .optional()
-                      .describe(
-                        "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
-                      )
-                  })
-                  .optional()
-                  .describe("Configuration for applying filtering to the transcription"),
-                speaker_diarization_config: zod
-                  .object({
-                    prefer_current_speaker: zod
-                      .boolean()
-                      .optional()
-                      .describe(
-                        'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
-                      ),
-                    speaker_sensitivity: zod
-                      .number()
-                      .min(
-                        getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin
-                      )
-                      .max(
-                        getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax
-                      )
-                      .optional()
-                      .describe(
-                        "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
-                      ),
-                    get_speakers: zod
-                      .boolean()
-                      .optional()
-                      .describe(
-                        "If true, speaker identifiers will be returned at the end of transcript."
-                      ),
-                    speakers: zod
-                      .array(
-                        zod.object({
-                          label: zod
-                            .string()
-                            .min(1)
-                            .describe(
-                              "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
-                            ),
-                          speaker_identifiers: zod
-                            .array(zod.string().describe("Speaker identifiers."))
-                            .min(1)
-                        })
-                      )
-                      .optional()
-                      .describe(
-                        "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
-                      )
-                  })
-                  .optional()
-                  .describe("Configuration for speaker diarization")
-              })
-              .optional(),
-            notification_config: zod
-              .array(
-                zod.object({
-                  url: zod
-                    .string()
-                    .describe(
-                      "The url to which a notification message will be sent upon\ncompletion of the job. The job `id` and `status` are added\nas query parameters, and any combination of the job inputs\nand outputs can be included by listing them in `contents`.\n\nIf `contents` is empty, the body of the request will be\nempty.\n\nIf only one item is listed, it will be sent as the body of\nthe request with `Content-Type` set to an appropriate value\nsuch as `application/octet-stream` or `application/json`.\n\nIf multiple items are listed they will be sent as named file\nattachments using the multipart content type.\n\nIf `contents` is not specified, the `transcript` item will\nbe sent as a file attachment named `data_file`, for\nbackwards compatibility.\n\nIf the job was rejected or failed during processing, that\nwill be indicated by the status, and any output items that\nare not available as a result will be omitted. The body\nformatting rules will still be followed as if all items were\navailable.\n\nThe user-agent header is set to `Speechmatics-API/2.0`, or\n`Speechmatics API V2` in older API versions.\n"
-                    ),
-                  contents: zod
-                    .array(
-                      zod.enum([
-                        "jobinfo",
-                        "transcript",
-                        "transcript.json-v2",
-                        "transcript.txt",
-                        "transcript.srt",
-                        "alignment",
-                        "alignment.word_start_and_end",
-                        "alignment.one_per_line",
-                        "data",
-                        "text"
-                      ])
-                    )
-                    .optional()
-                    .describe(
-                      "Specifies a list of items to be attached to the notification message. When multiple items are requested, they are included as named file attachments."
-                    ),
-                  method: zod
-                    .enum(["post", "put"])
-                    .optional()
-                    .describe(
-                      "The method to be used with http and https urls. The default is post."
-                    ),
-                  auth_headers: zod
-                    .array(zod.string())
-                    .optional()
-                    .describe(
-                      "A list of additional headers to be added to the notification request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                    )
-                })
-              )
-              .optional(),
-            tracking: zod
-              .object({
-                title: zod.string().optional().describe("The title of the job."),
-                reference: zod.string().optional().describe("External system reference."),
-                tags: zod.array(zod.string()).optional(),
-                details: zod.object({}).optional().describe("Customer-defined JSON structure.")
-              })
-              .optional(),
-            output_config: zod
-              .object({
-                srt_overrides: zod
-                  .object({
-                    max_line_length: zod.number().optional(),
-                    max_lines: zod.number().optional()
-                  })
-                  .optional()
-                  .describe(
-                    "Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section."
-                  )
-              })
-              .optional(),
-            translation_config: zod
-              .object({
-                target_languages: zod
-                  .array(zod.string())
-                  .max(getJobsResponseJobsItemConfigTranslationConfigTargetLanguagesMax)
-              })
-              .optional(),
-            language_identification_config: zod
-              .object({
-                expected_languages: zod.array(zod.string()).optional(),
-                low_confidence_action: zod
-                  .enum(["allow", "reject", "use_default_language"])
-                  .optional()
-                  .describe(
-                    "Action to take if all of the predicted languages are below the confidence threshold"
-                  ),
-                default_language: zod.string().optional()
-              })
-              .optional(),
-            summarization_config: zod
-              .object({
-                content_type: zod
-                  .enum(["auto", "informative", "conversational"])
-                  .default(getJobsResponseJobsItemConfigSummarizationConfigContentTypeDefault)
-                  .describe(
-                    "Choose from three options:\n- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.\n- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.\n- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.\n"
-                  ),
-                summary_length: zod
-                  .enum(["brief", "detailed"])
-                  .default(getJobsResponseJobsItemConfigSummarizationConfigSummaryLengthDefault)
-                  .describe(
-                    "Determines the depth of the summary:\n- `brief` - Provides a succinct summary, condensing the content into just a few sentences.\n- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each."
-                  ),
-                summary_type: zod.enum(["paragraphs", "bullets"]).optional()
-              })
-              .optional()
-              .describe("Configuration options for summarization."),
-            sentiment_analysis_config: zod.object({}).optional(),
-            topic_detection_config: zod
-              .object({
-                topics: zod.array(zod.string()).optional()
-              })
-              .optional(),
-            auto_chapters_config: zod.object({}).optional(),
-            audio_events_config: zod
-              .object({
-                types: zod.array(zod.string()).optional()
-              })
-              .optional()
-          })
-          .optional()
-          .describe(
-            "JSON object that contains various groups of job configuration\nparameters. Based on the value of `type`, a type-specific object\nsuch as `transcription_config` is required to be present to\nspecify all configuration settings or parameters needed to\nprocess the job inputs as expected.\n\nIf the results of the job are to be forwarded on completion,\n`notification_config` can be provided with a list of callbacks\nto be made; no assumptions should be made about the order in\nwhich they will occur.\n\nCustomer specific job details or metadata can be supplied in\n`tracking`, and this information will be available where\npossible in the job results and in callbacks.\n"
-          ),
-        lang: zod
-          .string()
-          .optional()
-          .describe("Optional parameter used for backwards compatibility with v1 api"),
-        errors: zod
-          .array(
-            zod.object({
-              timestamp: zod.string(),
-              message: zod.string()
-            })
-          )
-          .optional()
-          .describe(
-            "Optional list of errors that have occurred in user interaction, for example: audio could not be fetched or notification could not be sent."
-          )
-      })
-      .describe(
-        "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/{id} request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
-      )
-  )
+  "jobs": zod.array(zod.object({
+  "created_at": zod.string().datetime({}).describe('The UTC date time the job was created.'),
+  "data_name": zod.string().describe('Name of the data file submitted for job.'),
+  "text_name": zod.string().optional().describe('Name of the text file submitted to be aligned to audio.'),
+  "duration": zod.number().min(getJobsResponseJobsItemDurationMin).optional().describe('The file duration (in seconds). May be missing for fetch URL jobs.'),
+  "id": zod.string().describe('The unique id assigned to the job.'),
+  "status": zod.enum(['running', 'done', 'rejected', 'deleted', 'expired']).describe('The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time.'),
+  "config": zod.object({
+  "type": zod.enum(['alignment', 'transcription']),
+  "fetch_data": zod.object({
+  "url": zod.string(),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+}).optional(),
+  "fetch_text": zod.object({
+  "url": zod.string(),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+}).optional(),
+  "alignment_config": zod.object({
+  "language": zod.string()
+}).optional(),
+  "transcription_config": zod.object({
+  "language": zod.string().describe('Language model to process the audio input, normally specified as an ISO language code'),
+  "domain": zod.string().optional().describe('Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'),
+  "output_locale": zod.string().optional().describe('Language locale to be used when generating the transcription output, normally specified as an ISO language code'),
+  "operating_point": zod.enum(['standard', 'enhanced']).optional(),
+  "additional_vocab": zod.array(zod.object({
+  "content": zod.string(),
+  "sounds_like": zod.array(zod.string()).optional()
+})).optional().describe('List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition.'),
+  "punctuation_overrides": zod.object({
+  "sensitivity": zod.number().min(getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMin).max(getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesSensitivityMax).optional().describe('Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5.'),
+  "permitted_marks": zod.array(zod.string().regex(getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp)).optional().describe('The punctuation marks which the client is prepared to accept in transcription output, or the special value \'all\' (the default). Unsupported marks are ignored. This value is used to guide the transcription process.')
+}).optional().describe('Control punctuation settings.'),
+  "diarization": zod.enum(['none', 'speaker', 'channel']).optional().describe('Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript.'),
+  "channel_diarization_labels": zod.array(zod.string().regex(getJobsResponseJobsItemConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp)).optional().describe('Transcript labels to use when using collating separate input channels.'),
+  "enable_entities": zod.boolean().optional().describe('Include additional \'entity\' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the \'content\' field. The entities contain a \'spoken_form\' field, which can be used in place of the corresponding \'word\' type results, in case a spoken form is preferred to a written form. They also contain a \'written_form\', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as \'one hundred million dollars\' and \'$100 million\').'),
+  "max_delay_mode": zod.enum(['fixed', 'flexible']).optional().describe('Whether or not to enable flexible endpointing and allow the entity to continue to be spoken.'),
+  "transcript_filtering_config": zod.object({
+  "remove_disfluencies": zod.boolean().optional().describe('If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as \'disfluency\'.'),
+  "replacements": zod.array(zod.object({
+  "from": zod.string(),
+  "to": zod.string()
+})).optional().describe('A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text.')
+}).optional().describe('Configuration for applying filtering to the transcription'),
+  "speaker_diarization_config": zod.object({
+  "prefer_current_speaker": zod.boolean().optional().describe('If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'),
+  "speaker_sensitivity": zod.number().min(getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin).max(getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax).optional().describe('Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5.')
+}).optional().describe('Configuration for speaker diarization')
+}).optional(),
+  "notification_config": zod.array(zod.object({
+  "url": zod.string().describe('The url to which a notification message will be sent upon\ncompletion of the job. The job `id` and `status` are added\nas query parameters, and any combination of the job inputs\nand outputs can be included by listing them in `contents`.\n\nIf `contents` is empty, the body of the request will be\nempty.\n\nIf only one item is listed, it will be sent as the body of\nthe request with `Content-Type` set to an appropriate value\nsuch as `application/octet-stream` or `application/json`.\n\nIf multiple items are listed they will be sent as named file\nattachments using the multipart content type.\n\nIf `contents` is not specified, the `transcript` item will\nbe sent as a file attachment named `data_file`, for\nbackwards compatibility.\n\nIf the job was rejected or failed during processing, that\nwill be indicated by the status, and any output items that\nare not available as a result will be omitted. The body\nformatting rules will still be followed as if all items were\navailable.\n\nThe user-agent header is set to `Speechmatics-API/2.0`, or\n`Speechmatics API V2` in older API versions.\n'),
+  "contents": zod.array(zod.enum(['jobinfo', 'transcript', 'transcript.json-v2', 'transcript.txt', 'transcript.srt', 'alignment', 'alignment.word_start_and_end', 'alignment.one_per_line', 'data', 'text'])).optional().describe('Specifies a list of items to be attached to the notification message. When multiple items are requested, they are included as named file attachments.'),
+  "method": zod.enum(['post', 'put']).optional().describe('The method to be used with http and https urls. The default is post.'),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the notification request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+})).optional(),
+  "tracking": zod.object({
+  "title": zod.string().optional().describe('The title of the job.'),
+  "reference": zod.string().optional().describe('External system reference.'),
+  "tags": zod.array(zod.string()).optional(),
+  "details": zod.object({
+
+}).optional().describe('Customer-defined JSON structure.')
+}).optional(),
+  "output_config": zod.object({
+  "srt_overrides": zod.object({
+  "max_line_length": zod.number().optional(),
+  "max_lines": zod.number().optional()
+}).optional().describe('Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section.')
+}).optional(),
+  "translation_config": zod.object({
+  "target_languages": zod.array(zod.string()).max(getJobsResponseJobsItemConfigTranslationConfigTargetLanguagesMax)
+}).optional(),
+  "language_identification_config": zod.object({
+  "expected_languages": zod.array(zod.string()).optional(),
+  "low_confidence_action": zod.enum(['allow', 'reject', 'use_default_language']).optional().describe('Action to take if all of the predicted languages are below the confidence threshold'),
+  "default_language": zod.string().optional()
+}).optional(),
+  "summarization_config": zod.object({
+  "content_type": zod.enum(['auto', 'informative', 'conversational']).optional(),
+  "summary_length": zod.enum(['brief', 'detailed']).optional(),
+  "summary_type": zod.enum(['paragraphs', 'bullets']).optional()
+}).optional(),
+  "sentiment_analysis_config": zod.object({
+
+}).optional(),
+  "topic_detection_config": zod.object({
+  "topics": zod.array(zod.string()).optional()
+}).optional(),
+  "auto_chapters_config": zod.object({
+
+}).optional(),
+  "audio_events_config": zod.object({
+  "types": zod.array(zod.string()).optional()
+}).optional()
+}).optional().describe('JSON object that contains various groups of job configuration\nparameters. Based on the value of `type`, a type-specific object\nsuch as `transcription_config` is required to be present to\nspecify all configuration settings or parameters needed to\nprocess the job inputs as expected.\n\nIf the results of the job are to be forwarded on completion,\n`notification_config` can be provided with a list of callbacks\nto be made; no assumptions should be made about the order in\nwhich they will occur.\n\nCustomer specific job details or metadata can be supplied in\n`tracking`, and this information will be available where\npossible in the job results and in callbacks.\n'),
+  "lang": zod.string().optional().describe('Optional parameter used for backwards compatibility with v1 api'),
+  "errors": zod.array(zod.object({
+  "timestamp": zod.string(),
+  "message": zod.string()
+})).optional().describe('Optional list of errors that have occurred in user interaction, for example: audio could not be fetched or notification could not be sent.')
+}).describe('Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance.'))
 })
 
+
 /**
- * Get job details, including progress and any error reports.
- * @summary Get job details
+ * @summary Get job details, including progress and any error reports.
  */
 export const getJobsJobidParams = zod.object({
-  jobid: zod.string().describe("ID of the job.")
+  "jobid": zod.string().describe('ID of the job.')
 })
 
-export const getJobsJobidResponseJobDurationMin = 0
-export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin = 0
+export const getJobsJobidResponseJobDurationMin = 0;
+export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin = 0;
 
-export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1
-export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  /^(.|all)$/
-export const getJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  /^[A-Za-z0-9._]+$/
-export const getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1;
+export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp = new RegExp('^(.|all)$');
+export const getJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp = new RegExp('^[A-Za-z0-9._]+$');
+export const getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0;
 
-export const getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
-export const getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
+export const getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1;
+export const getJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax = 5;
 
-export const getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
-export const getJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax = 5
-export const getJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault = "auto"
-export const getJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault = "brief"
 
 export const getJobsJobidResponse = zod.object({
-  job: zod
-    .object({
-      created_at: zod.string().datetime({}).describe("The UTC date time the job was created."),
-      data_name: zod.string().describe("Name of the data file submitted for job."),
-      text_name: zod
-        .string()
-        .optional()
-        .describe("Name of the text file submitted to be aligned to audio."),
-      duration: zod
-        .number()
-        .min(getJobsJobidResponseJobDurationMin)
-        .optional()
-        .describe("The file duration (in seconds). May be missing for fetch URL jobs."),
-      id: zod.string().describe("The unique id assigned to the job."),
-      status: zod
-        .enum(["running", "done", "rejected", "deleted", "expired"])
-        .describe(
-          "The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time."
-        ),
-      config: zod
-        .object({
-          type: zod.enum(["alignment", "transcription"]),
-          fetch_data: zod
-            .object({
-              url: zod.string(),
-              auth_headers: zod
-                .array(zod.string())
-                .optional()
-                .describe(
-                  "A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                )
-            })
-            .optional(),
-          fetch_text: zod
-            .object({
-              url: zod.string(),
-              auth_headers: zod
-                .array(zod.string())
-                .optional()
-                .describe(
-                  "A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                )
-            })
-            .optional(),
-          alignment_config: zod
-            .object({
-              language: zod.string()
-            })
-            .optional(),
-          transcription_config: zod
-            .object({
-              language: zod
-                .string()
-                .describe(
-                  "Language model to process the audio input, normally specified as an ISO language code"
-                ),
-              domain: zod
-                .string()
-                .optional()
-                .describe(
-                  'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
-                ),
-              output_locale: zod
-                .string()
-                .optional()
-                .describe(
-                  "Language locale to be used when generating the transcription output, normally specified as an ISO language code"
-                ),
-              operating_point: zod.enum(["standard", "enhanced"]).optional(),
-              additional_vocab: zod
-                .array(
-                  zod.object({
-                    content: zod.string(),
-                    sounds_like: zod.array(zod.string()).optional()
-                  })
-                )
-                .optional()
-                .describe(
-                  "List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition."
-                ),
-              punctuation_overrides: zod
-                .object({
-                  sensitivity: zod
-                    .number()
-                    .min(
-                      getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin
-                    )
-                    .max(
-                      getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax
-                    )
-                    .optional()
-                    .describe(
-                      "Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5."
-                    ),
-                  permitted_marks: zod
-                    .array(
-                      zod
-                        .string()
-                        .regex(
-                          getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp
-                        )
-                    )
-                    .optional()
-                    .describe(
-                      "The punctuation marks which the client is prepared to accept in transcription output, or the special value 'all' (the default). Unsupported marks are ignored. This value is used to guide the transcription process."
-                    )
-                })
-                .optional()
-                .describe("Control punctuation settings."),
-              diarization: zod
-                .enum(["none", "speaker", "channel"])
-                .optional()
-                .describe(
-                  "Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript."
-                ),
-              channel_diarization_labels: zod
-                .array(
-                  zod
-                    .string()
-                    .regex(
-                      getJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp
-                    )
-                )
-                .optional()
-                .describe("Transcript labels to use when using collating separate input channels."),
-              enable_entities: zod
-                .boolean()
-                .optional()
-                .describe(
-                  "Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million')."
-                ),
-              max_delay_mode: zod
-                .enum(["fixed", "flexible"])
-                .optional()
-                .describe(
-                  "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
-                ),
-              audio_filtering_config: zod
-                .object({
-                  volume_threshold: zod
-                    .number()
-                    .min(
-                      getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
-                    )
-                    .max(
-                      getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
-                    )
-                    .optional()
-                    .describe(
-                      "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
-                    )
-                })
-                .optional()
-                .describe("Configuration for limiting the transcription of quiet audio."),
-              transcript_filtering_config: zod
-                .object({
-                  remove_disfluencies: zod
-                    .boolean()
-                    .optional()
-                    .describe(
-                      "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
-                    ),
-                  replacements: zod
-                    .array(
-                      zod.object({
-                        from: zod.string(),
-                        to: zod.string()
-                      })
-                    )
-                    .optional()
-                    .describe(
-                      "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
-                    )
-                })
-                .optional()
-                .describe("Configuration for applying filtering to the transcription"),
-              speaker_diarization_config: zod
-                .object({
-                  prefer_current_speaker: zod
-                    .boolean()
-                    .optional()
-                    .describe(
-                      'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
-                    ),
-                  speaker_sensitivity: zod
-                    .number()
-                    .min(
-                      getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin
-                    )
-                    .max(
-                      getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax
-                    )
-                    .optional()
-                    .describe(
-                      "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
-                    ),
-                  get_speakers: zod
-                    .boolean()
-                    .optional()
-                    .describe(
-                      "If true, speaker identifiers will be returned at the end of transcript."
-                    ),
-                  speakers: zod
-                    .array(
-                      zod.object({
-                        label: zod
-                          .string()
-                          .min(1)
-                          .describe(
-                            "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
-                          ),
-                        speaker_identifiers: zod
-                          .array(zod.string().describe("Speaker identifiers."))
-                          .min(1)
-                      })
-                    )
-                    .optional()
-                    .describe(
-                      "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
-                    )
-                })
-                .optional()
-                .describe("Configuration for speaker diarization")
-            })
-            .optional(),
-          notification_config: zod
-            .array(
-              zod.object({
-                url: zod
-                  .string()
-                  .describe(
-                    "The url to which a notification message will be sent upon\ncompletion of the job. The job `id` and `status` are added\nas query parameters, and any combination of the job inputs\nand outputs can be included by listing them in `contents`.\n\nIf `contents` is empty, the body of the request will be\nempty.\n\nIf only one item is listed, it will be sent as the body of\nthe request with `Content-Type` set to an appropriate value\nsuch as `application/octet-stream` or `application/json`.\n\nIf multiple items are listed they will be sent as named file\nattachments using the multipart content type.\n\nIf `contents` is not specified, the `transcript` item will\nbe sent as a file attachment named `data_file`, for\nbackwards compatibility.\n\nIf the job was rejected or failed during processing, that\nwill be indicated by the status, and any output items that\nare not available as a result will be omitted. The body\nformatting rules will still be followed as if all items were\navailable.\n\nThe user-agent header is set to `Speechmatics-API/2.0`, or\n`Speechmatics API V2` in older API versions.\n"
-                  ),
-                contents: zod
-                  .array(
-                    zod.enum([
-                      "jobinfo",
-                      "transcript",
-                      "transcript.json-v2",
-                      "transcript.txt",
-                      "transcript.srt",
-                      "alignment",
-                      "alignment.word_start_and_end",
-                      "alignment.one_per_line",
-                      "data",
-                      "text"
-                    ])
-                  )
-                  .optional()
-                  .describe(
-                    "Specifies a list of items to be attached to the notification message. When multiple items are requested, they are included as named file attachments."
-                  ),
-                method: zod
-                  .enum(["post", "put"])
-                  .optional()
-                  .describe("The method to be used with http and https urls. The default is post."),
-                auth_headers: zod
-                  .array(zod.string())
-                  .optional()
-                  .describe(
-                    "A list of additional headers to be added to the notification request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                  )
-              })
-            )
-            .optional(),
-          tracking: zod
-            .object({
-              title: zod.string().optional().describe("The title of the job."),
-              reference: zod.string().optional().describe("External system reference."),
-              tags: zod.array(zod.string()).optional(),
-              details: zod.object({}).optional().describe("Customer-defined JSON structure.")
-            })
-            .optional(),
-          output_config: zod
-            .object({
-              srt_overrides: zod
-                .object({
-                  max_line_length: zod.number().optional(),
-                  max_lines: zod.number().optional()
-                })
-                .optional()
-                .describe(
-                  "Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section."
-                )
-            })
-            .optional(),
-          translation_config: zod
-            .object({
-              target_languages: zod
-                .array(zod.string())
-                .max(getJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax)
-            })
-            .optional(),
-          language_identification_config: zod
-            .object({
-              expected_languages: zod.array(zod.string()).optional(),
-              low_confidence_action: zod
-                .enum(["allow", "reject", "use_default_language"])
-                .optional()
-                .describe(
-                  "Action to take if all of the predicted languages are below the confidence threshold"
-                ),
-              default_language: zod.string().optional()
-            })
-            .optional(),
-          summarization_config: zod
-            .object({
-              content_type: zod
-                .enum(["auto", "informative", "conversational"])
-                .default(getJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault)
-                .describe(
-                  "Choose from three options:\n- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.\n- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.\n- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.\n"
-                ),
-              summary_length: zod
-                .enum(["brief", "detailed"])
-                .default(getJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault)
-                .describe(
-                  "Determines the depth of the summary:\n- `brief` - Provides a succinct summary, condensing the content into just a few sentences.\n- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each."
-                ),
-              summary_type: zod.enum(["paragraphs", "bullets"]).optional()
-            })
-            .optional()
-            .describe("Configuration options for summarization."),
-          sentiment_analysis_config: zod.object({}).optional(),
-          topic_detection_config: zod
-            .object({
-              topics: zod.array(zod.string()).optional()
-            })
-            .optional(),
-          auto_chapters_config: zod.object({}).optional(),
-          audio_events_config: zod
-            .object({
-              types: zod.array(zod.string()).optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe(
-          "JSON object that contains various groups of job configuration\nparameters. Based on the value of `type`, a type-specific object\nsuch as `transcription_config` is required to be present to\nspecify all configuration settings or parameters needed to\nprocess the job inputs as expected.\n\nIf the results of the job are to be forwarded on completion,\n`notification_config` can be provided with a list of callbacks\nto be made; no assumptions should be made about the order in\nwhich they will occur.\n\nCustomer specific job details or metadata can be supplied in\n`tracking`, and this information will be available where\npossible in the job results and in callbacks.\n"
-        ),
-      lang: zod
-        .string()
-        .optional()
-        .describe("Optional parameter used for backwards compatibility with v1 api"),
-      errors: zod
-        .array(
-          zod.object({
-            timestamp: zod.string(),
-            message: zod.string()
-          })
-        )
-        .optional()
-        .describe(
-          "Optional list of errors that have occurred in user interaction, for example: audio could not be fetched or notification could not be sent."
-        )
-    })
-    .describe(
-      "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/{id} request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
-    )
+  "job": zod.object({
+  "created_at": zod.string().datetime({}).describe('The UTC date time the job was created.'),
+  "data_name": zod.string().describe('Name of the data file submitted for job.'),
+  "text_name": zod.string().optional().describe('Name of the text file submitted to be aligned to audio.'),
+  "duration": zod.number().min(getJobsJobidResponseJobDurationMin).optional().describe('The file duration (in seconds). May be missing for fetch URL jobs.'),
+  "id": zod.string().describe('The unique id assigned to the job.'),
+  "status": zod.enum(['running', 'done', 'rejected', 'deleted', 'expired']).describe('The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time.'),
+  "config": zod.object({
+  "type": zod.enum(['alignment', 'transcription']),
+  "fetch_data": zod.object({
+  "url": zod.string(),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+}).optional(),
+  "fetch_text": zod.object({
+  "url": zod.string(),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+}).optional(),
+  "alignment_config": zod.object({
+  "language": zod.string()
+}).optional(),
+  "transcription_config": zod.object({
+  "language": zod.string().describe('Language model to process the audio input, normally specified as an ISO language code'),
+  "domain": zod.string().optional().describe('Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'),
+  "output_locale": zod.string().optional().describe('Language locale to be used when generating the transcription output, normally specified as an ISO language code'),
+  "operating_point": zod.enum(['standard', 'enhanced']).optional(),
+  "additional_vocab": zod.array(zod.object({
+  "content": zod.string(),
+  "sounds_like": zod.array(zod.string()).optional()
+})).optional().describe('List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition.'),
+  "punctuation_overrides": zod.object({
+  "sensitivity": zod.number().min(getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin).max(getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax).optional().describe('Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5.'),
+  "permitted_marks": zod.array(zod.string().regex(getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp)).optional().describe('The punctuation marks which the client is prepared to accept in transcription output, or the special value \'all\' (the default). Unsupported marks are ignored. This value is used to guide the transcription process.')
+}).optional().describe('Control punctuation settings.'),
+  "diarization": zod.enum(['none', 'speaker', 'channel']).optional().describe('Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript.'),
+  "channel_diarization_labels": zod.array(zod.string().regex(getJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp)).optional().describe('Transcript labels to use when using collating separate input channels.'),
+  "enable_entities": zod.boolean().optional().describe('Include additional \'entity\' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the \'content\' field. The entities contain a \'spoken_form\' field, which can be used in place of the corresponding \'word\' type results, in case a spoken form is preferred to a written form. They also contain a \'written_form\', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as \'one hundred million dollars\' and \'$100 million\').'),
+  "max_delay_mode": zod.enum(['fixed', 'flexible']).optional().describe('Whether or not to enable flexible endpointing and allow the entity to continue to be spoken.'),
+  "transcript_filtering_config": zod.object({
+  "remove_disfluencies": zod.boolean().optional().describe('If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as \'disfluency\'.'),
+  "replacements": zod.array(zod.object({
+  "from": zod.string(),
+  "to": zod.string()
+})).optional().describe('A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text.')
+}).optional().describe('Configuration for applying filtering to the transcription'),
+  "speaker_diarization_config": zod.object({
+  "prefer_current_speaker": zod.boolean().optional().describe('If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'),
+  "speaker_sensitivity": zod.number().min(getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin).max(getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax).optional().describe('Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5.')
+}).optional().describe('Configuration for speaker diarization')
+}).optional(),
+  "notification_config": zod.array(zod.object({
+  "url": zod.string().describe('The url to which a notification message will be sent upon\ncompletion of the job. The job `id` and `status` are added\nas query parameters, and any combination of the job inputs\nand outputs can be included by listing them in `contents`.\n\nIf `contents` is empty, the body of the request will be\nempty.\n\nIf only one item is listed, it will be sent as the body of\nthe request with `Content-Type` set to an appropriate value\nsuch as `application/octet-stream` or `application/json`.\n\nIf multiple items are listed they will be sent as named file\nattachments using the multipart content type.\n\nIf `contents` is not specified, the `transcript` item will\nbe sent as a file attachment named `data_file`, for\nbackwards compatibility.\n\nIf the job was rejected or failed during processing, that\nwill be indicated by the status, and any output items that\nare not available as a result will be omitted. The body\nformatting rules will still be followed as if all items were\navailable.\n\nThe user-agent header is set to `Speechmatics-API/2.0`, or\n`Speechmatics API V2` in older API versions.\n'),
+  "contents": zod.array(zod.enum(['jobinfo', 'transcript', 'transcript.json-v2', 'transcript.txt', 'transcript.srt', 'alignment', 'alignment.word_start_and_end', 'alignment.one_per_line', 'data', 'text'])).optional().describe('Specifies a list of items to be attached to the notification message. When multiple items are requested, they are included as named file attachments.'),
+  "method": zod.enum(['post', 'put']).optional().describe('The method to be used with http and https urls. The default is post.'),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the notification request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+})).optional(),
+  "tracking": zod.object({
+  "title": zod.string().optional().describe('The title of the job.'),
+  "reference": zod.string().optional().describe('External system reference.'),
+  "tags": zod.array(zod.string()).optional(),
+  "details": zod.object({
+
+}).optional().describe('Customer-defined JSON structure.')
+}).optional(),
+  "output_config": zod.object({
+  "srt_overrides": zod.object({
+  "max_line_length": zod.number().optional(),
+  "max_lines": zod.number().optional()
+}).optional().describe('Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section.')
+}).optional(),
+  "translation_config": zod.object({
+  "target_languages": zod.array(zod.string()).max(getJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax)
+}).optional(),
+  "language_identification_config": zod.object({
+  "expected_languages": zod.array(zod.string()).optional(),
+  "low_confidence_action": zod.enum(['allow', 'reject', 'use_default_language']).optional().describe('Action to take if all of the predicted languages are below the confidence threshold'),
+  "default_language": zod.string().optional()
+}).optional(),
+  "summarization_config": zod.object({
+  "content_type": zod.enum(['auto', 'informative', 'conversational']).optional(),
+  "summary_length": zod.enum(['brief', 'detailed']).optional(),
+  "summary_type": zod.enum(['paragraphs', 'bullets']).optional()
+}).optional(),
+  "sentiment_analysis_config": zod.object({
+
+}).optional(),
+  "topic_detection_config": zod.object({
+  "topics": zod.array(zod.string()).optional()
+}).optional(),
+  "auto_chapters_config": zod.object({
+
+}).optional(),
+  "audio_events_config": zod.object({
+  "types": zod.array(zod.string()).optional()
+}).optional()
+}).optional().describe('JSON object that contains various groups of job configuration\nparameters. Based on the value of `type`, a type-specific object\nsuch as `transcription_config` is required to be present to\nspecify all configuration settings or parameters needed to\nprocess the job inputs as expected.\n\nIf the results of the job are to be forwarded on completion,\n`notification_config` can be provided with a list of callbacks\nto be made; no assumptions should be made about the order in\nwhich they will occur.\n\nCustomer specific job details or metadata can be supplied in\n`tracking`, and this information will be available where\npossible in the job results and in callbacks.\n'),
+  "lang": zod.string().optional().describe('Optional parameter used for backwards compatibility with v1 api'),
+  "errors": zod.array(zod.object({
+  "timestamp": zod.string(),
+  "message": zod.string()
+})).optional().describe('Optional list of errors that have occurred in user interaction, for example: audio could not be fetched or notification could not be sent.')
+}).describe('Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance.')
 })
 
+
 /**
- * Delete a job and remove all associated resources.
- * @summary Delete a job
+ * @summary Delete a job and remove all associated resources.
  */
 export const deleteJobsJobidParams = zod.object({
-  jobid: zod.string().describe("ID of the job to delete.")
+  "jobid": zod.string().describe('ID of the job to delete.')
 })
 
 export const deleteJobsJobidQueryParams = zod.object({
-  force: zod
-    .boolean()
-    .optional()
-    .describe(
-      "When set, a running job will be force terminated. When unset (default), a running job will not be terminated and request will return HTTP 423 Locked."
-    )
+  "force": zod.boolean().optional().describe('When set, a running job will be force terminated. When unset (default), a running job will not be terminated and request will return HTTP 423 Locked.')
 })
 
-export const deleteJobsJobidResponseJobDurationMin = 0
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin = 0
+export const deleteJobsJobidResponseJobDurationMin = 0;
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin = 0;
 
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  /^(.|all)$/
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  /^[A-Za-z0-9._]+$/
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax = 1;
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp = new RegExp('^(.|all)$');
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp = new RegExp('^[A-Za-z0-9._]+$');
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0;
 
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1;
+export const deleteJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax = 5;
 
-export const deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
-export const deleteJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax = 5
-export const deleteJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault = "auto"
-export const deleteJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault = "brief"
 
 export const deleteJobsJobidResponse = zod.object({
-  job: zod
-    .object({
-      created_at: zod.string().datetime({}).describe("The UTC date time the job was created."),
-      data_name: zod.string().describe("Name of the data file submitted for job."),
-      text_name: zod
-        .string()
-        .optional()
-        .describe("Name of the text file submitted to be aligned to audio."),
-      duration: zod
-        .number()
-        .min(deleteJobsJobidResponseJobDurationMin)
-        .optional()
-        .describe("The file duration (in seconds). May be missing for fetch URL jobs."),
-      id: zod.string().describe("The unique id assigned to the job."),
-      status: zod
-        .enum(["running", "done", "rejected", "deleted", "expired"])
-        .describe(
-          "The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time."
-        ),
-      config: zod
-        .object({
-          type: zod.enum(["alignment", "transcription"]),
-          fetch_data: zod
-            .object({
-              url: zod.string(),
-              auth_headers: zod
-                .array(zod.string())
-                .optional()
-                .describe(
-                  "A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                )
-            })
-            .optional(),
-          fetch_text: zod
-            .object({
-              url: zod.string(),
-              auth_headers: zod
-                .array(zod.string())
-                .optional()
-                .describe(
-                  "A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                )
-            })
-            .optional(),
-          alignment_config: zod
-            .object({
-              language: zod.string()
-            })
-            .optional(),
-          transcription_config: zod
-            .object({
-              language: zod
-                .string()
-                .describe(
-                  "Language model to process the audio input, normally specified as an ISO language code"
-                ),
-              domain: zod
-                .string()
-                .optional()
-                .describe(
-                  'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
-                ),
-              output_locale: zod
-                .string()
-                .optional()
-                .describe(
-                  "Language locale to be used when generating the transcription output, normally specified as an ISO language code"
-                ),
-              operating_point: zod.enum(["standard", "enhanced"]).optional(),
-              additional_vocab: zod
-                .array(
-                  zod.object({
-                    content: zod.string(),
-                    sounds_like: zod.array(zod.string()).optional()
-                  })
-                )
-                .optional()
-                .describe(
-                  "List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition."
-                ),
-              punctuation_overrides: zod
-                .object({
-                  sensitivity: zod
-                    .number()
-                    .min(
-                      deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin
-                    )
-                    .max(
-                      deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax
-                    )
-                    .optional()
-                    .describe(
-                      "Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5."
-                    ),
-                  permitted_marks: zod
-                    .array(
-                      zod
-                        .string()
-                        .regex(
-                          deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp
-                        )
-                    )
-                    .optional()
-                    .describe(
-                      "The punctuation marks which the client is prepared to accept in transcription output, or the special value 'all' (the default). Unsupported marks are ignored. This value is used to guide the transcription process."
-                    )
-                })
-                .optional()
-                .describe("Control punctuation settings."),
-              diarization: zod
-                .enum(["none", "speaker", "channel"])
-                .optional()
-                .describe(
-                  "Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript."
-                ),
-              channel_diarization_labels: zod
-                .array(
-                  zod
-                    .string()
-                    .regex(
-                      deleteJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp
-                    )
-                )
-                .optional()
-                .describe("Transcript labels to use when using collating separate input channels."),
-              enable_entities: zod
-                .boolean()
-                .optional()
-                .describe(
-                  "Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million')."
-                ),
-              max_delay_mode: zod
-                .enum(["fixed", "flexible"])
-                .optional()
-                .describe(
-                  "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
-                ),
-              audio_filtering_config: zod
-                .object({
-                  volume_threshold: zod
-                    .number()
-                    .min(
-                      deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
-                    )
-                    .max(
-                      deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
-                    )
-                    .optional()
-                    .describe(
-                      "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
-                    )
-                })
-                .optional()
-                .describe("Configuration for limiting the transcription of quiet audio."),
-              transcript_filtering_config: zod
-                .object({
-                  remove_disfluencies: zod
-                    .boolean()
-                    .optional()
-                    .describe(
-                      "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
-                    ),
-                  replacements: zod
-                    .array(
-                      zod.object({
-                        from: zod.string(),
-                        to: zod.string()
-                      })
-                    )
-                    .optional()
-                    .describe(
-                      "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
-                    )
-                })
-                .optional()
-                .describe("Configuration for applying filtering to the transcription"),
-              speaker_diarization_config: zod
-                .object({
-                  prefer_current_speaker: zod
-                    .boolean()
-                    .optional()
-                    .describe(
-                      'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
-                    ),
-                  speaker_sensitivity: zod
-                    .number()
-                    .min(
-                      deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin
-                    )
-                    .max(
-                      deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax
-                    )
-                    .optional()
-                    .describe(
-                      "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
-                    ),
-                  get_speakers: zod
-                    .boolean()
-                    .optional()
-                    .describe(
-                      "If true, speaker identifiers will be returned at the end of transcript."
-                    ),
-                  speakers: zod
-                    .array(
-                      zod.object({
-                        label: zod
-                          .string()
-                          .min(1)
-                          .describe(
-                            "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
-                          ),
-                        speaker_identifiers: zod
-                          .array(zod.string().describe("Speaker identifiers."))
-                          .min(1)
-                      })
-                    )
-                    .optional()
-                    .describe(
-                      "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
-                    )
-                })
-                .optional()
-                .describe("Configuration for speaker diarization")
-            })
-            .optional(),
-          notification_config: zod
-            .array(
-              zod.object({
-                url: zod
-                  .string()
-                  .describe(
-                    "The url to which a notification message will be sent upon\ncompletion of the job. The job `id` and `status` are added\nas query parameters, and any combination of the job inputs\nand outputs can be included by listing them in `contents`.\n\nIf `contents` is empty, the body of the request will be\nempty.\n\nIf only one item is listed, it will be sent as the body of\nthe request with `Content-Type` set to an appropriate value\nsuch as `application/octet-stream` or `application/json`.\n\nIf multiple items are listed they will be sent as named file\nattachments using the multipart content type.\n\nIf `contents` is not specified, the `transcript` item will\nbe sent as a file attachment named `data_file`, for\nbackwards compatibility.\n\nIf the job was rejected or failed during processing, that\nwill be indicated by the status, and any output items that\nare not available as a result will be omitted. The body\nformatting rules will still be followed as if all items were\navailable.\n\nThe user-agent header is set to `Speechmatics-API/2.0`, or\n`Speechmatics API V2` in older API versions.\n"
-                  ),
-                contents: zod
-                  .array(
-                    zod.enum([
-                      "jobinfo",
-                      "transcript",
-                      "transcript.json-v2",
-                      "transcript.txt",
-                      "transcript.srt",
-                      "alignment",
-                      "alignment.word_start_and_end",
-                      "alignment.one_per_line",
-                      "data",
-                      "text"
-                    ])
-                  )
-                  .optional()
-                  .describe(
-                    "Specifies a list of items to be attached to the notification message. When multiple items are requested, they are included as named file attachments."
-                  ),
-                method: zod
-                  .enum(["post", "put"])
-                  .optional()
-                  .describe("The method to be used with http and https urls. The default is post."),
-                auth_headers: zod
-                  .array(zod.string())
-                  .optional()
-                  .describe(
-                    "A list of additional headers to be added to the notification request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token."
-                  )
-              })
-            )
-            .optional(),
-          tracking: zod
-            .object({
-              title: zod.string().optional().describe("The title of the job."),
-              reference: zod.string().optional().describe("External system reference."),
-              tags: zod.array(zod.string()).optional(),
-              details: zod.object({}).optional().describe("Customer-defined JSON structure.")
-            })
-            .optional(),
-          output_config: zod
-            .object({
-              srt_overrides: zod
-                .object({
-                  max_line_length: zod.number().optional(),
-                  max_lines: zod.number().optional()
-                })
-                .optional()
-                .describe(
-                  "Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section."
-                )
-            })
-            .optional(),
-          translation_config: zod
-            .object({
-              target_languages: zod
-                .array(zod.string())
-                .max(deleteJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax)
-            })
-            .optional(),
-          language_identification_config: zod
-            .object({
-              expected_languages: zod.array(zod.string()).optional(),
-              low_confidence_action: zod
-                .enum(["allow", "reject", "use_default_language"])
-                .optional()
-                .describe(
-                  "Action to take if all of the predicted languages are below the confidence threshold"
-                ),
-              default_language: zod.string().optional()
-            })
-            .optional(),
-          summarization_config: zod
-            .object({
-              content_type: zod
-                .enum(["auto", "informative", "conversational"])
-                .default(deleteJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault)
-                .describe(
-                  "Choose from three options:\n- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.\n- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.\n- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.\n"
-                ),
-              summary_length: zod
-                .enum(["brief", "detailed"])
-                .default(deleteJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault)
-                .describe(
-                  "Determines the depth of the summary:\n- `brief` - Provides a succinct summary, condensing the content into just a few sentences.\n- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each."
-                ),
-              summary_type: zod.enum(["paragraphs", "bullets"]).optional()
-            })
-            .optional()
-            .describe("Configuration options for summarization."),
-          sentiment_analysis_config: zod.object({}).optional(),
-          topic_detection_config: zod
-            .object({
-              topics: zod.array(zod.string()).optional()
-            })
-            .optional(),
-          auto_chapters_config: zod.object({}).optional(),
-          audio_events_config: zod
-            .object({
-              types: zod.array(zod.string()).optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe(
-          "JSON object that contains various groups of job configuration\nparameters. Based on the value of `type`, a type-specific object\nsuch as `transcription_config` is required to be present to\nspecify all configuration settings or parameters needed to\nprocess the job inputs as expected.\n\nIf the results of the job are to be forwarded on completion,\n`notification_config` can be provided with a list of callbacks\nto be made; no assumptions should be made about the order in\nwhich they will occur.\n\nCustomer specific job details or metadata can be supplied in\n`tracking`, and this information will be available where\npossible in the job results and in callbacks.\n"
-        ),
-      lang: zod
-        .string()
-        .optional()
-        .describe("Optional parameter used for backwards compatibility with v1 api"),
-      errors: zod
-        .array(
-          zod.object({
-            timestamp: zod.string(),
-            message: zod.string()
-          })
-        )
-        .optional()
-        .describe(
-          "Optional list of errors that have occurred in user interaction, for example: audio could not be fetched or notification could not be sent."
-        )
-    })
-    .describe(
-      "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/{id} request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
-    )
+  "job": zod.object({
+  "created_at": zod.string().datetime({}).describe('The UTC date time the job was created.'),
+  "data_name": zod.string().describe('Name of the data file submitted for job.'),
+  "text_name": zod.string().optional().describe('Name of the text file submitted to be aligned to audio.'),
+  "duration": zod.number().min(deleteJobsJobidResponseJobDurationMin).optional().describe('The file duration (in seconds). May be missing for fetch URL jobs.'),
+  "id": zod.string().describe('The unique id assigned to the job.'),
+  "status": zod.enum(['running', 'done', 'rejected', 'deleted', 'expired']).describe('The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time.'),
+  "config": zod.object({
+  "type": zod.enum(['alignment', 'transcription']),
+  "fetch_data": zod.object({
+  "url": zod.string(),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+}).optional(),
+  "fetch_text": zod.object({
+  "url": zod.string(),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+}).optional(),
+  "alignment_config": zod.object({
+  "language": zod.string()
+}).optional(),
+  "transcription_config": zod.object({
+  "language": zod.string().describe('Language model to process the audio input, normally specified as an ISO language code'),
+  "domain": zod.string().optional().describe('Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'),
+  "output_locale": zod.string().optional().describe('Language locale to be used when generating the transcription output, normally specified as an ISO language code'),
+  "operating_point": zod.enum(['standard', 'enhanced']).optional(),
+  "additional_vocab": zod.array(zod.object({
+  "content": zod.string(),
+  "sounds_like": zod.array(zod.string()).optional()
+})).optional().describe('List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition.'),
+  "punctuation_overrides": zod.object({
+  "sensitivity": zod.number().min(deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMin).max(deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesSensitivityMax).optional().describe('Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5.'),
+  "permitted_marks": zod.array(zod.string().regex(deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp)).optional().describe('The punctuation marks which the client is prepared to accept in transcription output, or the special value \'all\' (the default). Unsupported marks are ignored. This value is used to guide the transcription process.')
+}).optional().describe('Control punctuation settings.'),
+  "diarization": zod.enum(['none', 'speaker', 'channel']).optional().describe('Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript.'),
+  "channel_diarization_labels": zod.array(zod.string().regex(deleteJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp)).optional().describe('Transcript labels to use when using collating separate input channels.'),
+  "enable_entities": zod.boolean().optional().describe('Include additional \'entity\' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the \'content\' field. The entities contain a \'spoken_form\' field, which can be used in place of the corresponding \'word\' type results, in case a spoken form is preferred to a written form. They also contain a \'written_form\', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as \'one hundred million dollars\' and \'$100 million\').'),
+  "max_delay_mode": zod.enum(['fixed', 'flexible']).optional().describe('Whether or not to enable flexible endpointing and allow the entity to continue to be spoken.'),
+  "transcript_filtering_config": zod.object({
+  "remove_disfluencies": zod.boolean().optional().describe('If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as \'disfluency\'.'),
+  "replacements": zod.array(zod.object({
+  "from": zod.string(),
+  "to": zod.string()
+})).optional().describe('A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text.')
+}).optional().describe('Configuration for applying filtering to the transcription'),
+  "speaker_diarization_config": zod.object({
+  "prefer_current_speaker": zod.boolean().optional().describe('If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'),
+  "speaker_sensitivity": zod.number().min(deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin).max(deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax).optional().describe('Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5.')
+}).optional().describe('Configuration for speaker diarization')
+}).optional(),
+  "notification_config": zod.array(zod.object({
+  "url": zod.string().describe('The url to which a notification message will be sent upon\ncompletion of the job. The job `id` and `status` are added\nas query parameters, and any combination of the job inputs\nand outputs can be included by listing them in `contents`.\n\nIf `contents` is empty, the body of the request will be\nempty.\n\nIf only one item is listed, it will be sent as the body of\nthe request with `Content-Type` set to an appropriate value\nsuch as `application/octet-stream` or `application/json`.\n\nIf multiple items are listed they will be sent as named file\nattachments using the multipart content type.\n\nIf `contents` is not specified, the `transcript` item will\nbe sent as a file attachment named `data_file`, for\nbackwards compatibility.\n\nIf the job was rejected or failed during processing, that\nwill be indicated by the status, and any output items that\nare not available as a result will be omitted. The body\nformatting rules will still be followed as if all items were\navailable.\n\nThe user-agent header is set to `Speechmatics-API/2.0`, or\n`Speechmatics API V2` in older API versions.\n'),
+  "contents": zod.array(zod.enum(['jobinfo', 'transcript', 'transcript.json-v2', 'transcript.txt', 'transcript.srt', 'alignment', 'alignment.word_start_and_end', 'alignment.one_per_line', 'data', 'text'])).optional().describe('Specifies a list of items to be attached to the notification message. When multiple items are requested, they are included as named file attachments.'),
+  "method": zod.enum(['post', 'put']).optional().describe('The method to be used with http and https urls. The default is post.'),
+  "auth_headers": zod.array(zod.string()).optional().describe('A list of additional headers to be added to the notification request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token.')
+})).optional(),
+  "tracking": zod.object({
+  "title": zod.string().optional().describe('The title of the job.'),
+  "reference": zod.string().optional().describe('External system reference.'),
+  "tags": zod.array(zod.string()).optional(),
+  "details": zod.object({
+
+}).optional().describe('Customer-defined JSON structure.')
+}).optional(),
+  "output_config": zod.object({
+  "srt_overrides": zod.object({
+  "max_line_length": zod.number().optional(),
+  "max_lines": zod.number().optional()
+}).optional().describe('Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section.')
+}).optional(),
+  "translation_config": zod.object({
+  "target_languages": zod.array(zod.string()).max(deleteJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax)
+}).optional(),
+  "language_identification_config": zod.object({
+  "expected_languages": zod.array(zod.string()).optional(),
+  "low_confidence_action": zod.enum(['allow', 'reject', 'use_default_language']).optional().describe('Action to take if all of the predicted languages are below the confidence threshold'),
+  "default_language": zod.string().optional()
+}).optional(),
+  "summarization_config": zod.object({
+  "content_type": zod.enum(['auto', 'informative', 'conversational']).optional(),
+  "summary_length": zod.enum(['brief', 'detailed']).optional(),
+  "summary_type": zod.enum(['paragraphs', 'bullets']).optional()
+}).optional(),
+  "sentiment_analysis_config": zod.object({
+
+}).optional(),
+  "topic_detection_config": zod.object({
+  "topics": zod.array(zod.string()).optional()
+}).optional(),
+  "auto_chapters_config": zod.object({
+
+}).optional(),
+  "audio_events_config": zod.object({
+  "types": zod.array(zod.string()).optional()
+}).optional()
+}).optional().describe('JSON object that contains various groups of job configuration\nparameters. Based on the value of `type`, a type-specific object\nsuch as `transcription_config` is required to be present to\nspecify all configuration settings or parameters needed to\nprocess the job inputs as expected.\n\nIf the results of the job are to be forwarded on completion,\n`notification_config` can be provided with a list of callbacks\nto be made; no assumptions should be made about the order in\nwhich they will occur.\n\nCustomer specific job details or metadata can be supplied in\n`tracking`, and this information will be available where\npossible in the job results and in callbacks.\n'),
+  "lang": zod.string().optional().describe('Optional parameter used for backwards compatibility with v1 api'),
+  "errors": zod.array(zod.object({
+  "timestamp": zod.string(),
+  "message": zod.string()
+})).optional().describe('Optional list of errors that have occurred in user interaction, for example: audio could not be fetched or notification could not be sent.')
+}).describe('Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance.')
 })
+
 
 /**
  * @summary Get the data file used as input to a job.
  */
 export const getJobsJobidDataParams = zod.object({
-  jobid: zod.string().describe("ID of the job.")
+  "jobid": zod.string().describe('ID of the job.')
 })
 
 export const getJobsJobidDataResponse = zod.instanceof(File)
+
 
 /**
  * @summary Get the text file used as input to an alignment job.
  */
 export const getJobsJobidTextParams = zod.object({
-  jobid: zod.string().describe("ID of the job.")
+  "jobid": zod.string().describe('ID of the job.')
 })
 
 export const getJobsJobidTextResponse = zod.instanceof(File)
 
+
 /**
- * @summary Get the transcript for a transcription job
+ * @summary Get the transcript for a transcription job.
  */
 export const getJobsJobidTranscriptParams = zod.object({
-  jobid: zod.string().describe("ID of the job.")
+  "jobid": zod.string().describe('ID of the job.')
 })
 
 export const getJobsJobidTranscriptQueryParams = zod.object({
-  format: zod
-    .enum(["json-v2", "txt", "srt"])
-    .optional()
-    .describe("The transcription format (by default the `json-v2` format is returned).")
+  "format": zod.enum(['json-v2', 'txt', 'srt']).optional().describe('The transcription format (by default the `json-v2` format is returned).')
 })
 
-export const getJobsJobidTranscriptResponseJobDurationMin = 0
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMin = 0
+export const getJobsJobidTranscriptResponseJobDurationMin = 0;
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMin = 0;
 
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMax = 1
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp =
-  /^(.|all)$/
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigChannelDiarizationLabelsItemRegExp =
-  /^[A-Za-z0-9._]+$/
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMax = 1;
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp = new RegExp('^(.|all)$');
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigChannelDiarizationLabelsItemRegExp = new RegExp('^[A-Za-z0-9._]+$');
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0;
 
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1;
+export const getJobsJobidTranscriptResponseResultsItemVolumeMin = 0;
 
-export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
-export const getJobsJobidTranscriptResponseResultsItemVolumeMin = 0
+export const getJobsJobidTranscriptResponseResultsItemVolumeMax = 100;
 
-export const getJobsJobidTranscriptResponseResultsItemVolumeMax = 100
 
 export const getJobsJobidTranscriptResponse = zod.object({
-  format: zod.string().describe("Speechmatics JSON transcript format version number."),
-  job: zod
-    .object({
-      created_at: zod.string().datetime({}).describe("The UTC date time the job was created."),
-      data_name: zod.string().describe("Name of data file submitted for job."),
-      duration: zod
-        .number()
-        .min(getJobsJobidTranscriptResponseJobDurationMin)
-        .describe("The data file audio duration (in seconds)."),
-      id: zod.string().describe("The unique id assigned to the job."),
-      text_name: zod
-        .string()
-        .optional()
-        .describe("Name of the text file submitted to be aligned to audio."),
-      tracking: zod
-        .object({
-          title: zod.string().optional().describe("The title of the job."),
-          reference: zod.string().optional().describe("External system reference."),
-          tags: zod.array(zod.string()).optional(),
-          details: zod.object({}).optional().describe("Customer-defined JSON structure.")
-        })
-        .optional()
-    })
-    .describe("Summary information about an ASR job, to support identification and tracking."),
-  metadata: zod
-    .object({
-      created_at: zod
-        .string()
-        .datetime({})
-        .describe("The UTC date time the transcription output was created."),
-      type: zod.enum(["alignment", "transcription"]),
-      transcription_config: zod
-        .object({
-          language: zod
-            .string()
-            .describe(
-              "Language model to process the audio input, normally specified as an ISO language code"
-            ),
-          domain: zod
-            .string()
-            .optional()
-            .describe(
-              'Request a specialized model based on \'language\' but optimized for a particular field, e.g. "finance" or "medical".'
-            ),
-          output_locale: zod
-            .string()
-            .optional()
-            .describe(
-              "Language locale to be used when generating the transcription output, normally specified as an ISO language code"
-            ),
-          operating_point: zod.enum(["standard", "enhanced"]).optional(),
-          additional_vocab: zod
-            .array(
-              zod.object({
-                content: zod.string(),
-                sounds_like: zod.array(zod.string()).optional()
-              })
-            )
-            .optional()
-            .describe(
-              "List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition."
-            ),
-          punctuation_overrides: zod
-            .object({
-              sensitivity: zod
-                .number()
-                .min(
-                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMin
-                )
-                .max(
-                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMax
-                )
-                .optional()
-                .describe(
-                  "Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5."
-                ),
-              permitted_marks: zod
-                .array(
-                  zod
-                    .string()
-                    .regex(
-                      getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp
-                    )
-                )
-                .optional()
-                .describe(
-                  "The punctuation marks which the client is prepared to accept in transcription output, or the special value 'all' (the default). Unsupported marks are ignored. This value is used to guide the transcription process."
-                )
-            })
-            .optional()
-            .describe("Control punctuation settings."),
-          diarization: zod
-            .enum(["none", "speaker", "channel"])
-            .optional()
-            .describe(
-              "Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript."
-            ),
-          channel_diarization_labels: zod
-            .array(
-              zod
-                .string()
-                .regex(
-                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigChannelDiarizationLabelsItemRegExp
-                )
-            )
-            .optional()
-            .describe("Transcript labels to use when using collating separate input channels."),
-          enable_entities: zod
-            .boolean()
-            .optional()
-            .describe(
-              "Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million')."
-            ),
-          max_delay_mode: zod
-            .enum(["fixed", "flexible"])
-            .optional()
-            .describe(
-              "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
-            ),
-          audio_filtering_config: zod
-            .object({
-              volume_threshold: zod
-                .number()
-                .min(
-                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
-                )
-                .max(
-                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
-                )
-                .optional()
-                .describe(
-                  "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
-                )
-            })
-            .optional()
-            .describe("Configuration for limiting the transcription of quiet audio."),
-          transcript_filtering_config: zod
-            .object({
-              remove_disfluencies: zod
-                .boolean()
-                .optional()
-                .describe(
-                  "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
-                ),
-              replacements: zod
-                .array(
-                  zod.object({
-                    from: zod.string(),
-                    to: zod.string()
-                  })
-                )
-                .optional()
-                .describe(
-                  "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
-                )
-            })
-            .optional()
-            .describe("Configuration for applying filtering to the transcription"),
-          speaker_diarization_config: zod
-            .object({
-              prefer_current_speaker: zod
-                .boolean()
-                .optional()
-                .describe(
-                  'If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."'
-                ),
-              speaker_sensitivity: zod
-                .number()
-                .min(
-                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin
-                )
-                .max(
-                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax
-                )
-                .optional()
-                .describe(
-                  "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
-                ),
-              get_speakers: zod
-                .boolean()
-                .optional()
-                .describe(
-                  "If true, speaker identifiers will be returned at the end of transcript."
-                ),
-              speakers: zod
-                .array(
-                  zod.object({
-                    label: zod
-                      .string()
-                      .min(1)
-                      .describe(
-                        "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
-                      ),
-                    speaker_identifiers: zod
-                      .array(zod.string().describe("Speaker identifiers."))
-                      .min(1)
-                  })
-                )
-                .optional()
-                .describe(
-                  "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
-                )
-            })
-            .optional()
-            .describe("Configuration for speaker diarization")
-        })
-        .optional(),
-      orchestrator_version: zod
-        .string()
-        .optional()
-        .describe("The engine version used to generate transcription output."),
-      translation_errors: zod
-        .array(
-          zod.object({
-            type: zod.enum(["translation_failed", "unsupported_translation_pair"]).optional(),
-            message: zod.string().optional().describe("Human readable error message")
-          })
-        )
-        .optional()
-        .describe("List of errors that occurred in the translation stage."),
-      summarization_errors: zod
-        .array(
-          zod.object({
-            type: zod.enum(["summarization_failed", "unsupported_language"]).optional(),
-            message: zod.string().optional().describe("Human readable error message")
-          })
-        )
-        .optional()
-        .describe("List of errors that occurred in the summarization stage."),
-      sentiment_analysis_errors: zod
-        .array(
-          zod.object({
-            type: zod.enum(["sentiment_analysis_failed", "unsupported_language"]).optional(),
-            message: zod.string().optional().describe("Human readable error message")
-          })
-        )
-        .optional()
-        .describe("List of errors that occurred in the sentiment analysis stage."),
-      topic_detection_errors: zod
-        .array(
-          zod.object({
-            type: zod
-              .enum([
-                "topic_detection_failed",
-                "unsupported_list_of_topics",
-                "unsupported_language"
-              ])
-              .optional(),
-            message: zod.string().optional().describe("Human readable error message")
-          })
-        )
-        .optional()
-        .describe("List of errors that occurred in the topic detection stage."),
-      auto_chapters_errors: zod
-        .array(
-          zod.object({
-            type: zod.enum(["auto_chapters_failed", "unsupported_language"]).optional(),
-            message: zod.string().optional().describe("Human readable error message")
-          })
-        )
-        .optional()
-        .describe("List of errors that occurred in the auto chapters stage."),
-      alignment_config: zod
-        .object({
-          language: zod.string()
-        })
-        .optional(),
-      output_config: zod
-        .object({
-          srt_overrides: zod
-            .object({
-              max_line_length: zod.number().optional(),
-              max_lines: zod.number().optional()
-            })
-            .optional()
-            .describe(
-              "Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section."
-            )
-        })
-        .optional(),
-      language_pack_info: zod
-        .object({
-          language_description: zod
-            .string()
-            .optional()
-            .describe("Full descriptive name of the language, e.g. 'Japanese'."),
-          word_delimiter: zod.string().describe("The character to use to separate words."),
-          writing_direction: zod
-            .enum(["left-to-right", "right-to-left"])
-            .optional()
-            .describe("The direction that words in the language should be written and read in."),
-          itn: zod
-            .boolean()
-            .optional()
-            .describe(
-              "Whether or not ITN (inverse text normalization) is available for the language pack."
-            ),
-          adapted: zod
-            .boolean()
-            .optional()
-            .describe(
-              "Whether or not language model adaptation has been applied to the language pack."
-            )
-        })
-        .optional()
-        .describe("Properties of the language pack."),
-      language_identification: zod
-        .object({
-          results: zod
-            .array(
-              zod.object({
-                alternatives: zod
-                  .array(
-                    zod.object({
-                      language: zod.string().optional(),
-                      confidence: zod.number().optional()
-                    })
-                  )
-                  .optional(),
-                start_time: zod.number().optional(),
-                end_time: zod.number().optional()
-              })
-            )
-            .optional(),
-          error: zod
-            .enum([
-              "LOW_CONFIDENCE",
-              "UNEXPECTED_LANGUAGE",
-              "NO_SPEECH",
-              "FILE_UNREADABLE",
-              "OTHER"
-            ])
-            .optional(),
-          message: zod.string().optional()
-        })
-        .optional()
-    })
-    .describe(
-      "Summary information about the output from an ASR job, comprising the job type and configuration parameters used when generating the output."
-    ),
-  results: zod.array(
-    zod
-      .object({
-        channel: zod.string().optional(),
-        start_time: zod.number(),
-        end_time: zod.number(),
-        volume: zod
-          .number()
-          .min(getJobsJobidTranscriptResponseResultsItemVolumeMin)
-          .max(getJobsJobidTranscriptResponseResultsItemVolumeMax)
-          .optional()
-          .describe(
-            "An indication of the volume of audio across the time period the word was spoken."
-          ),
-        is_eos: zod
-          .boolean()
-          .optional()
-          .describe(
-            "Whether the punctuation mark is an end of sentence character. Only applies to punctuation marks."
-          ),
-        type: zod
-          .enum(["word", "punctuation", "entity"])
-          .describe(
-            "New types of items may appear without being requested; unrecognized item types can be ignored."
-          ),
-        written_form: zod
-          .array(
-            zod
-              .object({
-                alternatives: zod.array(
-                  zod
-                    .object({
-                      content: zod.string(),
-                      confidence: zod.number(),
-                      language: zod.string(),
-                      display: zod
-                        .object({
-                          direction: zod.enum(["ltr", "rtl"])
-                        })
-                        .optional(),
-                      speaker: zod.string().optional(),
-                      tags: zod.array(zod.string()).optional()
-                    })
-                    .describe("List of possible job output item values, ordered by likelihood.")
-                ),
-                end_time: zod.number(),
-                start_time: zod.number(),
-                type: zod
-                  .enum(["word"])
-                  .describe(
-                    "What kind of object this is. See #/Definitions/RecognitionResult for definitions of the enums."
-                  )
-              })
-              .describe(
-                "A WrittenFormRecognitionResult describes a simple object which consists solely of 'word' type entries with a start and end time. It can occur only inside the written_form property of a full RecognitionResult\""
-              )
-          )
-          .optional(),
-        spoken_form: zod
-          .array(
-            zod
-              .object({
-                alternatives: zod.array(
-                  zod
-                    .object({
-                      content: zod.string(),
-                      confidence: zod.number(),
-                      language: zod.string(),
-                      display: zod
-                        .object({
-                          direction: zod.enum(["ltr", "rtl"])
-                        })
-                        .optional(),
-                      speaker: zod.string().optional(),
-                      tags: zod.array(zod.string()).optional()
-                    })
-                    .describe("List of possible job output item values, ordered by likelihood.")
-                ),
-                end_time: zod.number(),
-                start_time: zod.number(),
-                type: zod
-                  .enum(["word", "punctuation"])
-                  .describe(
-                    "What kind of object this is. See #/Definitions/RecognitionResult for definitions of the enums."
-                  )
-              })
-              .describe(
-                "A SpokenFormRecognitionResult describes a simple object which consists solely of 'word' or 'punctuation' type entries with a start and end time. It can occur only inside the spoken_form property of a full \"RecognitionResult\""
-              )
-          )
-          .optional(),
-        alternatives: zod
-          .array(
-            zod
-              .object({
-                content: zod.string(),
-                confidence: zod.number(),
-                language: zod.string(),
-                display: zod
-                  .object({
-                    direction: zod.enum(["ltr", "rtl"])
-                  })
-                  .optional(),
-                speaker: zod.string().optional(),
-                tags: zod.array(zod.string()).optional()
-              })
-              .describe("List of possible job output item values, ordered by likelihood.")
-          )
-          .optional(),
-        attaches_to: zod
-          .enum(["previous", "next", "both", "none"])
-          .optional()
-          .describe(
-            "Attachment direction of the punctuation mark. This only applies to punctuation marks. This information can be used to produce a well-formed text representation by placing the `word_delimiter` from `language_pack_info` on the correct side of the punctuation mark."
-          )
-      })
-      .describe(
-        "An ASR job output item. The primary item types are `word` and `punctuation`. Other item types may be present, for example to provide semantic information of different forms."
-      )
-  ),
-  speakers: zod
-    .array(
-      zod.object({
-        label: zod.string().min(1).describe("Speaker label."),
-        speaker_identifiers: zod.array(zod.string().describe("Speaker identifiers.")).min(1)
-      })
-    )
-    .optional()
-    .describe("List of unique speaker identifiers detected in the transcript."),
-  translations: zod
-    .record(
-      zod.string(),
-      zod.array(
-        zod.object({
-          start_time: zod.number().optional(),
-          end_time: zod.number().optional(),
-          content: zod.string().optional(),
-          speaker: zod.string().optional(),
-          channel: zod.string().optional()
-        })
-      )
-    )
-    .optional()
-    .describe(
-      "Translations of the transcript into other languages. It is a map of ISO language codes to arrays of translated sentences. Configured using `translation_config`."
-    ),
-  summary: zod
-    .object({
-      content: zod.string().optional()
-    })
-    .optional()
-    .describe("Summary of the transcript, configured using `summarization_config`."),
-  sentiment_analysis: zod
-    .object({
-      sentiment_analysis: zod
-        .object({
-          segments: zod
-            .array(
-              zod
-                .object({
-                  text: zod
-                    .string()
-                    .optional()
-                    .describe("Represents the transcript of the analysed segment"),
-                  sentiment: zod
-                    .string()
-                    .optional()
-                    .describe(
-                      "The assigned sentiment to the segment, which can be positive, neutral or negative"
-                    ),
-                  start_time: zod
-                    .number()
-                    .optional()
-                    .describe(
-                      "The timestamp corresponding to the beginning of the transcription segment"
-                    ),
-                  end_time: zod
-                    .number()
-                    .optional()
-                    .describe(
-                      "The timestamp corresponding to the end of the transcription segment"
-                    ),
-                  speaker: zod
-                    .string()
-                    .optional()
-                    .describe(
-                      "The speaker label for the segment, if speaker diarization is enabled"
-                    ),
-                  channel: zod
-                    .string()
-                    .optional()
-                    .describe(
-                      "The channel label for the segment, if channel diarization is enabled"
-                    ),
-                  confidence: zod
-                    .number()
-                    .optional()
-                    .describe("A confidence score in the range of 0-1")
-                })
-                .describe("Represents a segment of text and its associated sentiment.")
-            )
-            .optional()
-            .describe(
-              "An array of objects that represent a segment of text and its associated sentiment."
-            ),
-          summary: zod
-            .object({
-              overall: zod
-                .object({
-                  positive_count: zod.number().optional(),
-                  negative_count: zod.number().optional(),
-                  neutral_count: zod.number().optional()
-                })
-                .optional()
-                .describe(
-                  "Holds the count of sentiment information grouped by positive, neutral and negative."
-                ),
-              speakers: zod
-                .array(
-                  zod
-                    .object({
-                      speaker: zod.string().optional(),
-                      positive_count: zod.number().optional(),
-                      negative_count: zod.number().optional(),
-                      neutral_count: zod.number().optional()
-                    })
-                    .describe("Holds sentiment information for a specific speaker.")
-                )
-                .optional()
-                .describe(
-                  "An array of objects that represent sentiment data for a specific speaker."
-                ),
-              channels: zod
-                .array(
-                  zod
-                    .object({
-                      channel: zod.string().optional(),
-                      positive_count: zod.number().optional(),
-                      negative_count: zod.number().optional(),
-                      neutral_count: zod.number().optional()
-                    })
-                    .describe("Holds sentiment information for a specific channel.")
-                )
-                .optional()
-                .describe(
-                  "An array of objects that represent sentiment data for a specific channel."
-                )
-            })
-            .optional()
-            .describe(
-              "Holds overall sentiment information, as well as detailed per-speaker and per-channel sentiment data."
-            )
-        })
-        .optional()
-        .describe("Holds the detailed sentiment analysis information.")
-    })
-    .optional()
-    .describe("The main object that holds sentiment analysis data."),
-  topics: zod
-    .object({
-      segments: zod
-        .array(
-          zod
-            .object({
-              text: zod.string().optional(),
-              start_time: zod.number().optional(),
-              end_time: zod.number().optional(),
-              topics: zod
-                .array(
-                  zod
-                    .object({
-                      topic: zod.string().optional()
-                    })
-                    .describe("Represents a topic and its associated information.")
-                )
-                .optional()
-            })
-            .describe("Represents a segment of text and its associated topic information.")
-        )
-        .optional()
-        .describe(
-          "An array of objects that represent a segment of text and its associated topic information."
-        ),
-      summary: zod
-        .object({
-          overall: zod
-            .record(zod.string(), zod.number())
-            .optional()
-            .describe("Holds the count of topics detected.")
-        })
-        .optional()
-        .describe("Holds overall information on the topics detected.")
-    })
-    .optional()
-    .describe("Main object that holds topic detection results."),
-  chapters: zod
-    .array(
-      zod.object({
-        title: zod.string().optional().describe("The auto-generated title for the chapter"),
-        summary: zod
-          .string()
-          .optional()
-          .describe("An auto-generated paragraph-style, short summary of the chapter"),
-        start_time: zod
-          .number()
-          .optional()
-          .describe("The start time of the chapter in the audio file"),
-        end_time: zod.number().optional().describe("The end time of the chapter in the audio file")
-      })
-    )
-    .optional()
-    .describe("An array of objects that represent summarized chapters of the transcript"),
-  audio_events: zod
-    .array(
-      zod.object({
-        type: zod.string().optional().describe("Kind of audio event. E.g. music"),
-        start_time: zod
-          .number()
-          .optional()
-          .describe("Time (in seconds) at which the audio event starts"),
-        end_time: zod
-          .number()
-          .optional()
-          .describe("Time (in seconds) at which the audio event ends"),
-        confidence: zod
-          .number()
-          .optional()
-          .describe("Prediction confidence associated with this event"),
-        channel: zod.string().optional().describe("Input channel this event occurred on")
-      })
-    )
-    .optional()
-    .describe("Timestamped audio events, only set if `audio_events_config` is in the config"),
-  audio_event_summary: zod
-    .object({
-      overall: zod
-        .record(
-          zod.string(),
-          zod
-            .object({
-              total_duration: zod
-                .number()
-                .optional()
-                .describe("Total duration (in seconds) of all audio events of this type"),
-              count: zod.number().optional().describe("Number of events of this type")
-            })
-            .describe("Summary statistics for this audio event type")
-        )
-        .optional(),
-      channels: zod
-        .record(
-          zod.string(),
-          zod.record(
-            zod.string(),
-            zod
-              .object({
-                total_duration: zod
-                  .number()
-                  .optional()
-                  .describe("Total duration (in seconds) of all audio events of this type"),
-                count: zod.number().optional().describe("Number of events of this type")
-              })
-              .describe("Summary statistics for this audio event type")
-          )
-        )
-        .optional()
-        .describe("Summary keyed by channel, only set if channel diarization is enabled")
-    })
-    .optional()
-    .describe("Summary statistics per event type, keyed by `type`, e.g. music")
+  "format": zod.string().describe('Speechmatics JSON transcript format version number.'),
+  "job": zod.object({
+  "created_at": zod.string().datetime({}).describe('The UTC date time the job was created.'),
+  "data_name": zod.string().describe('Name of data file submitted for job.'),
+  "duration": zod.number().min(getJobsJobidTranscriptResponseJobDurationMin).describe('The data file audio duration (in seconds).'),
+  "id": zod.string().describe('The unique id assigned to the job.'),
+  "text_name": zod.string().optional().describe('Name of the text file submitted to be aligned to audio.'),
+  "tracking": zod.object({
+  "title": zod.string().optional().describe('The title of the job.'),
+  "reference": zod.string().optional().describe('External system reference.'),
+  "tags": zod.array(zod.string()).optional(),
+  "details": zod.object({
+
+}).optional().describe('Customer-defined JSON structure.')
+}).optional()
+}).describe('Summary information about an ASR job, to support identification and tracking.'),
+  "metadata": zod.object({
+  "created_at": zod.string().datetime({}).describe('The UTC date time the transcription output was created.'),
+  "type": zod.enum(['alignment', 'transcription']),
+  "transcription_config": zod.object({
+  "language": zod.string().describe('Language model to process the audio input, normally specified as an ISO language code'),
+  "domain": zod.string().optional().describe('Request a specialized model based on \'language\' but optimized for a particular field, e.g. \"finance\" or \"medical\".'),
+  "output_locale": zod.string().optional().describe('Language locale to be used when generating the transcription output, normally specified as an ISO language code'),
+  "operating_point": zod.enum(['standard', 'enhanced']).optional(),
+  "additional_vocab": zod.array(zod.object({
+  "content": zod.string(),
+  "sounds_like": zod.array(zod.string()).optional()
+})).optional().describe('List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition.'),
+  "punctuation_overrides": zod.object({
+  "sensitivity": zod.number().min(getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMin).max(getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesSensitivityMax).optional().describe('Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5.'),
+  "permitted_marks": zod.array(zod.string().regex(getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuationOverridesPermittedMarksItemRegExp)).optional().describe('The punctuation marks which the client is prepared to accept in transcription output, or the special value \'all\' (the default). Unsupported marks are ignored. This value is used to guide the transcription process.')
+}).optional().describe('Control punctuation settings.'),
+  "diarization": zod.enum(['none', 'speaker', 'channel']).optional().describe('Specify whether speaker or channel labels are added to the transcript.\nThe default is `none`.\n  - **none**: no speaker or channel labels are added.\n  - **speaker**: speaker attribution is performed based on acoustic matching;\n             all input channels are mixed into a single stream for processing.\n  - **channel**: multiple input channels are processed individually and collated\n            into a single transcript.'),
+  "channel_diarization_labels": zod.array(zod.string().regex(getJobsJobidTranscriptResponseMetadataTranscriptionConfigChannelDiarizationLabelsItemRegExp)).optional().describe('Transcript labels to use when using collating separate input channels.'),
+  "enable_entities": zod.boolean().optional().describe('Include additional \'entity\' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the \'content\' field. The entities contain a \'spoken_form\' field, which can be used in place of the corresponding \'word\' type results, in case a spoken form is preferred to a written form. They also contain a \'written_form\', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as \'one hundred million dollars\' and \'$100 million\').'),
+  "max_delay_mode": zod.enum(['fixed', 'flexible']).optional().describe('Whether or not to enable flexible endpointing and allow the entity to continue to be spoken.'),
+  "transcript_filtering_config": zod.object({
+  "remove_disfluencies": zod.boolean().optional().describe('If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as \'disfluency\'.'),
+  "replacements": zod.array(zod.object({
+  "from": zod.string(),
+  "to": zod.string()
+})).optional().describe('A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text.')
+}).optional().describe('Configuration for applying filtering to the transcription'),
+  "speaker_diarization_config": zod.object({
+  "prefer_current_speaker": zod.boolean().optional().describe('If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section.\"'),
+  "speaker_sensitivity": zod.number().min(getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin).max(getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax).optional().describe('Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5.')
+}).optional().describe('Configuration for speaker diarization')
+}).optional(),
+  "translation_errors": zod.array(zod.object({
+  "type": zod.enum(['translation_failed', 'unsupported_translation_pair']).optional(),
+  "message": zod.string().optional().describe('Human readable error message')
+})).optional().describe('List of errors that occurred in the translation stage.'),
+  "summarization_errors": zod.array(zod.object({
+  "type": zod.enum(['summarization_failed', 'unsupported_language']).optional(),
+  "message": zod.string().optional().describe('Human readable error message')
+})).optional().describe('List of errors that occurred in the summarization stage.'),
+  "sentiment_analysis_errors": zod.array(zod.object({
+  "type": zod.enum(['sentiment_analysis_failed', 'unsupported_language']).optional(),
+  "message": zod.string().optional().describe('Human readable error message')
+})).optional().describe('List of errors that occurred in the sentiment analysis stage.'),
+  "topic_detection_errors": zod.array(zod.object({
+  "type": zod.enum(['topic_detection_failed', 'unsupported_list_of_topics', 'unsupported_language']).optional(),
+  "message": zod.string().optional().describe('Human readable error message')
+})).optional().describe('List of errors that occurred in the topic detection stage.'),
+  "auto_chapters_errors": zod.array(zod.object({
+  "type": zod.enum(['auto_chapters_failed', 'unsupported_language']).optional(),
+  "message": zod.string().optional().describe('Human readable error message')
+})).optional().describe('List of errors that occurred in the auto chapters stage.'),
+  "alignment_config": zod.object({
+  "language": zod.string()
+}).optional(),
+  "output_config": zod.object({
+  "srt_overrides": zod.object({
+  "max_line_length": zod.number().optional(),
+  "max_lines": zod.number().optional()
+}).optional().describe('Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section.')
+}).optional(),
+  "language_pack_info": zod.object({
+  "language_description": zod.string().optional().describe('Full descriptive name of the language, e.g. \'Japanese\'.'),
+  "word_delimiter": zod.string().describe('The character to use to separate words.'),
+  "writing_direction": zod.enum(['left-to-right', 'right-to-left']).optional().describe('The direction that words in the language should be written and read in.'),
+  "itn": zod.boolean().optional().describe('Whether or not ITN (inverse text normalization) is available for the language pack.'),
+  "adapted": zod.boolean().optional().describe('Whether or not language model adaptation has been applied to the language pack.')
+}).optional().describe('Properties of the language pack.'),
+  "language_identification": zod.object({
+  "results": zod.array(zod.object({
+  "alternatives": zod.array(zod.object({
+  "language": zod.string().optional(),
+  "confidence": zod.number().optional()
+})).optional(),
+  "start_time": zod.number().optional(),
+  "end_time": zod.number().optional()
+})).optional(),
+  "error": zod.enum(['LOW_CONFIDENCE', 'UNEXPECTED_LANGUAGE', 'NO_SPEECH', 'FILE_UNREADABLE', 'OTHER']).optional(),
+  "message": zod.string().optional()
+}).optional(),
+  "orchestrator_version": zod.string().optional().describe('Orchestrator version in PEP 440 Format or set to \'version_not_found\' as default.')
+}).describe('Summary information about the output from an ASR job, comprising the job type and configuration parameters used when generating the output.'),
+  "results": zod.array(zod.object({
+  "channel": zod.string().optional(),
+  "start_time": zod.number(),
+  "end_time": zod.number(),
+  "volume": zod.number().min(getJobsJobidTranscriptResponseResultsItemVolumeMin).max(getJobsJobidTranscriptResponseResultsItemVolumeMax).optional().describe('An indication of the volume of audio across the time period the word was spoken.'),
+  "is_eos": zod.boolean().optional().describe('Whether the punctuation mark is an end of sentence character. Only applies to punctuation marks.'),
+  "type": zod.enum(['word', 'punctuation', 'entity']).describe('New types of items may appear without being requested; unrecognized item types can be ignored.'),
+  "written_form": zod.array(zod.object({
+  "alternatives": zod.array(zod.object({
+  "content": zod.string(),
+  "confidence": zod.number(),
+  "language": zod.string(),
+  "display": zod.object({
+  "direction": zod.enum(['ltr', 'rtl'])
+}).optional(),
+  "speaker": zod.string().optional(),
+  "tags": zod.array(zod.string()).optional()
+}).describe('List of possible job output item values, ordered by likelihood.')),
+  "end_time": zod.number(),
+  "start_time": zod.number(),
+  "type": zod.enum(['word']).describe('What kind of object this is. See #/Definitions/RecognitionResult for definitions of the enums.')
+}).describe('A WrittenFormRecognitionResult describes a simple object which consists solely of \'word\' type entries with a start and end time. It can occur only inside the written_form property of a full RecognitionResult\"')).optional(),
+  "spoken_form": zod.array(zod.object({
+  "alternatives": zod.array(zod.object({
+  "content": zod.string(),
+  "confidence": zod.number(),
+  "language": zod.string(),
+  "display": zod.object({
+  "direction": zod.enum(['ltr', 'rtl'])
+}).optional(),
+  "speaker": zod.string().optional(),
+  "tags": zod.array(zod.string()).optional()
+}).describe('List of possible job output item values, ordered by likelihood.')),
+  "end_time": zod.number(),
+  "start_time": zod.number(),
+  "type": zod.enum(['word', 'punctuation']).describe('What kind of object this is. See #/Definitions/RecognitionResult for definitions of the enums.')
+}).describe('A SpokenFormRecognitionResult describes a simple object which consists solely of \'word\' or \'punctuation\' type entries with a start and end time. It can occur only inside the spoken_form property of a full \"RecognitionResult\"')).optional(),
+  "alternatives": zod.array(zod.object({
+  "content": zod.string(),
+  "confidence": zod.number(),
+  "language": zod.string(),
+  "display": zod.object({
+  "direction": zod.enum(['ltr', 'rtl'])
+}).optional(),
+  "speaker": zod.string().optional(),
+  "tags": zod.array(zod.string()).optional()
+}).describe('List of possible job output item values, ordered by likelihood.')).optional(),
+  "attaches_to": zod.enum(['previous', 'next', 'both', 'none']).optional().describe('Attachment direction of the punctuation mark. This only applies to punctuation marks. This information can be used to produce a well-formed text representation by placing the `word_delimiter` from `language_pack_info` on the correct side of the punctuation mark.')
+}).describe('An ASR job output item. The primary item types are `word` and `punctuation`. Other item types may be present, for example to provide semantic information of different forms.')),
+  "translations": zod.record(zod.string(), zod.array(zod.object({
+  "start_time": zod.number().optional(),
+  "end_time": zod.number().optional(),
+  "content": zod.string().optional(),
+  "speaker": zod.string().optional(),
+  "channel": zod.string().optional()
+}))).optional().describe('Translations of the transcript into other languages. It is a map of ISO language codes to arrays of translated sentences. Configured using `translation_config`.'),
+  "summary": zod.object({
+  "content": zod.string().optional()
+}).optional().describe('Summary of the transcript, configured using `summarization_config`.'),
+  "sentiment_analysis": zod.object({
+  "sentiment_analysis": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_time": zod.number().optional(),
+  "end_time": zod.number().optional(),
+  "sentiment": zod.string().optional(),
+  "speaker": zod.string().optional(),
+  "channel": zod.string().optional(),
+  "confidence": zod.number().optional()
+}).describe('Represents a segment of text and its associated sentiment.')).optional().describe('An array of objects that represent a segment of text and its associated sentiment.'),
+  "summary": zod.object({
+  "overall": zod.object({
+  "positive_count": zod.number().optional(),
+  "negative_count": zod.number().optional(),
+  "neutral_count": zod.number().optional()
+}).optional().describe('Holds the count of sentiment information grouped by positive, neutral and negative.'),
+  "speakers": zod.array(zod.object({
+  "speaker": zod.string().optional(),
+  "positive_count": zod.number().optional(),
+  "negative_count": zod.number().optional(),
+  "neutral_count": zod.number().optional()
+}).describe('Holds sentiment information for a specific speaker.')).optional().describe('An array of objects that represent sentiment data for a specific speaker.'),
+  "channels": zod.array(zod.object({
+  "channel": zod.string().optional(),
+  "positive_count": zod.number().optional(),
+  "negative_count": zod.number().optional(),
+  "neutral_count": zod.number().optional()
+}).describe('Holds sentiment information for a specific channel.')).optional().describe('An array of objects that represent sentiment data for a specific channel.')
+}).optional().describe('Holds overall sentiment information, as well as detailed per-speaker and per-channel sentiment data.')
+}).optional().describe('Holds the detailed sentiment analysis information.')
+}).optional().describe('The main object that holds sentiment analysis data.'),
+  "topics": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_time": zod.number().optional(),
+  "end_time": zod.number().optional(),
+  "topics": zod.array(zod.object({
+  "topic": zod.string().optional()
+}).describe('Represents a topic and its associated information.')).optional()
+}).describe('Represents a segment of text and its associated topic information.')).optional().describe('An array of objects that represent a segment of text and its associated topic information.'),
+  "summary": zod.object({
+  "overall": zod.record(zod.string(), zod.number()).optional().describe('Holds the count of topics detected.')
+}).optional().describe('Holds overall information on the topics detected.')
+}).optional().describe('Main object that holds topic detection results.'),
+  "chapters": zod.array(zod.object({
+  "title": zod.string().optional(),
+  "summary": zod.string().optional(),
+  "start_time": zod.number().optional(),
+  "end_time": zod.number().optional()
+})).optional().describe('An array of objects that represent summarized chapters of the transcript'),
+  "audio_events": zod.array(zod.object({
+  "type": zod.string().optional().describe('Kind of audio event. E.g. music'),
+  "start_time": zod.number().optional().describe('Time (in seconds) at which the audio event starts'),
+  "end_time": zod.number().optional().describe('Time (in seconds) at which the audio event ends'),
+  "confidence": zod.number().optional().describe('Prediction confidence associated with this event'),
+  "channel": zod.string().optional().describe('Input channel this event occurred on')
+})).optional().describe('Timestamped audio events, only set if `audio_events_config` is in the config'),
+  "audio_event_summary": zod.object({
+  "overall": zod.record(zod.string(), zod.object({
+  "total_duration": zod.number().optional().describe('Total duration (in seconds) of all audio events of this type'),
+  "count": zod.number().optional().describe('Number of events of this type')
+}).describe('Summary statistics for this audio event type')).optional(),
+  "channels": zod.record(zod.string(), zod.record(zod.string(), zod.object({
+  "total_duration": zod.number().optional().describe('Total duration (in seconds) of all audio events of this type'),
+  "count": zod.number().optional().describe('Number of events of this type')
+}).describe('Summary statistics for this audio event type'))).optional().describe('Summary keyed by channel, only set if channel diarization is enabled')
+}).optional().describe('Summary statistics per event type, keyed by `type`, e.g. music')
 })
+
 
 /**
  * @summary Get the aligned text file for an alignment job.
  */
 export const getJobsJobidAlignmentParams = zod.object({
-  jobid: zod.string().describe("ID of the job.")
+  "jobid": zod.string().describe('ID of the job.')
 })
 
 export const getJobsJobidAlignmentQueryParams = zod.object({
-  tags: zod
-    .enum(["word_start_and_end", "one_per_line"])
-    .optional()
-    .describe(
-      "Control how timing information is added to the text file provided as input to the alignment job. If set to `word_start_and_end`, SGML tags are inserted at the start and end of each word, for example <time=0.41>. If set to `one_per_line` square bracket tags are inserted at the start of each line, for example `[00:00:00.4] `. The default is `word_start_and_end`."
-    )
+  "tags": zod.enum(['word_start_and_end', 'one_per_line']).optional().describe('Control how timing information is added to the text file provided as input to the alignment job. If set to `word_start_and_end`, SGML tags are inserted at the start and end of each word, for example <time=0.41>. If set to `one_per_line` square bracket tags are inserted at the start of each line, for example `[00:00:00.4] `. The default is `word_start_and_end`.')
 })
 
 export const getJobsJobidAlignmentResponse = zod.instanceof(File)
+
 
 /**
  * @summary Get the log file for a job.
  */
 export const getJobsJobidLogParams = zod.object({
-  jobid: zod.string().describe("ID of the job.")
+  "jobid": zod.string().describe('ID of the job.')
 })
 
 export const getJobsJobidLogResponse = zod.instanceof(File)
 
-/**
- * Get signed urls for data files associated to the job.
- * @summary Get object URLs
- */
-export const getJobsJobidObjectUrlsParams = zod.object({
-  jobid: zod.string().describe("ID of the job.")
-})
-
-export const getJobsJobidObjectUrlsQueryParams = zod.object({
-  ttl: zod.number().describe("Time to live in seconds for the signed URLs"),
-  url_for: zod.array(zod.enum(["data", "audio_mp3", "transcript"]))
-})
-
-export const getJobsJobidObjectUrlsResponse = zod.object({
-  data: zod.string().optional(),
-  audio_mp3: zod.string().optional(),
-  transcript: zod.string().optional()
-})
 
 /**
- * @summary Get usage statistics
+ * @summary Get the usage statistics.
  */
 export const getUsageQueryParams = zod.object({
-  since: zod
-    .string()
-    .date()
-    .optional()
-    .describe(
-      "Include usage after the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`."
-    ),
-  until: zod
-    .string()
-    .date()
-    .optional()
-    .describe(
-      "Include usage before the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`."
-    )
+  "since": zod.string().date().optional().describe('Include usage after the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`.'),
+  "until": zod.string().date().optional().describe('Include usage before the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`.')
 })
 
 export const getUsageResponse = zod.object({
-  since: zod.string().datetime({}),
-  until: zod.string().datetime({}),
-  summary: zod.array(
-    zod.object({
-      mode: zod.enum(["batch"]),
-      type: zod.enum(["alignment", "transcription"]),
-      language: zod.string().optional(),
-      operating_point: zod.enum(["standard", "enhanced"]).optional(),
-      count: zod.number().describe("Total number of billable jobs in this cycle"),
-      duration_hrs: zod.number().describe("Total duration of billable jobs (in hours) this cycle")
-    })
-  ),
-  details: zod.array(
-    zod.object({
-      mode: zod.enum(["batch"]),
-      type: zod.enum(["alignment", "transcription"]),
-      language: zod.string().optional(),
-      operating_point: zod.enum(["standard", "enhanced"]).optional(),
-      count: zod.number().describe("Total number of billable jobs in this cycle"),
-      duration_hrs: zod.number().describe("Total duration of billable jobs (in hours) this cycle")
-    })
-  )
+  "since": zod.string().datetime({}),
+  "until": zod.string().datetime({}),
+  "summary": zod.array(zod.object({
+  "mode": zod.enum(['batch']),
+  "type": zod.enum(['alignment', 'transcription']),
+  "language": zod.string().optional(),
+  "operating_point": zod.enum(['standard', 'enhanced']).optional(),
+  "count": zod.number().describe('Total number of billable jobs in this cycle'),
+  "duration_hrs": zod.number().describe('Total duration of billable jobs (in hours) this cycle')
+})),
+  "details": zod.array(zod.object({
+  "mode": zod.enum(['batch']),
+  "type": zod.enum(['alignment', 'transcription']),
+  "language": zod.string().optional(),
+  "operating_point": zod.enum(['standard', 'enhanced']).optional(),
+  "count": zod.number().describe('Total number of billable jobs in this cycle'),
+  "duration_hrs": zod.number().describe('Total duration of billable jobs (in hours) this cycle')
+}))
 })

@@ -6,7 +6,7 @@
 import { BaseWebhookHandler } from "./base-webhook"
 import type { UnifiedWebhookEvent } from "./types"
 import type { TranscriptionProvider } from "../router/types"
-import type { TranscriptionResponse } from "../types/speechmatics"
+import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
 
 /**
  * Speechmatics webhook handler
@@ -152,7 +152,7 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
 
     // Parse transcript if available and status is success
     if (status === "success" && payload && typeof payload === "object") {
-      const transcript = payload as TranscriptionResponse
+      const transcript = payload as RetrieveTranscriptResponse
 
       if (transcript.results && transcript.job) {
         // Extract full text

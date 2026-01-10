@@ -27,7 +27,11 @@ const AZURE_STT_INPUT = {
 }
 
 const SPEECHMATICS_INPUT = {
-  target: "./specs/speechmatics-batch.yaml"
+  target: "./specs/speechmatics-batch.yml"
+}
+
+const SONIOX_INPUT = {
+  target: "./specs/soniox-openapi.json"
 }
 
 export default defineConfig({
@@ -169,24 +173,53 @@ export default defineConfig({
     }
   },
 
-  // Speechmatics API generation (manual types due to invalid Swagger 2.0 spec)
-  // The official spec has validation errors that prevent automatic generation.
-  // We'll create manual type definitions based on API documentation.
-  // speechmaticsApi: {
-  //   input: SPEECHMATICS_INPUT,
-  //   output: {
-  //     target: "./src/generated/speechmatics/api",
-  //     schemas: "./src/generated/speechmatics/schema",
-  //     client: "axios-functions",
-  //     mode: "single",
-  //     biome: true
-  //   }
-  // },
+  // Speechmatics API generation (from SDK batch.yml spec)
+  speechmaticsApi: {
+    input: SPEECHMATICS_INPUT,
+    output: {
+      target: "./src/generated/speechmatics/api",
+      schemas: "./src/generated/speechmatics/schema",
+      client: "axios-functions",
+      mode: "single",
+      biome: true,
+      mock: {
+        type: "msw",
+        baseUrl: "https://asr.api.speechmatics.com"
+      }
+    }
+  },
   // Generate Zod schemas for Speechmatics
   speechmaticsZod: {
     input: SPEECHMATICS_INPUT,
     output: {
       target: "./src/generated/speechmatics/api",
+      client: "zod",
+      mode: "single",
+      fileExtension: ".zod.ts",
+      biome: true
+    }
+  },
+
+  // Soniox API generation
+  sonioxApi: {
+    input: SONIOX_INPUT,
+    output: {
+      target: "./src/generated/soniox/api",
+      schemas: "./src/generated/soniox/schema",
+      client: "axios-functions",
+      mode: "single",
+      biome: true,
+      mock: {
+        type: "msw",
+        baseUrl: "https://api.soniox.com"
+      }
+    }
+  },
+  // Generate Zod schemas for Soniox
+  sonioxZod: {
+    input: SONIOX_INPUT,
+    output: {
+      target: "./src/generated/soniox/api",
       client: "zod",
       mode: "single",
       fileExtension: ".zod.ts",

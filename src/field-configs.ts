@@ -52,6 +52,11 @@ import {
   streamingUpdateConfigParams as speechmaticsUpdateConfigParams
 } from "./generated/speechmatics/streaming-types.zod"
 
+import {
+  batchTranscriptionParams as speechmaticsTranscribeParams,
+  listJobsQueryParams as speechmaticsListParams
+} from "./generated/speechmatics/batch-types.zod"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Re-export types
 // ─────────────────────────────────────────────────────────────────────────────
@@ -223,6 +228,21 @@ export function getOpenAIFieldConfigs(): ProviderFieldConfigs {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Get Speechmatics transcription fields (derived from batch API spec)
+ * @see https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/batch-client
+ */
+export function getSpeechmaticsTranscriptionFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(speechmaticsTranscribeParams)
+}
+
+/**
+ * Get Speechmatics list filter fields (derived from batch API spec)
+ */
+export function getSpeechmaticsListFilterFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(speechmaticsListParams)
+}
+
+/**
  * Get Speechmatics streaming fields (derived from SDK types)
  * @see https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/real-time-client/models
  */
@@ -240,14 +260,14 @@ export function getSpeechmaticsStreamingUpdateFields(): ZodFieldConfig[] {
 
 /**
  * Get all Speechmatics field configs
- * Note: Speechmatics batch transcription uses a separate API with different params
  */
 export function getSpeechmaticsFieldConfigs(): ProviderFieldConfigs {
   return {
     provider: "speechmatics",
-    transcription: [], // Batch uses different API structure
+    transcription: getSpeechmaticsTranscriptionFields(),
     streaming: getSpeechmaticsStreamingFields(),
-    streamingUpdate: getSpeechmaticsStreamingUpdateFields()
+    streamingUpdate: getSpeechmaticsStreamingUpdateFields(),
+    listFilters: getSpeechmaticsListFilterFields()
   }
 }
 
