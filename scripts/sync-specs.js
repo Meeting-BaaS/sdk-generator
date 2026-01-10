@@ -61,7 +61,7 @@ const SPEC_SOURCES = {
   speechmatics: {
     manual: true,
     output: "specs/speechmatics-batch.yaml",
-    note: "Official Swagger 2.0 spec has validation errors"
+    note: "Batch API only - streaming synced via speechmaticsAsync"
   },
   speechmaticsAsync: {
     url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/real-time-client/schema/realtime.yml",
@@ -120,7 +120,11 @@ function validateSpec(content, format) {
       return { valid: true, version: parsed.openapi || parsed.asyncapi || parsed.swagger }
     } else if (format === "yaml") {
       // Basic YAML validation - check for openapi/asyncapi field
-      if (!content.includes("openapi:") && !content.includes("swagger:") && !content.includes("asyncapi:")) {
+      if (
+        !content.includes("openapi:") &&
+        !content.includes("swagger:") &&
+        !content.includes("asyncapi:")
+      ) {
         return { valid: false, error: "Missing openapi/asyncapi/swagger version field" }
       }
       const versionMatch = content.match(/(?:openapi|asyncapi):\s*['"]?([^'"\s]+)['"]?/)
