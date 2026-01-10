@@ -73,6 +73,16 @@ const SPEC_SOURCES = {
     url: "https://raw.githubusercontent.com/deepgram/deepgram-js-sdk/main/src/lib/types/TranscriptionSchema.ts",
     output: "specs/deepgram-streaming-sdk.ts",
     format: "typescript"
+  },
+  soniox: {
+    url: "https://api.soniox.com/v1/openapi.json",
+    output: "specs/soniox-openapi.json",
+    format: "json"
+  },
+  sonioxStreaming: {
+    manual: true,
+    output: "specs/soniox-streaming-types.ts",
+    note: "No official AsyncAPI spec - types extracted from @soniox/speech-to-text-web SDK"
   }
 }
 
@@ -210,8 +220,20 @@ async function validateOnly() {
       continue
     }
 
+    // Skip validation for manual specs - they're manually maintained
+    if (config.manual) {
+      console.log(`  ⏭️  ${name}: Manual spec (skipped)`)
+      continue
+    }
+
     const content = fs.readFileSync(outputPath, "utf-8")
-    const format = config.format || (outputPath.endsWith(".json") ? "json" : "yaml")
+    // Determine format from config or file extension
+    let format = config.format
+    if (!format) {
+      if (outputPath.endsWith(".json")) format = "json"
+      else if (outputPath.endsWith(".ts")) format = "typescript"
+      else format = "yaml"
+    }
     const validation = validateSpec(content, format)
 
     if (validation.valid) {

@@ -57,6 +57,16 @@ import {
   listJobsQueryParams as speechmaticsListParams
 } from "./generated/speechmatics/batch-types.zod"
 
+import {
+  createTranscriptionBody as sonioxTranscribeParams,
+  getTranscriptionsQueryParams as sonioxListParams
+} from "./generated/soniox/api/sonioxPublicAPI.zod"
+
+import {
+  streamingTranscriberParams as sonioxStreamingParams,
+  streamingUpdateConfigParams as sonioxUpdateConfigParams
+} from "./generated/soniox/streaming-types.zod"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Re-export types
 // ─────────────────────────────────────────────────────────────────────────────
@@ -272,6 +282,53 @@ export function getSpeechmaticsFieldConfigs(): ProviderFieldConfigs {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Soniox - Derived from Zod schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Get Soniox transcription fields (derived from OpenAPI spec)
+ * @see https://soniox.com/docs/stt/async-api
+ */
+export function getSonioxTranscriptionFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(sonioxTranscribeParams)
+}
+
+/**
+ * Get Soniox list filter fields (derived from OpenAPI spec)
+ */
+export function getSonioxListFilterFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(sonioxListParams)
+}
+
+/**
+ * Get Soniox streaming fields (derived from streaming types)
+ * @see https://soniox.com/docs/stt/SDKs/web-sdk
+ */
+export function getSonioxStreamingFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(sonioxStreamingParams)
+}
+
+/**
+ * Get Soniox streaming update config fields (placeholder - Soniox doesn't support mid-session updates)
+ */
+export function getSonioxStreamingUpdateFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(sonioxUpdateConfigParams)
+}
+
+/**
+ * Get all Soniox field configs
+ */
+export function getSonioxFieldConfigs(): ProviderFieldConfigs {
+  return {
+    provider: "soniox",
+    transcription: getSonioxTranscriptionFields(),
+    streaming: getSonioxStreamingFields(),
+    streamingUpdate: getSonioxStreamingUpdateFields(),
+    listFilters: getSonioxListFilterFields()
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // All Providers
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -281,6 +338,7 @@ export type FieldConfigProvider =
   | "assemblyai"
   | "openai-whisper"
   | "speechmatics"
+  | "soniox"
 
 /**
  * Get field configs for a specific provider
@@ -297,6 +355,8 @@ export function getProviderFieldConfigs(provider: FieldConfigProvider): Provider
       return getOpenAIFieldConfigs()
     case "speechmatics":
       return getSpeechmaticsFieldConfigs()
+    case "soniox":
+      return getSonioxFieldConfigs()
   }
 }
 
@@ -309,6 +369,7 @@ export function getAllFieldConfigs(): Record<FieldConfigProvider, ProviderFieldC
     deepgram: getDeepgramFieldConfigs(),
     assemblyai: getAssemblyAIFieldConfigs(),
     "openai-whisper": getOpenAIFieldConfigs(),
-    speechmatics: getSpeechmaticsFieldConfigs()
+    speechmatics: getSpeechmaticsFieldConfigs(),
+    soniox: getSonioxFieldConfigs()
   }
 }

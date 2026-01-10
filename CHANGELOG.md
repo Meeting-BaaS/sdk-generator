@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.4.0] - 2026-01-10
+## [0.6.0] - 2026-01-10
 
 ### Added
 
-#### Soniox Provider Support
+#### Soniox Provider (8th Provider)
 
-New adapter for Soniox speech-to-text with batch and streaming support:
+New adapter for [Soniox](https://soniox.com) speech-to-text with batch and streaming support:
 
 ```typescript
 import { createSonioxAdapter, SonioxLanguages } from 'voice-router-dev'
@@ -37,25 +37,30 @@ const session = await adapter.transcribeStream({
   onTranscript: (event) => console.log(event.text),
   onError: (error) => console.error(error)
 })
+
+// Dynamic model/language discovery
+const models = await adapter.getModels()
+const languages = await adapter.getLanguagesForModel('stt-rt-preview')
 ```
 
 **Features:**
 - Batch transcription via URL or file upload
-- Real-time WebSocket streaming
+- Real-time WebSocket streaming with endpoint detection
 - Speaker diarization
-- Language identification
+- Language identification (auto-detect)
 - Translation support (one-way and bidirectional)
-- 60+ supported languages (derived from OpenAPI spec)
+- Custom vocabulary via structured context
+- 60+ supported languages
 
-**Generated types from OpenAPI spec:**
-- `SonioxLanguages` - Array of {code, name} for all 60 languages
+**Generated types from OpenAPI spec (`api.soniox.com/v1/openapi.json`):**
+- `SonioxLanguages` - Array of `{code, name}` for all 60 languages
 - `SonioxLanguageCodes` - ISO 639-1 language codes
 - `SonioxLanguageLabels` - Code-to-name mapping
-- All request/response types generated via Orval
+- 90+ schema types via Orval (Transcription, Model, Language, etc.)
 
 #### Speechmatics Batch API Type Generation
 
-Full type generation from Speechmatics SDK batch spec:
+Full type generation from Speechmatics SDK batch spec (`speechmatics-batch.yml`):
 
 ```typescript
 import type { JobConfig, RetrieveTranscriptResponse } from 'voice-router-dev'
@@ -72,17 +77,190 @@ const config: JobConfig = {
 }
 ```
 
-**Generated from specs:**
+**Generated from SDK spec:**
 - 100+ TypeScript types from `speechmatics-batch.yml`
 - Enums: `OperatingPoint`, `TranscriptionConfigDiarization`, `SummarizationConfigSummaryType`, `SummarizationConfigSummaryLength`, `JobDetailsStatus`
-- Batch field configs via Zod schemas
+- Removed manual `src/types/speechmatics.ts` (replaced by generated types)
+
+#### Soniox Field Configs
+
+Field config functions for Soniox now available:
+
+```typescript
+import {
+  getSonioxTranscriptionFields,
+  getSonioxStreamingFields,
+  getSonioxListFilterFields,
+  getSonioxFieldConfigs
+} from 'voice-router-dev/field-configs'
+
+const fields = getSonioxTranscriptionFields()
+// → [{ name: 'model', type: 'string', ... }, { name: 'language_hints', ... }, ...]
+```
+
+#### Field Config Coverage (All Providers)
+
+| Provider     | Transcription | Streaming | List Filters | Update Config |
+|--------------|:-------------:|:---------:|:------------:|:-------------:|
+| Gladia       | ✓             | ✓         | ✓            | -             |
+| Deepgram     | ✓             | ✓         | ✓            | -             |
+| AssemblyAI   | ✓             | ✓         | ✓            | ✓             |
+| OpenAI       | ✓             | -         | -            | -             |
+| Speechmatics | ✓             | ✓         | ✓            | ✓             |
+| Soniox       | ✓             | ✓         | ✓            | -             |
+| Azure        | -             | -         | -            | -             |
+
+> **Note:** Azure field configs not yet implemented (no OpenAPI spec available).
+
+#### Zod Schema Exports Reference
+
+All generated Zod schemas are exported for direct use with `zodToFieldConfigs()`:
+
+| Export Name               | Provider     | Source                          |
+|---------------------------|--------------|----------------------------------|
+| `GladiaZodSchemas`        | Gladia       | OpenAPI spec                     |
+| `DeepgramZodSchemas`      | Deepgram     | OpenAPI spec                     |
+| `AssemblyAIZodSchemas`    | AssemblyAI   | OpenAPI spec                     |
+| `OpenAIZodSchemas`        | OpenAI       | OpenAPI spec                     |
+| `SpeechmaticsZodSchemas`  | Speechmatics | OpenAPI spec (batch)             |
+| `SonioxApiZodSchemas`     | Soniox       | OpenAPI spec (batch)             |
+| `SonioxStreamingZodSchemas` | Soniox     | Manual spec (real-time WebSocket)|
+
+> **Note on manual specs:** Soniox and Deepgram streaming types are manually maintained because
+> these providers do not publish AsyncAPI specs for their WebSocket APIs. Types were extracted
+> from their official SDKs (`@soniox/speech-to-text-web` and `@deepgram/sdk`). The REST API
+> types are auto-synced from their OpenAPI specs. If these providers publish AsyncAPI specs
+> in the future, we will switch to auto-generation.
+
+```typescript
+import { zodToFieldConfigs, SonioxApiZodSchemas } from 'voice-router-dev'
+
+// Extract fields from any Zod schema
+const transcriptionFields = zodToFieldConfigs(SonioxApiZodSchemas.createTranscriptionBody)
+```
 
 ### Changed
 
 - **Speechmatics adapter** now uses generated enums instead of hardcoded string values
-- **Soniox language codes** are now generated from OpenAPI spec (60 languages vs 28 hardcoded)
-- OpenAPI sync scripts now include Speechmatics batch spec
-- Added `openapi:generate:speechmatics` and `openapi:clean:speechmatics` scripts
+- **Speechmatics adapter** fixed API structure: `sentiment_analysis_config` and `summarization_config` moved to job level (was incorrectly in `transcription_config`)
+- **Speechmatics adapter** fixed `additional_vocab` format: now uses `{content: string}[]` per spec
+- **Speechmatics adapter** fixed `speaker_diarization_config`: uses `speaker_sensitivity` (not `max_speakers`)
+- **Soniox language codes** now generated from OpenAPI spec (60 languages vs 28 hardcoded)
+- OpenAPI sync scripts now include Speechmatics batch spec and Soniox specs
+- Added `openapi:generate:speechmatics`, `openapi:generate:soniox`, `openapi:clean:speechmatics`, `openapi:clean:soniox` scripts
+- Added `openapi:sync-soniox-languages` to generate flow
+
+### Fixed
+
+- Speechmatics batch field configs now work (was returning empty array)
+- Speechmatics webhook handler now uses generated `RetrieveTranscriptResponse` type
+
+---
+
+## [0.5.5] - 2026-01-09
+
+### Changed
+
+- Dynamic streaming types synced from AsyncAPI/SDK specs for all providers
+- Deepgram streaming params derived from official SDK (`TranscriptionSchema.ts`)
+- AssemblyAI streaming Zod auto-generated from SDK types
+- Speechmatics streaming types from AsyncAPI spec
+
+---
+
+## [0.5.0] - 2026-01-09
+
+### Added
+
+#### Zero-Hardcoding Field Configs
+
+All field configs are now derived from Zod schemas at runtime - zero hardcoded field definitions:
+
+```typescript
+import { zodToFieldConfigs, DeepgramZodSchemas } from 'voice-router-dev'
+
+// Extract fields directly from generated Zod schemas
+const fields = zodToFieldConfigs(DeepgramZodSchemas.listenV1MediaTranscribeQueryParams)
+// → [{ name, type, description, options, default, min, max, ... }]
+
+// Or use pre-built helpers
+import { getDeepgramTranscriptionFields } from 'voice-router-dev'
+const deepgramFields = getDeepgramTranscriptionFields() // 36 fields from Zod
+```
+
+**Exports:**
+- `zodToFieldConfigs(schema)` - Extract field configs from any Zod schema
+- `filterFields(fields, names)` - Include only specified fields
+- `excludeFields(fields, names)` - Exclude specified fields
+- `GladiaZodSchemas`, `DeepgramZodSchemas`, `AssemblyAIZodSchemas`, etc.
+
+#### 100% Streaming Field Coverage
+
+| Provider   | Fields | Source |
+|------------|--------|--------|
+| Gladia     | 10     | OpenAPI Zod |
+| Deepgram   | 30     | OpenAPI Zod |
+| AssemblyAI | 13     | SDK Zod |
+
+### Changed
+
+- Deleted `streaming-field-schemas.ts` (was 461 lines of hardcoding)
+- Rewrote `field-configs.ts`: 890 → 205 lines (zero hardcoded fields)
+- All field configs now derived from Zod schemas at runtime
+
+---
+
+## [0.4.1] - 2026-01-09
+
+### Added
+
+#### Provider Metadata Exports for UI Rendering
+
+Static runtime data derived from OpenAPI specs and adapter definitions:
+
+```typescript
+import {
+  ProviderCapabilitiesMap,
+  CapabilityLabels,
+  LanguageLabels,
+  AllLanguageCodes,
+  ProviderDisplayNames,
+  StreamingProviders,
+  BatchOnlyProviders
+} from 'voice-router-dev/provider-metadata'
+
+// Capability matrix for all providers
+const capabilities = ProviderCapabilitiesMap['deepgram']
+// → { streaming: true, diarization: true, ... }
+
+// Language dropdown data
+const languages = AllLanguageCodes['gladia']
+// → ['en', 'es', 'fr', ...]
+const label = LanguageLabels['en'] // → 'English'
+```
+
+#### Browser-Safe Subpath Exports
+
+New subpath exports with no `node:crypto` dependency:
+
+```typescript
+// Browser-safe imports
+import { AllFieldConfigs } from 'voice-router-dev/field-configs'
+import { ProviderCapabilitiesMap } from 'voice-router-dev/provider-metadata'
+
+// Full SDK (server-side only)
+import { VoiceRouter } from 'voice-router-dev'
+```
+
+**Exports:**
+- `voice-router-dev/constants` - Enums only (existing)
+- `voice-router-dev/field-configs` - Field configurations
+- `voice-router-dev/provider-metadata` - Capabilities, languages, display names
+
+### Changed
+
+- Types refactored to shared `src/types/core.ts` for browser compatibility
+- `router/types.ts` re-exports from `core.ts` (no duplication)
 
 ---
 
