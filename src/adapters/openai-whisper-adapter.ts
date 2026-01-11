@@ -21,8 +21,8 @@ import type { CreateTranscriptionRequestModel } from "../generated/openai/schema
 import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
 import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
 
-// Import model constants (derived from official spec)
-import { OpenAIModel } from "../constants"
+// Import model and response format constants (derived from official spec)
+import { OpenAIModel, OpenAIResponseFormat } from "../constants"
 
 /**
  * OpenAI Whisper transcription provider adapter
@@ -208,10 +208,10 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
 
       if (isDiarization) {
         // Diarization model uses verbose_json format with speaker info
-        request.response_format = "verbose_json"
+        request.response_format = OpenAIResponseFormat.verbose_json
       } else if (needsWords || options?.diarization) {
         // Use verbose_json for word timestamps
-        request.response_format = "verbose_json"
+        request.response_format = OpenAIResponseFormat.verbose_json
 
         // Add timestamp granularities (using the OpenAPI array-style property name)
         if (needsWords) {
@@ -219,7 +219,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         }
       } else {
         // Simple json format for basic transcription
-        request.response_format = "json"
+        request.response_format = OpenAIResponseFormat.json
       }
 
       // Use generated API client function - FULLY TYPED!
