@@ -113,7 +113,7 @@ export class AzureSTTAdapter extends BaseAdapter {
     diarization: true,
     wordTimestamps: true,
     languageDetection: true, // Via LanguageIdentificationProperties (Continuous/Single mode)
-    customVocabulary: true,
+    customVocabulary: false, // Requires custom model creation, not inline per-request
     summarization: false,
     sentimentAnalysis: false,
     entityDetection: false,
@@ -445,10 +445,10 @@ export class AzureSTTAdapter extends BaseAdapter {
   }
 
   /**
-   * Build Azure-specific transcription properties
+   * Build Azure-specific transcription properties using generated types
    */
   private buildTranscriptionProperties(options?: TranscribeOptions): TranscriptionProperties {
-    const properties: any = {
+    const properties: TranscriptionProperties = {
       wordLevelTimestampsEnabled: options?.wordTimestamps ?? true,
       punctuationMode: PunctuationMode.DictatedAndAutomatic,
       profanityFilterMode: ProfanityFilterMode.Masked
@@ -466,11 +466,8 @@ export class AzureSTTAdapter extends BaseAdapter {
       }
     }
 
-    if (options?.customVocabulary && options.customVocabulary.length > 0) {
-      properties.customProperties = {
-        phrases: options.customVocabulary.join(",")
-      }
-    }
+    // Note: Custom vocabulary requires creating a custom model in Azure, not supported inline
+    // See: https://learn.microsoft.com/azure/ai-services/speech-service/how-to-custom-speech-create-project
 
     return properties
   }
