@@ -17,6 +17,7 @@ import type {
   Word
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+import { SonioxRegion, type SonioxRegionType } from "../constants"
 
 // Import generated Soniox types
 import { TranscriptionStatus as SonioxTranscriptionStatus } from "../generated/soniox/schema/transcriptionStatus"
@@ -38,6 +39,28 @@ export interface SonioxConfig extends ProviderConfig {
    * @default "stt-async-preview"
    */
   model?: string
+
+  /**
+   * Regional endpoint for data residency (Sovereign Cloud)
+   *
+   * Available regions:
+   * - `us` - United States (default)
+   * - `eu` - European Union
+   * - `jp` - Japan
+   *
+   * All audio, transcripts, and logs stay fully in-region.
+   *
+   * **IMPORTANT:** Soniox API keys are region-specific. Each project is created
+   * with a specific region, and the API key only works with that region's endpoint.
+   * The `region` config must match the region of your project's API key.
+   *
+   * To use a different region, create a new project in that region via the
+   * Soniox dashboard and use its API key.
+   *
+   * @default "us"
+   * @see https://soniox.com/docs/stt/data-residency
+   */
+  region?: SonioxRegionType
 }
 
 /**
@@ -131,15 +154,56 @@ export class SonioxAdapter extends BaseAdapter {
   }
 
   private client?: AxiosInstance
-  protected baseUrl = "https://api.soniox.com/v1"
+  private region: SonioxRegionType = SonioxRegion.us
 
   /**
    * Default model for batch transcription
    */
   private defaultModel = "stt-async-preview"
 
+  /**
+   * Get regional API host based on configured region
+   */
+  private getRegionalHost(): string {
+    switch (this.region) {
+      case SonioxRegion.eu:
+        return "api.eu.soniox.com"
+      case SonioxRegion.jp:
+        return "api.jp.soniox.com"
+      case SonioxRegion.us:
+      default:
+        return "api.soniox.com"
+    }
+  }
+
+  /**
+   * Get regional WebSocket host for real-time streaming
+   */
+  private getRegionalWsHost(): string {
+    switch (this.region) {
+      case SonioxRegion.eu:
+        return "stt-rt.eu.soniox.com"
+      case SonioxRegion.jp:
+        return "stt-rt.jp.soniox.com"
+      case SonioxRegion.us:
+      default:
+        return "stt-rt.soniox.com"
+    }
+  }
+
+  /**
+   * Get the base URL for API requests
+   */
+  protected get baseUrl(): string {
+    return `https://${this.getRegionalHost()}/v1`
+  }
+
   initialize(config: SonioxConfig): void {
     super.initialize(config)
+
+    if (config.region) {
+      this.region = config.region
+    }
 
     if (config.model) {
       this.defaultModel = config.model
@@ -154,6 +218,49 @@ export class SonioxAdapter extends BaseAdapter {
         ...config.headers
       }
     })
+  }
+
+  /**
+   * Get current region
+   *
+   * @returns Current regional endpoint
+   */
+  getRegion(): SonioxRegionType {
+    return this.region
+  }
+
+  /**
+   * Set regional endpoint
+   *
+   * **Note:** Soniox API keys are region-specific. Changing the region
+   * requires an API key from a project created in that region.
+   * This method updates the endpoint but you must also update the API key.
+   *
+   * @param region - Regional endpoint to use
+   *
+   * @example
+   * ```typescript
+   * // Switch to EU (requires EU project API key)
+   * adapter.initialize({
+   *   apiKey: process.env.SONIOX_EU_API_KEY,
+   *   region: SonioxRegion.eu
+   * })
+   * ```
+   */
+  setRegion(region: SonioxRegionType): void {
+    this.region = region
+    // Recreate client with new base URL
+    if (this.config?.apiKey) {
+      this.client = axios.create({
+        baseURL: this.baseUrl,
+        timeout: this.config.timeout || 120000,
+        headers: {
+          Authorization: `Bearer ${this.config.apiKey}`,
+          "Content-Type": "application/json",
+          ...this.config.headers
+        }
+      })
+    }
   }
 
   /**
@@ -293,8 +400,8 @@ export class SonioxAdapter extends BaseAdapter {
     const sessionId = `soniox_${Date.now()}_${Math.random().toString(36).substring(7)}`
     const createdAt = new Date()
 
-    // Build WebSocket URL with query parameters
-    const wsUrl = new URL("wss://api.soniox.com/v1/speech/stream")
+    // Build WebSocket URL with query parameters (using regional WebSocket host)
+    const wsUrl = new URL(`wss://${this.getRegionalWsHost()}/transcribe-websocket`)
     wsUrl.searchParams.set("api_key", this.config!.apiKey)
     wsUrl.searchParams.set("model", options?.model?.toString() || "stt-rt-preview")
 

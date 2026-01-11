@@ -584,11 +584,49 @@ export const DeepgramRegion = {
   eu: "eu"
 } as const
 
+/**
+ * Soniox regional endpoints (Sovereign Cloud)
+ *
+ * Soniox offers regional endpoints for data residency compliance.
+ * All audio, transcripts, and logs stay fully in-region.
+ *
+ * | Region | REST API | WebSocket (Real-time) |
+ * |--------|----------|----------------------|
+ * | US (default) | api.soniox.com | stt-rt.soniox.com |
+ * | EU | api.eu.soniox.com | stt-rt.eu.soniox.com |
+ * | Japan | api.jp.soniox.com | stt-rt.jp.soniox.com |
+ *
+ * **Coming soon:** Korea, Australia, India, Canada, Saudi Arabia, UK, Brazil
+ *
+ * @example
+ * ```typescript
+ * import { SonioxRegion } from 'voice-router-dev/constants'
+ *
+ * const adapter = createSonioxAdapter({
+ *   apiKey: process.env.SONIOX_API_KEY,
+ *   region: SonioxRegion.eu
+ * })
+ * ```
+ *
+ * @see https://soniox.com/docs/stt/data-residency - Official data residency docs
+ */
+export const SonioxRegion = {
+  /** United States (default) */
+  us: "us",
+  /** European Union */
+  eu: "eu",
+  /** Japan */
+  jp: "jp"
+} as const
+
 /** Speechmatics region type derived from const object */
 export type SpeechmaticsRegionType = (typeof SpeechmaticsRegion)[keyof typeof SpeechmaticsRegion]
 
 /** Deepgram region type derived from const object */
 export type DeepgramRegionType = (typeof DeepgramRegion)[keyof typeof DeepgramRegion]
+
+/** Soniox region type derived from const object */
+export type SonioxRegionType = (typeof SonioxRegion)[keyof typeof SonioxRegion]
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Deepgram TTS (Text-to-Speech) Constants

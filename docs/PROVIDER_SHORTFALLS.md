@@ -526,6 +526,7 @@ Regional endpoint support for data residency, compliance, and latency optimizati
 |----------|--------------|
 | **Deepgram** | https://developers.deepgram.com/reference/custom-endpoints |
 | **Speechmatics** | https://docs.speechmatics.com/get-started/authentication#supported-endpoints |
+| **Soniox** | https://soniox.com/docs/stt/data-residency |
 | **Gladia** | Streaming regions via OpenAPI spec (`StreamingSupportedRegions`) |
 
 ### Regional Endpoint Summary
@@ -534,10 +535,12 @@ Regional endpoint support for data residency, compliance, and latency optimizati
 |----------|---------|--------------|----------------|
 | **Deepgram** | `global`, `eu` | Adapter init | `setRegion()` |
 | **Speechmatics** | `eu1`, `eu2`*, `us1`, `us2`*, `au1` | Adapter init | `setRegion()` |
+| **Soniox** | `us`, `eu`, `jp` | Adapter init | `setRegion()`** |
 | **Gladia** | `us-west`, `eu-west` | Streaming options | Per-request |
 | **Azure** | Via `speechConfig` | Adapter init | Reinitialize |
 
 \* Enterprise only
+\*\* Soniox API keys are region-specific - switching regions also requires changing the API key
 
 ### Deepgram Endpoints
 
@@ -586,9 +589,38 @@ const adapter = createSpeechmaticsAdapter({
 adapter.setRegion(SpeechmaticsRegion.au1)
 ```
 
+### Soniox Endpoints (Sovereign Cloud)
+
+| Region | REST API | WebSocket (Real-time) | Availability |
+|--------|----------|----------------------|--------------|
+| `us` (default) | `api.soniox.com` | `stt-rt.soniox.com` | All customers |
+| `eu` | `api.eu.soniox.com` | `stt-rt.eu.soniox.com` | All customers |
+| `jp` | `api.jp.soniox.com` | `stt-rt.jp.soniox.com` | All customers |
+
+**Coming soon:** Korea, Australia, India, Canada, Saudi Arabia, UK, Brazil
+
+**Important:** Soniox API keys are region-specific. Each project is created with a specific
+region, and the API key only works with that region's endpoint.
+
+```typescript
+import { createSonioxAdapter, SonioxRegion } from 'voice-router-dev'
+
+// US project (default)
+const usAdapter = createSonioxAdapter({
+  apiKey: process.env.SONIOX_US_API_KEY,
+  region: SonioxRegion.us
+})
+
+// EU project (requires EU project API key)
+const euAdapter = createSonioxAdapter({
+  apiKey: process.env.SONIOX_EU_API_KEY,
+  region: SonioxRegion.eu
+})
+```
+
 ### Dynamic Region Switching
 
-Both Deepgram and Speechmatics support changing regions without reinitializing:
+Deepgram and Speechmatics support changing regions without reinitializing (same API key works):
 
 ```typescript
 // Test different regions

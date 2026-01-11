@@ -156,6 +156,27 @@ const transcriptionFields = zodToFieldConfigs(SonioxApiZodSchemas.createTranscri
 - Speechmatics webhook handler now uses generated `RetrieveTranscriptResponse` type
 - **AssemblyAI streaming field configs** now include SDK v3 fields (`keyterms`, `keytermsPrompt`, `speechModel`, `languageDetection`, etc.) - sync script parses both AsyncAPI spec and SDK TypeScript types
 
+#### Soniox Regional Endpoints (Sovereign Cloud)
+
+Regional endpoint support for Soniox data residency:
+
+```typescript
+import { createSonioxAdapter, SonioxRegion } from 'voice-router-dev'
+
+const adapter = createSonioxAdapter({
+  apiKey: process.env.SONIOX_EU_API_KEY,
+  region: SonioxRegion.eu  // EU data residency
+})
+```
+
+| Region | REST API | WebSocket |
+|--------|----------|-----------|
+| `us` (default) | `api.soniox.com` | `stt-rt.soniox.com` |
+| `eu` | `api.eu.soniox.com` | `stt-rt.eu.soniox.com` |
+| `jp` | `api.jp.soniox.com` | `stt-rt.jp.soniox.com` |
+
+**Note:** Soniox API keys are region-specific. Each project is created with a specific region, and the API key only works with that region's endpoint.
+
 ---
 
 ## [0.5.5] - 2026-01-09
