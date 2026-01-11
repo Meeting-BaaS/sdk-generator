@@ -115,8 +115,8 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
     streaming: true, // Via OpenAI Realtime API (WebSocket) - see streaming-types.ts
     diarization: true, // Available with gpt-4o-transcribe-diarize model
     wordTimestamps: true,
-    languageDetection: false, // Language should be provided for best accuracy
-    customVocabulary: false, // Uses prompt instead
+    languageDetection: true, // Auto-detects language if not provided (returns in verbose_json)
+    customVocabulary: false, // Uses prompt for guidance instead
     summarization: false,
     sentimentAnalysis: false,
     entityDetection: false,
