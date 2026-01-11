@@ -4,19 +4,19 @@ info:
   version: 1.0.0
   description: |
     APIs for speech-to-text transcription, text-to-speech synthesis, language understanding, and account management.
-  termsOfService: 'https://deepgram.com/terms/'
+  termsOfService: https://deepgram.com/terms/
   contact:
     email: devrel@deepgram.com
-    url: 'https://community.deepgram.com'
+    url: https://community.deepgram.com
     name: Deepgram Developer Relations
   license:
     name: Privacy Notice
-    url: 'https://deepgram.com/privacy/'
+    url: https://deepgram.com/privacy/
 servers:
-  - url: 'https://api.deepgram.com'
+  - url: https://api.deepgram.com
     description: Deepgram Production API
     x-fern-server-name: Production
-  - url: 'https://agent.deepgram.com'
+  - url: https://agent.deepgram.com
     description: Deepgram Agent API
     x-fern-server-name: Agent
 components:
@@ -180,9 +180,9 @@ components:
           description: The unique identifier of the request
     ErrorResponse:
       oneOf:
-        - $ref: '#/components/schemas/ErrorResponseTextError'
-        - $ref: '#/components/schemas/ErrorResponseLegacyError'
-        - $ref: '#/components/schemas/ErrorResponseModernError'
+        - $ref: "#/components/schemas/ErrorResponseTextError"
+        - $ref: "#/components/schemas/ErrorResponseLegacyError"
+        - $ref: "#/components/schemas/ErrorResponseModernError"
     GrantV1Request:
       type: object
       properties:
@@ -215,7 +215,7 @@ components:
         url:
           type: string
           format: uri
-          example: 'https://dpgr.am/spacewalk.wav'
+          example: https://dpgr.am/spacewalk.wav
     ListenV1RequestFile:
       type: string
       format: binary
@@ -245,7 +245,7 @@ components:
         created:
           type: string
           format: date-time
-          example: '2024-05-12T18:57:13.426Z'
+          example: "2024-05-12T18:57:13.426Z"
         duration:
           type: number
           example: 25.933313
@@ -261,7 +261,7 @@ components:
         model_info:
           type: object
           patternProperties:
-            '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$':
+            ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$:
               type: object
               properties:
                 name:
@@ -528,7 +528,7 @@ components:
           example: success
         short:
           type: string
-          example: 'Speaker 0 discusses the significance of the first all-female spacewalk with an all-female team, stating that it is a tribute to the skilled and qualified women who were denied opportunities in the past.'
+          example: Speaker 0 discusses the significance of the first all-female spacewalk with an all-female team, stating that it is a tribute to the skilled and qualified women who were denied opportunities in the past.
     SharedTopics:
       type: object
       description: Output whenever `topics=true` is used
@@ -546,7 +546,7 @@ components:
                     properties:
                       text:
                         type: string
-                        example: 'And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn''t get the the same opportunities that we have today.'
+                        example: And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.
                       start_word:
                         type: number
                         example: 32
@@ -582,7 +582,7 @@ components:
                     properties:
                       text:
                         type: string
-                        example: 'If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app.'
+                        example: If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app.
                       start_word:
                         type: number
                         example: 354
@@ -612,7 +612,7 @@ components:
             properties:
               text:
                 type: string
-                example: 'Yeah. As as much as, um, it''s worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn''t get the the same opportunities that we have today.'
+                example: Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.
               start_word:
                 type: number
                 example: 0
@@ -640,17 +640,17 @@ components:
       type: object
       properties:
         channels:
-          $ref: '#/components/schemas/ListenV1ResponseResultsChannels'
+          $ref: "#/components/schemas/ListenV1ResponseResultsChannels"
         utterances:
-          $ref: '#/components/schemas/ListenV1ResponseResultsUtterances'
+          $ref: "#/components/schemas/ListenV1ResponseResultsUtterances"
         summary:
-          $ref: '#/components/schemas/ListenV1ResponseResultsSummary'
+          $ref: "#/components/schemas/ListenV1ResponseResultsSummary"
         topics:
-          $ref: '#/components/schemas/SharedTopics'
+          $ref: "#/components/schemas/SharedTopics"
         intents:
-          $ref: '#/components/schemas/SharedIntents'
+          $ref: "#/components/schemas/SharedIntents"
         sentiments:
-          $ref: '#/components/schemas/SharedSentiments'
+          $ref: "#/components/schemas/SharedSentiments"
     ListenV1Response:
       description: The standard transcription response
       required:
@@ -659,9 +659,9 @@ components:
       type: object
       properties:
         metadata:
-          $ref: '#/components/schemas/ListenV1ResponseMetadata'
+          $ref: "#/components/schemas/ListenV1ResponseMetadata"
         results:
-          $ref: '#/components/schemas/ListenV1ResponseResults'
+          $ref: "#/components/schemas/ListenV1ResponseResults"
     ListenV1AcceptedResponse:
       description: Accepted response for asynchronous transcription requests
       type: object
@@ -743,15 +743,15 @@ components:
               example: Adult
             color:
               type: string
-              example: '#C58DFF'
+              example: "#C58DFF"
             image:
               type: string
               format: uri
-              example: 'https://static.deepgram.com/examples/avatars/zeus.jpg'
+              example: https://static.deepgram.com/examples/avatars/zeus.jpg
             sample:
               type: string
               format: uri
-              example: 'https://static.deepgram.com/examples/Aura-2-zeus.wav'
+              example: https://static.deepgram.com/examples/Aura-2-zeus.wav
             tags:
               type: array
               items:
@@ -773,11 +773,11 @@ components:
         stt:
           type: array
           items:
-            $ref: '#/components/schemas/ListModelsV1ResponseSttModels'
+            $ref: "#/components/schemas/ListModelsV1ResponseSttModels"
         tts:
           type: array
           items:
-            $ref: '#/components/schemas/ListModelsV1ResponseTtsModels'
+            $ref: "#/components/schemas/ListModelsV1ResponseTtsModels"
     GetModelV1Response:
       oneOf:
         - type: object
@@ -850,15 +850,15 @@ components:
                   example: Adult
                 color:
                   type: string
-                  example: '#C58DFF'
+                  example: "#C58DFF"
                 image:
                   type: string
                   format: uri
-                  example: 'https://static.deepgram.com/examples/avatars/zeus.jpg'
+                  example: https://static.deepgram.com/examples/avatars/zeus.jpg
                 sample:
                   type: string
                   format: uri
-                  example: 'https://static.deepgram.com/examples/Aura-2-zeus.wav'
+                  example: https://static.deepgram.com/examples/Aura-2-zeus.wav
                 tags:
                   type: array
                   items:
@@ -937,7 +937,7 @@ components:
                 description: The amount of the balance
               units:
                 type: string
-                description: 'The units of the balance, such as "USD"'
+                description: The units of the balance, such as "USD"
               purchase_order_id:
                 type: string
                 description: Description or reference of the purchase
@@ -953,7 +953,7 @@ components:
           description: The amount of the balance
         units:
           type: string
-          description: 'The units of the balance, such as "USD"'
+          description: The units of the balance, such as "USD"
         purchase_order_id:
           type: string
           description: Description or reference of the purchase
@@ -969,12 +969,12 @@ components:
           type: string
           format: date
           description: Start date of the billing summmary period
-          example: '2025-01-16'
+          example: "2025-01-16"
         end:
           type: string
           format: date
           description: End date of the billing summary period
-          example: '2025-01-23'
+          example: "2025-01-23"
         resolution:
           type: object
           required:
@@ -1009,31 +1009,31 @@ components:
                     type: string
                     format: date
                     description: Start date for this group
-                    example: '2025-01-16'
+                    example: "2025-01-16"
                   end:
                     type: string
                     format: date
                     description: End date for this group
-                    example: '2025-01-16'
+                    example: "2025-01-16"
                   accessor:
                     type: string
                     nullable: true
-                    description: 'Optional accessor identifier, null unless grouped by accessor.'
-                    example: '123456789012345678901234'
+                    description: Optional accessor identifier, null unless grouped by accessor.
+                    example: "123456789012345678901234"
                   deployment:
                     type: string
                     nullable: true
-                    description: 'Optional deployment identifier, null unless grouped by deployment.'
+                    description: Optional deployment identifier, null unless grouped by deployment.
                     example: hosted
                   line_item:
                     type: string
                     nullable: true
-                    description: 'Optional line item identifier, null unless grouped by line item.'
-                    example: 'streaming::nova-3'
+                    description: Optional line item identifier, null unless grouped by line item.
+                    example: streaming::nova-3
                   tags:
                     type: array
                     nullable: true
-                    description: 'Optional list of tags, null unless grouped by tags.'
+                    description: Optional list of tags, null unless grouped by tags.
                     items:
                       type: string
                     example:
@@ -1078,8 +1078,8 @@ components:
           additionalProperties:
             type: string
           example:
-            'streaming::nova-3': Nova - 3 (Stream)
-            'sync::aura-2': Aura -2 (Sync)
+            streaming::nova-3: Nova - 3 (Stream)
+            sync::aura-2: Aura -2 (Sync)
     ListProjectInvitesV1Response:
       type: object
       properties:
@@ -1154,7 +1154,7 @@ components:
                   created:
                     type: string
                     format: date-time
-                    example: '2021-01-01T00:00:00Z'
+                    example: "2021-01-01T00:00:00Z"
     CreateKeyV1Request:
       type: object
       required:
@@ -1180,7 +1180,7 @@ components:
         expiration_date:
           type: string
           format: date-time
-          example: '2026-01-01T00:00:00Z'
+          example: "2026-01-01T00:00:00Z"
         time_to_live_in_seconds:
           type: number
           example: 3600
@@ -1228,7 +1228,7 @@ components:
           - member
         tags:
           - tag-1
-        expiration_date: '2024-05-01T00:00:00.000000Z'
+        expiration_date: "2024-05-01T00:00:00.000000Z"
     GetProjectKeyV1Response:
       type: object
       properties:
@@ -1275,11 +1275,11 @@ components:
                     expiration_date:
                       type: string
                       format: date-time
-                      example: '2021-01-01T00:00:00Z'
+                      example: "2021-01-01T00:00:00Z"
                     created:
                       type: string
                       format: date-time
-                      example: '2021-01-01T00:00:00Z'
+                      example: "2021-01-01T00:00:00Z"
     DeleteProjectKeyV1Response:
       type: object
       properties:
@@ -1357,11 +1357,11 @@ components:
               expiration:
                 type: string
                 format: date-time
-                example: '2026-03-04T00:00:00Z'
+                example: "2026-03-04T00:00:00Z"
               created:
                 type: string
                 format: date-time
-                example: '2023-02-21T21:13:40.014373Z'
+                example: "2023-02-21T21:13:40.014373Z"
               amount:
                 type: number
                 format: float
@@ -1416,12 +1416,12 @@ components:
         requests:
           type: array
           items:
-            $ref: '#/components/schemas/ProjectRequestResponse'
+            $ref: "#/components/schemas/ProjectRequestResponse"
     GetProjectRequestV1Response:
       type: object
       properties:
         request:
-          $ref: '#/components/schemas/ProjectRequestResponse'
+          $ref: "#/components/schemas/ProjectRequestResponse"
           type: object
     ListProjectDistributionCredentialsV1Response:
       type: object
@@ -1478,13 +1478,13 @@ components:
                     items:
                       type: string
                     example:
-                      - 'self-hosted:product:api'
-                      - 'self-hosted:product:engine'
+                      - self-hosted:product:api
+                      - self-hosted:product:engine
                   created:
                     type: string
                     format: date-time
                     description: Timestamp when the credentials were created
-                    example: '2023-06-28T15:36:59.609841Z'
+                    example: "2023-06-28T15:36:59.609841Z"
     CreateProjectDistributionCredentialsV1Request:
       type: object
       description: Request body for creating distribution credentials
@@ -1541,13 +1541,13 @@ components:
               items:
                 type: string
               example:
-                - 'self-hosted:product:api'
-                - 'self-hosted:product:engine'
+                - self-hosted:product:api
+                - self-hosted:product:engine
             created:
               type: string
               format: date-time
               description: Timestamp when the credentials were created
-              example: '2023-06-28T15:36:59.609841Z'
+              example: "2023-06-28T15:36:59.609841Z"
     GetProjectDistributionCredentialsV1Response:
       type: object
       required:
@@ -1597,24 +1597,24 @@ components:
               items:
                 type: string
               example:
-                - 'self-hosted:product:api'
-                - 'self-hosted:product:engine'
+                - self-hosted:product:api
+                - self-hosted:product:engine
             created:
               type: string
               format: date-time
               description: Timestamp when the credentials were created
-              example: '2023-06-28T15:36:59.609841Z'
+              example: "2023-06-28T15:36:59.609841Z"
     UsageV1Response:
       type: object
       properties:
         start:
           type: string
           format: date
-          example: '2024-10-16'
+          example: "2024-10-16"
         end:
           type: string
           format: date
-          example: '2024-10-23'
+          example: "2024-10-23"
         resolution:
           type: object
           properties:
@@ -1632,11 +1632,11 @@ components:
                 start:
                   type: string
                   format: date
-                  example: '2024-10-16'
+                  example: "2024-10-16"
                 end:
                   type: string
                   format: date
-                  example: '2024-10-16'
+                  example: "2024-10-16"
                 hours:
                   type: number
                   format: float
@@ -1678,12 +1678,12 @@ components:
           type: string
           format: date
           description: Start date of the usage period
-          example: '2025-01-16'
+          example: "2025-01-16"
         end:
           type: string
           format: date
           description: End date of the usage period
-          example: '2025-01-23'
+          example: "2025-01-23"
         resolution:
           type: object
           required:
@@ -1750,17 +1750,17 @@ components:
                     type: string
                     format: date
                     description: Start date for this group
-                    example: '2025-01-16'
+                    example: "2025-01-16"
                   end:
                     type: string
                     format: date
                     description: End date for this group
-                    example: '2025-01-16'
+                    example: "2025-01-16"
                   accessor:
                     type: string
                     nullable: true
                     description: Optional accessor identifier
-                    example: '123456789012345678901234'
+                    example: "123456789012345678901234"
                   endpoint:
                     type: string
                     nullable: true
@@ -1818,7 +1818,7 @@ components:
                 example: en-MY
               version:
                 type: string
-                description: 'Version identifier of the model, typically with a date and a revision number.'
+                description: Version identifier of the model, typically with a date and a revision number.
                 example: 2024-05-31.13574
               model_id:
                 type: string
@@ -1860,8 +1860,8 @@ components:
         - text
     ReadV1Request:
       oneOf:
-        - $ref: '#/components/schemas/ReadV1RequestUrl'
-        - $ref: '#/components/schemas/ReadV1RequestText'
+        - $ref: "#/components/schemas/ReadV1RequestUrl"
+        - $ref: "#/components/schemas/ReadV1RequestText"
     ReadV1ResponseMetadata:
       required:
         - request_id
@@ -1883,7 +1883,7 @@ components:
             created:
               type: string
               format: date-time
-              example: '2024-11-18T23:47:44.674Z'
+              example: "2024-11-18T23:47:44.674Z"
             language:
               type: string
               example: en
@@ -1944,13 +1944,13 @@ components:
       type: object
       properties:
         summary:
-          $ref: '#/components/schemas/ReadV1ResponseResultsSummary'
+          $ref: "#/components/schemas/ReadV1ResponseResultsSummary"
         topics:
-          $ref: '#/components/schemas/SharedTopics'
+          $ref: "#/components/schemas/SharedTopics"
         intents:
-          $ref: '#/components/schemas/SharedIntents'
+          $ref: "#/components/schemas/SharedIntents"
         sentiments:
-          $ref: '#/components/schemas/SharedSentiments'
+          $ref: "#/components/schemas/SharedSentiments"
     ReadV1Response:
       description: The standard text response
       required:
@@ -1959,10 +1959,10 @@ components:
       type: object
       properties:
         metadata:
-          $ref: '#/components/schemas/ReadV1ResponseMetadata'
+          $ref: "#/components/schemas/ReadV1ResponseMetadata"
           x-collapse: true
         results:
-          $ref: '#/components/schemas/ReadV1ResponseResults'
+          $ref: "#/components/schemas/ReadV1ResponseResults"
     SpeakV1Request:
       type: object
       description: Request body for text-to-speech conversion
@@ -1972,7 +1972,7 @@ components:
         text:
           type: string
           description: The text content to be converted to speech
-          example: 'Hello, welcome to Deepgram!'
+          example: Hello, welcome to Deepgram!
     SpeakV1Response:
       type: string
       format: binary
@@ -2029,7 +2029,7 @@ components:
       name: summarize
       in: query
       required: false
-      description: 'Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.'
+      description: Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
       schema:
         oneOf:
           - title: Listen API Version Option
@@ -2086,7 +2086,7 @@ components:
       name: custom_topic_mode
       in: query
       required: false
-      description: 'Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param'
+      description: Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param
       schema:
         default: extended
         type: string
@@ -2125,7 +2125,7 @@ components:
       name: custom_intent_mode
       in: query
       required: false
-      description: 'Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.'
+      description: Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.
       schema:
         default: extended
         type: string
@@ -2202,7 +2202,7 @@ components:
       name: filler_words
       in: query
       required: false
-      description: 'Filler Words can help transcribe interruptions in your audio, like "uh" and "um"'
+      description: Filler Words can help transcribe interruptions in your audio, like "uh" and "um"
       schema:
         default: false
         type: boolean
@@ -2240,7 +2240,7 @@ components:
       name: language
       in: query
       required: false
-      description: 'The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available'
+      description: The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
       schema:
         type: string
         default: en
@@ -2404,7 +2404,7 @@ components:
       name: smart_format
       in: query
       required: false
-      description: 'Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability'
+      description: Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability
       schema:
         default: false
         type: boolean
@@ -2450,7 +2450,7 @@ components:
       name: mip_opt_out
       in: query
       required: false
-      description: 'Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip'
+      description: Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
       schema:
         default: false
         type: boolean
@@ -2487,7 +2487,7 @@ components:
       name: limit
       in: query
       required: false
-      description: 'Number of results to return per page. Default 10. Range [1,1000]'
+      description: Number of results to return per page. Default 10. Range [1,1000]
       schema:
         type: number
         default: 10
@@ -2572,17 +2572,17 @@ components:
       name: line_item
       in: query
       required: false
-      description: 'Filter requests by line item (e.g. streaming::nova-3)'
+      description: Filter requests by line item (e.g. streaming::nova-3)
       schema:
         type: string
-      example: 'streaming::nova-3'
+      example: streaming::nova-3
     ManageV1BillingGrouping:
       x-fern-optional: true
       x-fern-type-name: ManageV1BillingGrouping
       name: grouping
       in: query
       required: false
-      description: 'Group billing breakdown by one or more dimensions (accessor, deployment, line_item, tags)'
+      description: Group billing breakdown by one or more dimensions (accessor, deployment, line_item, tags)
       schema:
         type: array
         items:
@@ -2624,7 +2624,7 @@ components:
       description: The unique identifier of the API key
       schema:
         type: string
-      example: '123456789012345678901234'
+      example: "123456789012345678901234"
     ManageV1ProjectMemberId:
       x-fern-type-name: ManageV1ProjectMemberId
       name: member_id
@@ -2633,14 +2633,14 @@ components:
       description: The unique identifier of the Member
       schema:
         type: string
-      example: '123456789012345678901234'
+      example: "123456789012345678901234"
     ManageV1StartDateTime:
       x-fern-optional: true
       x-fern-type-name: ManageV1StartDateTime
       name: start
       in: query
       required: false
-      description: 'Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'
+      description: Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM
       schema:
         type: string
         format: date-time
@@ -2650,7 +2650,7 @@ components:
       name: end
       in: query
       required: false
-      description: 'End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'
+      description: End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM
       schema:
         type: string
         format: date-time
@@ -2725,19 +2725,19 @@ components:
       description: List of permission scopes for the credentials
       schema:
         default:
-          - 'self-hosted:products'
+          - self-hosted:products
         type: array
         items:
           type: string
           enum:
-            - 'self-hosted:products'
-            - 'self-hosted:product:api'
-            - 'self-hosted:product:engine'
-            - 'self-hosted:product:license-proxy'
-            - 'self-hosted:product:dgtools'
-            - 'self-hosted:product:billing'
-            - 'self-hosted:product:hotpepper'
-            - 'self-hosted:product:metrics-server'
+            - self-hosted:products
+            - self-hosted:product:api
+            - self-hosted:product:engine
+            - self-hosted:product:license-proxy
+            - self-hosted:product:dgtools
+            - self-hosted:product:billing
+            - self-hosted:product:hotpepper
+            - self-hosted:product:metrics-server
     SelfHostedV1ParamsDistributionProvider:
       x-fern-optional: true
       x-fern-type-name: SelfHostedV1ParamsDistributionProvider
@@ -3152,7 +3152,7 @@ components:
       name: language
       in: query
       required: false
-      description: 'The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available'
+      description: The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
       schema:
         type: string
         default: en
@@ -3167,16 +3167,16 @@ components:
         default: 48000
         oneOf:
           - title: mp3(default)
-            description: 'Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.'
+            description: Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.
             type: number
             nullable: true
             enum:
               - 32000
               - 48000
             x-fern-enum:
-              '32000':
+              "32000":
                 name: ThirtyTwoThousand
-              '48000':
+              "48000":
                 name: FortyEightThousand
           - title: opus
             description: Encoding - opus. Bitrate range - 4000-650000 bps.
@@ -3185,9 +3185,9 @@ components:
             minimum: 4000
             maximum: 650000
             x-fern-enum:
-              '4000':
+              "4000":
                 name: FourThousand
-              '650000':
+              "650000":
                 name: SixHundredFiftyThousand
           - title: aac
             description: Encoding -aac. Bitrate range - 4000-192000 bps.
@@ -3196,94 +3196,38 @@ components:
             minimum: 4000
             maximum: 192000
             x-fern-enum:
-              '4000':
+              "4000":
                 name: FourThousand
-              '192000':
+              "192000":
                 name: OneHundredNinetyTwoThousand
     SpeakV1Container:
-      x-fern-optional: true
-      x-fern-type-name: SpeakV1Container
       name: container
       in: query
       required: false
-      description: Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
+      description: Container format for output audio
       schema:
+        type: string
+        enum:
+          - none
+          - wav
+          - ogg
         default: wav
-        oneOf:
-          - title: none
-            description: No container.
-            type: string
-            enum:
-              - none
-            nullable: true
-          - title: linear16
-            description: 'Encoding - linear16. Supported container - wav (default), or no container.'
-            type: string
-            enum:
-              - wav
-            nullable: true
-          - title: mulaw
-            description: 'Encoding - mulaw. Supported container - wav (default), or no container.'
-            type: string
-            enum:
-              - wav
-            nullable: true
-          - title: alaw
-            description: 'Encoding - alaw. Supported container - wav (default), or no container.'
-            type: string
-            enum:
-              - wav
-            nullable: true
-          - title: opus
-            description: Encoding - opus. Supported container - ogg (default).
-            type: string
-            enum:
-              - ogg
     SpeakV1Encoding:
-      x-fern-optional: true
-      x-fern-type-name: SpeakV1Encoding
       name: encoding
       in: query
       required: false
-      description: Encoding allows you to specify the expected encoding of your audio output
+      description: Audio encoding format
       schema:
+        type: string
+        enum:
+          - linear16
+          - aac
+          - opus
+          - mp3
+          - flac
+          - mulaw
+          - alaw
         default: mp3
-        oneOf:
-          - title: linear16
-            description: 'Encoding - linear16. Uncompressed, high-quality audio format often used for telephony or audio processing.'
-            type: string
-            enum:
-              - linear16
-          - title: flac
-            description: Encoding - flac. Lossless audio format for high-quality compression.
-            type: string
-            enum:
-              - flac
-          - title: mulaw
-            description: Encoding - mulaw. Compressed audio format commonly used in telephony.
-            type: string
-            enum:
-              - mulaw
-          - title: alaw
-            description: Encoding - alaw. Similar to mulaw but used in international telephony.
-            type: string
-            enum:
-              - alaw
-          - title: mp3
-            description: Encoding - mp3. Popular compressed audio format for music and streaming.
-            type: string
-            enum:
-              - mp3
-          - title: opus
-            description: Encoding - opus. High-compression audio format optimized for real-time communications.
-            type: string
-            enum:
-              - opus
-          - title: aac
-            description: Encoding - aac. Advanced audio format offering better quality at smaller file sizes than mp3.
-            type: string
-            enum:
-              - aac
     SpeakV1Model:
       x-fern-type-name: SpeakV1Model
       name: model
@@ -3358,84 +3302,25 @@ components:
           - aura-2-javier-es
       example: aura-2-thalia-en
     SpeakV1SampleRate:
-      x-fern-optional: true
-      x-fern-type-name: SpeakV1SampleRate
       name: sample_rate
       in: query
       required: false
-      description: 'Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable'
+      description: Sample rate in Hz
       schema:
-        default: 24000
-        oneOf:
-          - title: linear16
-            description: 'Encoding - linear16. Supported sample rates - 8000, 16000, 24000, 32000, 48000 Hz.'
-            type: number
-            nullable: true
-            enum:
-              - 8000
-              - 16000
-              - 24000
-              - 32000
-              - 48000
-            x-fern-enum:
-              '8000':
-                name: EightThousand
-              '16000':
-                name: SixteenThousand
-              '24000':
-                name: TwentyFourThousand
-              '32000':
-                name: ThirtyTwoThousand
-              '48000':
-                name: FortyEightThousand
-          - title: mulaw
-            description: 'Encoding - mulaw. Supported sample rates - 8000, 16000 Hz.'
-            type: number
-            nullable: true
-            enum:
-              - 8000
-              - 16000
-            x-fern-enum:
-              '8000':
-                name: EightThousand
-              '16000':
-                name: SixteenThousand
-          - title: alaw
-            description: 'Encoding - alaw. Supported sample rates - 8000, 16000 Hz.'
-            type: number
-            nullable: true
-            enum:
-              - 8000
-              - 16000
-            x-fern-enum:
-              '8000':
-                name: EightThousand
-              '16000':
-                name: SixteenThousand
-          - title: mp3
-            description: Encoding - mp3. Sample rate is fixed and not configurable (22050 Hz).
-            type: number
-            nullable: true
-            enum:
-              - 22050
-            x-fern-enum:
-              '22050':
-                name: TwentyTwoThousandFifty
-          - title: opus
-            description: Encoding - opus. Sample rate is fixed at 48000 Hz.
-            type: number
-            nullable: true
-            enum:
-              - 48000
-            x-fern-enum:
-              '48000':
-                name: FortyEightThousand
+        type: integer
+        enum:
+          - 8000
+          - 16000
+          - 22050
+          - 24000
+          - 32000
+          - 48000
 paths:
   /v1/agent/settings/think/models:
     x-dg-public: true
     description: Get available think models for AI agent
     servers:
-      - url: 'https://agent.deepgram.com'
+      - url: https://agent.deepgram.com
         description: Deepgram Agent API
         x-fern-server-name: Agent
     get:
@@ -3456,23 +3341,23 @@ paths:
       operationId: agent.v1.settings.think.models.list
       description: Retrieves the available think models that can be used for AI agent processing
       responses:
-        '200':
+        "200":
           description: List of available think models
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AgentThinkModelsV1Response'
-        '400':
+                $ref: "#/components/schemas/AgentThinkModelsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /v1/auth/grant:
     x-dg-public: true
     description: Token-based Authentication
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     post:
@@ -3489,32 +3374,32 @@ paths:
       security:
         - ApiKeyAuth: []
       operationId: auth.v1.tokens.grant
-      description: 'Generates a temporary JSON Web Token (JWT) with a 30-second (by default) TTL and usage::write permission for core voice APIs, requiring an API key with Member or higher authorization. Tokens created with this endpoint will not work with the Manage APIs.'
+      description: Generates a temporary JSON Web Token (JWT) with a 30-second (by default) TTL and usage::write permission for core voice APIs, requiring an API key with Member or higher authorization. Tokens created with this endpoint will not work with the Manage APIs.
       requestBody:
         description: Time to live settings
         required: false
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GrantV1Request'
+              $ref: "#/components/schemas/GrantV1Request"
       responses:
-        '200':
+        "200":
           description: Grant response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GrantV1Response'
-        '400':
+                $ref: "#/components/schemas/GrantV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /v1/listen:
     x-dg-public: true
     description: Use Deepgram's speech-to-text API to transcribe and analyze pre-recorded audio and video
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     post:
@@ -3534,87 +3419,87 @@ paths:
       x-fern-sdk-method-name: transcribe
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       parameters:
-        - $ref: '#/components/parameters/SharedCallback'
-        - $ref: '#/components/parameters/SharedCallbackMethod'
-        - $ref: '#/components/parameters/SharedExtra'
-        - $ref: '#/components/parameters/SharedSentiment'
-        - $ref: '#/components/parameters/SharedSummarize'
-        - $ref: '#/components/parameters/SharedTag'
-        - $ref: '#/components/parameters/SharedTopics'
-        - $ref: '#/components/parameters/SharedCustomTopic'
-        - $ref: '#/components/parameters/SharedCustomTopicMode'
-        - $ref: '#/components/parameters/SharedIntents'
-        - $ref: '#/components/parameters/SharedCustomIntent'
-        - $ref: '#/components/parameters/SharedCustomIntentMode'
-        - $ref: '#/components/parameters/ListenV1DetectEntities'
-        - $ref: '#/components/parameters/ListenV1DetectLanguage'
-        - $ref: '#/components/parameters/ListenV1Diarize'
-        - $ref: '#/components/parameters/ListenV1Dictation'
-        - $ref: '#/components/parameters/ListenV1Encoding'
-        - $ref: '#/components/parameters/ListenV1FillerWords'
-        - $ref: '#/components/parameters/ListenV1Keyterm'
-        - $ref: '#/components/parameters/ListenV1Keywords'
-        - $ref: '#/components/parameters/ListenV1Language'
-        - $ref: '#/components/parameters/ListenV1Measurements'
-        - $ref: '#/components/parameters/ListenV1Model'
-        - $ref: '#/components/parameters/ListenV1Multichannel'
-        - $ref: '#/components/parameters/ListenV1Numerals'
-        - $ref: '#/components/parameters/ListenV1Paragraphs'
-        - $ref: '#/components/parameters/ListenV1ProfanityFilter'
-        - $ref: '#/components/parameters/ListenV1Punctuate'
-        - $ref: '#/components/parameters/ListenV1Redact'
-        - $ref: '#/components/parameters/ListenV1Replace'
-        - $ref: '#/components/parameters/ListenV1Search'
-        - $ref: '#/components/parameters/ListenV1SmartFormat'
-        - $ref: '#/components/parameters/ListenV1Utterances'
-        - $ref: '#/components/parameters/ListenV1UttSplit'
-        - $ref: '#/components/parameters/ListenV1Version'
-        - $ref: '#/components/parameters/SharedMipOptOut'
+        - $ref: "#/components/parameters/SharedCallback"
+        - $ref: "#/components/parameters/SharedCallbackMethod"
+        - $ref: "#/components/parameters/SharedExtra"
+        - $ref: "#/components/parameters/SharedSentiment"
+        - $ref: "#/components/parameters/SharedSummarize"
+        - $ref: "#/components/parameters/SharedTag"
+        - $ref: "#/components/parameters/SharedTopics"
+        - $ref: "#/components/parameters/SharedCustomTopic"
+        - $ref: "#/components/parameters/SharedCustomTopicMode"
+        - $ref: "#/components/parameters/SharedIntents"
+        - $ref: "#/components/parameters/SharedCustomIntent"
+        - $ref: "#/components/parameters/SharedCustomIntentMode"
+        - $ref: "#/components/parameters/ListenV1DetectEntities"
+        - $ref: "#/components/parameters/ListenV1DetectLanguage"
+        - $ref: "#/components/parameters/ListenV1Diarize"
+        - $ref: "#/components/parameters/ListenV1Dictation"
+        - $ref: "#/components/parameters/ListenV1Encoding"
+        - $ref: "#/components/parameters/ListenV1FillerWords"
+        - $ref: "#/components/parameters/ListenV1Keyterm"
+        - $ref: "#/components/parameters/ListenV1Keywords"
+        - $ref: "#/components/parameters/ListenV1Language"
+        - $ref: "#/components/parameters/ListenV1Measurements"
+        - $ref: "#/components/parameters/ListenV1Model"
+        - $ref: "#/components/parameters/ListenV1Multichannel"
+        - $ref: "#/components/parameters/ListenV1Numerals"
+        - $ref: "#/components/parameters/ListenV1Paragraphs"
+        - $ref: "#/components/parameters/ListenV1ProfanityFilter"
+        - $ref: "#/components/parameters/ListenV1Punctuate"
+        - $ref: "#/components/parameters/ListenV1Redact"
+        - $ref: "#/components/parameters/ListenV1Replace"
+        - $ref: "#/components/parameters/ListenV1Search"
+        - $ref: "#/components/parameters/ListenV1SmartFormat"
+        - $ref: "#/components/parameters/ListenV1Utterances"
+        - $ref: "#/components/parameters/ListenV1UttSplit"
+        - $ref: "#/components/parameters/ListenV1Version"
+        - $ref: "#/components/parameters/SharedMipOptOut"
       requestBody:
         description: Transcribe an audio or video file
         content:
           application/json:
             x-fern-sdk-method-name: transcribeUrl
             schema:
-              $ref: '#/components/schemas/ListenV1RequestUrl'
+              $ref: "#/components/schemas/ListenV1RequestUrl"
           application/octet-stream:
             x-fern-sdk-method-name: transcribeFile
             schema:
-              $ref: '#/components/schemas/ListenV1RequestFile'
+              $ref: "#/components/schemas/ListenV1RequestFile"
         required: true
       responses:
-        '200':
-          description: 'Returns either transcription results, or a request_id when using a callback.'
+        "200":
+          description: Returns either transcription results, or a request_id when using a callback.
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ListenV1Response'
-                  - $ref: '#/components/schemas/ListenV1AcceptedResponse'
-        '400':
+                  - $ref: "#/components/schemas/ListenV1Response"
+                  - $ref: "#/components/schemas/ListenV1AcceptedResponse"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListenV1Response'
+                $ref: "#/components/schemas/ListenV1Response"
       callbacks:
         listenCallback:
-          '{$request.query.callback}':
+          "{$request.query.callback}":
             post:
               requestBody:
                 required: true
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/ListenV1Response'
+                      $ref: "#/components/schemas/ListenV1Response"
               responses:
-                '200':
+                "200":
                   description: We expect a 200 to determine whether the callback was successfully received
   /v1/models:
     x-dg-public: true
     description: Get information on public models
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     get:
@@ -3631,31 +3516,31 @@ paths:
       security:
         - ApiKeyAuth: []
       operationId: manage.v1.models.list
-      description: 'Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.'
+      description: Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
       parameters:
-        - $ref: '#/components/parameters/ManageV1IncludeOutdatedModels'
+        - $ref: "#/components/parameters/ManageV1IncludeOutdatedModels"
       responses:
-        '200':
+        "200":
           description: A list of models
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListModelsV1Response'
-        '400':
+                $ref: "#/components/schemas/ListModelsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/models/{model_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/models/{model_id}:
     x-dg-public: true
     description: Get information on a specific public model
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ModelId'
+      - $ref: "#/components/parameters/ManageV1ModelId"
     get:
       tags:
         - Manage
@@ -3672,23 +3557,23 @@ paths:
       summary: Get a specific Model
       description: Returns metadata for a specific public model
       responses:
-        '200':
+        "200":
           description: A model object that can be either STT or TTS
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetModelV1Response'
-        '400':
+                $ref: "#/components/schemas/GetModelV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /v1/projects:
     x-dg-public: true
     description: Manage your projects
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     get:
@@ -3707,26 +3592,26 @@ paths:
       operationId: manage.v1.projects.list
       description: Retrieves basic information about the projects associated with the API key
       responses:
-        '200':
+        "200":
           description: A list of projects
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectsV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}:
     description: Manage individual project details and settings
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: Get a Project
       tags:
@@ -3743,21 +3628,21 @@ paths:
       operationId: manage.v1.projects.get
       description: Retrieves information about the specified project
       parameters:
-        - $ref: '#/components/parameters/ManageV1Limit'
-        - $ref: '#/components/parameters/ManageV1Page'
+        - $ref: "#/components/parameters/ManageV1Limit"
+        - $ref: "#/components/parameters/ManageV1Page"
       responses:
-        '200':
+        "200":
           description: A project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetProjectV1Response'
-        '400':
+                $ref: "#/components/schemas/GetProjectV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     patch:
       summary: Update a Project
       tags:
@@ -3778,20 +3663,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateProjectV1Request'
+              $ref: "#/components/schemas/UpdateProjectV1Request"
       responses:
-        '200':
+        "200":
           description: A project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateProjectV1Response'
-        '400':
+                $ref: "#/components/schemas/UpdateProjectV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       summary: Delete a Project
       tags:
@@ -3808,27 +3693,27 @@ paths:
       operationId: manage.projects.delete
       description: Deletes the specified project
       responses:
-        '200':
+        "200":
           description: A project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteProjectV1Response'
-        '400':
+                $ref: "#/components/schemas/DeleteProjectV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/balances':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/balances:
     x-dg-public: true
     description: Manage your project balances
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: Get Project Balances
       tags:
@@ -3849,28 +3734,28 @@ paths:
       operationId: manage.v1.projects.billing.balances.list
       description: Generates a list of outstanding balances for the specified project
       responses:
-        '200':
+        "200":
           description: A list of outstanding balances
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectBalancesV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectBalancesV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/balances/{balance_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/balances/{balance_id}:
     x-dg-public: true
     description: Manage your project balances
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/ManageV1BalanceId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/ManageV1BalanceId"
     get:
       summary: Get a Project Balance
       tags:
@@ -3891,27 +3776,27 @@ paths:
       operationId: manage.v1.projects.billing.balances.get
       description: Retrieves details about the specified balance
       responses:
-        '200':
+        "200":
           description: A specific balance
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetProjectBalanceV1Response'
-        '400':
+                $ref: "#/components/schemas/GetProjectBalanceV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/billing/breakdown':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/billing/breakdown:
     x-dg-public: true
     description: View billing summary for a given time period
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: Get Project Billing Breakdown
       tags:
@@ -3930,37 +3815,37 @@ paths:
       security:
         - ApiKeyAuth: []
       operationId: manage.v1.projects.billing.breakdown.list
-      description: 'Retrieves the billing summary for a specific project, with various filter options or by grouping options.'
+      description: Retrieves the billing summary for a specific project, with various filter options or by grouping options.
       parameters:
-        - $ref: '#/components/parameters/ManageV1StartDate'
-        - $ref: '#/components/parameters/ManageV1EndDate'
-        - $ref: '#/components/parameters/ManageV1FilterAccessor'
-        - $ref: '#/components/parameters/ManageV1FilterDeployment'
-        - $ref: '#/components/parameters/ManageV1FilterTag'
-        - $ref: '#/components/parameters/ManageV1FilterLineItem'
-        - $ref: '#/components/parameters/ManageV1BillingGrouping'
+        - $ref: "#/components/parameters/ManageV1StartDate"
+        - $ref: "#/components/parameters/ManageV1EndDate"
+        - $ref: "#/components/parameters/ManageV1FilterAccessor"
+        - $ref: "#/components/parameters/ManageV1FilterDeployment"
+        - $ref: "#/components/parameters/ManageV1FilterTag"
+        - $ref: "#/components/parameters/ManageV1FilterLineItem"
+        - $ref: "#/components/parameters/ManageV1BillingGrouping"
       responses:
-        '200':
+        "200":
           description: Billing breakdown response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BillingBreakdownV1Response'
-        '400':
+                $ref: "#/components/schemas/BillingBreakdownV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/billing/fields':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/billing/fields:
     x-dg-public: true
     description: View billing fields for a given time period
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Billing Fields
       tags:
@@ -3979,32 +3864,32 @@ paths:
       security:
         - ApiKeyAuth: []
       operationId: manage.v1.projects.billing.fields.list
-      description: 'Lists the accessors, deployment types, tags, and line items used for billing data in the specified time period. Use this endpoint if you want to filter your results from the Billing Breakdown endpoint and want to know what filters are available.'
+      description: Lists the accessors, deployment types, tags, and line items used for billing data in the specified time period. Use this endpoint if you want to filter your results from the Billing Breakdown endpoint and want to know what filters are available.
       parameters:
-        - $ref: '#/components/parameters/ManageV1StartDate'
-        - $ref: '#/components/parameters/ManageV1EndDate'
+        - $ref: "#/components/parameters/ManageV1StartDate"
+        - $ref: "#/components/parameters/ManageV1EndDate"
       responses:
-        '200':
+        "200":
           description: A list of billing fields for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListBillingFieldsV1Response'
-        '400':
+                $ref: "#/components/schemas/ListBillingFieldsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/invites':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/invites:
     x-dg-public: true
     description: Manage your project invites
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Invites
       tags:
@@ -4025,18 +3910,18 @@ paths:
       operationId: manage.v1.projects.members.invites.list
       description: Generates a list of invites for a specific project
       responses:
-        '200':
+        "200":
           description: A list of invites for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectInvitesV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectInvitesV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       summary: Create a Project Invite
       tags:
@@ -4061,30 +3946,30 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateProjectInviteV1Request'
+              $ref: "#/components/schemas/CreateProjectInviteV1Request"
       responses:
-        '200':
+        "200":
           description: The invite was successfully generated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateProjectInviteV1Response'
-        '400':
+                $ref: "#/components/schemas/CreateProjectInviteV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/invites/{email}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/invites/{email}:
     x-dg-public: true
     description: Manage your project invites
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/ManageV1ProjectMemberEmail'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/ManageV1ProjectMemberEmail"
     delete:
       summary: Delete a Project Invite
       tags:
@@ -4105,27 +3990,27 @@ paths:
       operationId: manage.v1.projects.members.invites.delete
       description: Deletes an invite for a specific project
       responses:
-        '200':
+        "200":
           description: The invite was successfully deleted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteProjectInviteV1Response'
-        '400':
+                $ref: "#/components/schemas/DeleteProjectInviteV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/keys':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/keys:
     x-dg-public: true
     description: Manage your project keys
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Keys
       tags:
@@ -4144,20 +4029,20 @@ paths:
       operationId: manage.v1.projects.keys.list
       description: Retrieves all API keys associated with the specified project
       parameters:
-        - $ref: '#/components/parameters/ManageV1ProjectKeysStatus'
+        - $ref: "#/components/parameters/ManageV1ProjectKeysStatus"
       responses:
-        '200':
+        "200":
           description: A list of API keys
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectKeysV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectKeysV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       summary: Create a Project Key
       tags:
@@ -4181,30 +4066,30 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateKeyV1Request'
+              $ref: "#/components/schemas/CreateKeyV1Request"
       responses:
-        '200':
+        "200":
           description: API key created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateKeyV1Response'
-        '400':
+                $ref: "#/components/schemas/CreateKeyV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/keys/{key_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/keys/{key_id}:
     x-dg-public: true
     description: Manage your project keys
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/ManageV1ProjectKeyId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/ManageV1ProjectKeyId"
     get:
       summary: Get a Project Key
       tags:
@@ -4223,18 +4108,18 @@ paths:
       operationId: manage.v1.projects.keys.get
       description: Retrieves information about a specified API key
       responses:
-        '200':
+        "200":
           description: A specific API key
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetProjectKeyV1Response'
-        '400':
+                $ref: "#/components/schemas/GetProjectKeyV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       summary: Delete a Project Key
       tags:
@@ -4253,27 +4138,27 @@ paths:
       operationId: manage.projects.keys.delete
       description: Deletes an API key for a specific project
       responses:
-        '200':
+        "200":
           description: API key deleted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteProjectKeyV1Response'
-        '400':
+                $ref: "#/components/schemas/DeleteProjectKeyV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/leave':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/leave:
     x-dg-public: true
     description: Remove your account from a project
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     delete:
       summary: Leave a Project
       tags:
@@ -4290,27 +4175,27 @@ paths:
       operationId: manage.v1.projects.leave
       description: Removes the authenticated account from the specific project
       responses:
-        '200':
+        "200":
           description: Successfully removed account from project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeaveProjectV1Response'
-        '400':
+                $ref: "#/components/schemas/LeaveProjectV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/members':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/members:
     x-dg-public: true
     description: Manage your project members
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Members
       tags:
@@ -4329,28 +4214,28 @@ paths:
       operationId: manage.v1.projects.members.list
       description: Retrieves a list of members for a given project
       responses:
-        '200':
+        "200":
           description: A list of members for a given project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectMembersV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectMembersV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/members/{member_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/members/{member_id}:
     x-dg-public: true
     description: Manage your project members
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/ManageV1ProjectMemberId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/ManageV1ProjectMemberId"
     delete:
       summary: Delete a Project Member
       tags:
@@ -4369,28 +4254,28 @@ paths:
       operationId: manage.v1.projects.members.delete
       description: Removes a member from the project using their unique member ID
       responses:
-        '200':
+        "200":
           description: Delete the specific member from the project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteProjectMemberV1Response'
-        '400':
+                $ref: "#/components/schemas/DeleteProjectMemberV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/members/{member_id}/scopes':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/members/{member_id}/scopes:
     x-dg-public: true
     description: Manage your project members
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/ManageV1ProjectMemberId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/ManageV1ProjectMemberId"
     get:
       summary: List Project Member Scopes
       tags:
@@ -4411,18 +4296,18 @@ paths:
       operationId: manage.v1.projects.members.scopes.list
       description: Retrieves a list of scopes for a specific member
       responses:
-        '200':
+        "200":
           description: A list of scopes for a specific member
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectMemberScopesV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectMemberScopesV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     put:
       summary: Update Project Member Scopes
       tags:
@@ -4447,29 +4332,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateProjectMemberScopesV1Request'
+              $ref: "#/components/schemas/UpdateProjectMemberScopesV1Request"
       responses:
-        '200':
+        "200":
           description: Updated the scopes for a specific member
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateProjectMemberScopesV1Response'
-        '400':
+                $ref: "#/components/schemas/UpdateProjectMemberScopesV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/models':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/models:
     x-dg-public: true
     description: Manage your project models
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Models
       tags:
@@ -4486,32 +4371,32 @@ paths:
       security:
         - ApiKeyAuth: []
       operationId: manage.v1.projects.models.list
-      description: 'Returns metadata on all the latest models that a specific project has access to, including non-public models'
+      description: Returns metadata on all the latest models that a specific project has access to, including non-public models
       parameters:
-        - $ref: '#/components/parameters/ManageV1IncludeOutdatedModels'
+        - $ref: "#/components/parameters/ManageV1IncludeOutdatedModels"
       responses:
-        '200':
+        "200":
           description: A list of models
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListModelsV1Response'
-        '400':
+                $ref: "#/components/schemas/ListModelsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/models/{model_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/models/{model_id}:
     x-dg-public: true
     description: Manage your project models
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/ManageV1ModelId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/ManageV1ModelId"
     get:
       summary: Get a Project Model
       tags:
@@ -4530,27 +4415,27 @@ paths:
       operationId: manage.v1.projects.models.get
       description: Returns metadata for a specific model
       responses:
-        '200':
+        "200":
           description: A model object that can be either STT or TTS
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetModelV1Response'
-        '400':
+                $ref: "#/components/schemas/GetModelV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/purchases':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/purchases:
     x-dg-public: true
     description: Manage your project purchases
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Purchases
       tags:
@@ -4571,29 +4456,29 @@ paths:
       operationId: manage.v1.projects.billing.purchases.list
       description: Returns the original purchased amount on an order transaction
       parameters:
-        - $ref: '#/components/parameters/ManageV1Limit'
+        - $ref: "#/components/parameters/ManageV1Limit"
       responses:
-        '200':
+        "200":
           description: A list of purchases for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectPurchasesV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectPurchasesV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/requests':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/requests:
     x-dg-public: true
     description: Manage your project requests
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Requests
       tags:
@@ -4612,39 +4497,39 @@ paths:
       operationId: manage.v1.projects.requests.list
       description: Generates a list of requests for a specific project
       parameters:
-        - $ref: '#/components/parameters/ManageV1StartDateTime'
-        - $ref: '#/components/parameters/ManageV1EndDateTime'
-        - $ref: '#/components/parameters/ManageV1Limit'
-        - $ref: '#/components/parameters/ManageV1Page'
-        - $ref: '#/components/parameters/ManageV1FilterAccessor'
-        - $ref: '#/components/parameters/ManageV1FilterRequestId'
-        - $ref: '#/components/parameters/ManageV1FilterDeployment'
-        - $ref: '#/components/parameters/ManageV1FilterEndpoint'
-        - $ref: '#/components/parameters/ManageV1FilterMethod'
-        - $ref: '#/components/parameters/ManageV1FilterStatus'
+        - $ref: "#/components/parameters/ManageV1StartDateTime"
+        - $ref: "#/components/parameters/ManageV1EndDateTime"
+        - $ref: "#/components/parameters/ManageV1Limit"
+        - $ref: "#/components/parameters/ManageV1Page"
+        - $ref: "#/components/parameters/ManageV1FilterAccessor"
+        - $ref: "#/components/parameters/ManageV1FilterRequestId"
+        - $ref: "#/components/parameters/ManageV1FilterDeployment"
+        - $ref: "#/components/parameters/ManageV1FilterEndpoint"
+        - $ref: "#/components/parameters/ManageV1FilterMethod"
+        - $ref: "#/components/parameters/ManageV1FilterStatus"
       responses:
-        '200':
+        "200":
           description: A list of requests for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectRequestsV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectRequestsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/requests/{request_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/requests/{request_id}:
     x-dg-public: true
     description: Manage your project requests
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/ManageV1RequestId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/ManageV1RequestId"
     get:
       summary: Get a Project Request
       tags:
@@ -4663,27 +4548,27 @@ paths:
       operationId: manage.v1.projects.requests.get
       description: Retrieves a specific request for a specific project
       responses:
-        '200':
+        "200":
           description: A specific request for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetProjectRequestV1Response'
-        '400':
+                $ref: "#/components/schemas/GetProjectRequestV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/self-hosted/distribution/credentials':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/self-hosted/distribution/credentials:
     x-dg-public: true
     description: Returns sets of distribution credentials for the specified project
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Self-Hosted Distribution Credentials
       tags:
@@ -4700,18 +4585,18 @@ paths:
       operationId: selfHosted.v1.distributionCredentials.list
       description: Lists sets of distribution credentials for the specified project
       responses:
-        '200':
+        "200":
           description: A list of distribution credentials for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectDistributionCredentialsV1Response'
-        '400':
+                $ref: "#/components/schemas/ListProjectDistributionCredentialsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       summary: Create a Project Self-Hosted Distribution Credential
       tags:
@@ -4728,37 +4613,37 @@ paths:
       operationId: selfHosted.v1.distributionCredentials.create
       description: Creates a set of distribution credentials for the specified project
       parameters:
-        - $ref: '#/components/parameters/SelfHostedV1ParamsDistributionScopes'
-        - $ref: '#/components/parameters/SelfHostedV1ParamsDistributionProvider'
+        - $ref: "#/components/parameters/SelfHostedV1ParamsDistributionScopes"
+        - $ref: "#/components/parameters/SelfHostedV1ParamsDistributionProvider"
       requestBody:
         description: The set of distribution credentials to create
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateProjectDistributionCredentialsV1Request'
+              $ref: "#/components/schemas/CreateProjectDistributionCredentialsV1Request"
       responses:
-        '200':
+        "200":
           description: Single distribution credential
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateProjectDistributionCredentialsV1Response'
-        '400':
+                $ref: "#/components/schemas/CreateProjectDistributionCredentialsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/self-hosted/distribution/credentials/{distribution_credentials_id}':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/self-hosted/distribution/credentials/{distribution_credentials_id}:
     x-dg-public: true
     description: Returns a single set of distribution credentials for the specified project
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
-      - $ref: '#/components/parameters/SelfHostedV1ParamsDistributionCredentialsId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
+      - $ref: "#/components/parameters/SelfHostedV1ParamsDistributionCredentialsId"
     get:
       summary: Get a Project Self-Hosted Distribution Credential
       tags:
@@ -4775,18 +4660,18 @@ paths:
       operationId: selfHosted.v1.distributionCredentials.get
       description: Returns a set of distribution credentials for the specified project
       responses:
-        '200':
+        "200":
           description: Single distribution credential
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetProjectDistributionCredentialsV1Response'
-        '400':
+                $ref: "#/components/schemas/GetProjectDistributionCredentialsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       summary: Delete a Project Self-Hosted Distribution Credential
       tags:
@@ -4803,27 +4688,27 @@ paths:
       operationId: selfHosted.v1.distributionCredentials.delete
       description: Deletes a set of distribution credentials for the specified project
       responses:
-        '200':
+        "200":
           description: Single distribution credential
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetProjectDistributionCredentialsV1Response'
-        '400':
+                $ref: "#/components/schemas/GetProjectDistributionCredentialsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/usage':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/usage:
     x-dg-public: true
     description: Manage your project usage
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: Get Project Usage
       tags:
@@ -4844,72 +4729,72 @@ paths:
       deprecated: true
       x-fern-availability: deprecated
       parameters:
-        - $ref: '#/components/parameters/ManageV1StartDate'
-        - $ref: '#/components/parameters/ManageV1EndDate'
-        - $ref: '#/components/parameters/ManageV1FilterAccessor'
-        - $ref: '#/components/parameters/ManageV1FilterAlternatives'
-        - $ref: '#/components/parameters/ManageV1FilterCallbackMethod'
-        - $ref: '#/components/parameters/ManageV1FilterCallback'
-        - $ref: '#/components/parameters/ManageV1FilterChannels'
-        - $ref: '#/components/parameters/ManageV1FilterCustomIntentMode'
-        - $ref: '#/components/parameters/ManageV1FilterCustomIntent'
-        - $ref: '#/components/parameters/ManageV1FilterCustomTopicMode'
-        - $ref: '#/components/parameters/ManageV1FilterCustomTopic'
-        - $ref: '#/components/parameters/ManageV1FilterDeployment'
-        - $ref: '#/components/parameters/ManageV1FilterDetectEntities'
-        - $ref: '#/components/parameters/ManageV1FilterDetectLanguage'
-        - $ref: '#/components/parameters/ManageV1FilterDiarize'
-        - $ref: '#/components/parameters/ManageV1FilterDictation'
-        - $ref: '#/components/parameters/ManageV1FilterEncoding'
-        - $ref: '#/components/parameters/ManageV1FilterEndpoint'
-        - $ref: '#/components/parameters/ManageV1FilterExtra'
-        - $ref: '#/components/parameters/ManageV1FilterFillerWords'
-        - $ref: '#/components/parameters/ManageV1FilterIntents'
-        - $ref: '#/components/parameters/ManageV1FilterKeyterm'
-        - $ref: '#/components/parameters/ManageV1FilterKeywords'
-        - $ref: '#/components/parameters/ManageV1FilterLanguage'
-        - $ref: '#/components/parameters/ManageV1FilterMeasurements'
-        - $ref: '#/components/parameters/ManageV1FilterMethod'
-        - $ref: '#/components/parameters/ManageV1FilterModel'
-        - $ref: '#/components/parameters/ManageV1FilterMultichannel'
-        - $ref: '#/components/parameters/ManageV1FilterNumerals'
-        - $ref: '#/components/parameters/ManageV1FilterParagraphs'
-        - $ref: '#/components/parameters/ManageV1FilterProfanityFilter'
-        - $ref: '#/components/parameters/ManageV1FilterPunctuate'
-        - $ref: '#/components/parameters/ManageV1FilterRedact'
-        - $ref: '#/components/parameters/ManageV1FilterReplace'
-        - $ref: '#/components/parameters/ManageV1FilterSampleRate'
-        - $ref: '#/components/parameters/ManageV1FilterSearch'
-        - $ref: '#/components/parameters/ManageV1FilterSentiment'
-        - $ref: '#/components/parameters/ManageV1FilterSmartFormat'
-        - $ref: '#/components/parameters/ManageV1FilterSummarize'
-        - $ref: '#/components/parameters/ManageV1FilterTag'
-        - $ref: '#/components/parameters/ManageV1FilterTopics'
-        - $ref: '#/components/parameters/ManageV1FilterUttSplit'
-        - $ref: '#/components/parameters/ManageV1FilterUtterances'
-        - $ref: '#/components/parameters/ManageV1FilterVersion'
+        - $ref: "#/components/parameters/ManageV1StartDate"
+        - $ref: "#/components/parameters/ManageV1EndDate"
+        - $ref: "#/components/parameters/ManageV1FilterAccessor"
+        - $ref: "#/components/parameters/ManageV1FilterAlternatives"
+        - $ref: "#/components/parameters/ManageV1FilterCallbackMethod"
+        - $ref: "#/components/parameters/ManageV1FilterCallback"
+        - $ref: "#/components/parameters/ManageV1FilterChannels"
+        - $ref: "#/components/parameters/ManageV1FilterCustomIntentMode"
+        - $ref: "#/components/parameters/ManageV1FilterCustomIntent"
+        - $ref: "#/components/parameters/ManageV1FilterCustomTopicMode"
+        - $ref: "#/components/parameters/ManageV1FilterCustomTopic"
+        - $ref: "#/components/parameters/ManageV1FilterDeployment"
+        - $ref: "#/components/parameters/ManageV1FilterDetectEntities"
+        - $ref: "#/components/parameters/ManageV1FilterDetectLanguage"
+        - $ref: "#/components/parameters/ManageV1FilterDiarize"
+        - $ref: "#/components/parameters/ManageV1FilterDictation"
+        - $ref: "#/components/parameters/ManageV1FilterEncoding"
+        - $ref: "#/components/parameters/ManageV1FilterEndpoint"
+        - $ref: "#/components/parameters/ManageV1FilterExtra"
+        - $ref: "#/components/parameters/ManageV1FilterFillerWords"
+        - $ref: "#/components/parameters/ManageV1FilterIntents"
+        - $ref: "#/components/parameters/ManageV1FilterKeyterm"
+        - $ref: "#/components/parameters/ManageV1FilterKeywords"
+        - $ref: "#/components/parameters/ManageV1FilterLanguage"
+        - $ref: "#/components/parameters/ManageV1FilterMeasurements"
+        - $ref: "#/components/parameters/ManageV1FilterMethod"
+        - $ref: "#/components/parameters/ManageV1FilterModel"
+        - $ref: "#/components/parameters/ManageV1FilterMultichannel"
+        - $ref: "#/components/parameters/ManageV1FilterNumerals"
+        - $ref: "#/components/parameters/ManageV1FilterParagraphs"
+        - $ref: "#/components/parameters/ManageV1FilterProfanityFilter"
+        - $ref: "#/components/parameters/ManageV1FilterPunctuate"
+        - $ref: "#/components/parameters/ManageV1FilterRedact"
+        - $ref: "#/components/parameters/ManageV1FilterReplace"
+        - $ref: "#/components/parameters/ManageV1FilterSampleRate"
+        - $ref: "#/components/parameters/ManageV1FilterSearch"
+        - $ref: "#/components/parameters/ManageV1FilterSentiment"
+        - $ref: "#/components/parameters/ManageV1FilterSmartFormat"
+        - $ref: "#/components/parameters/ManageV1FilterSummarize"
+        - $ref: "#/components/parameters/ManageV1FilterTag"
+        - $ref: "#/components/parameters/ManageV1FilterTopics"
+        - $ref: "#/components/parameters/ManageV1FilterUttSplit"
+        - $ref: "#/components/parameters/ManageV1FilterUtterances"
+        - $ref: "#/components/parameters/ManageV1FilterVersion"
       responses:
-        '200':
+        "200":
           description: A specific request for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsageV1Response'
-        '400':
+                $ref: "#/components/schemas/UsageV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/usage/breakdown':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/usage/breakdown:
     x-dg-public: true
     description: Manage your project usage breakdown with various filter options
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: Get Project Usage Breakdown
       tags:
@@ -4928,75 +4813,75 @@ paths:
       security:
         - ApiKeyAuth: []
       operationId: manage.v1.projects.usage.breakdown.get
-      description: 'Retrieves the usage breakdown for a specific project, with various filter options by API feature or by groupings. Setting a feature (e.g. diarize) to true includes requests that used that feature, while false excludes requests that used it. Multiple true filters are combined with OR logic, while false filters use AND logic.'
+      description: Retrieves the usage breakdown for a specific project, with various filter options by API feature or by groupings. Setting a feature (e.g. diarize) to true includes requests that used that feature, while false excludes requests that used it. Multiple true filters are combined with OR logic, while false filters use AND logic.
       parameters:
-        - $ref: '#/components/parameters/ManageV1StartDate'
-        - $ref: '#/components/parameters/ManageV1EndDate'
-        - $ref: '#/components/parameters/ManageV1Grouping'
-        - $ref: '#/components/parameters/ManageV1FilterAccessor'
-        - $ref: '#/components/parameters/ManageV1FilterAlternatives'
-        - $ref: '#/components/parameters/ManageV1FilterCallbackMethod'
-        - $ref: '#/components/parameters/ManageV1FilterCallback'
-        - $ref: '#/components/parameters/ManageV1FilterChannels'
-        - $ref: '#/components/parameters/ManageV1FilterCustomIntentMode'
-        - $ref: '#/components/parameters/ManageV1FilterCustomIntent'
-        - $ref: '#/components/parameters/ManageV1FilterCustomTopicMode'
-        - $ref: '#/components/parameters/ManageV1FilterCustomTopic'
-        - $ref: '#/components/parameters/ManageV1FilterDeployment'
-        - $ref: '#/components/parameters/ManageV1FilterDetectEntities'
-        - $ref: '#/components/parameters/ManageV1FilterDetectLanguage'
-        - $ref: '#/components/parameters/ManageV1FilterDiarize'
-        - $ref: '#/components/parameters/ManageV1FilterDictation'
-        - $ref: '#/components/parameters/ManageV1FilterEncoding'
-        - $ref: '#/components/parameters/ManageV1FilterEndpoint'
-        - $ref: '#/components/parameters/ManageV1FilterExtra'
-        - $ref: '#/components/parameters/ManageV1FilterFillerWords'
-        - $ref: '#/components/parameters/ManageV1FilterIntents'
-        - $ref: '#/components/parameters/ManageV1FilterKeyterm'
-        - $ref: '#/components/parameters/ManageV1FilterKeywords'
-        - $ref: '#/components/parameters/ManageV1FilterLanguage'
-        - $ref: '#/components/parameters/ManageV1FilterMeasurements'
-        - $ref: '#/components/parameters/ManageV1FilterMethod'
-        - $ref: '#/components/parameters/ManageV1FilterModel'
-        - $ref: '#/components/parameters/ManageV1FilterMultichannel'
-        - $ref: '#/components/parameters/ManageV1FilterNumerals'
-        - $ref: '#/components/parameters/ManageV1FilterParagraphs'
-        - $ref: '#/components/parameters/ManageV1FilterProfanityFilter'
-        - $ref: '#/components/parameters/ManageV1FilterPunctuate'
-        - $ref: '#/components/parameters/ManageV1FilterRedact'
-        - $ref: '#/components/parameters/ManageV1FilterReplace'
-        - $ref: '#/components/parameters/ManageV1FilterSampleRate'
-        - $ref: '#/components/parameters/ManageV1FilterSearch'
-        - $ref: '#/components/parameters/ManageV1FilterSentiment'
-        - $ref: '#/components/parameters/ManageV1FilterSmartFormat'
-        - $ref: '#/components/parameters/ManageV1FilterSummarize'
-        - $ref: '#/components/parameters/ManageV1FilterTag'
-        - $ref: '#/components/parameters/ManageV1FilterTopics'
-        - $ref: '#/components/parameters/ManageV1FilterUttSplit'
-        - $ref: '#/components/parameters/ManageV1FilterUtterances'
-        - $ref: '#/components/parameters/ManageV1FilterVersion'
+        - $ref: "#/components/parameters/ManageV1StartDate"
+        - $ref: "#/components/parameters/ManageV1EndDate"
+        - $ref: "#/components/parameters/ManageV1Grouping"
+        - $ref: "#/components/parameters/ManageV1FilterAccessor"
+        - $ref: "#/components/parameters/ManageV1FilterAlternatives"
+        - $ref: "#/components/parameters/ManageV1FilterCallbackMethod"
+        - $ref: "#/components/parameters/ManageV1FilterCallback"
+        - $ref: "#/components/parameters/ManageV1FilterChannels"
+        - $ref: "#/components/parameters/ManageV1FilterCustomIntentMode"
+        - $ref: "#/components/parameters/ManageV1FilterCustomIntent"
+        - $ref: "#/components/parameters/ManageV1FilterCustomTopicMode"
+        - $ref: "#/components/parameters/ManageV1FilterCustomTopic"
+        - $ref: "#/components/parameters/ManageV1FilterDeployment"
+        - $ref: "#/components/parameters/ManageV1FilterDetectEntities"
+        - $ref: "#/components/parameters/ManageV1FilterDetectLanguage"
+        - $ref: "#/components/parameters/ManageV1FilterDiarize"
+        - $ref: "#/components/parameters/ManageV1FilterDictation"
+        - $ref: "#/components/parameters/ManageV1FilterEncoding"
+        - $ref: "#/components/parameters/ManageV1FilterEndpoint"
+        - $ref: "#/components/parameters/ManageV1FilterExtra"
+        - $ref: "#/components/parameters/ManageV1FilterFillerWords"
+        - $ref: "#/components/parameters/ManageV1FilterIntents"
+        - $ref: "#/components/parameters/ManageV1FilterKeyterm"
+        - $ref: "#/components/parameters/ManageV1FilterKeywords"
+        - $ref: "#/components/parameters/ManageV1FilterLanguage"
+        - $ref: "#/components/parameters/ManageV1FilterMeasurements"
+        - $ref: "#/components/parameters/ManageV1FilterMethod"
+        - $ref: "#/components/parameters/ManageV1FilterModel"
+        - $ref: "#/components/parameters/ManageV1FilterMultichannel"
+        - $ref: "#/components/parameters/ManageV1FilterNumerals"
+        - $ref: "#/components/parameters/ManageV1FilterParagraphs"
+        - $ref: "#/components/parameters/ManageV1FilterProfanityFilter"
+        - $ref: "#/components/parameters/ManageV1FilterPunctuate"
+        - $ref: "#/components/parameters/ManageV1FilterRedact"
+        - $ref: "#/components/parameters/ManageV1FilterReplace"
+        - $ref: "#/components/parameters/ManageV1FilterSampleRate"
+        - $ref: "#/components/parameters/ManageV1FilterSearch"
+        - $ref: "#/components/parameters/ManageV1FilterSentiment"
+        - $ref: "#/components/parameters/ManageV1FilterSmartFormat"
+        - $ref: "#/components/parameters/ManageV1FilterSummarize"
+        - $ref: "#/components/parameters/ManageV1FilterTag"
+        - $ref: "#/components/parameters/ManageV1FilterTopics"
+        - $ref: "#/components/parameters/ManageV1FilterUttSplit"
+        - $ref: "#/components/parameters/ManageV1FilterUtterances"
+        - $ref: "#/components/parameters/ManageV1FilterVersion"
       responses:
-        '200':
+        "200":
           description: Usage breakdown response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsageBreakdownV1Response'
-        '400':
+                $ref: "#/components/schemas/UsageBreakdownV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  '/v1/projects/{project_id}/usage/fields':
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/projects/{project_id}/usage/fields:
     x-dg-public: true
     description: Project usage fields
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     parameters:
-      - $ref: '#/components/parameters/ManageV1ProjectId'
+      - $ref: "#/components/parameters/ManageV1ProjectId"
     get:
       summary: List Project Usage Fields
       tags:
@@ -5015,28 +4900,28 @@ paths:
       security:
         - ApiKeyAuth: []
       operationId: manage.v1.projects.usage.fields.list
-      description: 'Lists the features, models, tags, languages, and processing method used for requests in the specified project'
+      description: Lists the features, models, tags, languages, and processing method used for requests in the specified project
       parameters:
-        - $ref: '#/components/parameters/ManageV1StartDate'
-        - $ref: '#/components/parameters/ManageV1EndDate'
+        - $ref: "#/components/parameters/ManageV1StartDate"
+        - $ref: "#/components/parameters/ManageV1EndDate"
       responses:
-        '200':
+        "200":
           description: A list of fields for a specific project
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsageFieldsV1Response'
-        '400':
+                $ref: "#/components/schemas/UsageFieldsV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /v1/read:
     x-dg-public: true
     description: Use Deepgrams text analysis API to analyze text
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     post:
@@ -5056,40 +4941,40 @@ paths:
       operationId: read.v1.text.analyze
       description: Analyze text content using Deepgrams text analysis API
       parameters:
-        - $ref: '#/components/parameters/SharedCallback'
-        - $ref: '#/components/parameters/SharedCallbackMethod'
-        - $ref: '#/components/parameters/SharedSentiment'
-        - $ref: '#/components/parameters/SharedSummarize'
-        - $ref: '#/components/parameters/SharedTag'
-        - $ref: '#/components/parameters/SharedTopics'
-        - $ref: '#/components/parameters/SharedCustomTopic'
-        - $ref: '#/components/parameters/SharedCustomTopicMode'
-        - $ref: '#/components/parameters/SharedIntents'
-        - $ref: '#/components/parameters/SharedCustomIntent'
-        - $ref: '#/components/parameters/SharedCustomIntentMode'
-        - $ref: '#/components/parameters/ReadV1Language'
+        - $ref: "#/components/parameters/SharedCallback"
+        - $ref: "#/components/parameters/SharedCallbackMethod"
+        - $ref: "#/components/parameters/SharedSentiment"
+        - $ref: "#/components/parameters/SharedSummarize"
+        - $ref: "#/components/parameters/SharedTag"
+        - $ref: "#/components/parameters/SharedTopics"
+        - $ref: "#/components/parameters/SharedCustomTopic"
+        - $ref: "#/components/parameters/SharedCustomTopicMode"
+        - $ref: "#/components/parameters/SharedIntents"
+        - $ref: "#/components/parameters/SharedCustomIntent"
+        - $ref: "#/components/parameters/SharedCustomIntentMode"
+        - $ref: "#/components/parameters/ReadV1Language"
       requestBody:
         description: Analyze a text file
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReadV1Request'
+              $ref: "#/components/schemas/ReadV1Request"
       responses:
-        '200':
+        "200":
           description: Successful text analysis
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadV1Response'
-        '400':
+                $ref: "#/components/schemas/ReadV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
       callbacks:
         readCallback:
-          '{$request.query.callback}':
+          "{$request.query.callback}":
             post:
               description: Callback endpoint for text analysis results
               requestBody:
@@ -5098,15 +4983,15 @@ paths:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/ReadV1Response'
+                      $ref: "#/components/schemas/ReadV1Response"
               responses:
-                '200':
+                "200":
                   description: We expect a 200 to determine whether the callback was successfully received
   /v1/speak:
     x-dg-public: true
     description: Use Deepgram's Aura text-to-speech API to generate audio from text
     servers:
-      - url: 'https://api.deepgram.com'
+      - url: https://api.deepgram.com
         description: Deepgram Production API
         x-fern-server-name: Production
     post:
@@ -5125,38 +5010,74 @@ paths:
       operationId: speak.v1.audio.generate
       description: Convert text into natural-sounding speech using Deepgram's TTS REST API
       parameters:
-        - $ref: '#/components/parameters/SharedCallback'
-        - $ref: '#/components/parameters/SharedCallbackMethod'
-        - $ref: '#/components/parameters/SharedMipOptOut'
-        - $ref: '#/components/parameters/SharedTag'
-        - $ref: '#/components/parameters/SpeakV1BitRate'
-        - $ref: '#/components/parameters/SpeakV1Container'
-        - $ref: '#/components/parameters/SpeakV1Encoding'
-        - $ref: '#/components/parameters/SpeakV1Model'
-        - $ref: '#/components/parameters/SpeakV1SampleRate'
+        - $ref: "#/components/parameters/SharedCallback"
+        - $ref: "#/components/parameters/SharedCallbackMethod"
+        - $ref: "#/components/parameters/SharedMipOptOut"
+        - $ref: "#/components/parameters/SharedTag"
+        - $ref: "#/components/parameters/SpeakV1BitRate"
+        - name: container
+          in: query
+          required: false
+          description: Container format for output audio
+          schema:
+            type: string
+            enum:
+              - none
+              - wav
+              - ogg
+            default: wav
+        - name: encoding
+          in: query
+          required: false
+          description: Audio encoding format
+          schema:
+            type: string
+            enum:
+              - linear16
+              - aac
+              - opus
+              - mp3
+              - flac
+              - mulaw
+              - alaw
+            default: mp3
+        - $ref: "#/components/parameters/SpeakV1Model"
+        - name: sample_rate
+          in: query
+          required: false
+          description: Sample rate in Hz
+          schema:
+            type: integer
+            enum:
+              - 8000
+              - 16000
+              - 22050
+              - 24000
+              - 32000
+              - 48000
       requestBody:
         description: Transform text to speech
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SpeakV1Request'
+              $ref: "#/components/schemas/SpeakV1Request"
       responses:
-        '200':
+        "200":
           description: Successful text-to-speech transformation
           content:
             application/octet-stream:
               schema:
-                $ref: '#/components/schemas/SpeakV1Response'
-        '400':
+                $ref: "#/components/schemas/SpeakV1Response"
+        "400":
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
       callbacks:
         speakCallback:
-          '{$request.query.callback}':
+          "{$request.query.callback}":
             post:
               description: Callback endpoint for text-to-speech results
               requestBody:
@@ -5165,13 +5086,13 @@ paths:
                 content:
                   application/octet-stream:
                     schema:
-                      $ref: '#/components/schemas/SpeakV1Response'
+                      $ref: "#/components/schemas/SpeakV1Response"
               responses:
-                '200':
+                "200":
                   description: We expect a 200 to determine whether the callback was successfully received
 externalDocs:
   description: Visit our docs to learn more about using Deepgram APIs
-  url: 'https://developers.deepgram.com'
+  url: https://developers.deepgram.com
 tags:
   - name: Auth
     description: Authentication operations
