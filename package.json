@@ -1,6 +1,6 @@
 {
   "name": "voice-router-dev",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, Speechmatics, and Soniox",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -62,6 +62,7 @@
     "openapi:sync:soniox": "node scripts/sync-specs.js --provider soniox",
     "openapi:validate": "node scripts/sync-specs.js --validate-only",
     "openapi:fix-specs": "node scripts/fix-openai-spec.js && node scripts/fix-speechmatics-spec.js && node scripts/fix-deepgram-spec.js",
+    "openapi:fix": "node scripts/fix-generated.js && node scripts/fix-assemblyai-missing-schemas.js && sed -i \"s/'\\([a-z_]*\\)\\.'\\([a-z_]*\\)'/'\\1.\\2'/g\" src/generated/speechmatics/api/speechmaticsASRRESTAPI.zod.ts 2>/dev/null || true",
     "openapi:clean": "rm -rf src/generated",
     "openapi:clean:gladia": "rm -rf src/generated/gladia",
     "openapi:clean:assemblyai": "rm -rf src/generated/assemblyai",
@@ -81,6 +82,7 @@
     "openapi:generate:speechmatics-streaming": "pnpm openapi:sync-speechmatics-streaming",
     "openapi:generate:soniox": "pnpm openapi:clean:soniox && orval --config orval.config.ts --project sonioxApi && orval --config orval.config.ts --project sonioxZod && pnpm openapi:sync-soniox-streaming && pnpm openapi:sync-soniox-languages && pnpm openapi:fix",
     "openapi:generate:soniox-streaming": "pnpm openapi:sync-soniox-streaming",
+    "openapi:diagram": "node scripts/generate-pipeline-diagram.js",
     "openapi:rebuild": "pnpm openapi:sync && pnpm openapi:generate && pnpm build",
     "docs:clean": "rm -rf docs/generated",
     "docs:generate": "pnpm docs:clean && pnpm docs:generate:router && pnpm docs:generate:webhooks && pnpm docs:generate:gladia && pnpm docs:generate:assemblyai && pnpm docs:generate:deepgram && pnpm docs:generate:azure && pnpm docs:generate:openai && pnpm docs:generate:speechmatics",
@@ -93,7 +95,6 @@
     "docs:generate:openai": "typedoc --options typedoc.openai.config.mjs",
     "docs:generate:speechmatics": "typedoc --options typedoc.speechmatics.config.mjs",
     "prepublishOnly": "pnpm openapi:sync && pnpm openapi:validate && pnpm lint:fix && pnpm build",
-    "openapi:fix": "node scripts/fix-generated.js && node scripts/fix-assemblyai-missing-schemas.js && sed -i \"s/'\\([a-z_]*\\)\\.'\\([a-z_]*\\)'/'\\1.\\2'/g\" src/generated/speechmatics/api/speechmaticsASRRESTAPI.zod.ts 2>/dev/null || true",
     "prebuild": "pnpm openapi:fix-specs && pnpm openapi:fix"
   },
   "publishConfig": {
