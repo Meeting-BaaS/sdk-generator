@@ -104,7 +104,7 @@ export const DeepgramCapabilities: ProviderCapabilities = {
  * OpenAI Whisper provider capabilities
  */
 export const OpenAICapabilities: ProviderCapabilities = {
-  streaming: false,
+  streaming: true, // Via OpenAI Realtime API (WebSocket)
   diarization: true,
   wordTimestamps: true,
   languageDetection: false,

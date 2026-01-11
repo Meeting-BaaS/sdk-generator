@@ -129,7 +129,7 @@ interface CreateTranscriptionResponseDiarizedJson {
 export class OpenAIWhisperAdapter extends BaseAdapter {
   readonly name = "openai-whisper" as const
   readonly capabilities: ProviderCapabilities = {
-    streaming: false, // Synchronous only (no streaming API for transcription)
+    streaming: true, // Via OpenAI Realtime API (WebSocket) - see streaming-types.ts
     diarization: true, // Available with gpt-4o-transcribe-diarize model
     wordTimestamps: true,
     languageDetection: false, // Language should be provided for best accuracy
