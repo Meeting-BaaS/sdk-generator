@@ -721,6 +721,31 @@ function restoreManualDeepgramFiles() {
 }
 
 /**
+ * Restore manual Speechmatics batch types file
+ *
+ * The batch-types.zod.ts file contains curated schemas for field-configs
+ * that are not auto-generated. It's stored in specs/ and copied after generation.
+ */
+function restoreManualSpeechmaticsFiles() {
+  const srcPath = path.join(__dirname, "..", "specs", "speechmatics-batch-types.zod.ts")
+  const targetDir = path.join(__dirname, "..", "src", "generated", "speechmatics")
+  const destPath = path.join(targetDir, "batch-types.zod.ts")
+
+  if (!fs.existsSync(srcPath)) {
+    console.log("⚠️  Speechmatics batch-types.zod.ts not found in specs/, skipping restore")
+    return
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  fs.copyFileSync(srcPath, destPath)
+  fixes.push("Restored Speechmatics batch-types.zod.ts from specs/")
+  console.log("\n📦 Restored Speechmatics batch-types.zod.ts")
+}
+
+/**
  * Main function
  */
 function main() {
@@ -743,6 +768,9 @@ function main() {
 
   // Restore manual Deepgram files after processing
   restoreManualDeepgramFiles()
+
+  // Restore manual Speechmatics batch types
+  restoreManualSpeechmaticsFiles()
 
   if (fixes.length > 0) {
     console.log("\n✅ Fixes applied:")
