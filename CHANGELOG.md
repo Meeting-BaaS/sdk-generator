@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.7.0] - 2026-01-11
+## [0.6.0] - 2026-01-11
 
 ### Added
 
@@ -15,7 +15,7 @@ OpenAI types now auto-generated from the official [Stainless-hosted OpenAPI spec
 
 ```typescript
 import { OpenAIModel, OpenAIResponseFormat } from 'voice-router-dev/constants'
-import type { 
+import type {
   RealtimeSessionCreateRequest,
   RealtimeTranscriptionSessionCreateRequest,
   CreateTranscriptionResponseDiarizedJson
@@ -69,24 +69,6 @@ type ClientEvent = OpenAIStreamingTypes.RealtimeClientEvent
 **Endpoints:**
 - OpenAI: `wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview`
 - Azure OpenAI: `wss://{endpoint}/openai/realtime?deployment={model}&api-version={version}`
-
-### Changed
-
-- **OpenAI spec source**: Now uses Stainless live spec instead of manual `openai-whisper-openapi.yml`
-- **`fix-openai-spec.js`**: Filters full OpenAI API to audio + realtime endpoints only
-- **OpenAI adapter**: Uses `OpenAIModel` constants instead of hardcoded strings
-- **Provider capabilities**: OpenAI now shows `streaming: true` (via Realtime API)
-
-### Fixed
-
-- OpenAI model values now stay in sync with official spec
-- `OpenAIResponseFormat` now includes `diarized_json` from official spec
-
----
-
-## [0.6.0] - 2026-01-10
-
-### Added
 
 #### Soniox Provider (8th Provider)
 
@@ -218,8 +200,28 @@ import { zodToFieldConfigs, SonioxApiZodSchemas } from 'voice-router-dev'
 const transcriptionFields = zodToFieldConfigs(SonioxApiZodSchemas.createTranscriptionBody)
 ```
 
+#### SDK Generation Pipeline Diagram
+
+New auto-generated Mermaid diagram showing the SDK generation flow:
+
+```bash
+pnpm openapi:diagram
+```
+
+Generates `docs/sdk-generation-pipeline.mmd` from codebase analysis:
+- Analyzes `sync-specs.js` for remote/manual spec sources
+- Extracts orval config for API/Zod generation
+- Maps streaming type sync scripts
+- Includes consumer layer (router, webhooks, adapters)
+- Shows public API exports
+
 ### Changed
 
+- **OpenAI spec source**: Now uses Stainless live spec instead of manual `openai-whisper-openapi.yml`
+- **`fix-openai-spec.js`**: Filters full OpenAI API to audio + realtime endpoints only
+- **OpenAI adapter**: Uses `OpenAIModel` constants instead of hardcoded strings
+- **Provider capabilities**: OpenAI now shows `streaming: true` (via Realtime API)
+- **Azure adapter**: Uses generated enums instead of hardcoded strings, removed `any` type casts
 - **Speechmatics adapter** now uses generated enums instead of hardcoded string values
 - **Speechmatics adapter** fixed API structure: `sentiment_analysis_config` and `summarization_config` moved to job level (was incorrectly in `transcription_config`)
 - **Speechmatics adapter** fixed `additional_vocab` format: now uses `{content: string}[]` per spec
@@ -231,6 +233,12 @@ const transcriptionFields = zodToFieldConfigs(SonioxApiZodSchemas.createTranscri
 
 ### Fixed
 
+- OpenAI model values now stay in sync with official spec
+- `OpenAIResponseFormat` now includes `diarized_json` from official spec
+- OpenAI `languageDetection` capability is now `true` (language is optional in request)
+- Azure `languageDetection` capability fixed (was incorrectly `false`)
+- Azure `customVocabulary` capability fixed
+- AssemblyAI/Speechmatics streaming types now survive `openapi:clean` (stored in `specs/`)
 - Speechmatics batch field configs now work (was returning empty array)
 - Speechmatics webhook handler now uses generated `RetrieveTranscriptResponse` type
 - **AssemblyAI streaming field configs** now include SDK v3 fields (`keyterms`, `keytermsPrompt`, `speechModel`, `languageDetection`, etc.) - sync script parses both AsyncAPI spec and SDK TypeScript types

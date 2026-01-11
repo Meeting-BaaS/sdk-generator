@@ -1,6 +1,6 @@
 # Voice Router SDK
 
-> Universal speech-to-text router for 6+ transcription providers with a single, unified API.
+> Universal speech-to-text router for 8 transcription providers with a single, unified API.
 
 [![npm version](https://badge.fury.io/js/voice-router-dev.svg)](https://www.npmjs.com/package/voice-router-dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -8,7 +8,7 @@
 
 ## Why Voice Router?
 
-Switch between speech-to-text providers **without changing your code**. One API for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, and Speechmatics.
+Switch between speech-to-text providers **without changing your code**. One API for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, Speechmatics, and Soniox.
 
 ```typescript
 import { VoiceRouter } from 'voice-router-dev';
@@ -31,7 +31,7 @@ const result = await router.transcribe(audio, {
 - **Provider-Agnostic** - Switch providers with one line
 - **Unified API** - Same interface for all providers
 - **Webhook Normalization** - Auto-detect and parse webhooks
-- **Real-time Streaming** - WebSocket support (Gladia, AssemblyAI, Deepgram)
+- **Real-time Streaming** - WebSocket support (Gladia, AssemblyAI, Deepgram, Soniox, OpenAI Realtime)
 - **Advanced Features** - Diarization, sentiment, summarization, chapters, entities
 - **Type-Safe** - Full TypeScript support with OpenAPI-generated types
 - **Typed Extended Data** - Access provider-specific features with full autocomplete
@@ -46,8 +46,9 @@ const result = await router.transcribe(audio, {
 | **AssemblyAI** | Yes | Real-time | HMAC | Chapters, entities, content moderation |
 | **Deepgram** | Sync | WebSocket | Yes | PII redaction, keyword boosting |
 | **Azure STT** | Async | No | HMAC | Custom models, language ID |
-| **OpenAI Whisper** | Sync | No | No | gpt-4o, diarization |
+| **OpenAI** | Sync | Realtime | No | gpt-4o, diarization, Realtime API |
 | **Speechmatics** | Async | No | Query params | High accuracy, summarization |
+| **Soniox** | Yes | WebSocket | No | 60+ languages, translation, regions |
 
 ## Installation
 
@@ -371,8 +372,9 @@ Provider-specific implementations:
 - `AssemblyAIAdapter` - AssemblyAI transcription
 - `DeepgramAdapter` - Deepgram transcription
 - `AzureSTTAdapter` - Azure Speech-to-Text
-- `OpenAIWhisperAdapter` - OpenAI Whisper
+- `OpenAIWhisperAdapter` - OpenAI Whisper + Realtime API
 - `SpeechmaticsAdapter` - Speechmatics transcription
+- `SonioxAdapter` - Soniox transcription (batch + streaming)
 
 ## TypeScript Support
 
@@ -650,6 +652,23 @@ router.registerAdapter(new SpeechmaticsAdapter());
 ```
 
 Get your API key: https://speechmatics.com
+
+### Soniox
+```typescript
+import { VoiceRouter, SonioxAdapter, SonioxRegion } from 'voice-router-dev';
+
+const router = new VoiceRouter({
+  providers: {
+    soniox: {
+      apiKey: 'YOUR_KEY',
+      region: SonioxRegion.us  // or 'eu', 'jp'
+    }
+  }
+});
+router.registerAdapter(new SonioxAdapter());
+```
+
+Get your API key: https://soniox.com
 
 ## Contributing
 
