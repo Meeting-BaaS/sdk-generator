@@ -720,7 +720,12 @@ import { AudioResponseFormat } from "./generated/openai/schema/audioResponseForm
 /**
  * OpenAI Whisper transcription models
  *
- * Values: `whisper-1`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`
+ * Values from official spec (auto-synced from Stainless):
+ * - `whisper-1`: Open source Whisper V2 model
+ * - `gpt-4o-transcribe`: GPT-4o based transcription (more accurate)
+ * - `gpt-4o-mini-transcribe`: Faster, cost-effective GPT-4o mini
+ * - `gpt-4o-mini-transcribe-2025-12-15`: Dated version of GPT-4o mini
+ * - `gpt-4o-transcribe-diarize`: GPT-4o with speaker diarization
  *
  * @example
  * ```typescript
@@ -728,27 +733,37 @@ import { AudioResponseFormat } from "./generated/openai/schema/audioResponseForm
  *
  * { model: OpenAIModel["whisper-1"] }
  * { model: OpenAIModel["gpt-4o-transcribe"] }
+ * { model: OpenAIModel["gpt-4o-transcribe-diarize"] }
  * ```
  */
 export const OpenAIModel = {
   "whisper-1": "whisper-1",
   "gpt-4o-transcribe": "gpt-4o-transcribe",
-  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe"
+  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
+  "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
+  "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize"
 } as const satisfies Record<string, CreateTranscriptionRequestModel>
 
 /**
  * OpenAI transcription response formats
  *
- * Values: `json`, `text`, `srt`, `verbose_json`, `vtt`
+ * Values from official spec (auto-synced from Stainless):
+ * - `json`: Basic JSON response
+ * - `text`: Plain text
+ * - `srt`: SRT subtitle format
+ * - `verbose_json`: Detailed JSON with timestamps
+ * - `vtt`: VTT subtitle format
+ * - `diarized_json`: JSON with speaker annotations (gpt-4o-transcribe-diarize only)
  *
  * Note: GPT-4o transcribe models only support `json` format.
+ * For diarization, use `diarized_json` with `gpt-4o-transcribe-diarize` model.
  *
  * @example
  * ```typescript
  * import { OpenAIResponseFormat } from 'voice-router-dev/constants'
  *
  * { responseFormat: OpenAIResponseFormat.verbose_json }
- * { responseFormat: OpenAIResponseFormat.srt }
+ * { responseFormat: OpenAIResponseFormat.diarized_json }
  * ```
  */
 export const OpenAIResponseFormat = AudioResponseFormat

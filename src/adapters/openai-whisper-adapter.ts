@@ -21,6 +21,9 @@ import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai
 import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
 import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
 
+// Import model constants (derived from official spec)
+import { OpenAIModel } from "../constants"
+
 /**
  * OpenAI Whisper transcription provider adapter
  *
@@ -187,7 +190,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       const model = this.selectModel(options)
 
       // Set response format based on requirements
-      const isDiarization = model === "gpt-4o-transcribe-diarize"
+      const isDiarization = model === OpenAIModel["gpt-4o-transcribe-diarize"]
       const needsWords = options?.wordTimestamps === true
 
       // Build typed request using generated types
@@ -255,11 +258,11 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
 
     // Auto-select based on diarization requirement
     if (options?.diarization) {
-      return "gpt-4o-transcribe-diarize"
+      return OpenAIModel["gpt-4o-transcribe-diarize"]
     }
 
     // Default to gpt-4o-transcribe (better accuracy than whisper-1)
-    return "gpt-4o-transcribe"
+    return OpenAIModel["gpt-4o-transcribe"]
   }
 
   /**
