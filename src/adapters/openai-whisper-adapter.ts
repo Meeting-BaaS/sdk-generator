@@ -18,6 +18,7 @@ import { createTranscription } from "../generated/openai/api/openAIAudioRealtime
 // Import OpenAI generated types (all from official Stainless-hosted spec)
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
+import { CreateTranscriptionRequestTimestampGranularitiesItem } from "../generated/openai/schema/createTranscriptionRequestTimestampGranularitiesItem"
 import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
 import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
 
@@ -213,9 +214,12 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         // Use verbose_json for word timestamps
         request.response_format = OpenAIResponseFormat.verbose_json
 
-        // Add timestamp granularities (using the OpenAPI array-style property name)
+        // Add timestamp granularities using generated enum
         if (needsWords) {
-          ;(request as any)["timestamp_granularities[]"] = ["word", "segment"]
+          request.timestamp_granularities = [
+            CreateTranscriptionRequestTimestampGranularitiesItem.word,
+            CreateTranscriptionRequestTimestampGranularitiesItem.segment
+          ]
         }
       } else {
         // Simple json format for basic transcription
