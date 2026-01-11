@@ -13,33 +13,13 @@ import type {
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 // Import generated API client function - FULL TYPE SAFETY!
-import { createTranscription } from "../generated/openai/api/openAIAudioAPI"
+import { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
 
-// Import OpenAI generated types
+// Import OpenAI generated types (all from official Stainless-hosted spec)
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
+import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
 import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
-
-/**
- * Diarized response type for speaker-labeled transcription
- * Note: This extends the verbose JSON format with speaker information
- * The official OpenAI spec doesn't include this yet, but the API supports it
- */
-interface DiarizedSegment {
-  id: number
-  start: number
-  end: number
-  text: string
-  speaker: string
-}
-
-interface CreateTranscriptionResponseDiarizedJson {
-  task: string
-  language: string
-  duration: number
-  text: string
-  segments: DiarizedSegment[]
-}
 
 /**
  * OpenAI Whisper transcription provider adapter
@@ -420,14 +400,12 @@ export function createOpenAIWhisperAdapter(config: ProviderConfig): OpenAIWhispe
 // ─────────────────────────────────────────────────────────────────────────────
 
 // API client function
-export { createTranscription } from "../generated/openai/api/openAIAudioAPI"
+export { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
 
-// Request/Response types
+// Request/Response types (all from official OpenAI spec)
 export type {
   CreateTranscriptionRequest,
   CreateTranscriptionResponseVerboseJson,
+  CreateTranscriptionResponseDiarizedJson,
   CreateTranscriptionRequestModel
 }
-
-// Local diarization type (not in official spec yet)
-export type { CreateTranscriptionResponseDiarizedJson }

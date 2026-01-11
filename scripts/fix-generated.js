@@ -746,6 +746,29 @@ function restoreManualSpeechmaticsFiles() {
 }
 
 /**
+ * Restore OpenAI streaming types (WebSocket events not in OpenAPI spec)
+ * These are hand-written types for the OpenAI Realtime WebSocket API
+ */
+function restoreOpenAIStreamingTypes() {
+  const srcPath = path.join(__dirname, "..", "specs", "openai-realtime-types.ts")
+  const targetDir = path.join(__dirname, "..", "src", "generated", "openai")
+  const destPath = path.join(targetDir, "streaming-types.ts")
+
+  if (!fs.existsSync(srcPath)) {
+    console.log("⚠️  OpenAI realtime-types.ts not found in specs/, skipping restore")
+    return
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  fs.copyFileSync(srcPath, destPath)
+  fixes.push("Restored OpenAI streaming-types.ts from specs/")
+  console.log("\n📦 Restored OpenAI streaming-types.ts")
+}
+
+/**
  * Main function
  */
 function main() {
@@ -771,6 +794,9 @@ function main() {
 
   // Restore manual Speechmatics batch types
   restoreManualSpeechmaticsFiles()
+
+  // Restore OpenAI streaming types (WebSocket events not in OpenAPI spec)
+  restoreOpenAIStreamingTypes()
 
   if (fixes.length > 0) {
     console.log("\n✅ Fixes applied:")

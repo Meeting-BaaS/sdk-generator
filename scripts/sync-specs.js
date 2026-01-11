@@ -54,9 +54,10 @@ const SPEC_SOURCES = {
     output: "specs/deepgram-openapi.yml",
     format: "yaml"
   },
-  // OpenAI spec from official repository - filtered to audio endpoints by fix-openai-spec.js
+  // OpenAI spec from Stainless (live, auto-updated) - filtered to audio+realtime by fix-openai-spec.js
+  // Source: https://github.com/openai/openai-openapi (points to Stainless-hosted live version)
   openai: {
-    url: "https://raw.githubusercontent.com/openai/openai-openapi/manual_spec/openapi.yaml",
+    url: "https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml",
     output: "specs/openai-openapi.yaml",
     format: "yaml"
   },

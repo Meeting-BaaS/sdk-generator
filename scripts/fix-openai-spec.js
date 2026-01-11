@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
- * Filter and fix OpenAI OpenAPI spec for Whisper/audio endpoints only
+ * Filter and fix OpenAI OpenAPI spec for audio + realtime endpoints
  *
  * The official OpenAI spec includes the entire API (chat, embeddings, assistants, etc.)
- * This script filters it down to just audio transcription/translation endpoints
- * and fixes any validation issues for Orval compatibility.
+ * This script filters it down to:
+ * - Audio transcription/translation/speech endpoints (batch)
+ * - Realtime streaming endpoints (WebSocket-based)
+ * And fixes any validation issues for Orval compatibility.
  *
- * Source: https://github.com/openai/openai-openapi (synced via sync-specs.js)
+ * Source: https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
  */
 
 const fs = require("fs")
@@ -15,7 +17,7 @@ const yaml = require("js-yaml")
 const SPEC_PATH = "./specs/openai-openapi.yaml"
 const BACKUP_PATH = "./specs/openai-openapi.yaml.backup"
 
-console.log("🔧 Filtering OpenAI spec to audio/Whisper endpoints only...\n")
+console.log("🔧 Filtering OpenAI spec to audio + realtime endpoints...\n")
 
 // Check if spec exists
 if (!fs.existsSync(SPEC_PATH)) {
@@ -30,13 +32,19 @@ const spec = yaml.load(specContent)
 
 let fixCount = 0
 
-// Step 1: Keep only audio-related paths
-console.log("📋 Step 1: Filtering paths to audio endpoints only")
+// Step 1: Keep only audio and realtime paths
+console.log("📋 Step 1: Filtering paths to audio + realtime endpoints")
 
 const allowedPathPrefixes = [
+  // Batch audio endpoints
   "/audio/transcriptions",
   "/audio/translations",
-  "/audio/speech"
+  "/audio/speech",
+  "/audio/voices",
+  // Realtime streaming endpoints
+  "/realtime/sessions",
+  "/realtime/transcription_sessions",
+  "/realtime/client_secrets"
 ]
 
 const removedPaths = []
@@ -197,16 +205,17 @@ if (paramFixes > 0) {
 // Step 7: Update spec metadata
 console.log("\n📋 Step 7: Updating spec metadata")
 
-spec.info.title = "OpenAI Audio API"
-spec.info.description = "OpenAI Audio API - Transcription, Translation, and Speech endpoints. Filtered from the official OpenAI API spec."
+spec.info.title = "OpenAI Audio & Realtime API"
+spec.info.description = "OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted)."
 console.log(`   ✅ Updated title and description`)
 
-// Filter tags to audio only
+// Filter tags to audio and realtime only
 if (spec.tags) {
-  spec.tags = spec.tags.filter(tag => 
-    tag.name?.toLowerCase().includes("audio")
-  )
-  console.log(`   ✅ Filtered tags to audio-related only`)
+  spec.tags = spec.tags.filter(tag => {
+    const name = tag.name?.toLowerCase() || ""
+    return name.includes("audio") || name.includes("realtime")
+  })
+  console.log(`   ✅ Filtered tags to audio + realtime only`)
 }
 
 // Save backup (only if not already exists)
