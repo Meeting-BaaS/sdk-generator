@@ -4,7 +4,7 @@
  *
  * Sources:
  * - AsyncAPI spec: specs/assemblyai-asyncapi.json (legacy WebSocket API)
- * - SDK types: src/generated/assemblyai/streaming-types.ts (SDK v3 fields)
+ * - SDK types: specs/assemblyai-streaming-sdk.ts (SDK v3 fields from GitHub)
  *
  * The SDK types include fields not in AsyncAPI: keyterms, keytermsPrompt, speechModel, etc.
  * This script merges both sources to provide complete field coverage.
@@ -16,9 +16,10 @@ const fs = require("fs")
 const path = require("path")
 
 const ASYNCAPI_SPEC = path.join(__dirname, "../specs/assemblyai-asyncapi.json")
-const SDK_TYPES = path.join(__dirname, "../src/generated/assemblyai/streaming-types.ts")
+const SDK_TYPES = path.join(__dirname, "../specs/assemblyai-streaming-sdk.ts")
 const OUTPUT_DIR = path.join(__dirname, "../src/generated/assemblyai")
 const STREAMING_ZOD_OUTPUT = path.join(OUTPUT_DIR, "streaming-types.zod.ts")
+const STREAMING_TYPES_OUTPUT = path.join(OUTPUT_DIR, "streaming-types.ts")
 
 /**
  * Parse TypeScript type definition and extract fields
@@ -274,6 +275,21 @@ ${updateParams.join(",\n")}
 `
 }
 
+/**
+ * Copy the TypeScript types file from specs/ to generated/
+ * This file contains all the streaming types used by adapters and constants
+ */
+function copyTypeScriptTypes() {
+  const srcPath = path.join(__dirname, "../specs/assemblyai-streaming-types.ts")
+  if (!fs.existsSync(srcPath)) {
+    console.warn(`  ⚠️  ${srcPath} not found, skipping TypeScript types`)
+    return false
+  }
+  const content = fs.readFileSync(srcPath, "utf-8")
+  fs.writeFileSync(STREAMING_TYPES_OUTPUT, content)
+  return true
+}
+
 async function main() {
   try {
     console.log("📥 Generating AssemblyAI streaming types from AsyncAPI spec...")
@@ -296,6 +312,11 @@ async function main() {
 
     fs.writeFileSync(STREAMING_ZOD_OUTPUT, zodContent)
     console.log(`  ✅ Generated ${path.relative(process.cwd(), STREAMING_ZOD_OUTPUT)}`)
+
+    // Copy TypeScript types file from specs/ for adapters and constants.ts
+    if (copyTypeScriptTypes()) {
+      console.log(`  ✅ Copied ${path.relative(process.cwd(), STREAMING_TYPES_OUTPUT)} from specs/`)
+    }
 
     console.log("✅ Successfully generated AssemblyAI streaming types!")
     process.exit(0)

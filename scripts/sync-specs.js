@@ -43,6 +43,11 @@ const SPEC_SOURCES = {
     output: "specs/assemblyai-asyncapi.json",
     format: "json"
   },
+  assemblyaiStreaming: {
+    url: "https://raw.githubusercontent.com/AssemblyAI/assemblyai-node-sdk/main/src/types/streaming/index.ts",
+    output: "specs/assemblyai-streaming-sdk.ts",
+    format: "typescript"
+  },
   deepgram: {
     url: "https://raw.githubusercontent.com/deepgram/deepgram-api-specs/main/openapi.yml",
     output: "specs/deepgram-openapi.yml",
@@ -68,6 +73,11 @@ const SPEC_SOURCES = {
     url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/real-time-client/schema/realtime.yml",
     output: "specs/speechmatics-asyncapi.yml",
     format: "yaml"
+  },
+  speechmaticsBatchTypes: {
+    manual: true,
+    output: "specs/speechmatics-batch-types.zod.ts",
+    note: "Curated batch schemas for field-configs"
   },
   deepgramStreaming: {
     url: "https://raw.githubusercontent.com/deepgram/deepgram-js-sdk/main/src/lib/types/TranscriptionSchema.ts",
