@@ -17,9 +17,9 @@ import { createTranscription } from "../generated/openai/api/openAIAudioRealtime
 
 // Import OpenAI generated types (all from official Stainless-hosted spec)
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
-import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
-import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
 import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
+import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
+import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
 
 // Import model constants (derived from official spec)
 import { OpenAIModel } from "../constants"
@@ -407,8 +407,6 @@ export { createTranscription } from "../generated/openai/api/openAIAudioRealtime
 
 // Request/Response types (all from official OpenAI spec)
 export type {
-  CreateTranscriptionRequest,
-  CreateTranscriptionResponseVerboseJson,
-  CreateTranscriptionResponseDiarizedJson,
-  CreateTranscriptionRequestModel
+  CreateTranscriptionRequest, CreateTranscriptionRequestModel, CreateTranscriptionResponseDiarizedJson, CreateTranscriptionResponseVerboseJson
 }
+

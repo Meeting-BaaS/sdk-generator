@@ -22,9 +22,9 @@
 
 import { ListenV1EncodingParameter } from "./generated/deepgram/schema/listenV1EncodingParameter"
 import { ListenV1RedactParameterOneOfItem } from "./generated/deepgram/schema/listenV1RedactParameterOneOfItem"
-import { SharedCustomTopicModeParameter } from "./generated/deepgram/schema/sharedCustomTopicModeParameter"
-import { SharedCustomIntentModeParameter } from "./generated/deepgram/schema/sharedCustomIntentModeParameter"
 import { SharedCallbackMethodParameter } from "./generated/deepgram/schema/sharedCallbackMethodParameter"
+import { SharedCustomIntentModeParameter } from "./generated/deepgram/schema/sharedCustomIntentModeParameter"
+import { SharedCustomTopicModeParameter } from "./generated/deepgram/schema/sharedCustomTopicModeParameter"
 
 /**
  * Deepgram audio encoding formats
@@ -180,11 +180,11 @@ export const DeepgramModel = {
 // Gladia Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { StreamingSupportedEncodingEnum } from "./generated/gladia/schema/streamingSupportedEncodingEnum"
-import { StreamingSupportedSampleRateEnum } from "./generated/gladia/schema/streamingSupportedSampleRateEnum"
 import { StreamingSupportedBitDepthEnum } from "./generated/gladia/schema/streamingSupportedBitDepthEnum"
+import { StreamingSupportedEncodingEnum } from "./generated/gladia/schema/streamingSupportedEncodingEnum"
 import { StreamingSupportedModels } from "./generated/gladia/schema/streamingSupportedModels"
 import { StreamingSupportedRegions } from "./generated/gladia/schema/streamingSupportedRegions"
+import { StreamingSupportedSampleRateEnum } from "./generated/gladia/schema/streamingSupportedSampleRateEnum"
 import { TranscriptionLanguageCodeEnum } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"
 import { TranslationLanguageCodeEnum } from "./generated/gladia/schema/translationLanguageCodeEnum"
 
@@ -360,9 +360,9 @@ export const AssemblyAISampleRate = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { TranscriptStatus } from "./generated/assemblyai/schema/transcriptStatus"
-import { TranscriptionControllerListV2StatusItem } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
 import { Status } from "./generated/azure/schema/status"
 import { ManageV1FilterStatusParameter } from "./generated/deepgram/schema/manageV1FilterStatusParameter"
+import { TranscriptionControllerListV2StatusItem } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
 
 /**
  * AssemblyAI transcript status values for filtering
@@ -632,9 +632,9 @@ export type SonioxRegionType = (typeof SonioxRegion)[keyof typeof SonioxRegion]
 // Deepgram TTS (Text-to-Speech) Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { SpeakV1ModelParameter } from "./generated/deepgram/schema/speakV1ModelParameter"
-import { SpeakV1EncodingParameter } from "./generated/deepgram/schema/speakV1EncodingParameter"
 import { SpeakV1ContainerParameter } from "./generated/deepgram/schema/speakV1ContainerParameter"
+import { SpeakV1EncodingParameter } from "./generated/deepgram/schema/speakV1EncodingParameter"
+import { SpeakV1ModelParameter } from "./generated/deepgram/schema/speakV1ModelParameter"
 import { SpeakV1SampleRateParameter } from "./generated/deepgram/schema/speakV1SampleRateParameter"
 
 /**
@@ -714,8 +714,8 @@ export type DeepgramTTSSampleRateType =
 // OpenAI Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { CreateTranscriptionRequestModel } from "./generated/openai/schema/createTranscriptionRequestModel"
 import { AudioResponseFormat } from "./generated/openai/schema/audioResponseFormat"
+import type { CreateTranscriptionRequestModel } from "./generated/openai/schema/createTranscriptionRequestModel"
 
 /**
  * OpenAI Whisper transcription models
