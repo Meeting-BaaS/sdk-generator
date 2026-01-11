@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type WebhookLiveStartSessionPayloadEvent =
-  (typeof WebhookLiveStartSessionPayloadEvent)[keyof typeof WebhookLiveStartSessionPayloadEvent]
+export type WebhookLiveStartSessionPayloadEvent = typeof WebhookLiveStartSessionPayloadEvent[keyof typeof WebhookLiveStartSessionPayloadEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookLiveStartSessionPayloadEvent = {
-  livestart_session: "live.start_session"
-} as const
+  livestart_session: 'live.start_session',
+} as const;

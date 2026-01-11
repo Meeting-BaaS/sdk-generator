@@ -4,30 +4,29 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-
-import type { TranscriptionTranscriptTokenIsAudioEvent } from "./transcriptionTranscriptTokenIsAudioEvent"
-import type { TranscriptionTranscriptTokenLanguage } from "./transcriptionTranscriptTokenLanguage"
-import type { TranscriptionTranscriptTokenSpeaker } from "./transcriptionTranscriptTokenSpeaker"
-import type { TranscriptionTranscriptTokenTranslationStatus } from "./transcriptionTranscriptTokenTranslationStatus"
+import type { TranscriptionTranscriptTokenSpeaker } from './transcriptionTranscriptTokenSpeaker';
+import type { TranscriptionTranscriptTokenLanguage } from './transcriptionTranscriptTokenLanguage';
+import type { TranscriptionTranscriptTokenIsAudioEvent } from './transcriptionTranscriptTokenIsAudioEvent';
+import type { TranscriptionTranscriptTokenTranslationStatus } from './transcriptionTranscriptTokenTranslationStatus';
 
 /**
  * The transcript token.
  */
 export interface TranscriptionTranscriptToken {
   /** Token text content. */
-  text: string
+  text: string;
   /** Start time of the token in milliseconds. */
-  start_ms: number
+  start_ms: number;
   /** End time of the token in milliseconds. */
-  end_ms: number
+  end_ms: number;
   /** Confidence score of the token, between 0.0 and 1.0. */
-  confidence: number
+  confidence: number;
   /** Speaker identifier. Only present when speaker diarization is enabled. */
-  speaker?: TranscriptionTranscriptTokenSpeaker
+  speaker?: TranscriptionTranscriptTokenSpeaker;
   /** Detected language code for this token. Only present when language identification is enabled. */
-  language?: TranscriptionTranscriptTokenLanguage
+  language?: TranscriptionTranscriptTokenLanguage;
   /** Boolean indicating if this token represents an audio event. Only present when audio event detection is enabled. */
-  is_audio_event?: TranscriptionTranscriptTokenIsAudioEvent
+  is_audio_event?: TranscriptionTranscriptTokenIsAudioEvent;
   /** Translation status ("none", "original" or "translation"). Only when if translation is enabled. */
-  translation_status?: TranscriptionTranscriptTokenTranslationStatus
+  translation_status?: TranscriptionTranscriptTokenTranslationStatus;
 }

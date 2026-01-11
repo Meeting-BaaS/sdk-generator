@@ -5,11 +5,11 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptWord } from "./transcriptWord"
+import type { TranscriptWord } from './transcriptWord';
 
 /**
  * An array of temporally-sequential word objects, one for each word in the transcript.
 See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
 
  */
-export type TranscriptWords = TranscriptWord[] | null
+export type TranscriptWords = TranscriptWord[] | null;

@@ -4,16 +4,15 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { EndRecordingMessageData } from "./endRecordingMessageData"
-import type { EndRecordingMessageType } from "./endRecordingMessageType"
+import type { EndRecordingMessageType } from './endRecordingMessageType';
+import type { EndRecordingMessageData } from './endRecordingMessageData';
 
 export interface EndRecordingMessage {
   /** Id of the live session */
-  session_id: string
+  session_id: string;
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string
-  type: EndRecordingMessageType
+  created_at: string;
+  type: EndRecordingMessageType;
   /** The message data */
-  data: EndRecordingMessageData
+  data: EndRecordingMessageData;
 }

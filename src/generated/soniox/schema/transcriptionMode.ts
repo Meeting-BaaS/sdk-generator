@@ -5,10 +5,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type TranscriptionMode = (typeof TranscriptionMode)[keyof typeof TranscriptionMode]
+export type TranscriptionMode = typeof TranscriptionMode[keyof typeof TranscriptionMode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptionMode = {
-  real_time: "real_time",
-  async: "async"
-} as const
+  real_time: 'real_time',
+  async: 'async',
+} as const;

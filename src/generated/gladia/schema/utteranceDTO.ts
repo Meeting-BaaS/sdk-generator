@@ -4,31 +4,30 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
-import type { WordDTO } from "./wordDTO"
+import type { WordDTO } from './wordDTO';
+import type { TranscriptionLanguageCodeEnum } from './transcriptionLanguageCodeEnum';
 
 export interface UtteranceDTO {
   /** Start timestamp in seconds of this utterance */
-  start: number
+  start: number;
   /** End timestamp in seconds of this utterance */
-  end: number
+  end: number;
   /** Confidence on the transcribed utterance (1 = 100% confident) */
-  confidence: number
+  confidence: number;
   /**
    * Audio channel of where this utterance has been transcribed from
    * @minimum 0
    */
-  channel: number
+  channel: number;
   /**
    * If `diarization` enabled, speaker identification number
    * @minimum 0
    */
-  speaker?: number
+  speaker?: number;
   /** List of words of the utterance, split by timestamp */
-  words: WordDTO[]
+  words: WordDTO[];
   /** Transcription for this utterance */
-  text: string
+  text: string;
   /** Spoken language in this utterance */
-  language: TranscriptionLanguageCodeEnum
+  language: TranscriptionLanguageCodeEnum;
 }

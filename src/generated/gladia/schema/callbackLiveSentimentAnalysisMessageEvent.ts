@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveSentimentAnalysisMessageEvent =
-  (typeof CallbackLiveSentimentAnalysisMessageEvent)[keyof typeof CallbackLiveSentimentAnalysisMessageEvent]
+export type CallbackLiveSentimentAnalysisMessageEvent = typeof CallbackLiveSentimentAnalysisMessageEvent[keyof typeof CallbackLiveSentimentAnalysisMessageEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveSentimentAnalysisMessageEvent = {
-  livesentiment_analysis: "live.sentiment_analysis"
-} as const
+  livesentiment_analysis: 'live.sentiment_analysis',
+} as const;

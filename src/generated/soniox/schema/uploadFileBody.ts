@@ -4,11 +4,11 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { UploadFileBodyClientReferenceId } from "./uploadFileBodyClientReferenceId"
+import type { UploadFileBodyClientReferenceId } from './uploadFileBodyClientReferenceId';
 
 export type UploadFileBody = {
   /** Optional tracking identifier string. Does not need to be unique. */
-  client_reference_id?: UploadFileBodyClientReferenceId
+  client_reference_id?: UploadFileBodyClientReferenceId;
   /** The file to upload. Original file name will be used unless a custom filename is provided. */
-  file: Blob
-}
+  file: Blob;
+};

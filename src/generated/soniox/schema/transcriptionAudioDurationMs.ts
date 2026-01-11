@@ -8,4 +8,4 @@
 /**
  * Duration of the audio in milliseconds. Only available after processing begins.
  */
-export type TranscriptionAudioDurationMs = number | null
+export type TranscriptionAudioDurationMs = number | null;

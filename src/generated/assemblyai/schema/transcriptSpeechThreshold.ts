@@ -13,4 +13,4 @@ Valid values are in the range [0, 1] inclusive.
  * @minimum 0
  * @maximum 1
  */
-export type TranscriptSpeechThreshold = number | null
+export type TranscriptSpeechThreshold = number | null;

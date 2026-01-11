@@ -8,5 +8,5 @@
 
 export interface CreateJobResponse {
   /** The unique ID assigned to the job. Keep a record of this for later retrieval of your completed job. */
-  id: string
+  id: string;
 }

@@ -4,12 +4,12 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { ApiErrorValidationError } from "./apiErrorValidationError"
+import type { ApiErrorValidationError } from './apiErrorValidationError';
 
 export interface ApiError {
-  status_code: number
-  error_type: string
-  message: string
-  validation_errors: ApiErrorValidationError[]
-  request_id: string
+  status_code: number;
+  error_type: string;
+  message: string;
+  validation_errors: ApiErrorValidationError[];
+  request_id: string;
 }

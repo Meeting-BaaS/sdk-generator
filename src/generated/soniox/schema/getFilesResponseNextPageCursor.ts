@@ -8,4 +8,4 @@
 /**
  * A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.
  */
-export type GetFilesResponseNextPageCursor = string | null
+export type GetFilesResponseNextPageCursor = string | null;

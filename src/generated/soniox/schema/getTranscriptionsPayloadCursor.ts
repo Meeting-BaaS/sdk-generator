@@ -8,4 +8,4 @@
 /**
  * Pagination cursor for the next page of results.
  */
-export type GetTranscriptionsPayloadCursor = string | null
+export type GetTranscriptionsPayloadCursor = string | null;

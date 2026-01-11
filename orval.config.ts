@@ -19,7 +19,7 @@ const DEEPGRAM_INPUT = {
 }
 
 const OPENAI_WHISPER_INPUT = {
-  target: "./specs/openai-whisper-openapi.yml"
+  target: "./specs/openai-openapi.yaml"
 }
 
 const AZURE_STT_INPUT = {

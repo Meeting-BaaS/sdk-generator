@@ -11,4 +11,4 @@
  * @minimum 0
  * @maximum 1
  */
-export type TranscriptLanguageConfidence = number | null
+export type TranscriptLanguageConfidence = number | null;

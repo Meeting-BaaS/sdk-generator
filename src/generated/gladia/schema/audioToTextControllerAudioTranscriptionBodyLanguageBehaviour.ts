@@ -5,12 +5,12 @@
  * OpenAPI spec version: 1.0
  */
 
-export type AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour =
-  (typeof AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour)[keyof typeof AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour]
+export type AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour = typeof AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour[keyof typeof AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour = {
-  automatic_single_language: "automatic single language",
-  automatic_multiple_languages: "automatic multiple languages",
-  manual: "manual"
-} as const
+  automatic_single_language: 'automatic single language',
+  automatic_multiple_languages: 'automatic multiple languages',
+  manual: 'manual',
+} as const;

@@ -7,13 +7,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ManageV1BillingGroupingParameterItem =
-  (typeof ManageV1BillingGroupingParameterItem)[keyof typeof ManageV1BillingGroupingParameterItem]
+export type ManageV1BillingGroupingParameterItem = typeof ManageV1BillingGroupingParameterItem[keyof typeof ManageV1BillingGroupingParameterItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ManageV1BillingGroupingParameterItem = {
-  accessor: "accessor",
-  deployment: "deployment",
-  line_item: "line_item",
-  tags: "tags"
-} as const
+  accessor: 'accessor',
+  deployment: 'deployment',
+  line_item: 'line_item',
+  tags: 'tags',
+} as const;

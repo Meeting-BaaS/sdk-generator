@@ -5,21 +5,20 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-
-import type { AlignmentConfig } from "./alignmentConfig"
-import type { AudioEventsConfig } from "./audioEventsConfig"
-import type { AutoChaptersConfig } from "./autoChaptersConfig"
-import type { DataFetchConfig } from "./dataFetchConfig"
-import type { JobType } from "./jobType"
-import type { LanguageIdentificationConfig } from "./languageIdentificationConfig"
-import type { NotificationConfig } from "./notificationConfig"
-import type { OutputConfig } from "./outputConfig"
-import type { SentimentAnalysisConfig } from "./sentimentAnalysisConfig"
-import type { SummarizationConfig } from "./summarizationConfig"
-import type { TopicDetectionConfig } from "./topicDetectionConfig"
-import type { TrackingData } from "./trackingData"
-import type { TranscriptionConfig } from "./transcriptionConfig"
-import type { TranslationConfig } from "./translationConfig"
+import type { JobType } from './jobType';
+import type { DataFetchConfig } from './dataFetchConfig';
+import type { AlignmentConfig } from './alignmentConfig';
+import type { TranscriptionConfig } from './transcriptionConfig';
+import type { NotificationConfig } from './notificationConfig';
+import type { TrackingData } from './trackingData';
+import type { OutputConfig } from './outputConfig';
+import type { TranslationConfig } from './translationConfig';
+import type { LanguageIdentificationConfig } from './languageIdentificationConfig';
+import type { SummarizationConfig } from './summarizationConfig';
+import type { SentimentAnalysisConfig } from './sentimentAnalysisConfig';
+import type { TopicDetectionConfig } from './topicDetectionConfig';
+import type { AutoChaptersConfig } from './autoChaptersConfig';
+import type { AudioEventsConfig } from './audioEventsConfig';
 
 /**
  * JSON object that contains various groups of job configuration
@@ -39,19 +38,19 @@ possible in the job results and in callbacks.
 
  */
 export interface JobConfig {
-  type: JobType
-  fetch_data?: DataFetchConfig
-  fetch_text?: DataFetchConfig
-  alignment_config?: AlignmentConfig
-  transcription_config?: TranscriptionConfig
-  notification_config?: NotificationConfig[]
-  tracking?: TrackingData
-  output_config?: OutputConfig
-  translation_config?: TranslationConfig
-  language_identification_config?: LanguageIdentificationConfig
-  summarization_config?: SummarizationConfig
-  sentiment_analysis_config?: SentimentAnalysisConfig
-  topic_detection_config?: TopicDetectionConfig
-  auto_chapters_config?: AutoChaptersConfig
-  audio_events_config?: AudioEventsConfig
+  type: JobType;
+  fetch_data?: DataFetchConfig;
+  fetch_text?: DataFetchConfig;
+  alignment_config?: AlignmentConfig;
+  transcription_config?: TranscriptionConfig;
+  notification_config?: NotificationConfig[];
+  tracking?: TrackingData;
+  output_config?: OutputConfig;
+  translation_config?: TranslationConfig;
+  language_identification_config?: LanguageIdentificationConfig;
+  summarization_config?: SummarizationConfig;
+  sentiment_analysis_config?: SentimentAnalysisConfig;
+  topic_detection_config?: TopicDetectionConfig;
+  auto_chapters_config?: AutoChaptersConfig;
+  audio_events_config?: AudioEventsConfig;
 }

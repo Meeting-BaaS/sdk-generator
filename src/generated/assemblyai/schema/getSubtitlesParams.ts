@@ -7,8 +7,8 @@
  */
 
 export type GetSubtitlesParams = {
-  /**
-   * The maximum number of characters per caption
-   */
-  chars_per_caption?: number
-}
+/**
+ * The maximum number of characters per caption
+ */
+chars_per_caption?: number;
+};

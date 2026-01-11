@@ -8,4 +8,4 @@
 /**
  * Authentication header value. Always returned masked as `******************`.
  */
-export type TranscriptionWebhookAuthHeaderValue = string | null
+export type TranscriptionWebhookAuthHeaderValue = string | null;

@@ -8,7 +8,7 @@
 
 export interface Error {
   /** Error message */
-  error: string
-  status?: "error"
-  [key: string]: unknown
-}
+  error: string;
+  status?: 'error';
+  [key: string]: unknown;
+ }

@@ -7,7 +7,7 @@
 
 export interface StructuredContextTranslationTerm {
   /** Source term. */
-  source: string
+  source: string;
   /** Target term to translate to. */
-  target: string
+  target: string;
 }

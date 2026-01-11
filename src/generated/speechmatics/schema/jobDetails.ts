@@ -5,33 +5,32 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-
-import type { JobConfig } from "./jobConfig"
-import type { JobDetailError } from "./jobDetailError"
-import type { JobDetailsStatus } from "./jobDetailsStatus"
+import type { JobDetailsStatus } from './jobDetailsStatus';
+import type { JobConfig } from './jobConfig';
+import type { JobDetailError } from './jobDetailError';
 
 /**
  * Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance.
  */
 export interface JobDetails {
   /** The UTC date time the job was created. */
-  created_at: string
+  created_at: string;
   /** Name of the data file submitted for job. */
-  data_name: string
+  data_name: string;
   /** Name of the text file submitted to be aligned to audio. */
-  text_name?: string
+  text_name?: string;
   /**
    * The file duration (in seconds). May be missing for fetch URL jobs.
    * @minimum 0
    */
-  duration?: number
+  duration?: number;
   /** The unique id assigned to the job. */
-  id: string
+  id: string;
   /** The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time. */
-  status: JobDetailsStatus
-  config?: JobConfig
+  status: JobDetailsStatus;
+  config?: JobConfig;
   /** Optional parameter used for backwards compatibility with v1 api */
-  lang?: string
+  lang?: string;
   /** Optional list of errors that have occurred in user interaction, for example: audio could not be fetched or notification could not be sent. */
-  errors?: JobDetailError[]
+  errors?: JobDetailError[];
 }

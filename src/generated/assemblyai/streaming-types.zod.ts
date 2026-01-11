@@ -4,7 +4,7 @@
  *
  * Sources merged:
  * - AsyncAPI: specs/assemblyai-asyncapi.json (legacy WebSocket API)
- * - SDK types: src/generated/assemblyai/streaming-types.ts (v3 streaming fields)
+ * - SDK types: specs/assemblyai-streaming-sdk.ts (v3 streaming fields)
  *
  * @source specs/assemblyai-asyncapi.json
  * @version 1.1.2

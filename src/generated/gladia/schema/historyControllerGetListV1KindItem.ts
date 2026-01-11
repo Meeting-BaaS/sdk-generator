@@ -5,11 +5,11 @@
  * OpenAPI spec version: 1.0
  */
 
-export type HistoryControllerGetListV1KindItem =
-  (typeof HistoryControllerGetListV1KindItem)[keyof typeof HistoryControllerGetListV1KindItem]
+export type HistoryControllerGetListV1KindItem = typeof HistoryControllerGetListV1KindItem[keyof typeof HistoryControllerGetListV1KindItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HistoryControllerGetListV1KindItem = {
-  "pre-recorded": "pre-recorded",
-  live: "live"
-} as const
+  'pre-recorded': 'pre-recorded',
+  live: 'live',
+} as const;

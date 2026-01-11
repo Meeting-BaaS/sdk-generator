@@ -8,4 +8,4 @@
 /**
  * Authentication header value sent with webhook notifications.
  */
-export type CreateTranscriptionPayloadWebhookAuthHeaderValue = string | null
+export type CreateTranscriptionPayloadWebhookAuthHeaderValue = string | null;

@@ -11,7 +11,7 @@
  */
 export interface Timestamp {
   /** The start time in milliseconds */
-  start: number
+  start: number;
   /** The end time in milliseconds */
-  end: number
+  end: number;
 }

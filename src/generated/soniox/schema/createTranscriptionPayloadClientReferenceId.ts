@@ -8,4 +8,4 @@
 /**
  * Optional tracking identifier string. Does not need to be unique.
  */
-export type CreateTranscriptionPayloadClientReferenceId = string | null
+export type CreateTranscriptionPayloadClientReferenceId = string | null;

@@ -9,4 +9,4 @@
 /**
  * The word boost parameter value
  */
-export type TranscriptBoostParamProperty = string | null
+export type TranscriptBoostParamProperty = string | null;

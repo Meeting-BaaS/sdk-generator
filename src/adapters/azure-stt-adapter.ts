@@ -20,7 +20,7 @@ import {
   transcriptionsDelete,
   transcriptionsList,
   transcriptionsListFiles
-} from "../generated/azure/api/speechServicesAPIV31"
+} from "../generated/azure/api/speechServicesAPIVersion32"
 
 // Import Azure generated types for list
 import type { TranscriptionsListParams } from "../generated/azure/schema/transcriptionsListParams"
@@ -576,7 +576,7 @@ export {
   transcriptionsDelete,
   transcriptionsList,
   transcriptionsListFiles
-} from "../generated/azure/api/speechServicesAPIV31"
+} from "../generated/azure/api/speechServicesAPIVersion32"
 
 // Request/Response types
 export type {

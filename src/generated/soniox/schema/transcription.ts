@@ -4,58 +4,57 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-
-import type { TranscriptionAudioDurationMs } from "./transcriptionAudioDurationMs"
-import type { TranscriptionAudioUrl } from "./transcriptionAudioUrl"
-import type { TranscriptionClientReferenceId } from "./transcriptionClientReferenceId"
-import type { TranscriptionErrorMessage } from "./transcriptionErrorMessage"
-import type { TranscriptionErrorType } from "./transcriptionErrorType"
-import type { TranscriptionFileId } from "./transcriptionFileId"
-import type { TranscriptionLanguageHints } from "./transcriptionLanguageHints"
-import type { TranscriptionStatus } from "./transcriptionStatus"
-import type { TranscriptionWebhookAuthHeaderName } from "./transcriptionWebhookAuthHeaderName"
-import type { TranscriptionWebhookAuthHeaderValue } from "./transcriptionWebhookAuthHeaderValue"
-import type { TranscriptionWebhookStatusCode } from "./transcriptionWebhookStatusCode"
-import type { TranscriptionWebhookUrl } from "./transcriptionWebhookUrl"
+import type { TranscriptionStatus } from './transcriptionStatus';
+import type { TranscriptionAudioUrl } from './transcriptionAudioUrl';
+import type { TranscriptionFileId } from './transcriptionFileId';
+import type { TranscriptionLanguageHints } from './transcriptionLanguageHints';
+import type { TranscriptionAudioDurationMs } from './transcriptionAudioDurationMs';
+import type { TranscriptionErrorType } from './transcriptionErrorType';
+import type { TranscriptionErrorMessage } from './transcriptionErrorMessage';
+import type { TranscriptionWebhookUrl } from './transcriptionWebhookUrl';
+import type { TranscriptionWebhookAuthHeaderName } from './transcriptionWebhookAuthHeaderName';
+import type { TranscriptionWebhookAuthHeaderValue } from './transcriptionWebhookAuthHeaderValue';
+import type { TranscriptionWebhookStatusCode } from './transcriptionWebhookStatusCode';
+import type { TranscriptionClientReferenceId } from './transcriptionClientReferenceId';
 
 /**
  * A transcription.
  */
 export interface Transcription {
   /** Unique identifier for the transcription request. */
-  id: string
+  id: string;
   /** Transcription status. */
-  status: TranscriptionStatus
+  status: TranscriptionStatus;
   /** UTC timestamp indicating when the transcription was created. */
-  created_at: string
+  created_at: string;
   /** Speech-to-text model used for the transcription. */
-  model: string
+  model: string;
   /** URL of the file being transcribed. */
-  audio_url?: TranscriptionAudioUrl
+  audio_url?: TranscriptionAudioUrl;
   /** ID of the file being transcribed. */
-  file_id?: TranscriptionFileId
+  file_id?: TranscriptionFileId;
   /** Name of the file being transcribed. */
-  filename: string
+  filename: string;
   /** Expected languages in the audio. If not specified, languages are automatically detected. */
-  language_hints?: TranscriptionLanguageHints
+  language_hints?: TranscriptionLanguageHints;
   /** When `true`, speakers are identified and separated in the transcription output. */
-  enable_speaker_diarization: boolean
+  enable_speaker_diarization: boolean;
   /** When `true`, language is detected for each part of the transcription. */
-  enable_language_identification: boolean
+  enable_language_identification: boolean;
   /** Duration of the audio in milliseconds. Only available after processing begins. */
-  audio_duration_ms?: TranscriptionAudioDurationMs
+  audio_duration_ms?: TranscriptionAudioDurationMs;
   /** Error type if transcription failed. `null` for successful or in-progress transcriptions. */
-  error_type?: TranscriptionErrorType
+  error_type?: TranscriptionErrorType;
   /** Error message if transcription failed. `null` for successful or in-progress transcriptions. */
-  error_message?: TranscriptionErrorMessage
+  error_message?: TranscriptionErrorMessage;
   /** URL to receive webhook notifications when transcription is completed or fails. */
-  webhook_url?: TranscriptionWebhookUrl
+  webhook_url?: TranscriptionWebhookUrl;
   /** Name of the authentication header sent with webhook notifications. */
-  webhook_auth_header_name?: TranscriptionWebhookAuthHeaderName
+  webhook_auth_header_name?: TranscriptionWebhookAuthHeaderName;
   /** Authentication header value. Always returned masked as `******************`. */
-  webhook_auth_header_value?: TranscriptionWebhookAuthHeaderValue
+  webhook_auth_header_value?: TranscriptionWebhookAuthHeaderValue;
   /** HTTP status code received from your server when webhook was delivered. `null` if not yet sent. */
-  webhook_status_code?: TranscriptionWebhookStatusCode
+  webhook_status_code?: TranscriptionWebhookStatusCode;
   /** Tracking identifier string. */
-  client_reference_id?: TranscriptionClientReferenceId
+  client_reference_id?: TranscriptionClientReferenceId;
 }

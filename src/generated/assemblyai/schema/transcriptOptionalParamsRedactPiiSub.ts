@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { SubstitutionPolicy } from "./substitutionPolicy"
+import type { SubstitutionPolicy } from './substitutionPolicy';
 
 /**
  * The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
  */
-export type TranscriptOptionalParamsRedactPiiSub = SubstitutionPolicy | null
+export type TranscriptOptionalParamsRedactPiiSub = SubstitutionPolicy | null;

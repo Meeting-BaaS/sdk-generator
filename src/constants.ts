@@ -714,13 +714,13 @@ export type DeepgramTTSSampleRateType =
 // OpenAI Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { AudioTranscriptionModel } from "./generated/openai/schema/audioTranscriptionModel"
+import type { CreateTranscriptionRequestModel } from "./generated/openai/schema/createTranscriptionRequestModel"
 import { AudioResponseFormat } from "./generated/openai/schema/audioResponseFormat"
 
 /**
  * OpenAI Whisper transcription models
  *
- * Values: `whisper-1`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-transcribe-diarize`
+ * Values: `whisper-1`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`
  *
  * @example
  * ```typescript
@@ -730,15 +730,18 @@ import { AudioResponseFormat } from "./generated/openai/schema/audioResponseForm
  * { model: OpenAIModel["gpt-4o-transcribe"] }
  * ```
  */
-export const OpenAIModel = AudioTranscriptionModel
+export const OpenAIModel = {
+  "whisper-1": "whisper-1",
+  "gpt-4o-transcribe": "gpt-4o-transcribe",
+  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe"
+} as const satisfies Record<string, CreateTranscriptionRequestModel>
 
 /**
  * OpenAI transcription response formats
  *
- * Values: `json`, `text`, `srt`, `verbose_json`, `vtt`, `diarized_json`
+ * Values: `json`, `text`, `srt`, `verbose_json`, `vtt`
  *
- * Note: `diarized_json` is only available with `gpt-4o-transcribe-diarize` model.
- * GPT-4o transcribe models only support `json` format.
+ * Note: GPT-4o transcribe models only support `json` format.
  *
  * @example
  * ```typescript

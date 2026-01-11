@@ -13,13 +13,33 @@ import type {
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 // Import generated API client function - FULL TYPE SAFETY!
-import { createTranscription } from "../generated/openai/api/openAIAPI"
+import { createTranscription } from "../generated/openai/api/openAIAudioAPI"
 
 // Import OpenAI generated types
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
-import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
-import type { AudioTranscriptionModel } from "../generated/openai/schema/audioTranscriptionModel"
+import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
+
+/**
+ * Diarized response type for speaker-labeled transcription
+ * Note: This extends the verbose JSON format with speaker information
+ * The official OpenAI spec doesn't include this yet, but the API supports it
+ */
+interface DiarizedSegment {
+  id: number
+  start: number
+  end: number
+  text: string
+  speaker: string
+}
+
+interface CreateTranscriptionResponseDiarizedJson {
+  task: string
+  language: string
+  duration: number
+  text: string
+  segments: DiarizedSegment[]
+}
 
 /**
  * OpenAI Whisper transcription provider adapter
@@ -195,7 +215,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       const request: CreateTranscriptionRequest = {
         ...options?.openai,
         file: audioData as any, // Generated type expects Blob
-        model: model as AudioTranscriptionModel
+        model: model as CreateTranscriptionRequestModel
       }
 
       // Map normalized options (take precedence over openai-specific)
@@ -204,15 +224,15 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       }
 
       if (isDiarization) {
-        // Diarization model returns diarized_json format
-        request.response_format = "diarized_json"
+        // Diarization model uses verbose_json format with speaker info
+        request.response_format = "verbose_json"
       } else if (needsWords || options?.diarization) {
         // Use verbose_json for word timestamps
         request.response_format = "verbose_json"
 
-        // Add timestamp granularities
+        // Add timestamp granularities (using the OpenAPI array-style property name)
         if (needsWords) {
-          request.timestamp_granularities = ["word", "segment"]
+          ;(request as any)["timestamp_granularities[]"] = ["word", "segment"]
         }
       } else {
         // Simple json format for basic transcription
@@ -247,10 +267,10 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
   /**
    * Select appropriate model based on transcription options
    */
-  private selectModel(options?: TranscribeOptions): AudioTranscriptionModel {
+  private selectModel(options?: TranscribeOptions): CreateTranscriptionRequestModel {
     // Use model from normalized options if provided
     if (options?.model) {
-      return options.model as AudioTranscriptionModel
+      return options.model as CreateTranscriptionRequestModel
     }
 
     // Auto-select based on diarization requirement
@@ -270,7 +290,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       | CreateTranscriptionResponseVerboseJson
       | CreateTranscriptionResponseDiarizedJson
       | { text: string },
-    model: AudioTranscriptionModel,
+    model: CreateTranscriptionRequestModel,
     isDiarization: boolean
   ): UnifiedTranscriptResponse {
     // Handle simple json format
@@ -400,12 +420,14 @@ export function createOpenAIWhisperAdapter(config: ProviderConfig): OpenAIWhispe
 // ─────────────────────────────────────────────────────────────────────────────
 
 // API client function
-export { createTranscription } from "../generated/openai/api/openAIAPI"
+export { createTranscription } from "../generated/openai/api/openAIAudioAPI"
 
 // Request/Response types
 export type {
   CreateTranscriptionRequest,
   CreateTranscriptionResponseVerboseJson,
-  CreateTranscriptionResponseDiarizedJson,
-  AudioTranscriptionModel
+  CreateTranscriptionRequestModel
 }
+
+// Local diarization type (not in official spec yet)
+export type { CreateTranscriptionResponseDiarizedJson }

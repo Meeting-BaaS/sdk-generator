@@ -19,11 +19,11 @@ OpenAPI Specs → Orval Generation → Post-Gen Fixes → TypeScript Build → T
 | Provider | Source | Type |
 |----------|--------|------|
 | Gladia | https://api.gladia.io/openapi.json | Remote |
-| Deepgram | https://developers.deepgram.com/openapi.json | Remote |
-| AssemblyAI | https://api.assemblyai.com/openapi.yml | Remote |
-| Azure STT | `specs/azure-stt-api-v3.1.json` | Bundled |
-| OpenAI Whisper | `specs/openai-whisper-openapi.yml` | Filtered |
-| Speechmatics | `specs/speechmatics-batch.yaml` | Bundled |
+| Deepgram | https://github.com/deepgram/deepgram-api-specs | Remote |
+| AssemblyAI | https://github.com/AssemblyAI/assemblyai-api-spec | Remote |
+| Azure STT | https://github.com/Azure/azure-rest-api-specs (Speech/SpeechToText v3.2) | Remote |
+| OpenAI | https://github.com/openai/openai-openapi (filtered to audio endpoints) | Remote |
+| Speechmatics | https://github.com/speechmatics/speechmatics-js-sdk | Remote |
 
 ### Commands
 

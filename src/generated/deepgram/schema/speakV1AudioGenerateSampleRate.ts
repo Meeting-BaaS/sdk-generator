@@ -7,8 +7,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SpeakV1AudioGenerateSampleRate =
-  (typeof SpeakV1AudioGenerateSampleRate)[keyof typeof SpeakV1AudioGenerateSampleRate]
+export type SpeakV1AudioGenerateSampleRate = typeof SpeakV1AudioGenerateSampleRate[keyof typeof SpeakV1AudioGenerateSampleRate];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeakV1AudioGenerateSampleRate = {
@@ -17,5 +17,5 @@ export const SpeakV1AudioGenerateSampleRate = {
   NUMBER_22050: 22050,
   NUMBER_24000: 24000,
   NUMBER_32000: 32000,
-  NUMBER_48000: 48000
-} as const
+  NUMBER_48000: 48000,
+} as const;

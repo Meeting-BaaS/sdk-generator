@@ -9,4 +9,4 @@
 /**
  * Whether Automatic Punctuation is enabled, either true or false
  */
-export type TranscriptPunctuate = boolean | null
+export type TranscriptPunctuate = boolean | null;

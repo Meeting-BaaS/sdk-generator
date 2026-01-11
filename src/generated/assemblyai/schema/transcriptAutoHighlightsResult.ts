@@ -5,11 +5,11 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { AutoHighlightsResult } from "./autoHighlightsResult"
+import type { AutoHighlightsResult } from './autoHighlightsResult';
 
 /**
  * An array of results for the Key Phrases model, if it is enabled.
 See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
 
  */
-export type TranscriptAutoHighlightsResult = AutoHighlightsResult | null
+export type TranscriptAutoHighlightsResult = AutoHighlightsResult | null;

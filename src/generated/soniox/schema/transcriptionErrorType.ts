@@ -8,4 +8,4 @@
 /**
  * Error type if transcription failed. `null` for successful or in-progress transcriptions.
  */
-export type TranscriptionErrorType = string | null
+export type TranscriptionErrorType = string | null;

@@ -4,20 +4,20 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { FileClientReferenceId } from "./fileClientReferenceId"
+import type { FileClientReferenceId } from './fileClientReferenceId';
 
 /**
  * File metadata.
  */
 export interface File {
   /** Unique identifier of the file. */
-  id: string
+  id: string;
   /** Name of the file. */
-  filename: string
+  filename: string;
   /** Size of the file in bytes. */
-  size: number
+  size: number;
   /** UTC timestamp indicating when the file was uploaded. */
-  created_at: string
+  created_at: string;
   /** Tracking identifier string. */
-  client_reference_id?: FileClientReferenceId
+  client_reference_id?: FileClientReferenceId;
 }

@@ -8,13 +8,13 @@
 
 export interface AudioEventItem {
   /** Kind of audio event. E.g. music */
-  type?: string
+  type?: string;
   /** Time (in seconds) at which the audio event starts */
-  start_time?: number
+  start_time?: number;
   /** Time (in seconds) at which the audio event ends */
-  end_time?: number
+  end_time?: number;
   /** Prediction confidence associated with this event */
-  confidence?: number
+  confidence?: number;
   /** Input channel this event occurred on */
-  channel?: string
+  channel?: string;
 }

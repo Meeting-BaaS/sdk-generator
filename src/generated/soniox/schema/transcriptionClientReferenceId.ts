@@ -8,4 +8,4 @@
 /**
  * Tracking identifier string.
  */
-export type TranscriptionClientReferenceId = string | null
+export type TranscriptionClientReferenceId = string | null;

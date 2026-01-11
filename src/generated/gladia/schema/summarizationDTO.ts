@@ -4,23 +4,23 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SummarizationDTOError } from "./summarizationDTOError"
+import type { SummarizationDTOError } from './summarizationDTOError';
 
 export interface SummarizationDTO {
   /** The audio intelligence model succeeded to get a valid output */
-  success: boolean
+  success: boolean;
   /** The audio intelligence model returned an empty value */
-  is_empty: boolean
+  is_empty: boolean;
   /** Time audio intelligence model took to complete the task */
-  exec_time: number
+  exec_time: number;
   /**
    * `null` if `success` is `true`. Contains the error details of the failed model
    * @nullable
    */
-  error: SummarizationDTOError
+  error: SummarizationDTOError;
   /**
    * If `summarization` has been enabled, summary of the transcription
    * @nullable
    */
-  results: string | null
+  results: string | null;
 }

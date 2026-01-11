@@ -4,11 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AudioUploadMetadataDTO } from "./audioUploadMetadataDTO"
+import type { AudioUploadMetadataDTO } from './audioUploadMetadataDTO';
 
 export interface AudioUploadResponse {
   /** Uploaded audio file Gladia URL */
-  audio_url: string
+  audio_url: string;
   /** Uploaded audio file detected metadata */
-  audio_metadata: AudioUploadMetadataDTO
+  audio_metadata: AudioUploadMetadataDTO;
 }

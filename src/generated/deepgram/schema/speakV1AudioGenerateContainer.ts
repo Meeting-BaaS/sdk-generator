@@ -7,12 +7,12 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SpeakV1AudioGenerateContainer =
-  (typeof SpeakV1AudioGenerateContainer)[keyof typeof SpeakV1AudioGenerateContainer]
+export type SpeakV1AudioGenerateContainer = typeof SpeakV1AudioGenerateContainer[keyof typeof SpeakV1AudioGenerateContainer];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeakV1AudioGenerateContainer = {
-  none: "none",
-  wav: "wav",
-  ogg: "ogg"
-} as const
+  none: 'none',
+  wav: 'wav',
+  ogg: 'ogg',
+} as const;

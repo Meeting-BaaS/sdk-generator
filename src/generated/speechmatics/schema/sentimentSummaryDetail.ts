@@ -10,7 +10,7 @@
  * Holds the count of sentiment information grouped by positive, neutral and negative.
  */
 export interface SentimentSummaryDetail {
-  positive_count?: number
-  negative_count?: number
-  neutral_count?: number
+  positive_count?: number;
+  negative_count?: number;
+  neutral_count?: number;
 }

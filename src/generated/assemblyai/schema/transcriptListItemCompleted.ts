@@ -10,4 +10,4 @@
  * The date and time the transcript was completed
  * @pattern ^(?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))$
  */
-export type TranscriptListItemCompleted = string | null
+export type TranscriptListItemCompleted = string | null;

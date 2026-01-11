@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { Error } from "./error"
+import type { Error as ErrorType } from './error';
 
 /**
  * Error message if the action was not successfully acknowledged
  * @nullable
  */
-export type StopRecordingAckMessageError = Error | null
+export type StopRecordingAckMessageError = Error | null;

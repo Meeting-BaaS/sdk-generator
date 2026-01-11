@@ -10,4 +10,4 @@
 /**
  * URL to which we'll make the callback request
  */
-export type SharedCallbackParameter = string
+export type SharedCallbackParameter = string;

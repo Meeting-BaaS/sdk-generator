@@ -5,18 +5,18 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { EntityType } from "./entityType"
+import type { EntityType } from './entityType';
 
 /**
  * A detected entity
  */
 export interface Entity {
   /** The type of entity for the detected entity */
-  entity_type: EntityType
+  entity_type: EntityType;
   /** The text for the detected entity */
-  text: string
+  text: string;
   /** The starting time, in milliseconds, at which the detected entity appears in the audio file */
-  start: number
+  start: number;
   /** The ending time, in milliseconds, for the detected entity in the audio file */
-  end: number
+  end: number;
 }

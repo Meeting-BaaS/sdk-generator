@@ -5,9 +5,8 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-
-import type { TranscriptUtteranceChannel } from "./transcriptUtteranceChannel"
-import type { TranscriptWord } from "./transcriptWord"
+import type { TranscriptWord } from './transcriptWord';
+import type { TranscriptUtteranceChannel } from './transcriptUtteranceChannel';
 
 export interface TranscriptUtterance {
   /**
@@ -15,17 +14,17 @@ export interface TranscriptUtterance {
    * @minimum 0
    * @maximum 1
    */
-  confidence: number
+  confidence: number;
   /** The starting time, in milliseconds, of the utterance in the audio file */
-  start: number
+  start: number;
   /** The ending time, in milliseconds, of the utterance in the audio file */
-  end: number
+  end: number;
   /** The text for this utterance */
-  text: string
+  text: string;
   /** The words in the utterance. */
-  words: TranscriptWord[]
+  words: TranscriptWord[];
   /** The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially. */
-  channel?: TranscriptUtteranceChannel
+  channel?: TranscriptUtteranceChannel;
   /** The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc. */
-  speaker: string
+  speaker: string;
 }

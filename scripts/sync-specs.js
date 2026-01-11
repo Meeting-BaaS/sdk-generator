@@ -19,7 +19,8 @@
  *   - AssemblyAI: https://github.com/AssemblyAI/assemblyai-api-spec
  *   - Deepgram: https://github.com/deepgram/deepgram-api-specs
  *   - Speechmatics: https://github.com/speechmatics/speechmatics-js-sdk
- *   - OpenAI, Azure: Manual specs (no official OpenAPI)
+ *   - Azure: https://github.com/Azure/azure-rest-api-specs (Speech/SpeechToText v3.2)
+ *   - OpenAI: Manual spec (official spec structure differs from adapter requirements)
  */
 
 const fs = require("fs")
@@ -53,16 +54,16 @@ const SPEC_SOURCES = {
     output: "specs/deepgram-openapi.yml",
     format: "yaml"
   },
-  // Manual specs - these are maintained locally, not synced
+  // OpenAI spec from official repository - filtered to audio endpoints by fix-openai-spec.js
   openai: {
-    manual: true,
-    output: "specs/openai-whisper-openapi.yml",
-    note: "No official OpenAPI spec available"
+    url: "https://raw.githubusercontent.com/openai/openai-openapi/manual_spec/openapi.yaml",
+    output: "specs/openai-openapi.yaml",
+    format: "yaml"
   },
   azure: {
-    manual: true,
+    url: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Speech/SpeechToText/stable/v3.2/speechtotext.json",
     output: "specs/azure-stt-openapi.json",
-    note: "No official OpenAPI spec available"
+    format: "json"
   },
   speechmatics: {
     url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/batch-client/schema/batch.yml",

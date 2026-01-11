@@ -9,4 +9,4 @@
 /**
  * The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
  */
-export type TranscriptWordSpeaker = string | null
+export type TranscriptWordSpeaker = string | null;

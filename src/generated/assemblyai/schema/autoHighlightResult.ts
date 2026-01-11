@@ -5,19 +5,19 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Timestamp } from "./timestamp"
+import type { Timestamp } from './timestamp';
 
 export interface AutoHighlightResult {
   /** The total number of times the key phrase appears in the audio file */
-  count: number
+  count: number;
   /**
    * The total relevancy to the overall audio file of this key phrase - a greater number means more relevant
    * @minimum 0
    * @maximum 1
    */
-  rank: number
+  rank: number;
   /** The text itself of the key phrase */
-  text: string
+  text: string;
   /** The timestamp of the of the key phrase */
-  timestamps: Timestamp[]
+  timestamps: Timestamp[];
 }

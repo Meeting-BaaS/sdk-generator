@@ -7,6 +7,6 @@
  */
 
 export type TranscriptionConfigAdditionalVocabItem = {
-  content: string
-  sounds_like?: string[]
-}
+  content: string;
+  sounds_like?: string[];
+};

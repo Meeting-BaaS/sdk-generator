@@ -4,13 +4,12 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-
-import type { GetTranscriptionsResponseNextPageCursor } from "./getTranscriptionsResponseNextPageCursor"
-import type { Transcription } from "./transcription"
+import type { Transcription } from './transcription';
+import type { GetTranscriptionsResponseNextPageCursor } from './getTranscriptionsResponseNextPageCursor';
 
 export interface GetTranscriptionsResponse {
   /** List of transcriptions. */
-  transcriptions: Transcription[]
+  transcriptions: Transcription[];
   /** A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available. */
-  next_page_cursor?: GetTranscriptionsResponseNextPageCursor
+  next_page_cursor?: GetTranscriptionsResponseNextPageCursor;
 }

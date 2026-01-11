@@ -11,13 +11,13 @@
  */
 export interface Chapter {
   /** An ultra-short summary (just a few words) of the content spoken in the chapter */
-  gist: string
+  gist: string;
   /** A single sentence summary of the content spoken during the chapter */
-  headline: string
+  headline: string;
   /** A one paragraph summary of the content spoken during the chapter */
-  summary: string
+  summary: string;
   /** The starting time, in milliseconds, for the chapter */
-  start: number
+  start: number;
   /** The starting time, in milliseconds, for the chapter */
-  end: number
+  end: number;
 }

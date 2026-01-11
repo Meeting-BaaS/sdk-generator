@@ -4,19 +4,18 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-
-import type { CreateTemporaryApiKeyPayloadClientReferenceId } from "./createTemporaryApiKeyPayloadClientReferenceId"
-import type { TemporaryApiKeyUsageType } from "./temporaryApiKeyUsageType"
+import type { TemporaryApiKeyUsageType } from './temporaryApiKeyUsageType';
+import type { CreateTemporaryApiKeyPayloadClientReferenceId } from './createTemporaryApiKeyPayloadClientReferenceId';
 
 export interface CreateTemporaryApiKeyPayload {
   /** Intended usage of the temporary API key. */
-  usage_type: TemporaryApiKeyUsageType
+  usage_type: TemporaryApiKeyUsageType;
   /**
    * Duration in seconds until the temporary API key expires.
    * @minimum 1
    * @maximum 3600
    */
-  expires_in_seconds: number
+  expires_in_seconds: number;
   /** Optional tracking identifier string. Does not need to be unique. */
-  client_reference_id?: CreateTemporaryApiKeyPayloadClientReferenceId
+  client_reference_id?: CreateTemporaryApiKeyPayloadClientReferenceId;
 }

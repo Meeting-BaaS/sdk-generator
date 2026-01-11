@@ -9,11 +9,11 @@
 /**
  * The method to be used with http and https urls. The default is post.
  */
-export type NotificationConfigMethod =
-  (typeof NotificationConfigMethod)[keyof typeof NotificationConfigMethod]
+export type NotificationConfigMethod = typeof NotificationConfigMethod[keyof typeof NotificationConfigMethod];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NotificationConfigMethod = {
-  post: "post",
-  put: "put"
-} as const
+  post: 'post',
+  put: 'put',
+} as const;

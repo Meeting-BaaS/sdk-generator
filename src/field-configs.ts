@@ -45,7 +45,7 @@ import {
   streamingControllerInitStreamingSessionV2Body as gladiaStreamingParams
 } from "./generated/gladia/api/gladiaControlAPI.zod"
 
-import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAPI.zod"
+import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAudioAPI.zod"
 
 import {
   streamingTranscriberParams as speechmaticsStreamingParams,

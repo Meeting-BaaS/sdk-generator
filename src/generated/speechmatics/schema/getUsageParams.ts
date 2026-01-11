@@ -7,12 +7,12 @@
  */
 
 export type GetUsageParams = {
-  /**
-   * Include usage after the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`.
-   */
-  since?: string
-  /**
-   * Include usage before the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`.
-   */
-  until?: string
-}
+/**
+ * Include usage after the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`.
+ */
+since?: string;
+/**
+ * Include usage before the given date (inclusive). This is a [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) calendar date format: `YYYY-MM-DD`.
+ */
+until?: string;
+};

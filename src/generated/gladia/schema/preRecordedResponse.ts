@@ -4,56 +4,55 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { PreRecordedResponseCustomMetadata } from "./preRecordedResponseCustomMetadata"
-import type { PreRecordedResponseFile } from "./preRecordedResponseFile"
-import type { PreRecordedResponseKind } from "./preRecordedResponseKind"
-import type { PreRecordedResponsePostSessionMetadata } from "./preRecordedResponsePostSessionMetadata"
-import type { PreRecordedResponseRequestParams } from "./preRecordedResponseRequestParams"
-import type { PreRecordedResponseResult } from "./preRecordedResponseResult"
-import type { PreRecordedResponseStatus } from "./preRecordedResponseStatus"
+import type { PreRecordedResponseStatus } from './preRecordedResponseStatus';
+import type { PreRecordedResponseCustomMetadata } from './preRecordedResponseCustomMetadata';
+import type { PreRecordedResponsePostSessionMetadata } from './preRecordedResponsePostSessionMetadata';
+import type { PreRecordedResponseKind } from './preRecordedResponseKind';
+import type { PreRecordedResponseFile } from './preRecordedResponseFile';
+import type { PreRecordedResponseRequestParams } from './preRecordedResponseRequestParams';
+import type { PreRecordedResponseResult } from './preRecordedResponseResult';
 
 export interface PreRecordedResponse {
   /** Id of the job */
-  id: string
+  id: string;
   /** Debug id */
-  request_id: string
+  request_id: string;
   /** API version */
-  version: number
+  version: number;
   /** "queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job's processing. */
-  status: PreRecordedResponseStatus
+  status: PreRecordedResponseStatus;
   /** Creation date */
-  created_at: string
+  created_at: string;
   /**
    * Completion date when status is "done" or "error"
    * @nullable
    */
-  completed_at?: string | null
+  completed_at?: string | null;
   /** Custom metadata given in the initial request */
-  custom_metadata?: PreRecordedResponseCustomMetadata
+  custom_metadata?: PreRecordedResponseCustomMetadata;
   /**
    * HTTP status code of the error if status is "error"
    * @minimum 400
    * @maximum 599
    * @nullable
    */
-  error_code?: number | null
+  error_code?: number | null;
   /** For debugging purposes, send data that could help to identify issues */
-  post_session_metadata: PreRecordedResponsePostSessionMetadata
-  kind: PreRecordedResponseKind
+  post_session_metadata: PreRecordedResponsePostSessionMetadata;
+  kind: PreRecordedResponseKind;
   /**
    * The file data you uploaded. Can be null if status is "error"
    * @nullable
    */
-  file?: PreRecordedResponseFile
+  file?: PreRecordedResponseFile;
   /**
    * Parameters used for this pre-recorded transcription. Can be null if status is "error"
    * @nullable
    */
-  request_params?: PreRecordedResponseRequestParams
+  request_params?: PreRecordedResponseRequestParams;
   /**
    * Pre-recorded transcription's result when status is "done"
    * @nullable
    */
-  result?: PreRecordedResponseResult
+  result?: PreRecordedResponseResult;
 }

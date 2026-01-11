@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLivePostFinalTranscriptMessageEvent =
-  (typeof CallbackLivePostFinalTranscriptMessageEvent)[keyof typeof CallbackLivePostFinalTranscriptMessageEvent]
+export type CallbackLivePostFinalTranscriptMessageEvent = typeof CallbackLivePostFinalTranscriptMessageEvent[keyof typeof CallbackLivePostFinalTranscriptMessageEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLivePostFinalTranscriptMessageEvent = {
-  livepost_final_transcript: "live.post_final_transcript"
-} as const
+  livepost_final_transcript: 'live.post_final_transcript',
+} as const;

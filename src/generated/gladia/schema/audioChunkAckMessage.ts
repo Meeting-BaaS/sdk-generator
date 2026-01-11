@@ -4,27 +4,26 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-
-import type { AudioChunkAckMessageData } from "./audioChunkAckMessageData"
-import type { AudioChunkAckMessageError } from "./audioChunkAckMessageError"
-import type { AudioChunkAckMessageType } from "./audioChunkAckMessageType"
+import type { AudioChunkAckMessageError } from './audioChunkAckMessageError';
+import type { AudioChunkAckMessageType } from './audioChunkAckMessageType';
+import type { AudioChunkAckMessageData } from './audioChunkAckMessageData';
 
 export interface AudioChunkAckMessage {
   /** Id of the live session */
-  session_id: string
+  session_id: string;
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string
+  created_at: string;
   /** Flag to indicate if the action was successfully acknowledged */
-  acknowledged: boolean
+  acknowledged: boolean;
   /**
    * Error message if the action was not successfully acknowledged
    * @nullable
    */
-  error: AudioChunkAckMessageError
-  type: AudioChunkAckMessageType
+  error: AudioChunkAckMessageError;
+  type: AudioChunkAckMessageType;
   /**
    * The message data. "null" if the action was not successfully acknowledged
    * @nullable
    */
-  data: AudioChunkAckMessageData
+  data: AudioChunkAckMessageData;
 }

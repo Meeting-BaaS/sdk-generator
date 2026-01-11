@@ -7,18 +7,16 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type CreateKeyV1Request =
-  | (unknown & {
-      comment: string
-      scopes: string[]
-      tags?: string[]
-      expiration_date?: string
-      time_to_live_in_seconds?: number
-    })
-  | (unknown & {
-      comment: string
-      scopes: string[]
-      tags?: string[]
-      expiration_date?: string
-      time_to_live_in_seconds?: number
-    })
+export type CreateKeyV1Request = (unknown & {
+  comment: string;
+  scopes: string[];
+  tags?: string[];
+  expiration_date?: string;
+  time_to_live_in_seconds?: number;
+}) | (unknown & {
+  comment: string;
+  scopes: string[];
+  tags?: string[];
+  expiration_date?: string;
+  time_to_live_in_seconds?: number;
+});

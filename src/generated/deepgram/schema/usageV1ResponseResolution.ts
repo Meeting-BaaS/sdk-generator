@@ -8,6 +8,6 @@
  */
 
 export type UsageV1ResponseResolution = {
-  units?: string
-  amount?: number
-}
+  units?: string;
+  amount?: number;
+};

@@ -6,17 +6,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-
-import type { ManageV1EndDateParameter } from "./manageV1EndDateParameter"
-import type { ManageV1StartDateParameter } from "./manageV1StartDateParameter"
+import type { ManageV1StartDateParameter } from './manageV1StartDateParameter';
+import type { ManageV1EndDateParameter } from './manageV1EndDateParameter';
 
 export type ManageV1ProjectsUsageFieldsListParams = {
-  /**
-   * Start date of the requested date range. Format accepted is YYYY-MM-DD
-   */
-  start?: ManageV1StartDateParameter
-  /**
-   * End date of the requested date range. Format accepted is YYYY-MM-DD
-   */
-  end?: ManageV1EndDateParameter
-}
+/**
+ * Start date of the requested date range. Format accepted is YYYY-MM-DD
+ */
+start?: ManageV1StartDateParameter;
+/**
+ * End date of the requested date range. Format accepted is YYYY-MM-DD
+ */
+end?: ManageV1EndDateParameter;
+};

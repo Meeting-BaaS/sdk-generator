@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveNamedEntityRecognitionMessageEvent =
-  (typeof CallbackLiveNamedEntityRecognitionMessageEvent)[keyof typeof CallbackLiveNamedEntityRecognitionMessageEvent]
+export type CallbackLiveNamedEntityRecognitionMessageEvent = typeof CallbackLiveNamedEntityRecognitionMessageEvent[keyof typeof CallbackLiveNamedEntityRecognitionMessageEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveNamedEntityRecognitionMessageEvent = {
-  livenamed_entity_recognition: "live.named_entity_recognition"
-} as const
+  livenamed_entity_recognition: 'live.named_entity_recognition',
+} as const;

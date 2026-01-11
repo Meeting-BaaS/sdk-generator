@@ -9,42 +9,42 @@
 
 export type UsageBreakdownV1ResponseResultsItemGrouping = {
   /** Start date for this group */
-  start?: string
+  start?: string;
   /** End date for this group */
-  end?: string
+  end?: string;
   /**
    * Optional accessor identifier
    * @nullable
    */
-  accessor?: string | null
+  accessor?: string | null;
   /**
    * Optional endpoint identifier
    * @nullable
    */
-  endpoint?: string | null
+  endpoint?: string | null;
   /**
    * Optional feature set identifier
    * @nullable
    */
-  feature_set?: string | null
+  feature_set?: string | null;
   /**
    * Optional models identifier
    * @nullable
    */
-  models?: string | null
+  models?: string | null;
   /**
    * Optional method identifier
    * @nullable
    */
-  method?: string | null
+  method?: string | null;
   /**
    * Optional tags
    * @nullable
    */
-  tags?: string | null
+  tags?: string | null;
   /**
    * Optional deployment identifier
    * @nullable
    */
-  deployment?: string | null
-}
+  deployment?: string | null;
+};

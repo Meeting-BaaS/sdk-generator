@@ -8,4 +8,4 @@
 /**
  * Boolean indicating if this token represents an audio event. Only present when audio event detection is enabled.
  */
-export type TranscriptionTranscriptTokenIsAudioEvent = boolean | null
+export type TranscriptionTranscriptTokenIsAudioEvent = boolean | null;

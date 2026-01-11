@@ -7,7 +7,7 @@
 
 export interface CreateTemporaryApiKeyResponse {
   /** Created temporary API key. */
-  api_key: string
+  api_key: string;
   /** UTC timestamp indicating when generated temporary API key will expire. */
-  expires_at: string
+  expires_at: string;
 }

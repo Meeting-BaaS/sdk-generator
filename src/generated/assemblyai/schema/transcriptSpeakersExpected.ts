@@ -9,4 +9,4 @@
 /**
  * Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
  */
-export type TranscriptSpeakersExpected = number | null
+export type TranscriptSpeakersExpected = number | null;

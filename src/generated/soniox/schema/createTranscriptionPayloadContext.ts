@@ -4,9 +4,9 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { StructuredContext } from "./structuredContext"
+import type { StructuredContext } from './structuredContext';
 
 /**
  * Additional context to improve transcription accuracy and formatting of specialized terms.
  */
-export type CreateTranscriptionPayloadContext = StructuredContext | string | null
+export type CreateTranscriptionPayloadContext = StructuredContext | string | null;

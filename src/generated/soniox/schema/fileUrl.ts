@@ -10,5 +10,5 @@
  */
 export interface FileUrl {
   /** Temporary file URL. */
-  url: string
+  url: string;
 }

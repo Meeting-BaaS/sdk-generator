@@ -5,8 +5,8 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { AudioIntelligenceModelStatus } from "./audioIntelligenceModelStatus"
-import type { AutoHighlightResult } from "./autoHighlightResult"
+import type { AudioIntelligenceModelStatus } from './audioIntelligenceModelStatus';
+import type { AutoHighlightResult } from './autoHighlightResult';
 
 /**
  * An array of results for the Key Phrases model, if it is enabled.
@@ -15,7 +15,7 @@ See [Key phrases](https://www.assemblyai.com/docs/models/key-phrases) for more i
  */
 export interface AutoHighlightsResult {
   /** The status of the Key Phrases model. Either success, or unavailable in the rare case that the model failed. */
-  status: AudioIntelligenceModelStatus
+  status: AudioIntelligenceModelStatus;
   /** A temporally-sequential array of Key Phrases */
-  results: AutoHighlightResult[]
+  results: AutoHighlightResult[];
 }

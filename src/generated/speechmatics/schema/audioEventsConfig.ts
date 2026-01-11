@@ -7,5 +7,5 @@
  */
 
 export interface AudioEventsConfig {
-  types?: string[]
+  types?: string[];
 }

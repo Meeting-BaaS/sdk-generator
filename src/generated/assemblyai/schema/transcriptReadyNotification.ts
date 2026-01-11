@@ -5,14 +5,14 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptReadyStatus } from "./transcriptReadyStatus"
+import type { TranscriptReadyStatus } from './transcriptReadyStatus';
 
 /**
  * The notification when the transcript status is completed or error.
  */
 export interface TranscriptReadyNotification {
   /** The ID of the transcript */
-  transcript_id: string
+  transcript_id: string;
   /** The status of the transcript. Either completed or error. */
-  status: TranscriptReadyStatus
+  status: TranscriptReadyStatus;
 }

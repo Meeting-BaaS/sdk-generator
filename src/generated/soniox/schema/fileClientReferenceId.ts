@@ -8,4 +8,4 @@
 /**
  * Tracking identifier string.
  */
-export type FileClientReferenceId = string | null
+export type FileClientReferenceId = string | null;

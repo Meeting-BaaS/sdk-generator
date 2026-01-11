@@ -8,4 +8,4 @@
 /**
  * URL of the audio file to transcribe. Cannot be specified if `file_id` is specified.
  */
-export type CreateTranscriptionPayloadAudioUrl = string | null
+export type CreateTranscriptionPayloadAudioUrl = string | null;

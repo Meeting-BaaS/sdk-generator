@@ -11,5 +11,5 @@ export interface CreateRealtimeTemporaryTokenParams {
    * The amount of time until the token expires in seconds
    * @minimum 60
    */
-  expires_in: number
+  expires_in: number;
 }

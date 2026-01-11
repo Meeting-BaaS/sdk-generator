@@ -11,4 +11,4 @@
 either true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
 
  */
-export type TranscriptRedactPiiAudio = boolean | null
+export type TranscriptRedactPiiAudio = boolean | null;

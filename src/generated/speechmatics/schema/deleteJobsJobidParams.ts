@@ -7,8 +7,8 @@
  */
 
 export type DeleteJobsJobidParams = {
-  /**
-   * When set, a running job will be force terminated. When unset (default), a running job will not be terminated and request will return HTTP 423 Locked.
-   */
-  force?: boolean
-}
+/**
+ * When set, a running job will be force terminated. When unset (default), a running job will not be terminated and request will return HTTP 423 Locked.
+ */
+force?: boolean;
+};

@@ -7,7 +7,7 @@
  */
 
 export interface DataFetchConfig {
-  url: string
+  url: string;
   /** A list of additional headers to be added to the input fetch request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token. */
-  auth_headers?: string[]
+  auth_headers?: string[];
 }

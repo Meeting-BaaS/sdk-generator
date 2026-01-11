@@ -7,5 +7,5 @@
 
 export type FileControllerUploadV2BodyTwo = {
   /** The URL of the audio or video file to be uploaded. */
-  audio_url?: string
-}
+  audio_url?: string;
+};

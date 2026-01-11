@@ -9,4 +9,4 @@
 /**
  * Error message of why the transcript failed
  */
-export type TranscriptListItemError = string | null
+export type TranscriptListItemError = string | null;

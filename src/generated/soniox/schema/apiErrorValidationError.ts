@@ -6,7 +6,7 @@
  */
 
 export interface ApiErrorValidationError {
-  error_type: string
-  location: string
-  message: string
+  error_type: string;
+  location: string;
+  message: string;
 }

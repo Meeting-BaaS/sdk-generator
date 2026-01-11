@@ -6,972 +6,538 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import { z as zod } from "zod"
+import {
+  z as zod
+} from 'zod';
 
 /**
  * Retrieves the available think models that can be used for AI agent processing
  * @summary List Agent Think Models
  */
 export const agentV1SettingsThinkModelsListResponse = zod.object({
-  models: zod.array(
-    zod
-      .object({
-        id: zod
-          .enum([
-            "gpt-5",
-            "gpt-5-mini",
-            "gpt-5-nano",
-            "gpt-4.1",
-            "gpt-4.1-mini",
-            "gpt-4.1-nano",
-            "gpt-4o",
-            "gpt-4o-mini"
-          ])
-          .describe("The unique identifier of the OpenAI model"),
-        name: zod.string().describe("The display name of the model"),
-        provider: zod.any().describe("The provider of the model")
-      })
-      .describe("OpenAI models")
-      .or(
-        zod
-          .object({
-            id: zod
-              .enum(["claude-3-5-haiku-latest", "claude-sonnet-4-20250514"])
-              .describe("The unique identifier of the Anthropic model"),
-            name: zod.string().describe("The display name of the model"),
-            provider: zod.any().describe("The provider of the model")
-          })
-          .describe("Anthropic models")
-      )
-      .or(
-        zod
-          .object({
-            id: zod
-              .enum(["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.0-flash-lite"])
-              .describe("The unique identifier of the Google model"),
-            name: zod.string().describe("The display name of the model"),
-            provider: zod.any().describe("The provider of the model")
-          })
-          .describe("Google models")
-      )
-      .or(
-        zod
-          .object({
-            id: zod
-              .enum(["openai/gpt-oss-20b"])
-              .describe("The unique identifier of the Groq model"),
-            name: zod.string().describe("The display name of the model"),
-            provider: zod.any().describe("The provider of the model")
-          })
-          .describe("Groq models")
-      )
-      .or(
-        zod
-          .object({
-            id: zod
-              .string()
-              .describe(
-                "The unique identifier of the AWS Bedrock model (any model string accepted for BYO LLMs)"
-              ),
-            name: zod.string().describe("The display name of the model"),
-            provider: zod.any().describe("The provider of the model")
-          })
-          .describe("AWS Bedrock models (custom models accepted)")
-      )
-  )
+  "models": zod.array(zod.object({
+  "id": zod.enum(['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-4.1', 'gpt-4.1-mini', 'gpt-4.1-nano', 'gpt-4o', 'gpt-4o-mini']).describe('The unique identifier of the OpenAI model'),
+  "name": zod.string().describe('The display name of the model'),
+  "provider": zod.any().describe('The provider of the model')
+}).describe('OpenAI models').or(zod.object({
+  "id": zod.enum(['claude-3-5-haiku-latest', 'claude-sonnet-4-20250514']).describe('The unique identifier of the Anthropic model'),
+  "name": zod.string().describe('The display name of the model'),
+  "provider": zod.any().describe('The provider of the model')
+}).describe('Anthropic models')).or(zod.object({
+  "id": zod.enum(['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.0-flash-lite']).describe('The unique identifier of the Google model'),
+  "name": zod.string().describe('The display name of the model'),
+  "provider": zod.any().describe('The provider of the model')
+}).describe('Google models')).or(zod.object({
+  "id": zod.enum(['openai/gpt-oss-20b']).describe('The unique identifier of the Groq model'),
+  "name": zod.string().describe('The display name of the model'),
+  "provider": zod.any().describe('The provider of the model')
+}).describe('Groq models')).or(zod.object({
+  "id": zod.string().describe('The unique identifier of the AWS Bedrock model (any model string accepted for BYO LLMs)'),
+  "name": zod.string().describe('The display name of the model'),
+  "provider": zod.any().describe('The provider of the model')
+}).describe('AWS Bedrock models (custom models accepted)')))
 })
+
 
 /**
  * Generates a temporary JSON Web Token (JWT) with a 30-second (by default) TTL and usage::write permission for core voice APIs, requiring an API key with Member or higher authorization. Tokens created with this endpoint will not work with the Manage APIs.
  * @summary Token-based Authentication
  */
-export const authV1TokensGrantBodyTtlSecondsMax = 3600
+export const authV1TokensGrantBodyTtlSecondsMax = 3600;
+
 
 export const authV1TokensGrantBody = zod.object({
-  ttl_seconds: zod
-    .number()
-    .min(1)
-    .max(authV1TokensGrantBodyTtlSecondsMax)
-    .optional()
-    .describe("Time to live in seconds for the token. Defaults to 30 seconds.")
+  "ttl_seconds": zod.number().min(1).max(authV1TokensGrantBodyTtlSecondsMax).optional().describe('Time to live in seconds for the token. Defaults to 30 seconds.')
 })
 
 export const authV1TokensGrantResponse = zod.object({
-  access_token: zod.string().describe("JSON Web Token (JWT)"),
-  expires_in: zod.number().optional().describe("Time in seconds until the JWT expires")
+  "access_token": zod.string().describe('JSON Web Token (JWT)'),
+  "expires_in": zod.number().optional().describe('Time in seconds until the JWT expires')
 })
+
 
 /**
  * Transcribe audio and video using Deepgram's speech-to-text REST API
  * @summary Transcribe and analyze pre-recorded audio and video
  */
-export const listenV1MediaTranscribeQueryCallbackMethodDefault = "POST"
-export const listenV1MediaTranscribeQuerySentimentDefault = false
-export const listenV1MediaTranscribeQuerySummarizeDefaultTwo = false
-export const listenV1MediaTranscribeQueryTopicsDefault = false
-export const listenV1MediaTranscribeQueryCustomTopicMaxTwo = 100
-export const listenV1MediaTranscribeQueryCustomTopicModeDefault = "extended"
-export const listenV1MediaTranscribeQueryIntentsDefault = false
-export const listenV1MediaTranscribeQueryCustomIntentItemMax = 100
-export const listenV1MediaTranscribeQueryCustomIntentModeDefault = "extended"
-export const listenV1MediaTranscribeQueryDetectEntitiesDefault = false
-export const listenV1MediaTranscribeQueryDetectLanguageDefaultOne = false
-export const listenV1MediaTranscribeQueryDiarizeDefault = false
-export const listenV1MediaTranscribeQueryDictationDefault = false
-export const listenV1MediaTranscribeQueryFillerWordsDefault = false
-export const listenV1MediaTranscribeQueryLanguageDefault = "en"
-export const listenV1MediaTranscribeQueryMeasurementsDefault = false
-export const listenV1MediaTranscribeQueryModelDefault = "base-general"
-export const listenV1MediaTranscribeQueryMultichannelDefault = false
-export const listenV1MediaTranscribeQueryNumeralsDefault = false
-export const listenV1MediaTranscribeQueryParagraphsDefault = false
-export const listenV1MediaTranscribeQueryProfanityFilterDefault = false
-export const listenV1MediaTranscribeQueryPunctuateDefault = false
-export const listenV1MediaTranscribeQueryRedactMaxTwo = 100
-export const listenV1MediaTranscribeQueryRedactDefault = false
-export const listenV1MediaTranscribeQuerySmartFormatDefault = false
-export const listenV1MediaTranscribeQueryUtterancesDefault = false
-export const listenV1MediaTranscribeQueryUttSplitDefault = 0.8
-export const listenV1MediaTranscribeQueryVersionDefault = "latest"
-export const listenV1MediaTranscribeQueryMipOptOutDefault = false
+export const listenV1MediaTranscribeQueryCallbackMethodDefault = "POST";export const listenV1MediaTranscribeQuerySentimentDefault = false;export const listenV1MediaTranscribeQuerySummarizeDefaultTwo = false;export const listenV1MediaTranscribeQueryTopicsDefault = false;export const listenV1MediaTranscribeQueryCustomTopicMaxTwo = 100;
+export const listenV1MediaTranscribeQueryCustomTopicModeDefault = "extended";export const listenV1MediaTranscribeQueryIntentsDefault = false;export const listenV1MediaTranscribeQueryCustomIntentItemMax = 100;
+export const listenV1MediaTranscribeQueryCustomIntentModeDefault = "extended";export const listenV1MediaTranscribeQueryDetectEntitiesDefault = false;export const listenV1MediaTranscribeQueryDetectLanguageDefaultOne = false;export const listenV1MediaTranscribeQueryDiarizeDefault = false;export const listenV1MediaTranscribeQueryDictationDefault = false;export const listenV1MediaTranscribeQueryFillerWordsDefault = false;export const listenV1MediaTranscribeQueryLanguageDefault = "en";export const listenV1MediaTranscribeQueryMeasurementsDefault = false;export const listenV1MediaTranscribeQueryModelDefault = "base-general";export const listenV1MediaTranscribeQueryMultichannelDefault = false;export const listenV1MediaTranscribeQueryNumeralsDefault = false;export const listenV1MediaTranscribeQueryParagraphsDefault = false;export const listenV1MediaTranscribeQueryProfanityFilterDefault = false;export const listenV1MediaTranscribeQueryPunctuateDefault = false;export const listenV1MediaTranscribeQueryRedactMaxTwo = 100;
+export const listenV1MediaTranscribeQueryRedactDefault = false;export const listenV1MediaTranscribeQuerySmartFormatDefault = false;export const listenV1MediaTranscribeQueryUtterancesDefault = false;export const listenV1MediaTranscribeQueryUttSplitDefault = 0.8;export const listenV1MediaTranscribeQueryVersionDefault = "latest";export const listenV1MediaTranscribeQueryMipOptOutDefault = false;
 
 export const listenV1MediaTranscribeQueryParams = zod.object({
-  callback: zod.string().optional().describe("URL to which we'll make the callback request"),
-  callback_method: zod
-    .enum(["POST", "PUT"])
-    .default(listenV1MediaTranscribeQueryCallbackMethodDefault)
-    .describe("HTTP method by which the callback request will be made"),
-  extra: zod
-    .string()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe(
-      "Arbitrary key-value pairs that are attached to the API response for usage in downstream processing"
-    ),
-  sentiment: zod
-    .boolean()
-    .optional()
-    .describe("Recognizes the sentiment throughout a transcript or text"),
-  summarize: zod
-    .enum(["v2"])
-    .or(zod.boolean())
-    .optional()
-    .describe(
-      "Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only."
-    ),
-  tag: zod
-    .string()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe("Label your requests for the purpose of identification during usage reporting"),
-  topics: zod.boolean().optional().describe("Detect topics throughout a transcript or text"),
-  custom_topic: zod
-    .string()
-    .or(zod.array(zod.string()).max(listenV1MediaTranscribeQueryCustomTopicMaxTwo))
-    .optional()
-    .describe(
-      "Custom topics you want the model to detect within your input audio or text if present Submit up to `100`."
-    ),
-  custom_topic_mode: zod
-    .enum(["extended", "strict"])
-    .default(listenV1MediaTranscribeQueryCustomTopicModeDefault)
-    .describe(
-      "Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param"
-    ),
-  intents: zod
-    .boolean()
-    .optional()
-    .describe("Recognizes speaker intent throughout a transcript or text"),
-  custom_intent: zod
-    .string()
-    .or(zod.array(zod.string().max(listenV1MediaTranscribeQueryCustomIntentItemMax)))
-    .optional()
-    .describe("Custom intents you want the model to detect within your input audio if present"),
-  custom_intent_mode: zod
-    .enum(["extended", "strict"])
-    .default(listenV1MediaTranscribeQueryCustomIntentModeDefault)
-    .describe(
-      "Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param."
-    ),
-  detect_entities: zod
-    .boolean()
-    .optional()
-    .describe("Identifies and extracts key entities from content in submitted audio"),
-  detect_language: zod
-    .boolean()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe("Identifies the dominant language spoken in submitted audio"),
-  diarize: zod
-    .boolean()
-    .optional()
-    .describe(
-      "Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0"
-    ),
-  dictation: zod
-    .boolean()
-    .optional()
-    .describe("Dictation mode for controlling formatting with dictated speech"),
-  encoding: zod
-    .enum(["linear16", "flac", "mulaw", "amr-nb", "amr-wb", "opus", "speex", "g729"])
-    .optional()
-    .describe("Specify the expected encoding of your submitted audio"),
-  filler_words: zod
-    .boolean()
-    .optional()
-    .describe('Filler Words can help transcribe interruptions in your audio, like "uh" and "um"'),
-  keyterm: zod
-    .array(zod.string())
-    .optional()
-    .describe(
-      "Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3"
-    ),
-  keywords: zod
-    .string()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe("Keywords can boost or suppress specialized terminology and brands"),
-  language: zod
-    .string()
-    .default(listenV1MediaTranscribeQueryLanguageDefault)
-    .describe(
-      "The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available"
-    ),
-  measurements: zod
-    .boolean()
-    .optional()
-    .describe("Spoken measurements will be converted to their corresponding abbreviations"),
-  model: zod
-    .enum([
-      "nova-3",
-      "nova-3-general",
-      "nova-3-medical",
-      "nova-2",
-      "nova-2-general",
-      "nova-2-meeting",
-      "nova-2-finance",
-      "nova-2-conversationalai",
-      "nova-2-voicemail",
-      "nova-2-video",
-      "nova-2-medical",
-      "nova-2-drivethru",
-      "nova-2-automotive",
-      "nova",
-      "nova-general",
-      "nova-phonecall",
-      "nova-medical",
-      "enhanced",
-      "enhanced-general",
-      "enhanced-meeting",
-      "enhanced-phonecall",
-      "enhanced-finance",
-      "base",
-      "meeting",
-      "phonecall",
-      "finance",
-      "conversationalai",
-      "voicemail",
-      "video"
-    ])
-    .describe("Our public models available to all accounts")
-    .or(zod.string().describe("Custom string if you've had a model trained by Deepgram"))
-    .default(listenV1MediaTranscribeQueryModelDefault)
-    .describe("AI model used to process submitted audio"),
-  multichannel: zod.boolean().optional().describe("Transcribe each audio channel independently"),
-  numerals: zod
-    .boolean()
-    .optional()
-    .describe("Numerals converts numbers from written format to numerical format"),
-  paragraphs: zod
-    .boolean()
-    .optional()
-    .describe("Splits audio into paragraphs to improve transcript readability"),
-  profanity_filter: zod
-    .boolean()
-    .optional()
-    .describe(
-      "Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely"
-    ),
-  punctuate: zod
-    .boolean()
-    .optional()
-    .describe("Add punctuation and capitalization to the transcript"),
-  redact: zod
-    .string()
-    .or(
-      zod.array(zod.enum(["pci", "pii", "numbers"])).max(listenV1MediaTranscribeQueryRedactMaxTwo)
-    )
-    .optional()
-    .describe("Redaction removes sensitive information from your transcripts"),
-  replace: zod
-    .string()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe("Search for terms or phrases in submitted audio and replaces them"),
-  search: zod
-    .string()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe("Search for terms or phrases in submitted audio"),
-  smart_format: zod
-    .boolean()
-    .optional()
-    .describe(
-      "Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability"
-    ),
-  utterances: zod.boolean().optional().describe("Segments speech into meaningful semantic units"),
-  utt_split: zod
-    .number()
-    .default(listenV1MediaTranscribeQueryUttSplitDefault)
-    .describe("Seconds to wait before detecting a pause between words in submitted audio"),
-  version: zod
-    .enum(["latest"])
-    .describe("Use the latest version of a model")
-    .or(zod.string().describe("Use a previous version of a model"))
-    .default(listenV1MediaTranscribeQueryVersionDefault)
-    .describe("Version of an AI model to use"),
-  mip_opt_out: zod
-    .boolean()
-    .optional()
-    .describe(
-      "Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip"
-    )
+  "callback": zod.string().optional().describe('URL to which we\'ll make the callback request'),
+  "callback_method": zod.enum(['POST', 'PUT']).default(listenV1MediaTranscribeQueryCallbackMethodDefault).describe('HTTP method by which the callback request will be made'),
+  "extra": zod.string().or(zod.array(zod.string())).optional().describe('Arbitrary key-value pairs that are attached to the API response for usage in downstream processing'),
+  "sentiment": zod.boolean().optional().describe('Recognizes the sentiment throughout a transcript or text'),
+  "summarize": zod.enum(['v2']).or(zod.boolean()).optional().describe('Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.'),
+  "tag": zod.string().or(zod.array(zod.string())).optional().describe('Label your requests for the purpose of identification during usage reporting'),
+  "topics": zod.boolean().optional().describe('Detect topics throughout a transcript or text'),
+  "custom_topic": zod.string().or(zod.array(zod.string()).max(listenV1MediaTranscribeQueryCustomTopicMaxTwo)).optional().describe('Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.'),
+  "custom_topic_mode": zod.enum(['extended', 'strict']).default(listenV1MediaTranscribeQueryCustomTopicModeDefault).describe('Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param'),
+  "intents": zod.boolean().optional().describe('Recognizes speaker intent throughout a transcript or text'),
+  "custom_intent": zod.string().or(zod.array(zod.string().max(listenV1MediaTranscribeQueryCustomIntentItemMax))).optional().describe('Custom intents you want the model to detect within your input audio if present'),
+  "custom_intent_mode": zod.enum(['extended', 'strict']).default(listenV1MediaTranscribeQueryCustomIntentModeDefault).describe('Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.'),
+  "detect_entities": zod.boolean().optional().describe('Identifies and extracts key entities from content in submitted audio'),
+  "detect_language": zod.boolean().or(zod.array(zod.string())).optional().describe('Identifies the dominant language spoken in submitted audio'),
+  "diarize": zod.boolean().optional().describe('Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0'),
+  "dictation": zod.boolean().optional().describe('Dictation mode for controlling formatting with dictated speech'),
+  "encoding": zod.enum(['linear16', 'flac', 'mulaw', 'amr-nb', 'amr-wb', 'opus', 'speex', 'g729']).optional().describe('Specify the expected encoding of your submitted audio'),
+  "filler_words": zod.boolean().optional().describe('Filler Words can help transcribe interruptions in your audio, like \"uh\" and \"um\"'),
+  "keyterm": zod.array(zod.string()).optional().describe('Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3'),
+  "keywords": zod.string().or(zod.array(zod.string())).optional().describe('Keywords can boost or suppress specialized terminology and brands'),
+  "language": zod.string().default(listenV1MediaTranscribeQueryLanguageDefault).describe('The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available'),
+  "measurements": zod.boolean().optional().describe('Spoken measurements will be converted to their corresponding abbreviations'),
+  "model": zod.enum(['nova-3', 'nova-3-general', 'nova-3-medical', 'nova-2', 'nova-2-general', 'nova-2-meeting', 'nova-2-finance', 'nova-2-conversationalai', 'nova-2-voicemail', 'nova-2-video', 'nova-2-medical', 'nova-2-drivethru', 'nova-2-automotive', 'nova', 'nova-general', 'nova-phonecall', 'nova-medical', 'enhanced', 'enhanced-general', 'enhanced-meeting', 'enhanced-phonecall', 'enhanced-finance', 'base', 'meeting', 'phonecall', 'finance', 'conversationalai', 'voicemail', 'video']).describe('Our public models available to all accounts').or(zod.string().describe('Custom string if you\'ve had a model trained by Deepgram')).default(listenV1MediaTranscribeQueryModelDefault).describe('AI model used to process submitted audio'),
+  "multichannel": zod.boolean().optional().describe('Transcribe each audio channel independently'),
+  "numerals": zod.boolean().optional().describe('Numerals converts numbers from written format to numerical format'),
+  "paragraphs": zod.boolean().optional().describe('Splits audio into paragraphs to improve transcript readability'),
+  "profanity_filter": zod.boolean().optional().describe('Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely'),
+  "punctuate": zod.boolean().optional().describe('Add punctuation and capitalization to the transcript'),
+  "redact": zod.string().or(zod.array(zod.enum(['pci', 'pii', 'numbers'])).max(listenV1MediaTranscribeQueryRedactMaxTwo)).optional().describe('Redaction removes sensitive information from your transcripts'),
+  "replace": zod.string().or(zod.array(zod.string())).optional().describe('Search for terms or phrases in submitted audio and replaces them'),
+  "search": zod.string().or(zod.array(zod.string())).optional().describe('Search for terms or phrases in submitted audio'),
+  "smart_format": zod.boolean().optional().describe('Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability'),
+  "utterances": zod.boolean().optional().describe('Segments speech into meaningful semantic units'),
+  "utt_split": zod.number().default(listenV1MediaTranscribeQueryUttSplitDefault).describe('Seconds to wait before detecting a pause between words in submitted audio'),
+  "version": zod.enum(['latest']).describe('Use the latest version of a model').or(zod.string().describe('Use a previous version of a model')).default(listenV1MediaTranscribeQueryVersionDefault).describe('Version of an AI model to use'),
+  "mip_opt_out": zod.boolean().optional().describe('Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip')
 })
 
-export const listenV1MediaTranscribeBody = zod
-  .object({
-    url: zod.string().url()
-  })
-  .describe("Audio file URL to transcribe")
+export const listenV1MediaTranscribeBody = zod.object({
+  "url": zod.string().url()
+}).describe('Audio file URL to transcribe')
 
-export const listenV1MediaTranscribeResponseMetadataTransactionKeyDefault = "deprecated"
+export const listenV1MediaTranscribeResponseMetadataTransactionKeyDefault = "deprecated";
 
-export const listenV1MediaTranscribeResponse = zod
-  .object({
-    metadata: zod.object({
-      transaction_key: zod
-        .string()
-        .default(listenV1MediaTranscribeResponseMetadataTransactionKeyDefault),
-      request_id: zod.string().uuid(),
-      sha256: zod.string(),
-      created: zod.string().datetime({}),
-      duration: zod.number(),
-      channels: zod.number(),
-      models: zod.array(zod.string()),
-      model_info: zod.object({}),
-      summary_info: zod
-        .object({
-          model_uuid: zod.string().optional(),
-          input_tokens: zod.number().optional(),
-          output_tokens: zod.number().optional()
-        })
-        .optional(),
-      sentiment_info: zod
-        .object({
-          model_uuid: zod.string().optional(),
-          input_tokens: zod.number().optional(),
-          output_tokens: zod.number().optional()
-        })
-        .optional(),
-      topics_info: zod
-        .object({
-          model_uuid: zod.string().optional(),
-          input_tokens: zod.number().optional(),
-          output_tokens: zod.number().optional()
-        })
-        .optional(),
-      intents_info: zod
-        .object({
-          model_uuid: zod.string().optional(),
-          input_tokens: zod.number().optional(),
-          output_tokens: zod.number().optional()
-        })
-        .optional(),
-      tags: zod.array(zod.string()).optional()
-    }),
-    results: zod.object({
-      channels: zod.array(
-        zod.object({
-          search: zod
-            .array(
-              zod.object({
-                query: zod.string().optional(),
-                hits: zod
-                  .array(
-                    zod.object({
-                      confidence: zod.number().optional(),
-                      start: zod.number().optional(),
-                      end: zod.number().optional(),
-                      snippet: zod.string().optional()
-                    })
-                  )
-                  .optional()
-              })
-            )
-            .optional(),
-          alternatives: zod
-            .array(
-              zod.object({
-                transcript: zod.string().optional(),
-                confidence: zod.number().optional(),
-                words: zod
-                  .array(
-                    zod.object({
-                      word: zod.string().optional(),
-                      start: zod.number().optional(),
-                      end: zod.number().optional(),
-                      confidence: zod.number().optional()
-                    })
-                  )
-                  .optional(),
-                paragraphs: zod
-                  .object({
-                    transcript: zod.string().optional(),
-                    paragraphs: zod
-                      .array(
-                        zod.object({
-                          sentences: zod
-                            .array(
-                              zod.object({
-                                text: zod.string().optional(),
-                                start: zod.number().optional(),
-                                end: zod.number().optional()
-                              })
-                            )
-                            .optional(),
-                          speaker: zod.number().optional(),
-                          num_words: zod.number().optional(),
-                          start: zod.number().optional(),
-                          end: zod.number().optional()
-                        })
-                      )
-                      .optional()
-                  })
-                  .optional(),
-                entities: zod
-                  .array(
-                    zod.object({
-                      label: zod.string().optional(),
-                      value: zod.string().optional(),
-                      raw_value: zod.string().optional(),
-                      confidence: zod.number().optional(),
-                      start_word: zod.number().optional(),
-                      end_word: zod.number().optional()
-                    })
-                  )
-                  .optional(),
-                summaries: zod
-                  .array(
-                    zod.object({
-                      summary: zod.string().optional(),
-                      start_word: zod.number().optional(),
-                      end_word: zod.number().optional()
-                    })
-                  )
-                  .optional(),
-                topics: zod
-                  .array(
-                    zod.object({
-                      text: zod.string().optional(),
-                      start_word: zod.number().optional(),
-                      end_word: zod.number().optional(),
-                      topics: zod.array(zod.string()).optional()
-                    })
-                  )
-                  .optional()
-              })
-            )
-            .optional(),
-          detected_language: zod.string().optional()
-        })
-      ),
-      utterances: zod
-        .array(
-          zod.object({
-            start: zod.number().optional(),
-            end: zod.number().optional(),
-            confidence: zod.number().optional(),
-            channel: zod.number().optional(),
-            transcript: zod.string().optional(),
-            words: zod
-              .array(
-                zod.object({
-                  word: zod.string().optional(),
-                  start: zod.number().optional(),
-                  end: zod.number().optional(),
-                  confidence: zod.number().optional(),
-                  speaker: zod.number().optional(),
-                  speaker_confidence: zod.number().optional(),
-                  punctuated_word: zod.string().optional()
-                })
-              )
-              .optional(),
-            speaker: zod.number().optional(),
-            id: zod.string().uuid().optional()
-          })
-        )
-        .optional(),
-      summary: zod
-        .object({
-          result: zod.string().optional(),
-          short: zod.string().optional()
-        })
-        .optional(),
-      topics: zod
-        .object({
-          results: zod
-            .object({
-              topics: zod
-                .object({
-                  segments: zod
-                    .array(
-                      zod.object({
-                        text: zod.string().optional(),
-                        start_word: zod.number().optional(),
-                        end_word: zod.number().optional(),
-                        topics: zod
-                          .array(
-                            zod.object({
-                              topic: zod.string().optional(),
-                              confidence_score: zod.number().optional()
-                            })
-                          )
-                          .optional()
-                      })
-                    )
-                    .optional()
-                })
-                .optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe("Output whenever `topics=true` is used"),
-      intents: zod
-        .object({
-          results: zod
-            .object({
-              intents: zod
-                .object({
-                  segments: zod
-                    .array(
-                      zod.object({
-                        text: zod.string().optional(),
-                        start_word: zod.number().optional(),
-                        end_word: zod.number().optional(),
-                        intents: zod
-                          .array(
-                            zod.object({
-                              intent: zod.string().optional(),
-                              confidence_score: zod.number().optional()
-                            })
-                          )
-                          .optional()
-                      })
-                    )
-                    .optional()
-                })
-                .optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe("Output whenever `intents=true` is used"),
-      sentiments: zod
-        .object({
-          segments: zod
-            .array(
-              zod.object({
-                text: zod.string().optional(),
-                start_word: zod.number().optional(),
-                end_word: zod.number().optional(),
-                sentiment: zod.string().optional(),
-                sentiment_score: zod.number().optional()
-              })
-            )
-            .optional(),
-          average: zod
-            .object({
-              sentiment: zod.string().optional(),
-              sentiment_score: zod.number().optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe("Output whenever `sentiment=true` is used")
-    })
-  })
-  .describe("The standard transcription response")
-  .or(
-    zod
-      .object({
-        request_id: zod
-          .string()
-          .uuid()
-          .describe("Unique identifier for tracking the asynchronous request")
-      })
-      .describe("Accepted response for asynchronous transcription requests")
-  )
+export const listenV1MediaTranscribeResponse = zod.object({
+  "metadata": zod.object({
+  "transaction_key": zod.string().default(listenV1MediaTranscribeResponseMetadataTransactionKeyDefault),
+  "request_id": zod.string().uuid(),
+  "sha256": zod.string(),
+  "created": zod.string().datetime({}),
+  "duration": zod.number(),
+  "channels": zod.number(),
+  "models": zod.array(zod.string()),
+  "model_info": zod.object({
+
+}),
+  "summary_info": zod.object({
+  "model_uuid": zod.string().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional(),
+  "sentiment_info": zod.object({
+  "model_uuid": zod.string().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional(),
+  "topics_info": zod.object({
+  "model_uuid": zod.string().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional(),
+  "intents_info": zod.object({
+  "model_uuid": zod.string().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional(),
+  "tags": zod.array(zod.string()).optional()
+}),
+  "results": zod.object({
+  "channels": zod.array(zod.object({
+  "search": zod.array(zod.object({
+  "query": zod.string().optional(),
+  "hits": zod.array(zod.object({
+  "confidence": zod.number().optional(),
+  "start": zod.number().optional(),
+  "end": zod.number().optional(),
+  "snippet": zod.string().optional()
+})).optional()
+})).optional(),
+  "alternatives": zod.array(zod.object({
+  "transcript": zod.string().optional(),
+  "confidence": zod.number().optional(),
+  "words": zod.array(zod.object({
+  "word": zod.string().optional(),
+  "start": zod.number().optional(),
+  "end": zod.number().optional(),
+  "confidence": zod.number().optional()
+})).optional(),
+  "paragraphs": zod.object({
+  "transcript": zod.string().optional(),
+  "paragraphs": zod.array(zod.object({
+  "sentences": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start": zod.number().optional(),
+  "end": zod.number().optional()
+})).optional(),
+  "speaker": zod.number().optional(),
+  "num_words": zod.number().optional(),
+  "start": zod.number().optional(),
+  "end": zod.number().optional()
+})).optional()
+}).optional(),
+  "entities": zod.array(zod.object({
+  "label": zod.string().optional(),
+  "value": zod.string().optional(),
+  "raw_value": zod.string().optional(),
+  "confidence": zod.number().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional()
+})).optional(),
+  "summaries": zod.array(zod.object({
+  "summary": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional()
+})).optional(),
+  "topics": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional(),
+  "topics": zod.array(zod.string()).optional()
+})).optional()
+})).optional(),
+  "detected_language": zod.string().optional()
+})),
+  "utterances": zod.array(zod.object({
+  "start": zod.number().optional(),
+  "end": zod.number().optional(),
+  "confidence": zod.number().optional(),
+  "channel": zod.number().optional(),
+  "transcript": zod.string().optional(),
+  "words": zod.array(zod.object({
+  "word": zod.string().optional(),
+  "start": zod.number().optional(),
+  "end": zod.number().optional(),
+  "confidence": zod.number().optional(),
+  "speaker": zod.number().optional(),
+  "speaker_confidence": zod.number().optional(),
+  "punctuated_word": zod.string().optional()
+})).optional(),
+  "speaker": zod.number().optional(),
+  "id": zod.string().uuid().optional()
+})).optional(),
+  "summary": zod.object({
+  "result": zod.string().optional(),
+  "short": zod.string().optional()
+}).optional(),
+  "topics": zod.object({
+  "results": zod.object({
+  "topics": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional(),
+  "topics": zod.array(zod.object({
+  "topic": zod.string().optional(),
+  "confidence_score": zod.number().optional()
+})).optional()
+})).optional()
+}).optional()
+}).optional()
+}).optional().describe('Output whenever `topics=true` is used'),
+  "intents": zod.object({
+  "results": zod.object({
+  "intents": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional(),
+  "intents": zod.array(zod.object({
+  "intent": zod.string().optional(),
+  "confidence_score": zod.number().optional()
+})).optional()
+})).optional()
+}).optional()
+}).optional()
+}).optional().describe('Output whenever `intents=true` is used'),
+  "sentiments": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional(),
+  "sentiment": zod.string().optional(),
+  "sentiment_score": zod.number().optional()
+})).optional(),
+  "average": zod.object({
+  "sentiment": zod.string().optional(),
+  "sentiment_score": zod.number().optional()
+}).optional()
+}).optional().describe('Output whenever `sentiment=true` is used')
+})
+}).describe('The standard transcription response').or(zod.object({
+  "request_id": zod.string().uuid().describe('Unique identifier for tracking the asynchronous request')
+}).describe('Accepted response for asynchronous transcription requests'))
+
 
 /**
  * Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
  * @summary List Models
  */
 export const manageV1ModelsListQueryParams = zod.object({
-  include_outdated: zod.boolean().optional().describe("returns non-latest versions of models")
+  "include_outdated": zod.boolean().optional().describe('returns non-latest versions of models')
 })
 
 export const manageV1ModelsListResponse = zod.object({
-  stt: zod
-    .array(
-      zod.object({
-        name: zod.string().optional(),
-        canonical_name: zod.string().optional(),
-        architecture: zod.string().optional(),
-        languages: zod.array(zod.string()).optional(),
-        version: zod.string().optional(),
-        uuid: zod.string().optional(),
-        batch: zod.boolean().optional(),
-        streaming: zod.boolean().optional(),
-        formatted_output: zod.boolean().optional()
-      })
-    )
-    .optional(),
-  tts: zod
-    .array(
-      zod.object({
-        name: zod.string().optional(),
-        canonical_name: zod.string().optional(),
-        architecture: zod.string().optional(),
-        languages: zod.array(zod.string()).optional(),
-        version: zod.string().optional(),
-        uuid: zod.string().uuid().optional(),
-        metadata: zod
-          .object({
-            accent: zod.string().optional(),
-            age: zod.string().optional(),
-            color: zod.string().optional(),
-            image: zod.string().url().optional(),
-            sample: zod.string().url().optional(),
-            tags: zod.array(zod.string()).optional(),
-            use_cases: zod.array(zod.string()).optional()
-          })
-          .optional()
-      })
-    )
-    .optional()
+  "stt": zod.array(zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().optional(),
+  "batch": zod.boolean().optional(),
+  "streaming": zod.boolean().optional(),
+  "formatted_output": zod.boolean().optional()
+})).optional(),
+  "tts": zod.array(zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().uuid().optional(),
+  "metadata": zod.object({
+  "accent": zod.string().optional(),
+  "age": zod.string().optional(),
+  "color": zod.string().optional(),
+  "image": zod.string().url().optional(),
+  "sample": zod.string().url().optional(),
+  "tags": zod.array(zod.string()).optional(),
+  "use_cases": zod.array(zod.string()).optional()
+}).optional()
+})).optional()
 })
+
 
 /**
  * Returns metadata for a specific public model
  * @summary Get a specific Model
  */
-export const manageV1ModelsGetResponse = zod
-  .object({
-    name: zod.string().optional(),
-    canonical_name: zod.string().optional(),
-    architecture: zod.string().optional(),
-    languages: zod.array(zod.string()).optional(),
-    version: zod.string().optional(),
-    uuid: zod.string().uuid().optional(),
-    batch: zod.boolean().optional(),
-    streaming: zod.boolean().optional(),
-    formatted_output: zod.boolean().optional()
-  })
-  .or(
-    zod.object({
-      name: zod.string().optional(),
-      canonical_name: zod.string().optional(),
-      architecture: zod.string().optional(),
-      languages: zod.array(zod.string()).optional(),
-      version: zod.string().optional(),
-      uuid: zod.string().uuid().optional(),
-      metadata: zod
-        .object({
-          accent: zod.string().optional(),
-          age: zod.string().optional(),
-          color: zod.string().optional(),
-          image: zod.string().url().optional(),
-          sample: zod.string().url().optional(),
-          tags: zod.array(zod.string()).optional(),
-          use_cases: zod.array(zod.string()).optional()
-        })
-        .optional()
-    })
-  )
+export const manageV1ModelsGetResponse = zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().uuid().optional(),
+  "batch": zod.boolean().optional(),
+  "streaming": zod.boolean().optional(),
+  "formatted_output": zod.boolean().optional()
+}).or(zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().uuid().optional(),
+  "metadata": zod.object({
+  "accent": zod.string().optional(),
+  "age": zod.string().optional(),
+  "color": zod.string().optional(),
+  "image": zod.string().url().optional(),
+  "sample": zod.string().url().optional(),
+  "tags": zod.array(zod.string()).optional(),
+  "use_cases": zod.array(zod.string()).optional()
+}).optional()
+}))
+
 
 /**
  * Retrieves basic information about the projects associated with the API key
  * @summary List Projects
  */
 export const manageV1ProjectsListResponse = zod.object({
-  projects: zod
-    .array(
-      zod.object({
-        project_id: zod.string().optional().describe("The unique identifier of the project"),
-        name: zod.string().optional().describe("The name of the project")
-      })
-    )
-    .optional()
+  "projects": zod.array(zod.object({
+  "project_id": zod.string().optional().describe('The unique identifier of the project'),
+  "name": zod.string().optional().describe('The name of the project')
+})).optional()
 })
+
 
 /**
  * Retrieves information about the specified project
  * @summary Get a Project
  */
-export const manageV1ProjectsGetQueryLimitDefault = 10
-export const manageV1ProjectsGetQueryLimitMax = 1000
+export const manageV1ProjectsGetQueryLimitDefault = 10;
+export const manageV1ProjectsGetQueryLimitMax = 1000;
+
 
 export const manageV1ProjectsGetQueryParams = zod.object({
-  limit: zod
-    .number()
-    .min(1)
-    .max(manageV1ProjectsGetQueryLimitMax)
-    .default(manageV1ProjectsGetQueryLimitDefault)
-    .describe("Number of results to return per page. Default 10. Range [1,1000]"),
-  page: zod
-    .number()
-    .optional()
-    .describe(
-      "Navigate and return the results to retrieve specific portions of information of the response"
-    )
+  "limit": zod.number().min(1).max(manageV1ProjectsGetQueryLimitMax).default(manageV1ProjectsGetQueryLimitDefault).describe('Number of results to return per page. Default 10. Range [1,1000]'),
+  "page": zod.number().optional().describe('Navigate and return the results to retrieve specific portions of information of the response')
 })
 
 export const manageV1ProjectsGetResponse = zod.object({
-  project_id: zod.string().optional().describe("The unique identifier of the project"),
-  mip_opt_out: zod.boolean().optional().describe("Model Improvement Program opt-out"),
-  name: zod.string().optional().describe("The name of the project")
+  "project_id": zod.string().optional().describe('The unique identifier of the project'),
+  "mip_opt_out": zod.boolean().optional().describe('Model Improvement Program opt-out'),
+  "name": zod.string().optional().describe('The name of the project')
 })
+
 
 /**
  * Updates the name or other properties of an existing project
  * @summary Update a Project
  */
 export const manageProjectsUpdateBody = zod.object({
-  name: zod.string().optional().describe("The name of the project")
+  "name": zod.string().optional().describe('The name of the project')
 })
 
 export const manageProjectsUpdateResponse = zod.object({
-  message: zod.string().optional().describe("confirmation message")
+  "message": zod.string().optional().describe('confirmation message')
 })
+
 
 /**
  * Deletes the specified project
  * @summary Delete a Project
  */
 export const manageProjectsDeleteResponse = zod.object({
-  message: zod.string().optional().describe("Confirmation message")
+  "message": zod.string().optional().describe('Confirmation message')
 })
+
 
 /**
  * Generates a list of outstanding balances for the specified project
  * @summary Get Project Balances
  */
-export const manageV1ProjectsBillingBalancesListResponseBalancesItemAmountDefault = 0
+export const manageV1ProjectsBillingBalancesListResponseBalancesItemAmountDefault = 0;
 
 export const manageV1ProjectsBillingBalancesListResponse = zod.object({
-  balances: zod
-    .array(
-      zod.object({
-        balance_id: zod.string().optional().describe("The unique identifier of the balance"),
-        amount: zod.number().optional().describe("The amount of the balance"),
-        units: zod.string().optional().describe('The units of the balance, such as "USD"'),
-        purchase_order_id: zod
-          .string()
-          .optional()
-          .describe("Description or reference of the purchase")
-      })
-    )
-    .optional()
+  "balances": zod.array(zod.object({
+  "balance_id": zod.string().optional().describe('The unique identifier of the balance'),
+  "amount": zod.number().optional().describe('The amount of the balance'),
+  "units": zod.string().optional().describe('The units of the balance, such as \"USD\"'),
+  "purchase_order_id": zod.string().optional().describe('Description or reference of the purchase')
+})).optional()
 })
+
 
 /**
  * Retrieves details about the specified balance
  * @summary Get a Project Balance
  */
-export const manageV1ProjectsBillingBalancesGetResponseAmountDefault = 0
+export const manageV1ProjectsBillingBalancesGetResponseAmountDefault = 0;
 
 export const manageV1ProjectsBillingBalancesGetResponse = zod.object({
-  balance_id: zod.string().optional().describe("The unique identifier of the balance"),
-  amount: zod.number().optional().describe("The amount of the balance"),
-  units: zod.string().optional().describe('The units of the balance, such as "USD"'),
-  purchase_order_id: zod.string().optional().describe("Description or reference of the purchase")
+  "balance_id": zod.string().optional().describe('The unique identifier of the balance'),
+  "amount": zod.number().optional().describe('The amount of the balance'),
+  "units": zod.string().optional().describe('The units of the balance, such as \"USD\"'),
+  "purchase_order_id": zod.string().optional().describe('Description or reference of the purchase')
 })
+
 
 /**
  * Retrieves the billing summary for a specific project, with various filter options or by grouping options.
  * @summary Get Project Billing Breakdown
  */
 export const manageV1ProjectsBillingBreakdownListQueryParams = zod.object({
-  start: zod
-    .string()
-    .date()
-    .optional()
-    .describe("Start date of the requested date range. Format accepted is YYYY-MM-DD"),
-  end: zod
-    .string()
-    .date()
-    .optional()
-    .describe("End date of the requested date range. Format accepted is YYYY-MM-DD"),
-  accessor: zod
-    .string()
-    .optional()
-    .describe("Filter for requests where a specific accessor was used"),
-  deployment: zod
-    .enum(["hosted", "beta", "self-hosted"])
-    .optional()
-    .describe("Filter for requests where a specific deployment was used"),
-  tag: zod.string().optional().describe("Filter for requests where a specific tag was used"),
-  line_item: zod
-    .string()
-    .optional()
-    .describe("Filter requests by line item (e.g. streaming::nova-3)"),
-  grouping: zod
-    .array(zod.enum(["accessor", "deployment", "line_item", "tags"]))
-    .optional()
-    .describe(
-      "Group billing breakdown by one or more dimensions (accessor, deployment, line_item, tags)"
-    )
+  "start": zod.string().date().optional().describe('Start date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "end": zod.string().date().optional().describe('End date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "accessor": zod.string().optional().describe('Filter for requests where a specific accessor was used'),
+  "deployment": zod.enum(['hosted', 'beta', 'self-hosted']).optional().describe('Filter for requests where a specific deployment was used'),
+  "tag": zod.string().optional().describe('Filter for requests where a specific tag was used'),
+  "line_item": zod.string().optional().describe('Filter requests by line item (e.g. streaming::nova-3)'),
+  "grouping": zod.array(zod.enum(['accessor', 'deployment', 'line_item', 'tags'])).optional().describe('Group billing breakdown by one or more dimensions (accessor, deployment, line_item, tags)')
 })
 
 export const manageV1ProjectsBillingBreakdownListResponse = zod.object({
-  start: zod.string().date().describe("Start date of the billing summmary period"),
-  end: zod.string().date().describe("End date of the billing summary period"),
-  resolution: zod.object({
-    units: zod.string().describe("Time unit for the resolution"),
-    amount: zod.number().describe("Amount of units")
-  }),
-  results: zod.array(
-    zod.object({
-      dollars: zod.number().describe("USD cost of the billing for this grouping"),
-      grouping: zod.object({
-        start: zod.string().date().optional().describe("Start date for this group"),
-        end: zod.string().date().optional().describe("End date for this group"),
-        accessor: zod
-          .string()
-          .nullish()
-          .describe("Optional accessor identifier, null unless grouped by accessor."),
-        deployment: zod
-          .string()
-          .nullish()
-          .describe("Optional deployment identifier, null unless grouped by deployment."),
-        line_item: zod
-          .string()
-          .nullish()
-          .describe("Optional line item identifier, null unless grouped by line item."),
-        tags: zod
-          .array(zod.string())
-          .nullish()
-          .describe("Optional list of tags, null unless grouped by tags.")
-      })
-    })
-  )
+  "start": zod.string().date().describe('Start date of the billing summmary period'),
+  "end": zod.string().date().describe('End date of the billing summary period'),
+  "resolution": zod.object({
+  "units": zod.string().describe('Time unit for the resolution'),
+  "amount": zod.number().describe('Amount of units')
+}),
+  "results": zod.array(zod.object({
+  "dollars": zod.number().describe('USD cost of the billing for this grouping'),
+  "grouping": zod.object({
+  "start": zod.string().date().optional().describe('Start date for this group'),
+  "end": zod.string().date().optional().describe('End date for this group'),
+  "accessor": zod.string().nullish().describe('Optional accessor identifier, null unless grouped by accessor.'),
+  "deployment": zod.string().nullish().describe('Optional deployment identifier, null unless grouped by deployment.'),
+  "line_item": zod.string().nullish().describe('Optional line item identifier, null unless grouped by line item.'),
+  "tags": zod.array(zod.string()).nullish().describe('Optional list of tags, null unless grouped by tags.')
 })
+}))
+})
+
 
 /**
  * Lists the accessors, deployment types, tags, and line items used for billing data in the specified time period. Use this endpoint if you want to filter your results from the Billing Breakdown endpoint and want to know what filters are available.
  * @summary List Project Billing Fields
  */
 export const manageV1ProjectsBillingFieldsListQueryParams = zod.object({
-  start: zod
-    .string()
-    .date()
-    .optional()
-    .describe("Start date of the requested date range. Format accepted is YYYY-MM-DD"),
-  end: zod
-    .string()
-    .date()
-    .optional()
-    .describe("End date of the requested date range. Format accepted is YYYY-MM-DD")
+  "start": zod.string().date().optional().describe('Start date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "end": zod.string().date().optional().describe('End date of the requested date range. Format accepted is YYYY-MM-DD')
 })
 
 export const manageV1ProjectsBillingFieldsListResponse = zod.object({
-  accessors: zod
-    .array(zod.string().uuid())
-    .optional()
-    .describe("List of accessor UUIDs for the time period"),
-  deployments: zod
-    .array(zod.enum(["hosted", "beta", "self-hosted", "dedicated"]))
-    .optional()
-    .describe("List of deployment types for the time period"),
-  tags: zod.array(zod.string()).optional().describe("List of tags for the time period"),
-  line_items: zod
-    .record(zod.string(), zod.string())
-    .optional()
-    .describe("Map of line item names to human-readable descriptions for the time period")
+  "accessors": zod.array(zod.string().uuid()).optional().describe('List of accessor UUIDs for the time period'),
+  "deployments": zod.array(zod.enum(['hosted', 'beta', 'self-hosted', 'dedicated'])).optional().describe('List of deployment types for the time period'),
+  "tags": zod.array(zod.string()).optional().describe('List of tags for the time period'),
+  "line_items": zod.record(zod.string(), zod.string()).optional().describe('Map of line item names to human-readable descriptions for the time period')
 })
+
 
 /**
  * Generates a list of invites for a specific project
  * @summary List Project Invites
  */
 export const manageV1ProjectsMembersInvitesListResponse = zod.object({
-  invites: zod
-    .array(
-      zod.object({
-        email: zod.string().optional().describe("The email address of the invitee"),
-        scope: zod.string().optional().describe("The scope of the invitee")
-      })
-    )
-    .optional()
+  "invites": zod.array(zod.object({
+  "email": zod.string().optional().describe('The email address of the invitee'),
+  "scope": zod.string().optional().describe('The scope of the invitee')
+})).optional()
 })
+
 
 /**
  * Generates an invite for a specific project
  * @summary Create a Project Invite
  */
-export const manageV1ProjectsMembersInvitesCreateBody = zod
-  .object({
-    email: zod.string().describe("The email address of the invitee"),
-    scope: zod.string().describe("The scope of the invitee")
-  })
-  .describe("Request body for creating a project invite")
+export const manageV1ProjectsMembersInvitesCreateBody = zod.object({
+  "email": zod.string().describe('The email address of the invitee'),
+  "scope": zod.string().describe('The scope of the invitee')
+}).describe('Request body for creating a project invite')
 
 export const manageV1ProjectsMembersInvitesCreateResponse = zod.object({
-  message: zod.string().optional().describe("confirmation message")
+  "message": zod.string().optional().describe('confirmation message')
 })
+
 
 /**
  * Deletes an invite for a specific project
  * @summary Delete a Project Invite
  */
 export const manageV1ProjectsMembersInvitesDeleteResponse = zod.object({
-  message: zod.string().optional().describe("confirmation message")
+  "message": zod.string().optional().describe('confirmation message')
 })
+
 
 /**
  * Retrieves all API keys associated with the specified project
  * @summary List Project Keys
  */
 export const manageV1ProjectsKeysListQueryParams = zod.object({
-  status: zod
-    .enum(["active", "expired"])
-    .optional()
-    .describe("Only return keys with a specific status")
+  "status": zod.enum(['active', 'expired']).optional().describe('Only return keys with a specific status')
 })
 
 export const manageV1ProjectsKeysListResponse = zod.object({
-  api_keys: zod
-    .array(
-      zod.object({
-        member: zod
-          .object({
-            member_id: zod.string().optional(),
-            email: zod.string().optional()
-          })
-          .optional(),
-        api_key: zod
-          .object({
-            api_key_id: zod.string().optional(),
-            comment: zod.string().optional(),
-            scopes: zod.array(zod.string()).optional(),
-            created: zod.string().datetime({}).optional()
-          })
-          .optional()
-      })
-    )
-    .optional()
+  "api_keys": zod.array(zod.object({
+  "member": zod.object({
+  "member_id": zod.string().optional(),
+  "email": zod.string().optional()
+}).optional(),
+  "api_key": zod.object({
+  "api_key_id": zod.string().optional(),
+  "comment": zod.string().optional(),
+  "scopes": zod.array(zod.string()).optional(),
+  "created": zod.string().datetime({}).optional()
+}).optional()
+})).optional()
 })
+
 
 /**
  * Creates a new API key with specified settings for the project
@@ -979,458 +545,347 @@ export const manageV1ProjectsKeysListResponse = zod.object({
  */
 export const manageProjectsKeysCreateBody = zod.any().or(zod.any())
 
-export const manageProjectsKeysCreateResponse = zod
-  .object({
-    api_key_id: zod.string().optional().describe("The unique identifier of the API key"),
-    key: zod.string().optional().describe("The API key"),
-    comment: zod.string().optional().describe("A comment for the API key"),
-    scopes: zod.array(zod.string()).optional().describe("The scopes for the API key"),
-    tags: zod.array(zod.string()).optional().describe("The tags for the API key"),
-    expiration_date: zod
-      .string()
-      .datetime({})
-      .optional()
-      .describe("The expiration date of the API key")
-  })
-  .describe("API key created")
+export const manageProjectsKeysCreateResponse = zod.object({
+  "api_key_id": zod.string().optional().describe('The unique identifier of the API key'),
+  "key": zod.string().optional().describe('The API key'),
+  "comment": zod.string().optional().describe('A comment for the API key'),
+  "scopes": zod.array(zod.string()).optional().describe('The scopes for the API key'),
+  "tags": zod.array(zod.string()).optional().describe('The tags for the API key'),
+  "expiration_date": zod.string().datetime({}).optional().describe('The expiration date of the API key')
+}).describe('API key created')
+
 
 /**
  * Retrieves information about a specified API key
  * @summary Get a Project Key
  */
 export const manageV1ProjectsKeysGetResponse = zod.object({
-  item: zod
-    .object({
-      member: zod
-        .object({
-          member_id: zod.string().optional(),
-          email: zod.string().optional(),
-          first_name: zod.string().optional(),
-          last_name: zod.string().optional(),
-          api_key: zod
-            .object({
-              api_key_id: zod.string().optional(),
-              comment: zod.string().optional(),
-              scopes: zod.array(zod.string()).optional(),
-              tags: zod.array(zod.string()).optional(),
-              expiration_date: zod.string().datetime({}).optional(),
-              created: zod.string().datetime({}).optional()
-            })
-            .optional()
-        })
-        .optional()
-    })
-    .optional()
+  "item": zod.object({
+  "member": zod.object({
+  "member_id": zod.string().optional(),
+  "email": zod.string().optional(),
+  "first_name": zod.string().optional(),
+  "last_name": zod.string().optional(),
+  "api_key": zod.object({
+  "api_key_id": zod.string().optional(),
+  "comment": zod.string().optional(),
+  "scopes": zod.array(zod.string()).optional(),
+  "tags": zod.array(zod.string()).optional(),
+  "expiration_date": zod.string().datetime({}).optional(),
+  "created": zod.string().datetime({}).optional()
+}).optional()
+}).optional()
+}).optional()
 })
+
 
 /**
  * Deletes an API key for a specific project
  * @summary Delete a Project Key
  */
 export const manageProjectsKeysDeleteResponse = zod.object({
-  message: zod.string().optional()
+  "message": zod.string().optional()
 })
+
 
 /**
  * Removes the authenticated account from the specific project
  * @summary Leave a Project
  */
 export const manageV1ProjectsLeaveResponse = zod.object({
-  message: zod.string().optional().describe("confirmation message")
+  "message": zod.string().optional().describe('confirmation message')
 })
+
 
 /**
  * Retrieves a list of members for a given project
  * @summary List Project Members
  */
 export const manageV1ProjectsMembersListResponse = zod.object({
-  members: zod
-    .array(
-      zod.object({
-        member_id: zod.string().optional().describe("The unique identifier of the member"),
-        email: zod.string().optional()
-      })
-    )
-    .optional()
+  "members": zod.array(zod.object({
+  "member_id": zod.string().optional().describe('The unique identifier of the member'),
+  "email": zod.string().optional()
+})).optional()
 })
+
 
 /**
  * Removes a member from the project using their unique member ID
  * @summary Delete a Project Member
  */
 export const manageV1ProjectsMembersDeleteResponse = zod.object({
-  message: zod.string().optional().describe("confirmation message")
+  "message": zod.string().optional().describe('confirmation message')
 })
+
 
 /**
  * Retrieves a list of scopes for a specific member
  * @summary List Project Member Scopes
  */
 export const manageV1ProjectsMembersScopesListResponse = zod.object({
-  scopes: zod.array(zod.string()).optional().describe("The API scopes of the member")
+  "scopes": zod.array(zod.string()).optional().describe('The API scopes of the member')
 })
+
 
 /**
  * Updates the scopes for a specific member
  * @summary Update Project Member Scopes
  */
 export const manageProjectsMembersScopesUpdateBody = zod.object({
-  scope: zod.string().describe("A scope to update")
+  "scope": zod.string().describe('A scope to update')
 })
 
 export const manageProjectsMembersScopesUpdateResponse = zod.object({
-  message: zod.string().optional().describe("confirmation message")
+  "message": zod.string().optional().describe('confirmation message')
 })
+
 
 /**
  * Returns metadata on all the latest models that a specific project has access to, including non-public models
  * @summary List Project Models
  */
 export const manageV1ProjectsModelsListQueryParams = zod.object({
-  include_outdated: zod.boolean().optional().describe("returns non-latest versions of models")
+  "include_outdated": zod.boolean().optional().describe('returns non-latest versions of models')
 })
 
 export const manageV1ProjectsModelsListResponse = zod.object({
-  stt: zod
-    .array(
-      zod.object({
-        name: zod.string().optional(),
-        canonical_name: zod.string().optional(),
-        architecture: zod.string().optional(),
-        languages: zod.array(zod.string()).optional(),
-        version: zod.string().optional(),
-        uuid: zod.string().optional(),
-        batch: zod.boolean().optional(),
-        streaming: zod.boolean().optional(),
-        formatted_output: zod.boolean().optional()
-      })
-    )
-    .optional(),
-  tts: zod
-    .array(
-      zod.object({
-        name: zod.string().optional(),
-        canonical_name: zod.string().optional(),
-        architecture: zod.string().optional(),
-        languages: zod.array(zod.string()).optional(),
-        version: zod.string().optional(),
-        uuid: zod.string().uuid().optional(),
-        metadata: zod
-          .object({
-            accent: zod.string().optional(),
-            age: zod.string().optional(),
-            color: zod.string().optional(),
-            image: zod.string().url().optional(),
-            sample: zod.string().url().optional(),
-            tags: zod.array(zod.string()).optional(),
-            use_cases: zod.array(zod.string()).optional()
-          })
-          .optional()
-      })
-    )
-    .optional()
+  "stt": zod.array(zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().optional(),
+  "batch": zod.boolean().optional(),
+  "streaming": zod.boolean().optional(),
+  "formatted_output": zod.boolean().optional()
+})).optional(),
+  "tts": zod.array(zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().uuid().optional(),
+  "metadata": zod.object({
+  "accent": zod.string().optional(),
+  "age": zod.string().optional(),
+  "color": zod.string().optional(),
+  "image": zod.string().url().optional(),
+  "sample": zod.string().url().optional(),
+  "tags": zod.array(zod.string()).optional(),
+  "use_cases": zod.array(zod.string()).optional()
+}).optional()
+})).optional()
 })
+
 
 /**
  * Returns metadata for a specific model
  * @summary Get a Project Model
  */
-export const manageV1ProjectsModelsGetResponse = zod
-  .object({
-    name: zod.string().optional(),
-    canonical_name: zod.string().optional(),
-    architecture: zod.string().optional(),
-    languages: zod.array(zod.string()).optional(),
-    version: zod.string().optional(),
-    uuid: zod.string().uuid().optional(),
-    batch: zod.boolean().optional(),
-    streaming: zod.boolean().optional(),
-    formatted_output: zod.boolean().optional()
-  })
-  .or(
-    zod.object({
-      name: zod.string().optional(),
-      canonical_name: zod.string().optional(),
-      architecture: zod.string().optional(),
-      languages: zod.array(zod.string()).optional(),
-      version: zod.string().optional(),
-      uuid: zod.string().uuid().optional(),
-      metadata: zod
-        .object({
-          accent: zod.string().optional(),
-          age: zod.string().optional(),
-          color: zod.string().optional(),
-          image: zod.string().url().optional(),
-          sample: zod.string().url().optional(),
-          tags: zod.array(zod.string()).optional(),
-          use_cases: zod.array(zod.string()).optional()
-        })
-        .optional()
-    })
-  )
+export const manageV1ProjectsModelsGetResponse = zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().uuid().optional(),
+  "batch": zod.boolean().optional(),
+  "streaming": zod.boolean().optional(),
+  "formatted_output": zod.boolean().optional()
+}).or(zod.object({
+  "name": zod.string().optional(),
+  "canonical_name": zod.string().optional(),
+  "architecture": zod.string().optional(),
+  "languages": zod.array(zod.string()).optional(),
+  "version": zod.string().optional(),
+  "uuid": zod.string().uuid().optional(),
+  "metadata": zod.object({
+  "accent": zod.string().optional(),
+  "age": zod.string().optional(),
+  "color": zod.string().optional(),
+  "image": zod.string().url().optional(),
+  "sample": zod.string().url().optional(),
+  "tags": zod.array(zod.string()).optional(),
+  "use_cases": zod.array(zod.string()).optional()
+}).optional()
+}))
+
 
 /**
  * Returns the original purchased amount on an order transaction
  * @summary List Project Purchases
  */
-export const manageV1ProjectsBillingPurchasesListQueryLimitDefault = 10
-export const manageV1ProjectsBillingPurchasesListQueryLimitMax = 1000
+export const manageV1ProjectsBillingPurchasesListQueryLimitDefault = 10;
+export const manageV1ProjectsBillingPurchasesListQueryLimitMax = 1000;
+
 
 export const manageV1ProjectsBillingPurchasesListQueryParams = zod.object({
-  limit: zod
-    .number()
-    .min(1)
-    .max(manageV1ProjectsBillingPurchasesListQueryLimitMax)
-    .default(manageV1ProjectsBillingPurchasesListQueryLimitDefault)
-    .describe("Number of results to return per page. Default 10. Range [1,1000]")
+  "limit": zod.number().min(1).max(manageV1ProjectsBillingPurchasesListQueryLimitMax).default(manageV1ProjectsBillingPurchasesListQueryLimitDefault).describe('Number of results to return per page. Default 10. Range [1,1000]')
 })
 
 export const manageV1ProjectsBillingPurchasesListResponse = zod.object({
-  orders: zod
-    .array(
-      zod.object({
-        order_id: zod.string().uuid().optional(),
-        expiration: zod.string().datetime({}).optional(),
-        created: zod.string().datetime({}).optional(),
-        amount: zod.number().optional(),
-        units: zod.string().optional(),
-        order_type: zod.string().optional()
-      })
-    )
-    .optional()
+  "orders": zod.array(zod.object({
+  "order_id": zod.string().uuid().optional(),
+  "expiration": zod.string().datetime({}).optional(),
+  "created": zod.string().datetime({}).optional(),
+  "amount": zod.number().optional(),
+  "units": zod.string().optional(),
+  "order_type": zod.string().optional()
+})).optional()
 })
+
 
 /**
  * Generates a list of requests for a specific project
  * @summary List Project Requests
  */
-export const manageV1ProjectsRequestsListQueryLimitDefault = 10
-export const manageV1ProjectsRequestsListQueryLimitMax = 1000
+export const manageV1ProjectsRequestsListQueryLimitDefault = 10;
+export const manageV1ProjectsRequestsListQueryLimitMax = 1000;
+
 
 export const manageV1ProjectsRequestsListQueryParams = zod.object({
-  start: zod
-    .string()
-    .datetime({})
-    .optional()
-    .describe(
-      "Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM"
-    ),
-  end: zod
-    .string()
-    .datetime({})
-    .optional()
-    .describe(
-      "End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM"
-    ),
-  limit: zod
-    .number()
-    .min(1)
-    .max(manageV1ProjectsRequestsListQueryLimitMax)
-    .default(manageV1ProjectsRequestsListQueryLimitDefault)
-    .describe("Number of results to return per page. Default 10. Range [1,1000]"),
-  page: zod
-    .number()
-    .optional()
-    .describe(
-      "Navigate and return the results to retrieve specific portions of information of the response"
-    ),
-  accessor: zod
-    .string()
-    .optional()
-    .describe("Filter for requests where a specific accessor was used"),
-  request_id: zod.string().optional().describe("Filter for a specific request id"),
-  deployment: zod
-    .enum(["hosted", "beta", "self-hosted"])
-    .optional()
-    .describe("Filter for requests where a specific deployment was used"),
-  endpoint: zod
-    .enum(["listen", "read", "speak", "agent"])
-    .optional()
-    .describe("Filter for requests where a specific endpoint was used"),
-  method: zod
-    .enum(["sync", "async", "streaming"])
-    .optional()
-    .describe("Filter for requests where a specific method was used"),
-  status: zod
-    .enum(["succeeded", "failed"])
-    .optional()
-    .describe(
-      "Filter for requests that succeeded (status code < 300) or failed (status code >=400)"
-    )
+  "start": zod.string().datetime({}).optional().describe('Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'),
+  "end": zod.string().datetime({}).optional().describe('End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'),
+  "limit": zod.number().min(1).max(manageV1ProjectsRequestsListQueryLimitMax).default(manageV1ProjectsRequestsListQueryLimitDefault).describe('Number of results to return per page. Default 10. Range [1,1000]'),
+  "page": zod.number().optional().describe('Navigate and return the results to retrieve specific portions of information of the response'),
+  "accessor": zod.string().optional().describe('Filter for requests where a specific accessor was used'),
+  "request_id": zod.string().optional().describe('Filter for a specific request id'),
+  "deployment": zod.enum(['hosted', 'beta', 'self-hosted']).optional().describe('Filter for requests where a specific deployment was used'),
+  "endpoint": zod.enum(['listen', 'read', 'speak', 'agent']).optional().describe('Filter for requests where a specific endpoint was used'),
+  "method": zod.enum(['sync', 'async', 'streaming']).optional().describe('Filter for requests where a specific method was used'),
+  "status": zod.enum(['succeeded', 'failed']).optional().describe('Filter for requests that succeeded (status code < 300) or failed (status code >=400)')
 })
 
 export const manageV1ProjectsRequestsListResponse = zod.object({
-  page: zod.number().optional().describe("The page number of the paginated response"),
-  limit: zod.number().optional().describe("The number of results per page"),
-  requests: zod
-    .array(
-      zod
-        .object({
-          request_id: zod.string().optional().describe("The unique identifier of the request"),
-          project_uuid: zod.string().optional().describe("The unique identifier of the project"),
-          created: zod
-            .string()
-            .datetime({})
-            .optional()
-            .describe("The date and time the request was created"),
-          path: zod.string().optional().describe("The API path of the request"),
-          api_key_id: zod.string().optional().describe("The unique identifier of the API key"),
-          response: zod.object({}).optional().describe("The response of the request"),
-          code: zod.number().optional().describe("The response code of the request"),
-          deployment: zod.string().optional().describe("The deployment type"),
-          callback: zod.string().optional().describe("The callback URL for the request")
-        })
-        .describe("A single request")
-    )
-    .optional()
+  "page": zod.number().optional().describe('The page number of the paginated response'),
+  "limit": zod.number().optional().describe('The number of results per page'),
+  "requests": zod.array(zod.object({
+  "request_id": zod.string().optional().describe('The unique identifier of the request'),
+  "project_uuid": zod.string().optional().describe('The unique identifier of the project'),
+  "created": zod.string().datetime({}).optional().describe('The date and time the request was created'),
+  "path": zod.string().optional().describe('The API path of the request'),
+  "api_key_id": zod.string().optional().describe('The unique identifier of the API key'),
+  "response": zod.object({
+
+}).optional().describe('The response of the request'),
+  "code": zod.number().optional().describe('The response code of the request'),
+  "deployment": zod.string().optional().describe('The deployment type'),
+  "callback": zod.string().optional().describe('The callback URL for the request')
+}).describe('A single request')).optional()
 })
+
 
 /**
  * Retrieves a specific request for a specific project
  * @summary Get a Project Request
  */
 export const manageV1ProjectsRequestsGetResponse = zod.object({
-  request: zod
-    .object({
-      request_id: zod.string().optional().describe("The unique identifier of the request"),
-      project_uuid: zod.string().optional().describe("The unique identifier of the project"),
-      created: zod
-        .string()
-        .datetime({})
-        .optional()
-        .describe("The date and time the request was created"),
-      path: zod.string().optional().describe("The API path of the request"),
-      api_key_id: zod.string().optional().describe("The unique identifier of the API key"),
-      response: zod.object({}).optional().describe("The response of the request"),
-      code: zod.number().optional().describe("The response code of the request"),
-      deployment: zod.string().optional().describe("The deployment type"),
-      callback: zod.string().optional().describe("The callback URL for the request")
-    })
-    .optional()
-    .describe("A single request")
+  "request": zod.object({
+  "request_id": zod.string().optional().describe('The unique identifier of the request'),
+  "project_uuid": zod.string().optional().describe('The unique identifier of the project'),
+  "created": zod.string().datetime({}).optional().describe('The date and time the request was created'),
+  "path": zod.string().optional().describe('The API path of the request'),
+  "api_key_id": zod.string().optional().describe('The unique identifier of the API key'),
+  "response": zod.object({
+
+}).optional().describe('The response of the request'),
+  "code": zod.number().optional().describe('The response code of the request'),
+  "deployment": zod.string().optional().describe('The deployment type'),
+  "callback": zod.string().optional().describe('The callback URL for the request')
+}).optional().describe('A single request')
 })
+
 
 /**
  * Lists sets of distribution credentials for the specified project
  * @summary List Project Self-Hosted Distribution Credentials
  */
 export const selfHostedV1DistributionCredentialsListResponse = zod.object({
-  distribution_credentials: zod
-    .array(
-      zod.object({
-        member: zod.object({
-          member_id: zod.string().uuid().describe("Unique identifier for the member"),
-          email: zod.string().email().describe("Email address of the member")
-        }),
-        distribution_credentials: zod.object({
-          distribution_credentials_id: zod
-            .string()
-            .uuid()
-            .describe("Unique identifier for the distribution credentials"),
-          provider: zod.string().describe("The provider of the distribution service"),
-          comment: zod.string().optional().describe("Optional comment about the credentials"),
-          scopes: zod.array(zod.string()).describe("List of permission scopes for the credentials"),
-          created: zod.string().datetime({}).describe("Timestamp when the credentials were created")
-        })
-      })
-    )
-    .optional()
-    .describe("Array of distribution credentials with associated member information")
+  "distribution_credentials": zod.array(zod.object({
+  "member": zod.object({
+  "member_id": zod.string().uuid().describe('Unique identifier for the member'),
+  "email": zod.string().email().describe('Email address of the member')
+}),
+  "distribution_credentials": zod.object({
+  "distribution_credentials_id": zod.string().uuid().describe('Unique identifier for the distribution credentials'),
+  "provider": zod.string().describe('The provider of the distribution service'),
+  "comment": zod.string().optional().describe('Optional comment about the credentials'),
+  "scopes": zod.array(zod.string()).describe('List of permission scopes for the credentials'),
+  "created": zod.string().datetime({}).describe('Timestamp when the credentials were created')
 })
+})).optional().describe('Array of distribution credentials with associated member information')
+})
+
 
 /**
  * Creates a set of distribution credentials for the specified project
  * @summary Create a Project Self-Hosted Distribution Credential
  */
-export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: ("self-hosted:products" | "self-hosted:product:api" | "self-hosted:product:engine" | "self-hosted:product:license-proxy" | "self-hosted:product:dgtools" | "self-hosted:product:billing" | "self-hosted:product:hotpepper" | "self-hosted:product:metrics-server")[] = ["self-hosted:products"]
-export const selfHostedV1DistributionCredentialsCreateQueryProviderDefault = "quay"
+export const selfHostedV1DistributionCredentialsCreateQueryScopesDefault: ('self-hosted:products' | 'self-hosted:product:api' | 'self-hosted:product:engine' | 'self-hosted:product:license-proxy' | 'self-hosted:product:dgtools' | 'self-hosted:product:billing' | 'self-hosted:product:hotpepper' | 'self-hosted:product:metrics-server')[] = ["self-hosted:products"];export const selfHostedV1DistributionCredentialsCreateQueryProviderDefault = "quay";
 
 export const selfHostedV1DistributionCredentialsCreateQueryParams = zod.object({
-  scopes: zod
-    .array(
-      zod.enum([
-        "self-hosted:products",
-        "self-hosted:product:api",
-        "self-hosted:product:engine",
-        "self-hosted:product:license-proxy",
-        "self-hosted:product:dgtools",
-        "self-hosted:product:billing",
-        "self-hosted:product:hotpepper",
-        "self-hosted:product:metrics-server"
-      ])
-    )
-    .default(selfHostedV1DistributionCredentialsCreateQueryScopesDefault)
-    .describe("List of permission scopes for the credentials"),
-  provider: zod
-    .enum(["quay"])
-    .default(selfHostedV1DistributionCredentialsCreateQueryProviderDefault)
-    .describe("The provider of the distribution service")
+  "scopes": zod.array(zod.enum(['self-hosted:products', 'self-hosted:product:api', 'self-hosted:product:engine', 'self-hosted:product:license-proxy', 'self-hosted:product:dgtools', 'self-hosted:product:billing', 'self-hosted:product:hotpepper', 'self-hosted:product:metrics-server'])).default(selfHostedV1DistributionCredentialsCreateQueryScopesDefault).describe('List of permission scopes for the credentials'),
+  "provider": zod.enum(['quay']).default(selfHostedV1DistributionCredentialsCreateQueryProviderDefault).describe('The provider of the distribution service')
 })
 
-export const selfHostedV1DistributionCredentialsCreateBody = zod
-  .object({
-    comment: zod.string().optional().describe("Optional comment about the credentials")
-  })
-  .describe("Request body for creating distribution credentials")
+export const selfHostedV1DistributionCredentialsCreateBody = zod.object({
+  "comment": zod.string().optional().describe('Optional comment about the credentials')
+}).describe('Request body for creating distribution credentials')
 
 export const selfHostedV1DistributionCredentialsCreateResponse = zod.object({
-  member: zod.object({
-    member_id: zod.string().uuid().describe("Unique identifier for the member"),
-    email: zod.string().email().describe("Email address of the member")
-  }),
-  distribution_credentials: zod.object({
-    distribution_credentials_id: zod
-      .string()
-      .uuid()
-      .describe("Unique identifier for the distribution credentials"),
-    provider: zod.string().describe("The provider of the distribution service"),
-    comment: zod.string().optional().describe("Optional comment about the credentials"),
-    scopes: zod.array(zod.string()).describe("List of permission scopes for the credentials"),
-    created: zod.string().datetime({}).describe("Timestamp when the credentials were created")
-  })
+  "member": zod.object({
+  "member_id": zod.string().uuid().describe('Unique identifier for the member'),
+  "email": zod.string().email().describe('Email address of the member')
+}),
+  "distribution_credentials": zod.object({
+  "distribution_credentials_id": zod.string().uuid().describe('Unique identifier for the distribution credentials'),
+  "provider": zod.string().describe('The provider of the distribution service'),
+  "comment": zod.string().optional().describe('Optional comment about the credentials'),
+  "scopes": zod.array(zod.string()).describe('List of permission scopes for the credentials'),
+  "created": zod.string().datetime({}).describe('Timestamp when the credentials were created')
 })
+})
+
 
 /**
  * Returns a set of distribution credentials for the specified project
  * @summary Get a Project Self-Hosted Distribution Credential
  */
 export const selfHostedV1DistributionCredentialsGetResponse = zod.object({
-  member: zod.object({
-    member_id: zod.string().uuid().describe("Unique identifier for the member"),
-    email: zod.string().email().describe("Email address of the member")
-  }),
-  distribution_credentials: zod.object({
-    distribution_credentials_id: zod
-      .string()
-      .uuid()
-      .describe("Unique identifier for the distribution credentials"),
-    provider: zod.string().describe("The provider of the distribution service"),
-    comment: zod.string().optional().describe("Optional comment about the credentials"),
-    scopes: zod.array(zod.string()).describe("List of permission scopes for the credentials"),
-    created: zod.string().datetime({}).describe("Timestamp when the credentials were created")
-  })
+  "member": zod.object({
+  "member_id": zod.string().uuid().describe('Unique identifier for the member'),
+  "email": zod.string().email().describe('Email address of the member')
+}),
+  "distribution_credentials": zod.object({
+  "distribution_credentials_id": zod.string().uuid().describe('Unique identifier for the distribution credentials'),
+  "provider": zod.string().describe('The provider of the distribution service'),
+  "comment": zod.string().optional().describe('Optional comment about the credentials'),
+  "scopes": zod.array(zod.string()).describe('List of permission scopes for the credentials'),
+  "created": zod.string().datetime({}).describe('Timestamp when the credentials were created')
 })
+})
+
 
 /**
  * Deletes a set of distribution credentials for the specified project
  * @summary Delete a Project Self-Hosted Distribution Credential
  */
 export const selfHostedV1DistributionCredentialsDeleteResponse = zod.object({
-  member: zod.object({
-    member_id: zod.string().uuid().describe("Unique identifier for the member"),
-    email: zod.string().email().describe("Email address of the member")
-  }),
-  distribution_credentials: zod.object({
-    distribution_credentials_id: zod
-      .string()
-      .uuid()
-      .describe("Unique identifier for the distribution credentials"),
-    provider: zod.string().describe("The provider of the distribution service"),
-    comment: zod.string().optional().describe("Optional comment about the credentials"),
-    scopes: zod.array(zod.string()).describe("List of permission scopes for the credentials"),
-    created: zod.string().datetime({}).describe("Timestamp when the credentials were created")
-  })
+  "member": zod.object({
+  "member_id": zod.string().uuid().describe('Unique identifier for the member'),
+  "email": zod.string().email().describe('Email address of the member')
+}),
+  "distribution_credentials": zod.object({
+  "distribution_credentials_id": zod.string().uuid().describe('Unique identifier for the distribution credentials'),
+  "provider": zod.string().describe('The provider of the distribution service'),
+  "comment": zod.string().optional().describe('Optional comment about the credentials'),
+  "scopes": zod.array(zod.string()).describe('List of permission scopes for the credentials'),
+  "created": zod.string().datetime({}).describe('Timestamp when the credentials were created')
 })
+})
+
 
 /**
  * Retrieves the usage for a specific project. Use Get Project Usage Breakdown for a more comprehensive usage summary.
@@ -1438,688 +893,300 @@ export const selfHostedV1DistributionCredentialsDeleteResponse = zod.object({
  * @summary Get Project Usage
  */
 export const manageV1ProjectsUsageGetQueryParams = zod.object({
-  start: zod
-    .string()
-    .date()
-    .optional()
-    .describe("Start date of the requested date range. Format accepted is YYYY-MM-DD"),
-  end: zod
-    .string()
-    .date()
-    .optional()
-    .describe("End date of the requested date range. Format accepted is YYYY-MM-DD"),
-  accessor: zod
-    .string()
-    .optional()
-    .describe("Filter for requests where a specific accessor was used"),
-  alternatives: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where alternatives were used"),
-  callback_method: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where callback method was used"),
-  callback: zod.boolean().optional().describe("Filter for requests where callback was used"),
-  channels: zod.boolean().optional().describe("Filter for requests where channels were used"),
-  custom_intent_mode: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom intent mode was used"),
-  custom_intent: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom intent was used"),
-  custom_topic_mode: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom topic mode was used"),
-  custom_topic: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom topic was used"),
-  deployment: zod
-    .enum(["hosted", "beta", "self-hosted"])
-    .optional()
-    .describe("Filter for requests where a specific deployment was used"),
-  detect_entities: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where detect entities was used"),
-  detect_language: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where detect language was used"),
-  diarize: zod.boolean().optional().describe("Filter for requests where diarize was used"),
-  dictation: zod.boolean().optional().describe("Filter for requests where dictation was used"),
-  encoding: zod.boolean().optional().describe("Filter for requests where encoding was used"),
-  endpoint: zod
-    .enum(["listen", "read", "speak", "agent"])
-    .optional()
-    .describe("Filter for requests where a specific endpoint was used"),
-  extra: zod.boolean().optional().describe("Filter for requests where extra was used"),
-  filler_words: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where filler words was used"),
-  intents: zod.boolean().optional().describe("Filter for requests where intents was used"),
-  keyterm: zod.boolean().optional().describe("Filter for requests where keyterm was used"),
-  keywords: zod.boolean().optional().describe("Filter for requests where keywords was used"),
-  language: zod.boolean().optional().describe("Filter for requests where language was used"),
-  measurements: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where measurements were used"),
-  method: zod
-    .enum(["sync", "async", "streaming"])
-    .optional()
-    .describe("Filter for requests where a specific method was used"),
-  model: zod
-    .string()
-    .optional()
-    .describe("Filter for requests where a specific model uuid was used"),
-  multichannel: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where multichannel was used"),
-  numerals: zod.boolean().optional().describe("Filter for requests where numerals were used"),
-  paragraphs: zod.boolean().optional().describe("Filter for requests where paragraphs were used"),
-  profanity_filter: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where profanity filter was used"),
-  punctuate: zod.boolean().optional().describe("Filter for requests where punctuate was used"),
-  redact: zod.boolean().optional().describe("Filter for requests where redact was used"),
-  replace: zod.boolean().optional().describe("Filter for requests where replace was used"),
-  sample_rate: zod.boolean().optional().describe("Filter for requests where sample rate was used"),
-  search: zod.boolean().optional().describe("Filter for requests where search was used"),
-  sentiment: zod.boolean().optional().describe("Filter for requests where sentiment was used"),
-  smart_format: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where smart format was used"),
-  summarize: zod.boolean().optional().describe("Filter for requests where summarize was used"),
-  tag: zod.string().optional().describe("Filter for requests where a specific tag was used"),
-  topics: zod.boolean().optional().describe("Filter for requests where topics was used"),
-  utt_split: zod.boolean().optional().describe("Filter for requests where utt split was used"),
-  utterances: zod.boolean().optional().describe("Filter for requests where utterances was used"),
-  version: zod.boolean().optional().describe("Filter for requests where version was used")
+  "start": zod.string().date().optional().describe('Start date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "end": zod.string().date().optional().describe('End date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "accessor": zod.string().optional().describe('Filter for requests where a specific accessor was used'),
+  "alternatives": zod.boolean().optional().describe('Filter for requests where alternatives were used'),
+  "callback_method": zod.boolean().optional().describe('Filter for requests where callback method was used'),
+  "callback": zod.boolean().optional().describe('Filter for requests where callback was used'),
+  "channels": zod.boolean().optional().describe('Filter for requests where channels were used'),
+  "custom_intent_mode": zod.boolean().optional().describe('Filter for requests where custom intent mode was used'),
+  "custom_intent": zod.boolean().optional().describe('Filter for requests where custom intent was used'),
+  "custom_topic_mode": zod.boolean().optional().describe('Filter for requests where custom topic mode was used'),
+  "custom_topic": zod.boolean().optional().describe('Filter for requests where custom topic was used'),
+  "deployment": zod.enum(['hosted', 'beta', 'self-hosted']).optional().describe('Filter for requests where a specific deployment was used'),
+  "detect_entities": zod.boolean().optional().describe('Filter for requests where detect entities was used'),
+  "detect_language": zod.boolean().optional().describe('Filter for requests where detect language was used'),
+  "diarize": zod.boolean().optional().describe('Filter for requests where diarize was used'),
+  "dictation": zod.boolean().optional().describe('Filter for requests where dictation was used'),
+  "encoding": zod.boolean().optional().describe('Filter for requests where encoding was used'),
+  "endpoint": zod.enum(['listen', 'read', 'speak', 'agent']).optional().describe('Filter for requests where a specific endpoint was used'),
+  "extra": zod.boolean().optional().describe('Filter for requests where extra was used'),
+  "filler_words": zod.boolean().optional().describe('Filter for requests where filler words was used'),
+  "intents": zod.boolean().optional().describe('Filter for requests where intents was used'),
+  "keyterm": zod.boolean().optional().describe('Filter for requests where keyterm was used'),
+  "keywords": zod.boolean().optional().describe('Filter for requests where keywords was used'),
+  "language": zod.boolean().optional().describe('Filter for requests where language was used'),
+  "measurements": zod.boolean().optional().describe('Filter for requests where measurements were used'),
+  "method": zod.enum(['sync', 'async', 'streaming']).optional().describe('Filter for requests where a specific method was used'),
+  "model": zod.string().optional().describe('Filter for requests where a specific model uuid was used'),
+  "multichannel": zod.boolean().optional().describe('Filter for requests where multichannel was used'),
+  "numerals": zod.boolean().optional().describe('Filter for requests where numerals were used'),
+  "paragraphs": zod.boolean().optional().describe('Filter for requests where paragraphs were used'),
+  "profanity_filter": zod.boolean().optional().describe('Filter for requests where profanity filter was used'),
+  "punctuate": zod.boolean().optional().describe('Filter for requests where punctuate was used'),
+  "redact": zod.boolean().optional().describe('Filter for requests where redact was used'),
+  "replace": zod.boolean().optional().describe('Filter for requests where replace was used'),
+  "sample_rate": zod.boolean().optional().describe('Filter for requests where sample rate was used'),
+  "search": zod.boolean().optional().describe('Filter for requests where search was used'),
+  "sentiment": zod.boolean().optional().describe('Filter for requests where sentiment was used'),
+  "smart_format": zod.boolean().optional().describe('Filter for requests where smart format was used'),
+  "summarize": zod.boolean().optional().describe('Filter for requests where summarize was used'),
+  "tag": zod.string().optional().describe('Filter for requests where a specific tag was used'),
+  "topics": zod.boolean().optional().describe('Filter for requests where topics was used'),
+  "utt_split": zod.boolean().optional().describe('Filter for requests where utt split was used'),
+  "utterances": zod.boolean().optional().describe('Filter for requests where utterances was used'),
+  "version": zod.boolean().optional().describe('Filter for requests where version was used')
 })
 
 export const manageV1ProjectsUsageGetResponse = zod.object({
-  start: zod.string().date().optional(),
-  end: zod.string().date().optional(),
-  resolution: zod
-    .object({
-      units: zod.string().optional(),
-      amount: zod.number().optional()
-    })
-    .optional()
+  "start": zod.string().date().optional(),
+  "end": zod.string().date().optional(),
+  "resolution": zod.object({
+  "units": zod.string().optional(),
+  "amount": zod.number().optional()
+}).optional()
 })
+
 
 /**
  * Retrieves the usage breakdown for a specific project, with various filter options by API feature or by groupings. Setting a feature (e.g. diarize) to true includes requests that used that feature, while false excludes requests that used it. Multiple true filters are combined with OR logic, while false filters use AND logic.
  * @summary Get Project Usage Breakdown
  */
 export const manageV1ProjectsUsageBreakdownGetQueryParams = zod.object({
-  start: zod
-    .string()
-    .date()
-    .optional()
-    .describe("Start date of the requested date range. Format accepted is YYYY-MM-DD"),
-  end: zod
-    .string()
-    .date()
-    .optional()
-    .describe("End date of the requested date range. Format accepted is YYYY-MM-DD"),
-  grouping: zod
-    .enum(["accessor", "endpoint", "feature_set", "models", "method", "tags", "deployment"])
-    .optional()
-    .describe("Common usage grouping parameters"),
-  accessor: zod
-    .string()
-    .optional()
-    .describe("Filter for requests where a specific accessor was used"),
-  alternatives: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where alternatives were used"),
-  callback_method: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where callback method was used"),
-  callback: zod.boolean().optional().describe("Filter for requests where callback was used"),
-  channels: zod.boolean().optional().describe("Filter for requests where channels were used"),
-  custom_intent_mode: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom intent mode was used"),
-  custom_intent: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom intent was used"),
-  custom_topic_mode: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom topic mode was used"),
-  custom_topic: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where custom topic was used"),
-  deployment: zod
-    .enum(["hosted", "beta", "self-hosted"])
-    .optional()
-    .describe("Filter for requests where a specific deployment was used"),
-  detect_entities: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where detect entities was used"),
-  detect_language: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where detect language was used"),
-  diarize: zod.boolean().optional().describe("Filter for requests where diarize was used"),
-  dictation: zod.boolean().optional().describe("Filter for requests where dictation was used"),
-  encoding: zod.boolean().optional().describe("Filter for requests where encoding was used"),
-  endpoint: zod
-    .enum(["listen", "read", "speak", "agent"])
-    .optional()
-    .describe("Filter for requests where a specific endpoint was used"),
-  extra: zod.boolean().optional().describe("Filter for requests where extra was used"),
-  filler_words: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where filler words was used"),
-  intents: zod.boolean().optional().describe("Filter for requests where intents was used"),
-  keyterm: zod.boolean().optional().describe("Filter for requests where keyterm was used"),
-  keywords: zod.boolean().optional().describe("Filter for requests where keywords was used"),
-  language: zod.boolean().optional().describe("Filter for requests where language was used"),
-  measurements: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where measurements were used"),
-  method: zod
-    .enum(["sync", "async", "streaming"])
-    .optional()
-    .describe("Filter for requests where a specific method was used"),
-  model: zod
-    .string()
-    .optional()
-    .describe("Filter for requests where a specific model uuid was used"),
-  multichannel: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where multichannel was used"),
-  numerals: zod.boolean().optional().describe("Filter for requests where numerals were used"),
-  paragraphs: zod.boolean().optional().describe("Filter for requests where paragraphs were used"),
-  profanity_filter: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where profanity filter was used"),
-  punctuate: zod.boolean().optional().describe("Filter for requests where punctuate was used"),
-  redact: zod.boolean().optional().describe("Filter for requests where redact was used"),
-  replace: zod.boolean().optional().describe("Filter for requests where replace was used"),
-  sample_rate: zod.boolean().optional().describe("Filter for requests where sample rate was used"),
-  search: zod.boolean().optional().describe("Filter for requests where search was used"),
-  sentiment: zod.boolean().optional().describe("Filter for requests where sentiment was used"),
-  smart_format: zod
-    .boolean()
-    .optional()
-    .describe("Filter for requests where smart format was used"),
-  summarize: zod.boolean().optional().describe("Filter for requests where summarize was used"),
-  tag: zod.string().optional().describe("Filter for requests where a specific tag was used"),
-  topics: zod.boolean().optional().describe("Filter for requests where topics was used"),
-  utt_split: zod.boolean().optional().describe("Filter for requests where utt split was used"),
-  utterances: zod.boolean().optional().describe("Filter for requests where utterances was used"),
-  version: zod.boolean().optional().describe("Filter for requests where version was used")
+  "start": zod.string().date().optional().describe('Start date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "end": zod.string().date().optional().describe('End date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "grouping": zod.enum(['accessor', 'endpoint', 'feature_set', 'models', 'method', 'tags', 'deployment']).optional().describe('Common usage grouping parameters'),
+  "accessor": zod.string().optional().describe('Filter for requests where a specific accessor was used'),
+  "alternatives": zod.boolean().optional().describe('Filter for requests where alternatives were used'),
+  "callback_method": zod.boolean().optional().describe('Filter for requests where callback method was used'),
+  "callback": zod.boolean().optional().describe('Filter for requests where callback was used'),
+  "channels": zod.boolean().optional().describe('Filter for requests where channels were used'),
+  "custom_intent_mode": zod.boolean().optional().describe('Filter for requests where custom intent mode was used'),
+  "custom_intent": zod.boolean().optional().describe('Filter for requests where custom intent was used'),
+  "custom_topic_mode": zod.boolean().optional().describe('Filter for requests where custom topic mode was used'),
+  "custom_topic": zod.boolean().optional().describe('Filter for requests where custom topic was used'),
+  "deployment": zod.enum(['hosted', 'beta', 'self-hosted']).optional().describe('Filter for requests where a specific deployment was used'),
+  "detect_entities": zod.boolean().optional().describe('Filter for requests where detect entities was used'),
+  "detect_language": zod.boolean().optional().describe('Filter for requests where detect language was used'),
+  "diarize": zod.boolean().optional().describe('Filter for requests where diarize was used'),
+  "dictation": zod.boolean().optional().describe('Filter for requests where dictation was used'),
+  "encoding": zod.boolean().optional().describe('Filter for requests where encoding was used'),
+  "endpoint": zod.enum(['listen', 'read', 'speak', 'agent']).optional().describe('Filter for requests where a specific endpoint was used'),
+  "extra": zod.boolean().optional().describe('Filter for requests where extra was used'),
+  "filler_words": zod.boolean().optional().describe('Filter for requests where filler words was used'),
+  "intents": zod.boolean().optional().describe('Filter for requests where intents was used'),
+  "keyterm": zod.boolean().optional().describe('Filter for requests where keyterm was used'),
+  "keywords": zod.boolean().optional().describe('Filter for requests where keywords was used'),
+  "language": zod.boolean().optional().describe('Filter for requests where language was used'),
+  "measurements": zod.boolean().optional().describe('Filter for requests where measurements were used'),
+  "method": zod.enum(['sync', 'async', 'streaming']).optional().describe('Filter for requests where a specific method was used'),
+  "model": zod.string().optional().describe('Filter for requests where a specific model uuid was used'),
+  "multichannel": zod.boolean().optional().describe('Filter for requests where multichannel was used'),
+  "numerals": zod.boolean().optional().describe('Filter for requests where numerals were used'),
+  "paragraphs": zod.boolean().optional().describe('Filter for requests where paragraphs were used'),
+  "profanity_filter": zod.boolean().optional().describe('Filter for requests where profanity filter was used'),
+  "punctuate": zod.boolean().optional().describe('Filter for requests where punctuate was used'),
+  "redact": zod.boolean().optional().describe('Filter for requests where redact was used'),
+  "replace": zod.boolean().optional().describe('Filter for requests where replace was used'),
+  "sample_rate": zod.boolean().optional().describe('Filter for requests where sample rate was used'),
+  "search": zod.boolean().optional().describe('Filter for requests where search was used'),
+  "sentiment": zod.boolean().optional().describe('Filter for requests where sentiment was used'),
+  "smart_format": zod.boolean().optional().describe('Filter for requests where smart format was used'),
+  "summarize": zod.boolean().optional().describe('Filter for requests where summarize was used'),
+  "tag": zod.string().optional().describe('Filter for requests where a specific tag was used'),
+  "topics": zod.boolean().optional().describe('Filter for requests where topics was used'),
+  "utt_split": zod.boolean().optional().describe('Filter for requests where utt split was used'),
+  "utterances": zod.boolean().optional().describe('Filter for requests where utterances was used'),
+  "version": zod.boolean().optional().describe('Filter for requests where version was used')
 })
 
 export const manageV1ProjectsUsageBreakdownGetResponse = zod.object({
-  start: zod.string().date().describe("Start date of the usage period"),
-  end: zod.string().date().describe("End date of the usage period"),
-  resolution: zod.object({
-    units: zod.string().describe("Time unit for the resolution"),
-    amount: zod.number().describe("Amount of units")
-  }),
-  results: zod.array(
-    zod.object({
-      hours: zod.number().describe("Audio hours processed"),
-      total_hours: zod.number().describe("Total hours including all processing"),
-      agent_hours: zod.number().describe("Agent hours used"),
-      tokens_in: zod.number().describe("Number of input tokens"),
-      tokens_out: zod.number().describe("Number of output tokens"),
-      tts_characters: zod.number().describe("Number of text-to-speech characters processed"),
-      requests: zod.number().describe("Number of requests"),
-      grouping: zod.object({
-        start: zod.string().date().optional().describe("Start date for this group"),
-        end: zod.string().date().optional().describe("End date for this group"),
-        accessor: zod.string().nullish().describe("Optional accessor identifier"),
-        endpoint: zod.string().nullish().describe("Optional endpoint identifier"),
-        feature_set: zod.string().nullish().describe("Optional feature set identifier"),
-        models: zod.string().nullish().describe("Optional models identifier"),
-        method: zod.string().nullish().describe("Optional method identifier"),
-        tags: zod.string().nullish().describe("Optional tags"),
-        deployment: zod.string().nullish().describe("Optional deployment identifier")
-      })
-    })
-  )
+  "start": zod.string().date().describe('Start date of the usage period'),
+  "end": zod.string().date().describe('End date of the usage period'),
+  "resolution": zod.object({
+  "units": zod.string().describe('Time unit for the resolution'),
+  "amount": zod.number().describe('Amount of units')
+}),
+  "results": zod.array(zod.object({
+  "hours": zod.number().describe('Audio hours processed'),
+  "total_hours": zod.number().describe('Total hours including all processing'),
+  "agent_hours": zod.number().describe('Agent hours used'),
+  "tokens_in": zod.number().describe('Number of input tokens'),
+  "tokens_out": zod.number().describe('Number of output tokens'),
+  "tts_characters": zod.number().describe('Number of text-to-speech characters processed'),
+  "requests": zod.number().describe('Number of requests'),
+  "grouping": zod.object({
+  "start": zod.string().date().optional().describe('Start date for this group'),
+  "end": zod.string().date().optional().describe('End date for this group'),
+  "accessor": zod.string().nullish().describe('Optional accessor identifier'),
+  "endpoint": zod.string().nullish().describe('Optional endpoint identifier'),
+  "feature_set": zod.string().nullish().describe('Optional feature set identifier'),
+  "models": zod.string().nullish().describe('Optional models identifier'),
+  "method": zod.string().nullish().describe('Optional method identifier'),
+  "tags": zod.string().nullish().describe('Optional tags'),
+  "deployment": zod.string().nullish().describe('Optional deployment identifier')
 })
+}))
+})
+
 
 /**
  * Lists the features, models, tags, languages, and processing method used for requests in the specified project
  * @summary List Project Usage Fields
  */
 export const manageV1ProjectsUsageFieldsListQueryParams = zod.object({
-  start: zod
-    .string()
-    .date()
-    .optional()
-    .describe("Start date of the requested date range. Format accepted is YYYY-MM-DD"),
-  end: zod
-    .string()
-    .date()
-    .optional()
-    .describe("End date of the requested date range. Format accepted is YYYY-MM-DD")
+  "start": zod.string().date().optional().describe('Start date of the requested date range. Format accepted is YYYY-MM-DD'),
+  "end": zod.string().date().optional().describe('End date of the requested date range. Format accepted is YYYY-MM-DD')
 })
 
 export const manageV1ProjectsUsageFieldsListResponse = zod.object({
-  tags: zod.array(zod.string()).optional().describe("List of tags associated with the project"),
-  models: zod
-    .array(
-      zod.object({
-        name: zod.string().optional().describe("Name of the model."),
-        language: zod
-          .string()
-          .optional()
-          .describe("The language supported by the model (IETF language tag)."),
-        version: zod
-          .string()
-          .optional()
-          .describe(
-            "Version identifier of the model, typically with a date and a revision number."
-          ),
-        model_id: zod.string().optional().describe("Unique identifier for the model.")
-      })
-    )
-    .optional()
-    .describe("List of models available for the project."),
-  processing_methods: zod
-    .array(zod.string())
-    .optional()
-    .describe("Processing methods supported by the API"),
-  features: zod.array(zod.string()).optional().describe("API features available to the project")
+  "tags": zod.array(zod.string()).optional().describe('List of tags associated with the project'),
+  "models": zod.array(zod.object({
+  "name": zod.string().optional().describe('Name of the model.'),
+  "language": zod.string().optional().describe('The language supported by the model (IETF language tag).'),
+  "version": zod.string().optional().describe('Version identifier of the model, typically with a date and a revision number.'),
+  "model_id": zod.string().optional().describe('Unique identifier for the model.')
+})).optional().describe('List of models available for the project.'),
+  "processing_methods": zod.array(zod.string()).optional().describe('Processing methods supported by the API'),
+  "features": zod.array(zod.string()).optional().describe('API features available to the project')
 })
+
 
 /**
  * Analyze text content using Deepgrams text analysis API
  * @summary Analyze text content
  */
-export const readV1TextAnalyzeQueryCallbackMethodDefault = "POST"
-export const readV1TextAnalyzeQuerySentimentDefault = false
-export const readV1TextAnalyzeQuerySummarizeDefaultTwo = false
-export const readV1TextAnalyzeQueryTopicsDefault = false
-export const readV1TextAnalyzeQueryCustomTopicMaxTwo = 100
-export const readV1TextAnalyzeQueryCustomTopicModeDefault = "extended"
-export const readV1TextAnalyzeQueryIntentsDefault = false
-export const readV1TextAnalyzeQueryCustomIntentItemMax = 100
-export const readV1TextAnalyzeQueryCustomIntentModeDefault = "extended"
-export const readV1TextAnalyzeQueryLanguageDefault = "en"
+export const readV1TextAnalyzeQueryCallbackMethodDefault = "POST";export const readV1TextAnalyzeQuerySentimentDefault = false;export const readV1TextAnalyzeQuerySummarizeDefaultTwo = false;export const readV1TextAnalyzeQueryTopicsDefault = false;export const readV1TextAnalyzeQueryCustomTopicMaxTwo = 100;
+export const readV1TextAnalyzeQueryCustomTopicModeDefault = "extended";export const readV1TextAnalyzeQueryIntentsDefault = false;export const readV1TextAnalyzeQueryCustomIntentItemMax = 100;
+export const readV1TextAnalyzeQueryCustomIntentModeDefault = "extended";export const readV1TextAnalyzeQueryLanguageDefault = "en";
 
 export const readV1TextAnalyzeQueryParams = zod.object({
-  callback: zod.string().optional().describe("URL to which we'll make the callback request"),
-  callback_method: zod
-    .enum(["POST", "PUT"])
-    .default(readV1TextAnalyzeQueryCallbackMethodDefault)
-    .describe("HTTP method by which the callback request will be made"),
-  sentiment: zod
-    .boolean()
-    .optional()
-    .describe("Recognizes the sentiment throughout a transcript or text"),
-  summarize: zod
-    .enum(["v2"])
-    .or(zod.boolean())
-    .optional()
-    .describe(
-      "Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only."
-    ),
-  tag: zod
-    .string()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe("Label your requests for the purpose of identification during usage reporting"),
-  topics: zod.boolean().optional().describe("Detect topics throughout a transcript or text"),
-  custom_topic: zod
-    .string()
-    .or(zod.array(zod.string()).max(readV1TextAnalyzeQueryCustomTopicMaxTwo))
-    .optional()
-    .describe(
-      "Custom topics you want the model to detect within your input audio or text if present Submit up to `100`."
-    ),
-  custom_topic_mode: zod
-    .enum(["extended", "strict"])
-    .default(readV1TextAnalyzeQueryCustomTopicModeDefault)
-    .describe(
-      "Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param"
-    ),
-  intents: zod
-    .boolean()
-    .optional()
-    .describe("Recognizes speaker intent throughout a transcript or text"),
-  custom_intent: zod
-    .string()
-    .or(zod.array(zod.string().max(readV1TextAnalyzeQueryCustomIntentItemMax)))
-    .optional()
-    .describe("Custom intents you want the model to detect within your input audio if present"),
-  custom_intent_mode: zod
-    .enum(["extended", "strict"])
-    .default(readV1TextAnalyzeQueryCustomIntentModeDefault)
-    .describe(
-      "Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param."
-    ),
-  language: zod
-    .string()
-    .default(readV1TextAnalyzeQueryLanguageDefault)
-    .describe(
-      "The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available"
-    )
+  "callback": zod.string().optional().describe('URL to which we\'ll make the callback request'),
+  "callback_method": zod.enum(['POST', 'PUT']).default(readV1TextAnalyzeQueryCallbackMethodDefault).describe('HTTP method by which the callback request will be made'),
+  "sentiment": zod.boolean().optional().describe('Recognizes the sentiment throughout a transcript or text'),
+  "summarize": zod.enum(['v2']).or(zod.boolean()).optional().describe('Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.'),
+  "tag": zod.string().or(zod.array(zod.string())).optional().describe('Label your requests for the purpose of identification during usage reporting'),
+  "topics": zod.boolean().optional().describe('Detect topics throughout a transcript or text'),
+  "custom_topic": zod.string().or(zod.array(zod.string()).max(readV1TextAnalyzeQueryCustomTopicMaxTwo)).optional().describe('Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.'),
+  "custom_topic_mode": zod.enum(['extended', 'strict']).default(readV1TextAnalyzeQueryCustomTopicModeDefault).describe('Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param'),
+  "intents": zod.boolean().optional().describe('Recognizes speaker intent throughout a transcript or text'),
+  "custom_intent": zod.string().or(zod.array(zod.string().max(readV1TextAnalyzeQueryCustomIntentItemMax))).optional().describe('Custom intents you want the model to detect within your input audio if present'),
+  "custom_intent_mode": zod.enum(['extended', 'strict']).default(readV1TextAnalyzeQueryCustomIntentModeDefault).describe('Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.'),
+  "language": zod.string().default(readV1TextAnalyzeQueryLanguageDefault).describe('The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available')
 })
 
-export const readV1TextAnalyzeBody = zod
-  .object({
-    url: zod.string().url().describe("A URL pointing to the text source")
-  })
-  .or(
-    zod.object({
-      text: zod.string().describe("The plain text to analyze")
-    })
-  )
+export const readV1TextAnalyzeBody = zod.object({
+  "url": zod.string().url().describe('A URL pointing to the text source')
+}).or(zod.object({
+  "text": zod.string().describe('The plain text to analyze')
+}))
 
-export const readV1TextAnalyzeResponse = zod
-  .object({
-    metadata: zod.object({
-      metadata: zod
-        .object({
-          request_id: zod.string().uuid().optional(),
-          created: zod.string().datetime({}).optional(),
-          language: zod.string().optional(),
-          summary_info: zod
-            .object({
-              model_uuid: zod.string().uuid().optional(),
-              input_tokens: zod.number().optional(),
-              output_tokens: zod.number().optional()
-            })
-            .optional(),
-          sentiment_info: zod
-            .object({
-              model_uuid: zod.string().uuid().optional(),
-              input_tokens: zod.number().optional(),
-              output_tokens: zod.number().optional()
-            })
-            .optional(),
-          topics_info: zod
-            .object({
-              model_uuid: zod.string().uuid().optional(),
-              input_tokens: zod.number().optional(),
-              output_tokens: zod.number().optional()
-            })
-            .optional(),
-          intents_info: zod
-            .object({
-              model_uuid: zod.string().uuid().optional(),
-              input_tokens: zod.number().optional(),
-              output_tokens: zod.number().optional()
-            })
-            .optional()
-        })
-        .optional()
-    }),
-    results: zod.object({
-      summary: zod
-        .object({
-          results: zod
-            .object({
-              summary: zod
-                .object({
-                  text: zod.string().optional()
-                })
-                .optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe("Output whenever `summary=true` is used"),
-      topics: zod
-        .object({
-          results: zod
-            .object({
-              topics: zod
-                .object({
-                  segments: zod
-                    .array(
-                      zod.object({
-                        text: zod.string().optional(),
-                        start_word: zod.number().optional(),
-                        end_word: zod.number().optional(),
-                        topics: zod
-                          .array(
-                            zod.object({
-                              topic: zod.string().optional(),
-                              confidence_score: zod.number().optional()
-                            })
-                          )
-                          .optional()
-                      })
-                    )
-                    .optional()
-                })
-                .optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe("Output whenever `topics=true` is used"),
-      intents: zod
-        .object({
-          results: zod
-            .object({
-              intents: zod
-                .object({
-                  segments: zod
-                    .array(
-                      zod.object({
-                        text: zod.string().optional(),
-                        start_word: zod.number().optional(),
-                        end_word: zod.number().optional(),
-                        intents: zod
-                          .array(
-                            zod.object({
-                              intent: zod.string().optional(),
-                              confidence_score: zod.number().optional()
-                            })
-                          )
-                          .optional()
-                      })
-                    )
-                    .optional()
-                })
-                .optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe("Output whenever `intents=true` is used"),
-      sentiments: zod
-        .object({
-          segments: zod
-            .array(
-              zod.object({
-                text: zod.string().optional(),
-                start_word: zod.number().optional(),
-                end_word: zod.number().optional(),
-                sentiment: zod.string().optional(),
-                sentiment_score: zod.number().optional()
-              })
-            )
-            .optional(),
-          average: zod
-            .object({
-              sentiment: zod.string().optional(),
-              sentiment_score: zod.number().optional()
-            })
-            .optional()
-        })
-        .optional()
-        .describe("Output whenever `sentiment=true` is used")
-    })
-  })
-  .describe("The standard text response")
+export const readV1TextAnalyzeResponse = zod.object({
+  "metadata": zod.object({
+  "metadata": zod.object({
+  "request_id": zod.string().uuid().optional(),
+  "created": zod.string().datetime({}).optional(),
+  "language": zod.string().optional(),
+  "summary_info": zod.object({
+  "model_uuid": zod.string().uuid().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional(),
+  "sentiment_info": zod.object({
+  "model_uuid": zod.string().uuid().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional(),
+  "topics_info": zod.object({
+  "model_uuid": zod.string().uuid().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional(),
+  "intents_info": zod.object({
+  "model_uuid": zod.string().uuid().optional(),
+  "input_tokens": zod.number().optional(),
+  "output_tokens": zod.number().optional()
+}).optional()
+}).optional()
+}),
+  "results": zod.object({
+  "summary": zod.object({
+  "results": zod.object({
+  "summary": zod.object({
+  "text": zod.string().optional()
+}).optional()
+}).optional()
+}).optional().describe('Output whenever `summary=true` is used'),
+  "topics": zod.object({
+  "results": zod.object({
+  "topics": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional(),
+  "topics": zod.array(zod.object({
+  "topic": zod.string().optional(),
+  "confidence_score": zod.number().optional()
+})).optional()
+})).optional()
+}).optional()
+}).optional()
+}).optional().describe('Output whenever `topics=true` is used'),
+  "intents": zod.object({
+  "results": zod.object({
+  "intents": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional(),
+  "intents": zod.array(zod.object({
+  "intent": zod.string().optional(),
+  "confidence_score": zod.number().optional()
+})).optional()
+})).optional()
+}).optional()
+}).optional()
+}).optional().describe('Output whenever `intents=true` is used'),
+  "sentiments": zod.object({
+  "segments": zod.array(zod.object({
+  "text": zod.string().optional(),
+  "start_word": zod.number().optional(),
+  "end_word": zod.number().optional(),
+  "sentiment": zod.string().optional(),
+  "sentiment_score": zod.number().optional()
+})).optional(),
+  "average": zod.object({
+  "sentiment": zod.string().optional(),
+  "sentiment_score": zod.number().optional()
+}).optional()
+}).optional().describe('Output whenever `sentiment=true` is used')
+})
+}).describe('The standard text response')
+
 
 /**
  * Convert text into natural-sounding speech using Deepgram's TTS REST API
  * @summary Text to Speech transformation
  */
-export const speakV1AudioGenerateQueryCallbackMethodDefault = "POST"
-export const speakV1AudioGenerateQueryMipOptOutDefault = false
-export const speakV1AudioGenerateQueryBitRateMinTwo = 4000
-export const speakV1AudioGenerateQueryBitRateMaxTwo = 650000
-export const speakV1AudioGenerateQueryBitRateMinThree = 4000
-export const speakV1AudioGenerateQueryBitRateMaxThree = 192000
-export const speakV1AudioGenerateQueryBitRateDefault = 48000
-export const speakV1AudioGenerateQueryContainerDefault = "wav"
-export const speakV1AudioGenerateQueryEncodingDefault = "mp3"
-export const speakV1AudioGenerateQueryModelDefault = "aura-asteria-en"
+export const speakV1AudioGenerateQueryCallbackMethodDefault = "POST";export const speakV1AudioGenerateQueryMipOptOutDefault = false;export const speakV1AudioGenerateQueryBitRateMinTwo = 4000;
+export const speakV1AudioGenerateQueryBitRateMaxTwo = 650000;
+export const speakV1AudioGenerateQueryBitRateMinThree = 4000;
+export const speakV1AudioGenerateQueryBitRateMaxThree = 192000;
+export const speakV1AudioGenerateQueryBitRateDefault = 48000;export const speakV1AudioGenerateQueryContainerDefault = "wav";export const speakV1AudioGenerateQueryEncodingDefault = "mp3";export const speakV1AudioGenerateQueryModelDefault = "aura-asteria-en";
 
 export const speakV1AudioGenerateQueryParams = zod.object({
-  callback: zod.string().optional().describe("URL to which we'll make the callback request"),
-  callback_method: zod
-    .enum(["POST", "PUT"])
-    .default(speakV1AudioGenerateQueryCallbackMethodDefault)
-    .describe("HTTP method by which the callback request will be made"),
-  mip_opt_out: zod
-    .boolean()
-    .optional()
-    .describe(
-      "Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip"
-    ),
-  tag: zod
-    .string()
-    .or(zod.array(zod.string()))
-    .optional()
-    .describe("Label your requests for the purpose of identification during usage reporting"),
-  bit_rate: zod
-    .literal(32000)
-    .or(zod.literal(48000))
-    .nullable()
-    .describe("Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.")
-    .or(
-      zod
-        .number()
-        .min(speakV1AudioGenerateQueryBitRateMinTwo)
-        .max(speakV1AudioGenerateQueryBitRateMaxTwo)
-        .nullable()
-        .describe("Encoding - opus. Bitrate range - 4000-650000 bps.")
-    )
-    .or(
-      zod
-        .number()
-        .min(speakV1AudioGenerateQueryBitRateMinThree)
-        .max(speakV1AudioGenerateQueryBitRateMaxThree)
-        .nullable()
-        .describe("Encoding -aac. Bitrate range - 4000-192000 bps.")
-    )
-    .default(speakV1AudioGenerateQueryBitRateDefault)
-    .describe(
-      "The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type."
-    ),
-  container: zod
-    .enum(["none", "wav", "ogg"])
-    .default(speakV1AudioGenerateQueryContainerDefault)
-    .describe("Container format for output audio"),
-  encoding: zod
-    .enum(["linear16", "aac", "opus", "mp3", "flac", "mulaw", "alaw"])
-    .default(speakV1AudioGenerateQueryEncodingDefault)
-    .describe("Audio encoding format"),
-  model: zod
-    .enum([
-      "aura-asteria-en",
-      "aura-luna-en",
-      "aura-stella-en",
-      "aura-athena-en",
-      "aura-hera-en",
-      "aura-orion-en",
-      "aura-arcas-en",
-      "aura-perseus-en",
-      "aura-angus-en",
-      "aura-orpheus-en",
-      "aura-helios-en",
-      "aura-zeus-en",
-      "aura-2-amalthea-en",
-      "aura-2-andromeda-en",
-      "aura-2-apollo-en",
-      "aura-2-arcas-en",
-      "aura-2-aries-en",
-      "aura-2-asteria-en",
-      "aura-2-athena-en",
-      "aura-2-atlas-en",
-      "aura-2-aurora-en",
-      "aura-2-callista-en",
-      "aura-2-cordelia-en",
-      "aura-2-cora-en",
-      "aura-2-delia-en",
-      "aura-2-draco-en",
-      "aura-2-electra-en",
-      "aura-2-harmonia-en",
-      "aura-2-helena-en",
-      "aura-2-hera-en",
-      "aura-2-hermes-en",
-      "aura-2-hyperion-en",
-      "aura-2-iris-en",
-      "aura-2-janus-en",
-      "aura-2-juno-en",
-      "aura-2-jupiter-en",
-      "aura-2-luna-en",
-      "aura-2-mars-en",
-      "aura-2-minerva-en",
-      "aura-2-neptune-en",
-      "aura-2-odysseus-en",
-      "aura-2-ophelia-en",
-      "aura-2-orion-en",
-      "aura-2-orpheus-en",
-      "aura-2-pandora-en",
-      "aura-2-phoebe-en",
-      "aura-2-pluto-en",
-      "aura-2-saturn-en",
-      "aura-2-selene-en",
-      "aura-2-thalia-en",
-      "aura-2-theia-en",
-      "aura-2-vesta-en",
-      "aura-2-zeus-en",
-      "aura-2-sirio-es",
-      "aura-2-nestor-es",
-      "aura-2-carina-es",
-      "aura-2-celeste-es",
-      "aura-2-alvaro-es",
-      "aura-2-diana-es",
-      "aura-2-aquila-es",
-      "aura-2-selena-es",
-      "aura-2-estrella-es",
-      "aura-2-javier-es"
-    ])
-    .default(speakV1AudioGenerateQueryModelDefault)
-    .describe("AI model used to process submitted text"),
-  sample_rate: zod
-    .literal(8000)
-    .or(zod.literal(16000))
-    .or(zod.literal(22050))
-    .or(zod.literal(24000))
-    .or(zod.literal(32000))
-    .or(zod.literal(48000))
-    .optional()
-    .describe("Sample rate in Hz")
+  "callback": zod.string().optional().describe('URL to which we\'ll make the callback request'),
+  "callback_method": zod.enum(['POST', 'PUT']).default(speakV1AudioGenerateQueryCallbackMethodDefault).describe('HTTP method by which the callback request will be made'),
+  "mip_opt_out": zod.boolean().optional().describe('Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip'),
+  "tag": zod.string().or(zod.array(zod.string())).optional().describe('Label your requests for the purpose of identification during usage reporting'),
+  "bit_rate": zod.literal(32000).or(zod.literal(48000)).nullable().describe('Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.').or(zod.number().min(speakV1AudioGenerateQueryBitRateMinTwo).max(speakV1AudioGenerateQueryBitRateMaxTwo).nullable().describe('Encoding - opus. Bitrate range - 4000-650000 bps.')).or(zod.number().min(speakV1AudioGenerateQueryBitRateMinThree).max(speakV1AudioGenerateQueryBitRateMaxThree).nullable().describe('Encoding -aac. Bitrate range - 4000-192000 bps.')).default(speakV1AudioGenerateQueryBitRateDefault).describe('The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.'),
+  "container": zod.enum(['none', 'wav', 'ogg']).default(speakV1AudioGenerateQueryContainerDefault).describe('Container format for output audio'),
+  "encoding": zod.enum(['linear16', 'aac', 'opus', 'mp3', 'flac', 'mulaw', 'alaw']).default(speakV1AudioGenerateQueryEncodingDefault).describe('Audio encoding format'),
+  "model": zod.enum(['aura-asteria-en', 'aura-luna-en', 'aura-stella-en', 'aura-athena-en', 'aura-hera-en', 'aura-orion-en', 'aura-arcas-en', 'aura-perseus-en', 'aura-angus-en', 'aura-orpheus-en', 'aura-helios-en', 'aura-zeus-en', 'aura-2-amalthea-en', 'aura-2-andromeda-en', 'aura-2-apollo-en', 'aura-2-arcas-en', 'aura-2-aries-en', 'aura-2-asteria-en', 'aura-2-athena-en', 'aura-2-atlas-en', 'aura-2-aurora-en', 'aura-2-callista-en', 'aura-2-cordelia-en', 'aura-2-cora-en', 'aura-2-delia-en', 'aura-2-draco-en', 'aura-2-electra-en', 'aura-2-harmonia-en', 'aura-2-helena-en', 'aura-2-hera-en', 'aura-2-hermes-en', 'aura-2-hyperion-en', 'aura-2-iris-en', 'aura-2-janus-en', 'aura-2-juno-en', 'aura-2-jupiter-en', 'aura-2-luna-en', 'aura-2-mars-en', 'aura-2-minerva-en', 'aura-2-neptune-en', 'aura-2-odysseus-en', 'aura-2-ophelia-en', 'aura-2-orion-en', 'aura-2-orpheus-en', 'aura-2-pandora-en', 'aura-2-phoebe-en', 'aura-2-pluto-en', 'aura-2-saturn-en', 'aura-2-selene-en', 'aura-2-thalia-en', 'aura-2-theia-en', 'aura-2-vesta-en', 'aura-2-zeus-en', 'aura-2-sirio-es', 'aura-2-nestor-es', 'aura-2-carina-es', 'aura-2-celeste-es', 'aura-2-alvaro-es', 'aura-2-diana-es', 'aura-2-aquila-es', 'aura-2-selena-es', 'aura-2-estrella-es', 'aura-2-javier-es']).default(speakV1AudioGenerateQueryModelDefault).describe('AI model used to process submitted text'),
+  "sample_rate": zod.literal(8000).or(zod.literal(16000)).or(zod.literal(22050)).or(zod.literal(24000)).or(zod.literal(32000)).or(zod.literal(48000)).optional().describe('Sample rate in Hz')
 })
 
-export const speakV1AudioGenerateBody = zod
-  .object({
-    text: zod.string().describe("The text content to be converted to speech")
-  })
-  .describe("Request body for text-to-speech conversion")
+export const speakV1AudioGenerateBody = zod.object({
+  "text": zod.string().describe('The text content to be converted to speech')
+}).describe('Request body for text-to-speech conversion')

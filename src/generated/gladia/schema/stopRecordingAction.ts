@@ -4,8 +4,8 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StopRecordingActionType } from "./stopRecordingActionType"
+import type { StopRecordingActionType } from './stopRecordingActionType';
 
 export interface StopRecordingAction {
-  type: StopRecordingActionType
+  type: StopRecordingActionType;
 }

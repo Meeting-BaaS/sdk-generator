@@ -8,4 +8,4 @@
 /**
  * When `true`, the model will rely more on language hints.
  */
-export type CreateTranscriptionPayloadLanguageHintsStrict = boolean | null
+export type CreateTranscriptionPayloadLanguageHintsStrict = boolean | null;

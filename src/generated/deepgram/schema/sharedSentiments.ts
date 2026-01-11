@@ -6,14 +6,13 @@
 
  * OpenAPI spec version: 1.0.0
  */
-
-import type { SharedSentimentsAverage } from "./sharedSentimentsAverage"
-import type { SharedSentimentsSegmentsItem } from "./sharedSentimentsSegmentsItem"
+import type { SharedSentimentsSegmentsItem } from './sharedSentimentsSegmentsItem';
+import type { SharedSentimentsAverage } from './sharedSentimentsAverage';
 
 /**
  * Output whenever `sentiment=true` is used
  */
 export interface SharedSentiments {
-  segments?: SharedSentimentsSegmentsItem[]
-  average?: SharedSentimentsAverage
+  segments?: SharedSentimentsSegmentsItem[];
+  average?: SharedSentimentsAverage;
 }

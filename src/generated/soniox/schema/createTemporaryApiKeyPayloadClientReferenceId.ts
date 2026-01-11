@@ -8,4 +8,4 @@
 /**
  * Optional tracking identifier string. Does not need to be unique.
  */
-export type CreateTemporaryApiKeyPayloadClientReferenceId = string | null
+export type CreateTemporaryApiKeyPayloadClientReferenceId = string | null;

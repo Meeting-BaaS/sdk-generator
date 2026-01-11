@@ -4,9 +4,9 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { Model } from "./model"
+import type { Model } from './model';
 
 export interface GetModelsResponse {
   /** List of available models and their attributes. */
-  models: Model[]
+  models: Model[];
 }

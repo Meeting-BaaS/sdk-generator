@@ -8,4 +8,4 @@
 /**
  * Text context.
  */
-export type StructuredContextText = string | null
+export type StructuredContextText = string | null;

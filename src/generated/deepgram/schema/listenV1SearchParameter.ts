@@ -7,4 +7,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ListenV1SearchParameter = string | string[]
+export type ListenV1SearchParameter = string | string[];

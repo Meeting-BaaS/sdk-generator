@@ -9,4 +9,4 @@
 /**
  * Whether Text Formatting is enabled, either true or false
  */
-export type TranscriptFormatText = boolean | null
+export type TranscriptFormatText = boolean | null;

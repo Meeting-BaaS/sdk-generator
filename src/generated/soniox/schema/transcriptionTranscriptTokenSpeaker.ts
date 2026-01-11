@@ -8,4 +8,4 @@
 /**
  * Speaker identifier. Only present when speaker diarization is enabled.
  */
-export type TranscriptionTranscriptTokenSpeaker = string | null
+export type TranscriptionTranscriptTokenSpeaker = string | null;

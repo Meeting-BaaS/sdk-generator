@@ -5,8 +5,7 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
+import type { LemurStringResponse } from './lemurStringResponse';
+import type { LemurQuestionAnswerResponse } from './lemurQuestionAnswerResponse';
 
-import type { LemurQuestionAnswerResponse } from "./lemurQuestionAnswerResponse"
-import type { LemurStringResponse } from "./lemurStringResponse"
-
-export type LemurResponse = LemurStringResponse | LemurQuestionAnswerResponse
+export type LemurResponse = LemurStringResponse | LemurQuestionAnswerResponse;

@@ -107,5 +107,5 @@ export { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/strea
  * OpenAI Whisper Types
  * Type-safe types for OpenAI Whisper API
  */
-export type { AudioTranscriptionModel } from "../generated/openai/schema/audioTranscriptionModel"
+export type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
 export type { AudioResponseFormat } from "../generated/openai/schema/audioResponseFormat"

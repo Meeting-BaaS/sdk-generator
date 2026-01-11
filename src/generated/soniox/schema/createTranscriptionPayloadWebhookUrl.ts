@@ -8,4 +8,4 @@
 /**
  * URL to receive webhook notifications when transcription is completed or fails.
  */
-export type CreateTranscriptionPayloadWebhookUrl = string | null
+export type CreateTranscriptionPayloadWebhookUrl = string | null;

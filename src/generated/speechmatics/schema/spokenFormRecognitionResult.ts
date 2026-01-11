@@ -5,16 +5,16 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { RecognitionAlternative } from "./recognitionAlternative"
-import type { SpokenFormRecognitionResultType } from "./spokenFormRecognitionResultType"
+import type { RecognitionAlternative } from './recognitionAlternative';
+import type { SpokenFormRecognitionResultType } from './spokenFormRecognitionResultType';
 
 /**
  * A SpokenFormRecognitionResult describes a simple object which consists solely of 'word' or 'punctuation' type entries with a start and end time. It can occur only inside the spoken_form property of a full "RecognitionResult"
  */
 export interface SpokenFormRecognitionResult {
-  alternatives: RecognitionAlternative[]
-  end_time: number
-  start_time: number
+  alternatives: RecognitionAlternative[];
+  end_time: number;
+  start_time: number;
   /** What kind of object this is. See #/Definitions/RecognitionResult for definitions of the enums. */
-  type: SpokenFormRecognitionResultType
+  type: SpokenFormRecognitionResultType;
 }

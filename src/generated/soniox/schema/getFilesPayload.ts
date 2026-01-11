@@ -4,7 +4,7 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { GetFilesPayloadCursor } from "./getFilesPayloadCursor"
+import type { GetFilesPayloadCursor } from './getFilesPayloadCursor';
 
 export interface GetFilesPayload {
   /**
@@ -12,7 +12,7 @@ export interface GetFilesPayload {
    * @minimum 1
    * @maximum 1000
    */
-  limit?: number
+  limit?: number;
   /** Pagination cursor for the next page of results. */
-  cursor?: GetFilesPayloadCursor
+  cursor?: GetFilesPayloadCursor;
 }

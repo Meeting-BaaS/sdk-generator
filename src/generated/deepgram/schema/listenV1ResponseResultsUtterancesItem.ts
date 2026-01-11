@@ -6,15 +6,15 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsUtterancesItemWordsItem } from "./listenV1ResponseResultsUtterancesItemWordsItem"
+import type { ListenV1ResponseResultsUtterancesItemWordsItem } from './listenV1ResponseResultsUtterancesItemWordsItem';
 
 export type ListenV1ResponseResultsUtterancesItem = {
-  start?: number
-  end?: number
-  confidence?: number
-  channel?: number
-  transcript?: string
-  words?: ListenV1ResponseResultsUtterancesItemWordsItem[]
-  speaker?: number
-  id?: string
-}
+  start?: number;
+  end?: number;
+  confidence?: number;
+  channel?: number;
+  transcript?: string;
+  words?: ListenV1ResponseResultsUtterancesItemWordsItem[];
+  speaker?: number;
+  id?: string;
+};

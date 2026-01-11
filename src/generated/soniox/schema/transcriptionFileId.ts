@@ -8,4 +8,4 @@
 /**
  * ID of the file being transcribed.
  */
-export type TranscriptionFileId = string | null
+export type TranscriptionFileId = string | null;

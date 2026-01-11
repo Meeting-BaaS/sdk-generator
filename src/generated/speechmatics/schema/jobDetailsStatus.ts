@@ -9,13 +9,14 @@
 /**
  * The status of the job. * `running` - The job is actively running. * `done` - The job completed successfully. * `rejected` - The job was accepted at first, but later could not be processed by the transcriber. * `deleted` - The user deleted the job. * `expired` - The system deleted the job. Usually because the job was in the `done` state for a very long time.
  */
-export type JobDetailsStatus = (typeof JobDetailsStatus)[keyof typeof JobDetailsStatus]
+export type JobDetailsStatus = typeof JobDetailsStatus[keyof typeof JobDetailsStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const JobDetailsStatus = {
-  running: "running",
-  done: "done",
-  rejected: "rejected",
-  deleted: "deleted",
-  expired: "expired"
-} as const
+  running: 'running',
+  done: 'done',
+  rejected: 'rejected',
+  deleted: 'deleted',
+  expired: 'expired',
+} as const;

@@ -436,8 +436,8 @@ All specs are stored locally in `./specs/` and can be synced from their authorit
 | AssemblyAI | https://github.com/AssemblyAI/assemblyai-api-spec/blob/main/openapi.json | JSON | `pnpm openapi:sync:assemblyai` |
 | AssemblyAI AsyncAPI | https://github.com/AssemblyAI/assemblyai-api-spec/blob/main/asyncapi.json | JSON | `pnpm openapi:sync:assemblyai` |
 | Deepgram | https://github.com/deepgram/deepgram-api-specs/blob/main/openapi.yml | YAML | `pnpm openapi:sync:deepgram` |
-| OpenAI Whisper | Manual (no official spec) | YAML | - |
-| Azure STT | Manual (no official spec) | JSON | - |
+| OpenAI | https://github.com/openai/openai-openapi (filtered to audio endpoints) | YAML | `pnpm openapi:sync --provider openai` |
+| Azure STT | https://github.com/Azure/azure-rest-api-specs (Speech/SpeechToText v3.2) | JSON | `pnpm openapi:sync --provider azure` |
 | Speechmatics | Manual (spec has validation errors) | YAML | - |
 
 ### Syncing Specs
@@ -463,8 +463,8 @@ pnpm openapi:rebuild
 | Provider | Issue | Workaround |
 |----------|-------|------------|
 | Deepgram | Duplicate parameter names cause Orval type conflicts | Input transformer in `orval.config.ts` inlines conflicting parameters |
-| OpenAI | No official Whisper OpenAPI spec | Manual spec maintained in `specs/openai-whisper-openapi.yml` |
-| Azure | No official STT OpenAPI spec | Manual spec based on Azure SDK types |
+| OpenAI | Official spec covers entire API, not just audio endpoints | `fix-openai-spec.js` filters to audio endpoints and fixes malformed arrays |
+| Azure | Swagger 2.0 spec covers full Speech API v3.2 | Synced from `Azure/azure-rest-api-specs` (works without modifications) |
 | Speechmatics | Official Swagger 2.0 spec has validation errors | Manual spec with fixes in `specs/speechmatics-batch.yaml` |
 
 ### Field Config Type Discrepancies

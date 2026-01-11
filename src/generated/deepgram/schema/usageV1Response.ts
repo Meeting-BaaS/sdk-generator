@@ -6,10 +6,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { UsageV1ResponseResolution } from "./usageV1ResponseResolution"
+import type { UsageV1ResponseResolution } from './usageV1ResponseResolution';
 
 export interface UsageV1Response {
-  start?: string
-  end?: string
-  resolution?: UsageV1ResponseResolution
+  start?: string;
+  end?: string;
+  resolution?: UsageV1ResponseResolution;
 }

@@ -4,47 +4,47 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { CreateTranscriptionPayloadAudioUrl } from "./createTranscriptionPayloadAudioUrl"
-import type { CreateTranscriptionPayloadClientReferenceId } from "./createTranscriptionPayloadClientReferenceId"
-import type { CreateTranscriptionPayloadContext } from "./createTranscriptionPayloadContext"
-import type { CreateTranscriptionPayloadEnableLanguageIdentification } from "./createTranscriptionPayloadEnableLanguageIdentification"
-import type { CreateTranscriptionPayloadEnableSpeakerDiarization } from "./createTranscriptionPayloadEnableSpeakerDiarization"
-import type { CreateTranscriptionPayloadFileId } from "./createTranscriptionPayloadFileId"
-import type { CreateTranscriptionPayloadLanguageHints } from "./createTranscriptionPayloadLanguageHints"
-import type { CreateTranscriptionPayloadLanguageHintsStrict } from "./createTranscriptionPayloadLanguageHintsStrict"
-import type { CreateTranscriptionPayloadTranslation } from "./createTranscriptionPayloadTranslation"
-import type { CreateTranscriptionPayloadWebhookAuthHeaderName } from "./createTranscriptionPayloadWebhookAuthHeaderName"
-import type { CreateTranscriptionPayloadWebhookAuthHeaderValue } from "./createTranscriptionPayloadWebhookAuthHeaderValue"
-import type { CreateTranscriptionPayloadWebhookUrl } from "./createTranscriptionPayloadWebhookUrl"
+import type { CreateTranscriptionPayloadAudioUrl } from './createTranscriptionPayloadAudioUrl';
+import type { CreateTranscriptionPayloadFileId } from './createTranscriptionPayloadFileId';
+import type { CreateTranscriptionPayloadLanguageHints } from './createTranscriptionPayloadLanguageHints';
+import type { CreateTranscriptionPayloadLanguageHintsStrict } from './createTranscriptionPayloadLanguageHintsStrict';
+import type { CreateTranscriptionPayloadEnableSpeakerDiarization } from './createTranscriptionPayloadEnableSpeakerDiarization';
+import type { CreateTranscriptionPayloadEnableLanguageIdentification } from './createTranscriptionPayloadEnableLanguageIdentification';
+import type { CreateTranscriptionPayloadTranslation } from './createTranscriptionPayloadTranslation';
+import type { CreateTranscriptionPayloadContext } from './createTranscriptionPayloadContext';
+import type { CreateTranscriptionPayloadWebhookUrl } from './createTranscriptionPayloadWebhookUrl';
+import type { CreateTranscriptionPayloadWebhookAuthHeaderName } from './createTranscriptionPayloadWebhookAuthHeaderName';
+import type { CreateTranscriptionPayloadWebhookAuthHeaderValue } from './createTranscriptionPayloadWebhookAuthHeaderValue';
+import type { CreateTranscriptionPayloadClientReferenceId } from './createTranscriptionPayloadClientReferenceId';
 
 export interface CreateTranscriptionPayload {
   /**
    * Speech-to-text model to use for the transcription.
    * @maxLength 32
    */
-  model: string
+  model: string;
   /** URL of the audio file to transcribe. Cannot be specified if `file_id` is specified. */
-  audio_url?: CreateTranscriptionPayloadAudioUrl
+  audio_url?: CreateTranscriptionPayloadAudioUrl;
   /** ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified. */
-  file_id?: CreateTranscriptionPayloadFileId
+  file_id?: CreateTranscriptionPayloadFileId;
   /** Expected languages in the audio. If not specified, languages are automatically detected. */
-  language_hints?: CreateTranscriptionPayloadLanguageHints
+  language_hints?: CreateTranscriptionPayloadLanguageHints;
   /** When `true`, the model will rely more on language hints. */
-  language_hints_strict?: CreateTranscriptionPayloadLanguageHintsStrict
+  language_hints_strict?: CreateTranscriptionPayloadLanguageHintsStrict;
   /** When `true`, speakers are identified and separated in the transcription output. */
-  enable_speaker_diarization?: CreateTranscriptionPayloadEnableSpeakerDiarization
+  enable_speaker_diarization?: CreateTranscriptionPayloadEnableSpeakerDiarization;
   /** When `true`, language is detected for each part of the transcription. */
-  enable_language_identification?: CreateTranscriptionPayloadEnableLanguageIdentification
+  enable_language_identification?: CreateTranscriptionPayloadEnableLanguageIdentification;
   /** Translation configuration. */
-  translation?: CreateTranscriptionPayloadTranslation
+  translation?: CreateTranscriptionPayloadTranslation;
   /** Additional context to improve transcription accuracy and formatting of specialized terms. */
-  context?: CreateTranscriptionPayloadContext
+  context?: CreateTranscriptionPayloadContext;
   /** URL to receive webhook notifications when transcription is completed or fails. */
-  webhook_url?: CreateTranscriptionPayloadWebhookUrl
+  webhook_url?: CreateTranscriptionPayloadWebhookUrl;
   /** Name of the authentication header sent with webhook notifications. */
-  webhook_auth_header_name?: CreateTranscriptionPayloadWebhookAuthHeaderName
+  webhook_auth_header_name?: CreateTranscriptionPayloadWebhookAuthHeaderName;
   /** Authentication header value sent with webhook notifications. */
-  webhook_auth_header_value?: CreateTranscriptionPayloadWebhookAuthHeaderValue
+  webhook_auth_header_value?: CreateTranscriptionPayloadWebhookAuthHeaderValue;
   /** Optional tracking identifier string. Does not need to be unique. */
-  client_reference_id?: CreateTranscriptionPayloadClientReferenceId
+  client_reference_id?: CreateTranscriptionPayloadClientReferenceId;
 }

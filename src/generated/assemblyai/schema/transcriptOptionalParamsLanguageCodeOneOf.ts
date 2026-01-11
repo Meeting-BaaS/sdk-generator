@@ -5,6 +5,6 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptLanguageCode } from "./transcriptLanguageCode"
+import type { TranscriptLanguageCode } from './transcriptLanguageCode';
 
-export type TranscriptOptionalParamsLanguageCodeOneOf = TranscriptLanguageCode | string
+export type TranscriptOptionalParamsLanguageCodeOneOf = TranscriptLanguageCode | string;

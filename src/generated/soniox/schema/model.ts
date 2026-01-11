@@ -4,35 +4,34 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-
-import type { Language } from "./language"
-import type { ModelAliasedModelId } from "./modelAliasedModelId"
-import type { ModelContextVersion } from "./modelContextVersion"
-import type { ModelOneWayTranslation } from "./modelOneWayTranslation"
-import type { ModelTwoWayTranslation } from "./modelTwoWayTranslation"
-import type { TranscriptionMode } from "./transcriptionMode"
-import type { TranslationTarget } from "./translationTarget"
+import type { ModelAliasedModelId } from './modelAliasedModelId';
+import type { ModelContextVersion } from './modelContextVersion';
+import type { TranscriptionMode } from './transcriptionMode';
+import type { Language } from './language';
+import type { TranslationTarget } from './translationTarget';
+import type { ModelOneWayTranslation } from './modelOneWayTranslation';
+import type { ModelTwoWayTranslation } from './modelTwoWayTranslation';
 
 export interface Model {
   /** Unique identifier of the model. */
-  id: string
+  id: string;
   /** If this is an alias, the id of the aliased model. */
-  aliased_model_id: ModelAliasedModelId
+  aliased_model_id: ModelAliasedModelId;
   /** Name of the model. */
-  name: string
+  name: string;
   /** Version of context supported. */
-  context_version: ModelContextVersion
+  context_version: ModelContextVersion;
   /** Transcription mode of the model. */
-  transcription_mode: TranscriptionMode
+  transcription_mode: TranscriptionMode;
   /** List of languages supported by the model. */
-  languages: Language[]
-  supports_language_hints_strict: boolean
+  languages: Language[];
+  supports_language_hints_strict: boolean;
   /** List of supported one-way translation targets. If list is empty, check for one_way_translation field */
-  translation_targets: TranslationTarget[]
+  translation_targets: TranslationTarget[];
   /** List of supported two-way translation pairs.  If list is empty, check for two_way_translation field */
-  two_way_translation_pairs: string[]
+  two_way_translation_pairs: string[];
   /** When contains string 'all_languages', any laguage from languages can be used */
-  one_way_translation: ModelOneWayTranslation
+  one_way_translation: ModelOneWayTranslation;
   /** When contains string 'all_languages',' any laguage pair from languages can be used */
-  two_way_translation: ModelTwoWayTranslation
+  two_way_translation: ModelTwoWayTranslation;
 }

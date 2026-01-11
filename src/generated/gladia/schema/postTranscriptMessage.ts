@@ -4,15 +4,15 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PostTranscriptMessageType } from "./postTranscriptMessageType"
-import type { TranscriptionDTO } from "./transcriptionDTO"
+import type { PostTranscriptMessageType } from './postTranscriptMessageType';
+import type { TranscriptionDTO } from './transcriptionDTO';
 
 export interface PostTranscriptMessage {
   /** Id of the live session */
-  session_id: string
+  session_id: string;
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string
-  type: PostTranscriptMessageType
+  created_at: string;
+  type: PostTranscriptMessageType;
   /** The message data */
-  data: TranscriptionDTO
+  data: TranscriptionDTO;
 }

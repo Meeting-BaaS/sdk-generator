@@ -4,18 +4,18 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { StructuredContextGeneral } from "./structuredContextGeneral"
-import type { StructuredContextTerms } from "./structuredContextTerms"
-import type { StructuredContextText } from "./structuredContextText"
-import type { StructuredContextTranslationTerms } from "./structuredContextTranslationTerms"
+import type { StructuredContextGeneral } from './structuredContextGeneral';
+import type { StructuredContextText } from './structuredContextText';
+import type { StructuredContextTerms } from './structuredContextTerms';
+import type { StructuredContextTranslationTerms } from './structuredContextTranslationTerms';
 
 export interface StructuredContext {
   /** General context items. */
-  general?: StructuredContextGeneral
+  general?: StructuredContextGeneral;
   /** Text context. */
-  text?: StructuredContextText
+  text?: StructuredContextText;
   /** Terms that might occur in speech. */
-  terms?: StructuredContextTerms
+  terms?: StructuredContextTerms;
   /** Hints how to translate specific terms. Ignored if translation is not enabled. */
-  translation_terms?: StructuredContextTranslationTerms
+  translation_terms?: StructuredContextTranslationTerms;
 }

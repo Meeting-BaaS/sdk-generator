@@ -9,4 +9,4 @@
 /**
  * The point in time, in milliseconds, in the file at which the transcription was started
  */
-export type TranscriptAudioStartFrom = number | null
+export type TranscriptAudioStartFrom = number | null;

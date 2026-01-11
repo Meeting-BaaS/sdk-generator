@@ -8,4 +8,4 @@
 /**
  * Terms that might occur in speech.
  */
-export type StructuredContextTerms = string[] | null
+export type StructuredContextTerms = string[] | null;

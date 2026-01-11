@@ -5,9 +5,9 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Error } from "./error"
+import type { Error as ErrorType } from './error';
 
 /**
  * An error occurred while processing the request
  */
-export type InternalServerErrorResponse = Error
+export type InternalServerErrorResponse = Error;

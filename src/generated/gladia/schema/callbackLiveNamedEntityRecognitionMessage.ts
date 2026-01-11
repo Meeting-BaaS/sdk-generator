@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveNamedEntityRecognitionMessageEvent } from "./callbackLiveNamedEntityRecognitionMessageEvent"
-import type { NamedEntityRecognitionMessage } from "./namedEntityRecognitionMessage"
+import type { CallbackLiveNamedEntityRecognitionMessageEvent } from './callbackLiveNamedEntityRecognitionMessageEvent';
+import type { NamedEntityRecognitionMessage } from './namedEntityRecognitionMessage';
 
 export interface CallbackLiveNamedEntityRecognitionMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLiveNamedEntityRecognitionMessageEvent
+  id: string;
+  event: CallbackLiveNamedEntityRecognitionMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: NamedEntityRecognitionMessage
+  payload: NamedEntityRecognitionMessage;
 }

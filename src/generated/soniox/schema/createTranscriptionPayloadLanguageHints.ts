@@ -8,4 +8,4 @@
 /**
  * Expected languages in the audio. If not specified, languages are automatically detected.
  */
-export type CreateTranscriptionPayloadLanguageHints = string[] | null
+export type CreateTranscriptionPayloadLanguageHints = string[] | null;

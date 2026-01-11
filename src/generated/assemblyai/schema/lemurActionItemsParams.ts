@@ -5,8 +5,7 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
+import type { LemurBaseParams } from './lemurBaseParams';
+import type { LemurActionItemsParamsAllOf } from './lemurActionItemsParamsAllOf';
 
-import type { LemurActionItemsParamsAllOf } from "./lemurActionItemsParamsAllOf"
-import type { LemurBaseParams } from "./lemurBaseParams"
-
-export type LemurActionItemsParams = LemurBaseParams & LemurActionItemsParamsAllOf
+export type LemurActionItemsParams = LemurBaseParams & LemurActionItemsParamsAllOf;

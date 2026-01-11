@@ -5,7 +5,7 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { TranscriptLanguageCode } from "./transcriptLanguageCode"
+import type { TranscriptLanguageCode } from './transcriptLanguageCode';
 
 /**
  * The language of your audio file.
@@ -13,4 +13,4 @@ Possible values are found in [Supported Languages](https://www.assemblyai.com/do
 The default value is 'en_us'.
 
  */
-export type TranscriptLanguageCodeProperty = TranscriptLanguageCode | string
+export type TranscriptLanguageCodeProperty = TranscriptLanguageCode | string;

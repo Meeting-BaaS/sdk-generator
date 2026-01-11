@@ -13,4 +13,4 @@ An error will be returned if the language confidence is below this threshold.
  * @minimum 0
  * @maximum 1
  */
-export type TranscriptLanguageConfidenceThreshold = number | null
+export type TranscriptLanguageConfidenceThreshold = number | null;

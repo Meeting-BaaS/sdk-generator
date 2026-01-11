@@ -4,16 +4,16 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptionTranscriptToken } from "./transcriptionTranscriptToken"
+import type { TranscriptionTranscriptToken } from './transcriptionTranscriptToken';
 
 /**
  * The transcription text.
  */
 export interface TranscriptionTranscript {
   /** Unique identifier of the transcription this transcript belongs to. */
-  id: string
+  id: string;
   /** Complete transcribed text content. */
-  text: string
+  text: string;
   /** List of detailed token information with timestamps and metadata. */
-  tokens: TranscriptionTranscriptToken[]
+  tokens: TranscriptionTranscriptToken[];
 }

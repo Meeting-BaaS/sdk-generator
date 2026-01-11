@@ -4,9 +4,9 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { TranslationConfig } from "./translationConfig"
+import type { TranslationConfig } from './translationConfig';
 
 /**
  * Translation configuration.
  */
-export type CreateTranscriptionPayloadTranslation = TranslationConfig | null
+export type CreateTranscriptionPayloadTranslation = TranslationConfig | null;

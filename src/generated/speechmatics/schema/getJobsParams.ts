@@ -7,16 +7,16 @@
  */
 
 export type GetJobsParams = {
-  /**
-   * UTC Timestamp cursor for paginating request response. Filters jobs based on creation time to the nearest millisecond. Accepts up to nanosecond precision, truncating to millisecond precision. By default, the response will start with the most recent job.
-   */
-  created_before?: string
-  /**
-   * Limit for paginating the request response. Defaults to 100.
-   */
-  limit?: number
-  /**
-   * Specifies whether deleted jobs should be included in the response. Defaults to false.
-   */
-  include_deleted?: boolean
-}
+/**
+ * UTC Timestamp cursor for paginating request response. Filters jobs based on creation time to the nearest millisecond. Accepts up to nanosecond precision, truncating to millisecond precision. By default, the response will start with the most recent job.
+ */
+created_before?: string;
+/**
+ * Limit for paginating the request response. Defaults to 100.
+ */
+limit?: number;
+/**
+ * Specifies whether deleted jobs should be included in the response. Defaults to false.
+ */
+include_deleted?: boolean;
+};

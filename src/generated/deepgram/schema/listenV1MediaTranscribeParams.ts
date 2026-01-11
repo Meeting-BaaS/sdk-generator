@@ -6,187 +6,186 @@
 
  * OpenAPI spec version: 1.0.0
  */
-
-import type { ListenV1DetectEntitiesParameter } from "./listenV1DetectEntitiesParameter"
-import type { ListenV1DetectLanguageParameter } from "./listenV1DetectLanguageParameter"
-import type { ListenV1DiarizeParameter } from "./listenV1DiarizeParameter"
-import type { ListenV1DictationParameter } from "./listenV1DictationParameter"
-import type { ListenV1EncodingParameter } from "./listenV1EncodingParameter"
-import type { ListenV1FillerWordsParameter } from "./listenV1FillerWordsParameter"
-import type { ListenV1KeytermParameter } from "./listenV1KeytermParameter"
-import type { ListenV1KeywordsParameter } from "./listenV1KeywordsParameter"
-import type { ListenV1LanguageParameter } from "./listenV1LanguageParameter"
-import type { ListenV1MeasurementsParameter } from "./listenV1MeasurementsParameter"
-import type { ListenV1ModelParameter } from "./listenV1ModelParameter"
-import type { ListenV1MultichannelParameter } from "./listenV1MultichannelParameter"
-import type { ListenV1NumeralsParameter } from "./listenV1NumeralsParameter"
-import type { ListenV1ParagraphsParameter } from "./listenV1ParagraphsParameter"
-import type { ListenV1ProfanityFilterParameter } from "./listenV1ProfanityFilterParameter"
-import type { ListenV1PunctuateParameter } from "./listenV1PunctuateParameter"
-import type { ListenV1RedactParameter } from "./listenV1RedactParameter"
-import type { ListenV1ReplaceParameter } from "./listenV1ReplaceParameter"
-import type { ListenV1SearchParameter } from "./listenV1SearchParameter"
-import type { ListenV1SmartFormatParameter } from "./listenV1SmartFormatParameter"
-import type { ListenV1UtterancesParameter } from "./listenV1UtterancesParameter"
-import type { ListenV1UttSplitParameter } from "./listenV1UttSplitParameter"
-import type { ListenV1VersionParameter } from "./listenV1VersionParameter"
-import type { SharedCallbackMethodParameter } from "./sharedCallbackMethodParameter"
-import type { SharedCallbackParameter } from "./sharedCallbackParameter"
-import type { SharedCustomIntentModeParameter } from "./sharedCustomIntentModeParameter"
-import type { SharedCustomIntentParameter } from "./sharedCustomIntentParameter"
-import type { SharedCustomTopicModeParameter } from "./sharedCustomTopicModeParameter"
-import type { SharedCustomTopicParameter } from "./sharedCustomTopicParameter"
-import type { SharedExtraParameter } from "./sharedExtraParameter"
-import type { SharedIntentsParameter } from "./sharedIntentsParameter"
-import type { SharedMipOptOutParameter } from "./sharedMipOptOutParameter"
-import type { SharedSentimentParameter } from "./sharedSentimentParameter"
-import type { SharedSummarizeParameter } from "./sharedSummarizeParameter"
-import type { SharedTagParameter } from "./sharedTagParameter"
-import type { SharedTopicsParameter } from "./sharedTopicsParameter"
+import type { SharedCallbackParameter } from './sharedCallbackParameter';
+import type { SharedCallbackMethodParameter } from './sharedCallbackMethodParameter';
+import type { SharedExtraParameter } from './sharedExtraParameter';
+import type { SharedSentimentParameter } from './sharedSentimentParameter';
+import type { SharedSummarizeParameter } from './sharedSummarizeParameter';
+import type { SharedTagParameter } from './sharedTagParameter';
+import type { SharedTopicsParameter } from './sharedTopicsParameter';
+import type { SharedCustomTopicParameter } from './sharedCustomTopicParameter';
+import type { SharedCustomTopicModeParameter } from './sharedCustomTopicModeParameter';
+import type { SharedIntentsParameter } from './sharedIntentsParameter';
+import type { SharedCustomIntentParameter } from './sharedCustomIntentParameter';
+import type { SharedCustomIntentModeParameter } from './sharedCustomIntentModeParameter';
+import type { ListenV1DetectEntitiesParameter } from './listenV1DetectEntitiesParameter';
+import type { ListenV1DetectLanguageParameter } from './listenV1DetectLanguageParameter';
+import type { ListenV1DiarizeParameter } from './listenV1DiarizeParameter';
+import type { ListenV1DictationParameter } from './listenV1DictationParameter';
+import type { ListenV1EncodingParameter } from './listenV1EncodingParameter';
+import type { ListenV1FillerWordsParameter } from './listenV1FillerWordsParameter';
+import type { ListenV1KeytermParameter } from './listenV1KeytermParameter';
+import type { ListenV1KeywordsParameter } from './listenV1KeywordsParameter';
+import type { ListenV1LanguageParameter } from './listenV1LanguageParameter';
+import type { ListenV1MeasurementsParameter } from './listenV1MeasurementsParameter';
+import type { ListenV1ModelParameter } from './listenV1ModelParameter';
+import type { ListenV1MultichannelParameter } from './listenV1MultichannelParameter';
+import type { ListenV1NumeralsParameter } from './listenV1NumeralsParameter';
+import type { ListenV1ParagraphsParameter } from './listenV1ParagraphsParameter';
+import type { ListenV1ProfanityFilterParameter } from './listenV1ProfanityFilterParameter';
+import type { ListenV1PunctuateParameter } from './listenV1PunctuateParameter';
+import type { ListenV1RedactParameter } from './listenV1RedactParameter';
+import type { ListenV1ReplaceParameter } from './listenV1ReplaceParameter';
+import type { ListenV1SearchParameter } from './listenV1SearchParameter';
+import type { ListenV1SmartFormatParameter } from './listenV1SmartFormatParameter';
+import type { ListenV1UtterancesParameter } from './listenV1UtterancesParameter';
+import type { ListenV1UttSplitParameter } from './listenV1UttSplitParameter';
+import type { ListenV1VersionParameter } from './listenV1VersionParameter';
+import type { SharedMipOptOutParameter } from './sharedMipOptOutParameter';
 
 export type ListenV1MediaTranscribeParams = {
-  /**
-   * URL to which we'll make the callback request
-   */
-  callback?: SharedCallbackParameter
-  /**
-   * HTTP method by which the callback request will be made
-   */
-  callback_method?: SharedCallbackMethodParameter
-  /**
-   * Arbitrary key-value pairs that are attached to the API response for usage in downstream processing
-   */
-  extra?: SharedExtraParameter
-  /**
-   * Recognizes the sentiment throughout a transcript or text
-   */
-  sentiment?: SharedSentimentParameter
-  /**
-   * Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
-   */
-  summarize?: SharedSummarizeParameter
-  /**
-   * Label your requests for the purpose of identification during usage reporting
-   */
-  tag?: SharedTagParameter
-  /**
-   * Detect topics throughout a transcript or text
-   */
-  topics?: SharedTopicsParameter
-  /**
-   * Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
-   */
-  custom_topic?: SharedCustomTopicParameter
-  /**
-   * Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param
-   */
-  custom_topic_mode?: SharedCustomTopicModeParameter
-  /**
-   * Recognizes speaker intent throughout a transcript or text
-   */
-  intents?: SharedIntentsParameter
-  /**
-   * Custom intents you want the model to detect within your input audio if present
-   */
-  custom_intent?: SharedCustomIntentParameter
-  /**
-   * Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.
-   */
-  custom_intent_mode?: SharedCustomIntentModeParameter
-  /**
-   * Identifies and extracts key entities from content in submitted audio
-   */
-  detect_entities?: ListenV1DetectEntitiesParameter
-  /**
-   * Identifies the dominant language spoken in submitted audio
-   */
-  detect_language?: ListenV1DetectLanguageParameter
-  /**
-   * Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0
-   */
-  diarize?: ListenV1DiarizeParameter
-  /**
-   * Dictation mode for controlling formatting with dictated speech
-   */
-  dictation?: ListenV1DictationParameter
-  /**
-   * Specify the expected encoding of your submitted audio
-   */
-  encoding?: ListenV1EncodingParameter
-  /**
-   * Filler Words can help transcribe interruptions in your audio, like "uh" and "um"
-   */
-  filler_words?: ListenV1FillerWordsParameter
-  /**
-   * Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3
-   */
-  keyterm?: ListenV1KeytermParameter
-  /**
-   * Keywords can boost or suppress specialized terminology and brands
-   */
-  keywords?: ListenV1KeywordsParameter
-  /**
-   * The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
-   */
-  language?: ListenV1LanguageParameter
-  /**
-   * Spoken measurements will be converted to their corresponding abbreviations
-   */
-  measurements?: ListenV1MeasurementsParameter
-  /**
-   * AI model used to process submitted audio
-   */
-  model?: ListenV1ModelParameter
-  /**
-   * Transcribe each audio channel independently
-   */
-  multichannel?: ListenV1MultichannelParameter
-  /**
-   * Numerals converts numbers from written format to numerical format
-   */
-  numerals?: ListenV1NumeralsParameter
-  /**
-   * Splits audio into paragraphs to improve transcript readability
-   */
-  paragraphs?: ListenV1ParagraphsParameter
-  /**
-   * Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely
-   */
-  profanity_filter?: ListenV1ProfanityFilterParameter
-  /**
-   * Add punctuation and capitalization to the transcript
-   */
-  punctuate?: ListenV1PunctuateParameter
-  /**
-   * Redaction removes sensitive information from your transcripts
-   */
-  redact?: ListenV1RedactParameter
-  /**
-   * Search for terms or phrases in submitted audio and replaces them
-   */
-  replace?: ListenV1ReplaceParameter
-  /**
-   * Search for terms or phrases in submitted audio
-   */
-  search?: ListenV1SearchParameter
-  /**
-   * Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability
-   */
-  smart_format?: ListenV1SmartFormatParameter
-  /**
-   * Segments speech into meaningful semantic units
-   */
-  utterances?: ListenV1UtterancesParameter
-  /**
-   * Seconds to wait before detecting a pause between words in submitted audio
-   */
-  utt_split?: ListenV1UttSplitParameter
-  /**
-   * Version of an AI model to use
-   */
-  version?: ListenV1VersionParameter
-  /**
-   * Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
-   */
-  mip_opt_out?: SharedMipOptOutParameter
-}
+/**
+ * URL to which we'll make the callback request
+ */
+callback?: SharedCallbackParameter;
+/**
+ * HTTP method by which the callback request will be made
+ */
+callback_method?: SharedCallbackMethodParameter;
+/**
+ * Arbitrary key-value pairs that are attached to the API response for usage in downstream processing
+ */
+extra?: SharedExtraParameter;
+/**
+ * Recognizes the sentiment throughout a transcript or text
+ */
+sentiment?: SharedSentimentParameter;
+/**
+ * Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
+ */
+summarize?: SharedSummarizeParameter;
+/**
+ * Label your requests for the purpose of identification during usage reporting
+ */
+tag?: SharedTagParameter;
+/**
+ * Detect topics throughout a transcript or text
+ */
+topics?: SharedTopicsParameter;
+/**
+ * Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
+ */
+custom_topic?: SharedCustomTopicParameter;
+/**
+ * Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param
+ */
+custom_topic_mode?: SharedCustomTopicModeParameter;
+/**
+ * Recognizes speaker intent throughout a transcript or text
+ */
+intents?: SharedIntentsParameter;
+/**
+ * Custom intents you want the model to detect within your input audio if present
+ */
+custom_intent?: SharedCustomIntentParameter;
+/**
+ * Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.
+ */
+custom_intent_mode?: SharedCustomIntentModeParameter;
+/**
+ * Identifies and extracts key entities from content in submitted audio
+ */
+detect_entities?: ListenV1DetectEntitiesParameter;
+/**
+ * Identifies the dominant language spoken in submitted audio
+ */
+detect_language?: ListenV1DetectLanguageParameter;
+/**
+ * Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0
+ */
+diarize?: ListenV1DiarizeParameter;
+/**
+ * Dictation mode for controlling formatting with dictated speech
+ */
+dictation?: ListenV1DictationParameter;
+/**
+ * Specify the expected encoding of your submitted audio
+ */
+encoding?: ListenV1EncodingParameter;
+/**
+ * Filler Words can help transcribe interruptions in your audio, like "uh" and "um"
+ */
+filler_words?: ListenV1FillerWordsParameter;
+/**
+ * Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3
+ */
+keyterm?: ListenV1KeytermParameter;
+/**
+ * Keywords can boost or suppress specialized terminology and brands
+ */
+keywords?: ListenV1KeywordsParameter;
+/**
+ * The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
+ */
+language?: ListenV1LanguageParameter;
+/**
+ * Spoken measurements will be converted to their corresponding abbreviations
+ */
+measurements?: ListenV1MeasurementsParameter;
+/**
+ * AI model used to process submitted audio
+ */
+model?: ListenV1ModelParameter;
+/**
+ * Transcribe each audio channel independently
+ */
+multichannel?: ListenV1MultichannelParameter;
+/**
+ * Numerals converts numbers from written format to numerical format
+ */
+numerals?: ListenV1NumeralsParameter;
+/**
+ * Splits audio into paragraphs to improve transcript readability
+ */
+paragraphs?: ListenV1ParagraphsParameter;
+/**
+ * Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely
+ */
+profanity_filter?: ListenV1ProfanityFilterParameter;
+/**
+ * Add punctuation and capitalization to the transcript
+ */
+punctuate?: ListenV1PunctuateParameter;
+/**
+ * Redaction removes sensitive information from your transcripts
+ */
+redact?: ListenV1RedactParameter;
+/**
+ * Search for terms or phrases in submitted audio and replaces them
+ */
+replace?: ListenV1ReplaceParameter;
+/**
+ * Search for terms or phrases in submitted audio
+ */
+search?: ListenV1SearchParameter;
+/**
+ * Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability
+ */
+smart_format?: ListenV1SmartFormatParameter;
+/**
+ * Segments speech into meaningful semantic units
+ */
+utterances?: ListenV1UtterancesParameter;
+/**
+ * Seconds to wait before detecting a pause between words in submitted audio
+ */
+utt_split?: ListenV1UttSplitParameter;
+/**
+ * Version of an AI model to use
+ */
+version?: ListenV1VersionParameter;
+/**
+ * Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
+ */
+mip_opt_out?: SharedMipOptOutParameter;
+};

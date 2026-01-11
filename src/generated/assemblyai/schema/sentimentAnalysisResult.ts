@@ -5,30 +5,30 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
-import type { Sentiment } from "./sentiment"
-import type { SentimentAnalysisResultChannel } from "./sentimentAnalysisResultChannel"
-import type { SentimentAnalysisResultSpeaker } from "./sentimentAnalysisResultSpeaker"
+import type { Sentiment } from './sentiment';
+import type { SentimentAnalysisResultChannel } from './sentimentAnalysisResultChannel';
+import type { SentimentAnalysisResultSpeaker } from './sentimentAnalysisResultSpeaker';
 
 /**
  * The result of the Sentiment Analysis model
  */
 export interface SentimentAnalysisResult {
   /** The transcript of the sentence */
-  text: string
+  text: string;
   /** The starting time, in milliseconds, of the sentence */
-  start: number
+  start: number;
   /** The ending time, in milliseconds, of the sentence */
-  end: number
+  end: number;
   /** The detected sentiment for the sentence, one of POSITIVE, NEUTRAL, NEGATIVE */
-  sentiment: Sentiment
+  sentiment: Sentiment;
   /**
    * The confidence score for the detected sentiment of the sentence, from 0 to 1
    * @minimum 0
    * @maximum 1
    */
-  confidence: number
+  confidence: number;
   /** The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially. */
-  channel?: SentimentAnalysisResultChannel
+  channel?: SentimentAnalysisResultChannel;
   /** The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null */
-  speaker: SentimentAnalysisResultSpeaker
+  speaker: SentimentAnalysisResultSpeaker;
 }

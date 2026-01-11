@@ -10,17 +10,17 @@
 /**
  * The unique identifier of the OpenAI model
  */
-export type AgentThinkModelsV1ResponseModelsItemOneOfId =
-  (typeof AgentThinkModelsV1ResponseModelsItemOneOfId)[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfId]
+export type AgentThinkModelsV1ResponseModelsItemOneOfId = typeof AgentThinkModelsV1ResponseModelsItemOneOfId[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfId];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AgentThinkModelsV1ResponseModelsItemOneOfId = {
-  "gpt-5": "gpt-5",
-  "gpt-5-mini": "gpt-5-mini",
-  "gpt-5-nano": "gpt-5-nano",
-  "gpt-41": "gpt-4.1",
-  "gpt-41-mini": "gpt-4.1-mini",
-  "gpt-41-nano": "gpt-4.1-nano",
-  "gpt-4o": "gpt-4o",
-  "gpt-4o-mini": "gpt-4o-mini"
-} as const
+  'gpt-5': 'gpt-5',
+  'gpt-5-mini': 'gpt-5-mini',
+  'gpt-5-nano': 'gpt-5-nano',
+  'gpt-41': 'gpt-4.1',
+  'gpt-41-mini': 'gpt-4.1-mini',
+  'gpt-41-nano': 'gpt-4.1-nano',
+  'gpt-4o': 'gpt-4o',
+  'gpt-4o-mini': 'gpt-4o-mini',
+} as const;

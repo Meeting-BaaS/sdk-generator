@@ -8,5 +8,5 @@
 
 export type LemurTaskParamsAllOf = {
   /** Your text to prompt the model to produce a desired output, including any context you want to pass into the model. */
-  prompt: string
-}
+  prompt: string;
+};

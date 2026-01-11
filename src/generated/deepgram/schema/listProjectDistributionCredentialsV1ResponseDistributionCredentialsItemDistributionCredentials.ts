@@ -7,16 +7,15 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemDistributionCredentials =
-  {
-    /** Unique identifier for the distribution credentials */
-    distribution_credentials_id: string
-    /** The provider of the distribution service */
-    provider: string
-    /** Optional comment about the credentials */
-    comment?: string
-    /** List of permission scopes for the credentials */
-    scopes: string[]
-    /** Timestamp when the credentials were created */
-    created: string
-  }
+export type ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemDistributionCredentials = {
+  /** Unique identifier for the distribution credentials */
+  distribution_credentials_id: string;
+  /** The provider of the distribution service */
+  provider: string;
+  /** Optional comment about the credentials */
+  comment?: string;
+  /** List of permission scopes for the credentials */
+  scopes: string[];
+  /** Timestamp when the credentials were created */
+  created: string;
+};

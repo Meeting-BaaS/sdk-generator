@@ -9,11 +9,11 @@
 /**
  * The direction that words in the language should be written and read in.
  */
-export type LanguagePackInfoWritingDirection =
-  (typeof LanguagePackInfoWritingDirection)[keyof typeof LanguagePackInfoWritingDirection]
+export type LanguagePackInfoWritingDirection = typeof LanguagePackInfoWritingDirection[keyof typeof LanguagePackInfoWritingDirection];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LanguagePackInfoWritingDirection = {
-  "left-to-right": "left-to-right",
-  "right-to-left": "right-to-left"
-} as const
+  'left-to-right': 'left-to-right',
+  'right-to-left': 'right-to-left',
+} as const;

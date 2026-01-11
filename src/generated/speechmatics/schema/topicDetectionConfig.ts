@@ -7,5 +7,5 @@
  */
 
 export interface TopicDetectionConfig {
-  topics?: string[]
+  topics?: string[];
 }

@@ -5,11 +5,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type TranslationConfigType =
-  (typeof TranslationConfigType)[keyof typeof TranslationConfigType]
+export type TranslationConfigType = typeof TranslationConfigType[keyof typeof TranslationConfigType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranslationConfigType = {
-  one_way: "one_way",
-  two_way: "two_way"
-} as const
+  one_way: 'one_way',
+  two_way: 'two_way',
+} as const;
