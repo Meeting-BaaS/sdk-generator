@@ -5,6 +5,85 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-01-11
+
+### Added
+
+#### OpenAI Official Spec Integration
+
+OpenAI types now auto-generated from the official [Stainless-hosted OpenAPI spec](https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml):
+
+```typescript
+import { OpenAIModel, OpenAIResponseFormat } from 'voice-router-dev/constants'
+import type { 
+  RealtimeSessionCreateRequest,
+  RealtimeTranscriptionSessionCreateRequest,
+  CreateTranscriptionResponseDiarizedJson
+} from 'voice-router-dev'
+
+// All models from official spec
+const model = OpenAIModel["gpt-4o-transcribe-diarize"]
+
+// Response formats including diarization
+const format = OpenAIResponseFormat.diarized_json
+```
+
+**What changed:**
+- **Single source of truth**: Stainless live spec (auto-updated by OpenAI)
+- **54 schemas** generated (up from 15 manual types)
+- **7 endpoints** included: batch audio + realtime streaming
+- **Diarization types** now from official spec (`CreateTranscriptionResponseDiarizedJson`)
+- **Realtime API types**: `RealtimeSessionCreateRequest`, `RealtimeTranscriptionSessionCreateRequest`, `VadConfig`, etc.
+
+**New models in `OpenAIModel`:**
+- `whisper-1` - Open source Whisper V2
+- `gpt-4o-transcribe` - GPT-4o based transcription
+- `gpt-4o-mini-transcribe` - Faster, cost-effective
+- `gpt-4o-mini-transcribe-2025-12-15` - Dated version
+- `gpt-4o-transcribe-diarize` - With speaker diarization
+
+**New response formats in `OpenAIResponseFormat`:**
+- `diarized_json` - JSON with speaker annotations (requires `gpt-4o-transcribe-diarize`)
+
+#### OpenAI Realtime Streaming Types
+
+WebSocket event types for OpenAI Realtime API:
+
+```typescript
+import { OpenAIStreamingTypes } from 'voice-router-dev'
+
+// Session creation
+const session: OpenAIStreamingTypes.RealtimeSessionConfig = {
+  modalities: ['text', 'audio'],
+  voice: 'ash',
+  input_audio_format: 'pcm16',
+  input_audio_transcription: { model: 'whisper-1' },
+  turn_detection: { type: 'server_vad', threshold: 0.6 }
+}
+
+// WebSocket event handling
+type ServerEvent = OpenAIStreamingTypes.RealtimeServerEvent
+type ClientEvent = OpenAIStreamingTypes.RealtimeClientEvent
+```
+
+**Endpoints:**
+- OpenAI: `wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview`
+- Azure OpenAI: `wss://{endpoint}/openai/realtime?deployment={model}&api-version={version}`
+
+### Changed
+
+- **OpenAI spec source**: Now uses Stainless live spec instead of manual `openai-whisper-openapi.yml`
+- **`fix-openai-spec.js`**: Filters full OpenAI API to audio + realtime endpoints only
+- **OpenAI adapter**: Uses `OpenAIModel` constants instead of hardcoded strings
+- **Provider capabilities**: OpenAI now shows `streaming: true` (via Realtime API)
+
+### Fixed
+
+- OpenAI model values now stay in sync with official spec
+- `OpenAIResponseFormat` now includes `diarized_json` from official spec
+
+---
+
 ## [0.6.0] - 2026-01-10
 
 ### Added

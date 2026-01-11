@@ -11,7 +11,9 @@ The SDK aims to use **only generated types** from provider OpenAPI specs. Howeve
 | **Gladia** | Excellent | None | ✅ Full | ✅ Full | ✅ Yes |
 | **Deepgram** | Good | Sample rate, Model enum, Language | ✅ Metadata | ✅ Full (requires projectId) | ❌ No |
 | **AssemblyAI** | Moderate | Sample rate, Encoding, Speech model | ✅ Full | ✅ Full | ❌ No |
+| **OpenAI** | Excellent | Model const (spec uses union type) | ❌ No | ❌ No | ❌ No |
 | **Azure** | Good | None | ✅ Full | ✅ Full | ❌ No |
+| **Soniox** | Good | Languages (only in example) | ✅ Full | ✅ Full | ❌ No |
 
 ---
 
@@ -290,6 +292,91 @@ Azure Speech-to-Text has a complete OpenAPI spec. All status values are generate
 
 ---
 
+## OpenAI
+
+OpenAI types are auto-generated from the official [Stainless-hosted spec](https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml).
+
+### Spec Source
+
+The OpenAI OpenAPI spec is hosted by Stainless and auto-updated by OpenAI. The SDK:
+1. Syncs the full spec via `sync-specs.js`
+2. Filters to audio + realtime endpoints via `fix-openai-spec.js`
+3. Generates 54 TypeScript types via Orval
+
+**Endpoints included:**
+- `/audio/transcriptions` - Batch transcription
+- `/audio/translations` - Batch translation
+- `/audio/speech` - Text-to-speech
+- `/audio/voices` - Voice listing
+- `/realtime/sessions` - Realtime session creation
+- `/realtime/transcription_sessions` - Transcription-specific realtime
+- `/realtime/client_secrets` - Client secret generation
+
+### Model Enum (Union type, not const object)
+
+**Issue:** OpenAPI generates `CreateTranscriptionRequestModel` as a union type with `| string` fallback.
+
+**Workaround:** Manual `OpenAIModel` const with `satisfies` check:
+
+```typescript
+export const OpenAIModel = {
+  "whisper-1": "whisper-1",
+  "gpt-4o-transcribe": "gpt-4o-transcribe",
+  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
+  "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
+  "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize"
+} as const satisfies Record<string, CreateTranscriptionRequestModel>
+```
+
+### Fully Generated OpenAI Constants
+
+| Const | Generated Type | Status |
+|-------|---------------|--------|
+| `OpenAIResponseFormat` | `AudioResponseFormat` | ✅ OpenAPI |
+
+**Response format values:** `json`, `text`, `srt`, `verbose_json`, `vtt`, `diarized_json`
+
+### Realtime API Types
+
+The Realtime API (WebSocket-based) types are generated from the REST endpoints for session creation:
+
+| Type | Description |
+|------|-------------|
+| `RealtimeSessionCreateRequest` | Create a realtime session |
+| `RealtimeSessionCreateResponse` | Session creation response |
+| `RealtimeTranscriptionSessionCreateRequest` | Create transcription-specific session |
+| `RealtimeTranscriptionSessionCreateResponse` | Transcription session response |
+| `RealtimeTurnDetection` | VAD configuration |
+| `RealtimeAudioFormats` | Audio format options |
+
+**WebSocket event types** (in `streaming-types.ts`) are manually maintained from [Azure-Samples/RealtimeAIApp-JS](https://github.com/Azure-Samples/RealtimeAIApp-JS) since WebSocket events are not in OpenAPI specs.
+
+### Why Soniox Has a Custom Language Script
+
+Unlike other providers, Soniox's OpenAPI spec defines languages only in an **example response**, not in the schema:
+
+```json
+// Soniox spec - languages in example only
+{
+  "example": {
+    "models": [{ "languages": [{ "code": "af", "name": "Afrikaans" }] }]
+  }
+}
+```
+
+Orval can't generate types from examples, so `generate-soniox-languages.js` extracts them manually.
+
+Compare to Gladia which has proper enum definitions:
+
+```yaml
+# Gladia spec - languages in schema as enum
+TranscriptionLanguageCodeEnum:
+  type: string
+  enum: [af, am, ar, ...]
+```
+
+---
+
 ## Type Safety Levels
 
 ### ✅ OpenAPI (Best)
@@ -422,7 +509,10 @@ const result: UnifiedTranscriptResponse<'assemblyai'> = await adapter.transcribe
 | `AssemblyAISpeechModel` | AssemblyAI | ⚠️ Type-checked | Spec has union type |
 | `AssemblyAISampleRate` | AssemblyAI | ❌ Unchecked | Spec uses `number` |
 | `AssemblyAIStatus` | AssemblyAI | ✅ OpenAPI | `TranscriptStatus` |
+| `OpenAIModel` | OpenAI | ⚠️ Type-checked | Spec has `\| string` fallback |
+| `OpenAIResponseFormat` | OpenAI | ✅ OpenAPI | `AudioResponseFormat` |
 | `AzureStatus` | Azure | ✅ OpenAPI | `Status` |
+| `SonioxLanguages` | Soniox | ⚠️ Extracted | From spec example (not schema) |
 
 ---
 
@@ -436,8 +526,9 @@ All specs are stored locally in `./specs/` and can be synced from their authorit
 | AssemblyAI | https://github.com/AssemblyAI/assemblyai-api-spec/blob/main/openapi.json | JSON | `pnpm openapi:sync:assemblyai` |
 | AssemblyAI AsyncAPI | https://github.com/AssemblyAI/assemblyai-api-spec/blob/main/asyncapi.json | JSON | `pnpm openapi:sync:assemblyai` |
 | Deepgram | https://github.com/deepgram/deepgram-api-specs/blob/main/openapi.yml | YAML | `pnpm openapi:sync:deepgram` |
-| OpenAI | https://github.com/openai/openai-openapi (filtered to audio endpoints) | YAML | `pnpm openapi:sync --provider openai` |
+| OpenAI | https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml | YAML | `pnpm openapi:sync --provider openai` |
 | Azure STT | https://github.com/Azure/azure-rest-api-specs (Speech/SpeechToText v3.2) | JSON | `pnpm openapi:sync --provider azure` |
+| Soniox | https://api.soniox.com/v1/openapi.json | JSON | `pnpm openapi:sync --provider soniox` |
 | Speechmatics | Manual (spec has validation errors) | YAML | - |
 
 ### Syncing Specs
@@ -463,8 +554,9 @@ pnpm openapi:rebuild
 | Provider | Issue | Workaround |
 |----------|-------|------------|
 | Deepgram | Duplicate parameter names cause Orval type conflicts | Input transformer in `orval.config.ts` inlines conflicting parameters |
-| OpenAI | Official spec covers entire API, not just audio endpoints | `fix-openai-spec.js` filters to audio endpoints and fixes malformed arrays |
+| OpenAI | Stainless spec covers entire API (1000+ schemas) | `fix-openai-spec.js` filters to audio + realtime endpoints (54 schemas) |
 | Azure | Swagger 2.0 spec covers full Speech API v3.2 | Synced from `Azure/azure-rest-api-specs` (works without modifications) |
+| Soniox | Languages defined in example response, not schema | `generate-soniox-languages.js` extracts languages from example |
 | Speechmatics | Official Swagger 2.0 spec has validation errors | Manual spec with fixes in `specs/speechmatics-batch.yaml` |
 
 ### Field Config Type Discrepancies
