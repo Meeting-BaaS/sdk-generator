@@ -16,18 +16,20 @@ import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 // Import generated API client functions - FULL TYPE SAFETY!
 import {
   transcriptionsCreate,
-  transcriptionsGet,
   transcriptionsDelete,
+  transcriptionsGet,
   transcriptionsList,
   transcriptionsListFiles
 } from "../generated/azure/api/speechServicesAPIVersion32"
 
 // Import Azure generated types for list
-import type { TranscriptionsListParams } from "../generated/azure/schema/transcriptionsListParams"
 import type { PaginatedTranscriptions } from "../generated/azure/schema/paginatedTranscriptions"
 import { Status as AzureStatus } from "../generated/azure/schema/status"
+import type { TranscriptionsListParams } from "../generated/azure/schema/transcriptionsListParams"
 
 // Import Azure generated types
+import { ProfanityFilterMode } from "../generated/azure/schema/profanityFilterMode"
+import { PunctuationMode } from "../generated/azure/schema/punctuationMode"
 import type { Transcription } from "../generated/azure/schema/transcription"
 import type { TranscriptionProperties } from "../generated/azure/schema/transcriptionProperties"
 
@@ -107,10 +109,10 @@ import type { TranscriptionProperties } from "../generated/azure/schema/transcri
 export class AzureSTTAdapter extends BaseAdapter {
   readonly name = "azure-stt" as const
   readonly capabilities: ProviderCapabilities = {
-    streaming: false, // Batch transcription only
+    streaming: false, // Batch transcription only (WebSocket streaming not implemented)
     diarization: true,
     wordTimestamps: true,
-    languageDetection: false,
+    languageDetection: true, // Via LanguageIdentificationProperties (Continuous/Single mode)
     customVocabulary: true,
     summarization: false,
     sentimentAnalysis: false,
@@ -448,8 +450,8 @@ export class AzureSTTAdapter extends BaseAdapter {
   private buildTranscriptionProperties(options?: TranscribeOptions): TranscriptionProperties {
     const properties: any = {
       wordLevelTimestampsEnabled: options?.wordTimestamps ?? true,
-      punctuationMode: "DictatedAndAutomatic",
-      profanityFilterMode: "Masked"
+      punctuationMode: PunctuationMode.DictatedAndAutomatic,
+      profanityFilterMode: ProfanityFilterMode.Masked
     }
 
     if (options?.diarization) {
@@ -571,20 +573,19 @@ export function createAzureSTTAdapter(
 
 // API client functions
 export {
-  transcriptionsCreate,
-  transcriptionsGet,
-  transcriptionsDelete,
-  transcriptionsList,
+  transcriptionsCreate, transcriptionsDelete, transcriptionsGet, transcriptionsList,
   transcriptionsListFiles
 } from "../generated/azure/api/speechServicesAPIVersion32"
 
 // Request/Response types
 export type {
-  Transcription,
+  PaginatedTranscriptions, Transcription,
   TranscriptionProperties,
-  TranscriptionsListParams,
-  PaginatedTranscriptions
+  TranscriptionsListParams
 }
 
-// Status enum
-export { AzureStatus }
+// Enums (from official Azure spec)
+export { LanguageIdentificationMode } from "../generated/azure/schema/languageIdentificationMode"
+export type { LanguageIdentificationProperties } from "../generated/azure/schema/languageIdentificationProperties"
+export { AzureStatus, ProfanityFilterMode, PunctuationMode }
+
