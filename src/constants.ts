@@ -849,7 +849,8 @@ export const OpenAIRealtimeAudioFormat = RealtimeTranscriptionSessionCreateReque
  * })
  * ```
  */
-export const OpenAIRealtimeTurnDetection = RealtimeTranscriptionSessionCreateRequestTurnDetectionType
+export const OpenAIRealtimeTurnDetection =
+  RealtimeTranscriptionSessionCreateRequestTurnDetectionType
 
 /**
  * OpenAI Realtime input transcription models
@@ -872,8 +873,7 @@ export const OpenAIRealtimeTranscriptionModel = {
 } as const satisfies Record<string, AudioTranscriptionModel>
 
 /** OpenAI Realtime model type */
-export type OpenAIRealtimeModelType =
-  (typeof OpenAIRealtimeModel)[keyof typeof OpenAIRealtimeModel]
+export type OpenAIRealtimeModelType = (typeof OpenAIRealtimeModel)[keyof typeof OpenAIRealtimeModel]
 
 /** OpenAI Realtime audio format type */
 export type OpenAIRealtimeAudioFormatType =

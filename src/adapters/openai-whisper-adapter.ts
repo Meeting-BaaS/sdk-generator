@@ -26,10 +26,7 @@ import type {
   SessionCreatedEvent,
   ErrorEvent as RealtimeErrorEvent
 } from "../generated/openai/streaming-types"
-import {
-  getOpenAIRealtimeUrl,
-  REALTIME_SERVER_EVENTS
-} from "../generated/openai/streaming-types"
+import { getOpenAIRealtimeUrl, REALTIME_SERVER_EVENTS } from "../generated/openai/streaming-types"
 
 // Import generated API client function - FULL TYPE SAFETY!
 import { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
@@ -344,17 +341,14 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         type: "session.update",
         session: {
           modalities: ["audio", "text"],
-          input_audio_format:
-            openaiOpts.inputAudioFormat || OpenAIRealtimeAudioFormat.pcm16,
+          input_audio_format: openaiOpts.inputAudioFormat || OpenAIRealtimeAudioFormat.pcm16,
           input_audio_transcription: {
             model: OpenAIRealtimeTranscriptionModel["whisper-1"]
           },
           // Use server VAD for turn detection; OpenAI defaults: threshold=0.5, prefix=300ms, silence=500ms
           turn_detection: openaiOpts.turnDetection
             ? {
-                type:
-                  openaiOpts.turnDetection.type ||
-                  OpenAIRealtimeTurnDetection.server_vad,
+                type: openaiOpts.turnDetection.type || OpenAIRealtimeTurnDetection.server_vad,
                 threshold: openaiOpts.turnDetection.threshold,
                 prefix_padding_ms: openaiOpts.turnDetection.prefixPaddingMs,
                 silence_duration_ms: openaiOpts.turnDetection.silenceDurationMs

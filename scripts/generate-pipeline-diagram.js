@@ -515,11 +515,11 @@ flowchart TB
   mmd += `
     %% Specs requiring pre-processing
 `
-  // Map pre-fix scripts to their target specs
+  // Map pre-fix scripts to their target spec files (must match sanitized spec filenames)
   const preFixToSpec = {
-    "fix-deepgram-spec": "deepgram_openapi",
-    "fix-openai-spec": "openai_whisper_openapi",
-    "fix-speechmatics-spec": "speechmatics_batch"
+    "fix-deepgram-spec": "deepgram-openapi",      // specs/deepgram-openapi.yml
+    "fix-openai-spec": "openai-openapi",          // specs/openai-openapi.yaml
+    "fix-speechmatics-spec": "speechmatics-batch" // specs/speechmatics-batch.yml
   }
   for (const script of preOrvalFixes) {
     const scriptId = sanitizeId(script.replace(".js", ""))
@@ -571,11 +571,12 @@ flowchart TB
   mmd += `
     %% Streaming spec sources to streaming scripts
 `
+  // Map streaming sync scripts to their source spec files (must match sanitized spec filenames)
   const streamingSpecMap = {
-    "sync-assemblyai-streaming-types": "assemblyai_asyncapi",
-    "sync-deepgram-streaming-types": "deepgram_streaming_sdk",
-    "sync-speechmatics-streaming-types": "speechmatics_asyncapi",
-    "sync-soniox-streaming-types": "soniox_streaming_types"
+    "sync-assemblyai-streaming-types": "assemblyai-streaming-sdk",   // specs/assemblyai-streaming-sdk.ts
+    "sync-deepgram-streaming-types": "deepgram-streaming-sdk",       // specs/deepgram-streaming-sdk.ts
+    "sync-speechmatics-streaming-types": "speechmatics-asyncapi",    // specs/speechmatics-asyncapi.yml
+    "sync-soniox-streaming-types": "soniox-streaming-types"          // specs/soniox-streaming-types.ts (manual)
   }
   for (const script of streamingScripts) {
     const scriptId = sanitizeId(script.replace(".js", ""))

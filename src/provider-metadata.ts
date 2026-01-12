@@ -207,7 +207,9 @@ export const ProviderCapabilitiesMap = {
  * @internal
  */
 type ProvidersWithCapability<K extends keyof ProviderCapabilities> = {
-  [P in keyof typeof ProviderCapabilitiesMap]: (typeof ProviderCapabilitiesMap)[P] extends { [key in K]: true }
+  [P in keyof typeof ProviderCapabilitiesMap]: (typeof ProviderCapabilitiesMap)[P] extends {
+    [key in K]: true
+  }
     ? P
     : never
 }[keyof typeof ProviderCapabilitiesMap]
