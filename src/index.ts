@@ -7,8 +7,8 @@
 export * from "./router"
 export * from "./adapters"
 
-// Webhook normalization exports
-export * from "./webhooks"
+// Note: Webhooks are NOT exported here to keep main entry browser-safe (no node:crypto)
+// Import webhooks separately: import { WebhookRouter } from 'voice-router-dev/webhooks'
 
 // Field configurations for UI rendering
 export * from "./field-configs"

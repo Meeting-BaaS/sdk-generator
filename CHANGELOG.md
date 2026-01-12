@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2026-01-12
+
+### Changed
+
+#### Browser-Safe Main Entry Point
+
+The main SDK entry point is now browser-safe. Webhooks (which use `node:crypto`) are moved to a separate entry point.
+
+**Before (0.6.0):**
+```typescript
+// This pulled in node:crypto and broke Next.js/browser builds
+import { WebhookRouter, AllProviders } from 'voice-router-dev';
+```
+
+**After (0.6.1):**
+```typescript
+// Main entry is now browser-safe
+import { VoiceRouter, AllProviders, StreamingProviders } from 'voice-router-dev';
+
+// Webhooks are server-side only - import separately
+import { WebhookRouter } from 'voice-router-dev/webhooks';
+```
+
+**Why this matters:**
+- Next.js apps can now import from the main entry without webpack errors
+- No more `node:crypto` pollution in client bundles
+- Cloudflare Workers and edge runtimes work out of the box
+
+**Entry point summary:**
+
+| Entry Point | Browser Safe | Contains |
+|-------------|--------------|----------|
+| `voice-router-dev` | ✅ Yes | Router, Adapters, Types, Metadata |
+| `voice-router-dev/webhooks` | ❌ No (node:crypto) | WebhookRouter, handlers |
+| `voice-router-dev/constants` | ✅ Yes | Enums only |
+| `voice-router-dev/field-configs` | ✅ Yes | Field configurations |
+| `voice-router-dev/provider-metadata` | ✅ Yes | Capabilities, languages |
+
+---
+
 ## [0.6.0] - 2026-01-11
 
 ### Added

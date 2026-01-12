@@ -167,7 +167,8 @@ await session.close();
 
 ```typescript
 import express from 'express';
-import { WebhookRouter } from 'voice-router-dev';
+// Webhooks use node:crypto - import from separate entry point
+import { WebhookRouter } from 'voice-router-dev/webhooks';
 
 const app = express();
 const webhookRouter = new WebhookRouter();
