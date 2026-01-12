@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.2] - 2026-01-12
+
+### Added
+
+#### Typed Soniox Streaming Options
+
+New `SonioxStreamingOptions` interface with full type safety - no more `as any` casts needed:
+
+```typescript
+await adapter.transcribeStream({
+  sonioxStreaming: {
+    model: 'stt-rt-preview',
+    enableSpeakerDiarization: true,
+    enableEndpointDetection: true,
+    context: {
+      terms: ['TypeScript', 'React'],
+      text: 'Technical discussion'
+    },
+    translation: { type: 'one_way', target_language: 'es' }
+  }
+});
+```
+
+**Features:**
+- `audioFormat` - PCM encodings (`pcm_s16le`, `mulaw`, etc.) or auto-detect (`wav`, `mp3`, etc.)
+- `enableSpeakerDiarization` - Speaker labels on each token
+- `enableLanguageIdentification` - Language detection per token
+- `enableEndpointDetection` - Detect when speaker finishes
+- `context` - Structured vocabulary hints (terms, text, translation terms)
+- `translation` - One-way or two-way translation config
+- `languageHints` - Expected languages for better accuracy
+- `clientReferenceId` - Custom tracking ID
+
+---
+
 ## [0.6.1] - 2026-01-12
 
 ### Changed
