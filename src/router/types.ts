@@ -39,7 +39,8 @@ import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gl
 import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
 import type {
   DeepgramStreamingOptions,
-  AssemblyAIStreamingOptions
+  AssemblyAIStreamingOptions,
+  OpenAIStreamingOptions
 } from "./provider-streaming-types"
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -219,15 +220,27 @@ export type ProviderExtendedDataMap = {
 export type { TranscriptionProvider, ProviderCapabilities, AudioInput } from "../types/core"
 import type { TranscriptionProvider } from "../types/core"
 
+// Import derived streaming types from provider-metadata (compile-time derived from capabilities)
+import type {
+  StreamingProviderType,
+  BatchOnlyProviderType
+} from "../provider-metadata"
+
 /**
  * Providers that support real-time streaming transcription
+ *
+ * This type is automatically derived from ProviderCapabilitiesMap.streaming in provider-metadata.ts
+ * No manual sync needed - if you set `streaming: true` for a provider, it's included here.
  */
-export type StreamingProvider = "gladia" | "deepgram" | "assemblyai" | "soniox"
+export type StreamingProvider = StreamingProviderType
 
 /**
  * Providers that only support batch/async transcription
+ *
+ * Automatically derived from providers where streaming is false or undefined.
+ * Note: Speechmatics has a WebSocket API but streaming is not yet implemented in this SDK.
  */
-export type BatchOnlyProvider = "azure-stt" | "openai-whisper" | "speechmatics"
+export type BatchOnlyProvider = BatchOnlyProviderType
 
 /**
  * WebSocket session status for streaming transcription
@@ -1014,6 +1027,31 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    * ```
    */
   assemblyaiStreaming?: AssemblyAIStreamingOptions
+
+  /**
+   * OpenAI Realtime API streaming options
+   *
+   * Configure the OpenAI Realtime WebSocket connection for audio transcription.
+   * Uses the Realtime API which supports real-time audio input transcription.
+   *
+   * @see https://platform.openai.com/docs/guides/realtime
+   *
+   * @example
+   * ```typescript
+   * await adapter.transcribeStream({
+   *   openaiStreaming: {
+   *     model: 'gpt-4o-realtime-preview',
+   *     voice: 'alloy',
+   *     turnDetection: {
+   *       type: 'server_vad',
+   *       threshold: 0.5,
+   *       silenceDurationMs: 500
+   *     }
+   *   }
+   * });
+   * ```
+   */
+  openaiStreaming?: OpenAIStreamingOptions
 
   /**
    * Regional endpoint for streaming (Gladia only)

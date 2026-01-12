@@ -30,11 +30,15 @@ export const speechmaticsMaxDelayModeSchema = zod.enum(["fixed", "flexible"])
 export const batchTranscriptionParams = zod.object({
   language: zod
     .string()
-    .describe("Language model to process the audio input, normally specified as an ISO language code"),
+    .describe(
+      "Language model to process the audio input, normally specified as an ISO language code"
+    ),
   domain: zod
     .string()
     .optional()
-    .describe('Request a specialized model based on "language" but optimized for a particular field'),
+    .describe(
+      'Request a specialized model based on "language" but optimized for a particular field'
+    ),
   output_locale: zod
     .string()
     .optional()
@@ -48,7 +52,9 @@ export const batchTranscriptionParams = zod.object({
   enable_entities: zod
     .boolean()
     .optional()
-    .describe("Include additional entity objects in the transcription results (dates, numbers, etc)"),
+    .describe(
+      "Include additional entity objects in the transcription results (dates, numbers, etc)"
+    ),
   max_delay_mode: speechmaticsMaxDelayModeSchema
     .optional()
     .describe("Whether to enable flexible endpointing for entities")

@@ -570,13 +570,17 @@ export function createAzureSTTAdapter(
 
 // API client functions
 export {
-  transcriptionsCreate, transcriptionsDelete, transcriptionsGet, transcriptionsList,
+  transcriptionsCreate,
+  transcriptionsDelete,
+  transcriptionsGet,
+  transcriptionsList,
   transcriptionsListFiles
 } from "../generated/azure/api/speechServicesAPIVersion32"
 
 // Request/Response types
 export type {
-  PaginatedTranscriptions, Transcription,
+  PaginatedTranscriptions,
+  Transcription,
   TranscriptionProperties,
   TranscriptionsListParams
 }
@@ -585,4 +589,3 @@ export type {
 export { LanguageIdentificationMode } from "../generated/azure/schema/languageIdentificationMode"
 export type { LanguageIdentificationProperties } from "../generated/azure/schema/languageIdentificationProperties"
 export { AzureStatus, ProfanityFilterMode, PunctuationMode }
-

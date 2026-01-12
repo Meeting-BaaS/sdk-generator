@@ -1,1 +1,2278 @@
-{"openapi": "3.1.0", "info": {"title": "Soniox Public API", "version": "1.0.0", "description": ""}, "paths": {"/v1/files": {"get": {"operationId": "get_files", "summary": "Get files", "parameters": [{"in": "query", "name": "limit", "schema": {"default": 1000, "description": "Maximum number of files to return.", "maximum": 1000, "minimum": 1, "title": "Limit", "type": "integer"}, "required": false, "description": "Maximum number of files to return."}, {"in": "query", "name": "cursor", "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Pagination cursor for the next page of results.", "title": "Cursor"}, "required": false, "description": "Pagination cursor for the next page of results."}], "responses": {"200": {"description": "List of files.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GetFilesResponse"}, "example": {"files": [{"id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753", "filename": "example.mp3", "size": 123456, "created_at": "2024-11-26T00:00:00Z"}], "next_page_cursor": "cursor_or_null"}}}}, "400": {"description": "Invalid request.\n\nError types:\n- `invalid_cursor`: Invalid cursor parameter.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "invalid_cursor", "message": "Invalid cursor parameter.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Retrieves list of uploaded files.", "tags": ["Files"], "security": [{"PublicApiAuth": []}]}, "post": {"operationId": "upload_file", "summary": "Upload file", "parameters": [], "responses": {"201": {"description": "Uploaded file.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/File"}, "example": {"id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753", "filename": "example.mp3", "size": 123456, "created_at": "2024-11-26T00:00:00Z"}}}}, "400": {"description": "Invalid request.\n\nError types:\n- `invalid_request`:\n  - Invalid request.\n  - Exceeded maximum file size (maximum is 1073741824 bytes).\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "invalid_request", "message": "Invalid request.", "validation_errors": [{"error_type": "missing", "location": "file.file", "message": "Field required"}], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Uploads a new file.", "tags": ["Files"], "requestBody": {"content": {"multipart/form-data": {"schema": {"title": "MultiPartBodyParams", "type": "object", "properties": {"client_reference_id": {"anyOf": [{"maxLength": 256, "type": "string"}, {"type": "null"}], "description": "Optional tracking identifier string. Does not need to be unique.", "title": "Client Reference Id"}, "file": {"description": "The file to upload. Original file name will be used unless a custom filename is provided.", "format": "binary", "title": "File", "type": "string"}}, "required": ["file"]}}}, "required": true}, "security": [{"PublicApiAuth": []}]}}, "/v1/files/{file_id}": {"get": {"operationId": "get_file", "summary": "Get file", "parameters": [{"in": "path", "name": "file_id", "schema": {"format": "uuid", "title": "File Id", "type": "string"}, "required": true}], "responses": {"200": {"description": "File metadata.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/File"}, "example": {"id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753", "filename": "example.mp3", "size": 123456, "created_at": "2024-11-26T00:00:00Z", "client_reference_id": "some_internal_id"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "404": {"description": "File not found.\n\nError types:\n- `file_not_found`: File could not be found.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "file_not_found", "message": "File could not be found.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Retrieve metadata for an uploaded file.", "tags": ["Files"], "security": [{"PublicApiAuth": []}]}, "delete": {"operationId": "delete_file", "summary": "Delete file", "parameters": [{"in": "path", "name": "file_id", "schema": {"format": "uuid", "title": "File Id", "type": "string"}, "required": true}], "responses": {"204": {"description": "File deleted."}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "404": {"description": "File not found.\n\nError types:\n- `file_not_found`: File could not be found.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "file_not_found", "message": "File could not be found.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Permanently deletes specified file.", "tags": ["Files"], "security": [{"PublicApiAuth": []}]}}, "/v1/files/{file_id}/url": {"get": {"operationId": "get_file_url", "summary": "Get file URL", "parameters": [{"in": "path", "name": "file_id", "schema": {"format": "uuid", "title": "File Id", "type": "string"}, "required": true}], "responses": {"200": {"description": "File URL.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/FileUrl"}, "example": {"url": "https://api.soniox.com/v1/files/84c32fc6-4fb5-4e7a-b656-b5ec70493753/download?token=TOKEN"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "404": {"description": "File not found.\n\nError types:\n- `file_not_found`: File could not be found.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "file_not_found", "message": "File could not be found.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Get a temporary file URL. URL is valid for 1 hour.", "tags": ["Files"], "security": [{"PublicApiAuth": []}]}}, "/v1/transcriptions": {"get": {"operationId": "get_transcriptions", "summary": "Get transcriptions", "parameters": [{"in": "query", "name": "limit", "schema": {"default": 1000, "description": "Maximum number of transcriptions to return.", "maximum": 1000, "minimum": 1, "title": "Limit", "type": "integer"}, "required": false, "description": "Maximum number of transcriptions to return."}, {"in": "query", "name": "cursor", "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Pagination cursor for the next page of results.", "title": "Cursor"}, "required": false, "description": "Pagination cursor for the next page of results."}], "responses": {"200": {"description": "A list of transcriptions.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GetTranscriptionsResponse"}, "example": {"transcriptions": [{"id": "73d4357d-cad2-4338-a60d-ec6f2044f721", "status": "completed", "created_at": "2024-11-26T00:00:00Z", "model": "stt-async-preview", "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3", "file_id": null, "filename": "coffee_shop.mp3", "language_hints": ["en", "fr"], "context": "extra context for the transcription", "audio_duration_ms": 16079, "error_message": null, "webhook_url": "https://example.com/webhook", "webhook_auth_header_name": "Authorization", "webhook_auth_header_value": "******************", "webhook_status_code": null, "client_reference_id": "some_internal_id"}], "next_page_cursor": "cursor_or_null"}}}}, "400": {"description": "Invalid request.\n\nError types:\n- `invalid_cursor`: Invalid cursor parameter.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "invalid_cursor", "message": "Invalid cursor parameter.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Retrieves list of transcriptions.", "tags": ["Transcriptions"], "security": [{"PublicApiAuth": []}]}, "post": {"operationId": "create_transcription", "summary": "Create transcription", "parameters": [], "responses": {"201": {"description": "Created transcription.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Transcription"}, "example": {"id": "73d4357d-cad2-4338-a60d-ec6f2044f721", "status": "queued", "created_at": "2024-11-26T00:00:00Z", "model": "stt-async-preview", "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3", "file_id": null, "filename": "coffee_shop.mp3", "language_hints": ["en", "fr"], "context": "extra context for the transcription", "audio_duration_ms": 0, "error_message": null, "webhook_url": "https://example.com/webhook", "webhook_auth_header_name": "Authorization", "webhook_auth_header_value": "******************", "webhook_status_code": null, "client_reference_id": "some_internal_id"}}}}, "400": {"description": "Invalid request.\n\nError types:\n- `invalid_request`: Invalid request.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "invalid_request", "message": "Invalid request.", "validation_errors": [{"error_type": "value_error", "location": "body.payload.model", "message": "Invalid model"}], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Creates a new transcription.", "tags": ["Transcriptions"], "requestBody": {"content": {"application/json": {"schema": {"$ref": "#/components/schemas/CreateTranscriptionPayload"}}}, "required": true}, "security": [{"PublicApiAuth": []}]}}, "/v1/transcriptions/{transcription_id}": {"get": {"operationId": "get_transcription", "summary": "Get transcription", "parameters": [{"in": "path", "name": "transcription_id", "schema": {"format": "uuid", "title": "Transcription Id", "type": "string"}, "required": true}], "responses": {"200": {"description": "Transcription details.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Transcription"}, "example": {"id": "73d4357d-cad2-4338-a60d-ec6f2044f721", "status": "completed", "created_at": "2024-11-26T00:00:00Z", "model": "stt-async-preview", "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3", "file_id": null, "filename": "coffee_shop.mp3", "language_hints": ["en", "fr"], "context": "extra context for the transcription", "audio_duration_ms": 16079, "error_message": null, "webhook_url": "https://example.com/webhook", "webhook_auth_header_name": "Authorization", "webhook_auth_header_value": "******************", "webhook_status_code": null, "client_reference_id": "some_internal_id"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "404": {"description": "Transcription not found.\n\nError types:\n- `transcription_not_found`: Transcription could not be found.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "transcription_not_found", "message": "Transcription could not be found.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Retrieves detailed information about a specific transcription.", "tags": ["Transcriptions"], "security": [{"PublicApiAuth": []}]}, "delete": {"operationId": "delete_transcription", "summary": "Delete transcription", "parameters": [{"in": "path", "name": "transcription_id", "schema": {"format": "uuid", "title": "Transcription Id", "type": "string"}, "required": true}], "responses": {"204": {"description": "Transcription deleted."}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "404": {"description": "Transcription not found.\n\nError types:\n- `transcription_not_found`: Transcription could not be found.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "transcription_not_found", "message": "Transcription could not be found.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "409": {"description": "Invalid transcription state.\n\nError types:\n- `transcription_invalid_state`:\n  - Cannot delete transcription with processing status.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "transcription_invalid_state", "message": "Can only get transcript with completed status.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Permanently deletes a transcription and its associated files. Cannot delete transcriptions that are currently processing.", "tags": ["Transcriptions"], "security": [{"PublicApiAuth": []}]}}, "/v1/transcriptions/{transcription_id}/transcript": {"get": {"operationId": "get_transcription_transcript", "summary": "Get transcription transcript", "parameters": [{"in": "path", "name": "transcription_id", "schema": {"format": "uuid", "title": "Transcription Id", "type": "string"}, "required": true}], "responses": {"200": {"description": "Transcription transcript.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/TranscriptionTranscript"}, "example": {"id": "19b6d61d-02db-4c25-bc71-b4094dc310c8", "text": "Hello", "tokens": [{"text": "Hel", "start_ms": 10, "end_ms": 90, "confidence": 0.95}, {"text": "lo", "start_ms": 110, "end_ms": 160, "confidence": 0.98}]}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "404": {"description": "Transcription not found.\n\nError types:\n- `transcription_not_found`: Transcription could not be found.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "transcription_not_found", "message": "Transcription could not be found.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "409": {"description": "Invalid transcription state.\n\nError types:\n- `transcription_invalid_state`:\n  - Can only get transcript with completed status.\n  - File transcription has failed.\n  - Transcript no longer available.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "transcription_invalid_state", "message": "Can only get transcript with completed status.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Retrieves the full transcript text and detailed tokens for a completed transcription. Only available for successfully completed transcriptions.", "tags": ["Transcriptions"], "security": [{"PublicApiAuth": []}]}}, "/v1/models": {"get": {"operationId": "get_models", "summary": "Get models", "parameters": [], "responses": {"200": {"description": "List of available models and their attributes.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/GetModelsResponse"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Retrieves list of available models and their attributes.", "tags": ["Models"], "security": [{"PublicApiAuth": []}]}}, "/v1/auth/temporary-api-key": {"post": {"operationId": "create_temporary_api_key", "summary": "Create temporary API key", "parameters": [], "responses": {"201": {"description": "Created temporary API key.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CreateTemporaryApiKeyResponse"}, "example": {"api_key": "temp:WYJ67RBEFUWQXXPKYPD2UGXKWB", "expires_at": "2025-02-22T22:47:37.150Z"}}}}, "400": {"description": "Invalid request.\n\nError types:\n- `invalid_request`: Invalid request.\n", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 400, "error_type": "invalid_request", "message": "Invalid request.", "validation_errors": [{"error_type": "less_than_equal", "location": "body.payload.expires_in_seconds", "message": "Input should be less than or equal to 3600"}], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "401": {"description": "Authentication error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 401, "error_type": "unauthenticated", "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}, "500": {"description": "Internal server error.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiError"}, "example": {"status_code": 500, "error_type": "internal_error", "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.", "validation_errors": [], "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"}}}}}, "description": "Creates a short-lived API key for specific temporary use cases. The key will automatically expire after the specified duration.", "tags": ["Auth"], "requestBody": {"content": {"application/json": {"schema": {"$ref": "#/components/schemas/CreateTemporaryApiKeyPayload"}}}, "required": true}, "security": [{"PublicApiAuth": []}]}}}, "components": {"schemas": {"GetFilesPayload": {"properties": {"limit": {"default": 1000, "description": "Maximum number of files to return.", "maximum": 1000, "minimum": 1, "title": "Limit", "type": "integer"}, "cursor": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Pagination cursor for the next page of results.", "title": "Cursor"}}, "title": "GetFilesPayload", "type": "object"}, "File": {"description": "File metadata.", "example": {"client_reference_id": "some_internal_id", "created_at": "2024-11-26T00:00:00Z", "filename": "example.mp3", "id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753", "size": 123456}, "properties": {"id": {"description": "Unique identifier of the file.", "format": "uuid", "title": "Id", "type": "string"}, "filename": {"description": "Name of the file.", "title": "Filename", "type": "string"}, "size": {"description": "Size of the file in bytes.", "title": "Size", "type": "integer"}, "created_at": {"description": "UTC timestamp indicating when the file was uploaded.", "format": "date-time", "title": "Created At", "type": "string"}, "client_reference_id": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Tracking identifier string.", "title": "Client Reference Id"}}, "required": ["id", "filename", "size", "created_at"], "title": "File", "type": "object"}, "GetFilesResponse": {"description": "A list of files.", "example": {"files": [{"created_at": "2024-11-26T00:00:00Z", "filename": "example.mp3", "id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753", "size": 123456}], "next_page_cursor": "cursor_or_null"}, "properties": {"files": {"description": "List of uploaded files.", "items": {"$ref": "#/components/schemas/File"}, "title": "Files", "type": "array"}, "next_page_cursor": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.", "title": "Next Page Cursor"}}, "required": ["files"], "title": "GetFilesResponse", "type": "object"}, "ApiError": {"properties": {"status_code": {"title": "Status Code", "type": "integer"}, "error_type": {"title": "Error Type", "type": "string"}, "message": {"title": "Message", "type": "string"}, "validation_errors": {"items": {"$ref": "#/components/schemas/ApiErrorValidationError"}, "title": "Validation Errors", "type": "array"}, "request_id": {"title": "Request Id", "type": "string"}}, "required": ["status_code", "error_type", "message", "validation_errors", "request_id"], "title": "ApiError", "type": "object"}, "ApiErrorValidationError": {"properties": {"error_type": {"title": "Error Type", "type": "string"}, "location": {"title": "Location", "type": "string"}, "message": {"title": "Message", "type": "string"}}, "required": ["error_type", "location", "message"], "title": "ApiErrorValidationError", "type": "object"}, "UploadFilePayload": {"properties": {"client_reference_id": {"anyOf": [{"maxLength": 256, "type": "string"}, {"type": "null"}], "description": "Optional tracking identifier string. Does not need to be unique.", "title": "Client Reference Id"}}, "title": "UploadFilePayload", "type": "object"}, "FileUrl": {"description": "Temporary file URL.", "example": {"url": "https://api.soniox.com/v1/files/84c32fc6-4fb5-4e7a-b656-b5ec70493753/download?signature=TOKEN"}, "properties": {"url": {"description": "Temporary file URL.", "title": "Url", "type": "string"}}, "required": ["url"], "title": "FileUrl", "type": "object"}, "GetTranscriptionsPayload": {"properties": {"limit": {"default": 1000, "description": "Maximum number of transcriptions to return.", "maximum": 1000, "minimum": 1, "title": "Limit", "type": "integer"}, "cursor": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Pagination cursor for the next page of results.", "title": "Cursor"}}, "title": "GetTranscriptionsPayload", "type": "object"}, "GetTranscriptionsResponse": {"properties": {"transcriptions": {"description": "List of transcriptions.", "items": {"$ref": "#/components/schemas/Transcription"}, "title": "Transcriptions", "type": "array"}, "next_page_cursor": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.", "title": "Next Page Cursor"}}, "required": ["transcriptions"], "title": "GetTranscriptionsResponse", "type": "object"}, "Transcription": {"description": "A transcription.", "example": {"audio_duration_ms": 0, "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3", "client_reference_id": "some_internal_id", "created_at": "2024-11-26T00:00:00Z", "error_message": null, "error_type": null, "file_id": null, "filename": "coffee_shop.mp3", "id": "73d4357d-cad2-4338-a60d-ec6f2044f721", "language_hints": ["en", "fr"], "model": "stt-async-preview", "status": "queued", "webhook_auth_header_name": "Authorization", "webhook_auth_header_value": "******************", "webhook_status_code": null, "webhook_url": "https://example.com/webhook"}, "properties": {"id": {"description": "Unique identifier for the transcription request.", "format": "uuid", "title": "Id", "type": "string"}, "status": {"allOf": [{"$ref": "#/components/schemas/TranscriptionStatus"}], "description": "Transcription status."}, "created_at": {"description": "UTC timestamp indicating when the transcription was created.", "format": "date-time", "title": "Created At", "type": "string"}, "model": {"description": "Speech-to-text model used for the transcription.", "title": "Model", "type": "string"}, "audio_url": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "URL of the file being transcribed.", "title": "Audio Url"}, "file_id": {"anyOf": [{"format": "uuid", "type": "string"}, {"type": "null"}], "description": "ID of the file being transcribed.", "title": "File Id"}, "filename": {"description": "Name of the file being transcribed.", "title": "Filename", "type": "string"}, "language_hints": {"anyOf": [{"items": {"type": "string"}, "type": "array"}, {"type": "null"}], "description": "Expected languages in the audio. If not specified, languages are automatically detected.", "title": "Language Hints"}, "enable_speaker_diarization": {"description": "When `true`, speakers are identified and separated in the transcription output.", "title": "Enable Speaker Diarization", "type": "boolean"}, "enable_language_identification": {"description": "When `true`, language is detected for each part of the transcription.", "title": "Enable Language Identification", "type": "boolean"}, "audio_duration_ms": {"anyOf": [{"type": "integer"}, {"type": "null"}], "description": "Duration of the audio in milliseconds. Only available after processing begins.", "title": "Audio Duration Ms"}, "error_type": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Error type if transcription failed. `null` for successful or in-progress transcriptions.", "title": "Error Type"}, "error_message": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Error message if transcription failed. `null` for successful or in-progress transcriptions.", "title": "Error Message"}, "webhook_url": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "URL to receive webhook notifications when transcription is completed or fails.", "title": "Webhook Url"}, "webhook_auth_header_name": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Name of the authentication header sent with webhook notifications.", "title": "Webhook Auth Header Name"}, "webhook_auth_header_value": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Authentication header value. Always returned masked as `******************`.", "title": "Webhook Auth Header Value"}, "webhook_status_code": {"anyOf": [{"type": "integer"}, {"type": "null"}], "description": "HTTP status code received from your server when webhook was delivered. `null` if not yet sent.", "title": "Webhook Status Code"}, "client_reference_id": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Tracking identifier string.", "title": "Client Reference Id"}}, "required": ["id", "status", "created_at", "model", "filename", "enable_speaker_diarization", "enable_language_identification"], "title": "Transcription", "type": "object"}, "TranscriptionStatus": {"enum": ["queued", "processing", "completed", "error"], "title": "TranscriptionStatus", "type": "string"}, "CreateTranscriptionPayload": {"properties": {"model": {"description": "Speech-to-text model to use for the transcription.", "maxLength": 32, "title": "Model", "type": "string"}, "audio_url": {"anyOf": [{"maxLength": 4096, "pattern": "^https?://[^\\s]+$", "type": "string"}, {"type": "null"}], "description": "URL of the audio file to transcribe. Cannot be specified if `file_id` is specified.", "title": "Audio Url"}, "file_id": {"anyOf": [{"format": "uuid", "type": "string"}, {"type": "null"}], "description": "ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified.", "title": "File Id"}, "language_hints": {"anyOf": [{"items": {"maxLength": 10, "type": "string"}, "maxItems": 100, "type": "array"}, {"type": "null"}], "description": "Expected languages in the audio. If not specified, languages are automatically detected.", "title": "Language Hints"}, "language_hints_strict": {"anyOf": [{"type": "boolean"}, {"type": "null"}], "description": "When `true`, the model will rely more on language hints.", "title": "Language Hints Strict"}, "enable_speaker_diarization": {"anyOf": [{"type": "boolean"}, {"type": "null"}], "description": "When `true`, speakers are identified and separated in the transcription output.", "title": "Enable Speaker Diarization"}, "enable_language_identification": {"anyOf": [{"type": "boolean"}, {"type": "null"}], "description": "When `true`, language is detected for each part of the transcription.", "title": "Enable Language Identification"}, "translation": {"anyOf": [{"$ref": "#/components/schemas/TranslationConfig"}, {"type": "null"}], "description": "Translation configuration."}, "context": {"anyOf": [{"$ref": "#/components/schemas/StructuredContext"}, {"type": "string"}, {"type": "null"}], "description": "Additional context to improve transcription accuracy and formatting of specialized terms.", "title": "Context"}, "webhook_url": {"anyOf": [{"maxLength": 256, "pattern": "^https?://[^\\s]+$", "type": "string"}, {"type": "null"}], "description": "URL to receive webhook notifications when transcription is completed or fails.", "title": "Webhook Url"}, "webhook_auth_header_name": {"anyOf": [{"maxLength": 256, "type": "string"}, {"type": "null"}], "description": "Name of the authentication header sent with webhook notifications.", "title": "Webhook Auth Header Name"}, "webhook_auth_header_value": {"anyOf": [{"maxLength": 256, "type": "string"}, {"type": "null"}], "description": "Authentication header value sent with webhook notifications.", "title": "Webhook Auth Header Value"}, "client_reference_id": {"anyOf": [{"maxLength": 256, "type": "string"}, {"type": "null"}], "description": "Optional tracking identifier string. Does not need to be unique.", "title": "Client Reference Id"}}, "required": ["model"], "title": "CreateTranscriptionPayload", "type": "object"}, "StructuredContext": {"properties": {"general": {"anyOf": [{"items": {"$ref": "#/components/schemas/StructuredContextGeneralItem"}, "type": "array"}, {"type": "null"}], "description": "General context items.", "title": "General"}, "text": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Text context.", "title": "Text"}, "terms": {"anyOf": [{"items": {"type": "string"}, "type": "array"}, {"type": "null"}], "description": "Terms that might occur in speech.", "title": "Terms"}, "translation_terms": {"anyOf": [{"items": {"$ref": "#/components/schemas/StructuredContextTranslationTerm"}, "type": "array"}, {"type": "null"}], "description": "Hints how to translate specific terms. Ignored if translation is not enabled.", "title": "Translation Terms"}}, "title": "StructuredContext", "type": "object"}, "StructuredContextGeneralItem": {"properties": {"key": {"description": "Item key (e.g. \"Domain\").", "title": "Key", "type": "string"}, "value": {"description": "Item value (e.g. \"medicine\").", "title": "Value", "type": "string"}}, "required": ["key", "value"], "title": "StructuredContextGeneralItem", "type": "object"}, "StructuredContextTranslationTerm": {"properties": {"source": {"description": "Source term.", "title": "Source", "type": "string"}, "target": {"description": "Target term to translate to.", "title": "Target", "type": "string"}}, "required": ["source", "target"], "title": "StructuredContextTranslationTerm", "type": "object"}, "TranslationConfig": {"properties": {"type": {"enum": ["one_way", "two_way"], "title": "Type", "type": "string"}, "target_language": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Target Language"}, "language_a": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Language A"}, "language_b": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Language B"}}, "required": ["type"], "title": "TranslationConfig", "type": "object"}, "TranscriptionTranscript": {"description": "The transcription text.", "example": {"id": "19b6d61d-02db-4c25-bc71-b4094dc310c8", "text": "Hello", "tokens": [{"confidence": 0.95, "end_ms": 90, "start_ms": 10, "text": "Hel"}, {"confidence": 0.98, "end_ms": 160, "start_ms": 110, "text": "lo"}]}, "properties": {"id": {"description": "Unique identifier of the transcription this transcript belongs to.", "format": "uuid", "title": "Id", "type": "string"}, "text": {"description": "Complete transcribed text content.", "title": "Text", "type": "string"}, "tokens": {"description": "List of detailed token information with timestamps and metadata.", "items": {"$ref": "#/components/schemas/TranscriptionTranscriptToken"}, "title": "Tokens", "type": "array"}}, "required": ["id", "text", "tokens"], "title": "TranscriptionTranscript", "type": "object"}, "TranscriptionTranscriptToken": {"description": "The transcript token.", "example": {"confidence": 0.95, "end_ms": 90, "start_ms": 10, "text": "Hel"}, "properties": {"text": {"description": "Token text content.", "title": "Text", "type": "string"}, "start_ms": {"description": "Start time of the token in milliseconds.", "title": "Start Ms", "type": "integer"}, "end_ms": {"description": "End time of the token in milliseconds.", "title": "End Ms", "type": "integer"}, "confidence": {"description": "Confidence score of the token, between 0.0 and 1.0.", "title": "Confidence", "type": "number"}, "speaker": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Speaker identifier. Only present when speaker diarization is enabled.", "title": "Speaker"}, "language": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Detected language code for this token. Only present when language identification is enabled.", "title": "Language"}, "is_audio_event": {"anyOf": [{"type": "boolean"}, {"type": "null"}], "description": "Boolean indicating if this token represents an audio event. Only present when audio event detection is enabled.", "title": "Is Audio Event"}, "translation_status": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Translation status (\"none\", \"original\" or \"translation\"). Only when if translation is enabled.", "title": "Translation Status"}}, "required": ["text", "start_ms", "end_ms", "confidence"], "title": "TranscriptionTranscriptToken", "type": "object"}, "GetModelsResponse": {"example": {"models": [{"aliased_model_id": null, "context_version": 2, "id": "stt-rt-v3", "languages": [{"code": "af", "name": "Afrikaans"}, {"code": "sq", "name": "Albanian"}, {"code": "ar", "name": "Arabic"}, {"code": "az", "name": "Azerbaijani"}, {"code": "eu", "name": "Basque"}, {"code": "be", "name": "Belarusian"}, {"code": "bn", "name": "Bengali"}, {"code": "bs", "name": "Bosnian"}, {"code": "bg", "name": "Bulgarian"}, {"code": "ca", "name": "Catalan"}, {"code": "zh", "name": "Chinese"}, {"code": "hr", "name": "Croatian"}, {"code": "cs", "name": "Czech"}, {"code": "da", "name": "Danish"}, {"code": "nl", "name": "Dutch"}, {"code": "en", "name": "English"}, {"code": "et", "name": "Estonian"}, {"code": "fi", "name": "Finnish"}, {"code": "fr", "name": "French"}, {"code": "gl", "name": "Galician"}, {"code": "de", "name": "German"}, {"code": "el", "name": "Greek"}, {"code": "gu", "name": "Gujarati"}, {"code": "he", "name": "Hebrew"}, {"code": "hi", "name": "Hindi"}, {"code": "hu", "name": "Hungarian"}, {"code": "id", "name": "Indonesian"}, {"code": "it", "name": "Italian"}, {"code": "ja", "name": "Japanese"}, {"code": "kn", "name": "Kannada"}, {"code": "kk", "name": "Kazakh"}, {"code": "ko", "name": "Korean"}, {"code": "lv", "name": "Latvian"}, {"code": "lt", "name": "Lithuanian"}, {"code": "mk", "name": "Macedonian"}, {"code": "ms", "name": "Malay"}, {"code": "ml", "name": "Malayalam"}, {"code": "mr", "name": "Marathi"}, {"code": "no", "name": "Norwegian"}, {"code": "fa", "name": "Persian"}, {"code": "pl", "name": "Polish"}, {"code": "pt", "name": "Portuguese"}, {"code": "pa", "name": "Punjabi"}, {"code": "ro", "name": "Romanian"}, {"code": "ru", "name": "Russian"}, {"code": "sr", "name": "Serbian"}, {"code": "sk", "name": "Slovak"}, {"code": "sl", "name": "Slovenian"}, {"code": "es", "name": "Spanish"}, {"code": "sw", "name": "Swahili"}, {"code": "sv", "name": "Swedish"}, {"code": "tl", "name": "Tagalog"}, {"code": "ta", "name": "Tamil"}, {"code": "te", "name": "Telugu"}, {"code": "th", "name": "Thai"}, {"code": "tr", "name": "Turkish"}, {"code": "uk", "name": "Ukrainian"}, {"code": "ur", "name": "Urdu"}, {"code": "vi", "name": "Vietnamese"}, {"code": "cy", "name": "Welsh"}], "name": "Speech-to-Text Real-time v3", "one_way_translation": "all_languages", "supports_language_hints_strict": true, "transcription_mode": "real_time", "translation_targets": [], "two_way_translation": "all_languages", "two_way_translation_pairs": []}, {"aliased_model_id": null, "context_version": 2, "id": "stt-async-v3", "languages": [{"code": "af", "name": "Afrikaans"}, {"code": "sq", "name": "Albanian"}, {"code": "ar", "name": "Arabic"}, {"code": "az", "name": "Azerbaijani"}, {"code": "eu", "name": "Basque"}, {"code": "be", "name": "Belarusian"}, {"code": "bn", "name": "Bengali"}, {"code": "bs", "name": "Bosnian"}, {"code": "bg", "name": "Bulgarian"}, {"code": "ca", "name": "Catalan"}, {"code": "zh", "name": "Chinese"}, {"code": "hr", "name": "Croatian"}, {"code": "cs", "name": "Czech"}, {"code": "da", "name": "Danish"}, {"code": "nl", "name": "Dutch"}, {"code": "en", "name": "English"}, {"code": "et", "name": "Estonian"}, {"code": "fi", "name": "Finnish"}, {"code": "fr", "name": "French"}, {"code": "gl", "name": "Galician"}, {"code": "de", "name": "German"}, {"code": "el", "name": "Greek"}, {"code": "gu", "name": "Gujarati"}, {"code": "he", "name": "Hebrew"}, {"code": "hi", "name": "Hindi"}, {"code": "hu", "name": "Hungarian"}, {"code": "id", "name": "Indonesian"}, {"code": "it", "name": "Italian"}, {"code": "ja", "name": "Japanese"}, {"code": "kn", "name": "Kannada"}, {"code": "kk", "name": "Kazakh"}, {"code": "ko", "name": "Korean"}, {"code": "lv", "name": "Latvian"}, {"code": "lt", "name": "Lithuanian"}, {"code": "mk", "name": "Macedonian"}, {"code": "ms", "name": "Malay"}, {"code": "ml", "name": "Malayalam"}, {"code": "mr", "name": "Marathi"}, {"code": "no", "name": "Norwegian"}, {"code": "fa", "name": "Persian"}, {"code": "pl", "name": "Polish"}, {"code": "pt", "name": "Portuguese"}, {"code": "pa", "name": "Punjabi"}, {"code": "ro", "name": "Romanian"}, {"code": "ru", "name": "Russian"}, {"code": "sr", "name": "Serbian"}, {"code": "sk", "name": "Slovak"}, {"code": "sl", "name": "Slovenian"}, {"code": "es", "name": "Spanish"}, {"code": "sw", "name": "Swahili"}, {"code": "sv", "name": "Swedish"}, {"code": "tl", "name": "Tagalog"}, {"code": "ta", "name": "Tamil"}, {"code": "te", "name": "Telugu"}, {"code": "th", "name": "Thai"}, {"code": "tr", "name": "Turkish"}, {"code": "uk", "name": "Ukrainian"}, {"code": "ur", "name": "Urdu"}, {"code": "vi", "name": "Vietnamese"}, {"code": "cy", "name": "Welsh"}], "name": "Speech-to-Text Async v3", "one_way_translation": "all_languages", "supports_language_hints_strict": false, "transcription_mode": "async", "translation_targets": [], "two_way_translation": "all_languages", "two_way_translation_pairs": []}, {"aliased_model_id": "stt-rt-v3", "context_version": 2, "id": "stt-rt-preview", "languages": [{"code": "af", "name": "Afrikaans"}, {"code": "sq", "name": "Albanian"}, {"code": "ar", "name": "Arabic"}, {"code": "az", "name": "Azerbaijani"}, {"code": "eu", "name": "Basque"}, {"code": "be", "name": "Belarusian"}, {"code": "bn", "name": "Bengali"}, {"code": "bs", "name": "Bosnian"}, {"code": "bg", "name": "Bulgarian"}, {"code": "ca", "name": "Catalan"}, {"code": "zh", "name": "Chinese"}, {"code": "hr", "name": "Croatian"}, {"code": "cs", "name": "Czech"}, {"code": "da", "name": "Danish"}, {"code": "nl", "name": "Dutch"}, {"code": "en", "name": "English"}, {"code": "et", "name": "Estonian"}, {"code": "fi", "name": "Finnish"}, {"code": "fr", "name": "French"}, {"code": "gl", "name": "Galician"}, {"code": "de", "name": "German"}, {"code": "el", "name": "Greek"}, {"code": "gu", "name": "Gujarati"}, {"code": "he", "name": "Hebrew"}, {"code": "hi", "name": "Hindi"}, {"code": "hu", "name": "Hungarian"}, {"code": "id", "name": "Indonesian"}, {"code": "it", "name": "Italian"}, {"code": "ja", "name": "Japanese"}, {"code": "kn", "name": "Kannada"}, {"code": "kk", "name": "Kazakh"}, {"code": "ko", "name": "Korean"}, {"code": "lv", "name": "Latvian"}, {"code": "lt", "name": "Lithuanian"}, {"code": "mk", "name": "Macedonian"}, {"code": "ms", "name": "Malay"}, {"code": "ml", "name": "Malayalam"}, {"code": "mr", "name": "Marathi"}, {"code": "no", "name": "Norwegian"}, {"code": "fa", "name": "Persian"}, {"code": "pl", "name": "Polish"}, {"code": "pt", "name": "Portuguese"}, {"code": "pa", "name": "Punjabi"}, {"code": "ro", "name": "Romanian"}, {"code": "ru", "name": "Russian"}, {"code": "sr", "name": "Serbian"}, {"code": "sk", "name": "Slovak"}, {"code": "sl", "name": "Slovenian"}, {"code": "es", "name": "Spanish"}, {"code": "sw", "name": "Swahili"}, {"code": "sv", "name": "Swedish"}, {"code": "tl", "name": "Tagalog"}, {"code": "ta", "name": "Tamil"}, {"code": "te", "name": "Telugu"}, {"code": "th", "name": "Thai"}, {"code": "tr", "name": "Turkish"}, {"code": "uk", "name": "Ukrainian"}, {"code": "ur", "name": "Urdu"}, {"code": "vi", "name": "Vietnamese"}, {"code": "cy", "name": "Welsh"}], "name": "Speech-to-Text Real-time Preview", "one_way_translation": "all_languages", "supports_language_hints_strict": true, "transcription_mode": "real_time", "translation_targets": [], "two_way_translation": "all_languages", "two_way_translation_pairs": []}, {"aliased_model_id": "stt-async-v3", "context_version": 2, "id": "stt-async-preview", "languages": [{"code": "af", "name": "Afrikaans"}, {"code": "sq", "name": "Albanian"}, {"code": "ar", "name": "Arabic"}, {"code": "az", "name": "Azerbaijani"}, {"code": "eu", "name": "Basque"}, {"code": "be", "name": "Belarusian"}, {"code": "bn", "name": "Bengali"}, {"code": "bs", "name": "Bosnian"}, {"code": "bg", "name": "Bulgarian"}, {"code": "ca", "name": "Catalan"}, {"code": "zh", "name": "Chinese"}, {"code": "hr", "name": "Croatian"}, {"code": "cs", "name": "Czech"}, {"code": "da", "name": "Danish"}, {"code": "nl", "name": "Dutch"}, {"code": "en", "name": "English"}, {"code": "et", "name": "Estonian"}, {"code": "fi", "name": "Finnish"}, {"code": "fr", "name": "French"}, {"code": "gl", "name": "Galician"}, {"code": "de", "name": "German"}, {"code": "el", "name": "Greek"}, {"code": "gu", "name": "Gujarati"}, {"code": "he", "name": "Hebrew"}, {"code": "hi", "name": "Hindi"}, {"code": "hu", "name": "Hungarian"}, {"code": "id", "name": "Indonesian"}, {"code": "it", "name": "Italian"}, {"code": "ja", "name": "Japanese"}, {"code": "kn", "name": "Kannada"}, {"code": "kk", "name": "Kazakh"}, {"code": "ko", "name": "Korean"}, {"code": "lv", "name": "Latvian"}, {"code": "lt", "name": "Lithuanian"}, {"code": "mk", "name": "Macedonian"}, {"code": "ms", "name": "Malay"}, {"code": "ml", "name": "Malayalam"}, {"code": "mr", "name": "Marathi"}, {"code": "no", "name": "Norwegian"}, {"code": "fa", "name": "Persian"}, {"code": "pl", "name": "Polish"}, {"code": "pt", "name": "Portuguese"}, {"code": "pa", "name": "Punjabi"}, {"code": "ro", "name": "Romanian"}, {"code": "ru", "name": "Russian"}, {"code": "sr", "name": "Serbian"}, {"code": "sk", "name": "Slovak"}, {"code": "sl", "name": "Slovenian"}, {"code": "es", "name": "Spanish"}, {"code": "sw", "name": "Swahili"}, {"code": "sv", "name": "Swedish"}, {"code": "tl", "name": "Tagalog"}, {"code": "ta", "name": "Tamil"}, {"code": "te", "name": "Telugu"}, {"code": "th", "name": "Thai"}, {"code": "tr", "name": "Turkish"}, {"code": "uk", "name": "Ukrainian"}, {"code": "ur", "name": "Urdu"}, {"code": "vi", "name": "Vietnamese"}, {"code": "cy", "name": "Welsh"}], "name": "Speech-to-Text Async Preview", "one_way_translation": "all_languages", "supports_language_hints_strict": false, "transcription_mode": "async", "translation_targets": [], "two_way_translation": "all_languages", "two_way_translation_pairs": []}, {"aliased_model_id": "stt-rt-v3", "context_version": 2, "id": "stt-rt-v3-preview", "languages": [{"code": "af", "name": "Afrikaans"}, {"code": "sq", "name": "Albanian"}, {"code": "ar", "name": "Arabic"}, {"code": "az", "name": "Azerbaijani"}, {"code": "eu", "name": "Basque"}, {"code": "be", "name": "Belarusian"}, {"code": "bn", "name": "Bengali"}, {"code": "bs", "name": "Bosnian"}, {"code": "bg", "name": "Bulgarian"}, {"code": "ca", "name": "Catalan"}, {"code": "zh", "name": "Chinese"}, {"code": "hr", "name": "Croatian"}, {"code": "cs", "name": "Czech"}, {"code": "da", "name": "Danish"}, {"code": "nl", "name": "Dutch"}, {"code": "en", "name": "English"}, {"code": "et", "name": "Estonian"}, {"code": "fi", "name": "Finnish"}, {"code": "fr", "name": "French"}, {"code": "gl", "name": "Galician"}, {"code": "de", "name": "German"}, {"code": "el", "name": "Greek"}, {"code": "gu", "name": "Gujarati"}, {"code": "he", "name": "Hebrew"}, {"code": "hi", "name": "Hindi"}, {"code": "hu", "name": "Hungarian"}, {"code": "id", "name": "Indonesian"}, {"code": "it", "name": "Italian"}, {"code": "ja", "name": "Japanese"}, {"code": "kn", "name": "Kannada"}, {"code": "kk", "name": "Kazakh"}, {"code": "ko", "name": "Korean"}, {"code": "lv", "name": "Latvian"}, {"code": "lt", "name": "Lithuanian"}, {"code": "mk", "name": "Macedonian"}, {"code": "ms", "name": "Malay"}, {"code": "ml", "name": "Malayalam"}, {"code": "mr", "name": "Marathi"}, {"code": "no", "name": "Norwegian"}, {"code": "fa", "name": "Persian"}, {"code": "pl", "name": "Polish"}, {"code": "pt", "name": "Portuguese"}, {"code": "pa", "name": "Punjabi"}, {"code": "ro", "name": "Romanian"}, {"code": "ru", "name": "Russian"}, {"code": "sr", "name": "Serbian"}, {"code": "sk", "name": "Slovak"}, {"code": "sl", "name": "Slovenian"}, {"code": "es", "name": "Spanish"}, {"code": "sw", "name": "Swahili"}, {"code": "sv", "name": "Swedish"}, {"code": "tl", "name": "Tagalog"}, {"code": "ta", "name": "Tamil"}, {"code": "te", "name": "Telugu"}, {"code": "th", "name": "Thai"}, {"code": "tr", "name": "Turkish"}, {"code": "uk", "name": "Ukrainian"}, {"code": "ur", "name": "Urdu"}, {"code": "vi", "name": "Vietnamese"}, {"code": "cy", "name": "Welsh"}], "name": "Speech-to-Text Real-time v3 Preview", "one_way_translation": "all_languages", "supports_language_hints_strict": true, "transcription_mode": "real_time", "translation_targets": [], "two_way_translation": "all_languages", "two_way_translation_pairs": []}, {"aliased_model_id": "stt-rt-v3", "context_version": 2, "id": "stt-rt-preview-v2", "languages": [{"code": "af", "name": "Afrikaans"}, {"code": "sq", "name": "Albanian"}, {"code": "ar", "name": "Arabic"}, {"code": "az", "name": "Azerbaijani"}, {"code": "eu", "name": "Basque"}, {"code": "be", "name": "Belarusian"}, {"code": "bn", "name": "Bengali"}, {"code": "bs", "name": "Bosnian"}, {"code": "bg", "name": "Bulgarian"}, {"code": "ca", "name": "Catalan"}, {"code": "zh", "name": "Chinese"}, {"code": "hr", "name": "Croatian"}, {"code": "cs", "name": "Czech"}, {"code": "da", "name": "Danish"}, {"code": "nl", "name": "Dutch"}, {"code": "en", "name": "English"}, {"code": "et", "name": "Estonian"}, {"code": "fi", "name": "Finnish"}, {"code": "fr", "name": "French"}, {"code": "gl", "name": "Galician"}, {"code": "de", "name": "German"}, {"code": "el", "name": "Greek"}, {"code": "gu", "name": "Gujarati"}, {"code": "he", "name": "Hebrew"}, {"code": "hi", "name": "Hindi"}, {"code": "hu", "name": "Hungarian"}, {"code": "id", "name": "Indonesian"}, {"code": "it", "name": "Italian"}, {"code": "ja", "name": "Japanese"}, {"code": "kn", "name": "Kannada"}, {"code": "kk", "name": "Kazakh"}, {"code": "ko", "name": "Korean"}, {"code": "lv", "name": "Latvian"}, {"code": "lt", "name": "Lithuanian"}, {"code": "mk", "name": "Macedonian"}, {"code": "ms", "name": "Malay"}, {"code": "ml", "name": "Malayalam"}, {"code": "mr", "name": "Marathi"}, {"code": "no", "name": "Norwegian"}, {"code": "fa", "name": "Persian"}, {"code": "pl", "name": "Polish"}, {"code": "pt", "name": "Portuguese"}, {"code": "pa", "name": "Punjabi"}, {"code": "ro", "name": "Romanian"}, {"code": "ru", "name": "Russian"}, {"code": "sr", "name": "Serbian"}, {"code": "sk", "name": "Slovak"}, {"code": "sl", "name": "Slovenian"}, {"code": "es", "name": "Spanish"}, {"code": "sw", "name": "Swahili"}, {"code": "sv", "name": "Swedish"}, {"code": "tl", "name": "Tagalog"}, {"code": "ta", "name": "Tamil"}, {"code": "te", "name": "Telugu"}, {"code": "th", "name": "Thai"}, {"code": "tr", "name": "Turkish"}, {"code": "uk", "name": "Ukrainian"}, {"code": "ur", "name": "Urdu"}, {"code": "vi", "name": "Vietnamese"}, {"code": "cy", "name": "Welsh"}], "name": "Speech-to-Text Real-time Preview v2", "one_way_translation": "all_languages", "supports_language_hints_strict": true, "transcription_mode": "real_time", "translation_targets": [], "two_way_translation": "all_languages", "two_way_translation_pairs": []}, {"aliased_model_id": "stt-async-v3", "context_version": 2, "id": "stt-async-preview-v1", "languages": [{"code": "af", "name": "Afrikaans"}, {"code": "sq", "name": "Albanian"}, {"code": "ar", "name": "Arabic"}, {"code": "az", "name": "Azerbaijani"}, {"code": "eu", "name": "Basque"}, {"code": "be", "name": "Belarusian"}, {"code": "bn", "name": "Bengali"}, {"code": "bs", "name": "Bosnian"}, {"code": "bg", "name": "Bulgarian"}, {"code": "ca", "name": "Catalan"}, {"code": "zh", "name": "Chinese"}, {"code": "hr", "name": "Croatian"}, {"code": "cs", "name": "Czech"}, {"code": "da", "name": "Danish"}, {"code": "nl", "name": "Dutch"}, {"code": "en", "name": "English"}, {"code": "et", "name": "Estonian"}, {"code": "fi", "name": "Finnish"}, {"code": "fr", "name": "French"}, {"code": "gl", "name": "Galician"}, {"code": "de", "name": "German"}, {"code": "el", "name": "Greek"}, {"code": "gu", "name": "Gujarati"}, {"code": "he", "name": "Hebrew"}, {"code": "hi", "name": "Hindi"}, {"code": "hu", "name": "Hungarian"}, {"code": "id", "name": "Indonesian"}, {"code": "it", "name": "Italian"}, {"code": "ja", "name": "Japanese"}, {"code": "kn", "name": "Kannada"}, {"code": "kk", "name": "Kazakh"}, {"code": "ko", "name": "Korean"}, {"code": "lv", "name": "Latvian"}, {"code": "lt", "name": "Lithuanian"}, {"code": "mk", "name": "Macedonian"}, {"code": "ms", "name": "Malay"}, {"code": "ml", "name": "Malayalam"}, {"code": "mr", "name": "Marathi"}, {"code": "no", "name": "Norwegian"}, {"code": "fa", "name": "Persian"}, {"code": "pl", "name": "Polish"}, {"code": "pt", "name": "Portuguese"}, {"code": "pa", "name": "Punjabi"}, {"code": "ro", "name": "Romanian"}, {"code": "ru", "name": "Russian"}, {"code": "sr", "name": "Serbian"}, {"code": "sk", "name": "Slovak"}, {"code": "sl", "name": "Slovenian"}, {"code": "es", "name": "Spanish"}, {"code": "sw", "name": "Swahili"}, {"code": "sv", "name": "Swedish"}, {"code": "tl", "name": "Tagalog"}, {"code": "ta", "name": "Tamil"}, {"code": "te", "name": "Telugu"}, {"code": "th", "name": "Thai"}, {"code": "tr", "name": "Turkish"}, {"code": "uk", "name": "Ukrainian"}, {"code": "ur", "name": "Urdu"}, {"code": "vi", "name": "Vietnamese"}, {"code": "cy", "name": "Welsh"}], "name": "Speech-to-Text Async Preview v1", "one_way_translation": "all_languages", "supports_language_hints_strict": false, "transcription_mode": "async", "translation_targets": [], "two_way_translation": "all_languages", "two_way_translation_pairs": []}]}, "properties": {"models": {"description": "List of available models and their attributes.", "items": {"$ref": "#/components/schemas/Model"}, "title": "Models", "type": "array"}}, "required": ["models"], "title": "GetModelsResponse", "type": "object"}, "Language": {"properties": {"code": {"description": "2-letter language code.", "title": "Code", "type": "string"}, "name": {"description": "Language name.", "title": "Name", "type": "string"}}, "required": ["code", "name"], "title": "Language", "type": "object"}, "Model": {"properties": {"id": {"description": "Unique identifier of the model.", "title": "Id", "type": "string"}, "aliased_model_id": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "If this is an alias, the id of the aliased model.", "title": "Aliased Model Id"}, "name": {"description": "Name of the model.", "title": "Name", "type": "string"}, "context_version": {"anyOf": [{"type": "integer"}, {"type": "null"}], "description": "Version of context supported.", "title": "Context Version"}, "transcription_mode": {"allOf": [{"$ref": "#/components/schemas/TranscriptionMode"}], "description": "Transcription mode of the model."}, "languages": {"description": "List of languages supported by the model.", "items": {"$ref": "#/components/schemas/Language"}, "title": "Languages", "type": "array"}, "supports_language_hints_strict": {"title": "Supports Language Hints Strict", "type": "boolean"}, "translation_targets": {"description": "List of supported one-way translation targets. If list is empty, check for one_way_translation field", "items": {"$ref": "#/components/schemas/TranslationTarget"}, "title": "Translation Targets", "type": "array"}, "two_way_translation_pairs": {"description": "List of supported two-way translation pairs.  If list is empty, check for two_way_translation field", "items": {"type": "string"}, "title": "Two Way Translation Pairs", "type": "array"}, "one_way_translation": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "When contains string 'all_languages', any laguage from languages can be used", "title": "One Way Translation"}, "two_way_translation": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "When contains string 'all_languages',' any laguage pair from languages can be used", "title": "Two Way Translation"}}, "required": ["id", "aliased_model_id", "name", "context_version", "transcription_mode", "languages", "supports_language_hints_strict", "translation_targets", "two_way_translation_pairs", "one_way_translation", "two_way_translation"], "title": "Model", "type": "object"}, "TranscriptionMode": {"enum": ["real_time", "async"], "title": "TranscriptionMode", "type": "string"}, "TranslationTarget": {"properties": {"target_language": {"title": "Target Language", "type": "string"}, "source_languages": {"items": {"type": "string"}, "title": "Source Languages", "type": "array"}, "exclude_source_languages": {"items": {"type": "string"}, "title": "Exclude Source Languages", "type": "array"}}, "required": ["target_language", "source_languages", "exclude_source_languages"], "title": "TranslationTarget", "type": "object"}, "CreateTemporaryApiKeyResponse": {"example": {"api_key": "temp:WYJ67RBEFUWQXXPKYPD2UGXKWB", "expires_at": "2025-02-22T22:47:37.150Z"}, "properties": {"api_key": {"description": "Created temporary API key.", "title": "Api Key", "type": "string"}, "expires_at": {"description": "UTC timestamp indicating when generated temporary API key will expire.", "format": "date-time", "title": "Expires At", "type": "string"}}, "required": ["api_key", "expires_at"], "title": "CreateTemporaryApiKeyResponse", "type": "object"}, "CreateTemporaryApiKeyPayload": {"example": {"client_reference_id": "reference_id", "expires_in_seconds": 1800, "usage_type": "transcribe_websocket"}, "properties": {"usage_type": {"allOf": [{"$ref": "#/components/schemas/TemporaryApiKeyUsageType"}], "description": "Intended usage of the temporary API key."}, "expires_in_seconds": {"description": "Duration in seconds until the temporary API key expires.", "maximum": 3600, "minimum": 1, "title": "Expires In Seconds", "type": "integer"}, "client_reference_id": {"anyOf": [{"maxLength": 256, "type": "string"}, {"type": "null"}], "description": "Optional tracking identifier string. Does not need to be unique.", "title": "Client Reference Id"}}, "required": ["usage_type", "expires_in_seconds"], "title": "CreateTemporaryApiKeyPayload", "type": "object"}, "TemporaryApiKeyUsageType": {"const": "transcribe_websocket", "enum": ["transcribe_websocket"], "title": "TemporaryApiKeyUsageType", "type": "string"}}, "securitySchemes": {"PublicApiAuth": {"type": "http", "scheme": "bearer"}}}, "servers": [{"url": "https://api.soniox.com", "description": "Soniox API"}]}
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Soniox Public API", "version": "1.0.0", "description": "" },
+  "paths": {
+    "/v1/files": {
+      "get": {
+        "operationId": "get_files",
+        "summary": "Get files",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of files to return.",
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Maximum number of files to return."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Pagination cursor for the next page of results.",
+              "title": "Cursor"
+            },
+            "required": false,
+            "description": "Pagination cursor for the next page of results."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of files.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetFilesResponse" },
+                "example": {
+                  "files": [
+                    {
+                      "id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753",
+                      "filename": "example.mp3",
+                      "size": 123456,
+                      "created_at": "2024-11-26T00:00:00Z"
+                    }
+                  ],
+                  "next_page_cursor": "cursor_or_null"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.\n\nError types:\n- `invalid_cursor`: Invalid cursor parameter.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "invalid_cursor",
+                  "message": "Invalid cursor parameter.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieves list of uploaded files.",
+        "tags": ["Files"],
+        "security": [{ "PublicApiAuth": [] }]
+      },
+      "post": {
+        "operationId": "upload_file",
+        "summary": "Upload file",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Uploaded file.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/File" },
+                "example": {
+                  "id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753",
+                  "filename": "example.mp3",
+                  "size": 123456,
+                  "created_at": "2024-11-26T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.\n\nError types:\n- `invalid_request`:\n  - Invalid request.\n  - Exceeded maximum file size (maximum is 1073741824 bytes).\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "invalid_request",
+                  "message": "Invalid request.",
+                  "validation_errors": [
+                    {
+                      "error_type": "missing",
+                      "location": "file.file",
+                      "message": "Field required"
+                    }
+                  ],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Uploads a new file.",
+        "tags": ["Files"],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "title": "MultiPartBodyParams",
+                "type": "object",
+                "properties": {
+                  "client_reference_id": {
+                    "anyOf": [{ "maxLength": 256, "type": "string" }, { "type": "null" }],
+                    "description": "Optional tracking identifier string. Does not need to be unique.",
+                    "title": "Client Reference Id"
+                  },
+                  "file": {
+                    "description": "The file to upload. Original file name will be used unless a custom filename is provided.",
+                    "format": "binary",
+                    "title": "File",
+                    "type": "string"
+                  }
+                },
+                "required": ["file"]
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
+    "/v1/files/{file_id}": {
+      "get": {
+        "operationId": "get_file",
+        "summary": "Get file",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "file_id",
+            "schema": { "format": "uuid", "title": "File Id", "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File metadata.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/File" },
+                "example": {
+                  "id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753",
+                  "filename": "example.mp3",
+                  "size": 123456,
+                  "created_at": "2024-11-26T00:00:00Z",
+                  "client_reference_id": "some_internal_id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found.\n\nError types:\n- `file_not_found`: File could not be found.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "file_not_found",
+                  "message": "File could not be found.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve metadata for an uploaded file.",
+        "tags": ["Files"],
+        "security": [{ "PublicApiAuth": [] }]
+      },
+      "delete": {
+        "operationId": "delete_file",
+        "summary": "Delete file",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "file_id",
+            "schema": { "format": "uuid", "title": "File Id", "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": { "description": "File deleted." },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found.\n\nError types:\n- `file_not_found`: File could not be found.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "file_not_found",
+                  "message": "File could not be found.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Permanently deletes specified file.",
+        "tags": ["Files"],
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
+    "/v1/files/{file_id}/url": {
+      "get": {
+        "operationId": "get_file_url",
+        "summary": "Get file URL",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "file_id",
+            "schema": { "format": "uuid", "title": "File Id", "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File URL.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FileUrl" },
+                "example": {
+                  "url": "https://api.soniox.com/v1/files/84c32fc6-4fb5-4e7a-b656-b5ec70493753/download?token=TOKEN"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found.\n\nError types:\n- `file_not_found`: File could not be found.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "file_not_found",
+                  "message": "File could not be found.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get a temporary file URL. URL is valid for 1 hour.",
+        "tags": ["Files"],
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
+    "/v1/transcriptions": {
+      "get": {
+        "operationId": "get_transcriptions",
+        "summary": "Get transcriptions",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 1000,
+              "description": "Maximum number of transcriptions to return.",
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Maximum number of transcriptions to return."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Pagination cursor for the next page of results.",
+              "title": "Cursor"
+            },
+            "required": false,
+            "description": "Pagination cursor for the next page of results."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of transcriptions.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetTranscriptionsResponse" },
+                "example": {
+                  "transcriptions": [
+                    {
+                      "id": "73d4357d-cad2-4338-a60d-ec6f2044f721",
+                      "status": "completed",
+                      "created_at": "2024-11-26T00:00:00Z",
+                      "model": "stt-async-preview",
+                      "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3",
+                      "file_id": null,
+                      "filename": "coffee_shop.mp3",
+                      "language_hints": ["en", "fr"],
+                      "context": "extra context for the transcription",
+                      "audio_duration_ms": 16079,
+                      "error_message": null,
+                      "webhook_url": "https://example.com/webhook",
+                      "webhook_auth_header_name": "Authorization",
+                      "webhook_auth_header_value": "******************",
+                      "webhook_status_code": null,
+                      "client_reference_id": "some_internal_id"
+                    }
+                  ],
+                  "next_page_cursor": "cursor_or_null"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.\n\nError types:\n- `invalid_cursor`: Invalid cursor parameter.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "invalid_cursor",
+                  "message": "Invalid cursor parameter.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieves list of transcriptions.",
+        "tags": ["Transcriptions"],
+        "security": [{ "PublicApiAuth": [] }]
+      },
+      "post": {
+        "operationId": "create_transcription",
+        "summary": "Create transcription",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created transcription.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Transcription" },
+                "example": {
+                  "id": "73d4357d-cad2-4338-a60d-ec6f2044f721",
+                  "status": "queued",
+                  "created_at": "2024-11-26T00:00:00Z",
+                  "model": "stt-async-preview",
+                  "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3",
+                  "file_id": null,
+                  "filename": "coffee_shop.mp3",
+                  "language_hints": ["en", "fr"],
+                  "context": "extra context for the transcription",
+                  "audio_duration_ms": 0,
+                  "error_message": null,
+                  "webhook_url": "https://example.com/webhook",
+                  "webhook_auth_header_name": "Authorization",
+                  "webhook_auth_header_value": "******************",
+                  "webhook_status_code": null,
+                  "client_reference_id": "some_internal_id"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.\n\nError types:\n- `invalid_request`: Invalid request.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "invalid_request",
+                  "message": "Invalid request.",
+                  "validation_errors": [
+                    {
+                      "error_type": "value_error",
+                      "location": "body.payload.model",
+                      "message": "Invalid model"
+                    }
+                  ],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Creates a new transcription.",
+        "tags": ["Transcriptions"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateTranscriptionPayload" }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
+    "/v1/transcriptions/{transcription_id}": {
+      "get": {
+        "operationId": "get_transcription",
+        "summary": "Get transcription",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transcription_id",
+            "schema": { "format": "uuid", "title": "Transcription Id", "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transcription details.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Transcription" },
+                "example": {
+                  "id": "73d4357d-cad2-4338-a60d-ec6f2044f721",
+                  "status": "completed",
+                  "created_at": "2024-11-26T00:00:00Z",
+                  "model": "stt-async-preview",
+                  "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3",
+                  "file_id": null,
+                  "filename": "coffee_shop.mp3",
+                  "language_hints": ["en", "fr"],
+                  "context": "extra context for the transcription",
+                  "audio_duration_ms": 16079,
+                  "error_message": null,
+                  "webhook_url": "https://example.com/webhook",
+                  "webhook_auth_header_name": "Authorization",
+                  "webhook_auth_header_value": "******************",
+                  "webhook_status_code": null,
+                  "client_reference_id": "some_internal_id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transcription not found.\n\nError types:\n- `transcription_not_found`: Transcription could not be found.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "transcription_not_found",
+                  "message": "Transcription could not be found.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieves detailed information about a specific transcription.",
+        "tags": ["Transcriptions"],
+        "security": [{ "PublicApiAuth": [] }]
+      },
+      "delete": {
+        "operationId": "delete_transcription",
+        "summary": "Delete transcription",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transcription_id",
+            "schema": { "format": "uuid", "title": "Transcription Id", "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": { "description": "Transcription deleted." },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transcription not found.\n\nError types:\n- `transcription_not_found`: Transcription could not be found.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "transcription_not_found",
+                  "message": "Transcription could not be found.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid transcription state.\n\nError types:\n- `transcription_invalid_state`:\n  - Cannot delete transcription with processing status.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "transcription_invalid_state",
+                  "message": "Can only get transcript with completed status.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Permanently deletes a transcription and its associated files. Cannot delete transcriptions that are currently processing.",
+        "tags": ["Transcriptions"],
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
+    "/v1/transcriptions/{transcription_id}/transcript": {
+      "get": {
+        "operationId": "get_transcription_transcript",
+        "summary": "Get transcription transcript",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transcription_id",
+            "schema": { "format": "uuid", "title": "Transcription Id", "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transcription transcript.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TranscriptionTranscript" },
+                "example": {
+                  "id": "19b6d61d-02db-4c25-bc71-b4094dc310c8",
+                  "text": "Hello",
+                  "tokens": [
+                    { "text": "Hel", "start_ms": 10, "end_ms": 90, "confidence": 0.95 },
+                    { "text": "lo", "start_ms": 110, "end_ms": 160, "confidence": 0.98 }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transcription not found.\n\nError types:\n- `transcription_not_found`: Transcription could not be found.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "transcription_not_found",
+                  "message": "Transcription could not be found.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid transcription state.\n\nError types:\n- `transcription_invalid_state`:\n  - Can only get transcript with completed status.\n  - File transcription has failed.\n  - Transcript no longer available.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "transcription_invalid_state",
+                  "message": "Can only get transcript with completed status.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieves the full transcript text and detailed tokens for a completed transcription. Only available for successfully completed transcriptions.",
+        "tags": ["Transcriptions"],
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "operationId": "get_models",
+        "summary": "Get models",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of available models and their attributes.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/GetModelsResponse" } }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieves list of available models and their attributes.",
+        "tags": ["Models"],
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
+    "/v1/auth/temporary-api-key": {
+      "post": {
+        "operationId": "create_temporary_api_key",
+        "summary": "Create temporary API key",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created temporary API key.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CreateTemporaryApiKeyResponse" },
+                "example": {
+                  "api_key": "temp:WYJ67RBEFUWQXXPKYPD2UGXKWB",
+                  "expires_at": "2025-02-22T22:47:37.150Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.\n\nError types:\n- `invalid_request`: Invalid request.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 400,
+                  "error_type": "invalid_request",
+                  "message": "Invalid request.",
+                  "validation_errors": [
+                    {
+                      "error_type": "less_than_equal",
+                      "location": "body.payload.expires_in_seconds",
+                      "message": "Input should be less than or equal to 3600"
+                    }
+                  ],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Creates a short-lived API key for specific temporary use cases. The key will automatically expire after the specified duration.",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateTemporaryApiKeyPayload" }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GetFilesPayload": {
+        "properties": {
+          "limit": {
+            "default": 1000,
+            "description": "Maximum number of files to return.",
+            "maximum": 1000,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Pagination cursor for the next page of results.",
+            "title": "Cursor"
+          }
+        },
+        "title": "GetFilesPayload",
+        "type": "object"
+      },
+      "File": {
+        "description": "File metadata.",
+        "example": {
+          "client_reference_id": "some_internal_id",
+          "created_at": "2024-11-26T00:00:00Z",
+          "filename": "example.mp3",
+          "id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753",
+          "size": 123456
+        },
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the file.",
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "filename": { "description": "Name of the file.", "title": "Filename", "type": "string" },
+          "size": {
+            "description": "Size of the file in bytes.",
+            "title": "Size",
+            "type": "integer"
+          },
+          "created_at": {
+            "description": "UTC timestamp indicating when the file was uploaded.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "client_reference_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Tracking identifier string.",
+            "title": "Client Reference Id"
+          }
+        },
+        "required": ["id", "filename", "size", "created_at"],
+        "title": "File",
+        "type": "object"
+      },
+      "GetFilesResponse": {
+        "description": "A list of files.",
+        "example": {
+          "files": [
+            {
+              "created_at": "2024-11-26T00:00:00Z",
+              "filename": "example.mp3",
+              "id": "84c32fc6-4fb5-4e7a-b656-b5ec70493753",
+              "size": 123456
+            }
+          ],
+          "next_page_cursor": "cursor_or_null"
+        },
+        "properties": {
+          "files": {
+            "description": "List of uploaded files.",
+            "items": { "$ref": "#/components/schemas/File" },
+            "title": "Files",
+            "type": "array"
+          },
+          "next_page_cursor": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.",
+            "title": "Next Page Cursor"
+          }
+        },
+        "required": ["files"],
+        "title": "GetFilesResponse",
+        "type": "object"
+      },
+      "ApiError": {
+        "properties": {
+          "status_code": { "title": "Status Code", "type": "integer" },
+          "error_type": { "title": "Error Type", "type": "string" },
+          "message": { "title": "Message", "type": "string" },
+          "validation_errors": {
+            "items": { "$ref": "#/components/schemas/ApiErrorValidationError" },
+            "title": "Validation Errors",
+            "type": "array"
+          },
+          "request_id": { "title": "Request Id", "type": "string" }
+        },
+        "required": ["status_code", "error_type", "message", "validation_errors", "request_id"],
+        "title": "ApiError",
+        "type": "object"
+      },
+      "ApiErrorValidationError": {
+        "properties": {
+          "error_type": { "title": "Error Type", "type": "string" },
+          "location": { "title": "Location", "type": "string" },
+          "message": { "title": "Message", "type": "string" }
+        },
+        "required": ["error_type", "location", "message"],
+        "title": "ApiErrorValidationError",
+        "type": "object"
+      },
+      "UploadFilePayload": {
+        "properties": {
+          "client_reference_id": {
+            "anyOf": [{ "maxLength": 256, "type": "string" }, { "type": "null" }],
+            "description": "Optional tracking identifier string. Does not need to be unique.",
+            "title": "Client Reference Id"
+          }
+        },
+        "title": "UploadFilePayload",
+        "type": "object"
+      },
+      "FileUrl": {
+        "description": "Temporary file URL.",
+        "example": {
+          "url": "https://api.soniox.com/v1/files/84c32fc6-4fb5-4e7a-b656-b5ec70493753/download?signature=TOKEN"
+        },
+        "properties": {
+          "url": { "description": "Temporary file URL.", "title": "Url", "type": "string" }
+        },
+        "required": ["url"],
+        "title": "FileUrl",
+        "type": "object"
+      },
+      "GetTranscriptionsPayload": {
+        "properties": {
+          "limit": {
+            "default": 1000,
+            "description": "Maximum number of transcriptions to return.",
+            "maximum": 1000,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Pagination cursor for the next page of results.",
+            "title": "Cursor"
+          }
+        },
+        "title": "GetTranscriptionsPayload",
+        "type": "object"
+      },
+      "GetTranscriptionsResponse": {
+        "properties": {
+          "transcriptions": {
+            "description": "List of transcriptions.",
+            "items": { "$ref": "#/components/schemas/Transcription" },
+            "title": "Transcriptions",
+            "type": "array"
+          },
+          "next_page_cursor": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.",
+            "title": "Next Page Cursor"
+          }
+        },
+        "required": ["transcriptions"],
+        "title": "GetTranscriptionsResponse",
+        "type": "object"
+      },
+      "Transcription": {
+        "description": "A transcription.",
+        "example": {
+          "audio_duration_ms": 0,
+          "audio_url": "https://soniox.com/media/examples/coffee_shop.mp3",
+          "client_reference_id": "some_internal_id",
+          "created_at": "2024-11-26T00:00:00Z",
+          "error_message": null,
+          "error_type": null,
+          "file_id": null,
+          "filename": "coffee_shop.mp3",
+          "id": "73d4357d-cad2-4338-a60d-ec6f2044f721",
+          "language_hints": ["en", "fr"],
+          "model": "stt-async-preview",
+          "status": "queued",
+          "webhook_auth_header_name": "Authorization",
+          "webhook_auth_header_value": "******************",
+          "webhook_status_code": null,
+          "webhook_url": "https://example.com/webhook"
+        },
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the transcription request.",
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/TranscriptionStatus" }],
+            "description": "Transcription status."
+          },
+          "created_at": {
+            "description": "UTC timestamp indicating when the transcription was created.",
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "model": {
+            "description": "Speech-to-text model used for the transcription.",
+            "title": "Model",
+            "type": "string"
+          },
+          "audio_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "URL of the file being transcribed.",
+            "title": "Audio Url"
+          },
+          "file_id": {
+            "anyOf": [{ "format": "uuid", "type": "string" }, { "type": "null" }],
+            "description": "ID of the file being transcribed.",
+            "title": "File Id"
+          },
+          "filename": {
+            "description": "Name of the file being transcribed.",
+            "title": "Filename",
+            "type": "string"
+          },
+          "language_hints": {
+            "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+            "description": "Expected languages in the audio. If not specified, languages are automatically detected.",
+            "title": "Language Hints"
+          },
+          "enable_speaker_diarization": {
+            "description": "When `true`, speakers are identified and separated in the transcription output.",
+            "title": "Enable Speaker Diarization",
+            "type": "boolean"
+          },
+          "enable_language_identification": {
+            "description": "When `true`, language is detected for each part of the transcription.",
+            "title": "Enable Language Identification",
+            "type": "boolean"
+          },
+          "audio_duration_ms": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "description": "Duration of the audio in milliseconds. Only available after processing begins.",
+            "title": "Audio Duration Ms"
+          },
+          "error_type": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Error type if transcription failed. `null` for successful or in-progress transcriptions.",
+            "title": "Error Type"
+          },
+          "error_message": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Error message if transcription failed. `null` for successful or in-progress transcriptions.",
+            "title": "Error Message"
+          },
+          "webhook_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "URL to receive webhook notifications when transcription is completed or fails.",
+            "title": "Webhook Url"
+          },
+          "webhook_auth_header_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Name of the authentication header sent with webhook notifications.",
+            "title": "Webhook Auth Header Name"
+          },
+          "webhook_auth_header_value": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Authentication header value. Always returned masked as `******************`.",
+            "title": "Webhook Auth Header Value"
+          },
+          "webhook_status_code": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "description": "HTTP status code received from your server when webhook was delivered. `null` if not yet sent.",
+            "title": "Webhook Status Code"
+          },
+          "client_reference_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Tracking identifier string.",
+            "title": "Client Reference Id"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "created_at",
+          "model",
+          "filename",
+          "enable_speaker_diarization",
+          "enable_language_identification"
+        ],
+        "title": "Transcription",
+        "type": "object"
+      },
+      "TranscriptionStatus": {
+        "enum": ["queued", "processing", "completed", "error"],
+        "title": "TranscriptionStatus",
+        "type": "string"
+      },
+      "CreateTranscriptionPayload": {
+        "properties": {
+          "model": {
+            "description": "Speech-to-text model to use for the transcription.",
+            "maxLength": 32,
+            "title": "Model",
+            "type": "string"
+          },
+          "audio_url": {
+            "anyOf": [
+              { "maxLength": 4096, "pattern": "^https?://[^\\s]+$", "type": "string" },
+              { "type": "null" }
+            ],
+            "description": "URL of the audio file to transcribe. Cannot be specified if `file_id` is specified.",
+            "title": "Audio Url"
+          },
+          "file_id": {
+            "anyOf": [{ "format": "uuid", "type": "string" }, { "type": "null" }],
+            "description": "ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified.",
+            "title": "File Id"
+          },
+          "language_hints": {
+            "anyOf": [
+              { "items": { "maxLength": 10, "type": "string" }, "maxItems": 100, "type": "array" },
+              { "type": "null" }
+            ],
+            "description": "Expected languages in the audio. If not specified, languages are automatically detected.",
+            "title": "Language Hints"
+          },
+          "language_hints_strict": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "description": "When `true`, the model will rely more on language hints.",
+            "title": "Language Hints Strict"
+          },
+          "enable_speaker_diarization": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "description": "When `true`, speakers are identified and separated in the transcription output.",
+            "title": "Enable Speaker Diarization"
+          },
+          "enable_language_identification": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "description": "When `true`, language is detected for each part of the transcription.",
+            "title": "Enable Language Identification"
+          },
+          "translation": {
+            "anyOf": [{ "$ref": "#/components/schemas/TranslationConfig" }, { "type": "null" }],
+            "description": "Translation configuration."
+          },
+          "context": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/StructuredContext" },
+              { "type": "string" },
+              { "type": "null" }
+            ],
+            "description": "Additional context to improve transcription accuracy and formatting of specialized terms.",
+            "title": "Context"
+          },
+          "webhook_url": {
+            "anyOf": [
+              { "maxLength": 256, "pattern": "^https?://[^\\s]+$", "type": "string" },
+              { "type": "null" }
+            ],
+            "description": "URL to receive webhook notifications when transcription is completed or fails.",
+            "title": "Webhook Url"
+          },
+          "webhook_auth_header_name": {
+            "anyOf": [{ "maxLength": 256, "type": "string" }, { "type": "null" }],
+            "description": "Name of the authentication header sent with webhook notifications.",
+            "title": "Webhook Auth Header Name"
+          },
+          "webhook_auth_header_value": {
+            "anyOf": [{ "maxLength": 256, "type": "string" }, { "type": "null" }],
+            "description": "Authentication header value sent with webhook notifications.",
+            "title": "Webhook Auth Header Value"
+          },
+          "client_reference_id": {
+            "anyOf": [{ "maxLength": 256, "type": "string" }, { "type": "null" }],
+            "description": "Optional tracking identifier string. Does not need to be unique.",
+            "title": "Client Reference Id"
+          }
+        },
+        "required": ["model"],
+        "title": "CreateTranscriptionPayload",
+        "type": "object"
+      },
+      "StructuredContext": {
+        "properties": {
+          "general": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/StructuredContextGeneralItem" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "description": "General context items.",
+            "title": "General"
+          },
+          "text": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Text context.",
+            "title": "Text"
+          },
+          "terms": {
+            "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+            "description": "Terms that might occur in speech.",
+            "title": "Terms"
+          },
+          "translation_terms": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/StructuredContextTranslationTerm" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "description": "Hints how to translate specific terms. Ignored if translation is not enabled.",
+            "title": "Translation Terms"
+          }
+        },
+        "title": "StructuredContext",
+        "type": "object"
+      },
+      "StructuredContextGeneralItem": {
+        "properties": {
+          "key": { "description": "Item key (e.g. \"Domain\").", "title": "Key", "type": "string" },
+          "value": {
+            "description": "Item value (e.g. \"medicine\").",
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": ["key", "value"],
+        "title": "StructuredContextGeneralItem",
+        "type": "object"
+      },
+      "StructuredContextTranslationTerm": {
+        "properties": {
+          "source": { "description": "Source term.", "title": "Source", "type": "string" },
+          "target": {
+            "description": "Target term to translate to.",
+            "title": "Target",
+            "type": "string"
+          }
+        },
+        "required": ["source", "target"],
+        "title": "StructuredContextTranslationTerm",
+        "type": "object"
+      },
+      "TranslationConfig": {
+        "properties": {
+          "type": { "enum": ["one_way", "two_way"], "title": "Type", "type": "string" },
+          "target_language": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Target Language"
+          },
+          "language_a": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Language A"
+          },
+          "language_b": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Language B"
+          }
+        },
+        "required": ["type"],
+        "title": "TranslationConfig",
+        "type": "object"
+      },
+      "TranscriptionTranscript": {
+        "description": "The transcription text.",
+        "example": {
+          "id": "19b6d61d-02db-4c25-bc71-b4094dc310c8",
+          "text": "Hello",
+          "tokens": [
+            { "confidence": 0.95, "end_ms": 90, "start_ms": 10, "text": "Hel" },
+            { "confidence": 0.98, "end_ms": 160, "start_ms": 110, "text": "lo" }
+          ]
+        },
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the transcription this transcript belongs to.",
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "description": "Complete transcribed text content.",
+            "title": "Text",
+            "type": "string"
+          },
+          "tokens": {
+            "description": "List of detailed token information with timestamps and metadata.",
+            "items": { "$ref": "#/components/schemas/TranscriptionTranscriptToken" },
+            "title": "Tokens",
+            "type": "array"
+          }
+        },
+        "required": ["id", "text", "tokens"],
+        "title": "TranscriptionTranscript",
+        "type": "object"
+      },
+      "TranscriptionTranscriptToken": {
+        "description": "The transcript token.",
+        "example": { "confidence": 0.95, "end_ms": 90, "start_ms": 10, "text": "Hel" },
+        "properties": {
+          "text": { "description": "Token text content.", "title": "Text", "type": "string" },
+          "start_ms": {
+            "description": "Start time of the token in milliseconds.",
+            "title": "Start Ms",
+            "type": "integer"
+          },
+          "end_ms": {
+            "description": "End time of the token in milliseconds.",
+            "title": "End Ms",
+            "type": "integer"
+          },
+          "confidence": {
+            "description": "Confidence score of the token, between 0.0 and 1.0.",
+            "title": "Confidence",
+            "type": "number"
+          },
+          "speaker": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Speaker identifier. Only present when speaker diarization is enabled.",
+            "title": "Speaker"
+          },
+          "language": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Detected language code for this token. Only present when language identification is enabled.",
+            "title": "Language"
+          },
+          "is_audio_event": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "description": "Boolean indicating if this token represents an audio event. Only present when audio event detection is enabled.",
+            "title": "Is Audio Event"
+          },
+          "translation_status": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "Translation status (\"none\", \"original\" or \"translation\"). Only when if translation is enabled.",
+            "title": "Translation Status"
+          }
+        },
+        "required": ["text", "start_ms", "end_ms", "confidence"],
+        "title": "TranscriptionTranscriptToken",
+        "type": "object"
+      },
+      "GetModelsResponse": {
+        "example": {
+          "models": [
+            {
+              "aliased_model_id": null,
+              "context_version": 2,
+              "id": "stt-rt-v3",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Real-time v3",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": true,
+              "transcription_mode": "real_time",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": null,
+              "context_version": 2,
+              "id": "stt-async-v3",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Async v3",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": false,
+              "transcription_mode": "async",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": "stt-rt-v3",
+              "context_version": 2,
+              "id": "stt-rt-preview",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Real-time Preview",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": true,
+              "transcription_mode": "real_time",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": "stt-async-v3",
+              "context_version": 2,
+              "id": "stt-async-preview",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Async Preview",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": false,
+              "transcription_mode": "async",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": "stt-rt-v3",
+              "context_version": 2,
+              "id": "stt-rt-v3-preview",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Real-time v3 Preview",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": true,
+              "transcription_mode": "real_time",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": "stt-rt-v3",
+              "context_version": 2,
+              "id": "stt-rt-preview-v2",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Real-time Preview v2",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": true,
+              "transcription_mode": "real_time",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": "stt-async-v3",
+              "context_version": 2,
+              "id": "stt-async-preview-v1",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Async Preview v1",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": false,
+              "transcription_mode": "async",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            }
+          ]
+        },
+        "properties": {
+          "models": {
+            "description": "List of available models and their attributes.",
+            "items": { "$ref": "#/components/schemas/Model" },
+            "title": "Models",
+            "type": "array"
+          }
+        },
+        "required": ["models"],
+        "title": "GetModelsResponse",
+        "type": "object"
+      },
+      "Language": {
+        "properties": {
+          "code": { "description": "2-letter language code.", "title": "Code", "type": "string" },
+          "name": { "description": "Language name.", "title": "Name", "type": "string" }
+        },
+        "required": ["code", "name"],
+        "title": "Language",
+        "type": "object"
+      },
+      "Model": {
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the model.",
+            "title": "Id",
+            "type": "string"
+          },
+          "aliased_model_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "If this is an alias, the id of the aliased model.",
+            "title": "Aliased Model Id"
+          },
+          "name": { "description": "Name of the model.", "title": "Name", "type": "string" },
+          "context_version": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "description": "Version of context supported.",
+            "title": "Context Version"
+          },
+          "transcription_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/TranscriptionMode" }],
+            "description": "Transcription mode of the model."
+          },
+          "languages": {
+            "description": "List of languages supported by the model.",
+            "items": { "$ref": "#/components/schemas/Language" },
+            "title": "Languages",
+            "type": "array"
+          },
+          "supports_language_hints_strict": {
+            "title": "Supports Language Hints Strict",
+            "type": "boolean"
+          },
+          "translation_targets": {
+            "description": "List of supported one-way translation targets. If list is empty, check for one_way_translation field",
+            "items": { "$ref": "#/components/schemas/TranslationTarget" },
+            "title": "Translation Targets",
+            "type": "array"
+          },
+          "two_way_translation_pairs": {
+            "description": "List of supported two-way translation pairs.  If list is empty, check for two_way_translation field",
+            "items": { "type": "string" },
+            "title": "Two Way Translation Pairs",
+            "type": "array"
+          },
+          "one_way_translation": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "When contains string 'all_languages', any laguage from languages can be used",
+            "title": "One Way Translation"
+          },
+          "two_way_translation": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "When contains string 'all_languages',' any laguage pair from languages can be used",
+            "title": "Two Way Translation"
+          }
+        },
+        "required": [
+          "id",
+          "aliased_model_id",
+          "name",
+          "context_version",
+          "transcription_mode",
+          "languages",
+          "supports_language_hints_strict",
+          "translation_targets",
+          "two_way_translation_pairs",
+          "one_way_translation",
+          "two_way_translation"
+        ],
+        "title": "Model",
+        "type": "object"
+      },
+      "TranscriptionMode": {
+        "enum": ["real_time", "async"],
+        "title": "TranscriptionMode",
+        "type": "string"
+      },
+      "TranslationTarget": {
+        "properties": {
+          "target_language": { "title": "Target Language", "type": "string" },
+          "source_languages": {
+            "items": { "type": "string" },
+            "title": "Source Languages",
+            "type": "array"
+          },
+          "exclude_source_languages": {
+            "items": { "type": "string" },
+            "title": "Exclude Source Languages",
+            "type": "array"
+          }
+        },
+        "required": ["target_language", "source_languages", "exclude_source_languages"],
+        "title": "TranslationTarget",
+        "type": "object"
+      },
+      "CreateTemporaryApiKeyResponse": {
+        "example": {
+          "api_key": "temp:WYJ67RBEFUWQXXPKYPD2UGXKWB",
+          "expires_at": "2025-02-22T22:47:37.150Z"
+        },
+        "properties": {
+          "api_key": {
+            "description": "Created temporary API key.",
+            "title": "Api Key",
+            "type": "string"
+          },
+          "expires_at": {
+            "description": "UTC timestamp indicating when generated temporary API key will expire.",
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          }
+        },
+        "required": ["api_key", "expires_at"],
+        "title": "CreateTemporaryApiKeyResponse",
+        "type": "object"
+      },
+      "CreateTemporaryApiKeyPayload": {
+        "example": {
+          "client_reference_id": "reference_id",
+          "expires_in_seconds": 1800,
+          "usage_type": "transcribe_websocket"
+        },
+        "properties": {
+          "usage_type": {
+            "allOf": [{ "$ref": "#/components/schemas/TemporaryApiKeyUsageType" }],
+            "description": "Intended usage of the temporary API key."
+          },
+          "expires_in_seconds": {
+            "description": "Duration in seconds until the temporary API key expires.",
+            "maximum": 3600,
+            "minimum": 1,
+            "title": "Expires In Seconds",
+            "type": "integer"
+          },
+          "client_reference_id": {
+            "anyOf": [{ "maxLength": 256, "type": "string" }, { "type": "null" }],
+            "description": "Optional tracking identifier string. Does not need to be unique.",
+            "title": "Client Reference Id"
+          }
+        },
+        "required": ["usage_type", "expires_in_seconds"],
+        "title": "CreateTemporaryApiKeyPayload",
+        "type": "object"
+      },
+      "TemporaryApiKeyUsageType": {
+        "const": "transcribe_websocket",
+        "enum": ["transcribe_websocket"],
+        "title": "TemporaryApiKeyUsageType",
+        "type": "string"
+      }
+    },
+    "securitySchemes": { "PublicApiAuth": { "type": "http", "scheme": "bearer" } }
+  },
+  "servers": [{ "url": "https://api.soniox.com", "description": "Soniox API" }]
+}

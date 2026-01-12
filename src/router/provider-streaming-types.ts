@@ -36,6 +36,11 @@ import type {
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
 
+// OpenAI Realtime types - from OpenAPI-generated schema
+import type { RealtimeSessionCreateRequestGAModel } from "../generated/openai/schema/realtimeSessionCreateRequestGAModel"
+import type { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "../generated/openai/schema/realtimeTranscriptionSessionCreateRequestInputAudioFormat"
+import type { RealtimeTranscriptionSessionCreateRequestTurnDetectionType } from "../generated/openai/schema/realtimeTranscriptionSessionCreateRequestTurnDetectionType"
+
 // Gladia model type from generated schema
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
@@ -422,12 +427,98 @@ export interface AssemblyAIStreamingOptions {
 export type AssemblyAIUpdateConfiguration = Omit<StreamingUpdateConfiguration, "type">
 
 /**
+ * OpenAI Realtime API streaming options
+ *
+ * Based on the OpenAI Realtime WebSocket API for audio transcription.
+ * Uses server-side VAD for automatic turn detection.
+ *
+ * @see https://platform.openai.com/docs/guides/realtime
+ */
+export interface OpenAIStreamingOptions {
+  // ─────────────────────────────────────────────────────────────────
+  // Model Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Realtime model to use (from OpenAPI-generated schema)
+   * @default "gpt-4o-realtime-preview"
+   * @see RealtimeSessionCreateRequestGAModel
+   */
+  model?: RealtimeSessionCreateRequestGAModel
+
+  // ─────────────────────────────────────────────────────────────────
+  // Audio Format Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Input audio format (from OpenAPI-generated schema)
+   * - pcm16: 16-bit PCM at 24kHz, mono, little-endian
+   * - g711_ulaw: μ-law telephony codec
+   * - g711_alaw: A-law telephony codec
+   * @default "pcm16"
+   * @see RealtimeTranscriptionSessionCreateRequestInputAudioFormat
+   */
+  inputAudioFormat?: RealtimeTranscriptionSessionCreateRequestInputAudioFormat
+
+  // ─────────────────────────────────────────────────────────────────
+  // Voice Activity Detection (Turn Detection)
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Turn detection configuration
+   * Controls when the model considers a turn complete
+   */
+  turnDetection?: {
+    /**
+     * Type of turn detection (from OpenAPI-generated schema)
+     * Currently only "server_vad" is supported for transcription sessions
+     * @default "server_vad"
+     * @see RealtimeTranscriptionSessionCreateRequestTurnDetectionType
+     */
+    type: RealtimeTranscriptionSessionCreateRequestTurnDetectionType
+    /**
+     * VAD activation threshold (0.0-1.0)
+     * Higher values require louder audio to trigger
+     * @default 0.5
+     */
+    threshold?: number
+    /**
+     * Audio padding before speech (ms)
+     * @default 300
+     */
+    prefixPaddingMs?: number
+    /**
+     * Silence duration to end turn (ms)
+     * @default 500
+     */
+    silenceDurationMs?: number
+  }
+
+  // ─────────────────────────────────────────────────────────────────
+  // Session Options (for transcription-only mode)
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * System instructions for the session
+   * For transcription-only, can be left empty or provide context
+   */
+  instructions?: string
+
+  /**
+   * Enable noise reduction on input audio
+   * @default true
+   */
+  inputAudioNoiseReduction?: boolean
+}
+
+/**
  * Union of all provider-specific streaming options
  */
 export type ProviderStreamingOptions =
   | ({ provider: "gladia" } & GladiaStreamingOptions)
   | ({ provider: "deepgram" } & DeepgramStreamingOptions)
   | ({ provider: "assemblyai" } & AssemblyAIStreamingOptions)
+  | ({ provider: "openai-whisper" } & OpenAIStreamingOptions)
 
 /**
  * Type-safe streaming options for a specific provider
@@ -438,7 +529,9 @@ export type StreamingOptionsForProvider<P extends StreamingProvider> = P extends
     ? DeepgramStreamingOptions
     : P extends "assemblyai"
       ? AssemblyAIStreamingOptions
-      : never
+      : P extends "openai-whisper"
+        ? OpenAIStreamingOptions
+        : never
 
 /**
  * Type-safe transcribeStream parameters for a specific provider

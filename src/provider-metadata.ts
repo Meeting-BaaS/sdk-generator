@@ -50,8 +50,9 @@ import { SonioxLanguageCodes } from "./generated/soniox/languages"
 
 /**
  * Gladia provider capabilities
+ * Note: Using `as const satisfies` to preserve literal boolean types for type derivation
  */
-export const GladiaCapabilities: ProviderCapabilities = {
+export const GladiaCapabilities = {
   streaming: true,
   diarization: true,
   wordTimestamps: true,
@@ -64,12 +65,12 @@ export const GladiaCapabilities: ProviderCapabilities = {
   listTranscripts: true,
   deleteTranscript: true,
   getAudioFile: true
-} as const
+} as const satisfies ProviderCapabilities
 
 /**
  * AssemblyAI provider capabilities
  */
-export const AssemblyAICapabilities: ProviderCapabilities = {
+export const AssemblyAICapabilities = {
   streaming: true,
   diarization: true,
   wordTimestamps: true,
@@ -81,12 +82,12 @@ export const AssemblyAICapabilities: ProviderCapabilities = {
   piiRedaction: true,
   listTranscripts: true,
   deleteTranscript: true
-} as const
+} as const satisfies ProviderCapabilities
 
 /**
  * Deepgram provider capabilities
  */
-export const DeepgramCapabilities: ProviderCapabilities = {
+export const DeepgramCapabilities = {
   streaming: true,
   diarization: true,
   wordTimestamps: true,
@@ -98,12 +99,12 @@ export const DeepgramCapabilities: ProviderCapabilities = {
   piiRedaction: true,
   listTranscripts: true,
   deleteTranscript: false
-} as const
+} as const satisfies ProviderCapabilities
 
 /**
  * OpenAI Whisper provider capabilities
  */
-export const OpenAICapabilities: ProviderCapabilities = {
+export const OpenAICapabilities = {
   streaming: true, // Via OpenAI Realtime API (WebSocket)
   diarization: true,
   wordTimestamps: true,
@@ -115,12 +116,12 @@ export const OpenAICapabilities: ProviderCapabilities = {
   piiRedaction: false,
   listTranscripts: false,
   deleteTranscript: false
-} as const
+} as const satisfies ProviderCapabilities
 
 /**
  * Azure Speech-to-Text provider capabilities
  */
-export const AzureCapabilities: ProviderCapabilities = {
+export const AzureCapabilities = {
   streaming: false,
   diarization: true,
   wordTimestamps: true,
@@ -132,12 +133,12 @@ export const AzureCapabilities: ProviderCapabilities = {
   piiRedaction: false,
   listTranscripts: true,
   deleteTranscript: true
-} as const
+} as const satisfies ProviderCapabilities
 
 /**
  * Speechmatics provider capabilities
  */
-export const SpeechmaticsCapabilities: ProviderCapabilities = {
+export const SpeechmaticsCapabilities = {
   streaming: false,
   diarization: true,
   wordTimestamps: true,
@@ -149,12 +150,12 @@ export const SpeechmaticsCapabilities: ProviderCapabilities = {
   piiRedaction: false,
   listTranscripts: true,
   deleteTranscript: true
-} as const
+} as const satisfies ProviderCapabilities
 
 /**
  * Soniox provider capabilities
  */
-export const SonioxCapabilities: ProviderCapabilities = {
+export const SonioxCapabilities = {
   streaming: true,
   diarization: true,
   wordTimestamps: true,
@@ -166,10 +167,13 @@ export const SonioxCapabilities: ProviderCapabilities = {
   piiRedaction: false,
   listTranscripts: false,
   deleteTranscript: false
-} as const
+} as const satisfies ProviderCapabilities
 
 /**
  * All provider capabilities in a single map
+ *
+ * Uses `as const satisfies` to preserve literal types while ensuring type safety.
+ * This enables compile-time derivation of StreamingProvider type.
  *
  * @example
  * ```typescript
@@ -185,10 +189,10 @@ export const SonioxCapabilities: ProviderCapabilities = {
  * const streamingProviders = Object.entries(ProviderCapabilitiesMap)
  *   .filter(([_, caps]) => caps.streaming)
  *   .map(([name]) => name)
- * // ['gladia', 'assemblyai', 'deepgram']
+ * // ['gladia', 'assemblyai', 'deepgram', 'openai-whisper', 'soniox']
  * ```
  */
-export const ProviderCapabilitiesMap: Record<TranscriptionProvider, ProviderCapabilities> = {
+export const ProviderCapabilitiesMap = {
   gladia: GladiaCapabilities,
   assemblyai: AssemblyAICapabilities,
   deepgram: DeepgramCapabilities,
@@ -196,7 +200,30 @@ export const ProviderCapabilitiesMap: Record<TranscriptionProvider, ProviderCapa
   "azure-stt": AzureCapabilities,
   speechmatics: SpeechmaticsCapabilities,
   soniox: SonioxCapabilities
-} as const
+} as const satisfies Record<TranscriptionProvider, ProviderCapabilities>
+
+/**
+ * Type utility to extract providers where a capability is true
+ * @internal
+ */
+type ProvidersWithCapability<K extends keyof ProviderCapabilities> = {
+  [P in keyof typeof ProviderCapabilitiesMap]: (typeof ProviderCapabilitiesMap)[P] extends { [key in K]: true }
+    ? P
+    : never
+}[keyof typeof ProviderCapabilitiesMap]
+
+/**
+ * Providers that support streaming transcription (derived from ProviderCapabilitiesMap)
+ *
+ * This type is automatically derived from the capabilities map - no manual sync needed.
+ * If you add `streaming: true` to a provider's capabilities, this type updates automatically.
+ */
+export type StreamingProviderType = ProvidersWithCapability<"streaming">
+
+/**
+ * Providers that don't support streaming (derived from ProviderCapabilitiesMap)
+ */
+export type BatchOnlyProviderType = Exclude<TranscriptionProvider, StreamingProviderType>
 
 /**
  * List of capability keys for iteration

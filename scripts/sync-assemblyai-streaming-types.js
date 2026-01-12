@@ -85,8 +85,7 @@ function tsTypeToZod(tsType, optional = false) {
   // Handle specific known types
   else if (tsType === "AudioEncoding") {
     zodType = 'zod.enum(["pcm_s16le", "pcm_mulaw"])'
-  }
-  else if (tsType === "StreamingSpeechModel") {
+  } else if (tsType === "StreamingSpeechModel") {
     zodType = 'zod.enum(["universal-streaming-english", "universal-streaming-multilingual"])'
   }
   // Default fallback

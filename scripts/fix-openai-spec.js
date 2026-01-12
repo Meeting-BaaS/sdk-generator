@@ -206,12 +206,13 @@ if (paramFixes > 0) {
 console.log("\n📋 Step 7: Updating spec metadata")
 
 spec.info.title = "OpenAI Audio & Realtime API"
-spec.info.description = "OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted)."
+spec.info.description =
+  "OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted)."
 console.log(`   ✅ Updated title and description`)
 
 // Filter tags to audio and realtime only
 if (spec.tags) {
-  spec.tags = spec.tags.filter(tag => {
+  spec.tags = spec.tags.filter((tag) => {
     const name = tag.name?.toLowerCase() || ""
     return name.includes("audio") || name.includes("realtime")
   })

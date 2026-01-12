@@ -84,7 +84,9 @@ function parseSpecSources() {
 function scanSpecs() {
   return fs
     .readdirSync(SPECS_DIR)
-    .filter((f) => f.endsWith(".json") || f.endsWith(".yml") || f.endsWith(".yaml") || f.endsWith(".ts"))
+    .filter(
+      (f) => f.endsWith(".json") || f.endsWith(".yml") || f.endsWith(".yaml") || f.endsWith(".ts")
+    )
     .filter((f) => !f.endsWith(".backup"))
 }
 
@@ -107,7 +109,9 @@ function scanScripts() {
  */
 function scanGenerated() {
   if (!fs.existsSync(GENERATED_DIR)) return []
-  return fs.readdirSync(GENERATED_DIR).filter((f) => fs.statSync(path.join(GENERATED_DIR, f)).isDirectory())
+  return fs
+    .readdirSync(GENERATED_DIR)
+    .filter((f) => fs.statSync(path.join(GENERATED_DIR, f)).isDirectory())
 }
 
 /**
@@ -321,7 +325,9 @@ flowchart TB
 `
 
   // ===== POST-ORVAL FIXES =====
-  const postOrvalFixes = scripts.fix.filter((f) => f.includes("generated") || f.includes("assemblyai-missing"))
+  const postOrvalFixes = scripts.fix.filter(
+    (f) => f.includes("generated") || f.includes("assemblyai-missing")
+  )
   if (postOrvalFixes.length > 0) {
     mmd += `    subgraph FIX_POST["POST-ORVAL FIXES"]
         direction TB

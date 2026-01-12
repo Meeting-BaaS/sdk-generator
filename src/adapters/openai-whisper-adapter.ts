@@ -4,13 +4,32 @@
  */
 
 import axios from "axios"
+import WebSocket from "ws"
 import type {
+  AudioChunk,
   AudioInput,
   ProviderCapabilities,
+  StreamingCallbacks,
+  StreamingOptions,
+  StreamingSession,
   TranscribeOptions,
   UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+
+// Import OpenAI Realtime streaming types
+import type {
+  RealtimeServerEvent,
+  ConversationItemInputAudioTranscriptionCompletedEvent,
+  InputAudioBufferSpeechStartedEvent,
+  InputAudioBufferSpeechStoppedEvent,
+  SessionCreatedEvent,
+  ErrorEvent as RealtimeErrorEvent
+} from "../generated/openai/streaming-types"
+import {
+  getOpenAIRealtimeUrl,
+  REALTIME_SERVER_EVENTS
+} from "../generated/openai/streaming-types"
 
 // Import generated API client function - FULL TYPE SAFETY!
 import { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
@@ -23,7 +42,14 @@ import type { CreateTranscriptionResponseDiarizedJson } from "../generated/opena
 import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
 
 // Import model and response format constants (derived from official spec)
-import { OpenAIModel, OpenAIResponseFormat } from "../constants"
+import {
+  OpenAIModel,
+  OpenAIResponseFormat,
+  OpenAIRealtimeModel,
+  OpenAIRealtimeAudioFormat,
+  OpenAIRealtimeTurnDetection,
+  OpenAIRealtimeTranscriptionModel
+} from "../constants"
 
 /**
  * OpenAI Whisper transcription provider adapter
@@ -252,6 +278,279 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
   }
 
   /**
+   * Real-time streaming transcription using OpenAI Realtime API
+   *
+   * Opens a WebSocket connection to OpenAI's Realtime API for live audio transcription.
+   * Audio should be sent as PCM16 format (16-bit signed, little-endian).
+   *
+   * @param options - Streaming options including audio format and VAD settings
+   * @param callbacks - Event callbacks for transcription events
+   * @returns StreamingSession for sending audio and controlling the session
+   *
+   * @example
+   * ```typescript
+   * const session = await adapter.transcribeStream({
+   *   sampleRate: 24000,
+   *   openaiStreaming: {
+   *     model: 'gpt-4o-realtime-preview',
+   *     turnDetection: {
+   *       type: 'server_vad',
+   *       threshold: 0.5,
+   *       silenceDurationMs: 500
+   *     }
+   *   }
+   * }, {
+   *   onTranscript: (event) => console.log(event.text),
+   *   onError: (error) => console.error(error)
+   * });
+   *
+   * // Send audio chunks (PCM16 format)
+   * session.sendAudio({ data: audioBuffer });
+   *
+   * // Close when done
+   * await session.close();
+   * ```
+   */
+  async transcribeStream(
+    options?: StreamingOptions,
+    callbacks?: StreamingCallbacks
+  ): Promise<StreamingSession> {
+    this.validateConfig()
+
+    const openaiOpts = options?.openaiStreaming || {}
+    const model = openaiOpts.model || OpenAIRealtimeModel["gpt-4o-realtime-preview"]
+
+    // Build WebSocket URL
+    const wsUrl = getOpenAIRealtimeUrl(model)
+
+    // Create WebSocket connection with auth header
+    const ws = new WebSocket(wsUrl, {
+      headers: {
+        Authorization: `Bearer ${this.config!.apiKey}`,
+        "OpenAI-Beta": "realtime=v1"
+      }
+    })
+
+    let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
+    const sessionId = `openai-realtime-${Date.now()}-${Math.random().toString(36).substring(7)}`
+    let currentTranscript = ""
+
+    // Handle WebSocket events
+    ws.on("open", () => {
+      sessionStatus = "open"
+
+      // Configure session for transcription-only mode
+      const sessionConfig = {
+        type: "session.update",
+        session: {
+          modalities: ["audio", "text"],
+          input_audio_format:
+            openaiOpts.inputAudioFormat || OpenAIRealtimeAudioFormat.pcm16,
+          input_audio_transcription: {
+            model: OpenAIRealtimeTranscriptionModel["whisper-1"]
+          },
+          // Use server VAD for turn detection; OpenAI defaults: threshold=0.5, prefix=300ms, silence=500ms
+          turn_detection: openaiOpts.turnDetection
+            ? {
+                type:
+                  openaiOpts.turnDetection.type ||
+                  OpenAIRealtimeTurnDetection.server_vad,
+                threshold: openaiOpts.turnDetection.threshold,
+                prefix_padding_ms: openaiOpts.turnDetection.prefixPaddingMs,
+                silence_duration_ms: openaiOpts.turnDetection.silenceDurationMs
+              }
+            : {
+                type: OpenAIRealtimeTurnDetection.server_vad
+              },
+          instructions: openaiOpts.instructions
+        }
+      }
+
+      ws.send(JSON.stringify(sessionConfig))
+      callbacks?.onOpen?.()
+    })
+
+    ws.on("message", (data: Buffer) => {
+      try {
+        const message = JSON.parse(data.toString()) as RealtimeServerEvent
+        this.handleRealtimeMessage(message, callbacks, (text) => {
+          currentTranscript = text
+        })
+      } catch (error) {
+        callbacks?.onError?.({
+          code: "PARSE_ERROR",
+          message: "Failed to parse WebSocket message",
+          details: error
+        })
+      }
+    })
+
+    ws.on("error", (error: Error) => {
+      callbacks?.onError?.({
+        code: "WEBSOCKET_ERROR",
+        message: error.message,
+        details: error
+      })
+    })
+
+    ws.on("close", (code: number, reason: Buffer) => {
+      sessionStatus = "closed"
+      callbacks?.onClose?.(code, reason.toString())
+    })
+
+    // Wait for connection to open
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error("WebSocket connection timeout"))
+      }, 10000)
+
+      ws.once("open", () => {
+        clearTimeout(timeout)
+        resolve()
+      })
+
+      ws.once("error", (error) => {
+        clearTimeout(timeout)
+        reject(error)
+      })
+    })
+
+    // Return StreamingSession interface
+    return {
+      id: sessionId,
+      provider: this.name,
+      createdAt: new Date(),
+      getStatus: () => sessionStatus,
+      sendAudio: async (chunk: AudioChunk) => {
+        if (sessionStatus !== "open") {
+          throw new Error(`Cannot send audio: session is ${sessionStatus}`)
+        }
+
+        if (ws.readyState !== WebSocket.OPEN) {
+          throw new Error("WebSocket is not open")
+        }
+
+        // OpenAI Realtime expects base64-encoded audio
+        const base64Audio = Buffer.from(chunk.data).toString("base64")
+
+        // Send audio buffer append event
+        ws.send(
+          JSON.stringify({
+            type: "input_audio_buffer.append",
+            audio: base64Audio
+          })
+        )
+
+        // Commit the buffer if this is the last chunk
+        if (chunk.isLast) {
+          ws.send(JSON.stringify({ type: "input_audio_buffer.commit" }))
+        }
+      },
+      close: async () => {
+        if (sessionStatus === "closed" || sessionStatus === "closing") {
+          return
+        }
+
+        sessionStatus = "closing"
+
+        // Commit any remaining audio before closing
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: "input_audio_buffer.commit" }))
+        }
+
+        // Close WebSocket
+        return new Promise<void>((resolve) => {
+          const timeout = setTimeout(() => {
+            ws.terminate()
+            resolve()
+          }, 5000)
+
+          ws.close()
+
+          ws.once("close", () => {
+            clearTimeout(timeout)
+            sessionStatus = "closed"
+            resolve()
+          })
+        })
+      }
+    }
+  }
+
+  /**
+   * Handle incoming Realtime API messages
+   */
+  private handleRealtimeMessage(
+    message: RealtimeServerEvent,
+    callbacks?: StreamingCallbacks,
+    onTranscriptUpdate?: (text: string) => void
+  ): void {
+    switch (message.type) {
+      case REALTIME_SERVER_EVENTS.SessionCreated: {
+        const sessionMsg = message as SessionCreatedEvent
+        callbacks?.onMetadata?.({
+          sessionId: sessionMsg.session.id,
+          model: sessionMsg.session.model
+        })
+        break
+      }
+
+      case REALTIME_SERVER_EVENTS.InputAudioBufferSpeechStarted: {
+        const speechStart = message as InputAudioBufferSpeechStartedEvent
+        callbacks?.onSpeechStart?.({
+          type: "speech_start",
+          timestamp: speechStart.audio_start_ms / 1000, // Convert ms to seconds
+          sessionId: speechStart.item_id
+        })
+        break
+      }
+
+      case REALTIME_SERVER_EVENTS.InputAudioBufferSpeechStopped: {
+        const speechStop = message as InputAudioBufferSpeechStoppedEvent
+        callbacks?.onSpeechEnd?.({
+          type: "speech_end",
+          timestamp: speechStop.audio_end_ms / 1000, // Convert ms to seconds
+          sessionId: speechStop.item_id
+        })
+        break
+      }
+
+      case REALTIME_SERVER_EVENTS.ConversationItemInputAudioTranscriptionCompleted: {
+        const transcription = message as ConversationItemInputAudioTranscriptionCompletedEvent
+        onTranscriptUpdate?.(transcription.transcript)
+
+        callbacks?.onTranscript?.({
+          type: "transcript",
+          text: transcription.transcript,
+          isFinal: true
+        })
+
+        // Also emit as utterance for consistency with other providers
+        // Note: OpenAI Realtime API doesn't provide timing info for transcriptions
+        callbacks?.onUtterance?.({
+          text: transcription.transcript,
+          start: 0,
+          end: 0
+        })
+        break
+      }
+
+      case REALTIME_SERVER_EVENTS.Error: {
+        const errorMsg = message as RealtimeErrorEvent
+        callbacks?.onError?.({
+          code: errorMsg.error.code || "REALTIME_ERROR",
+          message: errorMsg.error.message,
+          details: errorMsg.error
+        })
+        break
+      }
+
+      // Ignore other message types (response.*, rate_limits.*, etc.)
+      // These are for conversational AI, not transcription-only mode
+    }
+  }
+
+  /**
    * Select appropriate model based on transcription options
    */
   private selectModel(options?: TranscribeOptions): CreateTranscriptionRequestModel {
@@ -411,6 +710,8 @@ export { createTranscription } from "../generated/openai/api/openAIAudioRealtime
 
 // Request/Response types (all from official OpenAI spec)
 export type {
-  CreateTranscriptionRequest, CreateTranscriptionRequestModel, CreateTranscriptionResponseDiarizedJson, CreateTranscriptionResponseVerboseJson
+  CreateTranscriptionRequest,
+  CreateTranscriptionRequestModel,
+  CreateTranscriptionResponseDiarizedJson,
+  CreateTranscriptionResponseVerboseJson
 }
-

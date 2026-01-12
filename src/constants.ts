@@ -716,6 +716,10 @@ export type DeepgramTTSSampleRateType =
 
 import { AudioResponseFormat } from "./generated/openai/schema/audioResponseFormat"
 import type { CreateTranscriptionRequestModel } from "./generated/openai/schema/createTranscriptionRequestModel"
+import { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestInputAudioFormat"
+import { RealtimeTranscriptionSessionCreateRequestTurnDetectionType } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestTurnDetectionType"
+import type { RealtimeSessionCreateRequestGAModel } from "./generated/openai/schema/realtimeSessionCreateRequestGAModel"
+import type { AudioTranscriptionModel } from "./generated/openai/schema/audioTranscriptionModel"
 
 /**
  * OpenAI Whisper transcription models
@@ -774,3 +778,111 @@ export type OpenAIModelType = (typeof OpenAIModel)[keyof typeof OpenAIModel]
 /** OpenAI response format type derived from const object */
 export type OpenAIResponseFormatType =
   (typeof OpenAIResponseFormat)[keyof typeof OpenAIResponseFormat]
+
+/**
+ * OpenAI Realtime API models for streaming transcription
+ *
+ * Values from official spec (auto-synced from Stainless):
+ * - `gpt-4o-realtime-preview`: Latest GPT-4o realtime preview
+ * - `gpt-4o-realtime-preview-2024-10-01`: October 2024 version
+ * - `gpt-4o-realtime-preview-2024-12-17`: December 2024 version
+ * - `gpt-4o-realtime-preview-2025-06-03`: June 2025 version
+ * - `gpt-4o-mini-realtime-preview`: GPT-4o mini realtime
+ * - `gpt-4o-mini-realtime-preview-2024-12-17`: December 2024 mini version
+ *
+ * @example
+ * ```typescript
+ * import { OpenAIRealtimeModel } from 'voice-router-dev/constants'
+ *
+ * await adapter.transcribeStream({
+ *   openaiStreaming: {
+ *     model: OpenAIRealtimeModel["gpt-4o-realtime-preview"]
+ *   }
+ * })
+ * ```
+ */
+export const OpenAIRealtimeModel = {
+  "gpt-4o-realtime-preview": "gpt-4o-realtime-preview",
+  "gpt-4o-realtime-preview-2024-10-01": "gpt-4o-realtime-preview-2024-10-01",
+  "gpt-4o-realtime-preview-2024-12-17": "gpt-4o-realtime-preview-2024-12-17",
+  "gpt-4o-realtime-preview-2025-06-03": "gpt-4o-realtime-preview-2025-06-03",
+  "gpt-4o-mini-realtime-preview": "gpt-4o-mini-realtime-preview",
+  "gpt-4o-mini-realtime-preview-2024-12-17": "gpt-4o-mini-realtime-preview-2024-12-17"
+} as const satisfies Record<string, RealtimeSessionCreateRequestGAModel>
+
+/**
+ * OpenAI Realtime audio input formats
+ *
+ * Values from official spec:
+ * - `pcm16`: 16-bit PCM at 24kHz sample rate, mono, little-endian
+ * - `g711_ulaw`: μ-law telephony codec
+ * - `g711_alaw`: A-law telephony codec
+ *
+ * @example
+ * ```typescript
+ * import { OpenAIRealtimeAudioFormat } from 'voice-router-dev/constants'
+ *
+ * await adapter.transcribeStream({
+ *   openaiStreaming: {
+ *     inputAudioFormat: OpenAIRealtimeAudioFormat.pcm16
+ *   }
+ * })
+ * ```
+ */
+export const OpenAIRealtimeAudioFormat = RealtimeTranscriptionSessionCreateRequestInputAudioFormat
+
+/**
+ * OpenAI Realtime turn detection type
+ *
+ * Currently only `server_vad` is supported for transcription sessions.
+ *
+ * @example
+ * ```typescript
+ * import { OpenAIRealtimeTurnDetection } from 'voice-router-dev/constants'
+ *
+ * await adapter.transcribeStream({
+ *   openaiStreaming: {
+ *     turnDetection: {
+ *       type: OpenAIRealtimeTurnDetection.server_vad
+ *     }
+ *   }
+ * })
+ * ```
+ */
+export const OpenAIRealtimeTurnDetection = RealtimeTranscriptionSessionCreateRequestTurnDetectionType
+
+/**
+ * OpenAI Realtime input transcription models
+ *
+ * Models available for input audio transcription in Realtime sessions.
+ *
+ * @example
+ * ```typescript
+ * import { OpenAIRealtimeTranscriptionModel } from 'voice-router-dev/constants'
+ *
+ * // whisper-1 is the standard transcription model
+ * ```
+ */
+export const OpenAIRealtimeTranscriptionModel = {
+  "whisper-1": "whisper-1",
+  "gpt-4o-transcribe": "gpt-4o-transcribe",
+  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
+  "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
+  "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize"
+} as const satisfies Record<string, AudioTranscriptionModel>
+
+/** OpenAI Realtime model type */
+export type OpenAIRealtimeModelType =
+  (typeof OpenAIRealtimeModel)[keyof typeof OpenAIRealtimeModel]
+
+/** OpenAI Realtime audio format type */
+export type OpenAIRealtimeAudioFormatType =
+  (typeof OpenAIRealtimeAudioFormat)[keyof typeof OpenAIRealtimeAudioFormat]
+
+/** OpenAI Realtime turn detection type */
+export type OpenAIRealtimeTurnDetectionType =
+  (typeof OpenAIRealtimeTurnDetection)[keyof typeof OpenAIRealtimeTurnDetection]
+
+/** OpenAI Realtime transcription model type */
+export type OpenAIRealtimeTranscriptionModelType =
+  (typeof OpenAIRealtimeTranscriptionModel)[keyof typeof OpenAIRealtimeTranscriptionModel]
