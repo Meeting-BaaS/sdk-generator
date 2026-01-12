@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.3] - 2026-01-12
+
+### Fixed
+
+#### Zod discriminatedUnion Runtime Crash
+
+Fixed critical runtime error that crashed Node.js on module load:
+
+```
+Error: Discriminator property type has duplicate value undefined
+Error: A discriminator value for key `type` could not be extracted from all schema options
+```
+
+**Root cause:** Orval-generated OpenAI Zod schemas had two bugs:
+1. Discriminator fields marked `.optional()` - allowing all variants to have `undefined` as the discriminator value
+2. Discriminator fields using `zod.string()` instead of `zod.enum()`/`zod.literal()` - Zod can't extract a literal discriminator from a generic string
+
+**Fix:** Added two post-generation fixes in `scripts/fix-generated.js`:
+- `fixDiscriminatedUnionOptionalDiscriminator`: Removes `.optional()` from discriminator fields
+- Enhanced `fixDiscriminatedUnionMissingField`: Converts `discriminatedUnion` to `union` when discriminator uses `zod.string()`
+
+**Affected schemas:** OpenAI Realtime API audio format and turn detection configs
+
+---
+
 ## [0.6.2] - 2026-01-12
 
 ### Added
