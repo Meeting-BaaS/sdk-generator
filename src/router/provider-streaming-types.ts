@@ -511,6 +511,179 @@ export interface OpenAIStreamingOptions {
   inputAudioNoiseReduction?: boolean
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Soniox Streaming Types (inline to avoid importing from outside src/)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Soniox audio format specification
+ * Use "auto" for automatic detection, or specify PCM encoding
+ */
+type SonioxAudioFormat =
+  | "auto" | "aac" | "aiff" | "amr" | "asf" | "flac" | "mp3" | "ogg" | "wav" | "webm"
+  | "pcm_s8" | "pcm_s16le" | "pcm_s16be" | "pcm_s24le" | "pcm_s24be" | "pcm_s32le" | "pcm_s32be"
+  | "pcm_u8" | "pcm_u16le" | "pcm_u16be" | "pcm_u24le" | "pcm_u24be" | "pcm_u32le" | "pcm_u32be"
+  | "pcm_f32le" | "pcm_f32be" | "pcm_f64le" | "pcm_f64be"
+  | "mulaw" | "alaw"
+
+/** One-way translation: translate all spoken languages into a single target language */
+interface SonioxOneWayTranslation {
+  type: "one_way"
+  target_language: string
+}
+
+/** Two-way translation: translate back and forth between two specified languages */
+interface SonioxTwoWayTranslation {
+  type: "two_way"
+  language_a: string
+  language_b: string
+}
+
+/** Soniox translation configuration */
+type SonioxTranslationConfig = SonioxOneWayTranslation | SonioxTwoWayTranslation
+
+/** Structured context for improving transcription accuracy */
+interface SonioxStructuredContext {
+  /** General context items (key-value pairs) */
+  general?: Array<{ key: string; value: string }>
+  /** Text context */
+  text?: string
+  /** Terms that might occur in speech */
+  terms?: string[]
+  /** Hints how to translate specific terms (ignored if translation is not enabled) */
+  translation_terms?: Array<{ source: string; target: string }>
+}
+
+/** Soniox context can be either a structured object or a plain string */
+type SonioxContext = SonioxStructuredContext | string
+
+/**
+ * Soniox streaming options
+ *
+ * Based on the WebSocket API from the Soniox SDK.
+ * Supports speaker diarization, language identification, translation, and custom context.
+ *
+ * @see https://soniox.com/docs/stt/SDKs/web-sdk
+ */
+export interface SonioxStreamingOptions {
+  // ─────────────────────────────────────────────────────────────────
+  // Model Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Real-time model to use
+   * @default "stt-rt-preview"
+   * @example "stt-rt-preview", "stt-rt-v3"
+   */
+  model?: string
+
+  // ─────────────────────────────────────────────────────────────────
+  // Audio Format Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Audio format specification
+   * Use "auto" for automatic detection, or specify PCM encoding
+   * @example "auto", "pcm_s16le", "mulaw", "wav"
+   */
+  audioFormat?: SonioxAudioFormat
+
+  /**
+   * Sample rate in Hz (required for raw PCM formats)
+   * @example 16000, 44100, 48000
+   */
+  sampleRate?: number
+
+  /**
+   * Number of audio channels (1 for mono, 2 for stereo)
+   * Required for raw PCM formats
+   */
+  numChannels?: number
+
+  // ─────────────────────────────────────────────────────────────────
+  // Language Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Expected languages in the audio (ISO language codes)
+   * Helps improve recognition accuracy
+   * @example ["en", "es"]
+   */
+  languageHints?: string[]
+
+  /**
+   * Enable language identification
+   * Each token will include a language field
+   */
+  enableLanguageIdentification?: boolean
+
+  // ─────────────────────────────────────────────────────────────────
+  // Diarization & Detection Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Enable speaker diarization
+   * Each token will include a speaker field
+   */
+  enableSpeakerDiarization?: boolean
+
+  /**
+   * Enable endpoint detection
+   * Detects when a speaker has finished talking
+   */
+  enableEndpointDetection?: boolean
+
+  // ─────────────────────────────────────────────────────────────────
+  // Context & Vocabulary Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Additional context to improve transcription accuracy
+   * Can be a structured object or plain string
+   *
+   * @example
+   * ```typescript
+   * // Structured context
+   * context: {
+   *   terms: ["TypeScript", "React", "Node.js"],
+   *   text: "Technical discussion about web development"
+   * }
+   *
+   * // Simple string context
+   * context: "Medical terminology discussion"
+   * ```
+   */
+  context?: SonioxContext
+
+  // ─────────────────────────────────────────────────────────────────
+  // Translation Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Translation configuration
+   *
+   * @example
+   * ```typescript
+   * // One-way translation
+   * translation: { type: "one_way", target_language: "es" }
+   *
+   * // Two-way translation
+   * translation: { type: "two_way", language_a: "en", language_b: "es" }
+   * ```
+   */
+  translation?: SonioxTranslationConfig
+
+  // ─────────────────────────────────────────────────────────────────
+  // Tracking Options
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Optional tracking identifier (client-defined)
+   * Useful for correlating requests in logs
+   */
+  clientReferenceId?: string
+}
+
 /**
  * Union of all provider-specific streaming options
  */
@@ -519,6 +692,7 @@ export type ProviderStreamingOptions =
   | ({ provider: "deepgram" } & DeepgramStreamingOptions)
   | ({ provider: "assemblyai" } & AssemblyAIStreamingOptions)
   | ({ provider: "openai-whisper" } & OpenAIStreamingOptions)
+  | ({ provider: "soniox" } & SonioxStreamingOptions)
 
 /**
  * Type-safe streaming options for a specific provider
@@ -531,7 +705,9 @@ export type StreamingOptionsForProvider<P extends StreamingProvider> = P extends
       ? AssemblyAIStreamingOptions
       : P extends "openai-whisper"
         ? OpenAIStreamingOptions
-        : never
+        : P extends "soniox"
+          ? SonioxStreamingOptions
+          : never
 
 /**
  * Type-safe transcribeStream parameters for a specific provider

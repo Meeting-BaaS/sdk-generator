@@ -40,7 +40,8 @@ import type { StreamingSupportedRegions } from "../generated/gladia/schema/strea
 import type {
   DeepgramStreamingOptions,
   AssemblyAIStreamingOptions,
-  OpenAIStreamingOptions
+  OpenAIStreamingOptions,
+  SonioxStreamingOptions
 } from "./provider-streaming-types"
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -221,10 +222,7 @@ export type { TranscriptionProvider, ProviderCapabilities, AudioInput } from "..
 import type { TranscriptionProvider } from "../types/core"
 
 // Import derived streaming types from provider-metadata (compile-time derived from capabilities)
-import type {
-  StreamingProviderType,
-  BatchOnlyProviderType
-} from "../provider-metadata"
+import type { StreamingProviderType, BatchOnlyProviderType } from "../provider-metadata"
 
 /**
  * Providers that support real-time streaming transcription
@@ -1052,6 +1050,32 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    * ```
    */
   openaiStreaming?: OpenAIStreamingOptions
+
+  /**
+   * Soniox-specific streaming options
+   *
+   * Configure the Soniox WebSocket connection for real-time transcription.
+   * Supports speaker diarization, language identification, translation, and custom context.
+   *
+   * @see https://soniox.com/docs/stt/SDKs/web-sdk
+   *
+   * @example
+   * ```typescript
+   * await adapter.transcribeStream({
+   *   sonioxStreaming: {
+   *     model: 'stt-rt-preview',
+   *     enableSpeakerDiarization: true,
+   *     enableEndpointDetection: true,
+   *     context: {
+   *       terms: ['TypeScript', 'React'],
+   *       text: 'Technical discussion'
+   *     },
+   *     translation: { type: 'one_way', target_language: 'es' }
+   *   }
+   * });
+   * ```
+   */
+  sonioxStreaming?: SonioxStreamingOptions
 
   /**
    * Regional endpoint for streaming (Gladia only)

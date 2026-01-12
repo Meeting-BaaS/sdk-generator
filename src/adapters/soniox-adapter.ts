@@ -441,7 +441,7 @@ export class SonioxAdapter extends BaseAdapter {
     }
 
     // Handle Soniox-specific streaming options
-    const sonioxOpts = (options as any)?.sonioxStreaming
+    const sonioxOpts = options?.sonioxStreaming
     if (sonioxOpts) {
       if (sonioxOpts.enableEndpointDetection) {
         wsUrl.searchParams.set("enable_endpoint_detection", "true")
