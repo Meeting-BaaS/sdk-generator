@@ -88,6 +88,11 @@ import {
 import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAudioRealtimeAPI.zod"
 
 import {
+  transcriptionsCreateBody as azureTranscribeParams,
+  transcriptionsListQueryParams as azureListParams
+} from "./generated/azure/api/speechServicesAPIVersion32.zod"
+
+import {
   streamingTranscriberParams as speechmaticsStreamingParams,
   streamingUpdateConfigParams as speechmaticsUpdateConfigParams
 } from "./generated/speechmatics/streaming-types.zod"
@@ -243,6 +248,23 @@ export type OpenAITranscriptionConfig = z.infer<typeof openaiTranscribeParams>
 export const OpenAITranscriptionSchema = openaiTranscribeParams
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Azure - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for Azure Speech Services transcription requests */
+export type AzureTranscriptionFieldName = keyof z.infer<typeof azureTranscribeParams>
+/** Field names for Azure list filters */
+export type AzureListFilterFieldName = keyof z.infer<typeof azureListParams>
+
+/** Azure transcription request values (fully typed) */
+export type AzureTranscriptionConfig = z.infer<typeof azureTranscribeParams>
+
+/** Zod schema for Azure transcription */
+export const AzureTranscriptionSchema = azureTranscribeParams
+/** Zod schema for Azure list filters */
+export const AzureListFilterSchema = azureListParams
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Speechmatics - Typed field names and schemas
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -310,6 +332,7 @@ export type TranscriptionFieldName =
   | DeepgramTranscriptionFieldName
   | AssemblyAITranscriptionFieldName
   | OpenAITranscriptionFieldName
+  | AzureTranscriptionFieldName
   | SpeechmaticsTranscriptionFieldName
   | SonioxTranscriptionFieldName
 
@@ -465,6 +488,35 @@ export function getOpenAIFieldConfigs(): ProviderFieldConfigs {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Azure - Derived from Zod schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Get Azure Speech Services transcription fields (derived from OpenAPI spec)
+ */
+export function getAzureTranscriptionFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(azureTranscribeParams)
+}
+
+/**
+ * Get Azure list filter fields (derived from OpenAPI spec)
+ */
+export function getAzureListFilterFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(azureListParams)
+}
+
+/**
+ * Get all Azure field configs
+ */
+export function getAzureFieldConfigs(): ProviderFieldConfigs {
+  return {
+    provider: "azure",
+    transcription: getAzureTranscriptionFields(),
+    listFilters: getAzureListFilterFields()
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Speechmatics - Derived from Zod schemas (synced from SDK)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -568,6 +620,7 @@ export type FieldConfigProvider =
   | "deepgram"
   | "assemblyai"
   | "openai-whisper"
+  | "azure"
   | "speechmatics"
   | "soniox"
 
@@ -584,6 +637,8 @@ export function getProviderFieldConfigs(provider: FieldConfigProvider): Provider
       return getAssemblyAIFieldConfigs()
     case "openai-whisper":
       return getOpenAIFieldConfigs()
+    case "azure":
+      return getAzureFieldConfigs()
     case "speechmatics":
       return getSpeechmaticsFieldConfigs()
     case "soniox":
@@ -600,6 +655,7 @@ export function getAllFieldConfigs(): Record<FieldConfigProvider, ProviderFieldC
     deepgram: getDeepgramFieldConfigs(),
     assemblyai: getAssemblyAIFieldConfigs(),
     "openai-whisper": getOpenAIFieldConfigs(),
+    azure: getAzureFieldConfigs(),
     speechmatics: getSpeechmaticsFieldConfigs(),
     soniox: getSonioxFieldConfigs()
   }

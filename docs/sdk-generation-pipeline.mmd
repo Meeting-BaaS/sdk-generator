@@ -103,7 +103,7 @@ flowchart TB
 
     subgraph EXPORTS["SDK EXPORTS"]
         direction TB
-        EXP_FIELD["field-configs.ts<br/>zodToFieldConfigs()"]
+        EXP_FIELD["field-configs.ts<br/>zodToFieldConfigs() + typed field names"]
         EXP_INDEX["index.ts<br/>Types + Zod namespaces"]
         EXP_META["provider-metadata.ts<br/>Provider info"]
         EXP_CONST["constants.ts<br/>Enums + constants"]
@@ -145,7 +145,7 @@ flowchart TB
         API_ADAPTERS["Provider Adapters<br/>Direct provider access"]
         API_WEBHOOKS["WebhookRouter<br/>Webhook handling"]
         API_TYPES["Types + Zod Schemas<br/>Runtime validation"]
-        API_CONFIGS["Field Configs<br/>UI form generation"]
+        API_CONFIGS["Field Configs<br/>UI form generation + typed overrides"]
         API_META["Provider Metadata<br/>Provider capabilities"]
     end
 
