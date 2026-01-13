@@ -476,7 +476,8 @@ function fixDiscriminatedUnionMissingField(content, filePath) {
   // Fix 2: Handle 'type' discriminator where field uses zod.string() instead of literal/enum
   // This causes "A discriminator value could not be extracted" error
   // We need to find each discriminatedUnion and check if its first variant uses zod.string()
-  const discriminatedUnionRegex = /zod\.discriminatedUnion\(['"]type['"]\s*,\s*\[/g
+  // Note: Match both zod.discriminatedUnion AND .discriminatedUnion (chained from zod)
+  const discriminatedUnionRegex = /(?:zod)?\.discriminatedUnion\(['"]type['"]\s*,\s*\[/g
 
   let match
   const replacements = []
@@ -486,16 +487,25 @@ function fixDiscriminatedUnionMissingField(content, filePath) {
     const afterMatch = content.slice(match.index + match[0].length)
 
     // Find the first zod.object in this discriminatedUnion
-    // Look for pattern like: zod.object({ "type": zod.string()
-    // within the first ~200 characters (should be enough to find the first field)
-    const firstObjectMatch = afterMatch.slice(0, 300).match(/zod\.object\(\{\s*["']type["']:\s*zod\.string\(\)/)
+    // Handle multiline patterns like:
+    //   zod
+    //     .object({
+    //       type: zod
+    //         .string()
+    // within the first ~500 characters (should be enough to find the first field)
+    const firstObjectMatch = afterMatch
+      .slice(0, 500)
+      .match(/zod[\s\S]*?\.object\(\{[\s\S]*?["']?type["']?:\s*zod[\s\S]*?\.string\(\)/)
 
     if (firstObjectMatch) {
       // This discriminatedUnion has a zod.string() discriminator - mark for replacement
+      // Preserve the original prefix (.discriminatedUnion vs zod.discriminatedUnion)
+      const originalMatch = match[0]
+      const hasZodPrefix = originalMatch.startsWith("zod")
       replacements.push({
         start: startIdx,
         end: startIdx + match[0].length,
-        replacement: "zod.union(["
+        replacement: hasZodPrefix ? "zod.union([" : ".union(["
       })
     }
   }
@@ -557,7 +567,8 @@ function fixDiscriminatedUnionOptionalDiscriminator(content, filePath) {
   // We need to remove .optional() from the discriminator field declarations
 
   // Match discriminatedUnion with single or double quotes
-  const discriminatedUnionRegex = /zod\.discriminatedUnion\(['"](\w+)['"]\s*,\s*\[/g
+  // Note: Match both zod.discriminatedUnion AND .discriminatedUnion (chained from zod)
+  const discriminatedUnionRegex = /(?:zod)?\.discriminatedUnion\(['"](\w+)['"]\s*,\s*\[/g
 
   let match
   while ((match = discriminatedUnionRegex.exec(content)) !== null) {
@@ -587,15 +598,27 @@ function fixDiscriminatedUnionOptionalDiscriminator(content, filePath) {
     // Pattern: "fieldName": zod.<method>(<args>).optional()[.describe(...)]
     //
     // Use a simpler approach: just remove .optional() that follows the discriminator enum/literal pattern
+    // Handle multiline patterns - Orval generates:
+    //   type: zod
+    //     .enum(["audio/pcm"])
+    //     .optional()
+    //     .describe("...")
     const fixedUnionContent = unionContent
       // Pattern 1: .optional().describe('...') - remove .optional() keeping .describe()
+      // Handle both single-line and multiline (type: zod\n  .enum(...)\n  .optional()\n  .describe())
       .replace(
-        new RegExp(`(["']${discriminatorField}["']:\\s*zod\\.(?:enum|string|literal)\\([^)]+\\))\\.optional\\(\\)(\\.describe\\()`, "g"),
+        new RegExp(
+          `(["']?${discriminatorField}["']?:\\s*zod[\\s\\S]*?\\.(?:enum|literal)\\([^)]+\\))\\s*\\.optional\\(\\)(\\s*\\.describe\\()`,
+          "g"
+        ),
         "$1$2"
       )
       // Pattern 2: .optional() at the end (no .describe()) - just remove .optional()
       .replace(
-        new RegExp(`(["']${discriminatorField}["']:\\s*zod\\.(?:enum|string|literal)\\([^)]+\\))\\.optional\\(\\)([,}\\n])`, "g"),
+        new RegExp(
+          `(["']?${discriminatorField}["']?:\\s*zod[\\s\\S]*?\\.(?:enum|literal)\\([^)]+\\))\\s*\\.optional\\(\\)(\\s*[,}])`,
+          "g"
+        ),
         "$1$2"
       )
 
