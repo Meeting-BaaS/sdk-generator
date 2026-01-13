@@ -1,0 +1,5637 @@
+openapi: 3.1.0
+info:
+  contact: {}
+  description: ""
+  title: Gladia Control API
+  version: "1.0"
+servers:
+- description: Gladia API production URL
+  url: https://api.gladia.io/
+paths:
+  /v2/upload:
+    post:
+      operationId: FileController_upload_v2
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FileController_upload_v2_request"
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FileController_upload_v2_request_1"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AudioUploadResponse"
+          description: ""
+      security:
+      - x_gladia_key: []
+      summary: Upload an audio file or provide an audio URL for processing
+      tags:
+      - File Management
+  /v2/pre-recorded:
+    get:
+      operationId: PreRecordedController_getPreRecordedJobs_v2
+      parameters:
+      - description: The starting point for pagination. A value of 0 starts from the
+          first item.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - description: The maximum number of items to return. Useful for pagination
+          and controlling data payload size.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
+        explode: true
+        in: query
+        name: date
+        required: false
+        schema:
+          example: 2026-01-13
+          format: date-time
+          type: string
+        style: form
+      - description: Include items that occurred before the specified date in ISO
+          format.
+        explode: true
+        in: query
+        name: before_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter for items after the specified date. Use with `before_date`
+          for a range. Date in ISO format.
+        explode: true
+        in: query
+        name: after_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter the list based on item status. Accepts multiple values
+          from the predefined list.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          example:
+          - done
+          items:
+            enum:
+            - queued
+            - processing
+            - done
+            - error
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: custom_metadata
+        required: false
+        schema:
+          additionalProperties: {}
+          example:
+            user: John Doe
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListPreRecordedResponse"
+          description: A list of pre recorded jobs matching the parameters.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access pre recorded jobs
+      security:
+      - x_gladia_key: []
+      summary: Get pre recorded jobs based on query parameters
+      tags:
+      - Pre-recorded V2
+    post:
+      operationId: PreRecordedController_initPreRecordedJob_v2
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InitTranscriptionRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InitPreRecordedTranscriptionResponse"
+          description: The pre recorded job has been initiated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestErrorResponse"
+          description: Something is wrong with the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to initiate a new pre recorded
+            job
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnprocessableEntityErrorResponse"
+          description: The parameters you gave are incorrect
+      security:
+      - x_gladia_key: []
+      summary: Initiate a new pre recorded job
+      tags:
+      - Pre-recorded V2
+  /v2/pre-recorded/{id}:
+    delete:
+      operationId: PreRecordedController_deletePreRecordedJob_v2
+      parameters:
+      - description: Id of the pre recorded job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: The pre recorded job has been successfully deleted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to delete this pre recorded
+            job
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenErrorResponse"
+          description: The pre recorded job is not in a deletable state
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The pre recorded job doesn't exist or has been deleted
+      security:
+      - x_gladia_key: []
+      summary: Delete the pre recorded job
+      tags:
+      - Pre-recorded V2
+    get:
+      operationId: PreRecordedController_getPreRecordedJob_v2
+      parameters:
+      - description: Id of the pre recorded job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreRecordedResponse"
+          description: The pre recorded job's metadata
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access the pre recorded job
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The pre recorded job doesn't exist or has been deleted
+      security:
+      - x_gladia_key: []
+      summary: Get the pre recorded job's metadata
+      tags:
+      - Pre-recorded V2
+  /v2/pre-recorded/{id}/file:
+    get:
+      operationId: PreRecordedController_getAudio_v2
+      parameters:
+      - description: Id of the pre recorded job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                example: <binary>
+                format: binary
+                type: string
+          description: The audio file used for this pre recorded job
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access this pre recorded
+            job or its audio file
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The pre recorded job or its audio file doesn't exist or has
+            been deleted
+      security:
+      - x_gladia_key: []
+      summary: Download the audio file used for this pre recorded job
+      tags:
+      - Pre-recorded V2
+  /v2/transcription:
+    get:
+      operationId: TranscriptionController_list_v2
+      parameters:
+      - description: The starting point for pagination. A value of 0 starts from the
+          first item.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - description: The maximum number of items to return. Useful for pagination
+          and controlling data payload size.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
+        explode: true
+        in: query
+        name: date
+        required: false
+        schema:
+          example: 2026-01-13
+          format: date-time
+          type: string
+        style: form
+      - description: Include items that occurred before the specified date in ISO
+          format.
+        explode: true
+        in: query
+        name: before_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter for items after the specified date. Use with `before_date`
+          for a range. Date in ISO format.
+        explode: true
+        in: query
+        name: after_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter the list based on item status. Accepts multiple values
+          from the predefined list.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          example:
+          - done
+          items:
+            enum:
+            - queued
+            - processing
+            - done
+            - error
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: custom_metadata
+        required: false
+        schema:
+          additionalProperties: true
+          example:
+            user: John Doe
+          type: object
+        style: form
+      - description: Filter the list based on the item type. Supports multiple values
+          from the predefined list.
+        explode: true
+        in: query
+        name: kind
+        required: false
+        schema:
+          example:
+          - pre-recorded
+          items:
+            enum:
+            - pre-recorded
+            - live
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListTranscriptionResponse"
+          description: A list of transcription jobs matching the parameters.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access transcription jobs
+      security:
+      - x_gladia_key: []
+      summary: Get transcription jobs based on query parameters
+      tags:
+      - Transcription V2
+    post:
+      operationId: TranscriptionController_initPreRecordedJob_v2
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InitTranscriptionRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InitPreRecordedTranscriptionResponse"
+          description: The transcription job has been initiated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestErrorResponse"
+          description: Something is wrong with the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to initiate a new transcription
+            job
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnprocessableEntityErrorResponse"
+          description: The parameters you gave are incorrect
+      security:
+      - x_gladia_key: []
+      summary: Initiate a new transcription job
+      tags:
+      - Transcription V2
+  /v2/transcription/{id}:
+    delete:
+      operationId: TranscriptionController_deleteTranscript_v2
+      parameters:
+      - description: Id of the transcription job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: The transcription job has been successfully deleted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to delete this transcription
+            job
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenErrorResponse"
+          description: The transcription job is not in a deletable state
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The transcription job doesn't exist or has been deleted
+      security:
+      - x_gladia_key: []
+      summary: Delete the transcription job
+      tags:
+      - Transcription V2
+    get:
+      operationId: TranscriptionController_getTranscript_v2
+      parameters:
+      - description: Id of the transcription job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TranscriptionController_getTranscript_v2_200_response"
+          description: The transcription job's metadata
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access the transcription
+            job
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The transcription job doesn't exist or has been deleted
+      security:
+      - x_gladia_key: []
+      summary: Get the transcription job's metadata
+      tags:
+      - Transcription V2
+  /v2/transcription/{id}/file:
+    get:
+      operationId: TranscriptionController_getAudio_v2
+      parameters:
+      - description: Id of the transcription job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                example: <binary>
+                format: binary
+                type: string
+          description: The audio file used for this transcription job
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access this transcription
+            job or its audio file
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The transcription job or its audio file doesn't exist or has
+            been deleted
+      security:
+      - x_gladia_key: []
+      summary: Download the audio file used for this transcription job
+      tags:
+      - Transcription V2
+  /audio/text/audio-transcription:
+    post:
+      operationId: AudioToTextController_audioTranscription
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/AudioToTextController_audioTranscription_request"
+        required: true
+      responses:
+        "200":
+          description: ""
+      security:
+      - x_gladia_key: []
+      tags:
+      - AudioToText
+      - Transcription V1
+  /video/text/video-transcription:
+    post:
+      operationId: VideoToTextController_videoTranscription
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/VideoToTextController_videoTranscription_request"
+        required: true
+      responses:
+        "200":
+          description: ""
+      security:
+      - x_gladia_key: []
+      tags:
+      - Transcription V1
+  /v1/history:
+    get:
+      operationId: HistoryController_getList_v1
+      parameters:
+      - description: The starting point for pagination. A value of 0 starts from the
+          first item.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - description: The maximum number of items to return. Useful for pagination
+          and controlling data payload size.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
+        explode: true
+        in: query
+        name: date
+        required: false
+        schema:
+          example: 2026-01-13
+          format: date-time
+          type: string
+        style: form
+      - description: Include items that occurred before the specified date in ISO
+          format.
+        explode: true
+        in: query
+        name: before_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter for items after the specified date. Use with `before_date`
+          for a range. Date in ISO format.
+        explode: true
+        in: query
+        name: after_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter the list based on item status. Accepts multiple values
+          from the predefined list.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          example:
+          - done
+          items:
+            enum:
+            - queued
+            - processing
+            - done
+            - error
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: custom_metadata
+        required: false
+        schema:
+          additionalProperties: true
+          example:
+            user: John Doe
+          type: object
+        style: form
+      - description: Filter the list based on the item type. Supports multiple values
+          from the predefined list.
+        explode: true
+        in: query
+        name: kind
+        required: false
+        schema:
+          example:
+          - pre-recorded
+          items:
+            enum:
+            - pre-recorded
+            - live
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListHistoryResponse"
+          description: A list of jobs
+      security:
+      - x_gladia_key: []
+      summary: Get the history of all your jobs
+      tags:
+      - Job History
+  /v2/live:
+    get:
+      operationId: StreamingController_getStreamingJobs_v2
+      parameters:
+      - description: The starting point for pagination. A value of 0 starts from the
+          first item.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - description: The maximum number of items to return. Useful for pagination
+          and controlling data payload size.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 20
+          minimum: 1
+          type: integer
+        style: form
+      - description: Filter items relevant to a specific date in ISO format (YYYY-MM-DD).
+        explode: true
+        in: query
+        name: date
+        required: false
+        schema:
+          example: 2026-01-13
+          format: date-time
+          type: string
+        style: form
+      - description: Include items that occurred before the specified date in ISO
+          format.
+        explode: true
+        in: query
+        name: before_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter for items after the specified date. Use with `before_date`
+          for a range. Date in ISO format.
+        explode: true
+        in: query
+        name: after_date
+        required: false
+        schema:
+          example: 2026-01-13T00:00:03.578Z
+          format: date-time
+          type: string
+        style: form
+      - description: Filter the list based on item status. Accepts multiple values
+          from the predefined list.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          example:
+          - done
+          items:
+            enum:
+            - queued
+            - processing
+            - done
+            - error
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: custom_metadata
+        required: false
+        schema:
+          additionalProperties: true
+          example:
+            user: John Doe
+          type: object
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListStreamingResponse"
+          description: A list of live jobs matching the parameters.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access live jobs
+      security:
+      - x_gladia_key: []
+      summary: Get live jobs based on query parameters
+      tags:
+      - Live V2
+    post:
+      operationId: StreamingController_initStreamingSession_v2
+      parameters:
+      - description: The region used to process the audio.
+        explode: true
+        in: query
+        name: region
+        required: false
+        schema:
+          $ref: "#/components/schemas/StreamingSupportedRegions"
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StreamingRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InitStreamingResponse"
+          description: The live job has been initiated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestErrorResponse"
+          description: Something is wrong with the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to initiate a new live job
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnprocessableEntityErrorResponse"
+          description: The parameters you gave are incorrect
+      security:
+      - x_gladia_key: []
+      summary: Initiate a new live job
+      tags:
+      - Live V2
+  /v2/live/{id}:
+    delete:
+      operationId: StreamingController_deleteStreamingJob_v2
+      parameters:
+      - description: Id of the live job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: The live job has been successfully deleted
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to delete this live job
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenErrorResponse"
+          description: The live job is not in a deletable state
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The live job doesn't exist or has been deleted
+      security:
+      - x_gladia_key: []
+      summary: Delete the live job
+      tags:
+      - Live V2
+    get:
+      operationId: StreamingController_getStreamingJob_v2
+      parameters:
+      - description: Id of the live job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StreamingResponse"
+          description: The live job's metadata
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access the live job
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The live job doesn't exist or has been deleted
+      security:
+      - x_gladia_key: []
+      summary: Get the live job's metadata
+      tags:
+      - Live V2
+    patch:
+      operationId: StreamingController_patchRequestParams_v2
+      parameters:
+      - description: Id of the live job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchRequestParamsDTO"
+        required: true
+      responses:
+        "204":
+          description: Successfully patched the job
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestErrorResponse"
+          description: Something is wrong with the request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to update the job
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The live job doesn't exist or has been deleted
+        "413":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayloadTooLargeErrorResponse"
+          description: The post_request_metadata parameter must be a json object no
+            longer that 100kb
+      security:
+      - x_gladia_key: []
+      summary: "For debugging purposes, send post session metadata in the request\
+        \ params of the job"
+      tags:
+      - Live V2
+  /v2/live/{id}/file:
+    get:
+      operationId: StreamingController_getAudio_v2
+      parameters:
+      - description: Id of the live job
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                example: <binary>
+                format: binary
+                type: string
+          description: The audio file used for this live job
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedErrorResponse"
+          description: You don't have the permissions to access this live job or its
+            audio file
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundErrorResponse"
+          description: The live job or its audio file doesn't exist or has been deleted
+      security:
+      - x_gladia_key: []
+      summary: Download the audio file used for this live job
+      tags:
+      - Live V2
+components:
+  schemas:
+    UploadBody:
+      properties: {}
+      type: object
+    AudioUploadMetadataDTO:
+      properties:
+        id:
+          description: Uploaded audio file ID
+          example: 6c09400e-23d2-4bd2-be55-96a5ececfa3b
+          format: uuid
+          type: string
+        filename:
+          description: Uploaded audio filename
+          example: short-audio-en-16000.wav
+          type: string
+        source:
+          description: Uploaded audio source
+          example: http://files.gladia.io/example/audio-transcription/split_infinity.wav
+          format: uri
+          type: string
+        extension:
+          description: Uploaded audio detected extension
+          example: wav
+          format: uuid
+          type: string
+        size:
+          description: Uploaded audio size
+          example: 365702
+          type: integer
+        audio_duration:
+          description: Uploaded audio duration
+          example: 4.145782
+          type: number
+        number_of_channels:
+          description: Uploaded audio channel numbers
+          example: 1
+          type: integer
+      required:
+      - audio_duration
+      - extension
+      - filename
+      - id
+      - number_of_channels
+      - size
+    AudioUploadResponse:
+      example:
+        audio_metadata: ""
+        audio_url: https://api.gladia.io/file/6c09400e-23d2-4bd2-be55-96a5ececfa3b
+      properties:
+        audio_url:
+          description: Uploaded audio file Gladia URL
+          example: https://api.gladia.io/file/6c09400e-23d2-4bd2-be55-96a5ececfa3b
+          format: uri
+          type: string
+        audio_metadata:
+          allOf:
+          - $ref: "#/components/schemas/AudioUploadMetadataDTO"
+          description: Uploaded audio file detected metadata
+      required:
+      - audio_metadata
+      - audio_url
+    PreRecordedEventPayload:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+      required:
+      - id
+    LiveEventPayload:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+      required:
+      - id
+    TranscriptionLanguageCodeEnum:
+      description: Specify the language in which it will be pronounced when sound
+        comparison occurs. Default to transcription language.
+      enum:
+      - af
+      - am
+      - ar
+      - as
+      - az
+      - ba
+      - be
+      - bg
+      - bn
+      - bo
+      - br
+      - bs
+      - ca
+      - cs
+      - cy
+      - da
+      - de
+      - el
+      - en
+      - es
+      - et
+      - eu
+      - fa
+      - fi
+      - fo
+      - fr
+      - gl
+      - gu
+      - ha
+      - haw
+      - he
+      - hi
+      - hr
+      - ht
+      - hu
+      - hy
+      - id
+      - is
+      - it
+      - ja
+      - jw
+      - ka
+      - kk
+      - km
+      - kn
+      - ko
+      - la
+      - lb
+      - ln
+      - lo
+      - lt
+      - lv
+      - mg
+      - mi
+      - mk
+      - ml
+      - mn
+      - mr
+      - ms
+      - mt
+      - my
+      - ne
+      - nl
+      - nn
+      - "no"
+      - oc
+      - pa
+      - pl
+      - ps
+      - pt
+      - ro
+      - ru
+      - sa
+      - sd
+      - si
+      - sk
+      - sl
+      - sn
+      - so
+      - sq
+      - sr
+      - su
+      - sv
+      - sw
+      - ta
+      - te
+      - tg
+      - th
+      - tk
+      - tl
+      - tr
+      - tt
+      - uk
+      - ur
+      - uz
+      - vi
+      - yi
+      - yo
+      - zh
+      type: string
+    CustomVocabularyEntryDTO:
+      properties:
+        value:
+          description: The text used to replace in the transcription.
+          example: Gladia
+          type: string
+        intensity:
+          description: The global intensity of the feature.
+          example: 0.5
+          maximum: 1
+          minimum: 0
+          type: number
+        pronunciations:
+          description: The pronunciations used in the transcription.
+          items:
+            type: string
+          type: array
+        language:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          description: Specify the language in which it will be pronounced when sound
+            comparison occurs. Default to transcription language.
+          example: en
+      required:
+      - value
+    CustomVocabularyConfigDTO:
+      properties:
+        vocabulary:
+          description: "Specific vocabulary list to feed the transcription model with.\
+            \ Each item can be a string or an object with the following properties:\
+            \ value, intensity, pronunciations, language."
+          example:
+          - Westeros
+          - value: Stark
+          - value: Night's Watch
+            pronunciations:
+            - Nightz Watch
+            intensity: 0.4
+            language: en
+          items:
+            $ref: "#/components/schemas/CustomVocabularyConfigDTO_vocabulary_inner"
+          type: array
+        default_intensity:
+          description: Default intensity for the custom vocabulary
+          example: 0.5
+          maximum: 1
+          minimum: 0
+          type: number
+      required:
+      - vocabulary
+    CodeSwitchingConfigDTO:
+      properties:
+        languages:
+          default: []
+          description: Specify the languages you want to use when detecting multiple
+            languages
+          items:
+            $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          type: array
+    CallbackMethodEnum:
+      description: "The HTTP method to be used. Allowed values are `POST` or `PUT`\
+        \ (default: `POST`)"
+      enum:
+      - POST
+      - PUT
+      type: string
+    CallbackConfigDto:
+      properties:
+        url:
+          description: The URL to be called with the result of the transcription
+          example: http://callback.example
+          format: uri
+          type: string
+        method:
+          allOf:
+          - $ref: "#/components/schemas/CallbackMethodEnum"
+          default: POST
+          description: "The HTTP method to be used. Allowed values are `POST` or `PUT`\
+            \ (default: `POST`)"
+          example: POST
+      required:
+      - url
+    SubtitlesFormatEnum:
+      description: Subtitles formats you want your transcription to be formatted to
+      enum:
+      - srt
+      - vtt
+      type: string
+    SubtitlesStyleEnum:
+      description: "Style of the subtitles. Compliance mode refers to : https://loc.gov/preservation/digital/formats//fdd/fdd000569.shtml#:~:text=SRT%20files%20are%20basic%20text,alongside%2C%20example%3A%20%22MyVideo123 "
+      enum:
+      - default
+      - compliance
+      type: string
+    SubtitlesConfigDTO:
+      properties:
+        formats:
+          default:
+          - srt
+          description: Subtitles formats you want your transcription to be formatted
+            to
+          example:
+          - srt
+          items:
+            $ref: "#/components/schemas/SubtitlesFormatEnum"
+          minItems: 1
+          type: array
+        minimum_duration:
+          description: Minimum duration of a subtitle in seconds
+          minimum: 0
+          type: number
+        maximum_duration:
+          description: Maximum duration of a subtitle in seconds
+          maximum: 30
+          minimum: 1
+          type: number
+        maximum_characters_per_row:
+          description: Maximum number of characters per row in a subtitle
+          minimum: 1
+          type: integer
+        maximum_rows_per_caption:
+          description: Maximum number of rows per caption
+          maximum: 5
+          minimum: 1
+          type: integer
+        style:
+          allOf:
+          - $ref: "#/components/schemas/SubtitlesStyleEnum"
+          default: default
+          description: "Style of the subtitles. Compliance mode refers to : https://loc.gov/preservation/digital/formats//fdd/fdd000569.shtml#:~:text=SRT%20files%20are%20basic%20text,alongside%2C%20example%3A%20%22MyVideo123 "
+    DiarizationConfigDTO:
+      properties:
+        number_of_speakers:
+          description: Exact number of speakers in the audio
+          example: 3
+          minimum: 1
+          type: integer
+        min_speakers:
+          description: Minimum number of speakers in the audio
+          example: 1
+          minimum: 0
+          type: integer
+        max_speakers:
+          description: Maximum number of speakers in the audio
+          example: 2
+          minimum: 0
+          type: integer
+    TranslationLanguageCodeEnum:
+      description: Target language in `iso639-1` format you want the transcription
+        translated to
+      enum:
+      - af
+      - am
+      - ar
+      - as
+      - az
+      - ba
+      - be
+      - bg
+      - bn
+      - bo
+      - br
+      - bs
+      - ca
+      - cs
+      - cy
+      - da
+      - de
+      - el
+      - en
+      - es
+      - et
+      - eu
+      - fa
+      - fi
+      - fo
+      - fr
+      - gl
+      - gu
+      - ha
+      - haw
+      - he
+      - hi
+      - hr
+      - ht
+      - hu
+      - hy
+      - id
+      - is
+      - it
+      - ja
+      - jw
+      - ka
+      - kk
+      - km
+      - kn
+      - ko
+      - la
+      - lb
+      - ln
+      - lo
+      - lt
+      - lv
+      - mg
+      - mi
+      - mk
+      - ml
+      - mn
+      - mr
+      - ms
+      - mt
+      - my
+      - ne
+      - nl
+      - nn
+      - "no"
+      - oc
+      - pa
+      - pl
+      - ps
+      - pt
+      - ro
+      - ru
+      - sa
+      - sd
+      - si
+      - sk
+      - sl
+      - sn
+      - so
+      - sq
+      - sr
+      - su
+      - sv
+      - sw
+      - ta
+      - te
+      - tg
+      - th
+      - tk
+      - tl
+      - tr
+      - tt
+      - uk
+      - ur
+      - uz
+      - vi
+      - wo
+      - yi
+      - yo
+      - zh
+      type: string
+    TranslationModelEnum:
+      description: Model you want the translation model to use to translate
+      enum:
+      - base
+      - enhanced
+      type: string
+    TranslationConfigDTO:
+      properties:
+        target_languages:
+          description: Target language in `iso639-1` format you want the transcription
+            translated to
+          example:
+          - en
+          items:
+            $ref: "#/components/schemas/TranslationLanguageCodeEnum"
+          minItems: 1
+          type: array
+        model:
+          allOf:
+          - $ref: "#/components/schemas/TranslationModelEnum"
+          default: base
+          description: Model you want the translation model to use to translate
+        match_original_utterances:
+          default: true
+          description: Align translated utterances with the original ones
+          type: boolean
+        lipsync:
+          default: true
+          description: 'Whether to apply lipsync to the translated transcription. '
+          type: boolean
+        context_adaptation:
+          default: true
+          description: Enables or disables context-aware translation features that
+            allow the model to adapt translations based on provided context.
+          type: boolean
+        context:
+          description: Context information to improve translation accuracy
+          type: string
+        informal:
+          default: false
+          description: Forces the translation to use informal language forms when
+            available in the target language.
+          type: boolean
+      required:
+      - target_languages
+    SummaryTypesEnum:
+      description: The type of summarization to apply
+      enum:
+      - general
+      - bullet_points
+      - concise
+      type: string
+    SummarizationConfigDTO:
+      properties:
+        type:
+          allOf:
+          - $ref: "#/components/schemas/SummaryTypesEnum"
+          default: general
+          description: The type of summarization to apply
+    CustomSpellingConfigDTO:
+      properties:
+        spelling_dictionary:
+          additionalProperties:
+            items:
+              type: string
+          description: The list of spelling applied on the audio transcription
+          example:
+            Gettleman:
+            - gettleman
+            SQL:
+            - Sequel
+      required:
+      - spelling_dictionary
+    StructuredDataExtractionConfigDTO:
+      properties:
+        classes:
+          description: The list of classes to extract from the audio transcription
+          example:
+          - Persons
+          - Organizations
+          items:
+            items: {}
+            type: array
+          minItems: 1
+          type: array
+      required:
+      - classes
+    AudioToLlmListConfigDTO:
+      properties:
+        prompts:
+          description: The list of prompts applied on the audio transcription
+          example:
+          - Extract the key points from the transcription
+          items:
+            items: {}
+            type: array
+          minItems: 1
+          type: array
+      required:
+      - prompts
+    LanguageConfig:
+      properties:
+        languages:
+          default: []
+          description: "If one language is set, it will be used for the transcription.\
+            \ Otherwise, language will be auto-detected by the model."
+          items:
+            $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          type: array
+        code_switching:
+          default: false
+          description: "If true, language will be auto-detected on each utterance.\
+            \ Otherwise, language will be auto-detected on first utterance and then\
+            \ used for the rest of the transcription. If one language is set, this\
+            \ option will be ignored."
+          type: boolean
+    InitTranscriptionRequest:
+      example:
+        summarization: false
+        language_config: ""
+        subtitles_config: ""
+        display_mode: false
+        custom_vocabulary: false
+        sentences: false
+        enable_code_switching: false
+        language: en
+        diarization_config: ""
+        named_entity_recognition: false
+        custom_spelling: false
+        callback_url: http://callback.example
+        audio_to_llm: false
+        name_consistency: false
+        custom_vocabulary_config: ""
+        custom_spelling_config: ""
+        context_prompt: context_prompt
+        subtitles: false
+        summarization_config: ""
+        chapterization: false
+        audio_to_llm_config: ""
+        structured_data_extraction_config: ""
+        custom_metadata:
+          user: John Doe
+        punctuation_enhanced: false
+        detect_language: true
+        structured_data_extraction: false
+        translation_config: ""
+        sentiment_analysis: false
+        moderation: false
+        translation: false
+        callback: false
+        code_switching_config: ""
+        diarization: false
+        audio_url: http://files.gladia.io/example/audio-transcription/split_infinity.wav
+        callback_config: ""
+      properties:
+        context_prompt:
+          deprecated: true
+          description: "**[Deprecated]** Context to feed the transcription model with\
+            \ for possible better accuracy"
+          type: string
+        custom_vocabulary:
+          default: false
+          description: "**[Beta]** Can be either boolean to enable custom_vocabulary\
+            \ for this audio or an array with specific vocabulary list to feed the\
+            \ transcription model with"
+          type: boolean
+        custom_vocabulary_config:
+          allOf:
+          - $ref: "#/components/schemas/CustomVocabularyConfigDTO"
+          description: "**[Beta]** Custom vocabulary configuration, if `custom_vocabulary`\
+            \ is enabled"
+        detect_language:
+          default: true
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead. Detect the\
+            \ language from the given audio"
+          type: boolean
+        enable_code_switching:
+          default: false
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead.Detect multiple\
+            \ languages in the given audio"
+          type: boolean
+        code_switching_config:
+          allOf:
+          - $ref: "#/components/schemas/CodeSwitchingConfigDTO"
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead. Specify the\
+            \ configuration for code switching"
+        language:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead. Set the spoken\
+            \ language for the given audio (ISO 639 standard)"
+          example: en
+        callback_url:
+          deprecated: true
+          description: "**[Deprecated]** Use `callback`/`callback_config` instead.\
+            \ Callback URL we will do a `POST` request to with the result of the transcription"
+          example: http://callback.example
+          format: uri
+          type: string
+        callback:
+          default: false
+          description: "Enable callback for this transcription. If true, the `callback_config`\
+            \ property will be used to customize the callback behaviour"
+          type: boolean
+        callback_config:
+          allOf:
+          - $ref: "#/components/schemas/CallbackConfigDto"
+          description: Customize the callback behaviour (url and http method)
+        subtitles:
+          default: false
+          description: Enable subtitles generation for this transcription
+          type: boolean
+        subtitles_config:
+          allOf:
+          - $ref: "#/components/schemas/SubtitlesConfigDTO"
+          description: Configuration for subtitles generation if `subtitles` is enabled
+        diarization:
+          default: false
+          description: Enable speaker recognition (diarization) for this audio
+          type: boolean
+        diarization_config:
+          allOf:
+          - $ref: "#/components/schemas/DiarizationConfigDTO"
+          description: "Speaker recognition configuration, if `diarization` is enabled"
+        translation:
+          default: false
+          description: "**[Beta]** Enable translation for this audio"
+          type: boolean
+        translation_config:
+          allOf:
+          - $ref: "#/components/schemas/TranslationConfigDTO"
+          description: "**[Beta]** Translation configuration, if `translation` is\
+            \ enabled"
+        summarization:
+          default: false
+          description: "**[Beta]** Enable summarization for this audio"
+          type: boolean
+        summarization_config:
+          allOf:
+          - $ref: "#/components/schemas/SummarizationConfigDTO"
+          description: "**[Beta]** Summarization configuration, if `summarization`\
+            \ is enabled"
+        moderation:
+          default: false
+          description: "**[Alpha]** Enable moderation for this audio"
+          type: boolean
+        named_entity_recognition:
+          default: false
+          description: "**[Alpha]** Enable named entity recognition for this audio"
+          type: boolean
+        chapterization:
+          default: false
+          description: "**[Alpha]** Enable chapterization for this audio"
+          type: boolean
+        name_consistency:
+          default: false
+          description: "**[Alpha]** Enable names consistency for this audio"
+          type: boolean
+        custom_spelling:
+          default: false
+          description: "**[Alpha]** Enable custom spelling for this audio"
+          type: boolean
+        custom_spelling_config:
+          allOf:
+          - $ref: "#/components/schemas/CustomSpellingConfigDTO"
+          description: "**[Alpha]** Custom spelling configuration, if `custom_spelling`\
+            \ is enabled"
+        structured_data_extraction:
+          default: false
+          description: "**[Alpha]** Enable structured data extraction for this audio"
+          type: boolean
+        structured_data_extraction_config:
+          allOf:
+          - $ref: "#/components/schemas/StructuredDataExtractionConfigDTO"
+          description: "**[Alpha]** Structured data extraction configuration, if `structured_data_extraction`\
+            \ is enabled"
+        sentiment_analysis:
+          default: false
+          description: Enable sentiment analysis for this audio
+          type: boolean
+        audio_to_llm:
+          default: false
+          description: "**[Alpha]** Enable audio to llm processing for this audio"
+          type: boolean
+        audio_to_llm_config:
+          allOf:
+          - $ref: "#/components/schemas/AudioToLlmListConfigDTO"
+          description: "**[Alpha]** Audio to llm configuration, if `audio_to_llm`\
+            \ is enabled"
+        custom_metadata:
+          additionalProperties: true
+          description: Custom metadata you can attach to this transcription
+          example:
+            user: John Doe
+          type: object
+        sentences:
+          default: false
+          description: Enable sentences for this audio
+          type: boolean
+        display_mode:
+          default: false
+          description: "**[Alpha]** Allows to change the output display_mode for this\
+            \ audio. The output will be reordered, creating new utterances when speakers\
+            \ overlapped"
+          type: boolean
+        punctuation_enhanced:
+          default: false
+          description: "**[Alpha]** Use enhanced punctuation for this audio"
+          type: boolean
+        language_config:
+          allOf:
+          - $ref: "#/components/schemas/LanguageConfig"
+          description: Specify the language configuration
+        audio_url:
+          description: URL to a Gladia file or to an external audio or video file
+          example: http://files.gladia.io/example/audio-transcription/split_infinity.wav
+          format: uri
+          type: string
+      required:
+      - audio_url
+    InitPreRecordedTranscriptionResponse:
+      example:
+        result_url: https://api.gladia.io/v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+        id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        result_url:
+          description: Prebuilt URL with your transcription `id` to fetch the result
+          example: https://api.gladia.io/v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uri
+          type: string
+      required:
+      - id
+      - result_url
+    BadRequestErrorResponse:
+      example:
+        path: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+        validation_errors:
+        - Field "language" must be a string
+        - Field "min_speakers" must be a number
+        message: Content-Type is missing Multipart Boundary.
+        request_id: G-821fe9df
+        timestamp: 2023-12-28T09:04:17.210Z
+        statusCode: 400
+      properties:
+        timestamp:
+          description: Date of when the error occurred
+          example: 2023-12-28T09:04:17.210Z
+          type: string
+        path:
+          description: Path to the API endpoint
+          example: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        request_id:
+          description: Debug id
+          example: G-821fe9df
+          type: string
+        statusCode:
+          description: HTTP status code of the error
+          example: 400
+          type: number
+        message:
+          description: Error message
+          example: Content-Type is missing Multipart Boundary.
+          type: string
+        validation_errors:
+          description: "List of validation errors, if any"
+          example:
+          - Field "language" must be a string
+          - Field "min_speakers" must be a number
+          items:
+            type: string
+          type: array
+      required:
+      - message
+      - path
+      - request_id
+      - statusCode
+      - timestamp
+    UnauthorizedErrorResponse:
+      example:
+        path: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+        message: gladia key not found
+        request_id: G-821fe9df
+        timestamp: 2023-12-28T09:04:17.210Z
+        statusCode: 401
+      properties:
+        timestamp:
+          description: Date of when the error occurred
+          example: 2023-12-28T09:04:17.210Z
+          type: string
+        path:
+          description: Path to the API endpoint
+          example: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        request_id:
+          description: Debug id
+          example: G-821fe9df
+          type: string
+        statusCode:
+          description: HTTP status code of the error
+          example: 401
+          type: number
+        message:
+          description: Error message
+          example: gladia key not found
+          type: string
+      required:
+      - message
+      - path
+      - request_id
+      - statusCode
+      - timestamp
+    UnprocessableEntityErrorResponse:
+      example:
+        path: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+        message: Invalid parameter
+        request_id: G-821fe9df
+        timestamp: 2023-12-28T09:04:17.210Z
+        statusCode: 422
+      properties:
+        timestamp:
+          description: Date of when the error occurred
+          example: 2023-12-28T09:04:17.210Z
+          type: string
+        path:
+          description: Path to the API endpoint
+          example: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        request_id:
+          description: Debug id
+          example: G-821fe9df
+          type: string
+        statusCode:
+          description: HTTP status code of the error
+          example: 422
+          type: number
+        message:
+          description: Error message
+          example: Invalid parameter
+          type: string
+      required:
+      - message
+      - path
+      - request_id
+      - statusCode
+      - timestamp
+    FileResponse:
+      properties:
+        id:
+          description: The file id
+          type: string
+        filename:
+          description: The name of the uploaded file
+          type: string
+          nullable: true
+        source:
+          description: The link used to download the file if audio_url was used
+          type: string
+          nullable: true
+        audio_duration:
+          description: Duration of the audio file
+          example: 3600
+          type: number
+          nullable: true
+        number_of_channels:
+          description: Number of channels in the audio file
+          example: 1
+          minimum: 1
+          type: integer
+          nullable: true
+      required:
+      - audio_duration
+      - filename
+      - id
+      - number_of_channels
+      - source
+    PreRecordedRequestParamsResponse:
+      properties:
+        context_prompt:
+          deprecated: true
+          description: "**[Deprecated]** Context to feed the transcription model with\
+            \ for possible better accuracy"
+          type: string
+        custom_vocabulary:
+          default: false
+          description: "**[Beta]** Can be either boolean to enable custom_vocabulary\
+            \ for this audio or an array with specific vocabulary list to feed the\
+            \ transcription model with"
+          type: boolean
+        custom_vocabulary_config:
+          allOf:
+          - $ref: "#/components/schemas/CustomVocabularyConfigDTO"
+          description: "**[Beta]** Custom vocabulary configuration, if `custom_vocabulary`\
+            \ is enabled"
+        detect_language:
+          default: true
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead. Detect the\
+            \ language from the given audio"
+          type: boolean
+        enable_code_switching:
+          default: false
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead.Detect multiple\
+            \ languages in the given audio"
+          type: boolean
+        code_switching_config:
+          allOf:
+          - $ref: "#/components/schemas/CodeSwitchingConfigDTO"
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead. Specify the\
+            \ configuration for code switching"
+        language:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          deprecated: true
+          description: "**[Deprecated]** Use `language_config` instead. Set the spoken\
+            \ language for the given audio (ISO 639 standard)"
+          example: en
+        callback_url:
+          deprecated: true
+          description: "**[Deprecated]** Use `callback`/`callback_config` instead.\
+            \ Callback URL we will do a `POST` request to with the result of the transcription"
+          example: http://callback.example
+          format: uri
+          type: string
+        callback:
+          default: false
+          description: "Enable callback for this transcription. If true, the `callback_config`\
+            \ property will be used to customize the callback behaviour"
+          type: boolean
+        callback_config:
+          allOf:
+          - $ref: "#/components/schemas/CallbackConfigDto"
+          description: Customize the callback behaviour (url and http method)
+        subtitles:
+          default: false
+          description: Enable subtitles generation for this transcription
+          type: boolean
+        subtitles_config:
+          allOf:
+          - $ref: "#/components/schemas/SubtitlesConfigDTO"
+          description: Configuration for subtitles generation if `subtitles` is enabled
+        diarization:
+          default: false
+          description: Enable speaker recognition (diarization) for this audio
+          type: boolean
+        diarization_config:
+          allOf:
+          - $ref: "#/components/schemas/DiarizationConfigDTO"
+          description: "Speaker recognition configuration, if `diarization` is enabled"
+        translation:
+          default: false
+          description: "**[Beta]** Enable translation for this audio"
+          type: boolean
+        translation_config:
+          allOf:
+          - $ref: "#/components/schemas/TranslationConfigDTO"
+          description: "**[Beta]** Translation configuration, if `translation` is\
+            \ enabled"
+        summarization:
+          default: false
+          description: "**[Beta]** Enable summarization for this audio"
+          type: boolean
+        summarization_config:
+          allOf:
+          - $ref: "#/components/schemas/SummarizationConfigDTO"
+          description: "**[Beta]** Summarization configuration, if `summarization`\
+            \ is enabled"
+        moderation:
+          default: false
+          description: "**[Alpha]** Enable moderation for this audio"
+          type: boolean
+        named_entity_recognition:
+          default: false
+          description: "**[Alpha]** Enable named entity recognition for this audio"
+          type: boolean
+        chapterization:
+          default: false
+          description: "**[Alpha]** Enable chapterization for this audio"
+          type: boolean
+        name_consistency:
+          default: false
+          description: "**[Alpha]** Enable names consistency for this audio"
+          type: boolean
+        custom_spelling:
+          default: false
+          description: "**[Alpha]** Enable custom spelling for this audio"
+          type: boolean
+        custom_spelling_config:
+          allOf:
+          - $ref: "#/components/schemas/CustomSpellingConfigDTO"
+          description: "**[Alpha]** Custom spelling configuration, if `custom_spelling`\
+            \ is enabled"
+        structured_data_extraction:
+          default: false
+          description: "**[Alpha]** Enable structured data extraction for this audio"
+          type: boolean
+        structured_data_extraction_config:
+          allOf:
+          - $ref: "#/components/schemas/StructuredDataExtractionConfigDTO"
+          description: "**[Alpha]** Structured data extraction configuration, if `structured_data_extraction`\
+            \ is enabled"
+        sentiment_analysis:
+          default: false
+          description: Enable sentiment analysis for this audio
+          type: boolean
+        audio_to_llm:
+          default: false
+          description: "**[Alpha]** Enable audio to llm processing for this audio"
+          type: boolean
+        audio_to_llm_config:
+          allOf:
+          - $ref: "#/components/schemas/AudioToLlmListConfigDTO"
+          description: "**[Alpha]** Audio to llm configuration, if `audio_to_llm`\
+            \ is enabled"
+        sentences:
+          default: false
+          description: Enable sentences for this audio
+          type: boolean
+        display_mode:
+          default: false
+          description: "**[Alpha]** Allows to change the output display_mode for this\
+            \ audio. The output will be reordered, creating new utterances when speakers\
+            \ overlapped"
+          type: boolean
+        punctuation_enhanced:
+          default: false
+          description: "**[Alpha]** Use enhanced punctuation for this audio"
+          type: boolean
+        language_config:
+          allOf:
+          - $ref: "#/components/schemas/LanguageConfig"
+          description: Specify the language configuration
+        audio_url:
+          format: uri
+          type: string
+          nullable: true
+      required:
+      - audio_url
+    TranscriptionMetadataDTO:
+      properties:
+        audio_duration:
+          description: Duration of the transcribed audio file
+          example: 3600
+          type: number
+        number_of_distinct_channels:
+          description: Number of distinct channels in the transcribed audio file
+          example: 1
+          minimum: 1
+          type: integer
+        billing_time:
+          description: Billed duration in seconds (audio_duration * number_of_distinct_channels)
+          example: 3600
+          type: number
+        transcription_time:
+          description: Duration of the transcription in seconds
+          example: 20
+          type: number
+      required:
+      - audio_duration
+      - billing_time
+      - number_of_distinct_channels
+      - transcription_time
+    AddonErrorDTO:
+      properties:
+        status_code:
+          description: Status code of the addon error
+          example: 500
+          type: integer
+        exception:
+          description: Reason of the addon error
+          type: string
+        message:
+          description: Detailed message of the addon error
+          type: string
+      required:
+      - exception
+      - message
+      - status_code
+    SentencesDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `sentences` has been enabled, transcription as sentences."
+          items:
+            type: string
+          type: array
+          nullable: true
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    SubtitleDTO:
+      properties:
+        format:
+          allOf:
+          - $ref: "#/components/schemas/SubtitlesFormatEnum"
+          description: Format of the current subtitle
+          example: srt
+        subtitles:
+          description: Transcription on the asked subtitle format
+          type: string
+      required:
+      - format
+      - subtitles
+    WordDTO:
+      properties:
+        word:
+          description: Spoken word
+          type: string
+        start:
+          description: Start timestamps in seconds of the spoken word
+          type: number
+        end:
+          description: End timestamps in seconds of the spoken word
+          type: number
+        confidence:
+          description: Confidence on the transcribed word (1 = 100% confident)
+          type: number
+      required:
+      - confidence
+      - end
+      - start
+      - word
+    UtteranceDTO:
+      properties:
+        start:
+          description: Start timestamp in seconds of this utterance
+          type: number
+        end:
+          description: End timestamp in seconds of this utterance
+          type: number
+        confidence:
+          description: Confidence on the transcribed utterance (1 = 100% confident)
+          type: number
+        channel:
+          description: Audio channel of where this utterance has been transcribed
+            from
+          minimum: 0
+          type: integer
+        speaker:
+          description: "If `diarization` enabled, speaker identification number"
+          minimum: 0
+          type: integer
+        words:
+          description: "List of words of the utterance, split by timestamp"
+          items:
+            $ref: "#/components/schemas/WordDTO"
+          type: array
+        text:
+          description: Transcription for this utterance
+          type: string
+        language:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          description: Spoken language in this utterance
+          example: en
+      required:
+      - channel
+      - confidence
+      - end
+      - language
+      - start
+      - text
+      - words
+    TranscriptionDTO:
+      properties:
+        full_transcript:
+          description: All transcription on text format without any other information
+          type: string
+        languages:
+          description: All the detected languages in the audio sorted from the most
+            detected to the less detected
+          example:
+          - en
+          items:
+            $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          type: array
+        sentences:
+          description: "If `sentences` has been enabled, sentences results"
+          items:
+            $ref: "#/components/schemas/SentencesDTO"
+          type: array
+        subtitles:
+          description: "If `subtitles` has been enabled, subtitles results"
+          items:
+            $ref: "#/components/schemas/SubtitleDTO"
+          type: array
+        utterances:
+          description: Transcribed speech utterances present in the audio
+          items:
+            $ref: "#/components/schemas/UtteranceDTO"
+          type: array
+      required:
+      - full_transcript
+      - languages
+      - utterances
+    TranslationResultDTO:
+      properties:
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: Contains the error details of the failed addon
+          nullable: true
+        full_transcript:
+          description: All transcription on text format without any other information
+          type: string
+        languages:
+          description: All the detected languages in the audio sorted from the most
+            detected to the less detected
+          example:
+          - en
+          items:
+            $ref: "#/components/schemas/TranslationLanguageCodeEnum"
+          type: array
+        sentences:
+          description: "If `sentences` has been enabled, sentences results for this\
+            \ translation"
+          items:
+            $ref: "#/components/schemas/SentencesDTO"
+          type: array
+        subtitles:
+          description: "If `subtitles` has been enabled, subtitles results for this\
+            \ translation"
+          items:
+            $ref: "#/components/schemas/SubtitleDTO"
+          type: array
+        utterances:
+          description: Transcribed speech utterances present in the audio
+          items:
+            $ref: "#/components/schemas/UtteranceDTO"
+          type: array
+      required:
+      - error
+      - full_transcript
+      - languages
+      - utterances
+    TranslationDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "List of translated transcriptions, one for each `target_languages`"
+          items:
+            $ref: "#/components/schemas/TranslationResultDTO"
+          type: array
+          nullable: true
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    SummarizationDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `summarization` has been enabled, summary of the transcription"
+          type: string
+          nullable: true
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    ModerationDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `moderation` has been enabled, moderated transcription"
+          type: string
+          nullable: true
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    NamedEntityRecognitionDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        entity:
+          description: "If `named_entity_recognition` has been enabled, the detected\
+            \ entities."
+          type: string
+      required:
+      - entity
+      - error
+      - exec_time
+      - is_empty
+      - success
+    NamesConsistencyDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `name_consistency` has been enabled, Gladia will improve\
+            \ the consistency of the names across the transcription"
+          type: string
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    SpeakerReidentificationDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `speaker_reidentification` has been enabled, results of\
+            \ the AI speaker reidentification."
+          type: string
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    StructuredDataExtractionDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `structured_data_extraction` has been enabled, results\
+            \ of the AI structured data extraction for the defined classes."
+          type: string
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    SentimentAnalysisDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `sentiment_analysis` has been enabled, Gladia will analyze\
+            \ the sentiments and emotions of the audio"
+          type: string
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    AudioToLlmResultDTO:
+      properties:
+        prompt:
+          description: The prompt used
+          type: string
+          nullable: true
+        response:
+          description: The result of the AI analysis
+          type: string
+          nullable: true
+      required:
+      - prompt
+      - response
+    AudioToLlmDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          allOf:
+          - $ref: "#/components/schemas/AudioToLlmResultDTO"
+          description: The result from a specific prompt
+          nullable: true
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    AudioToLlmListDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `audio_to_llm` has been enabled, results of the AI custom\
+            \ analysis"
+          items:
+            $ref: "#/components/schemas/AudioToLlmDTO"
+          type: array
+          nullable: true
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    DisplayModeDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "If `display_mode` has been enabled, proposes an alternative\
+            \ display output."
+          items:
+            type: string
+          type: array
+          nullable: true
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    ChapterizationDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          additionalProperties: true
+          description: "If `chapterization` has been enabled, will generate chapters\
+            \ name for different parts of the given audio."
+          type: object
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    DiarizationDTO:
+      properties:
+        success:
+          description: The audio intelligence model succeeded to get a valid output
+          type: boolean
+        is_empty:
+          description: The audio intelligence model returned an empty value
+          type: boolean
+        exec_time:
+          description: Time audio intelligence model took to complete the task
+          type: number
+        error:
+          allOf:
+          - $ref: "#/components/schemas/AddonErrorDTO"
+          description: '`null` if `success` is `true`. Contains the error details
+            of the failed model'
+          nullable: true
+        results:
+          description: "[Deprecated] If `diarization` has been enabled, the diarization\
+            \ result will appear here"
+          items:
+            $ref: "#/components/schemas/UtteranceDTO"
+          type: array
+      required:
+      - error
+      - exec_time
+      - is_empty
+      - results
+      - success
+    TranscriptionResultDTO:
+      properties:
+        metadata:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionMetadataDTO"
+          description: Metadata for the given transcription & audio file
+        transcription:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionDTO"
+          description: Transcription of the audio speech
+        translation:
+          allOf:
+          - $ref: "#/components/schemas/TranslationDTO"
+          description: "If `translation` has been enabled, translation of the audio\
+            \ speech transcription"
+        summarization:
+          allOf:
+          - $ref: "#/components/schemas/SummarizationDTO"
+          description: "If `summarization` has been enabled, summarization of the\
+            \ audio speech transcription"
+        moderation:
+          allOf:
+          - $ref: "#/components/schemas/ModerationDTO"
+          description: "If `moderation` has been enabled, moderation of the audio\
+            \ speech transcription"
+        named_entity_recognition:
+          allOf:
+          - $ref: "#/components/schemas/NamedEntityRecognitionDTO"
+          description: "If `named_entity_recognition` has been enabled, the detected\
+            \ entities"
+        name_consistency:
+          allOf:
+          - $ref: "#/components/schemas/NamesConsistencyDTO"
+          description: "If `name_consistency` has been enabled, Gladia will improve\
+            \ consistency of the names accross the transcription"
+        speaker_reidentification:
+          allOf:
+          - $ref: "#/components/schemas/SpeakerReidentificationDTO"
+          description: "If `speaker_reidentification` has been enabled, results of\
+            \ the AI speaker reidentification."
+        structured_data_extraction:
+          allOf:
+          - $ref: "#/components/schemas/StructuredDataExtractionDTO"
+          description: "If `structured_data_extraction` has been enabled, structured\
+            \ data extraction results"
+        sentiment_analysis:
+          allOf:
+          - $ref: "#/components/schemas/SentimentAnalysisDTO"
+          description: "If `sentiment_analysis` has been enabled, sentiment analysis\
+            \ of the audio speech transcription"
+        audio_to_llm:
+          allOf:
+          - $ref: "#/components/schemas/AudioToLlmListDTO"
+          description: "If `audio_to_llm` has been enabled, audio to llm results of\
+            \ the audio speech transcription"
+        sentences:
+          allOf:
+          - $ref: "#/components/schemas/SentencesDTO"
+          deprecated: true
+          description: "If `sentences` has been enabled, sentences of the audio speech\
+            \ transcription. Deprecated: content will move to the `transcription`\
+            \ object."
+        display_mode:
+          allOf:
+          - $ref: "#/components/schemas/DisplayModeDTO"
+          description: "If `display_mode` has been enabled, the output will be reordered,\
+            \ creating new utterances when speakers overlapped"
+        chapterization:
+          allOf:
+          - $ref: "#/components/schemas/ChapterizationDTO"
+          description: "If `chapterization` has been enabled, will generate chapters\
+            \ name for different parts of the given audio."
+        diarization:
+          allOf:
+          - $ref: "#/components/schemas/DiarizationDTO"
+          description: "If `diarization` has been requested and an error has occurred,\
+            \ the result will appear here"
+      required:
+      - metadata
+    PreRecordedResponse:
+      example:
+        kind: pre-recorded
+        created_at: 2023-12-28T09:04:17.210Z
+        request_params: ""
+        version: 2
+        custom_metadata:
+          user: John Doe
+        result: ""
+        completed_at: 2023-12-28T09:04:37.210Z
+        file: ""
+        post_session_metadata: "{}"
+        error_code: 500
+        id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+        request_id: G-45463597
+        status: queued
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        request_id:
+          description: Debug id
+          example: G-45463597
+          type: string
+        version:
+          description: API version
+          example: 2
+          type: integer
+        status:
+          description: "\"queued\": the job has been queued. \"processing\": the job\
+            \ is being processed. \"done\": the job has been processed and the result\
+            \ is available. \"error\": an error occurred during the job's processing."
+          enum:
+          - queued
+          - processing
+          - done
+          - error
+          type: string
+        created_at:
+          description: Creation date
+          example: 2023-12-28T09:04:17.210Z
+          format: date-time
+          type: string
+        completed_at:
+          description: Completion date when status is "done" or "error"
+          example: 2023-12-28T09:04:37.210Z
+          format: date-time
+          type: string
+          nullable: true
+        custom_metadata:
+          additionalProperties: true
+          description: Custom metadata given in the initial request
+          example:
+            user: John Doe
+          type: object
+        error_code:
+          description: HTTP status code of the error if status is "error"
+          example: 500
+          maximum: 599
+          minimum: 400
+          type: integer
+          nullable: true
+        post_session_metadata:
+          description: "For debugging purposes, send data that could help to identify\
+            \ issues"
+          type: object
+        kind:
+          default: pre-recorded
+          enum:
+          - pre-recorded
+          example: pre-recorded
+          type: string
+        file:
+          allOf:
+          - $ref: "#/components/schemas/FileResponse"
+          description: The file data you uploaded. Can be null if status is "error"
+          nullable: true
+        request_params:
+          allOf:
+          - $ref: "#/components/schemas/PreRecordedRequestParamsResponse"
+          description: Parameters used for this pre-recorded transcription. Can be
+            null if status is "error"
+          nullable: true
+        result:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionResultDTO"
+          description: Pre-recorded transcription's result when status is "done"
+          nullable: true
+      required:
+      - created_at
+      - id
+      - kind
+      - post_session_metadata
+      - request_id
+      - status
+      - version
+    NotFoundErrorResponse:
+      example:
+        path: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+        message: Not found
+        request_id: G-821fe9df
+        timestamp: 2023-12-28T09:04:17.210Z
+        statusCode: 404
+      properties:
+        timestamp:
+          description: Date of when the error occurred
+          example: 2023-12-28T09:04:17.210Z
+          type: string
+        path:
+          description: Path to the API endpoint
+          example: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        request_id:
+          description: Debug id
+          example: G-821fe9df
+          type: string
+        statusCode:
+          description: HTTP status code of the error
+          example: 404
+          type: number
+        message:
+          description: Error message
+          example: Not found
+          type: string
+      required:
+      - message
+      - path
+      - request_id
+      - statusCode
+      - timestamp
+    ListPreRecordedResponse:
+      example:
+        next: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+        current: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+        items:
+        - kind: pre-recorded
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        - kind: pre-recorded
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        first: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+      properties:
+        first:
+          description: URL to fetch the first page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        current:
+          description: URL to fetch the current page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        next:
+          description: URL to fetch the next page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+          format: uri
+          type: string
+          nullable: true
+        items:
+          description: List of pre-recorded transcriptions
+          items:
+            $ref: "#/components/schemas/PreRecordedResponse"
+          type: array
+      required:
+      - current
+      - first
+      - items
+      - next
+    ForbiddenErrorResponse:
+      example:
+        path: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+        message: Invalid parameter
+        request_id: G-821fe9df
+        timestamp: 2023-12-28T09:04:17.210Z
+        statusCode: 403
+      properties:
+        timestamp:
+          description: Date of when the error occurred
+          example: 2023-12-28T09:04:17.210Z
+          type: string
+        path:
+          description: Path to the API endpoint
+          example: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        request_id:
+          description: Debug id
+          example: G-821fe9df
+          type: string
+        statusCode:
+          description: HTTP status code of the error
+          example: 403
+          type: number
+        message:
+          description: Forbidden request
+          example: Invalid parameter
+          type: string
+      required:
+      - message
+      - path
+      - request_id
+      - statusCode
+      - timestamp
+    CallbackTranscriptionSuccessPayload:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: transcription.success
+          description: Type of event
+          enum:
+          - transcription.success
+          example: transcription.success
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionResultDTO"
+          description: Result of the transcription
+        custom_metadata:
+          additionalProperties: {}
+          description: Custom metadata given in the initial request
+          example:
+            user: John Doe
+          nullable: true
+      required:
+      - event
+      - id
+      - payload
+    ErrorDTO:
+      properties:
+        code:
+          description: Error code
+          example: 400
+          type: integer
+        message:
+          description: Error message
+          example: Bad Request
+          type: string
+      required:
+      - code
+      - message
+    CallbackTranscriptionErrorPayload:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: transcription.error
+          description: Type of event
+          enum:
+          - transcription.error
+          example: transcription.error
+          type: string
+        error:
+          allOf:
+          - $ref: "#/components/schemas/ErrorDTO"
+          description: The error that occurred during the transcription
+        custom_metadata:
+          additionalProperties: true
+          description: Custom metadata given in the initial request
+          example:
+            user: John Doe
+          type: object
+          nullable: true
+      required:
+      - error
+      - event
+      - id
+    StreamingSupportedEncodingEnum:
+      description: "The encoding format of the audio stream. Supported formats: \n\
+        - PCM: 8, 16, 24, and 32 bits \n- A-law: 8 bits \n- μ-law: 8 bits \n\nNote:\
+        \ No need to add WAV headers to raw audio as the API supports both formats."
+      enum:
+      - wav/pcm
+      - wav/alaw
+      - wav/ulaw
+      type: string
+    StreamingSupportedBitDepthEnum:
+      description: The bit depth of the audio stream
+      enum:
+      - 8
+      - 16
+      - 24
+      - 32
+      type: number
+    StreamingSupportedSampleRateEnum:
+      description: The sample rate of the audio stream
+      enum:
+      - 8000
+      - 16000
+      - 32000
+      - 44100
+      - 48000
+      type: number
+    StreamingSupportedModels:
+      description: The model used to process the audio. "solaria-1" is used by default.
+      enum:
+      - solaria-1
+      type: string
+    PreProcessingConfig:
+      properties:
+        audio_enhancer:
+          default: false
+          description: "If true, apply pre-processing to the audio stream to enhance\
+            \ the quality."
+          type: boolean
+        speech_threshold:
+          default: 0.6
+          description: "Sensitivity configuration for Speech Threshold. A value close\
+            \ to 1 will apply stricter thresholds, making it less likely to detect\
+            \ background sounds as speech."
+          maximum: 1
+          minimum: 0
+          type: number
+    RealtimeProcessingConfig:
+      properties:
+        custom_vocabulary:
+          default: false
+          description: "If true, enable custom vocabulary for the transcription."
+          type: boolean
+        custom_vocabulary_config:
+          allOf:
+          - $ref: "#/components/schemas/CustomVocabularyConfigDTO"
+          description: "Custom vocabulary configuration, if `custom_vocabulary` is\
+            \ enabled"
+        custom_spelling:
+          default: false
+          description: "If true, enable custom spelling for the transcription."
+          type: boolean
+        custom_spelling_config:
+          allOf:
+          - $ref: "#/components/schemas/CustomSpellingConfigDTO"
+          description: "Custom spelling configuration, if `custom_spelling` is enabled"
+        translation:
+          default: false
+          description: "If true, enable translation for the transcription"
+          type: boolean
+        translation_config:
+          allOf:
+          - $ref: "#/components/schemas/TranslationConfigDTO"
+          description: "Translation configuration, if `translation` is enabled"
+        named_entity_recognition:
+          default: false
+          description: "If true, enable named entity recognition for the transcription."
+          type: boolean
+        sentiment_analysis:
+          default: false
+          description: "If true, enable sentiment analysis for the transcription."
+          type: boolean
+    PostProcessingConfig:
+      properties:
+        summarization:
+          default: false
+          description: "If true, generates summarization for the whole transcription."
+          type: boolean
+        summarization_config:
+          allOf:
+          - $ref: "#/components/schemas/SummarizationConfigDTO"
+          description: "Summarization configuration, if `summarization` is enabled"
+        chapterization:
+          default: false
+          description: "If true, generates chapters for the whole transcription."
+          type: boolean
+    MessagesConfig:
+      properties:
+        receive_partial_transcripts:
+          default: false
+          description: "If true, partial transcript will be sent to websocket."
+          type: boolean
+        receive_final_transcripts:
+          default: true
+          description: "If true, final transcript will be sent to websocket."
+          type: boolean
+        receive_speech_events:
+          default: true
+          description: "If true, begin and end speech events will be sent to websocket."
+          type: boolean
+        receive_pre_processing_events:
+          default: true
+          description: "If true, pre-processing events will be sent to websocket."
+          type: boolean
+        receive_realtime_processing_events:
+          default: true
+          description: "If true, realtime processing events will be sent to websocket."
+          type: boolean
+        receive_post_processing_events:
+          default: true
+          description: "If true, post-processing events will be sent to websocket."
+          type: boolean
+        receive_acknowledgments:
+          default: true
+          description: "If true, acknowledgments will be sent to websocket."
+          type: boolean
+        receive_errors:
+          default: true
+          description: "If true, errors will be sent to websocket."
+          type: boolean
+        receive_lifecycle_events:
+          default: false
+          description: "If true, lifecycle events will be sent to websocket."
+          type: boolean
+    CallbackConfig:
+      properties:
+        url:
+          description: URL on which we will do a `POST` request with configured messages
+          example: https://callback.example
+          format: uri
+          type: string
+        receive_partial_transcripts:
+          default: false
+          description: "If true, partial transcript will be sent to the defined callback."
+          type: boolean
+        receive_final_transcripts:
+          default: true
+          description: "If true, final transcript will be sent to the defined callback."
+          type: boolean
+        receive_speech_events:
+          default: false
+          description: "If true, begin and end speech events will be sent to the defined\
+            \ callback."
+          type: boolean
+        receive_pre_processing_events:
+          default: true
+          description: "If true, pre-processing events will be sent to the defined\
+            \ callback."
+          type: boolean
+        receive_realtime_processing_events:
+          default: true
+          description: "If true, realtime processing events will be sent to the defined\
+            \ callback."
+          type: boolean
+        receive_post_processing_events:
+          default: true
+          description: "If true, post-processing events will be sent to the defined\
+            \ callback."
+          type: boolean
+        receive_acknowledgments:
+          default: false
+          description: "If true, acknowledgments will be sent to the defined callback."
+          type: boolean
+        receive_errors:
+          default: false
+          description: "If true, errors will be sent to the defined callback."
+          type: boolean
+        receive_lifecycle_events:
+          default: true
+          description: "If true, lifecycle events will be sent to the defined callback."
+          type: boolean
+    StreamingRequestParamsResponse:
+      properties:
+        encoding:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedEncodingEnum"
+          default: wav/pcm
+          description: "The encoding format of the audio stream. Supported formats:\
+            \ \n- PCM: 8, 16, 24, and 32 bits \n- A-law: 8 bits \n- μ-law: 8 bits\
+            \ \n\nNote: No need to add WAV headers to raw audio as the API supports\
+            \ both formats."
+        bit_depth:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedBitDepthEnum"
+          default: 16
+          description: The bit depth of the audio stream
+        sample_rate:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedSampleRateEnum"
+          default: 16000
+          description: The sample rate of the audio stream
+        channels:
+          default: 1
+          description: The number of channels of the audio stream
+          maximum: 8
+          minimum: 1
+          type: integer
+        model:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedModels"
+          default: solaria-1
+          description: The model used to process the audio. "solaria-1" is used by
+            default.
+        endpointing:
+          default: 0.05
+          description: The endpointing duration in seconds. Endpointing is the duration
+            of silence which will cause an utterance to be considered as finished
+          maximum: 10
+          minimum: 0.01
+          type: number
+        maximum_duration_without_endpointing:
+          default: 5
+          description: "The maximum duration in seconds without endpointing. If endpointing\
+            \ is not detected after this duration, current utterance will be considered\
+            \ as finished"
+          maximum: 60
+          minimum: 5
+          type: number
+        language_config:
+          allOf:
+          - $ref: "#/components/schemas/LanguageConfig"
+          description: Specify the language configuration
+        pre_processing:
+          allOf:
+          - $ref: "#/components/schemas/PreProcessingConfig"
+          description: Specify the pre-processing configuration
+        realtime_processing:
+          allOf:
+          - $ref: "#/components/schemas/RealtimeProcessingConfig"
+          description: Specify the realtime processing configuration
+        post_processing:
+          allOf:
+          - $ref: "#/components/schemas/PostProcessingConfig"
+          description: Specify the post-processing configuration
+        messages_config:
+          allOf:
+          - $ref: "#/components/schemas/MessagesConfig"
+          description: Specify the websocket messages configuration
+        callback:
+          default: false
+          description: "If true, messages will be sent to configured url."
+          type: boolean
+        callback_config:
+          allOf:
+          - $ref: "#/components/schemas/CallbackConfig"
+          description: Specify the callback configuration
+    StreamingTranscriptionResultWithMessagesDTO:
+      properties:
+        metadata:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionMetadataDTO"
+          description: Metadata for the given transcription & audio file
+        transcription:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionDTO"
+          description: Transcription of the audio speech
+        translation:
+          allOf:
+          - $ref: "#/components/schemas/TranslationDTO"
+          description: "If `translation` has been enabled, translation of the audio\
+            \ speech transcription"
+        summarization:
+          allOf:
+          - $ref: "#/components/schemas/SummarizationDTO"
+          description: "If `summarization` has been enabled, summarization of the\
+            \ audio speech transcription"
+        named_entity_recognition:
+          allOf:
+          - $ref: "#/components/schemas/NamedEntityRecognitionDTO"
+          description: "If `named_entity_recognition` has been enabled, the detected\
+            \ entities"
+        sentiment_analysis:
+          allOf:
+          - $ref: "#/components/schemas/SentimentAnalysisDTO"
+          description: "If `sentiment_analysis` has been enabled, sentiment analysis\
+            \ of the audio speech transcription"
+        chapterization:
+          allOf:
+          - $ref: "#/components/schemas/ChapterizationDTO"
+          description: "If `chapterization` has been enabled, will generate chapters\
+            \ name for different parts of the given audio."
+        messages:
+          description: Real-Time messages sent by the server during the live transcription
+          items:
+            type: string
+          type: array
+      required:
+      - metadata
+    StreamingResponse:
+      example:
+        kind: live
+        created_at: 2023-12-28T09:04:17.210Z
+        request_params: ""
+        version: 2
+        custom_metadata:
+          user: John Doe
+        result: ""
+        completed_at: 2023-12-28T09:04:37.210Z
+        file: ""
+        post_session_metadata: "{}"
+        error_code: 500
+        id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+        request_id: G-45463597
+        status: queued
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        request_id:
+          description: Debug id
+          example: G-45463597
+          type: string
+        version:
+          description: API version
+          example: 2
+          type: integer
+        status:
+          description: "\"queued\": the job has been queued. \"processing\": the job\
+            \ is being processed. \"done\": the job has been processed and the result\
+            \ is available. \"error\": an error occurred during the job's processing."
+          enum:
+          - queued
+          - processing
+          - done
+          - error
+          type: string
+        created_at:
+          description: Creation date
+          example: 2023-12-28T09:04:17.210Z
+          format: date-time
+          type: string
+        completed_at:
+          description: Completion date when status is "done" or "error"
+          example: 2023-12-28T09:04:37.210Z
+          format: date-time
+          type: string
+          nullable: true
+        custom_metadata:
+          additionalProperties: true
+          description: Custom metadata given in the initial request
+          example:
+            user: John Doe
+          type: object
+        error_code:
+          description: HTTP status code of the error if status is "error"
+          example: 500
+          maximum: 599
+          minimum: 400
+          type: integer
+          nullable: true
+        post_session_metadata:
+          description: "For debugging purposes, send data that could help to identify\
+            \ issues"
+          type: object
+        kind:
+          default: live
+          enum:
+          - live
+          example: live
+          type: string
+        file:
+          allOf:
+          - $ref: "#/components/schemas/FileResponse"
+          description: The file data you uploaded. Can be null if status is "error"
+          nullable: true
+        request_params:
+          allOf:
+          - $ref: "#/components/schemas/StreamingRequestParamsResponse"
+          description: Parameters used for this live transcription. Can be null if
+            status is "error"
+          nullable: true
+        result:
+          allOf:
+          - $ref: "#/components/schemas/StreamingTranscriptionResultWithMessagesDTO"
+          description: Live transcription's result when status is "done"
+          nullable: true
+      required:
+      - created_at
+      - id
+      - kind
+      - post_session_metadata
+      - request_id
+      - status
+      - version
+    ListTranscriptionResponse:
+      example:
+        next: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+        current: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+        items:
+        - kind: pre-recorded
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        - kind: pre-recorded
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        first: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+      properties:
+        first:
+          description: URL to fetch the first page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        current:
+          description: URL to fetch the current page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        next:
+          description: URL to fetch the next page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+          format: uri
+          type: string
+          nullable: true
+        items:
+          description: List of transcriptions
+          items:
+            $ref: "#/components/schemas/ListTranscriptionResponse_items_inner"
+          type: array
+      required:
+      - current
+      - first
+      - items
+      - next
+    ListHistoryResponse:
+      example:
+        next: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+        current: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+        items:
+        - kind: pre-recorded
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        - kind: pre-recorded
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        first: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+      properties:
+        first:
+          description: URL to fetch the first page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        current:
+          description: URL to fetch the current page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        next:
+          description: URL to fetch the next page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+          format: uri
+          type: string
+          nullable: true
+        items:
+          description: List of jobs
+          items:
+            $ref: "#/components/schemas/ListTranscriptionResponse_items_inner"
+          type: array
+      required:
+      - current
+      - first
+      - items
+      - next
+    AudioChunkActionData:
+      properties:
+        chunk:
+          description: Chunk encoded in base64. The chunk must contains complete frames
+          example: aGVsbG8=
+          type: string
+      required:
+      - chunk
+    AudioChunkAction:
+      properties:
+        type:
+          default: audio_chunk
+          enum:
+          - audio_chunk
+          example: audio_chunk
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/AudioChunkActionData"
+          description: Payload of the audio chunk action
+      required:
+      - data
+      - type
+    StopRecordingAction:
+      properties:
+        type:
+          default: stop_recording
+          enum:
+          - stop_recording
+          example: stop_recording
+          type: string
+      required:
+      - type
+    Error:
+      properties:
+        message:
+          description: The error message
+          type: string
+      required:
+      - message
+    AudioChunkAckData:
+      properties:
+        byte_range:
+          description: Range in bytes length of the audio chunk (relative to the whole
+            session)
+          example:
+          - 1024
+          - 2048
+          items:
+            type: integer
+          maxItems: 2
+          minItems: 2
+          type: array
+        time_range:
+          description: Range in seconds of the audio chunk (relative to the whole
+            session)
+          example:
+          - 0.8
+          - 0.9
+          items:
+            type: number
+          maxItems: 2
+          minItems: 2
+          type: array
+      required:
+      - byte_range
+      - time_range
+    AudioChunkAckMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        acknowledged:
+          description: Flag to indicate if the action was successfully acknowledged
+          example: true
+          type: boolean
+        error:
+          allOf:
+          - $ref: "#/components/schemas/Error"
+          description: Error message if the action was not successfully acknowledged
+          nullable: true
+          example: null
+        type:
+          default: audio_chunk
+          enum:
+          - audio_chunk
+          example: audio_chunk
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/AudioChunkAckData"
+          description: The message data. "null" if the action was not successfully
+            acknowledged
+          nullable: true
+      required:
+      - acknowledged
+      - created_at
+      - data
+      - error
+      - session_id
+      - type
+    CallbackLiveAudioChunkAckMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.audio_chunk
+          enum:
+          - live.audio_chunk
+          example: live.audio_chunk
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/AudioChunkAckMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    EndRecordingMessageData:
+      properties:
+        recording_duration:
+          description: Total audio duration in seconds
+          example: 344.45
+          type: number
+      required:
+      - recording_duration
+    EndRecordingMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: end_recording
+          enum:
+          - end_recording
+          example: end_recording
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/EndRecordingMessageData"
+          description: The message data
+      required:
+      - created_at
+      - data
+      - session_id
+      - type
+    CallbackLiveEndRecordingMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.end_recording
+          enum:
+          - live.end_recording
+          example: live.end_recording
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/EndRecordingMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    EndSessionMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: end_session
+          enum:
+          - end_session
+          example: end_session
+          type: string
+      required:
+      - created_at
+      - session_id
+      - type
+    CallbackLiveEndSessionMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.end_session
+          enum:
+          - live.end_session
+          example: live.end_session
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/EndSessionMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    TranslationData:
+      properties:
+        utterance_id:
+          description: Id of the utterance used for this result
+          example: 00-00000011
+          type: string
+        utterance:
+          allOf:
+          - $ref: "#/components/schemas/UtteranceDTO"
+          description: The transcribed utterance
+        original_language:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionLanguageCodeEnum"
+          description: The original language in `iso639-1` or `iso639-2` format depending
+            on the language
+        target_language:
+          allOf:
+          - $ref: "#/components/schemas/TranslationLanguageCodeEnum"
+          description: The target language in `iso639-1` or `iso639-2` format depending
+            on the language
+        translated_utterance:
+          allOf:
+          - $ref: "#/components/schemas/UtteranceDTO"
+          description: The translated utterance
+      required:
+      - original_language
+      - target_language
+      - translated_utterance
+      - utterance
+      - utterance_id
+    TranslationMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        error:
+          allOf:
+          - $ref: "#/components/schemas/Error"
+          description: Error message if the addon failed
+          nullable: true
+          example: null
+        type:
+          default: translation
+          enum:
+          - translation
+          example: translation
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/TranslationData"
+          description: The message data. "null" if the addon failed
+          nullable: true
+      required:
+      - created_at
+      - data
+      - error
+      - session_id
+      - type
+    CallbackLiveTranslationMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.translation
+          enum:
+          - live.translation
+          example: live.translation
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/TranslationMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    NamedEntityRecognitionResult:
+      properties:
+        entity_type:
+          type: string
+        text:
+          type: string
+        start:
+          type: number
+        end:
+          type: number
+      required:
+      - end
+      - entity_type
+      - start
+      - text
+    NamedEntityRecognitionData:
+      properties:
+        utterance_id:
+          description: Id of the utterance used for this result
+          example: 00-00000011
+          type: string
+        utterance:
+          allOf:
+          - $ref: "#/components/schemas/UtteranceDTO"
+          description: The transcribed utterance
+        results:
+          description: The NER results
+          items:
+            $ref: "#/components/schemas/NamedEntityRecognitionResult"
+          type: array
+      required:
+      - results
+      - utterance
+      - utterance_id
+    NamedEntityRecognitionMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        error:
+          allOf:
+          - $ref: "#/components/schemas/Error"
+          description: Error message if the addon failed
+          nullable: true
+          example: null
+        type:
+          default: named_entity_recognition
+          enum:
+          - named_entity_recognition
+          example: named_entity_recognition
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/NamedEntityRecognitionData"
+          description: The message data. "null" if the addon failed
+          nullable: true
+      required:
+      - created_at
+      - data
+      - error
+      - session_id
+      - type
+    CallbackLiveNamedEntityRecognitionMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.named_entity_recognition
+          enum:
+          - live.named_entity_recognition
+          example: live.named_entity_recognition
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/NamedEntityRecognitionMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    ChapterizationSentence:
+      properties:
+        sentence:
+          type: string
+        start:
+          type: number
+        end:
+          type: number
+        words:
+          items:
+            $ref: "#/components/schemas/WordDTO"
+          type: array
+      required:
+      - end
+      - sentence
+      - start
+      - words
+    PostChapterizationResult:
+      properties:
+        abstractive_summary:
+          type: string
+        extractive_summary:
+          type: string
+        summary:
+          type: string
+        headline:
+          type: string
+        gist:
+          type: string
+        keywords:
+          items:
+            type: string
+          type: array
+        start:
+          type: number
+        end:
+          type: number
+        sentences:
+          items:
+            $ref: "#/components/schemas/ChapterizationSentence"
+          type: array
+        text:
+          type: string
+      required:
+      - end
+      - gist
+      - headline
+      - keywords
+      - sentences
+      - start
+      - text
+    PostChapterizationMessageData:
+      properties:
+        results:
+          description: The chapters
+          items:
+            $ref: "#/components/schemas/PostChapterizationResult"
+          type: array
+      required:
+      - results
+    PostChapterizationMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        error:
+          allOf:
+          - $ref: "#/components/schemas/Error"
+          description: Error message if the addon failed
+          nullable: true
+          example: null
+        type:
+          default: post_chapterization
+          enum:
+          - post_chapterization
+          example: post_chapterization
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/PostChapterizationMessageData"
+          description: The message data. "null" if the addon failed
+          nullable: true
+      required:
+      - created_at
+      - data
+      - error
+      - session_id
+      - type
+    CallbackLivePostChapterizationMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.post_chapterization
+          enum:
+          - live.post_chapterization
+          example: live.post_chapterization
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/PostChapterizationMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    StreamingTranscriptionResultDTO:
+      properties:
+        metadata:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionMetadataDTO"
+          description: Metadata for the given transcription & audio file
+        transcription:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionDTO"
+          description: Transcription of the audio speech
+        translation:
+          allOf:
+          - $ref: "#/components/schemas/TranslationDTO"
+          description: "If `translation` has been enabled, translation of the audio\
+            \ speech transcription"
+        summarization:
+          allOf:
+          - $ref: "#/components/schemas/SummarizationDTO"
+          description: "If `summarization` has been enabled, summarization of the\
+            \ audio speech transcription"
+        named_entity_recognition:
+          allOf:
+          - $ref: "#/components/schemas/NamedEntityRecognitionDTO"
+          description: "If `named_entity_recognition` has been enabled, the detected\
+            \ entities"
+        sentiment_analysis:
+          allOf:
+          - $ref: "#/components/schemas/SentimentAnalysisDTO"
+          description: "If `sentiment_analysis` has been enabled, sentiment analysis\
+            \ of the audio speech transcription"
+        chapterization:
+          allOf:
+          - $ref: "#/components/schemas/ChapterizationDTO"
+          description: "If `chapterization` has been enabled, will generate chapters\
+            \ name for different parts of the given audio."
+      required:
+      - metadata
+    PostFinalTranscriptMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: post_final_transcript
+          enum:
+          - post_final_transcript
+          example: post_final_transcript
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/StreamingTranscriptionResultDTO"
+          description: The message data
+      required:
+      - created_at
+      - data
+      - session_id
+      - type
+    CallbackLivePostFinalTranscriptMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.post_final_transcript
+          enum:
+          - live.post_final_transcript
+          example: live.post_final_transcript
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/PostFinalTranscriptMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    PostSummarizationMessageData:
+      properties:
+        results:
+          description: The summarization
+          type: string
+      required:
+      - results
+    PostSummarizationMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        error:
+          allOf:
+          - $ref: "#/components/schemas/Error"
+          description: Error message if the addon failed
+          nullable: true
+          example: null
+        type:
+          default: post_summarization
+          enum:
+          - post_summarization
+          example: post_summarization
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/PostSummarizationMessageData"
+          description: The message data. "null" if the addon failed
+          nullable: true
+      required:
+      - created_at
+      - data
+      - error
+      - session_id
+      - type
+    CallbackLivePostSummarizationMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.post_summarization
+          enum:
+          - live.post_summarization
+          example: live.post_summarization
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/PostSummarizationMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    PostTranscriptMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: post_transcript
+          enum:
+          - post_transcript
+          example: post_transcript
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptionDTO"
+          description: The message data
+      required:
+      - created_at
+      - data
+      - session_id
+      - type
+    CallbackLivePostTranscriptMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.post_transcript
+          enum:
+          - live.post_transcript
+          example: live.post_transcript
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/PostTranscriptMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    SentimentAnalysisResult:
+      properties:
+        sentiment:
+          type: string
+        emotion:
+          type: string
+        text:
+          type: string
+        start:
+          type: number
+        end:
+          type: number
+        channel:
+          type: number
+      required:
+      - channel
+      - emotion
+      - end
+      - sentiment
+      - start
+      - text
+    SentimentAnalysisData:
+      properties:
+        utterance_id:
+          description: Id of the utterance used for this result
+          example: 00-00000011
+          type: string
+        utterance:
+          allOf:
+          - $ref: "#/components/schemas/UtteranceDTO"
+          description: The transcribed utterance
+        results:
+          description: The sentiment analysis results
+          items:
+            $ref: "#/components/schemas/SentimentAnalysisResult"
+          type: array
+      required:
+      - results
+      - utterance
+      - utterance_id
+    SentimentAnalysisMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        error:
+          allOf:
+          - $ref: "#/components/schemas/Error"
+          description: Error message if the addon failed
+          nullable: true
+          example: null
+        type:
+          default: sentiment_analysis
+          enum:
+          - sentiment_analysis
+          example: sentiment_analysis
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/SentimentAnalysisData"
+          description: The message data. "null" if the addon failed
+          nullable: true
+      required:
+      - created_at
+      - data
+      - error
+      - session_id
+      - type
+    CallbackLiveSentimentAnalysisMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.sentiment_analysis
+          enum:
+          - live.sentiment_analysis
+          example: live.sentiment_analysis
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/SentimentAnalysisMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    StartRecordingMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: start_recording
+          enum:
+          - start_recording
+          example: start_recording
+          type: string
+      required:
+      - created_at
+      - session_id
+      - type
+    CallbackLiveStartRecordingMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.start_recording
+          enum:
+          - live.start_recording
+          example: live.start_recording
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/StartRecordingMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    StartSessionMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: start_session
+          enum:
+          - start_session
+          example: start_session
+          type: string
+      required:
+      - created_at
+      - session_id
+      - type
+    CallbackLiveStartSessionMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.start_session
+          enum:
+          - live.start_session
+          example: live.start_session
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/StartSessionMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    StopRecordingAckData:
+      properties:
+        recording_duration:
+          description: Total audio duration in seconds
+          example: 344.45
+          type: number
+        recording_left_to_process:
+          description: Audio duration left to process in seconds
+          example: 11.23
+          type: number
+      required:
+      - recording_duration
+      - recording_left_to_process
+    StopRecordingAckMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        acknowledged:
+          description: Flag to indicate if the action was successfully acknowledged
+          example: true
+          type: boolean
+        error:
+          allOf:
+          - $ref: "#/components/schemas/Error"
+          description: Error message if the action was not successfully acknowledged
+          nullable: true
+          example: null
+        type:
+          default: stop_recording
+          enum:
+          - stop_recording
+          example: stop_recording
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/StopRecordingAckData"
+          description: The message data. "null" if the action was not successfully
+            acknowledged
+          nullable: true
+      required:
+      - acknowledged
+      - created_at
+      - data
+      - error
+      - session_id
+      - type
+    CallbackLiveStopRecordingAckMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.stop_recording
+          enum:
+          - live.stop_recording
+          example: live.stop_recording
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/StopRecordingAckMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    TranscriptMessageData:
+      properties:
+        id:
+          description: Id of the utterance
+          example: 00-00000011
+          type: string
+        is_final:
+          description: Flag to indicate if the transcript is final or not
+          example: true
+          type: boolean
+        utterance:
+          allOf:
+          - $ref: "#/components/schemas/UtteranceDTO"
+          description: The transcribed utterance
+      required:
+      - id
+      - is_final
+      - utterance
+    TranscriptMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: transcript
+          enum:
+          - transcript
+          example: transcript
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptMessageData"
+          description: The message data
+      required:
+      - created_at
+      - data
+      - session_id
+      - type
+    CallbackLiveTranscriptMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.transcript
+          enum:
+          - live.transcript
+          example: live.transcript
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/TranscriptMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    SpeechMessageData:
+      properties:
+        time:
+          description: Timestamp in seconds of the speech event
+          example: 12.56
+          type: number
+        channel:
+          description: Channel of the speech event
+          example: 1
+          type: number
+      required:
+      - channel
+      - time
+    SpeechStartMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: speech_start
+          enum:
+          - speech_start
+          example: speech_start
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/SpeechMessageData"
+          description: The message data
+      required:
+      - created_at
+      - data
+      - session_id
+      - type
+    CallbackLiveSpeechStartMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.speech_start
+          enum:
+          - live.speech_start
+          example: live.speech_start
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/SpeechStartMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    SpeechEndMessage:
+      properties:
+        session_id:
+          description: Id of the live session
+          example: 4a39145c-2844-4557-8f34-34883f7be7d9
+          type: string
+        created_at:
+          description: Date of creation of the message. The date is formatted as an
+            ISO 8601 string
+          example: 2021-09-01T12:00:00.123Z
+          type: string
+        type:
+          default: speech_end
+          enum:
+          - speech_end
+          example: speech_end
+          type: string
+        data:
+          allOf:
+          - $ref: "#/components/schemas/SpeechMessageData"
+          description: The message data
+      required:
+      - created_at
+      - data
+      - session_id
+      - type
+    CallbackLiveSpeechEndMessage:
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        event:
+          default: live.speech_end
+          enum:
+          - live.speech_end
+          example: live.speech_end
+          type: string
+        payload:
+          allOf:
+          - $ref: "#/components/schemas/SpeechEndMessage"
+          description: The live message payload as sent to the WebSocket
+      required:
+      - event
+      - id
+      - payload
+    StreamingRequest:
+      example:
+        endpointing: 6.031428726887333
+        language_config: ""
+        realtime_processing: ""
+        encoding: ""
+        custom_metadata:
+          user: John Doe
+        maximum_duration_without_endpointing: 13.061971392766198
+        pre_processing: ""
+        sample_rate: ""
+        channels: 1
+        messages_config: ""
+        callback: false
+        model: ""
+        bit_depth: ""
+        callback_config: ""
+        post_processing: ""
+      properties:
+        encoding:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedEncodingEnum"
+          default: wav/pcm
+          description: "The encoding format of the audio stream. Supported formats:\
+            \ \n- PCM: 8, 16, 24, and 32 bits \n- A-law: 8 bits \n- μ-law: 8 bits\
+            \ \n\nNote: No need to add WAV headers to raw audio as the API supports\
+            \ both formats."
+        bit_depth:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedBitDepthEnum"
+          default: 16
+          description: The bit depth of the audio stream
+        sample_rate:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedSampleRateEnum"
+          default: 16000
+          description: The sample rate of the audio stream
+        channels:
+          default: 1
+          description: The number of channels of the audio stream
+          maximum: 8
+          minimum: 1
+          type: integer
+        custom_metadata:
+          additionalProperties: true
+          description: Custom metadata you can attach to this live transcription
+          example:
+            user: John Doe
+          type: object
+        model:
+          allOf:
+          - $ref: "#/components/schemas/StreamingSupportedModels"
+          default: solaria-1
+          description: The model used to process the audio. "solaria-1" is used by
+            default.
+        endpointing:
+          default: 0.05
+          description: The endpointing duration in seconds. Endpointing is the duration
+            of silence which will cause an utterance to be considered as finished
+          maximum: 10
+          minimum: 0.01
+          type: number
+        maximum_duration_without_endpointing:
+          default: 5
+          description: "The maximum duration in seconds without endpointing. If endpointing\
+            \ is not detected after this duration, current utterance will be considered\
+            \ as finished"
+          maximum: 60
+          minimum: 5
+          type: number
+        language_config:
+          allOf:
+          - $ref: "#/components/schemas/LanguageConfig"
+          description: Specify the language configuration
+        pre_processing:
+          allOf:
+          - $ref: "#/components/schemas/PreProcessingConfig"
+          description: Specify the pre-processing configuration
+        realtime_processing:
+          allOf:
+          - $ref: "#/components/schemas/RealtimeProcessingConfig"
+          description: Specify the realtime processing configuration
+        post_processing:
+          allOf:
+          - $ref: "#/components/schemas/PostProcessingConfig"
+          description: Specify the post-processing configuration
+        messages_config:
+          allOf:
+          - $ref: "#/components/schemas/MessagesConfig"
+          description: Specify the websocket messages configuration
+        callback:
+          default: false
+          description: "If true, messages will be sent to configured url."
+          type: boolean
+        callback_config:
+          allOf:
+          - $ref: "#/components/schemas/CallbackConfig"
+          description: Specify the callback configuration
+    StreamingSupportedRegions:
+      enum:
+      - us-west
+      - eu-west
+      type: string
+    InitStreamingResponse:
+      example:
+        created_at: 2023-12-28T09:04:17.210Z
+        id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+        url: wss://api.gladia.io/v2/live?token=4a39145c-2844-4557-8f34-34883f7be7d9
+      properties:
+        id:
+          description: Id of the job
+          example: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          format: uuid
+          type: string
+        created_at:
+          description: Creation date
+          example: 2023-12-28T09:04:17.210Z
+          format: date-time
+          type: string
+        url:
+          description: The websocket url to connect to for sending audio data. The
+            url will contain the temporary token to authenticate the session.
+          example: wss://api.gladia.io/v2/live?token=4a39145c-2844-4557-8f34-34883f7be7d9
+          format: uri
+          type: string
+      required:
+      - created_at
+      - id
+      - url
+    ListStreamingResponse:
+      example:
+        next: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+        current: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+        items:
+        - kind: live
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        - kind: live
+          created_at: 2023-12-28T09:04:17.210Z
+          request_params: ""
+          version: 2
+          custom_metadata:
+            user: John Doe
+          result: ""
+          completed_at: 2023-12-28T09:04:37.210Z
+          file: ""
+          post_session_metadata: "{}"
+          error_code: 500
+          id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+          request_id: G-45463597
+          status: queued
+        first: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+      properties:
+        first:
+          description: URL to fetch the first page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        current:
+          description: URL to fetch the current page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=0&limit=20
+          format: uri
+          type: string
+        next:
+          description: URL to fetch the next page
+          example: https://api.gladia.io/v2/transcription?status=done&offset=20&limit=20
+          format: uri
+          type: string
+          nullable: true
+        items:
+          description: List of live transcriptions
+          items:
+            $ref: "#/components/schemas/StreamingResponse"
+          type: array
+      required:
+      - current
+      - first
+      - items
+      - next
+    PatchRequestParamsDTO:
+      properties: {}
+      type: object
+    PayloadTooLargeErrorResponse:
+      example:
+        path: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+        message: payload too large
+        request_id: G-821fe9df
+        timestamp: 2023-12-28T09:04:17.210Z
+        statusCode: 413
+      properties:
+        timestamp:
+          description: Date of when the error occurred
+          example: 2023-12-28T09:04:17.210Z
+          type: string
+        path:
+          description: Path to the API endpoint
+          example: /v2/transcription/45463597-20b7-4af7-b3b3-f5fb778203ab
+          type: string
+        request_id:
+          description: Debug id
+          example: G-821fe9df
+          type: string
+        statusCode:
+          description: HTTP status code of the error
+          example: 413
+          type: number
+        message:
+          description: Payload too large
+          example: payload too large
+          type: string
+      required:
+      - message
+      - path
+      - request_id
+      - statusCode
+      - timestamp
+    WebhookTranscriptionCreatedPayload:
+      properties:
+        event:
+          default: transcription.created
+          enum:
+          - transcription.created
+          example: transcription.created
+          type: string
+        payload:
+          $ref: "#/components/schemas/PreRecordedEventPayload"
+      required:
+      - event
+      - payload
+    WebhookTranscriptionSuccessPayload:
+      properties:
+        event:
+          default: transcription.success
+          enum:
+          - transcription.success
+          example: transcription.success
+          type: string
+        payload:
+          $ref: "#/components/schemas/PreRecordedEventPayload"
+      required:
+      - event
+      - payload
+    WebhookTranscriptionErrorPayload:
+      properties:
+        event:
+          default: transcription.error
+          enum:
+          - transcription.error
+          example: transcription.error
+          type: string
+        payload:
+          $ref: "#/components/schemas/PreRecordedEventPayload"
+      required:
+      - event
+      - payload
+    WebhookLiveStartSessionPayload:
+      properties:
+        event:
+          default: live.start_session
+          enum:
+          - live.start_session
+          example: live.start_session
+          type: string
+        payload:
+          $ref: "#/components/schemas/LiveEventPayload"
+      required:
+      - event
+      - payload
+    WebhookLiveStartRecordingPayload:
+      properties:
+        event:
+          default: live.start_recording
+          enum:
+          - live.start_recording
+          example: live.start_recording
+          type: string
+        payload:
+          $ref: "#/components/schemas/LiveEventPayload"
+      required:
+      - event
+      - payload
+    WebhookLiveEndRecordingPayload:
+      properties:
+        event:
+          default: live.end_recording
+          enum:
+          - live.end_recording
+          example: live.end_recording
+          type: string
+        payload:
+          $ref: "#/components/schemas/LiveEventPayload"
+      required:
+      - event
+      - payload
+    WebhookLiveEndSessionPayload:
+      properties:
+        event:
+          default: live.end_session
+          enum:
+          - live.end_session
+          example: live.end_session
+          type: string
+        payload:
+          $ref: "#/components/schemas/LiveEventPayload"
+      required:
+      - event
+      - payload
+    FileController_upload_v2_request:
+      properties:
+        audio:
+          description: The file to be uploaded. This should be an audio or video file.
+          format: binary
+          type: string
+    FileController_upload_v2_request_1:
+      properties:
+        audio_url:
+          description: The URL of the audio or video file to be uploaded.
+          type: string
+    TranscriptionController_getTranscript_v2_200_response:
+      discriminator:
+        mapping:
+          pre-recorded: "#/components/schemas/PreRecordedResponse"
+          live: "#/components/schemas/StreamingResponse"
+        propertyName: kind
+      example:
+        id: 45463597-20b7-4af7-b3b3-f5fb778203ab
+        request_id: G-45463597
+        version: 2
+        kind: pre-recorded
+        created_at: 2023-12-28T09:04:17.210Z
+        status: queued
+        file:
+          id: f0dcZE10-23d8-47f0-a25d-74a6eed88721
+          filename: split_infinity.wav
+          source: http://files.gladia.io/example/audio-transcription/split_infinity.wav
+          audio_duration: 20
+          number_of_channels: 1
+        request_params:
+          audio_url: http://files.gladia.io/example/audio-transcription/split_infinity.wav
+          subtitles: false
+          diarization: false
+          translation: false
+          summarization: false
+          sentences: false
+          moderation: false
+          named_entity_recognition: false
+          name_consistency: false
+          speaker_reidentification: false
+          custom_spelling: false
+          structured_data_extraction: false
+          chapterization: false
+          sentiment_analysis: false
+          display_mode: false
+          audio_enhancer: false
+          language_config:
+            code_switching: false
+            languages:
+            - fr
+            - en
+          accurate_words_timestamps: false
+          diarization_enhanced: false
+          punctuation_enhanced: false
+        completed_at: null
+        custom_metadata: null
+        error_code: null
+        result: null
+      oneOf:
+      - $ref: "#/components/schemas/PreRecordedResponse"
+      - $ref: "#/components/schemas/StreamingResponse"
+    AudioToTextController_audioTranscription_request:
+      properties:
+        audio:
+          format: binary
+          type: string
+        audio_url:
+          default: http://files.gladia.io/example/audio-transcription/split_infinity.wav
+          type: string
+        language_behaviour:
+          default: automatic single language
+          enum:
+          - automatic single language
+          - automatic multiple languages
+          - manual
+          type: string
+        language:
+          enum:
+          - afrikaans
+          - albanian
+          - amharic
+          - arabic
+          - armenian
+          - assamese
+          - azerbaijani
+          - bashkir
+          - basque
+          - belarusian
+          - bengali
+          - bosnian
+          - breton
+          - bulgarian
+          - catalan
+          - chinese
+          - croatian
+          - czech
+          - danish
+          - dutch
+          - english
+          - estonian
+          - faroese
+          - finnish
+          - french
+          - galician
+          - georgian
+          - german
+          - greek
+          - gujarati
+          - haitian creole
+          - hausa
+          - hawaiian
+          - hebrew
+          - hindi
+          - hungarian
+          - icelandic
+          - indonesian
+          - italian
+          - japanese
+          - javanese
+          - kannada
+          - kazakh
+          - khmer
+          - korean
+          - lao
+          - latin
+          - latvian
+          - lingala
+          - lithuanian
+          - luxembourgish
+          - macedonian
+          - malagasy
+          - malay
+          - malayalam
+          - maltese
+          - maori
+          - marathi
+          - mongolian
+          - myanmar
+          - nepali
+          - norwegian
+          - nynorsk
+          - occitan
+          - pashto
+          - persian
+          - polish
+          - portuguese
+          - punjabi
+          - romanian
+          - russian
+          - sanskrit
+          - serbian
+          - shona
+          - sindhi
+          - sinhala
+          - slovak
+          - slovenian
+          - somali
+          - spanish
+          - sundanese
+          - swahili
+          - swedish
+          - tagalog
+          - tajik
+          - tamil
+          - tatar
+          - telugu
+          - thai
+          - tibetan
+          - turkish
+          - turkmen
+          - ukrainian
+          - urdu
+          - uzbek
+          - vietnamese
+          - welsh
+          - yiddish
+          - yoruba
+          type: string
+        transcription_hint:
+          type: string
+        toggle_diarization:
+          default: false
+          type: boolean
+        diarization_num_speakers:
+          type: integer
+        diarization_min_speakers:
+          type: integer
+        diarization_max_speakers:
+          type: integer
+        toggle_direct_translate:
+          default: false
+          type: boolean
+        target_translation_language:
+          enum:
+          - afrikaans
+          - albanian
+          - amharic
+          - arabic
+          - armenian
+          - assamese
+          - azerbaijani
+          - bashkir
+          - basque
+          - belarusian
+          - bengali
+          - bosnian
+          - breton
+          - bulgarian
+          - catalan
+          - chinese
+          - croatian
+          - czech
+          - danish
+          - dutch
+          - english
+          - estonian
+          - faroese
+          - finnish
+          - french
+          - galician
+          - georgian
+          - german
+          - greek
+          - gujarati
+          - haitian creole
+          - hausa
+          - hawaiian
+          - hebrew
+          - hindi
+          - hungarian
+          - icelandic
+          - indonesian
+          - italian
+          - japanese
+          - javanese
+          - kannada
+          - kazakh
+          - khmer
+          - korean
+          - lao
+          - latin
+          - latvian
+          - lingala
+          - lithuanian
+          - luxembourgish
+          - macedonian
+          - malagasy
+          - malay
+          - malayalam
+          - maltese
+          - maori
+          - marathi
+          - mongolian
+          - myanmar
+          - nepali
+          - norwegian
+          - nynorsk
+          - occitan
+          - pashto
+          - persian
+          - polish
+          - portuguese
+          - punjabi
+          - romanian
+          - russian
+          - sanskrit
+          - serbian
+          - shona
+          - sindhi
+          - sinhala
+          - slovak
+          - slovenian
+          - somali
+          - spanish
+          - sundanese
+          - swahili
+          - swedish
+          - tagalog
+          - tajik
+          - tamil
+          - tatar
+          - telugu
+          - thai
+          - tibetan
+          - turkish
+          - turkmen
+          - ukrainian
+          - urdu
+          - uzbek
+          - vietnamese
+          - welsh
+          - wolof
+          - yiddish
+          - yoruba
+          type: string
+        output_format:
+          default: json
+          enum:
+          - json
+          - srt
+          - vtt
+          - plain
+          - txt
+          type: string
+        toggle_noise_reduction:
+          default: false
+          type: boolean
+        toggle_accurate_words_timestamps:
+          default: false
+          type: boolean
+        webhook_url:
+          type: string
+    VideoToTextController_videoTranscription_request:
+      properties:
+        video:
+          format: binary
+          type: string
+        video_url:
+          default: http://files.gladia.io/example/audio-transcription/split_infinity.wav
+          type: string
+        language_behaviour:
+          default: automatic single language
+          enum:
+          - automatic single language
+          - automatic multiple languages
+          - manual
+          type: string
+        language:
+          enum:
+          - afrikaans
+          - albanian
+          - amharic
+          - arabic
+          - armenian
+          - assamese
+          - azerbaijani
+          - bashkir
+          - basque
+          - belarusian
+          - bengali
+          - bosnian
+          - breton
+          - bulgarian
+          - catalan
+          - chinese
+          - croatian
+          - czech
+          - danish
+          - dutch
+          - english
+          - estonian
+          - faroese
+          - finnish
+          - french
+          - galician
+          - georgian
+          - german
+          - greek
+          - gujarati
+          - haitian creole
+          - hausa
+          - hawaiian
+          - hebrew
+          - hindi
+          - hungarian
+          - icelandic
+          - indonesian
+          - italian
+          - japanese
+          - javanese
+          - kannada
+          - kazakh
+          - khmer
+          - korean
+          - lao
+          - latin
+          - latvian
+          - lingala
+          - lithuanian
+          - luxembourgish
+          - macedonian
+          - malagasy
+          - malay
+          - malayalam
+          - maltese
+          - maori
+          - marathi
+          - mongolian
+          - myanmar
+          - nepali
+          - norwegian
+          - nynorsk
+          - occitan
+          - pashto
+          - persian
+          - polish
+          - portuguese
+          - punjabi
+          - romanian
+          - russian
+          - sanskrit
+          - serbian
+          - shona
+          - sindhi
+          - sinhala
+          - slovak
+          - slovenian
+          - somali
+          - spanish
+          - sundanese
+          - swahili
+          - swedish
+          - tagalog
+          - tajik
+          - tamil
+          - tatar
+          - telugu
+          - thai
+          - tibetan
+          - turkish
+          - turkmen
+          - ukrainian
+          - urdu
+          - uzbek
+          - vietnamese
+          - welsh
+          - yiddish
+          - yoruba
+          type: string
+        transcription_hint:
+          type: string
+        toggle_diarization:
+          default: false
+          type: boolean
+        diarization_num_speakers:
+          type: integer
+        diarization_min_speakers:
+          type: integer
+        diarization_max_speakers:
+          type: integer
+        toggle_direct_translate:
+          default: false
+          type: boolean
+        target_translation_language:
+          enum:
+          - afrikaans
+          - albanian
+          - amharic
+          - arabic
+          - armenian
+          - assamese
+          - azerbaijani
+          - bashkir
+          - basque
+          - belarusian
+          - bengali
+          - bosnian
+          - breton
+          - bulgarian
+          - catalan
+          - chinese
+          - croatian
+          - czech
+          - danish
+          - dutch
+          - english
+          - estonian
+          - faroese
+          - finnish
+          - french
+          - galician
+          - georgian
+          - german
+          - greek
+          - gujarati
+          - haitian creole
+          - hausa
+          - hawaiian
+          - hebrew
+          - hindi
+          - hungarian
+          - icelandic
+          - indonesian
+          - italian
+          - japanese
+          - javanese
+          - kannada
+          - kazakh
+          - khmer
+          - korean
+          - lao
+          - latin
+          - latvian
+          - lingala
+          - lithuanian
+          - luxembourgish
+          - macedonian
+          - malagasy
+          - malay
+          - malayalam
+          - maltese
+          - maori
+          - marathi
+          - mongolian
+          - myanmar
+          - nepali
+          - norwegian
+          - nynorsk
+          - occitan
+          - pashto
+          - persian
+          - polish
+          - portuguese
+          - punjabi
+          - romanian
+          - russian
+          - sanskrit
+          - serbian
+          - shona
+          - sindhi
+          - sinhala
+          - slovak
+          - slovenian
+          - somali
+          - spanish
+          - sundanese
+          - swahili
+          - swedish
+          - tagalog
+          - tajik
+          - tamil
+          - tatar
+          - telugu
+          - thai
+          - tibetan
+          - turkish
+          - turkmen
+          - ukrainian
+          - urdu
+          - uzbek
+          - vietnamese
+          - welsh
+          - wolof
+          - yiddish
+          - yoruba
+          type: string
+        output_format:
+          default: json
+          enum:
+          - json
+          - srt
+          - vtt
+          - plain
+          - txt
+          type: string
+        toggle_noise_reduction:
+          default: false
+          type: boolean
+        toggle_accurate_words_timestamps:
+          default: false
+          type: boolean
+        webhook_url:
+          type: string
+    CustomVocabularyConfigDTO_vocabulary_inner:
+      oneOf:
+      - $ref: "#/components/schemas/CustomVocabularyEntryDTO"
+      - type: string
+    ListTranscriptionResponse_items_inner:
+      oneOf:
+      - $ref: "#/components/schemas/PreRecordedResponse"
+      - $ref: "#/components/schemas/StreamingResponse"
+  securitySchemes:
+    x_gladia_key:
+      description: Your personal Gladia API key
+      in: header
+      name: x-gladia-key
+      type: apiKey
+
