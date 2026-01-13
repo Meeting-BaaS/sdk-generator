@@ -5,6 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.5] - 2026-01-13
+
+### Added
+
+#### Typed Field Names for Compile-Time Safety
+
+New typed field name exports enable compile-time type checking for field overrides - no more typos going unnoticed!
+
+```typescript
+import {
+  GladiaStreamingFieldName,
+  GladiaStreamingConfig,
+  FieldOverrides,
+  GladiaStreamingSchema
+} from 'voice-router-dev/field-configs'
+
+// Type-safe field overrides - typos caught at compile time!
+const overrides: Partial<Record<GladiaStreamingFieldName, FieldConfig | null>> = {
+  encoding: { name: 'encoding', type: 'select', required: false },
+  language_config: null, // Hide this field
+  // typo_field: null, // ✗ TypeScript error!
+}
+
+// Fully typed config values - option values validated too!
+const config: Partial<GladiaStreamingConfig> = {
+  encoding: 'wav/pcm', // ✓ Only valid options allowed
+  sample_rate: 16000,
+}
+
+// Extract specific field's valid options
+type EncodingOptions = GladiaStreamingConfig['encoding']
+// = 'wav/pcm' | 'wav/alaw' | 'wav/ulaw'
+```
+
+**Exports for all 7 providers:**
+
+| Provider | Transcription | Streaming | StreamingUpdate | List |
+|----------|:-------------:|:---------:|:---------------:|:----:|
+| Gladia | ✓ | ✓ | - | ✓ |
+| Deepgram | ✓ | ✓ | - | ✓ |
+| AssemblyAI | ✓ | ✓ | ✓ | ✓ |
+| OpenAI | ✓ | - | - | - |
+| Azure | ✓ | - | - | ✓ |
+| Speechmatics | ✓ | ✓ | ✓ | ✓ |
+| Soniox | ✓ | ✓ | ✓ | ✓ |
+
+**New exports:**
+
+- **Field name types**: `GladiaStreamingFieldName`, `DeepgramTranscriptionFieldName`, etc.
+- **Config types**: `GladiaStreamingConfig`, `AssemblyAITranscriptionConfig`, etc.
+- **Zod schemas**: `GladiaStreamingSchema`, `DeepgramTranscriptionSchema`, etc.
+- **Generic helper**: `FieldOverrides<Schema>` for any Zod schema
+- **Union types**: `TranscriptionFieldName`, `StreamingFieldName` (all providers combined)
+
+---
+
 ## [0.6.4] - 2026-01-13
 
 ### Fixed
@@ -288,9 +344,7 @@ const fields = getSonioxTranscriptionFields()
 | OpenAI       | ✓             | -         | -            | -             |
 | Speechmatics | ✓             | ✓         | ✓            | ✓             |
 | Soniox       | ✓             | ✓         | ✓            | -             |
-| Azure        | -             | -         | -            | -             |
-
-> **Note:** Azure field configs not yet implemented (no OpenAPI spec available).
+| Azure        | ✓             | -         | ✓            | -             |
 
 #### Zod Schema Exports Reference
 

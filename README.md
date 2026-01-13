@@ -531,6 +531,42 @@ const assemblySession = await router.transcribeStream({
 - **Provider Discrimination** - Type system knows which provider you're using
 - **OpenAPI-Generated** - Types come directly from provider specifications
 
+### Typed Field Configs
+
+Build type-safe UI field overrides with compile-time validation:
+
+```typescript
+import {
+  GladiaStreamingFieldName,
+  GladiaStreamingConfig,
+  FieldOverrides,
+  GladiaStreamingSchema,
+  FieldConfig
+} from 'voice-router-dev/field-configs'
+
+// Type-safe field overrides - typos caught at compile time!
+const overrides: Partial<Record<GladiaStreamingFieldName, FieldConfig | null>> = {
+  encoding: { name: 'encoding', type: 'select', required: false },
+  language_config: null, // Hide this field
+  // typo_field: null, // ✗ TypeScript error!
+}
+
+// Fully typed config values - option values validated too!
+const config: Partial<GladiaStreamingConfig> = {
+  encoding: 'wav/pcm', // ✓ Only valid options allowed
+  sample_rate: 16000,
+}
+
+// Extract specific field's valid options
+type EncodingOptions = GladiaStreamingConfig['encoding']
+// = 'wav/pcm' | 'wav/alaw' | 'wav/ulaw'
+```
+
+**Available for all 7 providers:**
+- `GladiaStreamingFieldName`, `DeepgramTranscriptionFieldName`, `AssemblyAIStreamingFieldName`, etc.
+- `GladiaStreamingConfig`, `DeepgramTranscriptionConfig`, `AzureTranscriptionConfig`, etc.
+- `GladiaStreamingSchema`, `DeepgramTranscriptionSchema`, etc. (Zod schemas for advanced extraction)
+
 ## Requirements
 
 - **Node.js**: 20.0.0 or higher
