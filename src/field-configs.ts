@@ -4,6 +4,45 @@
  * All field configs are derived from Zod schemas (generated from OpenAPI specs).
  * Zero hardcoding - single source of truth.
  *
+ * ## Type-Safe Field Overrides
+ *
+ * Use exported field name types for compile-time safety:
+ *
+ * @example
+ * ```typescript
+ * import {
+ *   GladiaStreamingFieldName,
+ *   GladiaStreamingConfig,
+ *   FieldOverrides,
+ *   GladiaStreamingSchema,
+ *   FieldConfig
+ * } from 'voice-router-dev/field-configs'
+ *
+ * // Type-safe field overrides - typos caught at compile time!
+ * const overrides: Partial<Record<GladiaStreamingFieldName, FieldConfig | null>> = {
+ *   encoding: { name: 'encoding', type: 'select', required: false },
+ *   language_config: null, // Hide this field
+ *   // typo_field: null, // ✗ TypeScript error!
+ * }
+ *
+ * // Or use the generic helper with any schema
+ * const overrides2: FieldOverrides<typeof GladiaStreamingSchema> = {
+ *   encoding: { name: 'encoding', type: 'select', required: false },
+ * }
+ *
+ * // Fully typed config values - option values are validated too!
+ * const config: Partial<GladiaStreamingConfig> = {
+ *   encoding: 'wav/pcm', // ✓ Only valid options allowed
+ *   sample_rate: 16000,
+ * }
+ *
+ * // Extract specific field's valid options
+ * type EncodingOptions = GladiaStreamingConfig['encoding']
+ * // = 'wav/pcm' | 'wav/alaw' | 'wav/ulaw'
+ * ```
+ *
+ * ## Runtime Field Extraction
+ *
  * @example
  * ```typescript
  * import { getDeepgramTranscriptionFields, FieldConfig } from 'voice-router-dev'
@@ -19,6 +58,7 @@
  * @packageDocumentation
  */
 
+import { z } from "zod"
 import { zodToFieldConfigs, type ZodFieldConfig } from "./utils/zod-to-field-configs"
 
 // Import Zod schemas from generated code
@@ -89,6 +129,197 @@ export interface ProviderFieldConfigs {
   /** List transcripts filter fields */
   listFilters?: ZodFieldConfig[]
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Typed Field Names - Compile-time type safety for field overrides
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Generic helper for type-safe field overrides.
+ * Use with any Zod schema to get typed field names.
+ *
+ * @example
+ * ```typescript
+ * import { FieldOverrides, GladiaStreamingSchema } from 'voice-router-dev/field-configs'
+ *
+ * const overrides: FieldOverrides<typeof GladiaStreamingSchema> = {
+ *   encoding: { name: 'encoding', type: 'select' },
+ *   typo_field: null, // ✗ TypeScript error!
+ * }
+ * ```
+ */
+export type FieldOverrides<Schema extends z.ZodTypeAny> = Partial<
+  Record<keyof z.infer<Schema>, ZodFieldConfig | null>
+>
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Gladia - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for Gladia transcription requests */
+export type GladiaTranscriptionFieldName = keyof z.infer<typeof gladiaTranscribeParams>
+/** Field names for Gladia streaming sessions */
+export type GladiaStreamingFieldName = keyof z.infer<typeof gladiaStreamingParams>
+/** Field names for Gladia list filters */
+export type GladiaListFilterFieldName = keyof z.infer<typeof gladiaListParams>
+
+/** Gladia transcription request values (fully typed) */
+export type GladiaTranscriptionConfig = z.infer<typeof gladiaTranscribeParams>
+/** Gladia streaming session config (fully typed) */
+export type GladiaStreamingConfig = z.infer<typeof gladiaStreamingParams>
+
+/** Zod schema for Gladia transcription - use for advanced type extraction */
+export const GladiaTranscriptionSchema = gladiaTranscribeParams
+/** Zod schema for Gladia streaming - use for advanced type extraction */
+export const GladiaStreamingSchema = gladiaStreamingParams
+/** Zod schema for Gladia list filters */
+export const GladiaListFilterSchema = gladiaListParams
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Deepgram - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for Deepgram transcription requests */
+export type DeepgramTranscriptionFieldName = keyof z.infer<typeof deepgramTranscribeParams>
+/** Field names for Deepgram streaming (transcription + streaming-only params) */
+export type DeepgramStreamingFieldName =
+  | keyof z.infer<typeof deepgramTranscribeParams>
+  | keyof z.infer<typeof deepgramStreamingOnlyParams>
+/** Field names for Deepgram list filters */
+export type DeepgramListFilterFieldName = keyof z.infer<typeof deepgramListParams>
+
+/** Deepgram transcription request values (fully typed) */
+export type DeepgramTranscriptionConfig = z.infer<typeof deepgramTranscribeParams>
+/** Deepgram streaming-only config values */
+export type DeepgramStreamingOnlyConfig = z.infer<typeof deepgramStreamingOnlyParams>
+
+/** Zod schema for Deepgram transcription */
+export const DeepgramTranscriptionSchema = deepgramTranscribeParams
+/** Zod schema for Deepgram streaming-only params */
+export const DeepgramStreamingOnlySchema = deepgramStreamingOnlyParams
+/** Zod schema for Deepgram list filters */
+export const DeepgramListFilterSchema = deepgramListParams
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AssemblyAI - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for AssemblyAI transcription requests */
+export type AssemblyAITranscriptionFieldName = keyof z.infer<typeof assemblyaiTranscribeParams>
+/** Field names for AssemblyAI streaming sessions */
+export type AssemblyAIStreamingFieldName = keyof z.infer<typeof assemblyaiStreamingParams>
+/** Field names for AssemblyAI streaming update config */
+export type AssemblyAIStreamingUpdateFieldName = keyof z.infer<typeof assemblyaiUpdateConfigParams>
+/** Field names for AssemblyAI list filters */
+export type AssemblyAIListFilterFieldName = keyof z.infer<typeof assemblyaiListParams>
+
+/** AssemblyAI transcription request values (fully typed) */
+export type AssemblyAITranscriptionConfig = z.infer<typeof assemblyaiTranscribeParams>
+/** AssemblyAI streaming session config (fully typed) */
+export type AssemblyAIStreamingConfig = z.infer<typeof assemblyaiStreamingParams>
+/** AssemblyAI streaming update config (fully typed) */
+export type AssemblyAIStreamingUpdateConfig = z.infer<typeof assemblyaiUpdateConfigParams>
+
+/** Zod schema for AssemblyAI transcription */
+export const AssemblyAITranscriptionSchema = assemblyaiTranscribeParams
+/** Zod schema for AssemblyAI streaming */
+export const AssemblyAIStreamingSchema = assemblyaiStreamingParams
+/** Zod schema for AssemblyAI streaming updates */
+export const AssemblyAIStreamingUpdateSchema = assemblyaiUpdateConfigParams
+/** Zod schema for AssemblyAI list filters */
+export const AssemblyAIListFilterSchema = assemblyaiListParams
+
+// ─────────────────────────────────────────────────────────────────────────────
+// OpenAI - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for OpenAI Whisper transcription requests */
+export type OpenAITranscriptionFieldName = keyof z.infer<typeof openaiTranscribeParams>
+
+/** OpenAI Whisper transcription request values (fully typed) */
+export type OpenAITranscriptionConfig = z.infer<typeof openaiTranscribeParams>
+
+/** Zod schema for OpenAI transcription */
+export const OpenAITranscriptionSchema = openaiTranscribeParams
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Speechmatics - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for Speechmatics batch transcription requests */
+export type SpeechmaticsTranscriptionFieldName = keyof z.infer<typeof speechmaticsTranscribeParams>
+/** Field names for Speechmatics streaming sessions */
+export type SpeechmaticsStreamingFieldName = keyof z.infer<typeof speechmaticsStreamingParams>
+/** Field names for Speechmatics streaming update config */
+export type SpeechmaticsStreamingUpdateFieldName = keyof z.infer<typeof speechmaticsUpdateConfigParams>
+/** Field names for Speechmatics list filters */
+export type SpeechmaticsListFilterFieldName = keyof z.infer<typeof speechmaticsListParams>
+
+/** Speechmatics batch transcription values (fully typed) */
+export type SpeechmaticsTranscriptionConfig = z.infer<typeof speechmaticsTranscribeParams>
+/** Speechmatics streaming session config (fully typed) */
+export type SpeechmaticsStreamingConfig = z.infer<typeof speechmaticsStreamingParams>
+/** Speechmatics streaming update config (fully typed) */
+export type SpeechmaticsStreamingUpdateConfig = z.infer<typeof speechmaticsUpdateConfigParams>
+
+/** Zod schema for Speechmatics transcription */
+export const SpeechmaticsTranscriptionSchema = speechmaticsTranscribeParams
+/** Zod schema for Speechmatics streaming */
+export const SpeechmaticsStreamingSchema = speechmaticsStreamingParams
+/** Zod schema for Speechmatics streaming updates */
+export const SpeechmaticsStreamingUpdateSchema = speechmaticsUpdateConfigParams
+/** Zod schema for Speechmatics list filters */
+export const SpeechmaticsListFilterSchema = speechmaticsListParams
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Soniox - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for Soniox transcription requests */
+export type SonioxTranscriptionFieldName = keyof z.infer<typeof sonioxTranscribeParams>
+/** Field names for Soniox streaming sessions */
+export type SonioxStreamingFieldName = keyof z.infer<typeof sonioxStreamingParams>
+/** Field names for Soniox streaming update config */
+export type SonioxStreamingUpdateFieldName = keyof z.infer<typeof sonioxUpdateConfigParams>
+/** Field names for Soniox list filters */
+export type SonioxListFilterFieldName = keyof z.infer<typeof sonioxListParams>
+
+/** Soniox transcription request values (fully typed) */
+export type SonioxTranscriptionConfig = z.infer<typeof sonioxTranscribeParams>
+/** Soniox streaming session config (fully typed) */
+export type SonioxStreamingConfig = z.infer<typeof sonioxStreamingParams>
+/** Soniox streaming update config (fully typed) */
+export type SonioxStreamingUpdateConfig = z.infer<typeof sonioxUpdateConfigParams>
+
+/** Zod schema for Soniox transcription */
+export const SonioxTranscriptionSchema = sonioxTranscribeParams
+/** Zod schema for Soniox streaming */
+export const SonioxStreamingSchema = sonioxStreamingParams
+/** Zod schema for Soniox streaming updates */
+export const SonioxStreamingUpdateSchema = sonioxUpdateConfigParams
+/** Zod schema for Soniox list filters */
+export const SonioxListFilterSchema = sonioxListParams
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Convenience type aliases for all providers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** All transcription field names across providers */
+export type TranscriptionFieldName =
+  | GladiaTranscriptionFieldName
+  | DeepgramTranscriptionFieldName
+  | AssemblyAITranscriptionFieldName
+  | OpenAITranscriptionFieldName
+  | SpeechmaticsTranscriptionFieldName
+  | SonioxTranscriptionFieldName
+
+/** All streaming field names across providers */
+export type StreamingFieldName =
+  | GladiaStreamingFieldName
+  | DeepgramStreamingFieldName
+  | AssemblyAIStreamingFieldName
+  | SpeechmaticsStreamingFieldName
+  | SonioxStreamingFieldName
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Gladia - Derived from Zod schemas
