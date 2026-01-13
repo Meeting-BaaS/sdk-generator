@@ -37,6 +37,10 @@
             pkg-config
             openssl
 
+            # .NET ecosystem (for C# SDK generation)
+            dotnet-sdk_8
+            openapi-generator-cli
+
             # Useful tools
             git
             jq
@@ -48,6 +52,8 @@
             echo "pnpm: $(pnpm --version)"
             echo "Rust: $(rustc --version)"
             echo "Biome: $(biome --version)"
+            echo ".NET: $(dotnet --version)"
+            echo "OpenAPI Generator: $(openapi-generator-cli version 2>/dev/null || echo 'available')"
           '';
 
           # For openssl-sys crate
