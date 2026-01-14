@@ -35,11 +35,15 @@ export {
   AssemblyAIEncoding,
   AssemblyAISpeechModel,
   AssemblyAISampleRate,
+  AssemblyAITranscriptionModel,
+  AssemblyAILanguage,
   // Types
   type DeepgramModelType,
   type DeepgramRedactType,
   type DeepgramTopicModeType,
   type AssemblyAIEncodingType,
   type AssemblyAISpeechModelType,
-  type AssemblyAISampleRateType
+  type AssemblyAISampleRateType,
+  type AssemblyAITranscriptionModelType,
+  type AssemblyAILanguageType
 } from "../constants"

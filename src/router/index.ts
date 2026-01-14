@@ -66,7 +66,9 @@ export {
   // AssemblyAI enums
   AssemblyAIEncoding,
   AssemblyAISpeechModel,
-  AssemblyAISampleRate
+  AssemblyAISampleRate,
+  AssemblyAITranscriptionModel,
+  AssemblyAILanguage
 } from "./streaming-enums"
 
 // Re-export types for the enums
@@ -76,7 +78,9 @@ export type {
   DeepgramTopicModeType,
   AssemblyAIEncodingType,
   AssemblyAISpeechModelType,
-  AssemblyAISampleRateType
+  AssemblyAISampleRateType,
+  AssemblyAITranscriptionModelType,
+  AssemblyAILanguageType
 } from "./streaming-enums"
 
 // ─────────────────────────────────────────────────────────────────────────────
