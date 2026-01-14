@@ -51,24 +51,50 @@ export * from "./provider-streaming-types"
  * ```
  */
 export {
-  // Deepgram enums
+  // Deepgram streaming
   DeepgramEncoding,
   DeepgramModel,
   DeepgramRedact,
   DeepgramTopicMode,
-  // Gladia enums
+  // Deepgram batch
+  DeepgramCallbackMethod,
+  DeepgramIntentMode,
+  DeepgramRegion,
+  DeepgramSampleRate,
+  DeepgramStatus,
+  // Deepgram TTS
+  DeepgramTTSContainer,
+  DeepgramTTSEncoding,
+  DeepgramTTSModel,
+  DeepgramTTSSampleRate,
+  // Gladia
   GladiaEncoding,
   GladiaSampleRate,
   GladiaBitDepth,
   GladiaModel,
   GladiaLanguage,
   GladiaTranslationLanguage,
-  // AssemblyAI enums
+  GladiaRegion,
+  GladiaStatus,
+  // AssemblyAI
   AssemblyAIEncoding,
   AssemblyAISpeechModel,
   AssemblyAISampleRate,
   AssemblyAITranscriptionModel,
-  AssemblyAILanguage
+  AssemblyAILanguage,
+  AssemblyAIStatus,
+  // OpenAI Whisper batch
+  OpenAIModel,
+  OpenAIResponseFormat,
+  // OpenAI Realtime streaming
+  OpenAIRealtimeAudioFormat,
+  OpenAIRealtimeModel,
+  OpenAIRealtimeTranscriptionModel,
+  OpenAIRealtimeTurnDetection,
+  // Soniox
+  SonioxRegion,
+  // Speechmatics
+  SpeechmaticsRegion
 } from "./streaming-enums"
 
 // Re-export types for the enums

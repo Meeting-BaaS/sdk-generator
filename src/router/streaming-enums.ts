@@ -19,11 +19,22 @@
 
 // Re-export everything from the browser-safe constants module
 export {
-  // Deepgram
+  // Deepgram streaming
   DeepgramEncoding,
   DeepgramRedact,
   DeepgramTopicMode,
   DeepgramModel,
+  // Deepgram batch
+  DeepgramCallbackMethod,
+  DeepgramIntentMode,
+  DeepgramRegion,
+  DeepgramSampleRate,
+  DeepgramStatus,
+  // Deepgram TTS
+  DeepgramTTSContainer,
+  DeepgramTTSEncoding,
+  DeepgramTTSModel,
+  DeepgramTTSSampleRate,
   // Gladia
   GladiaEncoding,
   GladiaSampleRate,
@@ -31,12 +42,27 @@ export {
   GladiaModel,
   GladiaLanguage,
   GladiaTranslationLanguage,
+  GladiaRegion,
+  GladiaStatus,
   // AssemblyAI
   AssemblyAIEncoding,
   AssemblyAISpeechModel,
   AssemblyAISampleRate,
   AssemblyAITranscriptionModel,
   AssemblyAILanguage,
+  AssemblyAIStatus,
+  // OpenAI Whisper batch
+  OpenAIModel,
+  OpenAIResponseFormat,
+  // OpenAI Realtime streaming
+  OpenAIRealtimeAudioFormat,
+  OpenAIRealtimeModel,
+  OpenAIRealtimeTranscriptionModel,
+  OpenAIRealtimeTurnDetection,
+  // Soniox
+  SonioxRegion,
+  // Speechmatics
+  SpeechmaticsRegion,
   // Types
   type DeepgramModelType,
   type DeepgramRedactType,
