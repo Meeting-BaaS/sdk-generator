@@ -79,6 +79,37 @@ function unwrapZodType(schema: z.ZodTypeAny): { inner: z.ZodTypeAny; required: b
     inner = inner._def.innerType
   }
 
+  // Unwrap ZodUnion with null (e.g., .or(zod.null()) pattern)
+  // This is common in OpenAPI specs for nullable fields
+  if (inner._def?.typeName === "ZodUnion") {
+    const options = inner._def.options || []
+    // Find non-null/undefined option
+    const nonNullOption = options.find(
+      (opt: z.ZodTypeAny) =>
+        opt._def?.typeName !== "ZodNull" && opt._def?.typeName !== "ZodUndefined"
+    )
+    if (nonNullOption && options.length === 2) {
+      // It's a simple T | null union, extract T
+      inner = nonNullOption
+    }
+  }
+
+  // Recursively unwrap if we found a wrapper inside a wrapper
+  // e.g., ZodDefault(ZodUnion(ZodEnum, ZodNull))
+  const innerTypeName = inner._def?.typeName
+  if (
+    innerTypeName === "ZodOptional" ||
+    innerTypeName === "ZodNullable" ||
+    innerTypeName === "ZodDefault" ||
+    innerTypeName === "ZodUnion"
+  ) {
+    // Check if current inner differs from what we started with at this level
+    if (inner !== schema) {
+      const recursed = unwrapZodType(inner)
+      return { inner: recursed.inner, required: required && recursed.required }
+    }
+  }
+
   return { inner, required }
 }
 
@@ -204,16 +235,29 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
 
     case "ZodUnion":
     case "ZodDiscriminatedUnion":
-      // For unions, try to extract common type or use first option
-      const options = inner._def?.options || []
-      if (options.length > 0) {
-        const firstOption = options[0]
-        const firstTypeName = getZodTypeName(firstOption)
-        if (firstTypeName === "ZodString") {
-          baseConfig.type = "string"
-        } else if (firstTypeName === "ZodArray") {
-          baseConfig.type = "array"
-          baseConfig.inputFormat = "comma-separated"
+      // For unions, try to extract common type or use first non-null option
+      const unionOptions = inner._def?.options || []
+      if (unionOptions.length > 0) {
+        // Find first non-null/undefined option
+        const substantiveOption = unionOptions.find(
+          (opt: z.ZodTypeAny) =>
+            opt._def?.typeName !== "ZodNull" && opt._def?.typeName !== "ZodUndefined"
+        )
+        if (substantiveOption) {
+          const optTypeName = getZodTypeName(substantiveOption)
+          if (optTypeName === "ZodEnum" || optTypeName === "ZodNativeEnum") {
+            baseConfig.type = "select"
+            baseConfig.options = getEnumValues(substantiveOption)
+          } else if (optTypeName === "ZodString") {
+            baseConfig.type = "string"
+          } else if (optTypeName === "ZodArray") {
+            baseConfig.type = "array"
+            baseConfig.inputFormat = "comma-separated"
+          } else if (optTypeName === "ZodNumber") {
+            baseConfig.type = "number"
+          } else if (optTypeName === "ZodBoolean") {
+            baseConfig.type = "boolean"
+          }
         }
       }
       break

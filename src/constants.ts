@@ -296,6 +296,9 @@ export const GladiaRegion = StreamingSupportedRegions
 // AssemblyAI Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { SpeechModel } from "./generated/assemblyai/schema/speechModel"
+import { TranscriptLanguageCode } from "./generated/assemblyai/schema/transcriptLanguageCode"
+
 /**
  * AssemblyAI audio encoding formats
  *
@@ -312,6 +315,49 @@ export const AssemblyAIEncoding = {
   /** μ-law (telephony) */
   pcmMulaw: "pcm_mulaw"
 } as const satisfies Record<string, import("./generated/assemblyai/streaming-types").AudioEncoding>
+
+/**
+ * AssemblyAI batch transcription models
+ *
+ * Values: `best`, `slam-1`, `universal`
+ *
+ * - `best`: Highest accuracy, best for most use cases (default)
+ * - `slam-1`: Speech-Language Aligned Model, optimized for specific domains
+ * - `universal`: General-purpose model with broad language support
+ *
+ * @example
+ * ```typescript
+ * import { AssemblyAITranscriptionModel } from 'voice-router-dev/constants'
+ *
+ * await router.transcribe('assemblyai', audioUrl, {
+ *   speechModel: AssemblyAITranscriptionModel.best
+ * })
+ * ```
+ */
+export const AssemblyAITranscriptionModel = SpeechModel
+
+/**
+ * AssemblyAI language codes for transcription
+ *
+ * Common values: `en`, `en_us`, `en_uk`, `es`, `fr`, `de`, `it`, `pt`, `nl`, `ja`, `ko`, `zh`
+ *
+ * Default: `en_us`
+ *
+ * Full list at: https://www.assemblyai.com/docs/concepts/supported-languages
+ *
+ * @example
+ * ```typescript
+ * import { AssemblyAILanguage } from 'voice-router-dev/constants'
+ *
+ * await router.transcribe('assemblyai', audioUrl, {
+ *   languageCode: AssemblyAILanguage.en_us
+ * })
+ * await router.transcribe('assemblyai', audioUrl, {
+ *   languageCode: AssemblyAILanguage.es
+ * })
+ * ```
+ */
+export const AssemblyAILanguage = TranscriptLanguageCode
 
 /**
  * AssemblyAI streaming speech models
@@ -486,7 +532,14 @@ export type GladiaRegionType = (typeof GladiaRegion)[keyof typeof GladiaRegion]
 /** AssemblyAI encoding type derived from const object */
 export type AssemblyAIEncodingType = (typeof AssemblyAIEncoding)[keyof typeof AssemblyAIEncoding]
 
-/** AssemblyAI speech model type derived from const object */
+/** AssemblyAI batch transcription model type derived from const object */
+export type AssemblyAITranscriptionModelType =
+  (typeof AssemblyAITranscriptionModel)[keyof typeof AssemblyAITranscriptionModel]
+
+/** AssemblyAI language code type derived from const object */
+export type AssemblyAILanguageType = (typeof AssemblyAILanguage)[keyof typeof AssemblyAILanguage]
+
+/** AssemblyAI streaming speech model type derived from const object */
 export type AssemblyAISpeechModelType =
   (typeof AssemblyAISpeechModel)[keyof typeof AssemblyAISpeechModel]
 

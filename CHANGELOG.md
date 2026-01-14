@@ -9,6 +9,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+#### OpenAI Realtime Streaming Transcription
+
+New `transcribeStream()` method for OpenAI adapter using the Realtime API:
+
+```typescript
+import { createOpenAIWhisperAdapter, OpenAIRealtimeModel, OpenAIRealtimeAudioFormat } from 'voice-router-dev'
+
+const adapter = createOpenAIWhisperAdapter({ apiKey: process.env.OPENAI_API_KEY })
+
+const session = await adapter.transcribeStream({
+  openaiStreaming: {
+    model: OpenAIRealtimeModel["gpt-4o-realtime-preview"],
+    inputAudioFormat: OpenAIRealtimeAudioFormat.pcm16,
+    turnDetection: {
+      type: "server_vad",
+      threshold: 0.5,
+      silenceDurationMs: 500
+    }
+  }
+}, {
+  onTranscript: (event) => console.log(event.text),
+  onSpeechStart: (event) => console.log('Speech detected'),
+  onSpeechEnd: (event) => console.log('Speech ended')
+})
+
+// Send audio (base64-encoded PCM16 at 24kHz)
+session.sendAudio(audioChunk)
+session.close()
+```
+
+**New constants from generated OpenAPI types:**
+- `OpenAIRealtimeModel` - Realtime API models (`gpt-4o-realtime-preview`, etc.)
+- `OpenAIRealtimeAudioFormat` - Input formats (`pcm16`, `g711_ulaw`, `g711_alaw`)
+- `OpenAIRealtimeTurnDetection` - VAD type (`server_vad`)
+- `OpenAIRealtimeTranscriptionModel` - Transcription models (`whisper-1`, etc.)
+
+#### Type-Safe StreamingProvider Derivation
+
+`StreamingProvider` type is now automatically derived from `ProviderCapabilitiesMap`:
+
+```typescript
+// No more manual sync needed!
+// If you set streaming: true in a provider's capabilities,
+// it's automatically included in StreamingProvider type
+
+type StreamingProvider = "gladia" | "deepgram" | "assemblyai" | "soniox" | "openai-whisper"
+// ↑ Auto-derived from providers where streaming: true
+```
+
+**How it works:**
+- Capabilities use `as const satisfies` to preserve literal `true`/`false` types
+- `ProvidersWithCapability<"streaming">` extracts providers where capability is `true`
+- Works at compile-time - no runtime overhead, full browser compatibility
+
 #### Lightweight Field Metadata Export (solves 2.8MB type bundle OOM issue)
 
 ### Fixed

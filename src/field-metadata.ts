@@ -378,17 +378,19 @@ export const GLADIA_STREAMING_FIELDS = [
   },
   {
     name: "bit_depth",
-    type: "string",
+    type: "select",
     required: true,
     description: "The bit depth of the audio stream",
-    default: 16
+    default: 16,
+    options: [8]
   },
   {
     name: "sample_rate",
-    type: "string",
+    type: "select",
     required: true,
     description: "The sample rate of the audio stream",
-    default: 16000
+    default: 16000,
+    options: [8000]
   },
   {
     name: "channels",
@@ -571,9 +573,10 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "summarize",
-    type: "string",
+    type: "select",
     required: false,
-    description: "Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only."
+    description: "Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.",
+    options: ["v2"]
   },
   {
     name: "tag",
@@ -629,7 +632,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "detect_language",
-    type: "string",
+    type: "boolean",
     required: false,
     description: "Identifies the dominant language spoken in submitted audio"
   },
@@ -686,10 +689,41 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "model",
-    type: "string",
+    type: "select",
     required: true,
     description: "AI model used to process submitted audio",
-    default: "base-general"
+    default: "base-general",
+    options: [
+      "nova-3",
+      "nova-3-general",
+      "nova-3-medical",
+      "nova-2",
+      "nova-2-general",
+      "nova-2-meeting",
+      "nova-2-finance",
+      "nova-2-conversationalai",
+      "nova-2-voicemail",
+      "nova-2-video",
+      "nova-2-medical",
+      "nova-2-drivethru",
+      "nova-2-automotive",
+      "nova",
+      "nova-general",
+      "nova-phonecall",
+      "nova-medical",
+      "enhanced",
+      "enhanced-general",
+      "enhanced-meeting",
+      "enhanced-phonecall",
+      "enhanced-finance",
+      "base",
+      "meeting",
+      "phonecall",
+      "finance",
+      "conversationalai",
+      "voicemail",
+      "video"
+    ]
   },
   {
     name: "multichannel",
@@ -760,10 +794,11 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "version",
-    type: "string",
+    type: "select",
     required: true,
     description: "Version of an AI model to use",
-    default: "latest"
+    default: "latest",
+    options: ["latest"]
   },
   {
     name: "mip_opt_out",
@@ -805,9 +840,10 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   },
   {
     name: "summarize",
-    type: "string",
+    type: "select",
     required: false,
-    description: "Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only."
+    description: "Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.",
+    options: ["v2"]
   },
   {
     name: "tag",
@@ -863,7 +899,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   },
   {
     name: "detect_language",
-    type: "string",
+    type: "boolean",
     required: false,
     description: "Identifies the dominant language spoken in submitted audio"
   },
@@ -920,10 +956,41 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   },
   {
     name: "model",
-    type: "string",
+    type: "select",
     required: true,
     description: "AI model used to process submitted audio",
-    default: "base-general"
+    default: "base-general",
+    options: [
+      "nova-3",
+      "nova-3-general",
+      "nova-3-medical",
+      "nova-2",
+      "nova-2-general",
+      "nova-2-meeting",
+      "nova-2-finance",
+      "nova-2-conversationalai",
+      "nova-2-voicemail",
+      "nova-2-video",
+      "nova-2-medical",
+      "nova-2-drivethru",
+      "nova-2-automotive",
+      "nova",
+      "nova-general",
+      "nova-phonecall",
+      "nova-medical",
+      "enhanced",
+      "enhanced-general",
+      "enhanced-meeting",
+      "enhanced-phonecall",
+      "enhanced-finance",
+      "base",
+      "meeting",
+      "phonecall",
+      "finance",
+      "conversationalai",
+      "voicemail",
+      "video"
+    ]
   },
   {
     name: "multichannel",
@@ -994,10 +1061,11 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   },
   {
     name: "version",
-    type: "string",
+    type: "select",
     required: true,
     description: "Version of an AI model to use",
-    default: "latest"
+    default: "latest",
+    options: ["latest"]
   },
   {
     name: "mip_opt_out",
@@ -1025,9 +1093,12 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   },
   {
     name: "endpointing",
-    type: "string",
+    type: "select",
     required: false,
-    description: "endpointing - see https://developers.deepgram.com/docs/endpointing"
+    description: "endpointing - see https://developers.deepgram.com/docs/endpointing",
+    options: [
+      false
+    ]
   },
   {
     name: "interim_results",
@@ -1144,10 +1215,114 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "language_code",
-    type: "string",
+    type: "select",
     required: true,
     description: "The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is 'en_us'.\n",
-    default: "en_us"
+    default: "en_us",
+    options: [
+      "en",
+      "en_au",
+      "en_uk",
+      "en_us",
+      "es",
+      "fr",
+      "de",
+      "it",
+      "pt",
+      "nl",
+      "af",
+      "sq",
+      "am",
+      "ar",
+      "hy",
+      "as",
+      "az",
+      "ba",
+      "eu",
+      "be",
+      "bn",
+      "bs",
+      "br",
+      "bg",
+      "my",
+      "ca",
+      "zh",
+      "hr",
+      "cs",
+      "da",
+      "et",
+      "fo",
+      "fi",
+      "gl",
+      "ka",
+      "el",
+      "gu",
+      "ht",
+      "ha",
+      "haw",
+      "he",
+      "hi",
+      "hu",
+      "is",
+      "id",
+      "ja",
+      "jw",
+      "kn",
+      "kk",
+      "km",
+      "ko",
+      "lo",
+      "la",
+      "lv",
+      "ln",
+      "lt",
+      "lb",
+      "mk",
+      "mg",
+      "ms",
+      "ml",
+      "mt",
+      "mi",
+      "mr",
+      "mn",
+      "ne",
+      "no",
+      "nn",
+      "oc",
+      "pa",
+      "ps",
+      "fa",
+      "pl",
+      "ro",
+      "ru",
+      "sa",
+      "sr",
+      "sn",
+      "sd",
+      "si",
+      "sk",
+      "sl",
+      "so",
+      "su",
+      "sw",
+      "sv",
+      "tl",
+      "tg",
+      "ta",
+      "tt",
+      "te",
+      "th",
+      "bo",
+      "tr",
+      "tk",
+      "uk",
+      "ur",
+      "uz",
+      "vi",
+      "cy",
+      "yi",
+      "yo"
+    ]
   },
   {
     name: "language_detection",
@@ -1165,10 +1340,11 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "speech_model",
-    type: "string",
+    type: "select",
     required: true,
     description: "The speech model to use for the transcription. When `null`, the \"best\" model is used.",
-    default: "best"
+    default: "best",
+    options: ["best", "slam-1", "universal"]
   },
   {
     name: "punctuate",
@@ -1326,10 +1502,11 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "redact_pii_sub",
-    type: "string",
+    type: "select",
     required: true,
     description: "The replacement logic for detected PII, can be \"entity_type\" or \"hash\". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.",
-    default: "hash"
+    default: "hash",
+    options: ["entity_name", "hash"]
   },
   {
     name: "speaker_labels",
@@ -1706,15 +1883,16 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "stream",
-    type: "string",
+    type: "boolean",
     required: false,
     description: "If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section of the Speech-to-Text guide](https://platform.openai.com/docs/guides/speech-to-text?lang=curl#streaming-transcriptions)\nfor more information.\n\nNote: Streaming is not supported for the `whisper-1` model and will be ignored.\n"
   },
   {
     name: "chunking_strategy",
-    type: "string",
+    type: "select",
     required: false,
-    description: "Controls how the audio is cut into chunks. When set to `\"auto\"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. "
+    description: "Controls how the audio is cut into chunks. When set to `\"auto\"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. ",
+    options: ["auto"]
   },
   {
     name: "known_speaker_names",
@@ -2033,31 +2211,31 @@ export const SONIOX_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "language_hints_strict",
-    type: "string",
+    type: "boolean",
     required: false,
     description: "When `true`, the model will rely more on language hints."
   },
   {
     name: "enable_speaker_diarization",
-    type: "string",
+    type: "boolean",
     required: false,
     description: "When `true`, speakers are identified and separated in the transcription output."
   },
   {
     name: "enable_language_identification",
-    type: "string",
+    type: "boolean",
     required: false,
     description: "When `true`, language is detected for each part of the transcription."
   },
   {
     name: "translation",
-    type: "string",
+    type: "object",
     required: false,
     description: "Translation configuration."
   },
   {
     name: "context",
-    type: "string",
+    type: "object",
     required: false,
     description: "Additional context to improve transcription accuracy and formatting of specialized terms."
   },
@@ -2099,9 +2277,10 @@ export const SONIOX_STREAMING_FIELDS = [
   },
   {
     name: "audioFormat",
-    type: "string",
+    type: "select",
     required: false,
-    description: "Audio format specification. Use 'auto' for automatic detection"
+    description: "Audio format specification. Use 'auto' for automatic detection",
+    options: ["auto", "aac", "aiff", "amr", "asf", "flac", "mp3", "ogg", "wav", "webm"]
   },
   {
     name: "sampleRate",
@@ -2126,7 +2305,7 @@ export const SONIOX_STREAMING_FIELDS = [
   },
   {
     name: "context",
-    type: "string",
+    type: "object",
     required: false,
     description: "Additional context to improve transcription accuracy"
   },
@@ -2150,7 +2329,7 @@ export const SONIOX_STREAMING_FIELDS = [
   },
   {
     name: "translation",
-    type: "string",
+    type: "object",
     required: false,
     description: "Translation configuration"
   },
