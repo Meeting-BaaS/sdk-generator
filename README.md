@@ -391,9 +391,61 @@ import type {
   StreamingSession,
   StreamingOptions,
   UnifiedWebhookEvent,
-  TranscriptionProvider
+  TranscriptionProvider,
+  // Normalized data types
+  TranscriptData,
+  Word,
+  Utterance,
+  Speaker
 } from 'voice-router-dev';
 ```
+
+### Normalized Result Structure
+
+All providers return `UnifiedTranscriptResponse` with consistent data structure:
+
+```typescript
+interface UnifiedTranscriptResponse<P extends TranscriptionProvider> {
+  success: boolean;
+  provider: P;
+
+  // Normalized data - same structure for ALL providers
+  data?: {
+    id: string;              // Transcript ID
+    text: string;            // Full transcript text
+    status: TranscriptionStatus;
+    confidence?: number;     // 0-1 confidence score
+    duration?: number;       // Audio duration in seconds
+    language?: string;       // Detected/specified language
+
+    // Normalized arrays - consistent across providers
+    words?: Word[];          // { word, start, end, confidence, speaker }
+    utterances?: Utterance[]; // { text, start, end, speaker, words }
+    speakers?: Speaker[];    // { id, label, confidence }
+    summary?: string;
+    metadata?: TranscriptMetadata;
+  };
+
+  // Provider-specific rich data (typed per provider)
+  extended?: ProviderExtendedData;
+
+  // Request tracking
+  tracking?: { requestId, audioHash, processingTimeMs };
+
+  // Error info (on failure)
+  error?: { code, message, details, statusCode };
+
+  // Raw provider response (fully typed per provider)
+  raw?: ProviderRawResponse;
+}
+```
+
+**Use cases:**
+- **Display transcripts** - Use `data.text`, `data.words`, `data.utterances`
+- **Re-normalize stored responses** - Store `raw`, reconstruct via adapter
+- **Access provider features** - Use `extended` for chapters, entities, etc.
+
+See [docs/NORMALIZED_RESULTS.md](./docs/NORMALIZED_RESULTS.md) for detailed documentation.
 
 ### Provider-Specific Type Safety
 
