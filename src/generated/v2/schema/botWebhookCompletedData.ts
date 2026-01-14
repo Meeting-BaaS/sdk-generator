@@ -12,9 +12,9 @@ import type { BotWebhookCompletedDataDurationSeconds } from "./botWebhookComplet
 import type { BotWebhookCompletedDataEventId } from "./botWebhookCompletedDataEventId"
 import type { BotWebhookCompletedDataExitedAt } from "./botWebhookCompletedDataExitedAt"
 import type { BotWebhookCompletedDataJoinedAt } from "./botWebhookCompletedDataJoinedAt"
-import type { BotWebhookCompletedDataParticipants } from "./botWebhookCompletedDataParticipants"
+import type { BotWebhookCompletedDataParticipantsItem } from "./botWebhookCompletedDataParticipantsItem"
 import type { BotWebhookCompletedDataRawTranscription } from "./botWebhookCompletedDataRawTranscription"
-import type { BotWebhookCompletedDataSpeakers } from "./botWebhookCompletedDataSpeakers"
+import type { BotWebhookCompletedDataSpeakersItem } from "./botWebhookCompletedDataSpeakersItem"
 import type { BotWebhookCompletedDataTranscription } from "./botWebhookCompletedDataTranscription"
 import type { BotWebhookCompletedDataTranscriptionIds } from "./botWebhookCompletedDataTranscriptionIds"
 import type { BotWebhookCompletedDataTranscriptionProvider } from "./botWebhookCompletedDataTranscriptionProvider"
@@ -28,10 +28,10 @@ export type BotWebhookCompletedData = {
   bot_id: string
   /** The UUID of the calendar event associated with this bot. Null for non-calendar bots */
   event_id: BotWebhookCompletedDataEventId
-  /** List of participant names or identifiers who joined the meeting. Null if participant information is not available */
-  participants: BotWebhookCompletedDataParticipants
-  /** List of speaker names or identifiers detected in the meeting. Null if speaker information is not available */
-  speakers: BotWebhookCompletedDataSpeakers
+  /** List of participants who joined the meeting with their names and metadata. Empty array if participant information is not available */
+  participants: BotWebhookCompletedDataParticipantsItem[]
+  /** List of speakers detected in the meeting with their names and metadata. Empty array if speaker information is not available */
+  speakers: BotWebhookCompletedDataSpeakersItem[]
   duration_seconds: BotWebhookCompletedDataDurationSeconds
   /** ISO 8601 timestamp when the bot joined the meeting. Null if join time is not available */
   joined_at: BotWebhookCompletedDataJoinedAt

@@ -52,9 +52,9 @@ export type GetBotDetailsResponseData = {
   exited_at: GetBotDetailsResponseDataExitedAt
   /** Duration of the meeting in seconds (null if meeting hasn't ended) */
   duration_seconds: GetBotDetailsResponseDataDurationSeconds
-  /** List of participants who joined the meeting */
+  /** List of participants who joined the meeting with their names and metadata */
   participants: GetBotDetailsResponseDataParticipantsItem[]
-  /** List of speakers identified in the meeting */
+  /** List of speakers identified in the meeting with their names and metadata */
   speakers: GetBotDetailsResponseDataSpeakersItem[]
   /** Whether the artifacts have been deleted */
   artifacts_deleted: boolean

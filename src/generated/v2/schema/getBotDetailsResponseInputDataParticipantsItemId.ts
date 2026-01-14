@@ -6,4 +6,7 @@
  * OpenAPI spec version: 2.0.0
  */
 
+/**
+ * Sequential participant ID (1, 2, 3...). Null if not available
+ */
 export type GetBotDetailsResponseInputDataParticipantsItemId = number | null

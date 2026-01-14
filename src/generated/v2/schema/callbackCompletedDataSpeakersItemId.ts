@@ -7,6 +7,6 @@
  */
 
 /**
- * List of participant names or identifiers who joined the meeting. Null if participant information is not available
+ * Sequential participant ID (1, 2, 3...). Null if not available
  */
-export type CallbackCompletedInputDataParticipants = string[] | null
+export type CallbackCompletedDataSpeakersItemId = number | null

@@ -185,12 +185,22 @@ export const getGetBotDetailsResponseMock = (
       (_, i) => i + 1
     ).map(() => ({
       name: faker.string.alpha(20),
-      id: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null])
+      id: faker.helpers.arrayElement([
+        faker.number.int({ min: -9007199254740991, max: 9007199254740991 }),
+        null
+      ]),
+      display_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      profile_picture: faker.helpers.arrayElement([faker.internet.url(), undefined])
     })),
     speakers: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
       () => ({
         name: faker.string.alpha(20),
-        id: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), null])
+        id: faker.helpers.arrayElement([
+          faker.number.int({ min: -9007199254740991, max: 9007199254740991 }),
+          null
+        ]),
+        display_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+        profile_picture: faker.helpers.arrayElement([faker.internet.url(), undefined])
       })
     ),
     artifacts_deleted: faker.datatype.boolean(),

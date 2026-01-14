@@ -12,9 +12,9 @@ import type { CallbackCompletedDataDurationSeconds } from "./callbackCompletedDa
 import type { CallbackCompletedDataEventId } from "./callbackCompletedDataEventId"
 import type { CallbackCompletedDataExitedAt } from "./callbackCompletedDataExitedAt"
 import type { CallbackCompletedDataJoinedAt } from "./callbackCompletedDataJoinedAt"
-import type { CallbackCompletedDataParticipants } from "./callbackCompletedDataParticipants"
+import type { CallbackCompletedDataParticipantsItem } from "./callbackCompletedDataParticipantsItem"
 import type { CallbackCompletedDataRawTranscription } from "./callbackCompletedDataRawTranscription"
-import type { CallbackCompletedDataSpeakers } from "./callbackCompletedDataSpeakers"
+import type { CallbackCompletedDataSpeakersItem } from "./callbackCompletedDataSpeakersItem"
 import type { CallbackCompletedDataTranscription } from "./callbackCompletedDataTranscription"
 import type { CallbackCompletedDataTranscriptionIds } from "./callbackCompletedDataTranscriptionIds"
 import type { CallbackCompletedDataTranscriptionProvider } from "./callbackCompletedDataTranscriptionProvider"
@@ -28,10 +28,10 @@ export type CallbackCompletedData = {
   bot_id: string
   /** The UUID of the calendar event associated with this bot. Null for non-calendar bots */
   event_id: CallbackCompletedDataEventId
-  /** List of participant names or identifiers who joined the meeting. Null if participant information is not available */
-  participants: CallbackCompletedDataParticipants
-  /** List of speaker names or identifiers detected in the meeting. Null if speaker information is not available */
-  speakers: CallbackCompletedDataSpeakers
+  /** List of participants who joined the meeting with their names and metadata. Empty array if participant information is not available */
+  participants: CallbackCompletedDataParticipantsItem[]
+  /** List of speakers detected in the meeting with their names and metadata. Empty array if speaker information is not available */
+  speakers: CallbackCompletedDataSpeakersItem[]
   duration_seconds: CallbackCompletedDataDurationSeconds
   /** ISO 8601 timestamp when the bot joined the meeting. Null if join time is not available */
   joined_at: CallbackCompletedDataJoinedAt

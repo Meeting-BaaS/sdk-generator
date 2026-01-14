@@ -5,13 +5,13 @@
  * API for managing meeting bots, calendar integrations, and webhooks
  * OpenAPI spec version: 2.0.0
  */
-import type { GetBotDetailsResponseDataSpeakersItemId } from "./getBotDetailsResponseDataSpeakersItemId"
+import type { CallbackCompletedInputDataParticipantsItemId } from "./callbackCompletedInputDataParticipantsItemId"
 
-export type GetBotDetailsResponseDataSpeakersItem = {
+export type CallbackCompletedInputDataParticipantsItem = {
   /** Participant's name (full name or display name) */
   name: string
   /** Sequential participant ID (1, 2, 3...). Null if not available */
-  id: GetBotDetailsResponseDataSpeakersItemId
+  id: CallbackCompletedInputDataParticipantsItemId
   /** Display name shown in UI (if different from name) */
   display_name?: string
   /** Profile picture URL (if available) */

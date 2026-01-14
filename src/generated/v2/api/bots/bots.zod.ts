@@ -742,6 +742,10 @@ export const getBotDetailsResponseDataJoinedAtRegExpOne =
   /^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$/
 export const getBotDetailsResponseDataExitedAtRegExpOne =
   /^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$/
+export const getBotDetailsResponseDataParticipantsItemIdMinOne = -9007199254740991
+export const getBotDetailsResponseDataParticipantsItemIdMaxOne = 9007199254740991
+export const getBotDetailsResponseDataSpeakersItemIdMinOne = -9007199254740991
+export const getBotDetailsResponseDataSpeakersItemIdMaxOne = 9007199254740991
 
 export const getBotDetailsResponse = zod.object({
   success: zod.boolean(),
@@ -806,19 +810,47 @@ export const getBotDetailsResponse = zod.object({
     participants: zod
       .array(
         zod.object({
-          name: zod.string(),
-          id: zod.number().or(zod.null())
+          name: zod.string().describe("Participant's name (full name or display name)"),
+          id: zod
+            .number()
+            .min(getBotDetailsResponseDataParticipantsItemIdMinOne)
+            .max(getBotDetailsResponseDataParticipantsItemIdMaxOne)
+            .or(zod.null())
+            .describe("Sequential participant ID (1, 2, 3...). Null if not available"),
+          display_name: zod
+            .string()
+            .optional()
+            .describe("Display name shown in UI (if different from name)"),
+          profile_picture: zod
+            .string()
+            .url()
+            .optional()
+            .describe("Profile picture URL (if available)")
         })
       )
-      .describe("List of participants who joined the meeting"),
+      .describe("List of participants who joined the meeting with their names and metadata"),
     speakers: zod
       .array(
         zod.object({
-          name: zod.string(),
-          id: zod.number().or(zod.null())
+          name: zod.string().describe("Participant's name (full name or display name)"),
+          id: zod
+            .number()
+            .min(getBotDetailsResponseDataSpeakersItemIdMinOne)
+            .max(getBotDetailsResponseDataSpeakersItemIdMaxOne)
+            .or(zod.null())
+            .describe("Sequential participant ID (1, 2, 3...). Null if not available"),
+          display_name: zod
+            .string()
+            .optional()
+            .describe("Display name shown in UI (if different from name)"),
+          profile_picture: zod
+            .string()
+            .url()
+            .optional()
+            .describe("Profile picture URL (if available)")
         })
       )
-      .describe("List of speakers identified in the meeting"),
+      .describe("List of speakers identified in the meeting with their names and metadata"),
     artifacts_deleted: zod.boolean().describe("Whether the artifacts have been deleted"),
     video: zod
       .string()
