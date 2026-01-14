@@ -273,7 +273,9 @@ export type SpeechmaticsTranscriptionFieldName = keyof z.infer<typeof speechmati
 /** Field names for Speechmatics streaming sessions */
 export type SpeechmaticsStreamingFieldName = keyof z.infer<typeof speechmaticsStreamingParams>
 /** Field names for Speechmatics streaming update config */
-export type SpeechmaticsStreamingUpdateFieldName = keyof z.infer<typeof speechmaticsUpdateConfigParams>
+export type SpeechmaticsStreamingUpdateFieldName = keyof z.infer<
+  typeof speechmaticsUpdateConfigParams
+>
 /** Field names for Speechmatics list filters */
 export type SpeechmaticsListFilterFieldName = keyof z.infer<typeof speechmaticsListParams>
 

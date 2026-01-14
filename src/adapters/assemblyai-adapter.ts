@@ -661,7 +661,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
    *
    * @param options - Streaming configuration options
    * @param options.sampleRate - Sample rate (8000, 16000, 22050, 44100, 48000)
-   * @param options.encoding - Audio encoding (pcm_s16le, pcm_mulaw)
+   * @param options.encoding - Audio encoding in unified format (linear16) - mapped to AssemblyAI's pcm_s16le
    * @param options.assemblyaiStreaming - All AssemblyAI-specific streaming options
    * @param callbacks - Event callbacks for transcription results
    * @param callbacks.onTranscript - Interim/final transcript received (Turn event)
@@ -675,7 +675,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
    * ```typescript
    * const session = await adapter.transcribeStream({
    *   sampleRate: 16000,
-   *   encoding: 'pcm_s16le'
+   *   encoding: 'linear16' // Unified format - mapped to AssemblyAI's pcm_s16le
    * }, {
    *   onOpen: () => console.log('Connected'),
    *   onTranscript: (event) => {

@@ -484,11 +484,11 @@ const session = await router.transcribeStream({
   sampleRate: 16000
 });
 
-// Type-safe Gladia encoding
+// Type-safe Gladia encoding - use unified format
 const gladiaSession = await router.transcribeStream({
   provider: 'gladia',
-  encoding: StreamingSupportedEncodingEnum['wav/pcm'],
-  sampleRate: StreamingSupportedSampleRateEnum['16000']
+  encoding: 'linear16', // Unified format - mapped to Gladia's 'wav/pcm'
+  sampleRate: 16000
 });
 ```
 
@@ -509,7 +509,7 @@ const deepgramSession = await router.transcribeStream({
 // Gladia streaming - with typed gladiaStreaming options
 const gladiaSession = await router.transcribeStream({
   provider: 'gladia',
-  encoding: 'wav/pcm',
+  encoding: 'linear16', // Unified format - mapped to Gladia's 'wav/pcm'
   sampleRate: 16000,
   gladiaStreaming: {
     realtime_processing: { words_accurate_timestamps: true },
@@ -566,6 +566,34 @@ type EncodingOptions = GladiaStreamingConfig['encoding']
 - `GladiaStreamingFieldName`, `DeepgramTranscriptionFieldName`, `AssemblyAIStreamingFieldName`, etc.
 - `GladiaStreamingConfig`, `DeepgramTranscriptionConfig`, `AzureTranscriptionConfig`, etc.
 - `GladiaStreamingSchema`, `DeepgramTranscriptionSchema`, etc. (Zod schemas for advanced extraction)
+
+### Lightweight Field Metadata (Performance-Optimized)
+
+For UI form generation without heavy Zod schema types (156KB vs 2.8MB):
+
+```typescript
+// Lightweight import - 156KB types instead of 2.8MB
+import {
+  GLADIA_STREAMING_FIELDS,
+  GladiaStreamingFieldName,
+  PROVIDER_FIELDS,
+  FieldMetadata
+} from 'voice-router-dev/field-metadata'
+
+// Pre-computed field metadata - no Zod at runtime
+GLADIA_STREAMING_FIELDS.forEach(field => {
+  if (field.type === 'select' && field.options) {
+    renderDropdown(field.name, field.options)
+  }
+})
+```
+
+**When to use which:**
+
+| Use Case | Import | Types Size |
+|----------|--------|------------|
+| UI form generation (no validation) | `field-metadata` | 156 KB |
+| Runtime Zod validation needed | `field-configs` | 2.8 MB |
 
 ## Requirements
 

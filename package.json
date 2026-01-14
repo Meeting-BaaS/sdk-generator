@@ -1,6 +1,6 @@
 {
   "name": "voice-router-dev",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, Speechmatics, and Soniox",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -25,6 +25,11 @@
       "types": "./dist/field-configs.d.ts",
       "import": "./dist/field-configs.mjs",
       "require": "./dist/field-configs.js"
+    },
+    "./field-metadata": {
+      "types": "./dist/field-metadata.d.ts",
+      "import": "./dist/field-metadata.mjs",
+      "require": "./dist/field-metadata.js"
     },
     "./provider-metadata": {
       "types": "./dist/provider-metadata.d.ts",
@@ -90,6 +95,7 @@
     "openapi:generate:speechmatics-streaming": "pnpm openapi:sync-speechmatics-streaming",
     "openapi:generate:soniox": "pnpm openapi:clean:soniox && orval --config orval.config.ts --project sonioxApi && orval --config orval.config.ts --project sonioxZod && pnpm openapi:sync-soniox-streaming && pnpm openapi:sync-soniox-languages && pnpm openapi:fix",
     "openapi:generate:soniox-streaming": "pnpm openapi:sync-soniox-streaming",
+    "openapi:generate-field-metadata": "node scripts/generate-field-metadata.js",
     "openapi:clean:csharp": "rm -rf generated-csharp",
     "openapi:clean:csharp:gladia": "rm -rf generated-csharp/gladia",
     "openapi:fix:csharp:gladia": "node scripts/fix-gladia-spec-csharp.js",

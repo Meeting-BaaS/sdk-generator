@@ -831,7 +831,7 @@ export class GladiaAdapter extends BaseAdapter {
    * - Multi-language code switching
    *
    * @param options - Streaming configuration options
-   * @param options.encoding - Audio encoding (wav/pcm, wav/alaw, wav/ulaw)
+   * @param options.encoding - Audio encoding in unified format (linear16, mulaw, alaw) - mapped to Gladia's wav/pcm, wav/ulaw, wav/alaw
    * @param options.sampleRate - Sample rate (8000, 16000, 32000, 44100, 48000)
    * @param options.bitDepth - Bit depth (8, 16, 24, 32)
    * @param options.channels - Number of channels (1-8)
@@ -861,7 +861,7 @@ export class GladiaAdapter extends BaseAdapter {
    * @example Basic real-time streaming
    * ```typescript
    * const session = await adapter.transcribeStream({
-   *   encoding: 'wav/pcm',
+   *   encoding: 'linear16', // Unified format - mapped to Gladia's 'wav/pcm'
    *   sampleRate: 16000,
    *   channels: 1,
    *   language: 'en',
@@ -890,7 +890,7 @@ export class GladiaAdapter extends BaseAdapter {
    * @example Advanced streaming with all features
    * ```typescript
    * const session = await adapter.transcribeStream({
-   *   encoding: 'wav/pcm',
+   *   encoding: 'linear16', // Use unified format
    *   sampleRate: 16000,
    *   language: 'en',
    *   sentimentAnalysis: true,
