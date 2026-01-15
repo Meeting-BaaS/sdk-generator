@@ -176,6 +176,11 @@ export const DeepgramModel = {
   import("./generated/deepgram/schema/listenV1ModelParameter").ListenV1ModelParameter
 >
 
+// Re-export auto-generated Deepgram language constants
+// Generated from https://api.deepgram.com/v1/models by scripts/generate-deepgram-languages.js
+export { DeepgramLanguage, DeepgramLanguageCodes } from "./generated/deepgram/languages"
+export type { DeepgramLanguageCode } from "./generated/deepgram/languages"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Gladia Constants
 // ─────────────────────────────────────────────────────────────────────────────
@@ -506,6 +511,9 @@ export type DeepgramSampleRateType = (typeof DeepgramSampleRate)[keyof typeof De
 
 /** Deepgram model type derived from const object */
 export type DeepgramModelType = (typeof DeepgramModel)[keyof typeof DeepgramModel]
+
+/** Deepgram language type (alias for DeepgramLanguageCode) */
+export type { DeepgramLanguageCode as DeepgramLanguageType } from "./generated/deepgram/languages"
 
 /** Gladia encoding type derived from const object */
 export type GladiaEncodingType = (typeof GladiaEncoding)[keyof typeof GladiaEncoding]

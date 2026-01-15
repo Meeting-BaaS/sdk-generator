@@ -427,6 +427,11 @@ export interface Speaker {
 
 /**
  * Word-level transcription with timing
+ *
+ * Normalized from provider-specific types:
+ * - Gladia: `WordDTO`
+ * - AssemblyAI: `TranscriptWord`
+ * - Deepgram: `ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem`
  */
 export interface Word {
   /** The transcribed word */
@@ -439,10 +444,24 @@ export interface Word {
   confidence?: number
   /** Speaker ID if diarization is enabled */
   speaker?: string
+  /**
+   * Audio channel number (for multi-channel/stereo recordings)
+   *
+   * Channel numbering varies by provider:
+   * - AssemblyAI: 1=left, 2=right, sequential for additional channels
+   * - Deepgram: 0-indexed channel number
+   * - Gladia: 0-indexed channel number
+   */
+  channel?: number
 }
 
 /**
  * Utterance (sentence or phrase by a single speaker)
+ *
+ * Normalized from provider-specific types:
+ * - Gladia: `UtteranceDTO`
+ * - AssemblyAI: `TranscriptUtterance`
+ * - Deepgram: `ListenV1ResponseResultsUtterancesItem`
  */
 export interface Utterance {
   /** The transcribed text */
@@ -457,6 +476,32 @@ export interface Utterance {
   confidence?: number
   /** Words in this utterance */
   words?: Word[]
+  /**
+   * Unique utterance identifier (provider-assigned)
+   *
+   * Available from: Deepgram
+   * Useful for linking utterances to other data (entities, sentiment, etc.)
+   */
+  id?: string
+  /**
+   * Audio channel number (for multi-channel/stereo recordings)
+   *
+   * Channel numbering varies by provider:
+   * - AssemblyAI: 1=left, 2=right, sequential for additional channels
+   * - Deepgram: 0-indexed channel number
+   * - Gladia: 0-indexed channel number
+   */
+  channel?: number
+  /**
+   * Detected language for this utterance (BCP-47 code)
+   *
+   * Available from: Gladia (with code-switching enabled)
+   * Essential for multilingual transcription where language changes mid-conversation.
+   *
+   * @example 'en', 'es', 'fr', 'de'
+   * @see TranscriptionLanguage for full list of supported codes
+   */
+  language?: string
 }
 
 /**

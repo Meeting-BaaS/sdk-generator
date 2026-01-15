@@ -21,6 +21,7 @@
 export {
   // Deepgram streaming
   DeepgramEncoding,
+  DeepgramLanguage,
   DeepgramRedact,
   DeepgramTopicMode,
   DeepgramModel,
@@ -64,6 +65,7 @@ export {
   // Speechmatics
   SpeechmaticsRegion,
   // Types
+  type DeepgramLanguageType,
   type DeepgramModelType,
   type DeepgramRedactType,
   type DeepgramTopicModeType,

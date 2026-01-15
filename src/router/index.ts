@@ -53,6 +53,7 @@ export * from "./provider-streaming-types"
 export {
   // Deepgram streaming
   DeepgramEncoding,
+  DeepgramLanguage,
   DeepgramModel,
   DeepgramRedact,
   DeepgramTopicMode,
@@ -99,6 +100,7 @@ export {
 
 // Re-export types for the enums
 export type {
+  DeepgramLanguageType,
   DeepgramModelType,
   DeepgramRedactType,
   DeepgramTopicModeType,
