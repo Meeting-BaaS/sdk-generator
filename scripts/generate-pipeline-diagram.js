@@ -411,10 +411,11 @@ flowchart TB
   // ===== EXPORTS =====
   mmd += `    subgraph EXPORTS["SDK EXPORTS"]
         direction TB
-        EXP_FIELD["field-configs.ts<br/>zodToFieldConfigs()"]
+        EXP_FIELD["field-configs.ts<br/>zodToFieldConfigs() + typed field names"]
+        EXP_FIELD_META["field-metadata.ts<br/>Pre-computed field metadata (lightweight)"]
         EXP_INDEX["index.ts<br/>Types + Zod namespaces"]
-        EXP_META["provider-metadata.ts<br/>Provider info"]
-        EXP_CONST["constants.ts<br/>Enums + constants"]
+        EXP_META["provider-metadata.ts<br/>Provider info + capabilities"]
+        EXP_CONST["constants.ts<br/>Enums + constants (all providers)"]
     end
 
 `
@@ -476,8 +477,10 @@ flowchart TB
         API_ADAPTERS["Provider Adapters<br/>Direct provider access"]
         API_WEBHOOKS["WebhookRouter<br/>Webhook handling"]
         API_TYPES["Types + Zod Schemas<br/>Runtime validation"]
-        API_CONFIGS["Field Configs<br/>UI form generation"]
+        API_CONFIGS["Field Configs<br/>UI form generation + typed overrides"]
+        API_FIELD_META["Field Metadata<br/>Lightweight alternative to full Zod"]
         API_META["Provider Metadata<br/>Provider capabilities"]
+        API_CONST["Constants<br/>Type-safe enums for all providers"]
     end
 
 `
@@ -608,7 +611,9 @@ flowchart TB
     GENERATED --> EXP_FIELD
     GENERATED --> EXP_INDEX
     GENERATED --> EXP_META
+    GENERATED --> EXP_CONST
     EXP_FIELD --> EXP_INDEX
+    EXP_FIELD --> EXP_FIELD_META
 `
 
   // Exports + Generated -> SDK Internals
@@ -625,8 +630,10 @@ flowchart TB
     WEBHOOKS --> API_WEBHOOKS
     ROUTER --> API_ROUTER
     EXP_FIELD --> API_CONFIGS
+    EXP_FIELD_META --> API_FIELD_META
     EXP_META --> API_META
     EXP_INDEX --> API_TYPES
+    EXP_CONST --> API_CONST
 `
 
   // Styling
