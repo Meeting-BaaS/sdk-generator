@@ -182,7 +182,25 @@ function generateFieldArray(name, fields, docComment, providerKey = null, langua
       }
     }
 
-    // Skip nestedFields for lightweight output
+    // Include nestedFields for object types (recursive structure)
+    if (f.nestedFields?.length) {
+      simplified.nestedFields = f.nestedFields.map((nf) => {
+        const nestedSimplified = {
+          name: nf.name,
+          type: nf.type,
+          required: nf.required
+        }
+        if (nf.description) nestedSimplified.description = nf.description
+        if (nf.default !== undefined) nestedSimplified.default = nf.default
+        if (nf.options?.length) nestedSimplified.options = nf.options
+        if (nf.min !== undefined) nestedSimplified.min = nf.min
+        if (nf.max !== undefined) nestedSimplified.max = nf.max
+        if (nf.inputFormat) nestedSimplified.inputFormat = nf.inputFormat
+        // Recursively include deeply nested fields
+        if (nf.nestedFields?.length) nestedSimplified.nestedFields = nf.nestedFields
+        return nestedSimplified
+      })
+    }
     return simplified
   })
 
@@ -336,6 +354,8 @@ export interface FieldMetadata {
   max?: number
   /** Input format hint (e.g., "comma-separated" for arrays) */
   inputFormat?: "comma-separated" | "json"
+  /** Nested fields for object types */
+  nestedFields?: FieldMetadata[]
 }
 
 `

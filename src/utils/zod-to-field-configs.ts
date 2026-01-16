@@ -283,6 +283,11 @@ function extractShape(schema: z.ZodTypeAny): Record<string, z.ZodTypeAny> {
   // Cast to any for accessing internal Zod properties
   const def = schema._def as any
 
+  // Handle objects with .shape function but no _def (created for recursive calls)
+  if (!def && typeof (schema as any).shape === "function") {
+    return (schema as any).shape()
+  }
+
   switch (typeName) {
     case "ZodObject":
       return def?.shape?.() || (schema as any).shape || {}

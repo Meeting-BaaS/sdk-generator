@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1] - 2026-01-16
+
+### Fixed
+
+#### Nested Fields Now Extracted from Object Types
+
+Fixed bug where nested fields inside object-type parameters were not extracted. The `zodToFieldConfigs()` function now properly recurses into nested Zod objects.
+
+**Affected providers:**
+
+| Provider | Nested Fields Now Exposed |
+|----------|---------------------------|
+| **Gladia** | `pre_processing` (audio_enhancer, speech_threshold), `realtime_processing` (custom_vocabulary, translation, NER, sentiment), `post_processing` (summarization, chapterization), `language_config`, `messages_config`, `callback_config` |
+| **Azure** | `properties.diarization.speakers`, `properties.languageIdentification`, `properties.error`, `model`, `dataset`, `project` |
+| **Soniox** | `translation` (type, target_language), `context` (terms, text, translation_terms) |
+
+**Example - accessing nested field metadata:**
+
+```typescript
+import { GLADIA_STREAMING_FIELDS } from 'voice-router-dev/field-metadata'
+
+const preProcessing = GLADIA_STREAMING_FIELDS.find(f => f.name === 'pre_processing')
+console.log(preProcessing?.nestedFields)
+// [
+//   { name: "audio_enhancer", type: "boolean", ... },
+//   { name: "speech_threshold", type: "number", min: 0, max: 1, default: 0.6, ... }
+// ]
+```
+
+**Technical fix:** `extractShape()` in `zod-to-field-configs.ts` now handles objects with `.shape` function but no `_def` property (created during recursive extraction).
+
+---
+
 ## [0.7.0] - 2026-01-16
 
 ### Added
