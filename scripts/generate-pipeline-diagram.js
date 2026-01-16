@@ -363,9 +363,10 @@ flowchart TB
   }
 
   // ===== LANGUAGE EXTRACTION =====
-  const langScripts = scripts.generate.filter((f) => f.includes("language"))
+  // Include both "language" and "locale" scripts (Azure uses locales)
+  const langScripts = scripts.generate.filter((f) => f.includes("language") || f.includes("locale"))
   if (langScripts.length > 0) {
-    mmd += `    subgraph LANGS["LANGUAGE EXTRACTION"]
+    mmd += `    subgraph LANGS["LANGUAGE/LOCALE EXTRACTION"]
         direction TB
 `
     for (const script of langScripts) {
@@ -392,6 +393,7 @@ flowchart TB
       const hasStreaming = contents.some((f) => f.includes("streaming"))
       const hasBatch = contents.some((f) => f.includes("batch"))
       const hasLanguages = contents.includes("languages.ts")
+      const hasLocales = contents.includes("locales.ts")
 
       let features = []
       if (hasApi) features.push("api/")
@@ -399,6 +401,7 @@ flowchart TB
       if (hasStreaming) features.push("streaming")
       if (hasBatch) features.push("batch")
       if (hasLanguages) features.push("languages")
+      if (hasLocales) features.push("locales")
 
       mmd += `        GEN_${id}["${dir}/<br/>${features.join(" ")}"]
 `

@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-01-16
+
+### Added
+
+#### Unified Language Constants for All Providers
+
+All 7 STT providers now have auto-generated language constants fetched from external sources:
+
+| Provider | Constant | Count | Source |
+|----------|----------|-------|--------|
+| Gladia | `GladiaLanguage` | 99 | OpenAPI spec enum |
+| AssemblyAI | `AssemblyAILanguage` | 102 | OpenAPI spec enum |
+| Deepgram | `DeepgramLanguage` | 149 | Deepgram API `/v1/models` |
+| Speechmatics | `SpeechmaticsLanguage` | 62 | Feature Discovery API |
+| Soniox | `SonioxLanguage` | 60 | OpenAPI spec |
+| Azure | `AzureLocale` | 154 | Microsoft docs parsing |
+| OpenAI | `OpenAILanguage` | 30 | Manual (Whisper common languages) |
+
+```typescript
+import {
+  GladiaLanguage,
+  DeepgramLanguage,
+  SpeechmaticsLanguage,
+  SonioxLanguage,
+  AzureLocale,
+  OpenAILanguage
+} from 'voice-router-dev/constants'
+
+// All providers now have consistent language constant objects
+adapter.transcribe(audio, { language: GladiaLanguage.en })
+adapter.transcribe(audio, { language: DeepgramLanguage["en-US"] })
+adapter.transcribe(audio, { locale: AzureLocale["en-US"] })
+```
+
+#### Auto-Generated Language Scripts
+
+New generator scripts fetch language data from external sources at build time:
+
+- `generate-speechmatics-languages.js` - Fetches from Feature Discovery API
+- `generate-azure-locales.js` - Parses Microsoft documentation HTML
+- `generate-soniox-languages.js` - Parses OpenAPI spec (updated with `SonioxLanguage` constant)
+- `generate-deepgram-languages.js` - Fetches from Deepgram API (existing)
+
+Run `pnpm openapi:generate` to regenerate all language constants.
+
+#### Field Metadata Auto-Population
+
+Language fields in `field-metadata.ts` now automatically:
+- Set `type: "select"` (or `"multiselect"` for array fields)
+- Populate `options` from generated language constants
+
+This eliminates manual override needs for language dropdowns in UI forms.
+
+### Changed
+
+- `OpenAILanguageCodes` and `OpenAILanguage` now exported from `constants.ts` (was only in `provider-metadata.ts`)
+- Pipeline diagram generator now includes locale scripts in LANGUAGE/LOCALE EXTRACTION section
+- Field metadata generator loads language codes from all 7 providers
+
+---
+
 ## [0.6.9] - 2026-01-15
 
 ### Added

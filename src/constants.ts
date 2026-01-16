@@ -181,6 +181,54 @@ export const DeepgramModel = {
 export { DeepgramLanguage, DeepgramLanguageCodes } from "./generated/deepgram/languages"
 export type { DeepgramLanguageCode } from "./generated/deepgram/languages"
 
+// Re-export auto-generated Soniox language constants
+// Generated from Soniox OpenAPI spec by scripts/generate-soniox-languages.js
+import {
+  SonioxLanguage as _SonioxLanguage,
+  SonioxLanguageCodes as _SonioxLanguageCodes,
+  SonioxLanguageLabels as _SonioxLanguageLabels,
+  SonioxLanguages as _SonioxLanguages
+} from "./generated/soniox/languages"
+export {
+  _SonioxLanguage as SonioxLanguage,
+  _SonioxLanguageCodes as SonioxLanguageCodes,
+  _SonioxLanguageLabels as SonioxLanguageLabels,
+  _SonioxLanguages as SonioxLanguages
+}
+export type { SonioxLanguageCode } from "./generated/soniox/languages"
+
+// Re-export auto-generated Speechmatics language constants
+// Generated from Speechmatics documentation by scripts/generate-speechmatics-languages.js
+import {
+  SpeechmaticsLanguage as _SpeechmaticsLanguage,
+  SpeechmaticsLanguageCodes as _SpeechmaticsLanguageCodes,
+  SpeechmaticsLanguageLabels as _SpeechmaticsLanguageLabels,
+  SpeechmaticsLanguages as _SpeechmaticsLanguages
+} from "./generated/speechmatics/languages"
+export {
+  _SpeechmaticsLanguage as SpeechmaticsLanguage,
+  _SpeechmaticsLanguageCodes as SpeechmaticsLanguageCodes,
+  _SpeechmaticsLanguageLabels as SpeechmaticsLanguageLabels,
+  _SpeechmaticsLanguages as SpeechmaticsLanguages
+}
+export type { SpeechmaticsLanguageCode } from "./generated/speechmatics/languages"
+
+// Re-export auto-generated Azure locale constants
+// Generated from Azure documentation by scripts/generate-azure-locales.js
+import {
+  AzureLocale as _AzureLocale,
+  AzureLocaleCodes as _AzureLocaleCodes,
+  AzureLocaleLabels as _AzureLocaleLabels,
+  AzureLocales as _AzureLocales
+} from "./generated/azure/locales"
+export {
+  _AzureLocale as AzureLocale,
+  _AzureLocaleCodes as AzureLocaleCodes,
+  _AzureLocaleLabels as AzureLocaleLabels,
+  _AzureLocales as AzureLocales
+}
+export type { AzureLocaleCode } from "./generated/azure/locales"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Gladia Constants
 // ─────────────────────────────────────────────────────────────────────────────
@@ -567,6 +615,16 @@ export type AzureStatusType = (typeof AzureStatus)[keyof typeof AzureStatus]
 /** Deepgram status type derived from const object */
 export type DeepgramStatusType = (typeof DeepgramStatus)[keyof typeof DeepgramStatus]
 
+/** Soniox language type (alias for SonioxLanguageCode) */
+export type SonioxLanguageType = (typeof _SonioxLanguage)[keyof typeof _SonioxLanguage]
+
+/** Speechmatics language type (alias for SpeechmaticsLanguageCode) */
+export type SpeechmaticsLanguageType =
+  (typeof _SpeechmaticsLanguage)[keyof typeof _SpeechmaticsLanguage]
+
+/** Azure locale type (alias for AzureLocaleCode) */
+export type AzureLocaleType = (typeof _AzureLocale)[keyof typeof _AzureLocale]
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Region Constants
 // ─────────────────────────────────────────────────────────────────────────────
@@ -947,3 +1005,97 @@ export type OpenAIRealtimeTurnDetectionType =
 /** OpenAI Realtime transcription model type */
 export type OpenAIRealtimeTranscriptionModelType =
   (typeof OpenAIRealtimeTranscriptionModel)[keyof typeof OpenAIRealtimeTranscriptionModel]
+
+/**
+ * OpenAI Whisper supported language codes
+ *
+ * ISO 639-1 language codes supported by Whisper models.
+ * Not exhaustive - Whisper supports 99+ languages but these are the most common.
+ *
+ * @example
+ * ```typescript
+ * import { OpenAILanguageCodes, OpenAILanguage } from 'voice-router-dev/constants'
+ *
+ * { language: OpenAILanguage.en }
+ * { language: OpenAILanguage.es }
+ * ```
+ */
+export const OpenAILanguageCodes = [
+  "en",
+  "es",
+  "fr",
+  "de",
+  "it",
+  "pt",
+  "nl",
+  "ru",
+  "zh",
+  "ja",
+  "ko",
+  "ar",
+  "hi",
+  "pl",
+  "uk",
+  "cs",
+  "ro",
+  "hu",
+  "el",
+  "tr",
+  "fi",
+  "sv",
+  "da",
+  "no",
+  "th",
+  "vi",
+  "id",
+  "ms",
+  "he",
+  "fa"
+] as const
+
+/**
+ * OpenAI language constant object for autocomplete
+ *
+ * @example
+ * ```typescript
+ * import { OpenAILanguage } from 'voice-router-dev/constants'
+ *
+ * { language: OpenAILanguage.en }
+ * { language: OpenAILanguage.es }
+ * ```
+ */
+export const OpenAILanguage = {
+  en: "en",
+  es: "es",
+  fr: "fr",
+  de: "de",
+  it: "it",
+  pt: "pt",
+  nl: "nl",
+  ru: "ru",
+  zh: "zh",
+  ja: "ja",
+  ko: "ko",
+  ar: "ar",
+  hi: "hi",
+  pl: "pl",
+  uk: "uk",
+  cs: "cs",
+  ro: "ro",
+  hu: "hu",
+  el: "el",
+  tr: "tr",
+  fi: "fi",
+  sv: "sv",
+  da: "da",
+  no: "no",
+  th: "th",
+  vi: "vi",
+  id: "id",
+  ms: "ms",
+  he: "he",
+  fa: "fa"
+} as const satisfies Record<string, (typeof OpenAILanguageCodes)[number]>
+
+/** OpenAI language type */
+export type OpenAILanguageType = (typeof OpenAILanguageCodes)[number]

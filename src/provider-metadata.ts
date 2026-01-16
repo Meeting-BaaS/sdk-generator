@@ -44,6 +44,24 @@ export {
 } from "./generated/soniox/languages"
 import { SonioxLanguageCodes } from "./generated/soniox/languages"
 
+// Import Speechmatics languages from generated file (derived from documentation)
+export {
+  SpeechmaticsLanguageCodes,
+  SpeechmaticsLanguages,
+  SpeechmaticsLanguageLabels,
+  type SpeechmaticsLanguageCode
+} from "./generated/speechmatics/languages"
+import { SpeechmaticsLanguageCodes } from "./generated/speechmatics/languages"
+
+// Import Azure locales from generated file (derived from documentation)
+export {
+  AzureLocaleCodes,
+  AzureLocales,
+  AzureLocaleLabels,
+  type AzureLocaleCode
+} from "./generated/azure/locales"
+import { AzureLocaleCodes } from "./generated/azure/locales"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Provider Capabilities (Runtime)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -480,38 +498,10 @@ export const DeepgramLanguageCodes = [
  * OpenAI Whisper supported language codes
  * Whisper supports ISO 639-1 codes
  */
-export const OpenAILanguageCodes = [
-  "en",
-  "es",
-  "fr",
-  "de",
-  "it",
-  "pt",
-  "nl",
-  "ru",
-  "zh",
-  "ja",
-  "ko",
-  "ar",
-  "hi",
-  "pl",
-  "uk",
-  "cs",
-  "ro",
-  "hu",
-  "el",
-  "tr",
-  "fi",
-  "sv",
-  "da",
-  "no",
-  "th",
-  "vi",
-  "id",
-  "ms",
-  "he",
-  "fa"
-] as const
+// OpenAI language codes are now in constants.ts
+// Re-exported from constants.ts to maintain backwards compatibility
+export { OpenAILanguageCodes } from "./constants"
+import { OpenAILanguageCodes } from "./constants"
 
 // Soniox language codes are imported and re-exported from generated file
 // See: ./generated/soniox/languages.ts (derived from OpenAPI spec)
@@ -542,8 +532,8 @@ export const AllLanguageCodes = {
   assemblyai: AssemblyAILanguageCodes,
   deepgram: DeepgramLanguageCodes,
   "openai-whisper": OpenAILanguageCodes,
-  "azure-stt": [] as readonly string[], // Azure uses locale codes, configured per region
-  speechmatics: [] as readonly string[], // Speechmatics uses different config
+  "azure-stt": AzureLocaleCodes, // BCP-47 locale codes (e.g., "en-US")
+  speechmatics: SpeechmaticsLanguageCodes, // ISO 639-1 codes with multilingual packs
   soniox: SonioxLanguageCodes
 } as const
 

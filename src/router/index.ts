@@ -94,8 +94,21 @@ export {
   OpenAIRealtimeTurnDetection,
   // Soniox
   SonioxRegion,
+  SonioxLanguage,
+  SonioxLanguageCodes,
+  SonioxLanguageLabels,
+  SonioxLanguages,
   // Speechmatics
-  SpeechmaticsRegion
+  SpeechmaticsRegion,
+  SpeechmaticsLanguage,
+  SpeechmaticsLanguageCodes,
+  SpeechmaticsLanguageLabels,
+  SpeechmaticsLanguages,
+  // Azure
+  AzureLocale,
+  AzureLocaleCodes,
+  AzureLocaleLabels,
+  AzureLocales
 } from "./streaming-enums"
 
 // Re-export types for the enums
@@ -108,7 +121,13 @@ export type {
   AssemblyAISpeechModelType,
   AssemblyAISampleRateType,
   AssemblyAITranscriptionModelType,
-  AssemblyAILanguageType
+  AssemblyAILanguageType,
+  SonioxLanguageCode,
+  SonioxLanguageType,
+  SpeechmaticsLanguageCode,
+  SpeechmaticsLanguageType,
+  AzureLocaleCode,
+  AzureLocaleType
 } from "./streaming-enums"
 
 // ─────────────────────────────────────────────────────────────────────────────

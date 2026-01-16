@@ -62,8 +62,21 @@ export {
   OpenAIRealtimeTurnDetection,
   // Soniox
   SonioxRegion,
+  SonioxLanguage,
+  SonioxLanguageCodes,
+  SonioxLanguageLabels,
+  SonioxLanguages,
   // Speechmatics
   SpeechmaticsRegion,
+  SpeechmaticsLanguage,
+  SpeechmaticsLanguageCodes,
+  SpeechmaticsLanguageLabels,
+  SpeechmaticsLanguages,
+  // Azure
+  AzureLocale,
+  AzureLocaleCodes,
+  AzureLocaleLabels,
+  AzureLocales,
   // Types
   type DeepgramLanguageType,
   type DeepgramModelType,
@@ -73,5 +86,11 @@ export {
   type AssemblyAISpeechModelType,
   type AssemblyAISampleRateType,
   type AssemblyAITranscriptionModelType,
-  type AssemblyAILanguageType
+  type AssemblyAILanguageType,
+  type SonioxLanguageCode,
+  type SonioxLanguageType,
+  type SpeechmaticsLanguageCode,
+  type SpeechmaticsLanguageType,
+  type AzureLocaleCode,
+  type AzureLocaleType
 } from "../constants"

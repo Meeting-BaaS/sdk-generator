@@ -80,6 +80,21 @@ export type SonioxLanguageCode = (typeof SonioxLanguageCodes)[number]
 export const SonioxLanguageLabels: Record<SonioxLanguageCode, string> = {
 ${languages.map((lang) => `  ${lang.code}: "${lang.name}"`).join(",\n")}
 } as const
+
+/**
+ * Soniox language constant object for autocomplete
+ *
+ * @example
+ * \`\`\`typescript
+ * import { SonioxLanguage } from 'voice-router-dev/constants'
+ *
+ * { language: SonioxLanguage.en }
+ * { language: SonioxLanguage.es }
+ * \`\`\`
+ */
+export const SonioxLanguage = {
+${languages.map((lang) => `  ${lang.code}: "${lang.code}"`).join(",\n")}
+} as const satisfies Record<string, SonioxLanguageCode>
 `
 
   // Ensure output directory exists
@@ -91,7 +106,9 @@ ${languages.map((lang) => `  ${lang.code}: "${lang.name}"`).join(",\n")}
   fs.writeFileSync(OUTPUT_PATH, output, "utf-8")
   console.log(`✅ Generated ${OUTPUT_PATH}`)
   console.log(`   - ${languages.length} language codes`)
-  console.log(`   - SonioxLanguages, SonioxLanguageCodes, SonioxLanguageCode, SonioxLanguageLabels`)
+  console.log(
+    `   - SonioxLanguages, SonioxLanguageCodes, SonioxLanguageCode, SonioxLanguageLabels, SonioxLanguage`
+  )
 }
 
 main()
