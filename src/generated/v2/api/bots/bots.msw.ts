@@ -25,6 +25,7 @@ import type {
   ListScheduledBotsResponse,
   ResendFinalWebhookResponse,
   RetryCallbackResponse,
+  UpdateBotConfig200,
   UpdateScheduledBotResponse
 } from "../../schema"
 
@@ -318,6 +319,14 @@ export const getRetryCallbackResponseMock = (
   ...overrideResponse
 })
 
+export const getUpdateBotConfigResponseMock = (
+  overrideResponse: Partial<UpdateBotConfig200> = {}
+): UpdateBotConfig200 => ({
+  success: faker.datatype.boolean(),
+  data: { message: faker.string.alpha(20) },
+  ...overrideResponse
+})
+
 export const getCreateScheduledBotResponseMock = (
   overrideResponse: Partial<CreateScheduledBotResponse> = {}
 ): CreateScheduledBotResponse => ({
@@ -337,6 +346,12 @@ export const getListScheduledBotsResponseMock = (
     meeting_platform: faker.helpers.arrayElement(["zoom", "meet", "teams"] as const),
     join_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     status: faker.helpers.arrayElement(["scheduled", "cancelled", "completed", "failed"] as const),
+    extra: faker.helpers.arrayElement([
+      {
+        [faker.string.alphanumeric(5)]: {}
+      },
+      null
+    ]),
     created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
     updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`
   })),
@@ -701,6 +716,29 @@ export const getRetryCallbackMockHandler = (
   })
 }
 
+export const getUpdateBotConfigMockHandler = (
+  overrideResponse?:
+    | UpdateBotConfig200
+    | ((
+        info: Parameters<Parameters<typeof http.patch>[1]>[0]
+      ) => Promise<UpdateBotConfig200> | UpdateBotConfig200)
+) => {
+  return http.patch("https://api.meetingbaas.com/v2/bots/:botId/update-config", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getUpdateBotConfigResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
+  })
+}
+
 export const getCreateScheduledBotMockHandler = (
   overrideResponse?:
     | CreateScheduledBotResponse
@@ -849,6 +887,7 @@ export const getBotsMock = () => [
   getDeleteBotDataMockHandler(),
   getResendFinalWebhookMockHandler(),
   getRetryCallbackMockHandler(),
+  getUpdateBotConfigMockHandler(),
   getCreateScheduledBotMockHandler(),
   getListScheduledBotsMockHandler(),
   getBatchCreateScheduledBotsMockHandler(),

@@ -5,6 +5,7 @@ import {
   createMockApiKey,
   createMockBotId,
   createMockV2BatchResponse,
+  createMockV2ErrorResponse,
   createMockV2SuccessResponse,
   server
 } from "../setup"
@@ -73,6 +74,122 @@ describe("v2 Bot Operations Extended Tests", () => {
       expect(result.success).toBe(true)
       if (result.success) {
         expect(result.cursor).toBe("next-cursor")
+      }
+    })
+  })
+
+  describe("updateBotConfig", () => {
+    it("should update bot config successfully", async () => {
+      const botId = createMockBotId()
+      server.use(
+        http.patch(`https://api.meetingbaas.com/v2/bots/${botId}/update-config`, () => {
+          return HttpResponse.json(
+            createMockV2SuccessResponse({ message: "Bot configuration updated successfully" }),
+            { status: 200 }
+          )
+        })
+      )
+
+      const result = await client.updateBotConfig({
+        bot_id: botId,
+        body: {
+          extra: {
+            customer_id: "123",
+            session_id: "abc"
+          }
+        }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.message).toBe("Bot configuration updated successfully")
+      }
+    })
+
+    it("should update bot config with null extra to clear data", async () => {
+      const botId = createMockBotId()
+      server.use(
+        http.patch(`https://api.meetingbaas.com/v2/bots/${botId}/update-config`, () => {
+          return HttpResponse.json(
+            createMockV2SuccessResponse({ message: "Bot configuration updated successfully" }),
+            { status: 200 }
+          )
+        })
+      )
+
+      const result = await client.updateBotConfig({
+        bot_id: botId,
+        body: {
+          extra: null
+        }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.message).toBe("Bot configuration updated successfully")
+      }
+    })
+
+    it("should return error when bot_id is missing", async () => {
+      // @ts-expect-error - Testing missing bot_id
+      const result = await client.updateBotConfig({
+        body: {
+          extra: {
+            customer_id: "123"
+          }
+        }
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.error).toBe("Bad Request")
+        expect(result.message).toBe("Validation failed")
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+        expect(result.details).toContain("Required")
+      }
+    })
+
+    it("should return error when body is missing", async () => {
+      const botId = createMockBotId()
+      // @ts-expect-error - Testing missing body
+      const result = await client.updateBotConfig({
+        bot_id: botId
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.error).toBe("Bad Request")
+        expect(result.message).toBe("Validation failed")
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+    })
+
+    it("should handle API error response", async () => {
+      const botId = createMockBotId()
+      server.use(
+        http.patch(`https://api.meetingbaas.com/v2/bots/${botId}/update-config`, () => {
+          return HttpResponse.json(createMockV2ErrorResponse("Bot not found", "NOT_FOUND", 404), {
+            status: 404
+          })
+        })
+      )
+
+      const result = await client.updateBotConfig({
+        bot_id: botId,
+        body: {
+          extra: {
+            customer_id: "123"
+          }
+        }
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.statusCode).toBe(404)
+        expect(result.error).toBe("Bot not found")
+        expect(result.code).toBe("NOT_FOUND")
       }
     })
   })

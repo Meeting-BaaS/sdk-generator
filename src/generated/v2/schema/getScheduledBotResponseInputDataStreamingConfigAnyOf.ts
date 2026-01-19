@@ -16,6 +16,6 @@ export type GetScheduledBotResponseInputDataStreamingConfigAnyOf = {
   input_url: GetScheduledBotResponseInputDataStreamingConfigAnyOfInputUrl
   /** Websocket URL for sending audio (null if not set) */
   output_url: GetScheduledBotResponseInputDataStreamingConfigAnyOfOutputUrl
-  /** Audio frequency in Hz (null if not set) */
+  /** Audio frequency in Hz (null if not set). Supported values: 16000, 24000 (default), 32000, 48000 Hz. */
   audio_frequency: GetScheduledBotResponseInputDataStreamingConfigAnyOfAudioFrequency
 }

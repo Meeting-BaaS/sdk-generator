@@ -5,8 +5,10 @@
  * API for managing meeting bots, calendar integrations, and webhooks
  * OpenAPI spec version: 2.0.0
  */
+import type { UpdateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequencyAnyOf } from "./updateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequencyAnyOf"
 
 /**
- * The audio frequency in Hz. The default is 24000 Hz.
+ * The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz.
  */
-export type UpdateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequency = number | null
+export type UpdateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequency =
+  UpdateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequencyAnyOf | null

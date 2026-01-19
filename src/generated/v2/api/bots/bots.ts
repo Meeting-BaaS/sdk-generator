@@ -34,6 +34,8 @@ import type {
   ResendFinalWebhookResponse,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponse,
+  UpdateBotConfig200,
+  UpdateBotConfigBody,
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponse
 } from "../../schema"
@@ -299,6 +301,42 @@ export const retryCallback = <TData = AxiosResponse<RetryCallbackResponse>>(
   return axios.post(`/v2/bots/${botId}/retry-callback`, retryCallbackRequestBodyInput, options)
 }
 /**
+ * Update bot configuration (currently only supports updating the extra parameter).
+    
+    Allows updating the `extra` metadata even while the bot is running. The updated extra will be reflected in subsequent webhooks and API responses. This is useful when your system evolves and you need to attach additional tracking information to a bot after it has started.
+    
+    **Merge Behavior:** The `extra` parameter performs a shallow merge with the existing extra object:
+    - New keys are added to the existing extra object
+    - Existing keys are overwritten with new values
+    - Keys not included in the update request remain unchanged
+    - Pass `null` to clear all extra data
+    
+    **Example Merge:**
+    - Current extra: `{ "customer_id": "123", "session_id": "abc" }`
+    - Update with: `{ "session_id": "xyz", "order_id": "456" }`
+    - Result: `{ "customer_id": "123", "session_id": "xyz", "order_id": "456" }`
+    
+    **Webhook Behavior:** After updating extra, all future webhooks (including status updates) will use the new value from the database. The updated extra is fetched in real-time for each webhook, ensuring consistency.
+    
+    **Works for Any Bot Status:** You can update extra for bots in any status (queued, recording, completed, failed). This allows you to add correlation metadata even after a bot has finished.
+    
+    **Use Cases:**
+    - Add tracking IDs after bot creation
+    - Update correlation metadata when your system state changes
+    - Fix incorrect tracking information
+    - Add additional context for completed bots
+    
+    Returns 404 if the bot is not found or does not belong to your team.
+ * @summary Update bot configuration
+ */
+export const updateBotConfig = <TData = AxiosResponse<UpdateBotConfig200>>(
+  botId: string,
+  updateBotConfigBody: UpdateBotConfigBody,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.patch(`/v2/bots/${botId}/update-config`, updateBotConfigBody, options)
+}
+/**
  * Schedule a bot to join a meeting at a specific time in the future.
     
     The bot will automatically join the meeting at the specified `join_at` time (ISO 8601 timestamp). You can provide a callback URL to receive events for this bot. The bot configuration is stored immediately, but token reservation and daily bot cap checks are performed when the bot actually joins the meeting.
@@ -460,6 +498,7 @@ export type LeaveBotResult = AxiosResponse<LeaveBotResponse>
 export type DeleteBotDataResult = AxiosResponse<DeleteBotDataResponse>
 export type ResendFinalWebhookResult = AxiosResponse<ResendFinalWebhookResponse>
 export type RetryCallbackResult = AxiosResponse<RetryCallbackResponse>
+export type UpdateBotConfigResult = AxiosResponse<UpdateBotConfig200>
 export type CreateScheduledBotResult = AxiosResponse<CreateScheduledBotResponse>
 export type ListScheduledBotsResult = AxiosResponse<ListScheduledBotsResponse>
 export type BatchCreateScheduledBotsResult = AxiosResponse<BatchCreateScheduledBotResponse>

@@ -54,7 +54,6 @@ export const createBotBodyExtraDefault = null
 export const createBotBodyStreamingEnabledDefault = false
 export const createBotBodyStreamingConfigInputUrlDefault = null
 export const createBotBodyStreamingConfigOutputUrlDefault = null
-export const createBotBodyStreamingConfigAudioFrequencyMaxOne = 9007199254740991
 export const createBotBodyStreamingConfigAudioFrequencyDefault = 24000
 export const createBotBodyStreamingConfigDefault = null
 export const createBotBodyTranscriptionEnabledDefault = false
@@ -181,10 +180,15 @@ export const createBotBody = zod.object({
         ),
       audio_frequency: zod
         .number()
-        .max(createBotBodyStreamingConfigAudioFrequencyMaxOne)
+        .or(zod.number())
+        .or(zod.number())
+        .or(zod.number())
+        .describe(
+          "Audio frequency in Hz. Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+        )
         .or(zod.null())
         .default(createBotBodyStreamingConfigAudioFrequencyDefault)
-        .describe("The audio frequency in Hz. The default is 24000 Hz.")
+        .describe("The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz.")
     })
     .or(zod.null())
     .optional(),
@@ -513,7 +517,6 @@ export const batchCreateBotsBodyExtraDefault = null
 export const batchCreateBotsBodyStreamingEnabledDefault = false
 export const batchCreateBotsBodyStreamingConfigInputUrlDefault = null
 export const batchCreateBotsBodyStreamingConfigOutputUrlDefault = null
-export const batchCreateBotsBodyStreamingConfigAudioFrequencyMaxOne = 9007199254740991
 export const batchCreateBotsBodyStreamingConfigAudioFrequencyDefault = 24000
 export const batchCreateBotsBodyStreamingConfigDefault = null
 export const batchCreateBotsBodyTranscriptionEnabledDefault = false
@@ -640,10 +643,15 @@ export const batchCreateBotsBodyItem = zod.object({
         ),
       audio_frequency: zod
         .number()
-        .max(batchCreateBotsBodyStreamingConfigAudioFrequencyMaxOne)
+        .or(zod.number())
+        .or(zod.number())
+        .or(zod.number())
+        .describe(
+          "Audio frequency in Hz. Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+        )
         .or(zod.null())
         .default(batchCreateBotsBodyStreamingConfigAudioFrequencyDefault)
-        .describe("The audio frequency in Hz. The default is 24000 Hz.")
+        .describe("The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz.")
     })
     .or(zod.null())
     .optional(),
@@ -1242,6 +1250,60 @@ export const retryCallbackResponse = zod.object({
 })
 
 /**
+ * Update bot configuration (currently only supports updating the extra parameter).
+    
+    Allows updating the `extra` metadata even while the bot is running. The updated extra will be reflected in subsequent webhooks and API responses. This is useful when your system evolves and you need to attach additional tracking information to a bot after it has started.
+    
+    **Merge Behavior:** The `extra` parameter performs a shallow merge with the existing extra object:
+    - New keys are added to the existing extra object
+    - Existing keys are overwritten with new values
+    - Keys not included in the update request remain unchanged
+    - Pass `null` to clear all extra data
+    
+    **Example Merge:**
+    - Current extra: `{ "customer_id": "123", "session_id": "abc" }`
+    - Update with: `{ "session_id": "xyz", "order_id": "456" }`
+    - Result: `{ "customer_id": "123", "session_id": "xyz", "order_id": "456" }`
+    
+    **Webhook Behavior:** After updating extra, all future webhooks (including status updates) will use the new value from the database. The updated extra is fetched in real-time for each webhook, ensuring consistency.
+    
+    **Works for Any Bot Status:** You can update extra for bots in any status (queued, recording, completed, failed). This allows you to add correlation metadata even after a bot has finished.
+    
+    **Use Cases:**
+    - Add tracking IDs after bot creation
+    - Update correlation metadata when your system state changes
+    - Fix incorrect tracking information
+    - Add additional context for completed bots
+    
+    Returns 404 if the bot is not found or does not belong to your team.
+ * @summary Update bot configuration
+ */
+export const updateBotConfigPathBotIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+
+export const updateBotConfigParams = zod.object({
+  bot_id: zod
+    .string()
+    .uuid()
+    .regex(updateBotConfigPathBotIdRegExp)
+    .describe("The UUID of the bot to update configuration for.")
+})
+
+export const updateBotConfigBody = zod.object({
+  extra: zod
+    .record(zod.string(), zod.any())
+    .or(zod.null())
+    .describe("Custom metadata to merge with existing extra data (shallow merge)")
+})
+
+export const updateBotConfigResponse = zod.object({
+  success: zod.literal(true),
+  data: zod.object({
+    message: zod.string().describe("Success message")
+  })
+})
+
+/**
  * Schedule a bot to join a meeting at a specific time in the future.
     
     The bot will automatically join the meeting at the specified `join_at` time (ISO 8601 timestamp). You can provide a callback URL to receive events for this bot. The bot configuration is stored immediately, but token reservation and daily bot cap checks are performed when the bot actually joins the meeting.
@@ -1287,7 +1349,6 @@ export const createScheduledBotBodyExtraDefault = null
 export const createScheduledBotBodyStreamingEnabledDefault = false
 export const createScheduledBotBodyStreamingConfigInputUrlDefault = null
 export const createScheduledBotBodyStreamingConfigOutputUrlDefault = null
-export const createScheduledBotBodyStreamingConfigAudioFrequencyMaxOne = 9007199254740991
 export const createScheduledBotBodyStreamingConfigAudioFrequencyDefault = 24000
 export const createScheduledBotBodyStreamingConfigDefault = null
 export const createScheduledBotBodyTranscriptionEnabledDefault = false
@@ -1417,10 +1478,17 @@ export const createScheduledBotBody = zod
           ),
         audio_frequency: zod
           .number()
-          .max(createScheduledBotBodyStreamingConfigAudioFrequencyMaxOne)
+          .or(zod.number())
+          .or(zod.number())
+          .or(zod.number())
+          .describe(
+            "Audio frequency in Hz. Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+          )
           .or(zod.null())
           .default(createScheduledBotBodyStreamingConfigAudioFrequencyDefault)
-          .describe("The audio frequency in Hz. The default is 24000 Hz.")
+          .describe(
+            "The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz."
+          )
       })
       .or(zod.null())
       .optional(),
@@ -1627,6 +1695,10 @@ export const listScheduledBotsResponse = zod.object({
       status: zod
         .enum(["scheduled", "cancelled", "completed", "failed"])
         .describe("The current status of the scheduled bot"),
+      extra: zod
+        .record(zod.string(), zod.any())
+        .or(zod.null())
+        .describe("Custom metadata associated with the scheduled bot"),
       created_at: zod
         .string()
         .datetime({})
@@ -1696,7 +1768,6 @@ export const batchCreateScheduledBotsBodyExtraDefault = null
 export const batchCreateScheduledBotsBodyStreamingEnabledDefault = false
 export const batchCreateScheduledBotsBodyStreamingConfigInputUrlDefault = null
 export const batchCreateScheduledBotsBodyStreamingConfigOutputUrlDefault = null
-export const batchCreateScheduledBotsBodyStreamingConfigAudioFrequencyMaxOne = 9007199254740991
 export const batchCreateScheduledBotsBodyStreamingConfigAudioFrequencyDefault = 24000
 export const batchCreateScheduledBotsBodyStreamingConfigDefault = null
 export const batchCreateScheduledBotsBodyTranscriptionEnabledDefault = false
@@ -1826,10 +1897,17 @@ export const batchCreateScheduledBotsBodyItem = zod
           ),
         audio_frequency: zod
           .number()
-          .max(batchCreateScheduledBotsBodyStreamingConfigAudioFrequencyMaxOne)
+          .or(zod.number())
+          .or(zod.number())
+          .or(zod.number())
+          .describe(
+            "Audio frequency in Hz. Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+          )
           .or(zod.null())
           .default(batchCreateScheduledBotsBodyStreamingConfigAudioFrequencyDefault)
-          .describe("The audio frequency in Hz. The default is 24000 Hz.")
+          .describe(
+            "The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz."
+          )
       })
       .or(zod.null())
       .optional(),
@@ -2039,7 +2117,9 @@ export const getScheduledBotDetailsResponse = zod.object({
           .min(getScheduledBotDetailsResponseDataStreamingConfigAudioFrequencyMinOne)
           .max(getScheduledBotDetailsResponseDataStreamingConfigAudioFrequencyMaxOne)
           .or(zod.null())
-          .describe("Audio frequency in Hz (null if not set)")
+          .describe(
+            "Audio frequency in Hz (null if not set). Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+          )
       })
       .or(zod.null())
       .describe("Streaming configuration (null if streaming is disabled)"),
@@ -2123,7 +2203,6 @@ export const updateScheduledBotBodyExtraDefault = null
 export const updateScheduledBotBodyStreamingEnabledDefault = false
 export const updateScheduledBotBodyStreamingConfigInputUrlDefault = null
 export const updateScheduledBotBodyStreamingConfigOutputUrlDefault = null
-export const updateScheduledBotBodyStreamingConfigAudioFrequencyMaxOne = 9007199254740991
 export const updateScheduledBotBodyStreamingConfigAudioFrequencyDefault = 24000
 export const updateScheduledBotBodyStreamingConfigDefault = null
 export const updateScheduledBotBodyTranscriptionEnabledDefault = false
@@ -2254,10 +2333,15 @@ export const updateScheduledBotBody = zod.object({
         ),
       audio_frequency: zod
         .number()
-        .max(updateScheduledBotBodyStreamingConfigAudioFrequencyMaxOne)
+        .or(zod.number())
+        .or(zod.number())
+        .or(zod.number())
+        .describe(
+          "Audio frequency in Hz. Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+        )
         .or(zod.null())
         .default(updateScheduledBotBodyStreamingConfigAudioFrequencyDefault)
-        .describe("The audio frequency in Hz. The default is 24000 Hz.")
+        .describe("The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz.")
     })
     .or(zod.null())
     .optional(),

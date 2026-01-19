@@ -65,6 +65,8 @@ import type {
   RetryCallbackRequestBodyInput,
   RetryCallbackResponseData,
   SyncCalendarResponseData,
+  UpdateBotConfig200Data,
+  UpdateBotConfigBody,
   UpdateCalendarBotRequestBodyInput,
   UpdateCalendarBotResponseDataItem,
   UpdateCalendarBotResponseErrorsItem,
@@ -194,6 +196,10 @@ export interface BaasClientV2Methods {
     bot_id: string
     callbackConfig?: RetryCallbackRequestBodyInput
   }): Promise<ApiResponseV2<RetryCallbackResponseData>>
+  updateBotConfig(params: {
+    bot_id: string
+    body: UpdateBotConfigBody
+  }): Promise<ApiResponseV2<UpdateBotConfig200Data>>
   createScheduledBot(
     params: CreateScheduledBotRequestBodyInput
   ): Promise<ApiResponseV2<CreateScheduledBotResponseData>>

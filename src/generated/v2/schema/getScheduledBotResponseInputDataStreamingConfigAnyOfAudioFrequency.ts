@@ -7,6 +7,6 @@
  */
 
 /**
- * Audio frequency in Hz (null if not set)
+ * Audio frequency in Hz (null if not set). Supported values: 16000, 24000 (default), 32000, 48000 Hz.
  */
 export type GetScheduledBotResponseInputDataStreamingConfigAnyOfAudioFrequency = number | null

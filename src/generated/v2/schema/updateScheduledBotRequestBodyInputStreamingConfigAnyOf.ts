@@ -15,6 +15,6 @@ export type UpdateScheduledBotRequestBodyInputStreamingConfigAnyOf = {
   input_url?: UpdateScheduledBotRequestBodyInputStreamingConfigAnyOfInputUrl
   /** Websocket stream URL, which the bot sends the audio to. This is used to stream the output audio to a destination. */
   output_url?: UpdateScheduledBotRequestBodyInputStreamingConfigAnyOfOutputUrl
-  /** The audio frequency in Hz. The default is 24000 Hz. */
+  /** The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz. */
   audio_frequency?: UpdateScheduledBotRequestBodyInputStreamingConfigAnyOfAudioFrequency
 }

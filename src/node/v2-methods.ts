@@ -46,6 +46,8 @@ import type {
   RetryCallbackRequestBodyInput,
   RetryCallbackResponseData,
   SyncCalendarResponseData,
+  UpdateBotConfig200Data,
+  UpdateBotConfigBody,
   UpdateCalendarBotRequestBodyInput,
   UpdateCalendarBotResponseDataItem,
   UpdateCalendarBotResponseErrorsItem,
@@ -79,7 +81,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
 
       return apiWrapperV2<CreateBotResponseData, CreateBotRequestBodyInput>(
         createBotApi,
-        createBotBody,
+        createBotBody as z.ZodType<CreateBotRequestBodyInput>,
         params,
         state.getOptions()
       )
@@ -99,7 +101,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
       // We need to handle this specially or update apiWrapperV2 to support batch responses
       return apiWrapperV2<BatchCreateBotResponseDataItem[], BatchCreateBotsRequestBodyInput>(
         batchCreateBotsApi,
-        batchCreateBotsBody,
+        batchCreateBotsBody as z.ZodType<BatchCreateBotsRequestBodyInput>,
         params,
         state.getOptions()
       ) as Promise<
@@ -264,6 +266,29 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
       )
     },
 
+    async updateBotConfig(params: {
+      bot_id: string
+      body: UpdateBotConfigBody
+    }): Promise<ApiResponseV2<UpdateBotConfig200Data>> {
+      const { updateBotConfig: updateBotConfigApi } = await import(
+        "../generated/v2/api/bots/bots.js"
+      )
+      const { updateBotConfigParams, updateBotConfigBody } = await import(
+        "../generated/v2/api/bots/bots.zod.js"
+      )
+
+      return apiWrapperV2<UpdateBotConfig200Data, { bot_id: string; body: UpdateBotConfigBody }>(
+        (params: { bot_id: string; body: UpdateBotConfigBody }, options) =>
+          updateBotConfigApi(params.bot_id, params.body, options),
+        z.object({
+          bot_id: updateBotConfigParams.shape.bot_id,
+          body: updateBotConfigBody
+        }),
+        params,
+        state.getOptions()
+      )
+    },
+
     // Scheduled bot methods
     async createScheduledBot(
       params: CreateScheduledBotRequestBodyInput
@@ -275,7 +300,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
 
       return apiWrapperV2<CreateScheduledBotResponseData, CreateScheduledBotRequestBodyInput>(
         createScheduledBotApi,
-        createScheduledBotBody,
+        createScheduledBotBody as z.ZodType<CreateScheduledBotRequestBodyInput>,
         params,
         state.getOptions()
       )
@@ -299,7 +324,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         BatchCreateScheduledBotsRequestBodyInput
       >(
         batchCreateScheduledBotsApi,
-        batchCreateScheduledBotsBody,
+        batchCreateScheduledBotsBody as z.ZodType<BatchCreateScheduledBotsRequestBodyInput>,
         params,
         state.getOptions()
       ) as Promise<
@@ -363,7 +388,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         z.object({
           bot_id: updateScheduledBotParams.shape.bot_id,
           body: updateScheduledBotBody
-        }),
+        }) as z.ZodType<{ bot_id: string; body: UpdateScheduledBotRequestBodyInput }>,
         params,
         state.getOptions()
       )
@@ -647,7 +672,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         z.object({
           calendar_id: createCalendarBotParams.shape.calendar_id,
           body: createCalendarBotBody
-        }),
+        }) as z.ZodType<{ calendar_id: string; body: CreateCalendarBotRequestBodyInput }>,
         params,
         state.getOptions()
       ) as Promise<
@@ -684,7 +709,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         z.object({
           calendar_id: updateCalendarBotParams.shape.calendar_id,
           body: updateCalendarBotBody
-        }),
+        }) as z.ZodType<{ calendar_id: string; body: UpdateCalendarBotRequestBodyInput }>,
         { calendar_id: params.calendar_id, body: bodyWithEventId },
         state.getOptions()
       ) as Promise<

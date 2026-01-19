@@ -1238,7 +1238,6 @@ export const createCalendarBotBodyExtraDefault = null
 export const createCalendarBotBodyStreamingEnabledDefault = false
 export const createCalendarBotBodyStreamingConfigInputUrlDefault = null
 export const createCalendarBotBodyStreamingConfigOutputUrlDefault = null
-export const createCalendarBotBodyStreamingConfigAudioFrequencyMaxOne = 9007199254740991
 export const createCalendarBotBodyStreamingConfigAudioFrequencyDefault = 24000
 export const createCalendarBotBodyStreamingConfigDefault = null
 export const createCalendarBotBodyTranscriptionEnabledDefault = false
@@ -1359,10 +1358,17 @@ export const createCalendarBotBody = zod
           ),
         audio_frequency: zod
           .number()
-          .max(createCalendarBotBodyStreamingConfigAudioFrequencyMaxOne)
+          .or(zod.number())
+          .or(zod.number())
+          .or(zod.number())
+          .describe(
+            "Audio frequency in Hz. Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+          )
           .or(zod.null())
           .default(createCalendarBotBodyStreamingConfigAudioFrequencyDefault)
-          .describe("The audio frequency in Hz. The default is 24000 Hz.")
+          .describe(
+            "The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz."
+          )
       })
       .or(zod.null())
       .optional(),
@@ -1512,7 +1518,6 @@ export const updateCalendarBotBodyZoomAccessTokenUrlDefault = null
 export const updateCalendarBotBodyExtraDefault = null
 export const updateCalendarBotBodyStreamingConfigInputUrlDefault = null
 export const updateCalendarBotBodyStreamingConfigOutputUrlDefault = null
-export const updateCalendarBotBodyStreamingConfigAudioFrequencyMaxOne = 9007199254740991
 export const updateCalendarBotBodyStreamingConfigAudioFrequencyDefault = 24000
 export const updateCalendarBotBodyTranscriptionConfigProviderDefault = "gladia"
 export const updateCalendarBotBodyTranscriptionConfigApiKeyDefault = null
@@ -1648,10 +1653,17 @@ export const updateCalendarBotBody = zod
               ),
             audio_frequency: zod
               .number()
-              .max(updateCalendarBotBodyStreamingConfigAudioFrequencyMaxOne)
+              .or(zod.number())
+              .or(zod.number())
+              .or(zod.number())
+              .describe(
+                "Audio frequency in Hz. Supported values: 16000, 24000 (default), 32000, 48000 Hz."
+              )
               .or(zod.null())
               .default(updateCalendarBotBodyStreamingConfigAudioFrequencyDefault)
-              .describe("The audio frequency in Hz. The default is 24000 Hz.")
+              .describe(
+                "The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz."
+              )
           })
           .optional()
           .describe(
