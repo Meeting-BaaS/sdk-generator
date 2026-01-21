@@ -178,8 +178,18 @@ export const DeepgramModel = {
 
 // Re-export auto-generated Deepgram language constants
 // Generated from https://api.deepgram.com/v1/models by scripts/generate-deepgram-languages.js
-export { DeepgramLanguage, DeepgramLanguageCodes } from "./generated/deepgram/languages"
-export type { DeepgramLanguageCode } from "./generated/deepgram/languages"
+export {
+  DeepgramLanguage,
+  DeepgramLanguageCodes,
+  DeepgramArchitectures,
+  DeepgramArchitectureLanguages,
+  DeepgramMultilingualArchitectures
+} from "./generated/deepgram/languages"
+export type {
+  DeepgramLanguageCode,
+  DeepgramArchitecture,
+  DeepgramMultilingualArchitecture
+} from "./generated/deepgram/languages"
 
 // Re-export auto-generated Soniox language constants
 // Generated from Soniox OpenAPI spec by scripts/generate-soniox-languages.js

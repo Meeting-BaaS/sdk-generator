@@ -5,6 +5,74 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.2] - 2026-01-21
+
+### Added
+
+#### Deepgram Architecture-Based Language Support
+
+Added type-safe language constants with per-model architecture support:
+
+```typescript
+import {
+  DeepgramLanguage,
+  DeepgramLanguageCodes,
+  DeepgramArchitectures,
+  DeepgramArchitectureLanguages,
+  DeepgramMultilingualArchitectures
+} from 'voice-router-dev/constants'
+
+// 161 language codes (BCP-47 format)
+{ language: DeepgramLanguage.en }
+{ language: DeepgramLanguage["en-US"] }
+{ language: DeepgramLanguage["pt-BR"] }
+
+// Check languages supported by a specific architecture
+const nova3Langs = DeepgramArchitectureLanguages["nova-3"]
+// Includes: en, es, fr, de, ... and "multi" for codeswitching
+
+// Multilingual codeswitching (Nova-2 and Nova-3 only)
+if (DeepgramMultilingualArchitectures.includes("nova-3")) {
+  // Use language: "multi" for automatic language detection
+  { language: DeepgramLanguage.multi }
+}
+```
+
+**New exports:**
+
+| Export | Description |
+|--------|-------------|
+| `DeepgramLanguage` | Constant object for autocomplete (161 codes) |
+| `DeepgramLanguageCodes` | Array of all language codes |
+| `DeepgramLanguageCode` | Type for language codes |
+| `DeepgramArchitectures` | Array of model architectures (base, nova-2, nova-3, etc.) |
+| `DeepgramArchitecture` | Type for architectures |
+| `DeepgramArchitectureLanguages` | Mapping of architecture → supported languages |
+| `DeepgramMultilingualArchitectures` | Architectures supporting `language=multi` |
+| `DeepgramMultilingualArchitecture` | Type for multilingual architectures |
+
+**Technical details:**
+
+- Languages auto-generated from `https://api.deepgram.com/v1/models` (public API)
+- `multi` (multilingual codeswitching) only available for `nova-2` and `nova-3` per [Deepgram docs](https://developers.deepgram.com/docs/language-multi-codeswitching)
+- Script: `scripts/generate-deepgram-languages.js`
+- Run: `pnpm openapi:sync-deepgram-languages`
+
+### Fixed
+
+#### SonioxLanguage Constant Now Exported
+
+Added missing `SonioxLanguage` constant object to the generated Soniox languages file. This matches the pattern used by other providers (Deepgram, Speechmatics, Azure) for autocomplete support.
+
+```typescript
+import { SonioxLanguage } from 'voice-router-dev/constants'
+
+{ language: SonioxLanguage.en }
+{ language: SonioxLanguage.es }
+```
+
+---
+
 ## [0.7.1] - 2026-01-16
 
 ### Fixed

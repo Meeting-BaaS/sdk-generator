@@ -211,3 +211,77 @@ export const SonioxLanguageLabels: Record<SonioxLanguageCode, string> = {
   vi: "Vietnamese",
   cy: "Welsh"
 } as const
+
+/**
+ * Soniox language constant object for autocomplete
+ *
+ * @example
+ * ```typescript
+ * import { SonioxLanguage } from 'voice-router-dev/constants'
+ *
+ * { language: SonioxLanguage.en }
+ * { language: SonioxLanguage.es }
+ * ```
+ */
+export const SonioxLanguage = {
+  af: "af",
+  sq: "sq",
+  ar: "ar",
+  az: "az",
+  eu: "eu",
+  be: "be",
+  bn: "bn",
+  bs: "bs",
+  bg: "bg",
+  ca: "ca",
+  zh: "zh",
+  hr: "hr",
+  cs: "cs",
+  da: "da",
+  nl: "nl",
+  en: "en",
+  et: "et",
+  fi: "fi",
+  fr: "fr",
+  gl: "gl",
+  de: "de",
+  el: "el",
+  gu: "gu",
+  he: "he",
+  hi: "hi",
+  hu: "hu",
+  id: "id",
+  it: "it",
+  ja: "ja",
+  kn: "kn",
+  kk: "kk",
+  ko: "ko",
+  lv: "lv",
+  lt: "lt",
+  mk: "mk",
+  ms: "ms",
+  ml: "ml",
+  mr: "mr",
+  no: "no",
+  fa: "fa",
+  pl: "pl",
+  pt: "pt",
+  pa: "pa",
+  ro: "ro",
+  ru: "ru",
+  sr: "sr",
+  sk: "sk",
+  sl: "sl",
+  es: "es",
+  sw: "sw",
+  sv: "sv",
+  tl: "tl",
+  ta: "ta",
+  te: "te",
+  th: "th",
+  tr: "tr",
+  uk: "uk",
+  ur: "ur",
+  vi: "vi",
+  cy: "cy"
+} as const satisfies Record<string, SonioxLanguageCode>

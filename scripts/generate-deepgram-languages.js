@@ -18,6 +18,10 @@ const path = require("path")
 const API_URL = "https://api.deepgram.com/v1/models"
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/deepgram/languages.ts")
 
+// Architectures that support multilingual codeswitching (language=multi)
+// @see https://developers.deepgram.com/docs/language-multi-codeswitching
+const MULTI_SUPPORTED_ARCHITECTURES = ["nova-2", "nova-3"]
+
 async function main() {
   console.log("📦 Generating Deepgram language constants from API...")
   console.log(`   Fetching: ${API_URL}`)
@@ -36,17 +40,46 @@ async function main() {
 
     // Extract all unique language codes from STT models
     const languageSet = new Set()
+
+    // Group languages by architecture
+    const architectureLanguages = {}
+
     for (const model of data.stt) {
       if (model.languages && Array.isArray(model.languages)) {
+        const arch = model.architecture || "unknown"
+
+        if (!architectureLanguages[arch]) {
+          architectureLanguages[arch] = new Set()
+        }
+
         for (const lang of model.languages) {
           languageSet.add(lang)
+          architectureLanguages[arch].add(lang)
         }
       }
     }
 
+    // Add "multi" to architectures that support multilingual codeswitching
+    // This is documented but not returned by the API
+    for (const arch of MULTI_SUPPORTED_ARCHITECTURES) {
+      if (architectureLanguages[arch]) {
+        architectureLanguages[arch].add("multi")
+      }
+    }
+
+    // Also add "multi" to the global language set
+    languageSet.add("multi")
+
+    // Sort languages alphabetically for each architecture
+    const sortedArchLanguages = {}
+    for (const [arch, langs] of Object.entries(architectureLanguages)) {
+      sortedArchLanguages[arch] = Array.from(langs).sort((a, b) => a.localeCompare(b))
+    }
+
     // Sort alphabetically
     const languages = Array.from(languageSet).sort((a, b) => a.localeCompare(b))
-    console.log(`   Found ${languages.length} unique language codes`)
+    console.log(`   Found ${languages.length} unique language codes (including "multi")`)
+    console.log(`   Found ${Object.keys(sortedArchLanguages).length} architectures`)
 
     // Separate primary codes from regional variants
     const primaryCodes = languages.filter((l) => !l.includes("-"))
@@ -71,6 +104,7 @@ async function main() {
  * All Deepgram supported language codes (BCP-47)
  *
  * Includes both primary codes (e.g., 'en', 'es') and regional variants (e.g., 'en-US', 'pt-BR')
+ * Also includes "multi" for multilingual codeswitching (Nova-2/Nova-3 only)
  */
 export const DeepgramLanguageCodes = [
 ${languages.map((l) => `  "${l}"`).join(",\n")}
@@ -91,6 +125,7 @@ export type DeepgramLanguageCode = (typeof DeepgramLanguageCodes)[number]
  * { language: DeepgramLanguage.en }
  * { language: DeepgramLanguage["en-US"] }
  * { language: DeepgramLanguage["pt-BR"] }
+ * { language: DeepgramLanguage.multi } // Nova-2/Nova-3 only
  * \`\`\`
  */
 export const DeepgramLanguage = {
@@ -100,6 +135,59 @@ ${primaryCodes.map((l) => `  ${l}: "${l}"`).join(",\n")},
   // Regional variants
 ${regionalVariants.map((l) => `  "${l}": "${l}"`).join(",\n")}
 } as const satisfies Record<string, DeepgramLanguageCode>
+
+/**
+ * Deepgram model architectures
+ */
+export const DeepgramArchitectures = [
+${Object.keys(sortedArchLanguages).sort().map((a) => `  "${a}"`).join(",\n")}
+] as const
+
+/**
+ * Type for Deepgram model architectures
+ */
+export type DeepgramArchitecture = (typeof DeepgramArchitectures)[number]
+
+/**
+ * Languages supported by each Deepgram model architecture
+ *
+ * Use this to determine which languages are available for a specific model.
+ * Note: "multi" (multilingual codeswitching) is only supported by nova-2 and nova-3.
+ *
+ * @see https://developers.deepgram.com/docs/models-languages-overview
+ * @see https://developers.deepgram.com/docs/language-multi-codeswitching
+ *
+ * @example
+ * \`\`\`typescript
+ * import { DeepgramArchitectureLanguages } from 'voice-router-dev/constants'
+ *
+ * // Check if nova-3 supports a language
+ * const nova3Langs = DeepgramArchitectureLanguages["nova-3"]
+ * if (nova3Langs.includes("multi")) {
+ *   // Use multilingual codeswitching
+ * }
+ * \`\`\`
+ */
+export const DeepgramArchitectureLanguages = {
+${Object.entries(sortedArchLanguages)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([arch, langs]) => `  "${arch}": [\n${langs.map((l) => `    "${l}"`).join(",\n")}\n  ]`)
+  .join(",\n")}
+} as const satisfies Record<DeepgramArchitecture, readonly string[]>
+
+/**
+ * Architectures that support multilingual codeswitching (language=multi)
+ *
+ * @see https://developers.deepgram.com/docs/language-multi-codeswitching
+ */
+export const DeepgramMultilingualArchitectures = [
+${MULTI_SUPPORTED_ARCHITECTURES.map((a) => `  "${a}"`).join(",\n")}
+] as const
+
+/**
+ * Type for architectures that support multilingual codeswitching
+ */
+export type DeepgramMultilingualArchitecture = (typeof DeepgramMultilingualArchitectures)[number]
 `
 
     // Ensure output directory exists
@@ -112,7 +200,10 @@ ${regionalVariants.map((l) => `  "${l}": "${l}"`).join(",\n")}
     console.log(`✅ Generated ${OUTPUT_PATH}`)
     console.log(`   - ${primaryCodes.length} primary codes`)
     console.log(`   - ${regionalVariants.length} regional variants`)
-    console.log(`   - DeepgramLanguageCodes, DeepgramLanguageCode, DeepgramLanguage`)
+    console.log(`   - ${Object.keys(sortedArchLanguages).length} architectures with language mappings`)
+    console.log(`   - Exports: DeepgramLanguageCodes, DeepgramLanguageCode, DeepgramLanguage`)
+    console.log(`   - Exports: DeepgramArchitectures, DeepgramArchitecture, DeepgramArchitectureLanguages`)
+    console.log(`   - Exports: DeepgramMultilingualArchitectures, DeepgramMultilingualArchitecture`)
   } catch (error) {
     console.error(`❌ Failed to fetch Deepgram models: ${error.message}`)
     process.exit(1)
