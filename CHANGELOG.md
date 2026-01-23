@@ -5,6 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.3] - 2026-01-23
+
+### Added
+
+#### Strict Language Type Safety Across All Providers
+
+Removed the `| string` escape hatch from `TranscriptionLanguage` type. Invalid language codes now cause **compile-time errors** instead of silent runtime failures.
+
+```typescript
+// Before: any string was allowed (no compile-time validation)
+export type TranscriptionLanguage = AssemblyAILanguageCode | GladiaLanguageCode | string
+
+// After: strict union of all provider types
+export type TranscriptionLanguage =
+  | AssemblyAILanguageCode
+  | GladiaLanguageCode
+  | DeepgramLanguageCode
+  | SonioxLanguageCode
+  | SpeechmaticsLanguageCode
+  | AzureLocaleCode
+```
+
+**Soniox-specific options are now strictly typed:**
+
+```typescript
+// This now fails at compile time - "multi" is Deepgram-only
+sonioxStreaming: {
+  languageHints: ["multi"]  // ❌ Type error: "multi" not in SonioxLanguageCode
+}
+
+// Correct usage with autocomplete
+import { SonioxLanguage } from 'voice-router-dev/constants'
+sonioxStreaming: {
+  languageHints: [SonioxLanguage.en, SonioxLanguage.es]  // ✅
+}
+```
+
+#### Improved Soniox Error Messages
+
+Added explicit error detection when Soniox closes connection immediately after opening (common with auth/config issues):
+
+```typescript
+onError: {
+  code: "SONIOX_CONFIG_REJECTED",
+  message: "Soniox closed connection immediately after opening.
+    Likely causes:
+    - Invalid API key or region mismatch (keys are region-specific)
+    - Invalid language value (e.g., 'multi' is Deepgram-only)
+    - Unsupported audio format or sample rate for the model"
+}
+```
+
+Also added console warning when `language: "multi"` is passed to Soniox adapter.
+
+---
+
 ## [0.7.2] - 2026-01-21
 
 ### Added

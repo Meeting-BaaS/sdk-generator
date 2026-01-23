@@ -25,6 +25,10 @@ import type { SpeechModel as AssemblyAISpeechModel } from "../generated/assembly
 // Provider-specific language types for type-safe language selection
 import type { TranscriptLanguageCode as AssemblyAILanguageCode } from "../generated/assemblyai/schema/transcriptLanguageCode"
 import type { TranscriptionLanguageCodeEnum as GladiaLanguageCode } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
+import type { DeepgramLanguageCode } from "../generated/deepgram/languages"
+import type { SonioxLanguageCode } from "../generated/soniox/languages"
+import type { SpeechmaticsLanguageCode } from "../generated/speechmatics/languages"
+import type { AzureLocaleCode } from "../generated/azure/locales"
 
 // Provider-specific request types for full type safety
 import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
@@ -100,10 +104,32 @@ export type TranscriptionModel =
 /**
  * Unified transcription language type with autocomplete for all providers
  *
- * Includes language codes from AssemblyAI and Gladia OpenAPI specs.
- * Deepgram uses string for flexibility.
+ * Strict union type - only accepts valid language codes from each provider's
+ * auto-generated types. This ensures compile-time validation of language codes.
+ *
+ * Provider language sources:
+ * - AssemblyAI: OpenAPI spec enum (102 languages)
+ * - Gladia: OpenAPI spec enum (99 languages)
+ * - Deepgram: Auto-generated from /v1/models API (161 BCP-47 codes)
+ * - Soniox: Auto-generated from OpenAPI spec (60 languages)
+ * - Speechmatics: Auto-generated from Feature Discovery API (62 languages)
+ * - Azure: Auto-generated from Microsoft docs (154 locales)
+ *
+ * Use provider const objects for autocomplete:
+ * @example
+ * ```typescript
+ * import { DeepgramLanguage, SonioxLanguage } from 'voice-router-dev/constants'
+ * { language: DeepgramLanguage["en-US"] }
+ * { language: SonioxLanguage.en }
+ * ```
  */
-export type TranscriptionLanguage = AssemblyAILanguageCode | GladiaLanguageCode | string
+export type TranscriptionLanguage =
+  | AssemblyAILanguageCode
+  | GladiaLanguageCode
+  | DeepgramLanguageCode
+  | SonioxLanguageCode
+  | SpeechmaticsLanguageCode
+  | AzureLocaleCode
 
 // Re-export provider-specific types for direct access
 export type { ListenV1MediaTranscribeParams as DeepgramOptions }

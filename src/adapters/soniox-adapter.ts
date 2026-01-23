@@ -425,6 +425,13 @@ export class SonioxAdapter extends BaseAdapter {
     }
 
     if (options?.language) {
+      // Warn about Deepgram-specific language values
+      if (options.language === "multi") {
+        console.warn(
+          '[Soniox] Warning: language="multi" is Deepgram-specific and not supported by Soniox. ' +
+            "For automatic language detection, use languageDetection: true instead, or specify a language code like 'en'."
+        )
+      }
       wsUrl.searchParams.set("language_hints", JSON.stringify([options.language]))
     }
 
@@ -463,6 +470,8 @@ export class SonioxAdapter extends BaseAdapter {
     }
 
     let status: "connecting" | "open" | "closing" | "closed" = "connecting"
+    let openedAt: number | null = null
+    let receivedData = false
 
     // Create WebSocket connection
     const WebSocketImpl = typeof WebSocket !== "undefined" ? WebSocket : require("ws")
@@ -470,10 +479,12 @@ export class SonioxAdapter extends BaseAdapter {
 
     ws.onopen = () => {
       status = "open"
+      openedAt = Date.now()
       callbacks?.onOpen?.()
     }
 
     ws.onmessage = (event: MessageEvent) => {
+      receivedData = true
       try {
         const data = JSON.parse(event.data.toString())
 
@@ -541,6 +552,31 @@ export class SonioxAdapter extends BaseAdapter {
 
     ws.onclose = (event: CloseEvent) => {
       status = "closed"
+
+      // Detect immediate close after open (likely auth/config rejection)
+      const timeSinceOpen = openedAt ? Date.now() - openedAt : null
+      const isImmediateClose = timeSinceOpen !== null && timeSinceOpen < 1000 && !receivedData
+
+      if (isImmediateClose && event.code === 1000) {
+        // Soniox accepted WebSocket but rejected config - surface as error
+        const errorMessage = [
+          "Soniox closed connection immediately after opening.",
+          "Likely causes:",
+          "  - Invalid API key or region mismatch (keys are region-specific)",
+          "  - Invalid language value (e.g., 'multi' is Deepgram-only, use 'en' for Soniox)",
+          "  - Unsupported audio format or sample rate for the model",
+          "  - Model not available for your account",
+          event.reason ? `Server reason: ${event.reason}` : null
+        ]
+          .filter(Boolean)
+          .join("\n")
+
+        callbacks?.onError?.({
+          code: "SONIOX_CONFIG_REJECTED",
+          message: errorMessage
+        })
+      }
+
       callbacks?.onClose?.(event.code, event.reason)
     }
 

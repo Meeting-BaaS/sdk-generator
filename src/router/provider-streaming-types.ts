@@ -33,6 +33,9 @@ import type {
   AssemblyAISampleRateType
 } from "./streaming-enums"
 
+// Soniox language types for strict type checking
+import type { SonioxLanguageCode } from "../generated/soniox/languages"
+
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
 
@@ -554,14 +557,14 @@ type SonioxAudioFormat =
 /** One-way translation: translate all spoken languages into a single target language */
 interface SonioxOneWayTranslation {
   type: "one_way"
-  target_language: string
+  target_language: SonioxLanguageCode
 }
 
 /** Two-way translation: translate back and forth between two specified languages */
 interface SonioxTwoWayTranslation {
   type: "two_way"
-  language_a: string
-  language_b: string
+  language_a: SonioxLanguageCode
+  language_b: SonioxLanguageCode
 }
 
 /** Soniox translation configuration */
@@ -632,9 +635,15 @@ export interface SonioxStreamingOptions {
   /**
    * Expected languages in the audio (ISO language codes)
    * Helps improve recognition accuracy
-   * @example ["en", "es"]
+   *
+   * Use SonioxLanguage constant for autocomplete:
+   * @example
+   * ```typescript
+   * import { SonioxLanguage } from 'voice-router-dev/constants'
+   * { languageHints: [SonioxLanguage.en, SonioxLanguage.es] }
+   * ```
    */
-  languageHints?: string[]
+  languageHints?: SonioxLanguageCode[]
 
   /**
    * Enable language identification
