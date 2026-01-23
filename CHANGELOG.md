@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.4] - 2026-01-23
+
+### Added
+
+#### Raw WebSocket Message Capture (`onRawMessage` callback)
+
+New `onRawMessage` callback for capturing raw, untouched provider WebSocket messages before any SDK normalization. Essential for debugging, logging, and replay scenarios.
+
+```typescript
+import { VoiceRouter, RawWebSocketMessage } from 'voice-router-dev'
+
+const session = await router.transcribeStream(
+  { type: 'stream' },
+  {
+    onRawMessage: (msg: RawWebSocketMessage) => {
+      console.log(`[${msg.provider}] ${msg.direction}: ${msg.messageType}`)
+      // msg.payload contains the original, untouched data
+    }
+  }
+)
+```
+
+**RawWebSocketMessage interface:**
+
+```typescript
+interface RawWebSocketMessage {
+  provider: string           // "deepgram", "gladia", "assemblyai", etc.
+  direction: "incoming" | "outgoing"
+  timestamp: number          // Date.now() at capture time
+  payload: string | ArrayBuffer  // Raw, untouched message
+  messageType?: string       // Provider-specific type if available
+}
+```
+
+**Supported providers:** Deepgram, Gladia, AssemblyAI, Soniox, OpenAI Realtime
+
+**Captured messages include:**
+- Incoming: All server responses (transcripts, errors, session events)
+- Outgoing: Audio chunks, control messages (stop, terminate, etc.)
+
+---
+
 ## [0.7.3] - 2026-01-23
 
 ### Added

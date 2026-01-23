@@ -22,7 +22,8 @@ import type {
   SummarizationEvent,
   ChapterizationEvent,
   AudioAckEvent,
-  LifecycleEvent
+  LifecycleEvent,
+  RawWebSocketMessage
 } from "../router/types"
 import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
@@ -959,10 +960,36 @@ export class GladiaAdapter extends BaseAdapter {
 
     // Handle all WebSocket message types from Gladia
     ws.on("message", (data: Buffer) => {
+      // Capture raw message BEFORE any parsing/processing
+      const rawPayload = data.toString()
+
       try {
-        const message = JSON.parse(data.toString())
+        const message = JSON.parse(rawPayload)
+
+        // Invoke raw message callback with original payload and derived type
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType: (message as Record<string, unknown>).type as string | undefined
+          })
+        }
+
         this.handleWebSocketMessage(message, callbacks)
       } catch (error) {
+        // Still capture raw message even if parse fails
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType: "parse_error"
+          })
+        }
+
         callbacks?.onError?.({
           code: ERROR_CODES.PARSE_ERROR,
           message: "Failed to parse WebSocket message",
@@ -984,16 +1011,38 @@ export class GladiaAdapter extends BaseAdapter {
         // Validate session is ready
         validateSessionForAudio(sessionStatus, ws.readyState, WebSocket.OPEN)
 
+        // Capture outgoing raw message (convert Buffer/Uint8Array to ArrayBuffer)
+        if (callbacks?.onRawMessage) {
+          const audioPayload = chunk.data instanceof ArrayBuffer ? chunk.data :
+            chunk.data.buffer.slice(chunk.data.byteOffset, chunk.data.byteOffset + chunk.data.byteLength) as ArrayBuffer
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "outgoing",
+            timestamp: Date.now(),
+            payload: audioPayload,
+            messageType: "audio"
+          })
+        }
+
         // Send raw audio data
         ws.send(chunk.data)
 
         // Send stop recording message if this is the last chunk
         if (chunk.isLast) {
-          ws.send(
-            JSON.stringify({
-              type: "stop_recording"
+          const stopMessage = JSON.stringify({ type: "stop_recording" })
+
+          // Capture outgoing stop_recording message
+          if (callbacks?.onRawMessage) {
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: stopMessage,
+              messageType: "stop_recording"
             })
-          )
+          }
+
+          ws.send(stopMessage)
         }
       },
       close: async () => {
@@ -1005,11 +1054,20 @@ export class GladiaAdapter extends BaseAdapter {
 
         // Send stop recording message before closing
         if (ws.readyState === WebSocket.OPEN) {
-          ws.send(
-            JSON.stringify({
-              type: "stop_recording"
+          const stopMessage = JSON.stringify({ type: "stop_recording" })
+
+          // Capture outgoing stop_recording message
+          if (callbacks?.onRawMessage) {
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: stopMessage,
+              messageType: "stop_recording"
             })
-          )
+          }
+
+          ws.send(stopMessage)
         }
 
         // Close WebSocket with utility

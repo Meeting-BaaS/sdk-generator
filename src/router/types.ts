@@ -1172,6 +1172,54 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
 /**
  * Callback functions for streaming events
  */
+/**
+ * Raw WebSocket message from provider
+ *
+ * Captures the exact payload received from or sent to the provider WebSocket,
+ * before any SDK normalization or transformation. Useful for debugging and
+ * storing exact provider payloads for replay/analysis.
+ *
+ * @example
+ * ```typescript
+ * onRawMessage: (msg) => {
+ *   // Store raw payload for debugging
+ *   rawMessages.push({
+ *     provider: msg.provider,
+ *     direction: msg.direction,
+ *     timestamp: msg.timestamp,
+ *     payload: msg.payload,
+ *     messageType: msg.messageType
+ *   });
+ * }
+ * ```
+ */
+export interface RawWebSocketMessage {
+  /** Provider name (e.g., 'gladia', 'deepgram', 'soniox') */
+  provider: string
+  /** Message direction */
+  direction: "incoming" | "outgoing"
+  /** Timestamp in milliseconds (Date.now()) */
+  timestamp: number
+  /**
+   * Raw payload exactly as received/sent
+   *
+   * - For incoming JSON messages: the raw string before parsing
+   * - For outgoing audio: the binary data being sent
+   * - For incoming binary: ArrayBuffer as received
+   */
+  payload: string | ArrayBuffer
+  /**
+   * Message type if cheaply derivable from payload
+   *
+   * Provider-specific values:
+   * - Gladia: 'transcript', 'post_final_transcript', 'speech_start', 'speech_end', etc.
+   * - Deepgram: 'Results', 'Metadata', 'UtteranceEnd', etc.
+   * - AssemblyAI: 'SessionBegins', 'PartialTranscript', 'FinalTranscript', etc.
+   * - Soniox: derived from payload structure
+   */
+  messageType?: string
+}
+
 export interface StreamingCallbacks {
   /** Called when connection is established */
   onOpen?: () => void
@@ -1185,6 +1233,34 @@ export interface StreamingCallbacks {
   onError?: (error: { code: string; message: string; details?: unknown }) => void
   /** Called when the stream is closed */
   onClose?: (code?: number, reason?: string) => void
+
+  // ─────────────────────────────────────────────────────────────────
+  // Raw WebSocket Message Capture (for debugging/replay)
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Called for every raw WebSocket message before SDK processing
+   *
+   * Captures exact provider payloads for debugging, replay, and analysis.
+   * Invoked for both incoming messages from the provider and outgoing
+   * audio chunks sent to the provider.
+   *
+   * @example
+   * ```typescript
+   * const rawMessages: RawWebSocketMessage[] = [];
+   *
+   * await adapter.transcribeStream(options, {
+   *   onRawMessage: (msg) => {
+   *     rawMessages.push(msg);
+   *     // Or stream to storage immediately
+   *   },
+   *   onTranscript: (event) => { ... }
+   * });
+   *
+   * // After session, rawMessages contains all provider payloads
+   * ```
+   */
+  onRawMessage?: (message: RawWebSocketMessage) => void
 
   // ─────────────────────────────────────────────────────────────────
   // Gladia-specific streaming callbacks

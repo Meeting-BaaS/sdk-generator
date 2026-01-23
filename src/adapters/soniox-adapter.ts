@@ -14,7 +14,8 @@ import type {
   StreamingSession,
   StreamEvent,
   Utterance,
-  Word
+  Word,
+  RawWebSocketMessage
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 import { SonioxRegion, type SonioxRegionType } from "../constants"
@@ -485,8 +486,33 @@ export class SonioxAdapter extends BaseAdapter {
 
     ws.onmessage = (event: MessageEvent) => {
       receivedData = true
+
+      // Capture raw message BEFORE any parsing/processing
+      const rawPayload = typeof event.data === "string" ? event.data : event.data.toString()
+      let messageType: string | undefined
+
       try {
-        const data = JSON.parse(event.data.toString())
+        const data = JSON.parse(rawPayload)
+
+        // Derive message type for raw message callback
+        if (data.error) {
+          messageType = "error"
+        } else if (data.finished) {
+          messageType = "finished"
+        } else if (data.tokens) {
+          messageType = data.tokens.every((t: any) => t.is_final) ? "final_tokens" : "partial_tokens"
+        }
+
+        // Invoke raw message callback with original payload
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType
+          })
+        }
 
         // Handle different message types
         if (data.error) {
@@ -563,7 +589,9 @@ export class SonioxAdapter extends BaseAdapter {
           "Soniox closed connection immediately after opening.",
           `Current config: region=${this.region}, model=${options?.model || "stt-rt-preview"}`,
           "Likely causes:",
-          "  - Invalid API key or region mismatch (keys are region-specific, current: " + this.region + ")",
+          "  - Invalid API key or region mismatch (keys are region-specific, current: " +
+            this.region +
+            ")",
           "  - Invalid language value (e.g., 'multi' is Deepgram-only, use 'en' for Soniox)",
           "  - Unsupported audio format or sample rate for the model",
           "  - Model not available for your account",
@@ -610,6 +638,20 @@ export class SonioxAdapter extends BaseAdapter {
         if (status !== "open") {
           throw new Error("Session is not open")
         }
+
+        // Capture outgoing raw message (convert Buffer/Uint8Array to ArrayBuffer)
+        if (callbacks?.onRawMessage) {
+          const audioPayload = chunk.data instanceof ArrayBuffer ? chunk.data :
+            chunk.data.buffer.slice(chunk.data.byteOffset, chunk.data.byteOffset + chunk.data.byteLength) as ArrayBuffer
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "outgoing",
+            timestamp: Date.now(),
+            payload: audioPayload,
+            messageType: "audio"
+          })
+        }
+
         ws.send(chunk.data)
       },
       close: async () => {

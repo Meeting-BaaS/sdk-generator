@@ -14,7 +14,8 @@ import type {
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse
+  UnifiedTranscriptResponse,
+  RawWebSocketMessage
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 import { mapEncodingToProvider } from "../router/audio-encoding-types"
@@ -765,6 +766,22 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     const flushAudioBuffer = () => {
       if (audioBuffer.length > 0 && ws.readyState === WebSocket.OPEN) {
+        // Capture outgoing raw message (flushing buffered audio)
+        if (callbacks?.onRawMessage) {
+          // Convert Buffer to ArrayBuffer for type safety
+          const audioPayload = audioBuffer.buffer.slice(
+            audioBuffer.byteOffset,
+            audioBuffer.byteOffset + audioBuffer.byteLength
+          ) as ArrayBuffer
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "outgoing",
+            timestamp: Date.now(),
+            payload: audioPayload,
+            messageType: "audio"
+          })
+        }
+
         ws.send(audioBuffer)
         audioBuffer = Buffer.alloc(0)
       }
@@ -777,10 +794,40 @@ export class AssemblyAIAdapter extends BaseAdapter {
     })
 
     ws.on("message", (data: Buffer) => {
+      // Capture raw message BEFORE any parsing/processing
+      const rawPayload = data.toString()
+
       try {
-        const message = JSON.parse(data.toString()) as StreamingEventMessage
+        const message = JSON.parse(rawPayload) as StreamingEventMessage
+
+        // Invoke raw message callback with original payload and derived type
+        if (callbacks?.onRawMessage) {
+          // AssemblyAI v3 streaming uses 'type' field (Begin, Turn, Termination)
+          // ErrorEvent has no type field, just 'error'
+          const messageType = "type" in message ? (message as { type: string }).type :
+                             "error" in message ? "Error" : undefined
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType
+          })
+        }
+
         this.handleWebSocketMessage(message, callbacks)
       } catch (error) {
+        // Still capture raw message even if parse fails
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType: "parse_error"
+          })
+        }
+
         callbacks?.onError?.({
           code: "PARSE_ERROR",
           message: "Failed to parse WebSocket message",
@@ -841,6 +888,22 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
         // Send buffer if it meets minimum size or exceeds maximum
         if (audioBuffer.length >= MIN_CHUNK_SIZE || audioBuffer.length >= MAX_CHUNK_SIZE) {
+          // Capture outgoing raw message (the actual buffered chunk being sent)
+          if (callbacks?.onRawMessage) {
+            // Convert Buffer to ArrayBuffer for type safety
+            const audioPayload = audioBuffer.buffer.slice(
+              audioBuffer.byteOffset,
+              audioBuffer.byteOffset + audioBuffer.byteLength
+            )
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: audioPayload,
+              messageType: "audio"
+            })
+          }
+
           ws.send(audioBuffer)
           audioBuffer = Buffer.alloc(0)
         }
@@ -848,7 +911,21 @@ export class AssemblyAIAdapter extends BaseAdapter {
         // Flush remaining buffer and send termination message if this is the last chunk
         if (chunk.isLast) {
           flushAudioBuffer()
-          ws.send(JSON.stringify({ type: "Terminate" }))
+
+          const terminateMessage = JSON.stringify({ type: "Terminate" })
+
+          // Capture outgoing terminate message
+          if (callbacks?.onRawMessage) {
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: terminateMessage,
+              messageType: "Terminate"
+            })
+          }
+
+          ws.send(terminateMessage)
         }
       },
 
@@ -864,7 +941,20 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
         // Send termination message before closing
         if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({ type: "Terminate" }))
+          const terminateMessage = JSON.stringify({ type: "Terminate" })
+
+          // Capture outgoing terminate message
+          if (callbacks?.onRawMessage) {
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: terminateMessage,
+              messageType: "Terminate"
+            })
+          }
+
+          ws.send(terminateMessage)
         }
 
         // Close WebSocket

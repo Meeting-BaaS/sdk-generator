@@ -13,7 +13,8 @@ import type {
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse
+  UnifiedTranscriptResponse,
+  RawWebSocketMessage
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
@@ -360,17 +361,56 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         }
       }
 
-      ws.send(JSON.stringify(sessionConfig))
+      const sessionConfigMessage = JSON.stringify(sessionConfig)
+
+      // Capture outgoing session config message
+      if (callbacks?.onRawMessage) {
+        callbacks.onRawMessage({
+          provider: this.name,
+          direction: "outgoing",
+          timestamp: Date.now(),
+          payload: sessionConfigMessage,
+          messageType: "session.update"
+        })
+      }
+
+      ws.send(sessionConfigMessage)
       callbacks?.onOpen?.()
     })
 
     ws.on("message", (data: Buffer) => {
+      // Capture raw message BEFORE any parsing/processing
+      const rawPayload = data.toString()
+
       try {
-        const message = JSON.parse(data.toString()) as RealtimeServerEvent
+        const message = JSON.parse(rawPayload) as RealtimeServerEvent
+
+        // Invoke raw message callback with original payload and derived type
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType: message.type // OpenAI Realtime uses 'type' field
+          })
+        }
+
         this.handleRealtimeMessage(message, callbacks, (text) => {
           currentTranscript = text
         })
       } catch (error) {
+        // Still capture raw message even if parse fails
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType: "parse_error"
+          })
+        }
+
         callbacks?.onError?.({
           code: "PARSE_ERROR",
           message: "Failed to parse WebSocket message",
@@ -428,16 +468,40 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         const base64Audio = Buffer.from(chunk.data).toString("base64")
 
         // Send audio buffer append event
-        ws.send(
-          JSON.stringify({
-            type: "input_audio_buffer.append",
-            audio: base64Audio
+        const appendMessage = JSON.stringify({
+          type: "input_audio_buffer.append",
+          audio: base64Audio
+        })
+
+        // Capture outgoing raw message
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "outgoing",
+            timestamp: Date.now(),
+            payload: appendMessage,
+            messageType: "input_audio_buffer.append"
           })
-        )
+        }
+
+        ws.send(appendMessage)
 
         // Commit the buffer if this is the last chunk
         if (chunk.isLast) {
-          ws.send(JSON.stringify({ type: "input_audio_buffer.commit" }))
+          const commitMessage = JSON.stringify({ type: "input_audio_buffer.commit" })
+
+          // Capture outgoing commit message
+          if (callbacks?.onRawMessage) {
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: commitMessage,
+              messageType: "input_audio_buffer.commit"
+            })
+          }
+
+          ws.send(commitMessage)
         }
       },
       close: async () => {

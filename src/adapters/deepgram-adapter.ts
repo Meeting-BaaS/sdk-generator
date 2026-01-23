@@ -14,7 +14,8 @@ import type {
   StreamingSession,
   TranscribeOptions,
   UnifiedTranscriptResponse,
-  SpeechEvent
+  SpeechEvent,
+  RawWebSocketMessage
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 import type { DeepgramRegionType } from "../constants"
@@ -807,10 +808,36 @@ export class DeepgramAdapter extends BaseAdapter {
     })
 
     ws.on("message", (data: Buffer) => {
+      // Capture raw message BEFORE any parsing/processing
+      const rawPayload = data.toString()
+
       try {
-        const message = JSON.parse(data.toString()) as DeepgramRealtimeMessage
+        const message = JSON.parse(rawPayload) as DeepgramRealtimeMessage
+
+        // Invoke raw message callback with original payload and derived type
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType: message.type // Deepgram messages have a 'type' field
+          })
+        }
+
         this.handleWebSocketMessage(message, callbacks)
       } catch (error) {
+        // Still capture raw message even if parse fails
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType: "parse_error"
+          })
+        }
+
         callbacks?.onError?.({
           code: "PARSE_ERROR",
           message: "Failed to parse WebSocket message",
@@ -864,12 +891,38 @@ export class DeepgramAdapter extends BaseAdapter {
           throw new Error("WebSocket is not open")
         }
 
+        // Capture outgoing raw message (convert Buffer/Uint8Array to ArrayBuffer)
+        if (callbacks?.onRawMessage) {
+          const audioPayload = chunk.data instanceof ArrayBuffer ? chunk.data :
+            chunk.data.buffer.slice(chunk.data.byteOffset, chunk.data.byteOffset + chunk.data.byteLength) as ArrayBuffer
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "outgoing",
+            timestamp: Date.now(),
+            payload: audioPayload,
+            messageType: "audio"
+          })
+        }
+
         // Send audio data
         ws.send(chunk.data)
 
         // Send close message if this is the last chunk
         if (chunk.isLast) {
-          ws.send(JSON.stringify({ type: "CloseStream" }))
+          const closeMessage = JSON.stringify({ type: "CloseStream" })
+
+          // Capture outgoing close message
+          if (callbacks?.onRawMessage) {
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: closeMessage,
+              messageType: "CloseStream"
+            })
+          }
+
+          ws.send(closeMessage)
         }
       },
       close: async () => {
