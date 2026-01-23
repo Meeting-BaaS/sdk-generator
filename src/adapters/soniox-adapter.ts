@@ -561,8 +561,9 @@ export class SonioxAdapter extends BaseAdapter {
         // Soniox accepted WebSocket but rejected config - surface as error
         const errorMessage = [
           "Soniox closed connection immediately after opening.",
+          `Current config: region=${this.region}, model=${options?.model || "stt-rt-preview"}`,
           "Likely causes:",
-          "  - Invalid API key or region mismatch (keys are region-specific)",
+          "  - Invalid API key or region mismatch (keys are region-specific, current: " + this.region + ")",
           "  - Invalid language value (e.g., 'multi' is Deepgram-only, use 'en' for Soniox)",
           "  - Unsupported audio format or sample rate for the model",
           "  - Model not available for your account",
