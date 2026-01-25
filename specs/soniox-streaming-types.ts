@@ -131,6 +131,20 @@ export interface StructuredContext {
 export type Context = StructuredContext | string
 
 // =============================================================================
+// Real-time Model Types
+// =============================================================================
+
+/**
+ * Available real-time streaming models
+ * Extracted from Soniox API /v1/models endpoint
+ */
+export type RealtimeModelId =
+  | "stt-rt-v3"
+  | "stt-rt-preview"
+  | "stt-rt-v3-preview"
+  | "stt-rt-preview-v2"
+
+// =============================================================================
 // WebSocket API Request Types
 // =============================================================================
 
@@ -139,8 +153,8 @@ export type Context = StructuredContext | string
  * @source SpeechToTextAPIRequest from @soniox/speech-to-text-web SDK
  */
 export interface StreamingTranscriberParams {
-  /** Real-time model to use (e.g., "stt-rt-preview", "stt-rt-v3") */
-  model: string
+  /** Real-time model to use */
+  model: RealtimeModelId
 
   /** Audio format specification */
   audioFormat?: AudioFormat

@@ -22,8 +22,9 @@ import { SonioxRegion, type SonioxRegionType } from "../constants"
 
 // Import generated Soniox types
 import { TranscriptionStatus as SonioxTranscriptionStatus } from "../generated/soniox/schema/transcriptionStatus"
-import type { Model as SonioxModel } from "../generated/soniox/schema/model"
-import type { Language as SonioxLanguage } from "../generated/soniox/schema/language"
+import type { Model as SonioxModelInfo } from "../generated/soniox/schema/model"
+import type { Language as SonioxLanguageInfo } from "../generated/soniox/schema/language"
+import type { SonioxModelCode } from "../generated/soniox/models"
 
 /**
  * Soniox-specific configuration options
@@ -32,14 +33,18 @@ export interface SonioxConfig extends ProviderConfig {
   /**
    * Model to use for transcription
    *
-   * Available models:
-   * - `stt-async-preview` - Async/batch transcription (default)
-   * - `stt-rt-preview` - Real-time streaming
-   * - `stt-rt-v3` - Real-time streaming v3
+   * Use `SonioxModel` constant for type-safe autocomplete:
+   * @example
+   * ```typescript
+   * import { SonioxModel } from 'voice-router-dev/constants'
+   * { model: SonioxModel.stt_async_v3 }       // Async/batch
+   * { model: SonioxModel.stt_rt_preview }    // Real-time streaming
+   * { model: SonioxModel.stt_rt_v3 }         // Real-time v3
+   * ```
    *
    * @default "stt-async-preview"
    */
-  model?: string
+  model?: SonioxModelCode
 
   /**
    * Regional endpoint for data residency (Sovereign Cloud)
@@ -404,7 +409,9 @@ export class SonioxAdapter extends BaseAdapter {
     // Build WebSocket URL with query parameters (using regional WebSocket host)
     const wsUrl = new URL(`wss://${this.getRegionalWsHost()}/transcribe-websocket`)
     wsUrl.searchParams.set("api_key", this.config!.apiKey)
-    wsUrl.searchParams.set("model", options?.model?.toString() || "stt-rt-preview")
+    // Prefer sonioxStreaming.model over generic model option
+    const modelId = options?.sonioxStreaming?.model || options?.model || "stt-rt-preview"
+    wsUrl.searchParams.set("model", modelId)
 
     if (options?.encoding) {
       // Map common encoding names to Soniox format
@@ -425,34 +432,21 @@ export class SonioxAdapter extends BaseAdapter {
       wsUrl.searchParams.set("num_channels", options.channels.toString())
     }
 
-    if (options?.language) {
-      // Warn about Deepgram-specific language values
-      if (options.language === "multi") {
-        console.warn(
-          '[Soniox] Warning: language="multi" is Deepgram-specific and not supported by Soniox. ' +
-            "For automatic language detection, use languageDetection: true instead, or specify a language code like 'en'."
-        )
-      }
-      wsUrl.searchParams.set("language_hints", JSON.stringify([options.language]))
-    }
-
-    if (options?.diarization) {
-      wsUrl.searchParams.set("enable_speaker_diarization", "true")
-    }
-
-    if (options?.languageDetection) {
-      wsUrl.searchParams.set("enable_language_identification", "true")
-    }
-
-    if (options?.interimResults !== false) {
-      // Soniox returns partial results by default
-    }
-
-    // Handle Soniox-specific streaming options
+    // Handle Soniox-specific streaming options first (has strict types)
     const sonioxOpts = options?.sonioxStreaming
     if (sonioxOpts) {
+      // Prefer strictly typed languageHints from sonioxStreaming
+      if (sonioxOpts.languageHints && sonioxOpts.languageHints.length > 0) {
+        wsUrl.searchParams.set("language_hints", JSON.stringify(sonioxOpts.languageHints))
+      }
+      if (sonioxOpts.enableLanguageIdentification) {
+        wsUrl.searchParams.set("enable_language_identification", "true")
+      }
       if (sonioxOpts.enableEndpointDetection) {
         wsUrl.searchParams.set("enable_endpoint_detection", "true")
+      }
+      if (sonioxOpts.enableSpeakerDiarization) {
+        wsUrl.searchParams.set("enable_speaker_diarization", "true")
       }
       if (sonioxOpts.context) {
         wsUrl.searchParams.set(
@@ -468,6 +462,30 @@ export class SonioxAdapter extends BaseAdapter {
       if (sonioxOpts.clientReferenceId) {
         wsUrl.searchParams.set("client_reference_id", sonioxOpts.clientReferenceId)
       }
+    }
+
+    // Fallback to generic options if sonioxStreaming not provided
+    if (!sonioxOpts?.languageHints && options?.language) {
+      // Warn about Deepgram-specific language values
+      if (options.language === "multi") {
+        console.warn(
+          '[Soniox] Warning: language="multi" is Deepgram-specific and not supported by Soniox. ' +
+            "For automatic language detection, use languageDetection: true instead, or specify a language code like 'en'."
+        )
+      }
+      wsUrl.searchParams.set("language_hints", JSON.stringify([options.language]))
+    }
+
+    if (!sonioxOpts?.enableSpeakerDiarization && options?.diarization) {
+      wsUrl.searchParams.set("enable_speaker_diarization", "true")
+    }
+
+    if (!sonioxOpts?.enableLanguageIdentification && options?.languageDetection) {
+      wsUrl.searchParams.set("enable_language_identification", "true")
+    }
+
+    if (options?.interimResults !== false) {
+      // Soniox returns partial results by default
     }
 
     let status: "connecting" | "open" | "closing" | "closed" = "connecting"
@@ -500,7 +518,9 @@ export class SonioxAdapter extends BaseAdapter {
         } else if (data.finished) {
           messageType = "finished"
         } else if (data.tokens) {
-          messageType = data.tokens.every((t: any) => t.is_final) ? "final_tokens" : "partial_tokens"
+          messageType = data.tokens.every((t: any) => t.is_final)
+            ? "final_tokens"
+            : "partial_tokens"
         }
 
         // Invoke raw message callback with original payload
@@ -587,7 +607,7 @@ export class SonioxAdapter extends BaseAdapter {
         // Soniox accepted WebSocket but rejected config - surface as error
         const errorMessage = [
           "Soniox closed connection immediately after opening.",
-          `Current config: region=${this.region}, model=${options?.model || "stt-rt-preview"}`,
+          `Current config: region=${this.region}, model=${modelId}`,
           "Likely causes:",
           "  - Invalid API key or region mismatch (keys are region-specific, current: " +
             this.region +
@@ -641,8 +661,13 @@ export class SonioxAdapter extends BaseAdapter {
 
         // Capture outgoing raw message (convert Buffer/Uint8Array to ArrayBuffer)
         if (callbacks?.onRawMessage) {
-          const audioPayload = chunk.data instanceof ArrayBuffer ? chunk.data :
-            chunk.data.buffer.slice(chunk.data.byteOffset, chunk.data.byteOffset + chunk.data.byteLength) as ArrayBuffer
+          const audioPayload =
+            chunk.data instanceof ArrayBuffer
+              ? chunk.data
+              : (chunk.data.buffer.slice(
+                  chunk.data.byteOffset,
+                  chunk.data.byteOffset + chunk.data.byteLength
+                ) as ArrayBuffer)
           callbacks.onRawMessage({
             provider: this.name,
             direction: "outgoing",
@@ -681,7 +706,7 @@ export class SonioxAdapter extends BaseAdapter {
    * console.log('Languages:', rtModel?.languages.map(l => l.code));
    * ```
    */
-  async getModels(): Promise<SonioxModel[]> {
+  async getModels(): Promise<SonioxModelInfo[]> {
     this.validateConfig()
 
     try {
@@ -699,7 +724,7 @@ export class SonioxAdapter extends BaseAdapter {
    * @param modelId - The model ID (e.g., 'stt-rt-preview', 'stt-async-preview')
    * @returns Array of supported language objects with code and name
    */
-  async getLanguagesForModel(modelId: string): Promise<SonioxLanguage[]> {
+  async getLanguagesForModel(modelId: SonioxModelCode): Promise<SonioxLanguageInfo[]> {
     const models = await this.getModels()
     const model = models.find((m) => m.id === modelId)
     return model?.languages || []

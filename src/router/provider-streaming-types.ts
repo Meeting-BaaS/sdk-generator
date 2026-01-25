@@ -33,8 +33,9 @@ import type {
   AssemblyAISampleRateType
 } from "./streaming-enums"
 
-// Soniox language types for strict type checking
+// Soniox language and model types for strict type checking
 import type { SonioxLanguageCode } from "../generated/soniox/languages"
+import type { SonioxRealtimeModelCode } from "../generated/soniox/models"
 
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
@@ -600,10 +601,16 @@ export interface SonioxStreamingOptions {
 
   /**
    * Real-time model to use
+   *
+   * Use `SonioxModel` or `SonioxRealtimeModel` const for autocomplete:
+   * @example
+   * ```typescript
+   * import { SonioxModel } from 'voice-router-dev/constants'
+   * { model: SonioxModel.stt_rt_v3 }
+   * ```
    * @default "stt-rt-preview"
-   * @example "stt-rt-preview", "stt-rt-v3"
    */
-  model?: string
+  model?: SonioxRealtimeModelCode
 
   // ─────────────────────────────────────────────────────────────────
   // Audio Format Options

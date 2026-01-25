@@ -207,6 +207,34 @@ export {
 }
 export type { SonioxLanguageCode } from "./generated/soniox/languages"
 
+// Re-export auto-generated Soniox model constants
+// Generated from Soniox OpenAPI spec by scripts/generate-soniox-models.js
+import {
+  SonioxModel as _SonioxModel,
+  SonioxModelCodes as _SonioxModelCodes,
+  SonioxModelLabels as _SonioxModelLabels,
+  SonioxModels as _SonioxModels,
+  SonioxRealtimeModel as _SonioxRealtimeModel,
+  SonioxRealtimeModelCodes as _SonioxRealtimeModelCodes,
+  SonioxAsyncModel as _SonioxAsyncModel,
+  SonioxAsyncModelCodes as _SonioxAsyncModelCodes
+} from "./generated/soniox/models"
+export {
+  _SonioxModel as SonioxModel,
+  _SonioxModelCodes as SonioxModelCodes,
+  _SonioxModelLabels as SonioxModelLabels,
+  _SonioxModels as SonioxModels,
+  _SonioxRealtimeModel as SonioxRealtimeModel,
+  _SonioxRealtimeModelCodes as SonioxRealtimeModelCodes,
+  _SonioxAsyncModel as SonioxAsyncModel,
+  _SonioxAsyncModelCodes as SonioxAsyncModelCodes
+}
+export type {
+  SonioxModelCode,
+  SonioxRealtimeModelCode,
+  SonioxAsyncModelCode
+} from "./generated/soniox/models"
+
 // Re-export auto-generated Speechmatics language constants
 // Generated from Speechmatics documentation by scripts/generate-speechmatics-languages.js
 import {
@@ -222,6 +250,30 @@ export {
   _SpeechmaticsLanguages as SpeechmaticsLanguages
 }
 export type { SpeechmaticsLanguageCode } from "./generated/speechmatics/languages"
+
+// Re-export Speechmatics operating point (model quality tier)
+import { OperatingPoint as _SpeechmaticsOperatingPoint } from "./generated/speechmatics/schema/operatingPoint"
+
+/**
+ * Speechmatics operating point (model quality tier)
+ *
+ * Values: `standard`, `enhanced`
+ *
+ * - `standard`: Faster processing, good accuracy
+ * - `enhanced`: Higher accuracy, slightly slower
+ *
+ * @example
+ * ```typescript
+ * import { SpeechmaticsOperatingPoint } from 'voice-router-dev/constants'
+ *
+ * await router.transcribe('speechmatics', audioUrl, {
+ *   model: SpeechmaticsOperatingPoint.enhanced
+ * })
+ * ```
+ */
+export const SpeechmaticsOperatingPoint = _SpeechmaticsOperatingPoint
+export type SpeechmaticsOperatingPointType =
+  (typeof SpeechmaticsOperatingPoint)[keyof typeof SpeechmaticsOperatingPoint]
 
 // Re-export auto-generated Azure locale constants
 // Generated from Azure documentation by scripts/generate-azure-locales.js

@@ -21,6 +21,7 @@ import type { Transcription as AzureTranscription } from "../generated/azure/sch
 import type { DeepgramModelType } from "./streaming-enums"
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { SpeechModel as AssemblyAISpeechModel } from "../generated/assemblyai/schema/speechModel"
+import type { SonioxModelCode } from "../generated/soniox/models"
 
 // Provider-specific language types for type-safe language selection
 import type { TranscriptLanguageCode as AssemblyAILanguageCode } from "../generated/assemblyai/schema/transcriptLanguageCode"
@@ -86,19 +87,22 @@ export type SpeechmaticsOperatingPoint = "standard" | "enhanced"
  * - Deepgram: nova-3, nova-2, enhanced, base, etc.
  * - AssemblyAI: best, slam-1, universal
  * - Gladia: solaria-1
+ * - Soniox: stt-rt-v3, stt-rt-preview, stt-async-v3, etc.
  * - Speechmatics: standard, enhanced
  *
  * Use provider const objects for autocomplete:
  * @example
  * ```typescript
- * import { DeepgramModel } from 'voice-router-dev'
+ * import { DeepgramModel, SonioxModel } from 'voice-router-dev'
  * { model: DeepgramModel["nova-3"] }
+ * { model: SonioxModel.stt_rt_v3 }
  * ```
  */
 export type TranscriptionModel =
   | DeepgramModelType
   | StreamingSupportedModels
   | AssemblyAISpeechModel
+  | SonioxModelCode
   | SpeechmaticsOperatingPoint
 
 /**

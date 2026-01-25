@@ -166,6 +166,20 @@ export const sonioxContextSchema = zod.union([
 ])
 
 // =============================================================================
+// Real-time Model Schema
+// =============================================================================
+
+/**
+ * Available real-time streaming models
+ */
+export const sonioxRealtimeModelSchema = zod.enum([
+  "stt-rt-v3",
+  "stt-rt-preview",
+  "stt-rt-v3-preview",
+  "stt-rt-preview-v2"
+])
+
+// =============================================================================
 // Streaming Transcriber Params Schema
 // =============================================================================
 
@@ -175,8 +189,8 @@ export const sonioxContextSchema = zod.union([
  * @source StreamingTranscriberParams from manual spec
  */
 export const streamingTranscriberParams = zod.object({
-  model: zod.string()
-    .describe("Real-time model to use (e.g., 'stt-rt-preview', 'stt-rt-v3')"),
+  model: sonioxRealtimeModelSchema
+    .describe("Real-time model to use"),
   audioFormat: sonioxAudioFormatSchema.optional()
     .describe("Audio format specification. Use 'auto' for automatic detection"),
   sampleRate: zod.number().optional()

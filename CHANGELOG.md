@@ -5,6 +5,76 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.5] - 2026-01-25
+
+### Added
+
+#### Soniox Model Type Safety
+
+Added type-safe `SonioxModel` constants with full autocomplete support. Model selection is now a dropdown in UI field configs.
+
+```typescript
+import { SonioxModel, SonioxRealtimeModel, SonioxLanguage } from 'voice-router-dev/constants'
+
+// Real-time streaming models with autocomplete
+await adapter.transcribeStream({
+  model: SonioxModel.stt_rt_v3,  // ✅ Type-safe, autocomplete
+  sonioxStreaming: {
+    model: SonioxRealtimeModel.stt_rt_v3,  // ✅ Strictly real-time models only
+    languageHints: [SonioxLanguage.en, SonioxLanguage.es]  // ✅ Strict language codes
+  }
+})
+```
+
+**Available models:**
+- Real-time: `stt-rt-v3`, `stt-rt-preview`, `stt-rt-v3-preview`, `stt-rt-preview-v2`
+- Async: `stt-async-v3`, `stt-async-preview`, `stt-async-preview-v1`
+
+**Exports:**
+- `SonioxModel`, `SonioxRealtimeModel`, `SonioxAsyncModel` - const objects for autocomplete
+- `SonioxModelCode`, `SonioxRealtimeModelCode`, `SonioxAsyncModelCode` - type unions
+- `SonioxModelLabels` - display names for UI
+
+#### Speechmatics Operating Point Export
+
+Added `SpeechmaticsOperatingPoint` constant for type-safe model quality tier selection:
+
+```typescript
+import { SpeechmaticsOperatingPoint } from 'voice-router-dev/constants'
+
+await router.transcribe('speechmatics', audioUrl, {
+  model: SpeechmaticsOperatingPoint.enhanced  // ✅ Type-safe
+})
+```
+
+**Values:** `standard` (faster), `enhanced` (higher accuracy)
+
+### Changed
+
+#### Strict Typing for SonioxConfig
+
+`SonioxConfig.model` now uses `SonioxModelCode` instead of loose `string`:
+
+```typescript
+// Before (0.7.4)
+const adapter = createSonioxAdapter({
+  apiKey: '...',
+  model: 'any-string'  // ❌ No validation
+})
+
+// After (0.7.5)
+import { SonioxModel } from 'voice-router-dev/constants'
+
+const adapter = createSonioxAdapter({
+  apiKey: '...',
+  model: SonioxModel.stt_async_v3  // ✅ Type-safe with autocomplete
+})
+```
+
+Also improved `getLanguagesForModel()` parameter from `string` to `SonioxModelCode`.
+
+---
+
 ## [0.7.4] - 2026-01-23
 
 ### Added
