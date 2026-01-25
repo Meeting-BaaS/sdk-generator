@@ -1,6 +1,6 @@
 {
   "name": "voice-router-dev",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, Speechmatics, and Soniox",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -9,33 +9,50 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.js",
+      "default": "./dist/index.mjs"
     },
     "./webhooks": {
       "types": "./dist/webhooks.d.ts",
       "import": "./dist/webhooks.mjs",
-      "require": "./dist/webhooks.js"
+      "require": "./dist/webhooks.js",
+      "default": "./dist/webhooks.mjs"
     },
+    "./webhooks.mjs": "./dist/webhooks.mjs",
+    "./webhooks.js": "./dist/webhooks.js",
     "./constants": {
       "types": "./dist/constants.d.ts",
       "import": "./dist/constants.mjs",
-      "require": "./dist/constants.js"
+      "require": "./dist/constants.js",
+      "default": "./dist/constants.mjs"
     },
+    "./constants.mjs": "./dist/constants.mjs",
+    "./constants.js": "./dist/constants.js",
     "./field-configs": {
       "types": "./dist/field-configs.d.ts",
       "import": "./dist/field-configs.mjs",
-      "require": "./dist/field-configs.js"
+      "require": "./dist/field-configs.js",
+      "default": "./dist/field-configs.mjs"
     },
+    "./field-configs.mjs": "./dist/field-configs.mjs",
+    "./field-configs.js": "./dist/field-configs.js",
     "./field-metadata": {
       "types": "./dist/field-metadata.d.ts",
       "import": "./dist/field-metadata.mjs",
-      "require": "./dist/field-metadata.js"
+      "require": "./dist/field-metadata.js",
+      "default": "./dist/field-metadata.mjs"
     },
+    "./field-metadata.mjs": "./dist/field-metadata.mjs",
+    "./field-metadata.js": "./dist/field-metadata.js",
     "./provider-metadata": {
       "types": "./dist/provider-metadata.d.ts",
       "import": "./dist/provider-metadata.mjs",
-      "require": "./dist/provider-metadata.js"
-    }
+      "require": "./dist/provider-metadata.js",
+      "default": "./dist/provider-metadata.mjs"
+    },
+    "./provider-metadata.mjs": "./dist/provider-metadata.mjs",
+    "./provider-metadata.js": "./dist/provider-metadata.js",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist/**/*.js",
@@ -44,7 +61,8 @@
     "dist/**/*.d.mts",
     "README.md",
     "CHANGELOG.md",
-    "LICENSE"
+    "LICENSE",
+    "package.json"
   ],
   "engines": {
     "node": ">=20.0.0"

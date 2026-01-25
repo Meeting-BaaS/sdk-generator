@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.7] - 2026-01-25
+
+### Changed
+
+#### Improved Package Exports for Bundler Compatibility
+
+Fixed `ERR_PACKAGE_PATH_NOT_EXPORTED` errors in Next.js and other bundlers:
+
+- Added `default` condition to all subpath exports as bundler fallback
+- Added explicit file path exports (`./constants.mjs`, `./constants.js`, etc.) for direct aliasing
+- Exported `./package.json` for tooling that needs version metadata
+
+```json
+// Now works without aliasing hacks
+import { DeepgramModel } from 'voice-router-dev/constants'
+import { DeepgramModel } from 'voice-router-dev/constants.mjs'
+import pkg from 'voice-router-dev/package.json'
+```
+
+---
+
 ## [0.7.6] - 2026-01-25
 
 ### Added
