@@ -379,6 +379,22 @@ flowchart TB
 `
   }
 
+  // ===== MODEL EXTRACTION =====
+  const modelScripts = scripts.generate.filter((f) => f.includes("model"))
+  if (modelScripts.length > 0) {
+    mmd += `    subgraph MODELS["MODEL EXTRACTION"]
+        direction TB
+`
+    for (const script of modelScripts) {
+      const id = sanitizeId(script.replace(".js", ""))
+      mmd += `        MODEL_${id}["${script}"]
+`
+    }
+    mmd += `    end
+
+`
+  }
+
   // ===== GENERATED OUTPUT =====
   if (generated.length > 0) {
     mmd += `    subgraph GENERATED["src/generated/"]
@@ -394,6 +410,7 @@ flowchart TB
       const hasBatch = contents.some((f) => f.includes("batch"))
       const hasLanguages = contents.includes("languages.ts")
       const hasLocales = contents.includes("locales.ts")
+      const hasModels = contents.includes("models.ts")
 
       let features = []
       if (hasApi) features.push("api/")
@@ -402,6 +419,7 @@ flowchart TB
       if (hasBatch) features.push("batch")
       if (hasLanguages) features.push("languages")
       if (hasLocales) features.push("locales")
+      if (hasModels) features.push("models")
 
       mmd += `        GEN_${id}["${dir}/<br/>${features.join(" ")}"]
 `
@@ -608,6 +626,14 @@ flowchart TB
 `
   }
 
+  // Models -> Generated
+  if (modelScripts.length > 0) {
+    mmd += `
+    %% Model extraction to generated
+    MODELS --> GENERATED
+`
+  }
+
   // Generated -> Exports
   mmd += `
     %% Generated to exports
@@ -653,7 +679,7 @@ flowchart TB
     class REMOTE,SYNC remote
     class MANUAL,MANUAL_TYPES manual
     class FIX_PRE,FIX_POST fix
-    class ORVAL,GENERATED,STREAMING,LANGS gen
+    class ORVAL,GENERATED,STREAMING,LANGS,MODELS gen
     class EXPORTS export
     class SDK_INTERNALS,ADAPTERS,WEBHOOKS,ROUTER internal
     class PUBLIC_API api
