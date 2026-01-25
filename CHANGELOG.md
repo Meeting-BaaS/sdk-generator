@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.6] - 2026-01-25
+
+### Added
+
+#### Auto-Generated Model Constants
+
+Replaced hardcoded model lists with auto-generated constants from provider APIs/specs:
+
+```typescript
+import {
+  DeepgramModel,      // 48 models from Deepgram API
+  OpenAIModel,        // 5 transcription models from OpenAI spec
+  OpenAIRealtimeModel // 14 realtime models from OpenAI spec
+} from 'voice-router-dev/constants'
+
+// All models now auto-sync when specs update
+{ model: DeepgramModel["nova-3"] }
+{ model: OpenAIModel["gpt-4o-transcribe"] }
+{ model: OpenAIRealtimeModel["gpt-4o-realtime-preview"] }
+```
+
+**New generation scripts:**
+- `generate-deepgram-models.js` - Fetches from `https://api.deepgram.com/v1/models`
+- `generate-openai-models.js` - Extracts from orval-generated TypeScript types
+
+**New exports:**
+- `DeepgramModel`, `DeepgramModelCodes`, `DeepgramModelLabels`, `DeepgramModelCode`
+- `OpenAIModelCodes`, `OpenAIModelLabels`, `OpenAIModelCode`
+- `OpenAITranscriptionModel`, `OpenAITranscriptionModelCode`
+- `OpenAIRealtimeModel`, `OpenAIRealtimeModelCode`
+
+### Changed
+
+- Models are now automatically synced during `prebuild` and `openapi:generate`
+- Pipeline diagram updated to show MODEL EXTRACTION section
+
+---
+
 ## [0.7.5] - 2026-01-25
 
 ### Added
