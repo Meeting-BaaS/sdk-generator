@@ -89,12 +89,14 @@
     "openapi:sync-soniox-languages": "node scripts/generate-soniox-languages.js",
     "openapi:sync-soniox-models": "node scripts/generate-soniox-models.js",
     "openapi:sync-deepgram-languages": "node scripts/generate-deepgram-languages.js",
+    "openapi:sync-deepgram-models": "node scripts/generate-deepgram-models.js",
+    "openapi:sync-openai-models": "node scripts/generate-openai-models.js",
     "openapi:sync-speechmatics-languages": "node scripts/generate-speechmatics-languages.js",
     "openapi:sync-azure-locales": "node scripts/generate-azure-locales.js",
-    "openapi:generate": "pnpm openapi:fix-specs && pnpm openapi:clean && orval && pnpm openapi:sync-assemblyai-streaming && pnpm openapi:sync-deepgram-streaming && pnpm openapi:sync-deepgram-languages && pnpm openapi:sync-speechmatics-streaming && pnpm openapi:sync-speechmatics-languages && pnpm openapi:sync-soniox-streaming && pnpm openapi:sync-soniox-languages && pnpm openapi:sync-azure-locales && pnpm openapi:fix",
+    "openapi:generate": "pnpm openapi:fix-specs && pnpm openapi:clean && orval && pnpm openapi:sync-assemblyai-streaming && pnpm openapi:sync-deepgram-streaming && pnpm openapi:sync-deepgram-languages && pnpm openapi:sync-deepgram-models && pnpm openapi:sync-speechmatics-streaming && pnpm openapi:sync-speechmatics-languages && pnpm openapi:sync-soniox-streaming && pnpm openapi:sync-soniox-languages && pnpm openapi:sync-soniox-models && pnpm openapi:sync-openai-models && pnpm openapi:sync-azure-locales && pnpm openapi:fix",
     "openapi:generate:gladia": "pnpm openapi:clean:gladia && orval --config orval.config.ts --project gladiaApi && orval --config orval.config.ts --project gladiaZod && pnpm openapi:fix",
     "openapi:generate:assemblyai": "pnpm openapi:clean:assemblyai && orval --config orval.config.ts --project assemblyaiApi && orval --config orval.config.ts --project assemblyaiZod && pnpm openapi:sync-assemblyai-streaming && pnpm openapi:fix",
-    "openapi:generate:deepgram": "pnpm openapi:clean:deepgram && orval --config orval.config.ts --project deepgramApi && orval --config orval.config.ts --project deepgramZod && pnpm openapi:sync-deepgram-streaming && pnpm openapi:sync-deepgram-languages && pnpm openapi:fix",
+    "openapi:generate:deepgram": "pnpm openapi:clean:deepgram && orval --config orval.config.ts --project deepgramApi && orval --config orval.config.ts --project deepgramZod && pnpm openapi:sync-deepgram-streaming && pnpm openapi:sync-deepgram-languages && pnpm openapi:sync-deepgram-models && pnpm openapi:fix",
     "openapi:generate:speechmatics": "node scripts/fix-speechmatics-spec.js && orval --config orval.config.ts --project speechmaticsApi && orval --config orval.config.ts --project speechmaticsZod && pnpm openapi:sync-speechmatics-streaming && pnpm openapi:sync-speechmatics-languages && pnpm openapi:fix",
     "openapi:generate:speechmatics-streaming": "pnpm openapi:sync-speechmatics-streaming",
     "openapi:generate:soniox": "pnpm openapi:clean:soniox && orval --config orval.config.ts --project sonioxApi && orval --config orval.config.ts --project sonioxZod && pnpm openapi:sync-soniox-streaming && pnpm openapi:sync-soniox-languages && pnpm openapi:sync-soniox-models && pnpm openapi:fix",
@@ -117,7 +119,7 @@
     "docs:generate:openai": "typedoc --options typedoc.openai.config.mjs",
     "docs:generate:speechmatics": "typedoc --options typedoc.speechmatics.config.mjs",
     "prepublishOnly": "pnpm openapi:sync && pnpm openapi:validate && pnpm lint:fix && pnpm build",
-    "prebuild": "pnpm openapi:fix-specs && pnpm openapi:fix && pnpm openapi:sync-soniox-languages && pnpm openapi:sync-soniox-models && pnpm openapi:sync-speechmatics-languages && pnpm openapi:sync-azure-locales && pnpm openapi:sync-deepgram-languages"
+    "prebuild": "pnpm openapi:fix-specs && pnpm openapi:fix && pnpm openapi:sync-soniox-languages && pnpm openapi:sync-soniox-models && pnpm openapi:sync-speechmatics-languages && pnpm openapi:sync-azure-locales && pnpm openapi:sync-deepgram-languages && pnpm openapi:sync-deepgram-models && pnpm openapi:sync-openai-models"
   },
   "publishConfig": {
     "access": "public"

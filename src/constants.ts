@@ -121,60 +121,19 @@ export const DeepgramSampleRate = {
   NUMBER_48000: 48000
 } as const
 
-/**
- * Deepgram transcription models
- *
- * @example
- * ```typescript
- * import { DeepgramModel } from 'voice-router-dev/constants'
- *
- * { model: DeepgramModel["nova-3"] }
- * { model: DeepgramModel["nova-2-medical"] }
- * ```
- */
-export const DeepgramModel = {
-  // Nova 3 models (latest)
-  "nova-3": "nova-3",
-  "nova-3-general": "nova-3-general",
-  "nova-3-medical": "nova-3-medical",
-
-  // Nova 2 models
-  "nova-2": "nova-2",
-  "nova-2-general": "nova-2-general",
-  "nova-2-meeting": "nova-2-meeting",
-  "nova-2-finance": "nova-2-finance",
-  "nova-2-conversationalai": "nova-2-conversationalai",
-  "nova-2-voicemail": "nova-2-voicemail",
-  "nova-2-video": "nova-2-video",
-  "nova-2-medical": "nova-2-medical",
-  "nova-2-drivethru": "nova-2-drivethru",
-  "nova-2-automotive": "nova-2-automotive",
-
-  // Nova 1 models
-  nova: "nova",
-  "nova-general": "nova-general",
-  "nova-phonecall": "nova-phonecall",
-  "nova-medical": "nova-medical",
-
-  // Enhanced models
-  enhanced: "enhanced",
-  "enhanced-general": "enhanced-general",
-  "enhanced-meeting": "enhanced-meeting",
-  "enhanced-phonecall": "enhanced-phonecall",
-  "enhanced-finance": "enhanced-finance",
-
-  // Base models
-  base: "base",
-  meeting: "meeting",
-  phonecall: "phonecall",
-  finance: "finance",
-  conversationalai: "conversationalai",
-  voicemail: "voicemail",
-  video: "video"
-} as const satisfies Record<
-  string,
-  import("./generated/deepgram/schema/listenV1ModelParameter").ListenV1ModelParameter
->
+// Re-export auto-generated Deepgram model constants
+// Generated from https://api.deepgram.com/v1/models by scripts/generate-deepgram-models.js
+import {
+  DeepgramModel as _DeepgramModel,
+  DeepgramModelCodes as _DeepgramModelCodes,
+  DeepgramModelLabels as _DeepgramModelLabels
+} from "./generated/deepgram/models"
+export {
+  _DeepgramModel as DeepgramModel,
+  _DeepgramModelCodes as DeepgramModelCodes,
+  _DeepgramModelLabels as DeepgramModelLabels
+}
+export type { DeepgramModelCode } from "./generated/deepgram/models"
 
 // Re-export auto-generated Deepgram language constants
 // Generated from https://api.deepgram.com/v1/models by scripts/generate-deepgram-languages.js
@@ -620,7 +579,8 @@ export type DeepgramCallbackMethodType =
 export type DeepgramSampleRateType = (typeof DeepgramSampleRate)[keyof typeof DeepgramSampleRate]
 
 /** Deepgram model type derived from const object */
-export type DeepgramModelType = (typeof DeepgramModel)[keyof typeof DeepgramModel]
+/** Deepgram model type (alias for DeepgramModelCode) */
+export type { DeepgramModelCode as DeepgramModelType } from "./generated/deepgram/models"
 
 /** Deepgram language type (alias for DeepgramLanguageCode) */
 export type { DeepgramLanguageCode as DeepgramLanguageType } from "./generated/deepgram/languages"
@@ -896,38 +856,40 @@ export type DeepgramTTSSampleRateType =
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { AudioResponseFormat } from "./generated/openai/schema/audioResponseFormat"
-import type { CreateTranscriptionRequestModel } from "./generated/openai/schema/createTranscriptionRequestModel"
 import { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestInputAudioFormat"
 import { RealtimeTranscriptionSessionCreateRequestTurnDetectionType } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestTurnDetectionType"
-import type { RealtimeSessionCreateRequestGAModel } from "./generated/openai/schema/realtimeSessionCreateRequestGAModel"
-import type { AudioTranscriptionModel } from "./generated/openai/schema/audioTranscriptionModel"
+
+// Re-export auto-generated OpenAI model constants
+// Generated from orval types by scripts/generate-openai-models.js
+import {
+  OpenAITranscriptionModel as _OpenAITranscriptionModel,
+  OpenAITranscriptionModelCodes as _OpenAITranscriptionModelCodes,
+  OpenAIRealtimeModel as _OpenAIRealtimeModel,
+  OpenAIRealtimeModelCodes as _OpenAIRealtimeModelCodes,
+  OpenAIModelCodes as _OpenAIModelCodes,
+  OpenAIModelLabels as _OpenAIModelLabels
+} from "./generated/openai/models"
 
 /**
- * OpenAI Whisper transcription models
- *
- * Values from official spec (auto-synced from Stainless):
- * - `whisper-1`: Open source Whisper V2 model
- * - `gpt-4o-transcribe`: GPT-4o based transcription (more accurate)
- * - `gpt-4o-mini-transcribe`: Faster, cost-effective GPT-4o mini
- * - `gpt-4o-mini-transcribe-2025-12-15`: Dated version of GPT-4o mini
- * - `gpt-4o-transcribe-diarize`: GPT-4o with speaker diarization
- *
- * @example
- * ```typescript
- * import { OpenAIModel } from 'voice-router-dev/constants'
- *
- * { model: OpenAIModel["whisper-1"] }
- * { model: OpenAIModel["gpt-4o-transcribe"] }
- * { model: OpenAIModel["gpt-4o-transcribe-diarize"] }
- * ```
+ * OpenAI transcription models (batch)
+ * @see scripts/generate-openai-models.js
  */
-export const OpenAIModel = {
-  "whisper-1": "whisper-1",
-  "gpt-4o-transcribe": "gpt-4o-transcribe",
-  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
-  "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
-  "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize"
-} as const satisfies Record<string, CreateTranscriptionRequestModel>
+export const OpenAIModel = _OpenAITranscriptionModel
+export const OpenAIModelCodes = _OpenAIModelCodes
+export const OpenAIModelLabels = _OpenAIModelLabels
+
+/**
+ * OpenAI Realtime API models (streaming)
+ * @see scripts/generate-openai-models.js
+ */
+export const OpenAIRealtimeModel = _OpenAIRealtimeModel
+export const OpenAIRealtimeModelCodes = _OpenAIRealtimeModelCodes
+
+export type {
+  OpenAIModelCode,
+  OpenAITranscriptionModelCode,
+  OpenAIRealtimeModelCode
+} from "./generated/openai/models"
 
 /**
  * OpenAI transcription response formats
@@ -939,9 +901,6 @@ export const OpenAIModel = {
  * - `verbose_json`: Detailed JSON with timestamps
  * - `vtt`: VTT subtitle format
  * - `diarized_json`: JSON with speaker annotations (gpt-4o-transcribe-diarize only)
- *
- * Note: GPT-4o transcribe models only support `json` format.
- * For diarization, use `diarized_json` with `gpt-4o-transcribe-diarize` model.
  *
  * @example
  * ```typescript
@@ -960,36 +919,8 @@ export type OpenAIModelType = (typeof OpenAIModel)[keyof typeof OpenAIModel]
 export type OpenAIResponseFormatType =
   (typeof OpenAIResponseFormat)[keyof typeof OpenAIResponseFormat]
 
-/**
- * OpenAI Realtime API models for streaming transcription
- *
- * Values from official spec (auto-synced from Stainless):
- * - `gpt-4o-realtime-preview`: Latest GPT-4o realtime preview
- * - `gpt-4o-realtime-preview-2024-10-01`: October 2024 version
- * - `gpt-4o-realtime-preview-2024-12-17`: December 2024 version
- * - `gpt-4o-realtime-preview-2025-06-03`: June 2025 version
- * - `gpt-4o-mini-realtime-preview`: GPT-4o mini realtime
- * - `gpt-4o-mini-realtime-preview-2024-12-17`: December 2024 mini version
- *
- * @example
- * ```typescript
- * import { OpenAIRealtimeModel } from 'voice-router-dev/constants'
- *
- * await adapter.transcribeStream({
- *   openaiStreaming: {
- *     model: OpenAIRealtimeModel["gpt-4o-realtime-preview"]
- *   }
- * })
- * ```
- */
-export const OpenAIRealtimeModel = {
-  "gpt-4o-realtime-preview": "gpt-4o-realtime-preview",
-  "gpt-4o-realtime-preview-2024-10-01": "gpt-4o-realtime-preview-2024-10-01",
-  "gpt-4o-realtime-preview-2024-12-17": "gpt-4o-realtime-preview-2024-12-17",
-  "gpt-4o-realtime-preview-2025-06-03": "gpt-4o-realtime-preview-2025-06-03",
-  "gpt-4o-mini-realtime-preview": "gpt-4o-mini-realtime-preview",
-  "gpt-4o-mini-realtime-preview-2024-12-17": "gpt-4o-mini-realtime-preview-2024-12-17"
-} as const satisfies Record<string, RealtimeSessionCreateRequestGAModel>
+/** OpenAI Realtime model type derived from const object */
+export type OpenAIRealtimeModelType = (typeof OpenAIRealtimeModel)[keyof typeof OpenAIRealtimeModel]
 
 /**
  * OpenAI Realtime audio input formats
@@ -1035,26 +966,10 @@ export const OpenAIRealtimeTurnDetection =
 
 /**
  * OpenAI Realtime input transcription models
- *
- * Models available for input audio transcription in Realtime sessions.
- *
- * @example
- * ```typescript
- * import { OpenAIRealtimeTranscriptionModel } from 'voice-router-dev/constants'
- *
- * // whisper-1 is the standard transcription model
- * ```
+ * (Alias for OpenAITranscriptionModel - same models work for realtime input transcription)
+ * @see scripts/generate-openai-models.js
  */
-export const OpenAIRealtimeTranscriptionModel = {
-  "whisper-1": "whisper-1",
-  "gpt-4o-transcribe": "gpt-4o-transcribe",
-  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
-  "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
-  "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize"
-} as const satisfies Record<string, AudioTranscriptionModel>
-
-/** OpenAI Realtime model type */
-export type OpenAIRealtimeModelType = (typeof OpenAIRealtimeModel)[keyof typeof OpenAIRealtimeModel]
+export const OpenAIRealtimeTranscriptionModel = _OpenAITranscriptionModel
 
 /** OpenAI Realtime audio format type */
 export type OpenAIRealtimeAudioFormatType =
