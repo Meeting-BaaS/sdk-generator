@@ -618,16 +618,61 @@ flowchart TB
     STREAMING --> GENERATED
 `
 
-  // Languages -> Generated
+  // Language/Locale sources -> LANGS
   if (langScripts.length > 0) {
+    mmd += `
+    %% Language/locale extraction sources
+`
+    // Map language scripts to their sources
+    const langSourceMap = {
+      "generate-deepgram-languages": { type: "api", label: "Deepgram API" },
+      "generate-speechmatics-languages": { type: "api", label: "Speechmatics API" },
+      "generate-azure-locales": { type: "api", label: "Microsoft Docs" },
+      "generate-soniox-languages": { type: "spec", specId: "SONIOX_OPENAPI" }
+    }
+    for (const script of langScripts) {
+      const scriptKey = script.replace(".js", "")
+      const scriptId = sanitizeId(scriptKey)
+      const source = langSourceMap[scriptKey]
+      if (source) {
+        if (source.type === "api") {
+          mmd += `    REMOTE --> LANG_${scriptId}\n`
+        } else if (source.type === "spec" && source.specId) {
+          mmd += `    SPEC_${source.specId} --> LANG_${scriptId}\n`
+        }
+      }
+    }
     mmd += `
     %% Language extraction to generated
     LANGS --> GENERATED
 `
   }
 
-  // Models -> Generated
+  // Model sources -> MODELS
   if (modelScripts.length > 0) {
+    mmd += `
+    %% Model extraction sources
+`
+    // Map model scripts to their sources
+    const modelSourceMap = {
+      "generate-deepgram-models": { type: "api", label: "Deepgram API" },
+      "generate-openai-models": { type: "generated", label: "OpenAI generated types" },
+      "generate-soniox-models": { type: "spec", specId: "SONIOX_OPENAPI" }
+    }
+    for (const script of modelScripts) {
+      const scriptKey = script.replace(".js", "")
+      const scriptId = sanitizeId(scriptKey)
+      const source = modelSourceMap[scriptKey]
+      if (source) {
+        if (source.type === "api") {
+          mmd += `    REMOTE --> MODEL_${scriptId}\n`
+        } else if (source.type === "spec" && source.specId) {
+          mmd += `    SPEC_${source.specId} --> MODEL_${scriptId}\n`
+        } else if (source.type === "generated") {
+          mmd += `    GENERATED --> MODEL_${scriptId}\n`
+        }
+      }
+    }
     mmd += `
     %% Model extraction to generated
     MODELS --> GENERATED
