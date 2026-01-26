@@ -233,6 +233,12 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
       }
       break
 
+    case "ZodRecord":
+      // Record types like zod.record(zod.string(), zod.any()) - arbitrary key-value objects
+      baseConfig.type = "object"
+      baseConfig.inputFormat = "json"
+      break
+
     case "ZodUnion":
     case "ZodDiscriminatedUnion":
       // For unions, try to extract common type or use first non-null option

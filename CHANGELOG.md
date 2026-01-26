@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.9] - 2026-01-27
+
+### Fixed
+
+#### `custom_metadata` Now Correctly Typed as Object
+
+The `custom_metadata` field in Gladia (and other providers) was incorrectly typed as `string` in field metadata. It's now correctly typed as `object` with `inputFormat: "json"`.
+
+```typescript
+// Before (0.7.8)
+{ name: "custom_metadata", type: "string", ... }
+
+// After (0.7.9)
+{ name: "custom_metadata", type: "object", inputFormat: "json", ... }
+```
+
+This allows UI importers to properly handle nested properties like `custom_metadata.folder_id` instead of treating them as unrecognized fields.
+
+**Technical fix:** Added `ZodRecord` handling in `zodToFieldConfigs()` - record types like `zod.record(zod.string(), zod.any())` are now recognized as objects with JSON input format.
+
+---
+
 ## [0.7.8] - 2026-01-26
 
 ### Added
