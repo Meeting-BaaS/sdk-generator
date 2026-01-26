@@ -1,6 +1,6 @@
 {
   "name": "voice-router-dev",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "Universal speech-to-text router for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, Speechmatics, and Soniox",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -44,6 +44,14 @@
     },
     "./field-metadata.mjs": "./dist/field-metadata.mjs",
     "./field-metadata.js": "./dist/field-metadata.js",
+    "./field-equivalences": {
+      "types": "./dist/field-equivalences.d.ts",
+      "import": "./dist/field-equivalences.mjs",
+      "require": "./dist/field-equivalences.js",
+      "default": "./dist/field-equivalences.mjs"
+    },
+    "./field-equivalences.mjs": "./dist/field-equivalences.mjs",
+    "./field-equivalences.js": "./dist/field-equivalences.js",
     "./provider-metadata": {
       "types": "./dist/provider-metadata.d.ts",
       "import": "./dist/provider-metadata.mjs",
@@ -127,7 +135,7 @@
     "openapi:diagram": "node scripts/generate-pipeline-diagram.js",
     "openapi:rebuild": "pnpm openapi:sync && pnpm openapi:generate && pnpm build",
     "docs:clean": "rm -rf docs/generated",
-    "docs:generate": "pnpm docs:clean && pnpm docs:generate:router && pnpm docs:generate:webhooks && pnpm docs:generate:gladia && pnpm docs:generate:assemblyai && pnpm docs:generate:deepgram && pnpm docs:generate:azure && pnpm docs:generate:openai && pnpm docs:generate:speechmatics",
+    "docs:generate": "pnpm docs:clean && pnpm docs:generate:router && pnpm docs:generate:webhooks && pnpm docs:generate:gladia && pnpm docs:generate:assemblyai && pnpm docs:generate:deepgram && pnpm docs:generate:azure && pnpm docs:generate:openai && pnpm docs:generate:speechmatics && pnpm docs:field-equivalences",
     "docs:generate:router": "typedoc --options typedoc.router.config.mjs",
     "docs:generate:webhooks": "typedoc --options typedoc.webhooks.config.mjs",
     "docs:generate:gladia": "typedoc --options typedoc.gladia.config.mjs",
@@ -136,6 +144,7 @@
     "docs:generate:azure": "typedoc --options typedoc.azure.config.mjs",
     "docs:generate:openai": "typedoc --options typedoc.openai.config.mjs",
     "docs:generate:speechmatics": "typedoc --options typedoc.speechmatics.config.mjs",
+    "docs:field-equivalences": "node scripts/generate-field-equivalences.js",
     "prepublishOnly": "pnpm openapi:sync && pnpm openapi:validate && pnpm lint:fix && pnpm build",
     "prebuild": "pnpm openapi:fix-specs && pnpm openapi:fix && pnpm openapi:sync-soniox-languages && pnpm openapi:sync-soniox-models && pnpm openapi:sync-speechmatics-languages && pnpm openapi:sync-azure-locales && pnpm openapi:sync-deepgram-languages && pnpm openapi:sync-deepgram-models && pnpm openapi:sync-openai-models"
   },

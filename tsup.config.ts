@@ -7,6 +7,7 @@ export default defineConfig({
     constants: "src/constants.ts",
     "field-configs": "src/field-configs.ts",
     "field-metadata": "src/field-metadata.ts",
+    "field-equivalences": "src/field-equivalences.ts",
     "provider-metadata": "src/provider-metadata.ts"
   },
   format: ["cjs", "esm"],

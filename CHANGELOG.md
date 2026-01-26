@@ -5,6 +5,64 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.8] - 2026-01-26
+
+### Added
+
+#### Field Equivalences Export for Cross-Provider Mapping
+
+New `voice-router-dev/field-equivalences` export provides programmatic access to semantic field mappings across providers. Use this to build your own translation logic instead of relying on lossy auto-translation.
+
+```typescript
+import {
+  FIELD_EQUIVALENCES,
+  getEquivalentField,
+  getCategoryFields,
+  supportsCategory
+} from 'voice-router-dev/field-equivalences'
+
+// Get the diarization field for Deepgram
+getEquivalentField('diarization', 'deepgram', 'transcription') // 'diarize'
+getEquivalentField('diarization', 'assemblyai', 'transcription') // 'speaker_labels'
+
+// Check if provider supports a feature
+supportsCategory('sentiment', 'openai', 'transcription') // false
+supportsCategory('sentiment', 'deepgram', 'transcription') // true
+
+// Get all fields for a category
+getCategoryFields('diarization', 'transcription')
+// { deepgram: ['diarize'], gladia: ['diarization', ...], ... }
+
+// Access full metadata with notes and non-equivalences
+FIELD_EQUIVALENCES.diarization.notes
+FIELD_EQUIVALENCES.diarization.nonEquivalences
+```
+
+**Categories covered:** diarization, punctuation, language, model, translation, sentiment, entities, profanity, redaction, timestamps, callback
+
+**Also generates:** `docs/FIELD_EQUIVALENCES.md` - Human-readable documentation
+
+Regenerate with: `pnpm docs:field-equivalences`
+
+### Fixed
+
+#### Gladia Streaming: Added Missing `words_accurate_timestamps` Field
+
+The Gladia OpenAPI spec was missing the `words_accurate_timestamps` field in `RealtimeProcessingConfig`. This field exists in Gladia's V2 Live API (documented in their [V1→V2 migration guide](https://docs.gladia.io/chapters/live-stt/migration-from-v1)) but was not present in their published OpenAPI spec.
+
+```typescript
+// Now available in streaming config
+await gladia.transcribeStream({
+  realtime_processing: {
+    words_accurate_timestamps: true  // ✅ Now typed correctly
+  }
+})
+```
+
+**Note:** `emotion_analysis` and `structured_data_extraction` do NOT exist in Gladia's streaming API - only in batch transcription.
+
+---
+
 ## [0.7.7] - 2026-01-25
 
 ### Changed
