@@ -82,7 +82,7 @@ const SPEC_SOURCES = {
     format: "yaml"
   },
   speechmaticsAsync: {
-    url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/real-time-client/schema/realtime.yml",
+    url: "https://raw.githubusercontent.com/speechmatics/docs/refs/heads/main/spec/realtime.yaml",
     output: "specs/speechmatics-asyncapi.yml",
     format: "yaml"
   },

@@ -36,7 +36,8 @@ export const speechmaticsTranscriptionConfigSchema = zod.object({
   enable_entities: zod.boolean().optional(),
   operating_point: zod.enum(["standard", "enhanced"]).optional(),
   punctuation_overrides: zod.unknown() /* TODO: resolve PunctuationOverrides */.optional(),
-  conversation_config: zod.unknown() /* TODO: resolve ConversationConfig */.optional()
+  conversation_config: zod.unknown() /* TODO: resolve ConversationConfig */.optional(),
+  channel_diarization_labels: zod.array(zod.string()).optional()
 })
 
 /**
@@ -57,10 +58,11 @@ export const speechmaticsMidSessionConfigSchema = zod.object({
  * @source SpeakerDiarizationConfig from AsyncAPI spec
  */
 export const speechmaticsSpeakerDiarizationConfigSchema = zod.object({
-  max_speakers: zod.number().min(2).max(100).optional().describe("Configure the maximum number of speakers to detect. See [Max Speakers](http://docs.speechmatics.com/speech-to-text/features/diarization#max-speakers)."),
+  max_speakers: zod.number().min(2).optional().describe("Configure the maximum number of speakers to detect. See [Max Speakers](http://docs.speechmatics.com/speech-to-text/features/diarization#max-speakers)."),
   prefer_current_speaker: zod.boolean().optional().describe("When set to `true`, reduces the likelihood of incorrectly switching between similar sounding speakers. See [Prefer Current Speaker](https://docs.speechmatics.com/speech-to-text/features/diarization#prefer-current-speaker)."),
   speaker_sensitivity: zod.number().min(0).max(1).optional(),
-  speakers: zod.array(zod.unknown() /* TODO: resolve SpeakersInputItem */).optional().describe("Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. :::note This feature is currently in [preview mode](https://docs.speechmatics.com/private/preview-mode). :::")
+  get_speakers: zod.boolean().optional().describe("If true, speaker identifiers will be returned at the end of transcript."),
+  speakers: zod.array(zod.unknown() /* TODO: resolve SpeakersInputItem */).optional().describe("Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided.")
 })
 
 /**
@@ -94,7 +96,8 @@ export const streamingTranscriberParams = zod.object({
   max_delay_mode: zod.enum(["flexible", "fixed"]).optional(),
   enable_partials: zod.boolean().optional().describe("Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages) See [Partial transcripts](https://docs.speechmatics.com/speech-to-text/realtime/output#partial-transcripts)."),
   enable_entities: zod.boolean().optional(),
-  operating_point: zod.enum(["standard", "enhanced"]).optional()
+  operating_point: zod.enum(["standard", "enhanced"]).optional(),
+  channel_diarization_labels: zod.array(zod.string()).optional()
 })
 
 /**

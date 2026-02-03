@@ -39,6 +39,15 @@ adapter.initialize({
 | **Soniox** | Both REST and WS ignored `baseUrl` | `baseUrl` getter + WS URL both respect config |
 | **Gladia** | WS URL from API response (correct for prod) | API response URL overridable with `wsBaseUrl` |
 
+#### Speechmatics Real-Time Spec Sync Fixed
+
+The `speechmaticsAsync` spec sync was failing with HTTP 404 because Speechmatics moved the real-time AsyncAPI spec from their JS SDK repo to their docs repo (commit `fb21f29`).
+
+- **Old URL:** `speechmatics/speechmatics-js-sdk/.../packages/real-time-client/schema/realtime.yml` (deleted)
+- **New URL:** `speechmatics/docs/.../spec/realtime.yaml` (AsyncAPI 3.0.0)
+
+The updated spec includes new fields: `channel_diarization_labels`, `get_speakers`, `channel` and `channel_and_speaker` diarization modes, and `entity` recognition result type.
+
 #### `custom_metadata` Now Correctly Typed as Object
 
 The `custom_metadata` field in Gladia (and other providers) was incorrectly typed as `string` in field metadata. It's now correctly typed as `object` with `inputFormat: "json"`.
