@@ -946,9 +946,11 @@ export class GladiaAdapter extends BaseAdapter {
       this.getAxiosConfig()
     )
 
-    const { id, url: wsUrl } = initResponse.data
+    const { id, url: apiWsUrl } = initResponse.data
 
     // Step 2: Connect to WebSocket
+    // Allow wsBaseUrl override (for proxies/mocks that return public WS URLs)
+    const wsUrl = this.config?.wsBaseUrl || apiWsUrl
     const ws = new WebSocket(wsUrl)
 
     let sessionStatus: SessionStatus = "connecting"
@@ -1013,8 +1015,13 @@ export class GladiaAdapter extends BaseAdapter {
 
         // Capture outgoing raw message (convert Buffer/Uint8Array to ArrayBuffer)
         if (callbacks?.onRawMessage) {
-          const audioPayload = chunk.data instanceof ArrayBuffer ? chunk.data :
-            chunk.data.buffer.slice(chunk.data.byteOffset, chunk.data.byteOffset + chunk.data.byteLength) as ArrayBuffer
+          const audioPayload =
+            chunk.data instanceof ArrayBuffer
+              ? chunk.data
+              : (chunk.data.buffer.slice(
+                  chunk.data.byteOffset,
+                  chunk.data.byteOffset + chunk.data.byteLength
+                ) as ArrayBuffer)
           callbacks.onRawMessage({
             provider: this.name,
             direction: "outgoing",

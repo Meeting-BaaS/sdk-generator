@@ -124,6 +124,15 @@ export class AssemblyAIAdapter extends BaseAdapter {
   protected baseUrl = "https://api.assemblyai.com" // Generated functions already include /v2 path
   private wsBaseUrl = "wss://streaming.assemblyai.com/v3/ws" // v3 Universal Streaming endpoint
 
+  initialize(config: ProviderConfig): void {
+    super.initialize(config)
+    if (config.wsBaseUrl) {
+      this.wsBaseUrl = config.wsBaseUrl
+    } else if (config.baseUrl) {
+      this.wsBaseUrl = `${this.deriveWsUrl(config.baseUrl)}/v3/ws`
+    }
+  }
+
   /**
    * Get axios config for generated API client functions
    * Configures headers and base URL using authorization header
@@ -804,8 +813,12 @@ export class AssemblyAIAdapter extends BaseAdapter {
         if (callbacks?.onRawMessage) {
           // AssemblyAI v3 streaming uses 'type' field (Begin, Turn, Termination)
           // ErrorEvent has no type field, just 'error'
-          const messageType = "type" in message ? (message as { type: string }).type :
-                             "error" in message ? "Error" : undefined
+          const messageType =
+            "type" in message
+              ? (message as { type: string }).type
+              : "error" in message
+                ? "Error"
+                : undefined
           callbacks.onRawMessage({
             provider: this.name,
             direction: "incoming",

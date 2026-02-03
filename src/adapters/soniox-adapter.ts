@@ -201,6 +201,7 @@ export class SonioxAdapter extends BaseAdapter {
    * Get the base URL for API requests
    */
   protected get baseUrl(): string {
+    if (this.config?.baseUrl) return this.config.baseUrl
     return `https://${this.getRegionalHost()}/v1`
   }
 
@@ -407,7 +408,10 @@ export class SonioxAdapter extends BaseAdapter {
     const createdAt = new Date()
 
     // Build WebSocket URL with query parameters (using regional WebSocket host)
-    const wsUrl = new URL(`wss://${this.getRegionalWsHost()}/transcribe-websocket`)
+    // Respect wsBaseUrl > baseUrl > regional default
+    const wsBase = this.config?.wsBaseUrl
+      || (this.config?.baseUrl ? this.deriveWsUrl(this.config.baseUrl) : `wss://${this.getRegionalWsHost()}`)
+    const wsUrl = new URL(`${wsBase}/transcribe-websocket`)
     wsUrl.searchParams.set("api_key", this.config!.apiKey)
     // Prefer sonioxStreaming.model over generic model option
     const modelId = options?.sonioxStreaming?.model || options?.model || "stt-rt-preview"

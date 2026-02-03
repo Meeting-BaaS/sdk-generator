@@ -244,10 +244,11 @@ export class DeepgramAdapter extends BaseAdapter {
     super.initialize(config)
     this.projectId = config.projectId
 
-    // Set URLs based on region (unless explicit baseUrl is provided)
+    // Set URLs based on region (unless explicit baseUrl/wsBaseUrl is provided)
     const host = this.getRegionalHost(config.region)
     this.baseUrl = config.baseUrl || `https://${host}/v1`
-    this.wsBaseUrl = `wss://${host}/v1/listen`
+    this.wsBaseUrl = config.wsBaseUrl
+      || (config.baseUrl ? `${this.deriveWsUrl(config.baseUrl)}/listen` : `wss://${host}/v1/listen`)
 
     this.client = axios.create({
       baseURL: this.baseUrl,
@@ -285,9 +286,14 @@ export class DeepgramAdapter extends BaseAdapter {
   setRegion(region: DeepgramRegionType): void {
     this.validateConfig()
 
-    const host = this.getRegionalHost(region)
-    this.baseUrl = `https://${host}/v1`
-    this.wsBaseUrl = `wss://${host}/v1/listen`
+    // Don't override explicit baseUrl/wsBaseUrl from config
+    if (!this.config!.baseUrl) {
+      const host = this.getRegionalHost(region)
+      this.baseUrl = `https://${host}/v1`
+      if (!this.config!.wsBaseUrl) {
+        this.wsBaseUrl = `wss://${host}/v1/listen`
+      }
+    }
 
     // Recreate client with new base URL but preserve existing config
     this.client = axios.create({
@@ -893,8 +899,13 @@ export class DeepgramAdapter extends BaseAdapter {
 
         // Capture outgoing raw message (convert Buffer/Uint8Array to ArrayBuffer)
         if (callbacks?.onRawMessage) {
-          const audioPayload = chunk.data instanceof ArrayBuffer ? chunk.data :
-            chunk.data.buffer.slice(chunk.data.byteOffset, chunk.data.byteOffset + chunk.data.byteLength) as ArrayBuffer
+          const audioPayload =
+            chunk.data instanceof ArrayBuffer
+              ? chunk.data
+              : (chunk.data.buffer.slice(
+                  chunk.data.byteOffset,
+                  chunk.data.byteOffset + chunk.data.byteLength
+                ) as ArrayBuffer)
           callbacks.onRawMessage({
             provider: this.name,
             direction: "outgoing",

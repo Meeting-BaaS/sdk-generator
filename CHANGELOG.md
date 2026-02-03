@@ -5,9 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.7.9] - 2026-01-27
+## [0.8.0] - 2026-01-27
 
 ### Fixed
+
+#### WebSocket/Streaming URLs Now Respect `baseUrl` Override
+
+Previously, setting `config.baseUrl` only affected REST/HTTP calls. WebSocket streaming URLs remained hardcoded or region-derived, so streaming traffic still went to production endpoints even when pointing at a proxy, mock, or private deployment.
+
+Now all streaming adapters respect `baseUrl` (and the new `wsBaseUrl` for explicit WS override):
+
+```typescript
+// All traffic (REST + WebSocket) goes to your custom endpoint
+adapter.initialize({
+  apiKey: 'test-key',
+  baseUrl: 'https://my-proxy.internal:8080'
+})
+
+// Or override WS separately (e.g., proxy returns public WS URL you don't want)
+adapter.initialize({
+  apiKey: 'test-key',
+  baseUrl: 'https://my-proxy.internal:8080',
+  wsBaseUrl: 'wss://my-proxy.internal:8080'
+})
+```
+
+**Priority:** `wsBaseUrl` > derived from `baseUrl` (https→wss) > region default > hardcoded default
+
+| Adapter | Before | After |
+|---------|--------|-------|
+| **Deepgram** | WS always from region, ignored `baseUrl` | Derives WS from `baseUrl`. `setRegion()` skips when explicit URLs set. |
+| **AssemblyAI** | WS hardcoded to `streaming.assemblyai.com` | Derives WS from `baseUrl` + `/v3/ws` |
+| **Soniox** | Both REST and WS ignored `baseUrl` | `baseUrl` getter + WS URL both respect config |
+| **Gladia** | WS URL from API response (correct for prod) | API response URL overridable with `wsBaseUrl` |
 
 #### `custom_metadata` Now Correctly Typed as Object
 

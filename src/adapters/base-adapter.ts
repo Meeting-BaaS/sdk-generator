@@ -26,6 +26,15 @@ export interface ProviderConfig {
   apiKey: string
   /** Base API URL (optional, uses provider default if not specified) */
   baseUrl?: string
+  /**
+   * WebSocket base URL override for streaming (optional)
+   *
+   * If not set but `baseUrl` is provided, the WebSocket URL is derived
+   * from `baseUrl` by converting `https://` → `wss://` (or `http://` → `ws://`).
+   *
+   * Use this when your proxy/mock uses a different host for WebSocket connections.
+   */
+  wsBaseUrl?: string
   /** Request timeout in milliseconds */
   timeout?: number
   /** Custom headers to include in requests */
@@ -228,6 +237,22 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
     if (!this.config.apiKey) {
       throw new Error(`API key is required for ${this.name} provider`)
     }
+  }
+
+  /**
+   * Derive a WebSocket URL from an HTTP base URL
+   *
+   * Converts `https://` → `wss://` and `http://` → `ws://`
+   */
+  protected deriveWsUrl(httpUrl: string): string {
+    if (httpUrl.startsWith("https://")) {
+      return httpUrl.replace(/^https:\/\//, "wss://")
+    }
+    if (httpUrl.startsWith("http://")) {
+      return httpUrl.replace(/^http:\/\//, "ws://")
+    }
+    // Already a ws(s) URL
+    return httpUrl
   }
 
   /**
