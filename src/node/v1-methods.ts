@@ -439,9 +439,7 @@ export function createV1Methods(state: ClientState): BaasClientV1Methods {
      * Retrieves all Zoom OAuth connections associated with the authenticated account. Each connection represents a Zoom user who has authorized your app via OAuth. Use this to display connected users or to find the `zoom_user_id` needed for the `zoom_obf_token_user_id` bot parameter.
      * @returns The response from the list Zoom OAuth connections request
      */
-    async listZoomOauthConnections(): Promise<
-      ApiResponse<ZoomOAuthConnectionResponse[]>
-    > {
+    async listZoomOauthConnections(): Promise<ApiResponse<ZoomOAuthConnectionResponse[]>> {
       const { listZoomOauthConnections: listZoomOauthConnectionsApi } = await import(
         "../generated/v1/api/zoom-oauth/zoom-oauth.js"
       )
@@ -501,9 +499,7 @@ export function createV1Methods(state: ClientState): BaasClientV1Methods {
      * @param params - The parameters for the delete Zoom OAuth connection request
      * @returns The response from the delete Zoom OAuth connection request
      */
-    async deleteZoomOauthConnection(params: {
-      uuid: string
-    }): Promise<ApiResponse<void>> {
+    async deleteZoomOauthConnection(params: { uuid: string }): Promise<ApiResponse<void>> {
       const { deleteZoomOauthConnection: deleteZoomOauthConnectionApi } = await import(
         "../generated/v1/api/zoom-oauth/zoom-oauth.js"
       )

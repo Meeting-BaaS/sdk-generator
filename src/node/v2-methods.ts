@@ -784,9 +784,7 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
       )
     },
 
-    async listZoomCredentials(): Promise<
-      ApiResponseV2<ListZoomCredentials200DataItem[]>
-    > {
+    async listZoomCredentials(): Promise<ApiResponseV2<ListZoomCredentials200DataItem[]>> {
       const { listZoomCredentials: listZoomCredentialsApi } = await import(
         "../generated/v2/api/zoom-credentials/zoom-credentials.js"
       )

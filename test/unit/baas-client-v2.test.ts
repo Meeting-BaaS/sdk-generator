@@ -588,12 +588,9 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.get(
-          `https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`,
-          () => {
-            return HttpResponse.json(mockResponse, { status: 200 })
-          }
-        )
+        http.get(`https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
       )
 
       const result = await client.getZoomCredential({ id: credentialId })
@@ -623,12 +620,9 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.patch(
-          `https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`,
-          () => {
-            return HttpResponse.json(mockResponse, { status: 200 })
-          }
-        )
+        http.patch(`https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
       )
 
       const result = await client.updateZoomCredential({
@@ -650,12 +644,9 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.delete(
-          `https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`,
-          () => {
-            return HttpResponse.json(mockResponse, { status: 200 })
-          }
-        )
+        http.delete(`https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
       )
 
       const result = await client.deleteZoomCredential({ id: credentialId })

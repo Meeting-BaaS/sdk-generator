@@ -297,16 +297,12 @@ export interface BaasClientV2Methods {
     params: CreateZoomCredentialBody
   ): Promise<ApiResponseV2<CreateZoomCredential201Data>>
   listZoomCredentials(): Promise<ApiResponseV2<ListZoomCredentials200DataItem[]>>
-  getZoomCredential(params: {
-    id: string
-  }): Promise<ApiResponseV2<GetZoomCredential200Data>>
+  getZoomCredential(params: { id: string }): Promise<ApiResponseV2<GetZoomCredential200Data>>
   updateZoomCredential(params: {
     id: string
     body: UpdateZoomCredentialBody
   }): Promise<ApiResponseV2<UpdateZoomCredential200Data>>
-  deleteZoomCredential(params: {
-    id: string
-  }): Promise<ApiResponseV2<DeleteZoomCredential200Data>>
+  deleteZoomCredential(params: { id: string }): Promise<ApiResponseV2<DeleteZoomCredential200Data>>
   getApiKey(): string
   getBaseUrl(): string
 }
