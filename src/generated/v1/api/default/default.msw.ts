@@ -143,6 +143,18 @@ export const getGetMeetingDataResponseMock = (
         faker.helpers.arrayElement([faker.string.alpha(20), null]),
         undefined
       ]),
+      zoom_obf_token: faker.helpers.arrayElement([
+        faker.helpers.arrayElement([faker.string.alpha(20), null]),
+        undefined
+      ]),
+      zoom_obf_token_url: faker.helpers.arrayElement([
+        faker.helpers.arrayElement([faker.string.alpha(20), null]),
+        undefined
+      ]),
+      zoom_obf_token_user_id: faker.helpers.arrayElement([
+        faker.helpers.arrayElement([faker.string.alpha(20), null]),
+        undefined
+      ]),
       zoom_sdk_id: faker.helpers.arrayElement([
         faker.helpers.arrayElement([faker.string.alpha(20), null]),
         undefined

@@ -5,9 +5,15 @@
  * Meeting BaaS API
  * OpenAPI spec version: 1.1
  */
+import type { FailedRecordRequestEndedAt } from "./failedRecordRequestEndedAt"
 import type { FailedRecordRequestErrorCode } from "./failedRecordRequestErrorCode"
 
 export interface FailedRecordRequest {
+  /**
+   * Optional Unix timestamp (seconds, no ms) for when the bot actually ended. When provided (e.g. for manual replay), used instead of server time to avoid incorrect billing.
+   * @minimum 0
+   */
+  ended_at?: FailedRecordRequestEndedAt
   error_code?: FailedRecordRequestErrorCode
   meeting_url: string
   message: string

@@ -184,6 +184,18 @@ export const getGetEventResponseMock = (overrideResponse: Partial<Event> = {}): 
           faker.helpers.arrayElement([faker.string.alpha(20), null]),
           undefined
         ]),
+        zoom_obf_token: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
+        zoom_obf_token_url: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
+        zoom_obf_token_user_id: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
         zoom_sdk_id: faker.helpers.arrayElement([
           faker.helpers.arrayElement([faker.string.alpha(20), null]),
           undefined
@@ -304,6 +316,18 @@ export const getScheduleRecordEventResponseMock = (): Event[] =>
           ]),
           webhook_url: faker.string.alpha(20),
           zoom_access_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_user_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
           ]),
@@ -429,6 +453,18 @@ export const getUnscheduleRecordEventResponseMock = (): Event[] =>
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
           ]),
+          zoom_obf_token: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_user_id: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
           zoom_sdk_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
@@ -548,6 +584,18 @@ export const getPatchBotResponseMock = (): Event[] =>
           ]),
           webhook_url: faker.string.alpha(20),
           zoom_access_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_user_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
           ]),
@@ -672,6 +720,18 @@ export const getListEventsResponseMock = (
           ]),
           webhook_url: faker.string.alpha(20),
           zoom_access_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_url: faker.helpers.arrayElement([
+            faker.helpers.arrayElement([faker.string.alpha(20), null]),
+            undefined
+          ]),
+          zoom_obf_token_user_id: faker.helpers.arrayElement([
             faker.helpers.arrayElement([faker.string.alpha(20), null]),
             undefined
           ]),

@@ -5,6 +5,7 @@ import type {
   Calendar,
   CreateCalendarParams,
   CreateCalendarResponse,
+  CreateConnectionRequest,
   DeleteResponse,
   Event,
   GetMeetingDataParams,
@@ -24,7 +25,8 @@ import type {
   ScheduleRecordEventParams,
   ScreenshotsList,
   UnscheduleRecordEventParams,
-  UpdateCalendarParams
+  UpdateCalendarParams,
+  ZoomOAuthConnectionResponse
 } from "../generated/v1/schema"
 import type {
   BatchCreateBotResponseDataItem,
@@ -42,16 +44,20 @@ import type {
   CreateCalendarConnectionResponseData,
   CreateScheduledBotRequestBodyInput,
   CreateScheduledBotResponseData,
+  CreateZoomCredential201Data,
+  CreateZoomCredentialBody,
   DeleteBotDataResponseData,
   DeleteCalendarBotResponseDataItem,
   DeleteCalendarBotResponseErrorsItem,
   DeleteCalendarConnectionResponseData,
   DeleteScheduledBotResponseData,
+  DeleteZoomCredential200Data,
   GetBotDetailsResponseData,
   GetBotStatusResponseData,
   GetCalendarDetailsResponseData,
   GetEventDetailsResponseData,
   GetScheduledBotResponseData,
+  GetZoomCredential200Data,
   LeaveBotResponseData,
   ListBotsParams,
   ListCalendarsParams,
@@ -60,6 +66,7 @@ import type {
   ListRawCalendarsRequestBodyInput,
   ListRawCalendarsResponseDataItem,
   ListScheduledBotsParams,
+  ListZoomCredentials200DataItem,
   ResendFinalWebhookResponseData,
   ResubscribeCalendarResponseData,
   RetryCallbackRequestBodyInput,
@@ -73,7 +80,9 @@ import type {
   UpdateCalendarConnectionRequestBodyInput,
   UpdateCalendarConnectionResponseData,
   UpdateScheduledBotRequestBodyInput,
-  UpdateScheduledBotResponseData
+  UpdateScheduledBotResponseData,
+  UpdateZoomCredential200Data,
+  UpdateZoomCredentialBody
 } from "../generated/v2/schema"
 import type { ApiResponse, ApiResponseV2, BatchApiResponseV2, ListApiResponseV2 } from "./api"
 
@@ -163,6 +172,14 @@ export interface BaasClientV1Methods {
     query?: ResyncAllCalendarsParams
   ): Promise<ApiResponse<ResyncAllCalendarsResponse>>
   listRawCalendars(params: ListRawCalendarsParams): Promise<ApiResponse<ListRawCalendarsResponse>>
+  listZoomOauthConnections(): Promise<ApiResponse<ZoomOAuthConnectionResponse[]>>
+  createZoomOauthConnection(
+    params: CreateConnectionRequest
+  ): Promise<ApiResponse<undefined | ZoomOAuthConnectionResponse>>
+  getZoomOauthConnection(params: {
+    uuid: string
+  }): Promise<ApiResponse<ZoomOAuthConnectionResponse>>
+  deleteZoomOauthConnection(params: { uuid: string }): Promise<ApiResponse<void>>
   getApiKey(): string
   getBaseUrl(): string
 }
@@ -276,6 +293,20 @@ export interface BaasClientV2Methods {
   }): Promise<
     BatchApiResponseV2<DeleteCalendarBotResponseDataItem, DeleteCalendarBotResponseErrorsItem>
   >
+  createZoomCredential(
+    params: CreateZoomCredentialBody
+  ): Promise<ApiResponseV2<CreateZoomCredential201Data>>
+  listZoomCredentials(): Promise<ApiResponseV2<ListZoomCredentials200DataItem[]>>
+  getZoomCredential(params: {
+    id: string
+  }): Promise<ApiResponseV2<GetZoomCredential200Data>>
+  updateZoomCredential(params: {
+    id: string
+    body: UpdateZoomCredentialBody
+  }): Promise<ApiResponseV2<UpdateZoomCredential200Data>>
+  deleteZoomCredential(params: {
+    id: string
+  }): Promise<ApiResponseV2<DeleteZoomCredential200Data>>
   getApiKey(): string
   getBaseUrl(): string
 }

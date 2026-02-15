@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest"
 import { createBaasClient } from "../../src/node/client"
-import { createMockApiKey } from "../setup"
+import { createMockApiKey, createMockBotId } from "../setup"
 
 describe("BaasClient", () => {
   let client: ReturnType<typeof createBaasClient>
@@ -186,6 +186,63 @@ describe("BaasClient", () => {
         expect(result.data[0]).toHaveProperty("date")
         expect(result.data[0]).toHaveProperty("url")
       }
+    })
+  })
+
+  describe("Zoom OAuth connections", () => {
+    it("should list Zoom OAuth connections successfully", async () => {
+      const result = await client.listZoomOauthConnections()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(Array.isArray(result.data)).toBe(true)
+        if (result.data.length > 0) {
+          expect(result.data[0]).toHaveProperty("uuid")
+          expect(result.data[0]).toHaveProperty("zoom_user_id")
+          expect(result.data[0]).toHaveProperty("state")
+          expect(result.data[0]).toHaveProperty("created_at")
+          expect(result.data[0]).toHaveProperty("updated_at")
+        }
+      }
+    })
+
+    it("should create Zoom OAuth connection successfully", async () => {
+      const result = await client.createZoomOauthConnection({
+        authorization_code: "test-auth-code",
+        redirect_uri: "https://example.com/callback",
+        zoom_client_id: "test-client-id",
+        zoom_client_secret: "test-client-secret"
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success && result.data) {
+        expect(result.data).toHaveProperty("uuid")
+        expect(result.data).toHaveProperty("zoom_user_id")
+        expect(result.data).toHaveProperty("state")
+      }
+    })
+
+    it("should get Zoom OAuth connection successfully", async () => {
+      const result = await client.getZoomOauthConnection({
+        uuid: createMockBotId()
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("uuid")
+        expect(result.data).toHaveProperty("zoom_user_id")
+        expect(result.data).toHaveProperty("state")
+        expect(result.data).toHaveProperty("created_at")
+        expect(result.data).toHaveProperty("updated_at")
+      }
+    })
+
+    it("should delete Zoom OAuth connection successfully", async () => {
+      const result = await client.deleteZoomOauthConnection({
+        uuid: createMockBotId()
+      })
+
+      expect(result.success).toBe(true)
     })
   })
 

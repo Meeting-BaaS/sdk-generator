@@ -1233,7 +1233,9 @@ export const createCalendarBotBodyTimeoutConfigDefault = {
   no_one_joined_timeout: 600,
   silence_timeout: 600
 }
-export const createCalendarBotBodyZoomAccessTokenUrlDefault = null
+export const createCalendarBotBodyZoomConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const createCalendarBotBodyZoomConfigDefault = null
 export const createCalendarBotBodyExtraDefault = null
 export const createCalendarBotBodyStreamingEnabledDefault = false
 export const createCalendarBotBodyStreamingConfigInputUrlDefault = null
@@ -1317,13 +1319,47 @@ export const createCalendarBotBody = zod
       .describe(
         "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout."
       ),
-    zoom_access_token_url: zod
-      .string()
-      .url()
+    zoom_config: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(createCalendarBotBodyZoomConfigCredentialIdRegExp)
+          .optional()
+          .describe(
+            "UUID of a stored Zoom credential (created via Zoom credentials API). The bot will fetch the OBF token from the API server using this ID. Use this when you have saved a Zoom OAuth credential and want the bot to join on behalf of that user."
+          ),
+        credential_user_id: zod
+          .string()
+          .optional()
+          .describe(
+            "Zoom user ID (e.g. from the Zoom profile) to look up a stored credential by user. The API server will resolve this to a credential_id. Use when you have multiple credentials and want to target a specific user."
+          ),
+        obf_token: zod
+          .string()
+          .optional()
+          .describe(
+            "Direct OBF (On-Behalf-Of) token. Use this to join a Zoom meeting as a specific user without storing a credential. The token is a JWT issued by Zoom; the bot uses it once to join. Suitable for short-lived or one-off joins. For recurring use, prefer credential_id or obf_token_url."
+          ),
+        obf_token_url: zod
+          .string()
+          .url()
+          .optional()
+          .describe(
+            "URL that returns an OBF token at join time. The bot will make a GET request with query params: bot_uuid (bot UUID) and extra (URL-encoded JSON of the run's extra payload). Use these to identify which bot/run is requesting the token. Response must be plain text (ASCII) containing the OBF token. Timeout: 15 seconds."
+          ),
+        zak_token_url: zod
+          .string()
+          .url()
+          .optional()
+          .describe(
+            "URL to get the Zoom ZAK (Zoom Access Token). The bot makes a GET request with query params: bot_uuid and extra (URL-encoded JSON). Use these to identify which bot/run is requesting the token. Response must be plain text (ASCII) with the raw ZAK. See https://developers.zoom.us/docs/api/users/#tag/users/get/users/me/zak. Timeout: 15 seconds."
+          )
+      })
       .or(zod.null())
       .optional()
       .describe(
-        'The URL to get the Zoom access token (ZAK - Zoom Access Token).\n\nThis is required for Zoom meetings where the bot needs to join in the absence of the host. The bot will make a GET request to this URL to retrieve the access token. Follow the guide in Zoom to understand how to get Zoom Access Token at https://developers.zoom.us/docs/api/users/#tag/users/get/users/me/zak.\n\n**Expected Response Format:**\n\n- **HTTP Method:** GET\n- **Response Status:** 2xx (success)\n- **Response Body:** Plain text (ASCII) containing the Zoom access token directly\n- **Content-Type:** `text/plain` (or any text-based content type)\n- **Timeout:** The request will timeout after 15 seconds\n\n**Important Requirements:**\n\n- The response body must be plain ASCII text (not JSON, not binary)\n- The token must be a valid C string (no null bytes in the middle)\n- The token should be the raw access token string, not wrapped in JSON or any other format\n- Example response body: `\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MX0...\"`\n\n**Error Handling:**\n\n- If the request fails, times out, or returns non-ASCII data, the bot will fail to join the meeting\n- Ensure your endpoint is reliable and returns a valid token within the timeout window\n\nOnly applicable for Zoom meetings. Leave as `null` for Google Meet and Microsoft Teams meetings.\n\nExample: \"https://your-api.com/zoom-token\"'
+        "Zoom-only configuration for authentication and join method.\n\n- **credential_id**: Use a stored Zoom credential (OBF token fetched by the bot from the API server).\n- **credential_user_id**: Resolve a stored credential by Zoom user ID.\n- **obf_token**: Provide a direct OBF token (one-off join).\n- **obf_token_url**: URL that returns an OBF token when the bot joins.\n- **zak_token_url**: URL that returns a ZAK for joining without the host.\n\nLeave `null` for Google Meet and Microsoft Teams."
       ),
     extra: zod
       .record(zod.string(), zod.any())
@@ -1514,7 +1550,9 @@ export const updateCalendarBotBodyTimeoutConfigDefault = {
   no_one_joined_timeout: 600,
   silence_timeout: 600
 }
-export const updateCalendarBotBodyZoomAccessTokenUrlDefault = null
+export const updateCalendarBotBodyZoomConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const updateCalendarBotBodyZoomConfigDefault = null
 export const updateCalendarBotBodyExtraDefault = null
 export const updateCalendarBotBodyStreamingConfigInputUrlDefault = null
 export const updateCalendarBotBodyStreamingConfigOutputUrlDefault = null
@@ -1612,13 +1650,47 @@ export const updateCalendarBotBody = zod
           .describe(
             "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout."
           ),
-        zoom_access_token_url: zod
-          .string()
-          .url()
+        zoom_config: zod
+          .object({
+            credential_id: zod
+              .string()
+              .uuid()
+              .regex(updateCalendarBotBodyZoomConfigCredentialIdRegExp)
+              .optional()
+              .describe(
+                "UUID of a stored Zoom credential (created via Zoom credentials API). The bot will fetch the OBF token from the API server using this ID. Use this when you have saved a Zoom OAuth credential and want the bot to join on behalf of that user."
+              ),
+            credential_user_id: zod
+              .string()
+              .optional()
+              .describe(
+                "Zoom user ID (e.g. from the Zoom profile) to look up a stored credential by user. The API server will resolve this to a credential_id. Use when you have multiple credentials and want to target a specific user."
+              ),
+            obf_token: zod
+              .string()
+              .optional()
+              .describe(
+                "Direct OBF (On-Behalf-Of) token. Use this to join a Zoom meeting as a specific user without storing a credential. The token is a JWT issued by Zoom; the bot uses it once to join. Suitable for short-lived or one-off joins. For recurring use, prefer credential_id or obf_token_url."
+              ),
+            obf_token_url: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "URL that returns an OBF token at join time. The bot will make a GET request with query params: bot_uuid (bot UUID) and extra (URL-encoded JSON of the run's extra payload). Use these to identify which bot/run is requesting the token. Response must be plain text (ASCII) containing the OBF token. Timeout: 15 seconds."
+              ),
+            zak_token_url: zod
+              .string()
+              .url()
+              .optional()
+              .describe(
+                "URL to get the Zoom ZAK (Zoom Access Token). The bot makes a GET request with query params: bot_uuid and extra (URL-encoded JSON). Use these to identify which bot/run is requesting the token. Response must be plain text (ASCII) with the raw ZAK. See https://developers.zoom.us/docs/api/users/#tag/users/get/users/me/zak. Timeout: 15 seconds."
+              )
+          })
           .or(zod.null())
           .optional()
           .describe(
-            'The URL to get the Zoom access token (ZAK - Zoom Access Token).\n\nThis is required for Zoom meetings where the bot needs to join in the absence of the host. The bot will make a GET request to this URL to retrieve the access token. Follow the guide in Zoom to understand how to get Zoom Access Token at https://developers.zoom.us/docs/api/users/#tag/users/get/users/me/zak.\n\n**Expected Response Format:**\n\n- **HTTP Method:** GET\n- **Response Status:** 2xx (success)\n- **Response Body:** Plain text (ASCII) containing the Zoom access token directly\n- **Content-Type:** `text/plain` (or any text-based content type)\n- **Timeout:** The request will timeout after 15 seconds\n\n**Important Requirements:**\n\n- The response body must be plain ASCII text (not JSON, not binary)\n- The token must be a valid C string (no null bytes in the middle)\n- The token should be the raw access token string, not wrapped in JSON or any other format\n- Example response body: `\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MX0...\"`\n\n**Error Handling:**\n\n- If the request fails, times out, or returns non-ASCII data, the bot will fail to join the meeting\n- Ensure your endpoint is reliable and returns a valid token within the timeout window\n\nOnly applicable for Zoom meetings. Leave as `null` for Google Meet and Microsoft Teams meetings.\n\nExample: \"https://your-api.com/zoom-token\"'
+            "Zoom-only configuration for authentication and join method.\n\n- **credential_id**: Use a stored Zoom credential (OBF token fetched by the bot from the API server).\n- **credential_user_id**: Resolve a stored credential by Zoom user ID.\n- **obf_token**: Provide a direct OBF token (one-off join).\n- **obf_token_url**: URL that returns an OBF token when the bot joins.\n- **zak_token_url**: URL that returns a ZAK for joining without the host.\n\nLeave `null` for Google Meet and Microsoft Teams."
           ),
         extra: zod
           .record(zod.string(), zod.any())

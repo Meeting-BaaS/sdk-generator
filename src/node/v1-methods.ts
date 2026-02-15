@@ -7,6 +7,7 @@ import type {
   Calendar,
   CreateCalendarParams,
   CreateCalendarResponse,
+  CreateConnectionRequest,
   DeleteResponse,
   Event,
   GetMeetingDataParams,
@@ -26,7 +27,8 @@ import type {
   ScheduleRecordEventParams,
   ScreenshotsList,
   UnscheduleRecordEventParams,
-  UpdateCalendarParams
+  UpdateCalendarParams,
+  ZoomOAuthConnectionResponse
 } from "../generated/v1/schema"
 import { type ApiResponse, apiWrapper, apiWrapperNoParams } from "./api"
 import type { ClientState } from "./client-state"
@@ -431,6 +433,91 @@ export function createV1Methods(state: ClientState): BaasClientV1Methods {
       )
 
       return apiWrapper(listRawCalendarsApi, listRawCalendarsBody, params, state.getOptions())
+    },
+
+    /**
+     * Retrieves all Zoom OAuth connections associated with the authenticated account. Each connection represents a Zoom user who has authorized your app via OAuth. Use this to display connected users or to find the `zoom_user_id` needed for the `zoom_obf_token_user_id` bot parameter.
+     * @returns The response from the list Zoom OAuth connections request
+     */
+    async listZoomOauthConnections(): Promise<
+      ApiResponse<ZoomOAuthConnectionResponse[]>
+    > {
+      const { listZoomOauthConnections: listZoomOauthConnectionsApi } = await import(
+        "../generated/v1/api/zoom-oauth/zoom-oauth.js"
+      )
+
+      return apiWrapperNoParams(listZoomOauthConnectionsApi, state.getOptions())
+    },
+
+    /**
+     * Exchanges a Zoom OAuth authorization code for access and refresh tokens, retrieves the Zoom user's profile, and stores the connection for managed OBF token generation. Once stored, you can reference this connection's `zoom_user_id` as the `zoom_obf_token_user_id` parameter when creating a bot.
+     * @param params - The parameters for the create Zoom OAuth connection request
+     * @returns The response from the create Zoom OAuth connection request
+     */
+    async createZoomOauthConnection(
+      params: CreateConnectionRequest
+    ): Promise<ApiResponse<undefined | ZoomOAuthConnectionResponse>> {
+      const { createZoomOauthConnection: createZoomOauthConnectionApi } = await import(
+        "../generated/v1/api/zoom-oauth/zoom-oauth.js"
+      )
+      const { createZoomOauthConnectionBody } = await import(
+        "../generated/v1/api/zoom-oauth/zoom-oauth.zod.js"
+      )
+
+      return apiWrapper(
+        createZoomOauthConnectionApi,
+        createZoomOauthConnectionBody,
+        params,
+        state.getOptions()
+      ) as Promise<ApiResponse<undefined | ZoomOAuthConnectionResponse>>
+    },
+
+    /**
+     * Retrieves a specific Zoom OAuth connection by its UUID. Returns the connection details including the Zoom user ID, account ID, connection state, and granted scopes.
+     * @param params - The parameters for the get Zoom OAuth connection request
+     * @returns The response from the get Zoom OAuth connection request
+     */
+    async getZoomOauthConnection(params: {
+      uuid: string
+    }): Promise<ApiResponse<ZoomOAuthConnectionResponse>> {
+      const { getZoomOauthConnection: getZoomOauthConnectionApi } = await import(
+        "../generated/v1/api/zoom-oauth/zoom-oauth.js"
+      )
+      const { getZoomOauthConnectionParams } = await import(
+        "../generated/v1/api/zoom-oauth/zoom-oauth.zod.js"
+      )
+
+      return apiWrapper(
+        (params: { uuid: string }, options: AxiosRequestConfig) =>
+          getZoomOauthConnectionApi(params.uuid, options),
+        getZoomOauthConnectionParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    /**
+     * Permanently deletes a Zoom OAuth connection by its UUID, removing all stored tokens. After deletion, bots using this connection's `zoom_user_id` as `zoom_obf_token_user_id` will no longer be able to automatically fetch OBF tokens.
+     * @param params - The parameters for the delete Zoom OAuth connection request
+     * @returns The response from the delete Zoom OAuth connection request
+     */
+    async deleteZoomOauthConnection(params: {
+      uuid: string
+    }): Promise<ApiResponse<void>> {
+      const { deleteZoomOauthConnection: deleteZoomOauthConnectionApi } = await import(
+        "../generated/v1/api/zoom-oauth/zoom-oauth.js"
+      )
+      const { deleteZoomOauthConnectionParams } = await import(
+        "../generated/v1/api/zoom-oauth/zoom-oauth.zod.js"
+      )
+
+      return apiWrapper(
+        (params: { uuid: string }, options: AxiosRequestConfig) =>
+          deleteZoomOauthConnectionApi(params.uuid, options),
+        deleteZoomOauthConnectionParams,
+        params,
+        state.getOptions()
+      )
     },
 
     getApiKey(): string {

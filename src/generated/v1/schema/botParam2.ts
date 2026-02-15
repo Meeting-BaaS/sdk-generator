@@ -18,6 +18,9 @@ import type { BotParam2StreamingOutput } from "./botParam2StreamingOutput"
 import type { BotParam2WaitingRoomTimeout } from "./botParam2WaitingRoomTimeout"
 import type { BotParam2WebhookUrl } from "./botParam2WebhookUrl"
 import type { BotParam2ZoomAccessTokenUrl } from "./botParam2ZoomAccessTokenUrl"
+import type { BotParam2ZoomObfToken } from "./botParam2ZoomObfToken"
+import type { BotParam2ZoomObfTokenUrl } from "./botParam2ZoomObfTokenUrl"
+import type { BotParam2ZoomObfTokenUserId } from "./botParam2ZoomObfTokenUserId"
 import type { BotParam2ZoomSdkId } from "./botParam2ZoomSdkId"
 import type { BotParam2ZoomSdkPwd } from "./botParam2ZoomSdkPwd"
 import type { Extra } from "./extra"
@@ -39,6 +42,9 @@ export interface BotParam2 {
   waiting_room_timeout?: BotParam2WaitingRoomTimeout
   webhook_url?: BotParam2WebhookUrl
   zoom_access_token_url?: BotParam2ZoomAccessTokenUrl
+  zoom_obf_token?: BotParam2ZoomObfToken
+  zoom_obf_token_url?: BotParam2ZoomObfTokenUrl
+  zoom_obf_token_user_id?: BotParam2ZoomObfTokenUserId
   zoom_sdk_id?: BotParam2ZoomSdkId
   zoom_sdk_pwd?: BotParam2ZoomSdkPwd
 }

@@ -496,6 +496,182 @@ describe("BaasClient v2", () => {
     })
   })
 
+  describe("Zoom credentials", () => {
+    it("should create Zoom credential successfully", async () => {
+      const credentialId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        name: "Test Credential",
+        credential_type: "user",
+        zoom_user_id: "zoom-user-123",
+        zoom_account_id: null,
+        scopes: null,
+        state: "active",
+        last_error_message: null,
+        last_error_at: null,
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-01-01T00:00:00Z"
+      })
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/zoom-credentials", () => {
+          return HttpResponse.json(mockResponse, { status: 201 })
+        })
+      )
+
+      const result = await client.createZoomCredential({
+        name: "Test Credential",
+        client_id: "client-id",
+        client_secret: "client-secret"
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("credential_id")
+        expect(result.data.credential_id).toBe(credentialId)
+        expect(result.data).toHaveProperty("name")
+        expect(result.data).toHaveProperty("credential_type")
+        expect(result.data).toHaveProperty("state")
+      }
+    })
+
+    it("should list Zoom credentials successfully", async () => {
+      const credentialId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse([
+        {
+          credential_id: credentialId,
+          name: "Test Credential",
+          credential_type: "user" as const,
+          zoom_user_id: "zoom-user-123",
+          zoom_account_id: null,
+          scopes: null,
+          state: "active" as const,
+          last_error_message: null,
+          last_error_at: null,
+          created_at: "2025-01-01T00:00:00Z",
+          updated_at: "2025-01-01T00:00:00Z"
+        }
+      ])
+
+      server.use(
+        http.get("https://api.meetingbaas.com/v2/zoom-credentials", () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.listZoomCredentials()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(Array.isArray(result.data)).toBe(true)
+        expect(result.data).toHaveLength(1)
+        expect(result.data[0]).toHaveProperty("credential_id")
+        expect(result.data[0]).toHaveProperty("name")
+        expect(result.data[0]).toHaveProperty("credential_type")
+      }
+    })
+
+    it("should get Zoom credential successfully", async () => {
+      const credentialId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        name: "Test Credential",
+        credential_type: "user",
+        zoom_user_id: "zoom-user-123",
+        zoom_account_id: null,
+        scopes: null,
+        state: "active",
+        last_error_message: null,
+        last_error_at: null,
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-01-01T00:00:00Z"
+      })
+
+      server.use(
+        http.get(
+          `https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`,
+          () => {
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
+      )
+
+      const result = await client.getZoomCredential({ id: credentialId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("credential_id")
+        expect(result.data.credential_id).toBe(credentialId)
+        expect(result.data).toHaveProperty("name")
+      }
+    })
+
+    it("should update Zoom credential successfully", async () => {
+      const credentialId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        name: "Updated Credential",
+        credential_type: "user",
+        zoom_user_id: "zoom-user-123",
+        zoom_account_id: null,
+        scopes: null,
+        state: "active",
+        last_error_message: null,
+        last_error_at: null,
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-01-02T00:00:00Z"
+      })
+
+      server.use(
+        http.patch(
+          `https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`,
+          () => {
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
+      )
+
+      const result = await client.updateZoomCredential({
+        id: credentialId,
+        body: { name: "Updated Credential" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("name")
+        expect(result.data.name).toBe("Updated Credential")
+      }
+    })
+
+    it("should delete Zoom credential successfully", async () => {
+      const credentialId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Credential deleted"
+      })
+
+      server.use(
+        http.delete(
+          `https://api.meetingbaas.com/v2/zoom-credentials/${credentialId}`,
+          () => {
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
+      )
+
+      const result = await client.deleteZoomCredential({ id: credentialId })
+
+      expect(result.success).toBe(true)
+    })
+
+    it("should infer Zoom credential methods on v2 client", () => {
+      expect(client).toHaveProperty("createZoomCredential")
+      expect(client).toHaveProperty("listZoomCredentials")
+      expect(client).toHaveProperty("getZoomCredential")
+      expect(client).toHaveProperty("updateZoomCredential")
+      expect(client).toHaveProperty("deleteZoomCredential")
+    })
+  })
+
   describe("response format", () => {
     it("should pass through v2 API response format without transformation", async () => {
       const botId = createMockBotId()

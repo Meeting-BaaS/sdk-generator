@@ -15,13 +15,19 @@ import {
   getRetranscribeBotMockHandler
 } from "../src/generated/v1/api/default/default.msw"
 import { getWebhooksMock } from "../src/generated/v1/api/webhooks/webhooks.msw"
+import { getZoomOauthMock } from "../src/generated/v1/api/zoom-oauth/zoom-oauth.msw"
 
 // v2 mocks
 import { getBotsMock } from "../src/generated/v2/api/bots/bots.msw"
 import { getCalendarsMock as getV2CalendarsMock } from "../src/generated/v2/api/calendars/calendars.msw"
+import { getZoomCredentialsMock } from "../src/generated/v2/api/zoom-credentials/zoom-credentials.msw"
 
 // Note: Scheduled bot mocks are included in getBotsMock() (no separate scheduled-bots directory)
-const v2Mocks: HttpHandler[] = [...getBotsMock(), ...getV2CalendarsMock()]
+const v2Mocks: HttpHandler[] = [
+  ...getBotsMock(),
+  ...getV2CalendarsMock(),
+  ...getZoomCredentialsMock()
+]
 
 // Override handlers to return consistent success responses
 const leaveHandler = getLeaveMockHandler(() => getLeaveResponseMock({ ok: true }))
@@ -40,6 +46,7 @@ export const server = setupServer(
   getGetScreenshotsMockHandler(),
   ...getCalendarsMock(),
   ...getWebhooksMock(),
+  ...getZoomOauthMock(),
   // v2 handlers
   ...v2Mocks
 )

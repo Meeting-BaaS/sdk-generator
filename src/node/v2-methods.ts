@@ -16,18 +16,22 @@ import type {
   CreateCalendarConnectionResponseData,
   CreateScheduledBotRequestBodyInput,
   CreateScheduledBotResponseData,
+  CreateZoomCredential201Data,
+  CreateZoomCredentialBody,
   DeleteBotDataResponseData,
   DeleteCalendarBotBody,
   DeleteCalendarBotResponseDataItem,
   DeleteCalendarBotResponseErrorsItem,
   DeleteCalendarConnectionResponseData,
   DeleteScheduledBotResponseData,
+  DeleteZoomCredential200Data,
   GetBotDetailsResponseData,
   GetBotScreenshotsResponseDataItem,
   GetBotStatusResponseData,
   GetCalendarDetailsResponseData,
   GetEventDetailsResponseData,
   GetScheduledBotResponseData,
+  GetZoomCredential200Data,
   LeaveBotResponseData,
   ListBotsParams,
   ListBotsResponseDataItem,
@@ -41,6 +45,7 @@ import type {
   ListRawCalendarsResponseDataItem,
   ListScheduledBotsParams,
   ListScheduledBotsResponseDataItem,
+  ListZoomCredentials200DataItem,
   ResendFinalWebhookResponseData,
   ResubscribeCalendarResponseData,
   RetryCallbackRequestBodyInput,
@@ -54,12 +59,15 @@ import type {
   UpdateCalendarConnectionRequestBodyInput,
   UpdateCalendarConnectionResponseData,
   UpdateScheduledBotRequestBodyInput,
-  UpdateScheduledBotResponseData
+  UpdateScheduledBotResponseData,
+  UpdateZoomCredential200Data,
+  UpdateZoomCredentialBody
 } from "../generated/v2/schema"
 import {
   type ApiResponseV2,
   apiWrapperV2,
   apiWrapperV2List,
+  apiWrapperV2NoParams,
   type BatchApiResponseV2,
   type ListApiResponseV2
 } from "./api"
@@ -755,6 +763,99 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
       ) as Promise<
         BatchApiResponseV2<DeleteCalendarBotResponseDataItem, DeleteCalendarBotResponseErrorsItem>
       >
+    },
+
+    // Zoom credentials methods
+    async createZoomCredential(
+      params: CreateZoomCredentialBody
+    ): Promise<ApiResponseV2<CreateZoomCredential201Data>> {
+      const { createZoomCredential: createZoomCredentialApi } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.js"
+      )
+      const { createZoomCredentialBody } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.zod.js"
+      )
+
+      return apiWrapperV2<CreateZoomCredential201Data, CreateZoomCredentialBody>(
+        createZoomCredentialApi,
+        createZoomCredentialBody as z.ZodType<CreateZoomCredentialBody>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async listZoomCredentials(): Promise<
+      ApiResponseV2<ListZoomCredentials200DataItem[]>
+    > {
+      const { listZoomCredentials: listZoomCredentialsApi } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.js"
+      )
+
+      return apiWrapperV2NoParams(listZoomCredentialsApi, state.getOptions())
+    },
+
+    async getZoomCredential(params: {
+      id: string
+    }): Promise<ApiResponseV2<GetZoomCredential200Data>> {
+      const { getZoomCredential: getZoomCredentialApi } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.js"
+      )
+      const { getZoomCredentialParams } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.zod.js"
+      )
+
+      return apiWrapperV2<GetZoomCredential200Data, { id: string }>(
+        (params: { id: string }, options: AxiosRequestConfig) =>
+          getZoomCredentialApi(params.id, options),
+        getZoomCredentialParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async updateZoomCredential(params: {
+      id: string
+      body: UpdateZoomCredentialBody
+    }): Promise<ApiResponseV2<UpdateZoomCredential200Data>> {
+      const { updateZoomCredential: updateZoomCredentialApi } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.js"
+      )
+      const { updateZoomCredentialParams, updateZoomCredentialBody } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.zod.js"
+      )
+
+      return apiWrapperV2<
+        UpdateZoomCredential200Data,
+        { id: string; body: UpdateZoomCredentialBody }
+      >(
+        (params: { id: string; body: UpdateZoomCredentialBody }, options) =>
+          updateZoomCredentialApi(params.id, params.body, options),
+        z.object({
+          id: updateZoomCredentialParams.shape.id,
+          body: updateZoomCredentialBody
+        }),
+        params,
+        state.getOptions()
+      )
+    },
+
+    async deleteZoomCredential(params: {
+      id: string
+    }): Promise<ApiResponseV2<DeleteZoomCredential200Data>> {
+      const { deleteZoomCredential: deleteZoomCredentialApi } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.js"
+      )
+      const { deleteZoomCredentialParams } = await import(
+        "../generated/v2/api/zoom-credentials/zoom-credentials.zod.js"
+      )
+
+      return apiWrapperV2<DeleteZoomCredential200Data, { id: string }>(
+        (params: { id: string }, options: AxiosRequestConfig) =>
+          deleteZoomCredentialApi(params.id, options),
+        deleteZoomCredentialParams,
+        params,
+        state.getOptions()
+      )
     },
 
     getApiKey(): string {

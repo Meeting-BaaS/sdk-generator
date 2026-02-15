@@ -214,6 +214,9 @@ export const getEventResponse = zod.object({
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
       zoom_access_token_url: zod.string().nullish(),
+      zoom_obf_token: zod.string().nullish(),
+      zoom_obf_token_url: zod.string().nullish(),
+      zoom_obf_token_user_id: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -298,6 +301,9 @@ export const scheduleRecordEventBody = zod.object({
   waiting_room_timeout: zod.number().nullish(),
   webhook_url: zod.string().nullish(),
   zoom_access_token_url: zod.string().nullish(),
+  zoom_obf_token: zod.string().nullish(),
+  zoom_obf_token_url: zod.string().nullish(),
+  zoom_obf_token_user_id: zod.string().nullish(),
   zoom_sdk_id: zod.string().nullish(),
   zoom_sdk_pwd: zod.string().nullish()
 })
@@ -345,6 +351,9 @@ export const scheduleRecordEventResponseItem = zod.object({
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
       zoom_access_token_url: zod.string().nullish(),
+      zoom_obf_token: zod.string().nullish(),
+      zoom_obf_token_url: zod.string().nullish(),
+      zoom_obf_token_user_id: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -437,6 +446,9 @@ export const unscheduleRecordEventResponseItem = zod.object({
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
       zoom_access_token_url: zod.string().nullish(),
+      zoom_obf_token: zod.string().nullish(),
+      zoom_obf_token_url: zod.string().nullish(),
+      zoom_obf_token_user_id: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -500,6 +512,9 @@ export const patchBotBodyTranscriptionCustomParametersDefault = null
 export const patchBotBodyWaitingRoomTimeoutDefault = null
 export const patchBotBodyWebhookUrlDefault = null
 export const patchBotBodyZoomAccessTokenUrlDefault = null
+export const patchBotBodyZoomObfTokenDefault = null
+export const patchBotBodyZoomObfTokenUrlDefault = null
+export const patchBotBodyZoomObfTokenUserIdDefault = null
 export const patchBotBodyZoomSdkIdDefault = null
 export const patchBotBodyZoomSdkPwdDefault = null
 
@@ -537,6 +552,9 @@ export const patchBotBody = zod.object({
   waiting_room_timeout: zod.number().nullish(),
   webhook_url: zod.string().nullish(),
   zoom_access_token_url: zod.string().nullish(),
+  zoom_obf_token: zod.string().nullish(),
+  zoom_obf_token_url: zod.string().nullish(),
+  zoom_obf_token_user_id: zod.string().nullish(),
   zoom_sdk_id: zod.string().nullish(),
   zoom_sdk_pwd: zod.string().nullish()
 })
@@ -584,6 +602,9 @@ export const patchBotResponseItem = zod.object({
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
       zoom_access_token_url: zod.string().nullish(),
+      zoom_obf_token: zod.string().nullish(),
+      zoom_obf_token_url: zod.string().nullish(),
+      zoom_obf_token_user_id: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     })
@@ -721,6 +742,9 @@ export const listEventsResponse = zod.object({
             waiting_room_timeout: zod.number().nullish(),
             webhook_url: zod.string(),
             zoom_access_token_url: zod.string().nullish(),
+            zoom_obf_token: zod.string().nullish(),
+            zoom_obf_token_url: zod.string().nullish(),
+            zoom_obf_token_user_id: zod.string().nullish(),
             zoom_sdk_id: zod.string().nullish(),
             zoom_sdk_pwd: zod.string().nullish()
           })

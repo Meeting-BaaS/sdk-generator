@@ -17,6 +17,9 @@ import type { JoinRequestStartTime } from "./joinRequestStartTime"
 import type { JoinRequestStreaming } from "./joinRequestStreaming"
 import type { JoinRequestWebhookUrl } from "./joinRequestWebhookUrl"
 import type { JoinRequestZoomAccessTokenUrl } from "./joinRequestZoomAccessTokenUrl"
+import type { JoinRequestZoomObfToken } from "./joinRequestZoomObfToken"
+import type { JoinRequestZoomObfTokenUrl } from "./joinRequestZoomObfTokenUrl"
+import type { JoinRequestZoomObfTokenUserId } from "./joinRequestZoomObfTokenUserId"
 import type { JoinRequestZoomSdkId } from "./joinRequestZoomSdkId"
 import type { JoinRequestZoomSdkPwd } from "./joinRequestZoomSdkPwd"
 
@@ -52,6 +55,12 @@ export interface JoinRequest {
   webhook_url?: JoinRequestWebhookUrl
   /** URL that returns a Zoom ZAK token (short-lived access token) for joining authenticated meetings. */
   zoom_access_token_url?: JoinRequestZoomAccessTokenUrl
+  /** A raw Zoom On Behalf Of (OBF) token for joining external Zoom meetings. Required for meetings that enforce authenticated join after March 2, 2026. */
+  zoom_obf_token?: JoinRequestZoomObfToken
+  /** URL that returns a Zoom OBF token. The bot will fetch the token from this URL at join time. */
+  zoom_obf_token_url?: JoinRequestZoomObfTokenUrl
+  /** The Zoom user ID associated with a stored OAuth connection. When set, the system will automatically fetch an OBF token using the managed OAuth credentials. */
+  zoom_obf_token_user_id?: JoinRequestZoomObfTokenUserId
   /** For the Own Zoom Credentials feature, we need your zoom sdk id. */
   zoom_sdk_id?: JoinRequestZoomSdkId
   /** For the Own Zoom Credentials feature, we need your zoom sdk pwd. */

@@ -25,6 +25,9 @@ import type { BotWithParamsStreamingOutput } from "./botWithParamsStreamingOutpu
 import type { BotWithParamsTranscriptionFails } from "./botWithParamsTranscriptionFails"
 import type { BotWithParamsWaitingRoomTimeout } from "./botWithParamsWaitingRoomTimeout"
 import type { BotWithParamsZoomAccessTokenUrl } from "./botWithParamsZoomAccessTokenUrl"
+import type { BotWithParamsZoomObfToken } from "./botWithParamsZoomObfToken"
+import type { BotWithParamsZoomObfTokenUrl } from "./botWithParamsZoomObfTokenUrl"
+import type { BotWithParamsZoomObfTokenUserId } from "./botWithParamsZoomObfTokenUserId"
 import type { BotWithParamsZoomSdkId } from "./botWithParamsZoomSdkId"
 import type { BotWithParamsZoomSdkPwd } from "./botWithParamsZoomSdkPwd"
 import type { DateTime } from "./dateTime"
@@ -69,6 +72,9 @@ export interface BotWithParams {
   waiting_room_timeout?: BotWithParamsWaitingRoomTimeout
   webhook_url: string
   zoom_access_token_url?: BotWithParamsZoomAccessTokenUrl
+  zoom_obf_token?: BotWithParamsZoomObfToken
+  zoom_obf_token_url?: BotWithParamsZoomObfTokenUrl
+  zoom_obf_token_user_id?: BotWithParamsZoomObfTokenUserId
   zoom_sdk_id?: BotWithParamsZoomSdkId
   zoom_sdk_pwd?: BotWithParamsZoomSdkPwd
 }

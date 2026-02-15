@@ -13,7 +13,7 @@ import type { UpdateCalendarBotRequestBodyAllOfTwoRecordingMode } from "./update
 import type { UpdateCalendarBotRequestBodyAllOfTwoStreamingConfig } from "./updateCalendarBotRequestBodyAllOfTwoStreamingConfig"
 import type { UpdateCalendarBotRequestBodyAllOfTwoTimeoutConfig } from "./updateCalendarBotRequestBodyAllOfTwoTimeoutConfig"
 import type { UpdateCalendarBotRequestBodyAllOfTwoTranscriptionConfig } from "./updateCalendarBotRequestBodyAllOfTwoTranscriptionConfig"
-import type { UpdateCalendarBotRequestBodyAllOfTwoZoomAccessTokenUrl } from "./updateCalendarBotRequestBodyAllOfTwoZoomAccessTokenUrl"
+import type { UpdateCalendarBotRequestBodyAllOfTwoZoomConfig } from "./updateCalendarBotRequestBodyAllOfTwoZoomConfig"
 
 /**
  * Partial update of bot configuration. Only provide the fields you want to update. All fields are optional.
@@ -53,34 +53,16 @@ Maximum: 500 characters */
   entry_message?: UpdateCalendarBotRequestBodyAllOfTwoEntryMessage
   /** Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. */
   timeout_config?: UpdateCalendarBotRequestBodyAllOfTwoTimeoutConfig
-  /** The URL to get the Zoom access token (ZAK - Zoom Access Token).
+  /** Zoom-only configuration for authentication and join method.
 
-This is required for Zoom meetings where the bot needs to join in the absence of the host. The bot will make a GET request to this URL to retrieve the access token. Follow the guide in Zoom to understand how to get Zoom Access Token at https://developers.zoom.us/docs/api/users/#tag/users/get/users/me/zak.
+- **credential_id**: Use a stored Zoom credential (OBF token fetched by the bot from the API server).
+- **credential_user_id**: Resolve a stored credential by Zoom user ID.
+- **obf_token**: Provide a direct OBF token (one-off join).
+- **obf_token_url**: URL that returns an OBF token when the bot joins.
+- **zak_token_url**: URL that returns a ZAK for joining without the host.
 
-**Expected Response Format:**
-
-- **HTTP Method:** GET
-- **Response Status:** 2xx (success)
-- **Response Body:** Plain text (ASCII) containing the Zoom access token directly
-- **Content-Type:** `text/plain` (or any text-based content type)
-- **Timeout:** The request will timeout after 15 seconds
-
-**Important Requirements:**
-
-- The response body must be plain ASCII text (not JSON, not binary)
-- The token must be a valid C string (no null bytes in the middle)
-- The token should be the raw access token string, not wrapped in JSON or any other format
-- Example response body: `"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MX0..."`
-
-**Error Handling:**
-
-- If the request fails, times out, or returns non-ASCII data, the bot will fail to join the meeting
-- Ensure your endpoint is reliable and returns a valid token within the timeout window
-
-Only applicable for Zoom meetings. Leave as `null` for Google Meet and Microsoft Teams meetings.
-
-Example: "https://your-api.com/zoom-token" */
-  zoom_access_token_url?: UpdateCalendarBotRequestBodyAllOfTwoZoomAccessTokenUrl
+Leave `null` for Google Meet and Microsoft Teams. */
+  zoom_config?: UpdateCalendarBotRequestBodyAllOfTwoZoomConfig
   /** An optional extra configuration object for the bot.
 
 This object can contain any custom key-value pairs that you want to associate with the bot. The data will be:

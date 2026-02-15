@@ -125,6 +125,24 @@ export const joinBody = zod.object({
     .describe(
       "URL that returns a Zoom ZAK token (short-lived access token) for joining authenticated meetings."
     ),
+  zoom_obf_token: zod
+    .string()
+    .nullish()
+    .describe(
+      "A raw Zoom On Behalf Of (OBF) token for joining external Zoom meetings. Required for meetings that enforce authenticated join after March 2, 2026."
+    ),
+  zoom_obf_token_url: zod
+    .string()
+    .nullish()
+    .describe(
+      "URL that returns a Zoom OBF token. The bot will fetch the token from this URL at join time."
+    ),
+  zoom_obf_token_user_id: zod
+    .string()
+    .nullish()
+    .describe(
+      "The Zoom user ID associated with a stored OAuth connection. When set, the system will automatically fetch an OBF token using the managed OAuth credentials."
+    ),
   zoom_sdk_id: zod
     .string()
     .nullish()
@@ -225,6 +243,9 @@ export const getMeetingDataResponse = zod.object({
       waiting_room_timeout: zod.number().nullish(),
       webhook_url: zod.string(),
       zoom_access_token_url: zod.string().nullish(),
+      zoom_obf_token: zod.string().nullish(),
+      zoom_obf_token_url: zod.string().nullish(),
+      zoom_obf_token_user_id: zod.string().nullish(),
       zoom_sdk_id: zod.string().nullish(),
       zoom_sdk_pwd: zod.string().nullish()
     }),

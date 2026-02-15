@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.1
  */
 import type { EndMeetingTrampolineRequestDiarizationFailCount } from "./endMeetingTrampolineRequestDiarizationFailCount"
+import type { EndMeetingTrampolineRequestEndedAt } from "./endMeetingTrampolineRequestEndedAt"
 import type { EndMeetingTrampolineRequestFilesGenerated } from "./endMeetingTrampolineRequestFilesGenerated"
 import type { EndMeetingTrampolineRequestTranscriptionFailCount } from "./endMeetingTrampolineRequestTranscriptionFailCount"
 
@@ -17,6 +18,11 @@ export interface EndMeetingTrampolineRequest {
   /** @minimum 0 */
   diarization_fail_count?: EndMeetingTrampolineRequestDiarizationFailCount
   diarization_v2: boolean
+  /**
+   * Optional Unix timestamp (seconds, no ms) for when the meeting actually ended. When provided (e.g. for manual replay), used instead of server time for bot.ended_at.
+   * @minimum 0
+   */
+  ended_at?: EndMeetingTrampolineRequestEndedAt
   files_generated?: EndMeetingTrampolineRequestFilesGenerated
   /** @minimum 0 */
   transcription_fail_count?: EndMeetingTrampolineRequestTranscriptionFailCount
