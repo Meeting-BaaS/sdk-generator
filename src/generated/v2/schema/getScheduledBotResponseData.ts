@@ -16,6 +16,7 @@ import type { GetScheduledBotResponseDataStatus } from "./getScheduledBotRespons
 import type { GetScheduledBotResponseDataStreamingConfig } from "./getScheduledBotResponseDataStreamingConfig"
 import type { GetScheduledBotResponseDataTimeoutConfig } from "./getScheduledBotResponseDataTimeoutConfig"
 import type { GetScheduledBotResponseDataTranscriptionConfig } from "./getScheduledBotResponseDataTranscriptionConfig"
+import type { GetScheduledBotResponseDataZoomConfig } from "./getScheduledBotResponseDataZoomConfig"
 
 export type GetScheduledBotResponseData = {
   /**
@@ -65,4 +66,6 @@ export type GetScheduledBotResponseData = {
   callback_config: GetScheduledBotResponseDataCallbackConfig
   /** Custom metadata associated with the scheduled bot */
   extra: GetScheduledBotResponseDataExtra
+  /** Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided) */
+  zoom_config: GetScheduledBotResponseDataZoomConfig
 }

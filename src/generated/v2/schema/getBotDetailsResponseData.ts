@@ -24,6 +24,7 @@ import type { GetBotDetailsResponseDataTranscription } from "./getBotDetailsResp
 import type { GetBotDetailsResponseDataTranscriptionIds } from "./getBotDetailsResponseDataTranscriptionIds"
 import type { GetBotDetailsResponseDataTranscriptionProvider } from "./getBotDetailsResponseDataTranscriptionProvider"
 import type { GetBotDetailsResponseDataVideo } from "./getBotDetailsResponseDataVideo"
+import type { GetBotDetailsResponseDataZoomConfig } from "./getBotDetailsResponseDataZoomConfig"
 
 export type GetBotDetailsResponseData = {
   /**
@@ -78,4 +79,6 @@ export type GetBotDetailsResponseData = {
   error_message: GetBotDetailsResponseDataErrorMessage
   /** Custom metadata associated with the bot */
   extra: GetBotDetailsResponseDataExtra
+  /** Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided) */
+  zoom_config: GetBotDetailsResponseDataZoomConfig
 }

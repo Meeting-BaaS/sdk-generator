@@ -826,6 +826,8 @@ export const getBotDetailsResponseDataParticipantsItemIdMinOne = -90071992547409
 export const getBotDetailsResponseDataParticipantsItemIdMaxOne = 9007199254740991
 export const getBotDetailsResponseDataSpeakersItemIdMinOne = -9007199254740991
 export const getBotDetailsResponseDataSpeakersItemIdMaxOne = 9007199254740991
+export const getBotDetailsResponseDataZoomConfigCredentialIdRegExpOne =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 
 export const getBotDetailsResponse = zod.object({
   success: zod.boolean(),
@@ -980,7 +982,36 @@ export const getBotDetailsResponse = zod.object({
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())
-      .describe("Custom metadata associated with the bot")
+      .describe("Custom metadata associated with the bot"),
+    zoom_config: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(getBotDetailsResponseDataZoomConfigCredentialIdRegExpOne)
+          .or(zod.null())
+          .optional()
+          .describe("UUID of the stored Zoom credential"),
+        credential_user_id: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("Zoom user ID used to look up the credential"),
+        obf_token_url: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("URL that returns an OBF token at join time"),
+        zak_token_url: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("URL that returns a ZAK token at join time")
+      })
+      .or(zod.null())
+      .describe(
+        "Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided)"
+      )
   })
 })
 
@@ -2175,6 +2206,8 @@ export const getScheduledBotDetailsResponseDataTimeoutConfigNoOneJoinedTimeoutMa
 export const getScheduledBotDetailsResponseDataStreamingConfigAudioFrequencyMinOne =
   -9007199254740991
 export const getScheduledBotDetailsResponseDataStreamingConfigAudioFrequencyMaxOne = 9007199254740991
+export const getScheduledBotDetailsResponseDataZoomConfigCredentialIdRegExpOne =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 
 export const getScheduledBotDetailsResponse = zod.object({
   success: zod.boolean(),
@@ -2282,7 +2315,36 @@ export const getScheduledBotDetailsResponse = zod.object({
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())
-      .describe("Custom metadata associated with the scheduled bot")
+      .describe("Custom metadata associated with the scheduled bot"),
+    zoom_config: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(getScheduledBotDetailsResponseDataZoomConfigCredentialIdRegExpOne)
+          .or(zod.null())
+          .optional()
+          .describe("UUID of the stored Zoom credential"),
+        credential_user_id: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("Zoom user ID used to look up the credential"),
+        obf_token_url: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("URL that returns an OBF token at join time"),
+        zak_token_url: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("URL that returns a ZAK token at join time")
+      })
+      .or(zod.null())
+      .describe(
+        "Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided)"
+      )
   })
 })
 
