@@ -227,6 +227,27 @@ export const getGetBotDetailsResponseMock = (
         [faker.string.alphanumeric(5)]: {}
       },
       null
+    ]),
+    zoom_config: faker.helpers.arrayElement([
+      {
+        credential_id: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.uuid(), null]),
+          undefined
+        ]),
+        credential_user_id: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
+        obf_token_url: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
+        zak_token_url: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ])
+      },
+      null
     ])
   },
   ...overrideResponse
@@ -463,6 +484,27 @@ export const getGetScheduledBotDetailsResponseMock = (
     extra: faker.helpers.arrayElement([
       {
         [faker.string.alphanumeric(5)]: {}
+      },
+      null
+    ]),
+    zoom_config: faker.helpers.arrayElement([
+      {
+        credential_id: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.uuid(), null]),
+          undefined
+        ]),
+        credential_user_id: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
+        obf_token_url: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ]),
+        zak_token_url: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([faker.string.alpha(20), null]),
+          undefined
+        ])
       },
       null
     ])
