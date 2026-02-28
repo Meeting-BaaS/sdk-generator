@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.check-changes.outputs.has_changes }}
+      changed_providers: ${{ steps.sync-specs.outputs.changed_providers }}
 
     steps:
       - name: Checkout code
@@ -46,10 +47,38 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Regenerate SDK
+      # Step 1: Sync specs and check checksums (fast — HTTP fetches only)
+      - name: Sync specs and check for upstream changes
+        id: sync-specs
         run: |
-          echo "Regenerating SDK with latest OpenAPI specification..."
-          pnpm openapi:rebuild
+          echo "Syncing OpenAPI specs from official sources..."
+          pnpm openapi:sync
+          echo ""
+
+          # Check if any spec files changed after sync (including checksums)
+          SPEC_CHANGES="$(git diff --name-only -- specs/ || true)"
+          SPEC_NEW="$(git ls-files --others --exclude-standard -- specs/ || true)"
+          ALL_SPEC_CHANGES="$(echo -e "${SPEC_CHANGES}\n${SPEC_NEW}" | grep -v '.checksums.json' | sed '/^$/d' | sort -u)"
+
+          if [ -z "$ALL_SPEC_CHANGES" ]; then
+            echo "No upstream spec changes detected"
+            echo "has_spec_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Spec changes detected:"
+            echo "$ALL_SPEC_CHANGES"
+            echo "has_spec_changes=true" >> $GITHUB_OUTPUT
+
+            # Extract changed provider names for commit message
+            CHANGED_PROVIDERS="$(echo "$ALL_SPEC_CHANGES" | sed 's|specs/||;s|-.*||' | sort -u | tr '\n' ', ' | sed 's/,$//')"
+            echo "changed_providers=$CHANGED_PROVIDERS" >> $GITHUB_OUTPUT
+          fi
+
+      # Step 2: Full SDK regeneration (expensive — only runs if specs changed)
+      - name: Regenerate SDK
+        if: steps.sync-specs.outputs.has_spec_changes == 'true'
+        run: |
+          echo "Specs changed — running full SDK regeneration..."
+          pnpm openapi:generate && pnpm build
           echo "SDK regenerated successfully"
 
       - name: Check for actual changes
@@ -76,11 +105,11 @@ jobs:
           echo "Changed files:"
           echo "$CHANGED_FILES"
 
-          # Filter out webhook files since they are purely documentation and shouldn't trigger a new release
-          FILTERED_CHANGES=$(echo "$CHANGED_FILES" | grep -v "src/generated/v1/api/webhooks/" || true)
+          # Filter out webhook documentation and checksum-only changes
+          FILTERED_CHANGES=$(echo "$CHANGED_FILES" | grep -v "src/generated/v1/api/webhooks/" | grep -v "specs/.checksums.json" || true)
 
           if [ -z "$FILTERED_CHANGES" ]; then
-            echo "Only webhook documentation changes detected - ignoring"
+            echo "Only webhook documentation or checksum changes detected - ignoring"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "API schema changes detected:"
@@ -157,7 +186,9 @@ jobs:
       - name: Commit and push changes
         run: |
           git add .
-          git commit -m "chore: auto-update SDK to ${{ steps.bump-version.outputs.new_version }} [skip ci]"
+          git commit -m "chore: auto-update SDK to ${{ steps.bump-version.outputs.new_version }} [skip ci]
+
+          Changed providers: ${{ needs.check-and-update.outputs.changed_providers || 'unknown' }}"
           git push origin main
 
       - name: Publish to npm

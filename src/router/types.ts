@@ -504,8 +504,8 @@ export interface Utterance {
   speaker?: string
   /** Confidence score (0-1) */
   confidence?: number
-  /** Words in this utterance */
-  words?: Word[]
+  /** Words in this utterance (empty array when word-level data is unavailable) */
+  words: Word[]
   /**
    * Unique utterance identifier (provider-assigned)
    *

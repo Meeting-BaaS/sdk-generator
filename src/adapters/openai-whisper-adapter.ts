@@ -588,7 +588,8 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         callbacks?.onUtterance?.({
           text: transcription.transcript,
           start: 0,
-          end: 0
+          end: 0,
+          words: []
         })
         break
       }
@@ -675,7 +676,8 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         text: segment.text,
         start: segment.start,
         end: segment.end,
-        confidence: undefined
+        confidence: undefined,
+        words: [] as import("../router/types").Word[]
       }))
 
       const requestId = `openai-${Date.now()}`

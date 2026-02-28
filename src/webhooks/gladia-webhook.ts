@@ -66,7 +66,7 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
       end: utterance.end,
       confidence: utterance.confidence,
       speaker: utterance.speaker !== undefined ? String(utterance.speaker) : undefined,
-      words: utterance.words?.map((w) => this.mapWord(w))
+      words: utterance.words?.map((w) => this.mapWord(w)) ?? []
     }
   }
 
@@ -160,7 +160,7 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
         }
       })
       const speakers =
-        speakerIds.size > 0 ? Array.from(speakerIds).map((id) => ({ id: String(id) })) : undefined
+        speakerIds.size > 0 ? Array.from(speakerIds).map((id) => ({ id: String(id), label: `Speaker ${id}` })) : undefined
 
       // Build the summary field only if summarization succeeded
       const summary =

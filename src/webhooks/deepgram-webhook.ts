@@ -182,14 +182,20 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
             }))
           : undefined
 
-      // Extract speakers from utterances (if available)
+      // Extract unique speakers from utterances (if available)
+      const speakerIds = new Set<string>()
+      if (response.results.utterances) {
+        for (const utterance of response.results.utterances) {
+          if (utterance.speaker !== undefined) {
+            speakerIds.add(utterance.speaker.toString())
+          }
+        }
+      }
       const speakers =
-        response.results.utterances && response.results.utterances.length > 0
-          ? response.results.utterances.map((utterance) => ({
-              id: utterance.speaker?.toString() || "unknown",
-              speaker: utterance.speaker?.toString() || "unknown",
-              text: utterance.transcript || "",
-              confidence: utterance.confidence
+        speakerIds.size > 0
+          ? Array.from(speakerIds).map((id) => ({
+              id,
+              label: `Speaker ${id}`
             }))
           : undefined
 
@@ -197,20 +203,20 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
       const utterances =
         response.results.utterances && response.results.utterances.length > 0
           ? response.results.utterances.map((utterance) => ({
+              id: utterance.id,
               text: utterance.transcript || "",
               start: utterance.start || 0,
               end: utterance.end || 0,
               speaker: utterance.speaker?.toString(),
+              channel: utterance.channel,
               confidence: utterance.confidence,
-              words:
-                utterance.words && utterance.words.length > 0
-                  ? utterance.words.map((w) => ({
-                      word: w.word || "",
-                      start: w.start || 0,
-                      end: w.end || 0,
-                      confidence: w.confidence
-                    }))
-                  : undefined
+              words: utterance.words?.map((w) => ({
+                word: w.word || "",
+                start: w.start || 0,
+                end: w.end || 0,
+                confidence: w.confidence,
+                speaker: w.speaker?.toString()
+              })) ?? []
             }))
           : undefined
 
@@ -227,7 +233,7 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
           text: transcript,
           confidence: alternative.confidence,
           duration,
-          language: response.metadata.models?.[0] || undefined,
+          language: channel.detected_language,
           speakers: speakers && speakers.length > 0 ? speakers : undefined,
           words: words && words.length > 0 ? words : undefined,
           utterances: utterances && utterances.length > 0 ? utterances : undefined,

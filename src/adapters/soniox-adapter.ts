@@ -18,6 +18,7 @@ import type {
   RawWebSocketMessage
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+import { buildUtterancesFromWords } from "../utils/transcription-helpers"
 import { SonioxRegion, type SonioxRegionType } from "../constants"
 
 // Import generated Soniox types
@@ -738,53 +739,15 @@ export class SonioxAdapter extends BaseAdapter {
    * Build utterances from tokens based on speaker changes
    */
   private buildUtterancesFromTokens(tokens: any[]): Utterance[] {
-    const utterances: Utterance[] = []
-    let currentSpeaker: string | undefined
-    let currentWords: Word[] = []
-    let utteranceStart = 0
+    const words: Word[] = tokens.map((token: any) => ({
+      word: token.text,
+      start: token.start_ms ? token.start_ms / 1000 : 0,
+      end: token.end_ms ? token.end_ms / 1000 : 0,
+      confidence: token.confidence,
+      speaker: token.speaker
+    }))
 
-    for (const token of tokens) {
-      const word: Word = {
-        word: token.text,
-        start: token.start_ms ? token.start_ms / 1000 : 0,
-        end: token.end_ms ? token.end_ms / 1000 : 0,
-        confidence: token.confidence,
-        speaker: token.speaker
-      }
-
-      if (token.speaker !== currentSpeaker) {
-        // Speaker changed - save previous utterance
-        if (currentSpeaker && currentWords.length > 0) {
-          utterances.push({
-            text: currentWords.map((w) => w.word).join(" "),
-            start: utteranceStart,
-            end: currentWords[currentWords.length - 1].end,
-            speaker: currentSpeaker,
-            words: currentWords
-          })
-        }
-
-        // Start new utterance
-        currentSpeaker = token.speaker
-        currentWords = [word]
-        utteranceStart = word.start
-      } else {
-        currentWords.push(word)
-      }
-    }
-
-    // Add final utterance
-    if (currentSpeaker && currentWords.length > 0) {
-      utterances.push({
-        text: currentWords.map((w) => w.word).join(" "),
-        start: utteranceStart,
-        end: currentWords[currentWords.length - 1].end,
-        speaker: currentSpeaker,
-        words: currentWords
-      })
-    }
-
-    return utterances
+    return buildUtterancesFromWords(words)
   }
 
   /**
@@ -830,8 +793,10 @@ export class SonioxAdapter extends BaseAdapter {
           }))
         : undefined
 
-    // Build utterances from speaker changes
-    const utterances = response.tokens ? this.buildUtterancesFromTokens(response.tokens) : []
+    // Build utterances from speaker changes (only final tokens, matching words/text)
+    const utterances = response.tokens
+      ? this.buildUtterancesFromTokens(response.tokens.filter((t: any) => t.is_final))
+      : []
 
     // Detect language from tokens
     const language = response.tokens?.find((t: any) => t.language)?.language

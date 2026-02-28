@@ -4,9 +4,10 @@
  */
 
 import type { TranscriptReadyNotification } from "../generated/assemblyai/schema/transcriptReadyNotification"
+import type { Transcript } from "../generated/assemblyai/schema/transcript"
 import { BaseWebhookHandler } from "./base-webhook"
 import type { UnifiedWebhookEvent, WebhookVerificationOptions } from "./types"
-import type { TranscriptionProvider } from "../router/types"
+import type { TranscriptionProvider, Word, Utterance } from "../router/types"
 import crypto from "node:crypto"
 
 /**
@@ -18,7 +19,7 @@ import crypto from "node:crypto"
  *
  * AssemblyAI supports webhook signature verification using HMAC-SHA256.
  *
- * @example Basic usage
+ * @example Basic usage (full transcript body)
  * ```typescript
  * import { AssemblyAIWebhookHandler } from '@meeting-baas/sdk';
  *
@@ -30,10 +31,23 @@ import crypto from "node:crypto"
  *   return res.status(400).json({ error: validation.error });
  * }
  *
- * // Parse webhook
+ * // Parse webhook — works with both notification and full transcript formats
  * const event = handler.parse(req.body);
  * if (event.eventType === 'transcription.completed') {
  *   console.log('Transcript ID:', event.data?.id);
+ *   console.log('Text:', event.data?.text);
+ *   console.log('Duration:', event.data?.duration);
+ *   console.log('Confidence:', event.data?.confidence);
+ *
+ *   // Word-level timestamps (seconds)
+ *   event.data?.words?.forEach(w => {
+ *     console.log(`${w.word}: ${w.start}s - ${w.end}s`);
+ *   });
+ *
+ *   // Speaker-segmented utterances
+ *   event.data?.utterances?.forEach(u => {
+ *     console.log(`Speaker ${u.speaker}: ${u.text}`);
+ *   });
  * }
  * ```
  *
@@ -56,6 +70,10 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
 
   /**
    * Check if payload matches AssemblyAI webhook format
+   *
+   * Supports two formats:
+   * - Notification format: `{ transcript_id, status }` (lightweight callback)
+   * - Full transcript format: `{ id, status, audio_url, text, words, ... }` (complete response)
    */
   matches(
     payload: unknown,
@@ -67,26 +85,41 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
 
     const obj = payload as Record<string, unknown>
 
-    // AssemblyAI webhooks have "transcript_id" and "status" fields
-    if (!("transcript_id" in obj) || !("status" in obj)) {
-      return false
+    // Format 1: Notification format — { transcript_id, status }
+    // Only terminal statuses (completed/error) are accepted because AssemblyAI
+    // webhooks only fire on terminal states. Non-terminal statuses (queued,
+    // processing) are never sent as webhook payloads.
+    if ("transcript_id" in obj && "status" in obj) {
+      if (typeof obj.transcript_id !== "string") return false
+      if (obj.status !== "completed" && obj.status !== "error") return false
+      return true
     }
 
-    // transcript_id should be a string
-    if (typeof obj.transcript_id !== "string") {
-      return false
+    // Format 2: Full transcript format — { id, status, audio_url }
+    // Same terminal-status restriction as above — webhooks only deliver
+    // completed or error payloads.
+    if ("id" in obj && "status" in obj && "audio_url" in obj) {
+      if (typeof obj.id !== "string") return false
+      if (obj.status !== "completed" && obj.status !== "error") return false
+      return true
     }
 
-    // status should be "completed" or "error"
-    if (obj.status !== "completed" && obj.status !== "error") {
-      return false
-    }
+    return false
+  }
 
-    return true
+  /**
+   * Determine if the payload is a full transcript (vs a lightweight notification)
+   */
+  private isFullTranscript(payload: Record<string, unknown>): boolean {
+    return "audio_url" in payload && "id" in payload
   }
 
   /**
    * Parse AssemblyAI webhook payload to unified format
+   *
+   * Supports two payload formats:
+   * - Notification: `{ transcript_id, status }` — returns minimal event (ID + status only)
+   * - Full transcript: `{ id, status, text, words, utterances, ... }` — returns complete data
    */
   parse(
     payload: unknown,
@@ -96,27 +129,17 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
       return this.createErrorEvent(payload, "Invalid AssemblyAI webhook payload")
     }
 
-    const notification = payload as TranscriptReadyNotification
-    const transcriptId = notification.transcript_id
-    const status = notification.status
+    const obj = payload as Record<string, unknown>
 
-    if (status === "completed") {
-      return {
-        success: true,
-        provider: this.provider,
-        eventType: "transcription.completed",
-        data: {
-          id: transcriptId,
-          status: "completed"
-          // Note: Full transcript data needs to be fetched via API
-          // using AssemblyAIAdapter.getTranscript(transcriptId)
-        },
-        timestamp: new Date().toISOString(),
-        raw: payload
-      }
-    }
+    // Determine ID and status from whichever format we received
+    const isFullFormat = this.isFullTranscript(obj)
+    const transcriptId = isFullFormat
+      ? (payload as Transcript).id
+      : (payload as TranscriptReadyNotification).transcript_id
+    const status = obj.status as string
 
     if (status === "error") {
+      const error = isFullFormat ? (payload as Transcript).error : undefined
       return {
         success: false,
         provider: this.provider,
@@ -124,7 +147,27 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
         data: {
           id: transcriptId,
           status: "error",
-          error: "Transcription failed"
+          error: error || "Transcription failed"
+        },
+        timestamp: new Date().toISOString(),
+        raw: payload
+      }
+    }
+
+    if (status === "completed") {
+      // Full transcript format — extract all available data
+      if (isFullFormat) {
+        return this.parseFullTranscript(payload as Transcript, payload)
+      }
+
+      // Notification format — only ID and status available
+      return {
+        success: true,
+        provider: this.provider,
+        eventType: "transcription.completed",
+        data: {
+          id: transcriptId,
+          status: "completed"
         },
         timestamp: new Date().toISOString(),
         raw: payload
@@ -133,6 +176,84 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
 
     // Unknown status
     return this.createErrorEvent(payload, `Unknown AssemblyAI status: ${status}`)
+  }
+
+  /**
+   * Parse a full AssemblyAI transcript response into unified format
+   *
+   * AssemblyAI times are in milliseconds — converted to seconds for unified format.
+   */
+  private parseFullTranscript(transcript: Transcript, raw: unknown): UnifiedWebhookEvent {
+    try {
+      // Convert words (ms → seconds)
+      const words: Word[] | undefined = transcript.words
+        ? transcript.words.map((w) => ({
+            word: w.text,
+            start: w.start / 1000,
+            end: w.end / 1000,
+            confidence: w.confidence,
+            speaker: w.speaker ?? undefined
+          }))
+        : undefined
+
+      // Convert utterances (ms → seconds)
+      const utterances: Utterance[] | undefined = transcript.utterances
+        ? transcript.utterances.map((u) => ({
+            text: u.text,
+            start: u.start / 1000,
+            end: u.end / 1000,
+            speaker: u.speaker,
+            confidence: u.confidence,
+            words: u.words.map((w) => ({
+              word: w.text,
+              start: w.start / 1000,
+              end: w.end / 1000,
+              confidence: w.confidence,
+              speaker: w.speaker ?? undefined
+            }))
+          }))
+        : undefined
+
+      // Extract unique speakers from utterances
+      const speakerIds = new Set<string>()
+      transcript.utterances?.forEach((u) => {
+        if (u.speaker) speakerIds.add(u.speaker)
+      })
+      const speakers =
+        speakerIds.size > 0
+          ? Array.from(speakerIds).map((id) => ({ id, label: `Speaker ${id}` }))
+          : undefined
+
+      return {
+        success: true,
+        provider: this.provider,
+        eventType: "transcription.completed",
+        data: {
+          id: transcript.id,
+          status: "completed",
+          text: transcript.text ?? undefined,
+          confidence: transcript.confidence ?? undefined,
+          duration: transcript.audio_duration ?? undefined,
+          language: transcript.language_code ?? undefined,
+          speakers,
+          words,
+          utterances,
+          summary: transcript.summary ?? undefined,
+          metadata: {
+            speech_model: transcript.speech_model,
+            audio_channels: transcript.audio_channels,
+            webhook_status_code: transcript.webhook_status_code
+          }
+        },
+        timestamp: new Date().toISOString(),
+        raw
+      }
+    } catch (error) {
+      return this.createErrorEvent(
+        raw,
+        `Failed to parse AssemblyAI transcript: ${error instanceof Error ? error.message : "Unknown error"}`
+      )
+    }
   }
 
   /**

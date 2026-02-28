@@ -663,7 +663,7 @@ export class DeepgramAdapter extends BaseAdapter {
         start: w.start || 0,
         end: w.end || 0,
         confidence: w.confidence
-      }))
+      })) ?? []
     }))
   }
 
@@ -1165,7 +1165,7 @@ export class DeepgramAdapter extends BaseAdapter {
               start: w.start,
               end: w.end,
               confidence: w.confidence
-            }))
+            })) ?? []
           })
         }
         break

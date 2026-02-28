@@ -11,6 +11,7 @@ import type {
   UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+import { buildUtterancesFromWords, buildTextFromSpeechmaticsResults } from "../utils/transcription-helpers"
 import type { SpeechmaticsRegionType } from "../constants"
 
 /**
@@ -451,11 +452,8 @@ export class SpeechmaticsAdapter extends BaseAdapter {
    * Normalize Speechmatics response to unified format
    */
   private normalizeResponse(response: RetrieveTranscriptResponse): UnifiedTranscriptResponse {
-    // Extract full text from results
-    const text = response.results
-      .filter((r) => r.type === "word" && r.alternatives)
-      .map((r) => r.alternatives![0]?.content || "")
-      .join(" ")
+    // Build text preserving punctuation positions
+    const text = buildTextFromSpeechmaticsResults(response.results)
 
     // Extract words with timestamps (filter out items without required timestamps)
     const words = response.results
@@ -468,13 +466,10 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         speaker: result.alternatives?.[0]?.speaker
       }))
 
-    // Extract speakers if diarization was enabled
+    // Extract speakers if diarization was enabled (from word results only)
     const speakerSet = new Set<string>()
-    response.results.forEach((r) => {
-      if (r.alternatives) {
-        const speaker = r.alternatives[0]?.speaker
-        if (speaker) speakerSet.add(speaker)
-      }
+    words.forEach((w) => {
+      if (w.speaker) speakerSet.add(w.speaker)
     })
 
     const speakers =
@@ -486,56 +481,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         : undefined
 
     // Build utterances from speaker changes
-    const utterances: Array<{
-      speaker: string
-      text: string
-      start: number
-      end: number
-    }> = []
-
-    if (speakers) {
-      let currentSpeaker: string | undefined
-      let currentUtterance: string[] = []
-      let utteranceStart = 0
-
-      response.results
-        .filter((r) => r.type === "word" && r.alternatives)
-        .forEach((result, idx) => {
-          const speaker = result.alternatives![0]?.speaker
-          const word = result.alternatives![0]?.content || ""
-
-          if (speaker !== currentSpeaker) {
-            // Speaker changed - save previous utterance
-            if (currentSpeaker && currentUtterance.length > 0) {
-              const prevResult = response.results.filter((r) => r.type === "word")[idx - 1]
-              utterances.push({
-                speaker: currentSpeaker,
-                text: currentUtterance.join(" "),
-                start: utteranceStart || 0,
-                end: prevResult?.end_time || result.start_time || 0
-              })
-            }
-
-            // Start new utterance
-            currentSpeaker = speaker
-            currentUtterance = [word]
-            utteranceStart = result.start_time || 0
-          } else {
-            currentUtterance.push(word)
-          }
-        })
-
-      // Add final utterance
-      if (currentSpeaker && currentUtterance.length > 0) {
-        const lastWord = response.results.filter((r) => r.type === "word").pop()
-        utterances.push({
-          speaker: currentSpeaker,
-          text: currentUtterance.join(" "),
-          start: utteranceStart,
-          end: lastWord?.end_time || utteranceStart
-        })
-      }
-    }
+    const utterances = buildUtterancesFromWords(words)
 
     return {
       success: true,

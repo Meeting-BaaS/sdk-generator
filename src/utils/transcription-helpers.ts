@@ -5,7 +5,8 @@
  * data (speakers, words, utterances) across different provider formats.
  */
 
-import type { Speaker, Word, TranscriptionStatus } from "../router/types"
+import type { Speaker, Word, Utterance, TranscriptionStatus } from "../router/types"
+import type { RecognitionResult } from "../generated/speechmatics/schema/recognitionResult"
 
 /**
  * Extract unique speakers from utterances
@@ -96,6 +97,110 @@ export function extractWords<T>(
 
   const normalizedWords = words.map(mapper)
   return normalizedWords.length > 0 ? normalizedWords : undefined
+}
+
+/**
+ * Build utterances by grouping consecutive words by speaker
+ *
+ * Words without a speaker are skipped. Utterances are only produced
+ * when at least one word has a speaker assigned.
+ *
+ * @param words - Array of unified Word objects (already in seconds)
+ * @returns Array of utterances grouped by speaker turns
+ */
+export function buildUtterancesFromWords(words: Word[]): Utterance[] {
+  const utterances: Utterance[] = []
+  let currentSpeaker: string | undefined
+  let currentWords: Word[] = []
+  let utteranceStart = 0
+
+  for (const word of words) {
+    if (!word.speaker) continue
+
+    if (word.speaker !== currentSpeaker) {
+      // Speaker changed — flush previous utterance
+      if (currentSpeaker && currentWords.length > 0) {
+        utterances.push({
+          text: currentWords.map((w) => w.word).join(" "),
+          start: utteranceStart,
+          end: currentWords[currentWords.length - 1].end,
+          speaker: currentSpeaker,
+          words: currentWords
+        })
+      }
+
+      currentSpeaker = word.speaker
+      currentWords = [word]
+      utteranceStart = word.start
+    } else {
+      currentWords.push(word)
+    }
+  }
+
+  // Flush final utterance
+  if (currentSpeaker && currentWords.length > 0) {
+    utterances.push({
+      text: currentWords.map((w) => w.word).join(" "),
+      start: utteranceStart,
+      end: currentWords[currentWords.length - 1].end,
+      speaker: currentSpeaker,
+      words: currentWords
+    })
+  }
+
+  return utterances
+}
+
+/**
+ * Build text from Speechmatics recognition results, preserving punctuation
+ *
+ * Uses the `attaches_to` field on punctuation results to place punctuation
+ * marks correctly relative to surrounding words:
+ * - `previous` (e.g. `.`, `,`, `?`) — appended directly to previous word
+ * - `next` (e.g. opening quotes) — prepended to next word
+ * - `both` (e.g. hyphens) — no space on either side
+ * - `none` or missing — treated as a space-separated token
+ *
+ * @param results - Raw Speechmatics recognition results array
+ * @returns Joined text with punctuation in correct positions
+ */
+export function buildTextFromSpeechmaticsResults(results: RecognitionResult[]): string {
+  const parts: string[] = []
+  let attachNext = false
+
+  for (const result of results) {
+    if (result.type !== "word" && result.type !== "punctuation") continue
+
+    const content = result.alternatives?.[0]?.content
+    if (!content) continue
+
+    if (result.type === "punctuation") {
+      const attaches = result.attaches_to
+      if (attaches === "previous" || attaches === "both") {
+        // Attach directly to previous token (no leading space)
+        parts.push(content)
+        // "both" means also attach to next (no trailing space)
+        attachNext = attaches === "both"
+      } else if (attaches === "next") {
+        // Add space before, but next word attaches directly
+        if (parts.length > 0) parts.push(" ")
+        parts.push(content)
+        attachNext = true
+      } else {
+        // "none" or missing — space-separated
+        if (parts.length > 0 && !attachNext) parts.push(" ")
+        parts.push(content)
+        attachNext = false
+      }
+    } else {
+      // Word token
+      if (parts.length > 0 && !attachNext) parts.push(" ")
+      parts.push(content)
+      attachNext = false
+    }
+  }
+
+  return parts.join("")
 }
 
 /**

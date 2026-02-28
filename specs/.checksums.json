@@ -1,0 +1,96 @@
+{
+  "specs": {
+    "gladia": {
+      "sha256": "f2764757dd7d850c7532d15105539c7ad8992c3c106441210a5f12d7807f2012",
+      "url": "https://api.gladia.io/openapi.json",
+      "syncedAt": "2026-02-28T06:36:06.186Z",
+      "size": 201168
+    },
+    "assemblyai": {
+      "sha256": "45bc0d58fe9930cd664349b558d524a858894e7b1077cfa45687cf9bf6ebdc05",
+      "url": "https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/main/openapi.json",
+      "syncedAt": "2026-02-28T06:36:06.197Z",
+      "size": 246984
+    },
+    "assemblyaiAsync": {
+      "sha256": "85e73a36671fa4b3e402184b5906aba9ffad0679f8e95ac098ba104957443a06",
+      "url": "https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/main/asyncapi.json",
+      "syncedAt": "2026-02-28T06:36:06.198Z",
+      "size": 27510
+    },
+    "assemblyaiStreaming": {
+      "sha256": "254414b37b975660d229858d7fb64634a29c9cea562e53b6b6cd5017d51d0897",
+      "url": "https://raw.githubusercontent.com/AssemblyAI/assemblyai-node-sdk/main/src/types/streaming/index.ts",
+      "syncedAt": "2026-02-28T06:36:06.199Z",
+      "size": 2351
+    },
+    "assemblyaiStreamingTypes": {
+      "sha256": "b6c6b2bf2531ae3acfd70c0273846b63cb3eecdab2ef0cf4eb54ef46a117fda6",
+      "manual": true,
+      "checkedAt": "2026-02-28T06:36:06.199Z",
+      "note": "Curated streaming types"
+    },
+    "deepgram": {
+      "sha256": "e05c785605a7cc9b1478f0cd1bb7106a0a9683599b66b81c45ddfec16be80510",
+      "url": "https://raw.githubusercontent.com/deepgram/deepgram-api-specs/main/openapi.yml",
+      "syncedAt": "2026-02-28T06:36:06.205Z",
+      "size": 160455
+    },
+    "openai": {
+      "sha256": "4dbe562e5b501d556cc7ecb3297a54a70e53b17c0e26cccebbe8d107b8b1b037",
+      "url": "https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml",
+      "syncedAt": "2026-02-28T06:36:06.214Z",
+      "size": 260202
+    },
+    "openaiRealtime": {
+      "sha256": "f9374c0b5a8d296ec0014543feba266f760140ae8a782b820c8e7f431a4999db",
+      "manual": true,
+      "checkedAt": "2026-02-28T06:36:06.214Z",
+      "note": "Realtime API types"
+    },
+    "azure": {
+      "sha256": "2f4c85822556e4398ade52c2a18228c640a4d3d6e795776588f9b8307aaf0fd7",
+      "url": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Speech/SpeechToText/stable/v3.2/speechtotext.json",
+      "syncedAt": "2026-02-28T06:36:06.222Z",
+      "size": 218530
+    },
+    "speechmatics": {
+      "sha256": "cc1e2fae62485075f0b767aa1c28fd751300711b2a6593a09f132faaa8e9924b",
+      "url": "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/batch-client/schema/batch.yml",
+      "syncedAt": "2026-02-28T06:36:06.225Z",
+      "size": 68051
+    },
+    "speechmaticsAsync": {
+      "sha256": "d07a3096b2faaebd7ff8597cac526fc08b2f0870e890501363030708ff8ae21d",
+      "url": "https://raw.githubusercontent.com/speechmatics/docs/refs/heads/main/spec/realtime.yaml",
+      "syncedAt": "2026-02-28T06:36:06.228Z",
+      "size": 50681
+    },
+    "speechmaticsBatchTypes": {
+      "sha256": "985dd2b63d570f8e1b6dd30dcfd99b92e4340d976b779b785f12631d22839791",
+      "manual": true,
+      "checkedAt": "2026-02-28T06:36:06.228Z",
+      "note": "Curated batch schemas"
+    },
+    "deepgramStreaming": {
+      "sha256": "336a96288df3b3aaf0dc9174c988da05ba7a2d655b70d46ce212d5138bb5b3de",
+      "url": "https://raw.githubusercontent.com/deepgram/deepgram-js-sdk/main/src/lib/types/TranscriptionSchema.ts",
+      "syncedAt": "2026-02-28T06:36:06.229Z",
+      "size": 4843
+    },
+    "soniox": {
+      "sha256": "01d4a1d334d3239af196d24ccd382d63d651ac447f1136f1aa683a719b6dc514",
+      "url": "https://api.soniox.com/v1/openapi.json",
+      "syncedAt": "2026-02-28T06:36:06.233Z",
+      "size": 94857
+    },
+    "sonioxStreaming": {
+      "sha256": "b304249567191ee640f575a609912cbc360362421c8171006d138e2b101b0420",
+      "manual": true,
+      "checkedAt": "2026-02-28T06:36:06.233Z",
+      "note": "Extracted from @soniox/speech-to-text-web SDK"
+    }
+  },
+  "references": {},
+  "updatedAt": "2026-02-28T06:36:06.173Z"
+}

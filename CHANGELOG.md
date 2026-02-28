@@ -5,6 +5,80 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.2] - 2026-02-28
+
+### Fixed
+
+#### AssemblyAI Webhook Handler — Parse Full Transcript Body
+
+Previously, the AssemblyAI webhook handler only accepted the lightweight notification format (`{ transcript_id, status }`) and returned just the transcript ID — no text, words, or utterances.
+
+Now it also accepts the full transcript response body (`{ id, status, audio_url, text, words, utterances, ... }`) and extracts all available data:
+
+- Text, confidence, duration, language
+- Word-level timestamps (converted from ms to seconds)
+- Speaker-segmented utterances with per-word timing
+- Summary, speaker list, and provider metadata
+
+The handler auto-detects which format was received. Existing notification-format integrations continue to work unchanged.
+
+#### Speechmatics Webhook Handler — Word and Utterance Extraction
+
+The Speechmatics webhook handler now extracts word-level data and builds speaker-grouped utterances from the transcript body:
+
+- Words with `start`/`end` timestamps, `confidence`, and `speaker` ID
+- Utterances grouped by consecutive speaker (same algorithm as the batch adapter)
+
+Previously, only the full text and speaker set were extracted.
+
+#### Speechmatics Adapter — Utterances Now Include Words
+
+The Speechmatics batch adapter's utterance construction now includes word-level data in each utterance, matching the `Utterance.words: Word[]` contract.
+
+#### Speechmatics Text Now Preserves Punctuation
+
+Both the Speechmatics adapter and webhook handler were stripping all punctuation from transcript text by filtering to `type === "word"` and joining with spaces, producing `"Hello world"` instead of `"Hello, world."`.
+
+Now uses a shared `buildTextFromSpeechmaticsResults()` helper that reads the `attaches_to` field on punctuation results:
+- `previous` (`.`, `,`, `?`, `!`) — appended directly to previous word
+- `next` (opening quotes) — prepended to next word
+- `both` (hyphens) — no space on either side
+- `none` or missing — space-separated token
+
+#### Deepgram Webhook — Speaker Deduplication
+
+The Deepgram webhook handler mapped every utterance 1:1 to a "speaker" entry, so 10 utterances from 2 speakers produced 10 entries with duplicate IDs. Now correctly deduplicates via `Set<string>` and returns proper `{ id, label }` objects matching other providers.
+
+Also added `speaker` field to utterance word mappings — the generated Deepgram type has `speaker?: number` on utterance words but it wasn't being mapped through.
+
+#### Soniox Adapter — Utterances No Longer Include Interim Tokens
+
+`normalizeResponse` was building utterances from all tokens (including non-final/interim), while `words` and `text` correctly filtered by `is_final`. This could cause utterance text to contain partial words not present in the words array. Now filters to `is_final` tokens before building utterances.
+
+#### Speechmatics Adapter — Utterance End Time Fix
+
+Utterance end times used `prevResult?.end_time || result.start_time` (falling back to the *next* word's start time), which could produce incorrect values. Now uses `currentWords[last].end` — the actual end time of the last word in the utterance, matching the Speechmatics webhook and Soniox adapter behavior.
+
+#### Deepgram Webhook — Language Field Was Returning Model ID
+
+`data.language` was set to `response.metadata.models[0]`, which is a model UUID — not a language code. Now correctly reads `channel.detected_language` from the first channel (set when `detect_language=true`).
+
+#### Deepgram Webhook — Utterance `id` and `channel` Now Extracted
+
+The Deepgram schema includes `id` and `channel` on utterances but they weren't mapped through. Now populated in the unified response.
+
+#### Consistent Speaker `label` Across All Webhooks
+
+AssemblyAI and Gladia webhook handlers returned Speaker objects without a `label` field (`{ id }`), while Deepgram and Speechmatics included `{ id, label: "Speaker ..." }`. All handlers now consistently include the `label` field.
+
+### Changed
+
+#### `Utterance.words` Is Now Non-Optional
+
+`Utterance.words` changed from `words?: Word[]` to `words: Word[]`. Providers that don't supply word-level data now return an empty array instead of `undefined`. This removes the need for null checks when iterating utterance words.
+
+All adapters and webhook handlers have been updated accordingly (Deepgram, Gladia, OpenAI, Speechmatics, AssemblyAI).
+
 ## [0.8.0] - 2026-01-27
 
 ### Fixed

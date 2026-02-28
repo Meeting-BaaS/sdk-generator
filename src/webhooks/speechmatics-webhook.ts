@@ -5,7 +5,8 @@
 
 import { BaseWebhookHandler } from "./base-webhook"
 import type { UnifiedWebhookEvent } from "./types"
-import type { TranscriptionProvider } from "../router/types"
+import type { TranscriptionProvider, Word } from "../router/types"
+import { buildUtterancesFromWords, buildTextFromSpeechmaticsResults } from "../utils/transcription-helpers"
 import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
 
 /**
@@ -155,19 +156,29 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
       const transcript = payload as RetrieveTranscriptResponse
 
       if (transcript.results && transcript.job) {
-        // Extract full text
-        const text = transcript.results
-          .filter((r) => r.type === "word" && r.alternatives)
-          .map((r) => r.alternatives![0]?.content || "")
-          .join(" ")
+        // Build text preserving punctuation positions
+        const text = buildTextFromSpeechmaticsResults(transcript.results)
 
-        // Extract speakers if present
+        // Extract words with timestamps (seconds — Speechmatics uses seconds natively)
+        const wordResults = transcript.results.filter(
+          (r) => r.type === "word" && r.alternatives
+        )
+
+        const words: Word[] = wordResults
+          .filter((r) => r.start_time !== undefined && r.end_time !== undefined)
+          .map((r) => ({
+            word: r.alternatives![0]?.content || "",
+            start: r.start_time!,
+            end: r.end_time!,
+            confidence: r.alternatives![0]?.confidence,
+            speaker: r.alternatives![0]?.speaker
+          }))
+
+        // Extract speakers if diarization was enabled
         const speakerSet = new Set<string>()
-        transcript.results.forEach((r) => {
-          if (r.alternatives) {
-            const speaker = r.alternatives[0]?.speaker
-            if (speaker) speakerSet.add(speaker)
-          }
+        wordResults.forEach((r) => {
+          const speaker = r.alternatives![0]?.speaker
+          if (speaker) speakerSet.add(speaker)
         })
 
         const speakers =
@@ -177,6 +188,9 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
                 label: `Speaker ${id}`
               }))
             : undefined
+
+        // Build utterances by grouping consecutive words by speaker
+        const utterances = buildUtterancesFromWords(words)
 
         return {
           success: true,
@@ -190,6 +204,8 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
             language: transcript.metadata.transcription_config?.language,
             duration: transcript.job.duration,
             speakers,
+            words: words.length > 0 ? words : undefined,
+            utterances: utterances.length > 0 ? utterances : undefined,
             createdAt: transcript.job.created_at
           },
           raw: payload
