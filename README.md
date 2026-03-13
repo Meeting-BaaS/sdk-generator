@@ -8,7 +8,7 @@
 
 ## Why Voice Router?
 
-Switch between speech-to-text providers **without changing your code**. One API for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, Speechmatics, and Soniox.
+Switch between speech-to-text providers **without changing your code**. One API for Gladia, AssemblyAI, Deepgram, Azure, OpenAI Whisper, Speechmatics, Soniox, and ElevenLabs.
 
 ```typescript
 import { VoiceRouter } from 'voice-router-dev';
@@ -31,7 +31,7 @@ const result = await router.transcribe(audio, {
 - **Provider-Agnostic** - Switch providers with one line
 - **Unified API** - Same interface for all providers
 - **Webhook Normalization** - Auto-detect and parse webhooks
-- **Real-time Streaming** - WebSocket support (Gladia, AssemblyAI, Deepgram, Soniox, OpenAI Realtime)
+- **Real-time Streaming** - WebSocket support (Gladia, AssemblyAI, Deepgram, Soniox, OpenAI Realtime, ElevenLabs)
 - **Advanced Features** - Diarization, sentiment, summarization, chapters, entities
 - **Type-Safe** - Full TypeScript support with OpenAPI-generated types
 - **Typed Extended Data** - Access provider-specific features with full autocomplete
@@ -49,6 +49,7 @@ const result = await router.transcribe(audio, {
 | **OpenAI** | Sync | Realtime | No | gpt-4o, diarization, Realtime API |
 | **Speechmatics** | Async | No | Query params | High accuracy, summarization |
 | **Soniox** | Yes | WebSocket | No | 60+ languages, translation, regions |
+| **ElevenLabs** | Sync | WebSocket | Yes | Entity detection, audio events, 99 languages |
 
 ## Installation
 
@@ -376,6 +377,7 @@ Provider-specific implementations:
 - `OpenAIWhisperAdapter` - OpenAI Whisper + Realtime API
 - `SpeechmaticsAdapter` - Speechmatics transcription
 - `SonioxAdapter` - Soniox transcription (batch + streaming)
+- `ElevenLabsAdapter` - ElevenLabs transcription (batch + streaming)
 
 ## TypeScript Support
 
@@ -786,6 +788,23 @@ router.registerAdapter(new SonioxAdapter());
 ```
 
 Get your API key: https://soniox.com
+
+### ElevenLabs
+```typescript
+import { VoiceRouter, ElevenLabsAdapter, ElevenLabsRegion } from 'voice-router-dev';
+
+const router = new VoiceRouter({
+  providers: {
+    elevenlabs: {
+      apiKey: 'YOUR_KEY',
+      region: ElevenLabsRegion.global  // or 'us', 'eu', 'in'
+    }
+  }
+});
+router.registerAdapter(new ElevenLabsAdapter());
+```
+
+Get your API key: https://elevenlabs.io
 
 ## Contributing
 

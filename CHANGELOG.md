@@ -5,6 +5,90 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-03-13
+
+### Added
+
+#### ElevenLabs ScribeV2 — 9th Provider
+
+New adapter for [ElevenLabs](https://elevenlabs.io) speech-to-text with batch and real-time streaming support:
+
+```typescript
+import { createElevenLabsAdapter, ElevenLabsModel, ElevenLabsRegion } from 'voice-router-dev'
+
+const adapter = createElevenLabsAdapter({
+  apiKey: process.env.ELEVENLABS_API_KEY,
+  model: ElevenLabsModel.scribe_v2,
+  region: ElevenLabsRegion.eu  // global, us, eu, in
+})
+
+// Batch transcription (synchronous)
+const result = await adapter.transcribe({
+  type: 'url',
+  url: 'https://example.com/audio.mp3'
+}, {
+  language: 'en',
+  diarization: true,
+  customVocabulary: ['ElevenLabs', 'ScribeV2'],
+  entityDetection: true,
+  elevenlabs: {
+    tag_audio_events: true,
+    no_verbatim: true,
+    temperature: 0.1
+  }
+})
+
+// Real-time streaming (WebSocket)
+const session = await adapter.transcribeStream({
+  elevenlabsStreaming: {
+    model: 'scribe_v2_realtime',
+    audioFormat: 'pcm_16000',
+    commitStrategy: 'vad',
+    includeTimestamps: true
+  }
+}, {
+  onTranscript: (event) => console.log(event.text),
+  onUtterance: (utterance) => console.log(utterance.text),
+  onError: (error) => console.error(error)
+})
+
+// Retrieve transcript by ID
+const transcript = await adapter.getTranscript('abc123')
+```
+
+**Features:**
+- Batch transcription via URL or file upload (synchronous — result returned directly)
+- Real-time WebSocket streaming with base64-encoded audio
+- Speaker diarization with configurable threshold and speaker count
+- Word-level timestamps with logprob-based confidence
+- Entity detection (PII, PHI, PCI) with character positions
+- Audio event tagging (laughter, footsteps, music)
+- Custom vocabulary (keyterms) boosting (up to 100 terms)
+- 99 supported languages (ISO 639-1/3)
+- 4 regional endpoints (global, US, EU, India)
+- No-verbatim mode (removes filler words and false starts)
+
+**Spec pipeline:**
+- `fix-elevenlabs-spec.js` filters monolithic API spec (210 paths) to 2 STT endpoints, 18 schemas
+- `generate-elevenlabs-languages.js` generates 99 language codes
+- `generate-elevenlabs-models.js` extracts batch models from spec + adds realtime model
+
+**New exports:**
+
+| Export | Description |
+|--------|-------------|
+| `ElevenLabsModel` | Batch models: `scribe_v1`, `scribe_v2` |
+| `ElevenLabsRealtimeModel` | Realtime: `scribe_v2_realtime` |
+| `ElevenLabsLanguage` | 99 language codes with labels |
+| `ElevenLabsRegion` | `global`, `us`, `eu`, `in` |
+| `ElevenLabsAudioFormat` | PCM sample rates + ulaw |
+| `ElevenLabsTypes` | Generated schema types |
+| `ElevenLabsZodSchemas` | Zod schemas for runtime validation |
+
+**Webhook handler:** Auto-detects ElevenLabs payloads via `words` + `language_code` + `logprob` fields. Extracts words, speakers, utterances, entities, and language detection results.
+
+---
+
 ## [0.8.2] - 2026-02-28
 
 ### Fixed

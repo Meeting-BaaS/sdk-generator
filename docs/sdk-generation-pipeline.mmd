@@ -17,6 +17,7 @@ flowchart TB
         REMOTE_SPEECHMATICSASYNC["speechmaticsAsync<br/>raw.githubusercontent.com/speechmatics/s..."]
         REMOTE_DEEPGRAMSTREAMING["deepgramStreaming<br/>raw.githubusercontent.com/deepgram/deepg..."]
         REMOTE_SONIOX["soniox<br/>api.soniox.com/v1/openapi.json..."]
+        REMOTE_ELEVENLABS["elevenlabs<br/>api.elevenlabs.io/openapi.json..."]
     end
 
     subgraph SYNC["SPEC SYNC"]
@@ -53,6 +54,7 @@ flowchart TB
         SPEC_SPEECHMATICS_ASYNCAPI["speechmatics-asyncapi.yml"]
         SPEC_SPEECHMATICS_BATCH_TYPES_ZOD["speechmatics-batch-types.zod.ts"]
         SPEC_SPEECHMATICS_BATCH["speechmatics-batch.yml"]
+        SPEC_ELEVENLABS_OPENAPI["elevenlabs-openapi.json"]
     end
 
     subgraph FIX_PRE["PRE-ORVAL FIXES"]
@@ -60,11 +62,12 @@ flowchart TB
         PRE_FIX_DEEPGRAM_SPEC["fix-deepgram-spec.js<br/>fixes deepgram spec"]
         PRE_FIX_OPENAI_SPEC["fix-openai-spec.js<br/>fixes openai spec"]
         PRE_FIX_SPEECHMATICS_SPEC["fix-speechmatics-spec.js<br/>fixes speechmatics spec"]
+        PRE_FIX_ELEVENLABS_SPEC["fix-elevenlabs-spec.js<br/>filters elevenlabs spec to STT"]
     end
 
     subgraph ORVAL["ORVAL GENERATION"]
         direction TB
-        ORVAL_CFG["orval.config.ts<br/>14 projects"]
+        ORVAL_CFG["orval.config.ts<br/>16 projects"]
         ORVAL_API["API clients<br/>axios-functions"]
         ORVAL_ZOD["Zod schemas<br/>runtime validation"]
         ORVAL_TYPES["TypeScript types<br/>schema/ directories"]
@@ -91,6 +94,7 @@ flowchart TB
         LANG_GENERATE_DEEPGRAM_LANGUAGES["generate-deepgram-languages.js"]
         LANG_GENERATE_SONIOX_LANGUAGES["generate-soniox-languages.js"]
         LANG_GENERATE_SPEECHMATICS_LANGUAGES["generate-speechmatics-languages.js"]
+        LANG_GENERATE_ELEVENLABS_LANGUAGES["generate-elevenlabs-languages.js"]
     end
 
     subgraph MODELS["MODEL EXTRACTION"]
@@ -98,6 +102,7 @@ flowchart TB
         MODEL_GENERATE_DEEPGRAM_MODELS["generate-deepgram-models.js"]
         MODEL_GENERATE_OPENAI_MODELS["generate-openai-models.js"]
         MODEL_GENERATE_SONIOX_MODELS["generate-soniox-models.js"]
+        MODEL_GENERATE_ELEVENLABS_MODELS["generate-elevenlabs-models.js"]
     end
 
     subgraph GENERATED["src/generated/"]
@@ -109,6 +114,7 @@ flowchart TB
         GEN_OPENAI["openai/<br/>api/ schema/ streaming models"]
         GEN_SONIOX["soniox/<br/>api/ schema/ streaming languages models"]
         GEN_SPEECHMATICS["speechmatics/<br/>api/ schema/ streaming batch languages"]
+        GEN_ELEVENLABS["elevenlabs/<br/>api/ schema/ languages models"]
     end
 
     subgraph EXPORTS["SDK EXPORTS"]
@@ -132,6 +138,7 @@ flowchart TB
             ADAPT_OPENAI_WHISPER["openai-whisper"]
             ADAPT_SONIOX["soniox"]
             ADAPT_SPEECHMATICS["speechmatics"]
+            ADAPT_ELEVENLABS["elevenlabs"]
         end
         subgraph WEBHOOKS["Webhook Handlers"]
             direction LR
@@ -141,6 +148,7 @@ flowchart TB
             HOOK_DEEPGRAM["deepgram"]
             HOOK_GLADIA["gladia"]
             HOOK_SPEECHMATICS["speechmatics"]
+            HOOK_ELEVENLABS["elevenlabs"]
         end
         subgraph ROUTER["Voice Router"]
             direction TB
@@ -178,11 +186,13 @@ flowchart TB
     SPEC_DEEPGRAM_OPENAPI --> PRE_FIX_DEEPGRAM_SPEC
     SPEC_OPENAI_OPENAPI --> PRE_FIX_OPENAI_SPEC
     SPEC_SPEECHMATICS_BATCH --> PRE_FIX_SPEECHMATICS_SPEC
+    SPEC_ELEVENLABS_OPENAPI --> PRE_FIX_ELEVENLABS_SPEC
 
     %% Pre-fixes to Orval
     PRE_FIX_DEEPGRAM_SPEC --> ORVAL
     PRE_FIX_OPENAI_SPEC --> ORVAL
     PRE_FIX_SPEECHMATICS_SPEC --> ORVAL
+    PRE_FIX_ELEVENLABS_SPEC --> ORVAL
 
     %% Specs directly to Orval (no pre-processing needed)
     SPECS --> ORVAL
@@ -216,10 +226,14 @@ flowchart TB
     %% Language extraction to generated
     LANGS --> GENERATED
 
+    %% Language extraction - ElevenLabs (hardcoded, no external source)
+    LANG_GENERATE_ELEVENLABS_LANGUAGES
+
     %% Model extraction sources
     REMOTE --> MODEL_GENERATE_DEEPGRAM_MODELS
     GENERATED --> MODEL_GENERATE_OPENAI_MODELS
     SPEC_SONIOX_OPENAPI --> MODEL_GENERATE_SONIOX_MODELS
+    SPEC_ELEVENLABS_OPENAPI --> MODEL_GENERATE_ELEVENLABS_MODELS
 
     %% Model extraction to generated
     MODELS --> GENERATED
