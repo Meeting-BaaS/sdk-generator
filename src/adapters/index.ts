@@ -10,4 +10,4 @@ export * from "./azure-stt-adapter"
 export * from "./openai-whisper-adapter"
 export * from "./speechmatics-adapter"
 export * from "./soniox-adapter"
-// Additional provider adapters will be exported here as they're implemented
+export * from "./elevenlabs-adapter"

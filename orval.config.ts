@@ -34,6 +34,10 @@ const SONIOX_INPUT = {
   target: "./specs/soniox-openapi.json"
 }
 
+const ELEVENLABS_INPUT = {
+  target: "./specs/elevenlabs-openapi.json"
+}
+
 export default defineConfig({
   // Gladia API generation
   gladiaApi: {
@@ -220,6 +224,33 @@ export default defineConfig({
     input: SONIOX_INPUT,
     output: {
       target: "./src/generated/soniox/api",
+      client: "zod",
+      mode: "single",
+      fileExtension: ".zod.ts",
+      biome: true
+    }
+  },
+
+  // ElevenLabs API generation
+  elevenlabsApi: {
+    input: ELEVENLABS_INPUT,
+    output: {
+      target: "./src/generated/elevenlabs/api",
+      schemas: "./src/generated/elevenlabs/schema",
+      client: "axios-functions",
+      mode: "single",
+      biome: true,
+      mock: {
+        type: "msw",
+        baseUrl: "https://api.elevenlabs.io"
+      }
+    }
+  },
+  // Generate Zod schemas for ElevenLabs
+  elevenlabsZod: {
+    input: ELEVENLABS_INPUT,
+    output: {
+      target: "./src/generated/elevenlabs/api",
       client: "zod",
       mode: "single",
       fileExtension: ".zod.ts",

@@ -1,0 +1,1571 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ElevenLabs Speech-to-Text API",
+    "description": "ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.",
+    "version": "1.0"
+  },
+  "paths": {
+    "/v1/speech-to-text": {
+      "post": {
+        "tags": [
+          "speech-to-text"
+        ],
+        "summary": "Speech To Text",
+        "description": "Transcribe an audio or video file. If webhook is set to true, the request will be processed asynchronously and results sent to configured webhooks. When use_multi_channel is true and the provided audio has multiple channels, a 'transcripts' object with separate transcripts for each channel is returned. Otherwise, returns a single transcript. The optional webhook_metadata parameter allows you to attach custom data that will be included in webhook responses for request correlation and tracking.",
+        "operationId": "speech_to_text",
+        "parameters": [
+          {
+            "name": "enable_logging",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Enable request logging.",
+              "description": "When enable_logging is set to false zero retention mode will be used for the request. This will mean log and transcript storage features are unavailable for this request. Zero retention mode may only be used by enterprise customers.",
+              "default": true
+            },
+            "description": "When enable_logging is set to false zero retention mode will be used for the request. This will mean log and transcript storage features are unavailable for this request. Zero retention mode may only be used by enterprise customers."
+          },
+          {
+            "name": "xi-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website.",
+              "title": "Xi-Api-Key"
+            },
+            "description": "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_Speech_to_Text_v1_speech_to_text_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Synchronous transcription result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/SpeechToTextChunkResponseModel"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MultichannelSpeechToTextResponseModel"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SpeechToTextWebhookResponseModel"
+                    }
+                  ],
+                  "title": "Response Speech To Text V1 Speech To Text Post",
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/SpeechToTextChunkResponseModel"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MultichannelSpeechToTextResponseModel"
+                    }
+                  ]
+                },
+                "examples": {
+                  "single_channel": {
+                    "summary": "Single channel response",
+                    "value": {
+                      "language_code": "en",
+                      "language_probability": 0.98,
+                      "text": "Hello world!",
+                      "words": [
+                        {
+                          "text": "Hello",
+                          "start": 0,
+                          "end": 0.5,
+                          "type": "word",
+                          "speaker_id": "speaker_1",
+                          "logprob": -0.124
+                        }
+                      ]
+                    }
+                  },
+                  "multichannel": {
+                    "summary": "Multichannel response",
+                    "value": {
+                      "transcripts": [
+                        {
+                          "language_code": "en",
+                          "language_probability": 0.98,
+                          "text": "Hello from channel one.",
+                          "words": [
+                            {
+                              "text": "Hello",
+                              "start": 0,
+                              "end": 0.5,
+                              "type": "word",
+                              "speaker_id": "speaker_0",
+                              "channel_index": 0,
+                              "logprob": -0.124
+                            }
+                          ]
+                        },
+                        {
+                          "language_code": "en",
+                          "language_probability": 0.97,
+                          "text": "Greetings from channel two.",
+                          "words": [
+                            {
+                              "text": "Greetings",
+                              "start": 0.1,
+                              "end": 0.7,
+                              "type": "word",
+                              "speaker_id": "speaker_1",
+                              "channel_index": 1,
+                              "logprob": -0.156
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Asynchronous request accepted",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Request accepted. Transcription result will be sent to the webhook.",
+                  "request_id": "abc123"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": "speech_to_text",
+        "x-fern-sdk-method-name": "convert"
+      }
+    },
+    "/v1/speech-to-text/transcripts/{transcription_id}": {
+      "get": {
+        "tags": [
+          "speech-to-text"
+        ],
+        "summary": "Get Transcript By Id",
+        "description": "Retrieve a previously generated transcript by its ID.",
+        "operationId": "get_transcript_by_id",
+        "parameters": [
+          {
+            "name": "transcription_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique ID of the transcript to retrieve",
+              "title": "Transcription Id"
+            },
+            "description": "The unique ID of the transcript to retrieve"
+          },
+          {
+            "name": "xi-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website.",
+              "title": "Xi-Api-Key"
+            },
+            "description": "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The transcript data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/SpeechToTextChunkResponseModel"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MultichannelSpeechToTextResponseModel"
+                    }
+                  ],
+                  "title": "Response Get Transcript By Id V1 Speech To Text Transcripts  Transcription Id  Get",
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/SpeechToTextChunkResponseModel"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MultichannelSpeechToTextResponseModel"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "status": "unauthorized",
+                    "message": "Authentication required."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transcript not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "status": "not_found_error",
+                    "message": "Transcript not found."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": [
+          "speech_to_text",
+          "transcripts"
+        ],
+        "x-fern-sdk-method-name": "get"
+      },
+      "delete": {
+        "tags": [
+          "speech-to-text"
+        ],
+        "summary": "Delete Transcript By Id",
+        "description": "Delete a previously generated transcript by its ID.",
+        "operationId": "delete_transcript_by_id",
+        "parameters": [
+          {
+            "name": "transcription_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique ID of the transcript to delete",
+              "title": "Transcription Id"
+            },
+            "description": "The unique ID of the transcript to delete"
+          },
+          {
+            "name": "xi-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website.",
+              "title": "Xi-Api-Key"
+            },
+            "description": "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete completed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": {
+                    "status": "unauthorized",
+                    "message": "Authentication required."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-fern-sdk-group-name": [
+          "speech_to_text",
+          "transcripts"
+        ],
+        "x-fern-sdk-method-name": "delete"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdditionalFormatResponseModel": {
+        "properties": {
+          "requested_format": {
+            "type": "string",
+            "title": "Requested Format",
+            "description": "The requested format."
+          },
+          "file_extension": {
+            "type": "string",
+            "title": "File Extension",
+            "description": "The file extension of the additional format."
+          },
+          "content_type": {
+            "type": "string",
+            "title": "Content Type",
+            "description": "The content type of the additional format."
+          },
+          "is_base64_encoded": {
+            "type": "boolean",
+            "title": "Is Base64 Encoded",
+            "description": "Whether the content is base64 encoded."
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "The content of the additional format."
+          }
+        },
+        "type": "object",
+        "required": [
+          "requested_format",
+          "file_extension",
+          "content_type",
+          "is_base64_encoded",
+          "content"
+        ],
+        "title": "AdditionalFormatResponseModel"
+      },
+      "AdditionalFormats": {
+        "items": {
+          "$ref": "#/components/schemas/ExportOptions"
+        },
+        "type": "array",
+        "maxItems": 10,
+        "title": "AdditionalFormats"
+      },
+      "Body_Speech_to_Text_v1_speech_to_text_post": {
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "enum": [
+              "scribe_v1",
+              "scribe_v2"
+            ],
+            "title": "Model Id",
+            "description": "The ID of the model to use for transcription."
+          },
+          "file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File",
+            "description": "The file to transcribe. All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB."
+          },
+          "language_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language Code",
+            "description": "An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically."
+          },
+          "tag_audio_events": {
+            "type": "boolean",
+            "title": "Tag Audio Events",
+            "description": "Whether to tag audio events like (laughter), (footsteps), etc. in the transcription.",
+            "default": true
+          },
+          "num_speakers": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 32,
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Num Speakers",
+            "description": "The maximum amount of speakers talking in the uploaded file. Can help with predicting who speaks when. The maximum amount of speakers that can be predicted is 32. Defaults to null, in this case the amount of speakers is set to the maximum value the model supports."
+          },
+          "timestamps_granularity": {
+            "type": "string",
+            "enum": [
+              "none",
+              "word",
+              "character"
+            ],
+            "title": "Timestamps Granularity",
+            "description": "The granularity of the timestamps in the transcription. 'word' provides word-level timestamps and 'character' provides character-level timestamps per word.",
+            "default": "word"
+          },
+          "diarize": {
+            "type": "boolean",
+            "title": "Diarize",
+            "description": "Whether to annotate which speaker is currently talking in the uploaded file.",
+            "default": false
+          },
+          "diarization_threshold": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 0.4,
+                "minimum": 0.1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diarization Threshold",
+            "description": "Diarization threshold to apply during speaker diarization. A higher value means there will be a lower chance of one speaker being diarized as two different speakers but also a higher chance of two different speakers being diarized as one speaker (less total speakers predicted). A low value means there will be a higher chance of one speaker being diarized as two different speakers but also a lower chance of two different speakers being diarized as one speaker (more total speakers predicted). Can only be set when diarize=True and num_speakers=None. Defaults to None, in which case we will choose a threshold based on the model_id (0.22 usually)."
+          },
+          "additional_formats": {
+            "$ref": "#/components/schemas/AdditionalFormats",
+            "description": "A list of additional formats to export the transcript to.",
+            "examples": [
+              [
+                {
+                  "format": "srt",
+                  "include_speakers": true,
+                  "include_timestamps": true
+                },
+                {
+                  "format": "txt",
+                  "include_speakers": false
+                }
+              ]
+            ]
+          },
+          "file_format": {
+            "type": "string",
+            "enum": [
+              "pcm_s16le_16",
+              "other"
+            ],
+            "title": "File Format",
+            "description": "The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform.",
+            "default": "other",
+            "examples": [
+              "pcm_s16le_16",
+              "other"
+            ]
+          },
+          "cloud_storage_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cloud Storage Url",
+            "description": "The HTTPS URL of the file to transcribe. Exactly one of the file or cloud_storage_url parameters must be provided. The file must be accessible via HTTPS and the file size must be less than 2GB. Any valid HTTPS URL is accepted, including URLs from cloud storage providers (AWS S3, Google Cloud Storage, Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs can be pre-signed or include authentication tokens in query parameters.",
+            "examples": [
+              "https://storage.googleapis.com/my-bucket/folder/audio.mp3",
+              "https://my-bucket.s3.us-west-2.amazonaws.com/folder/audio.mp3",
+              "https://account123.r2.cloudflarestorage.com/my-bucket/audio.mp3",
+              "https://cdn.example.com/media/audio.wav"
+            ]
+          },
+          "webhook": {
+            "type": "boolean",
+            "title": "Webhook",
+            "description": "Whether to send the transcription result to configured speech-to-text webhooks.  If set the request will return early without the transcription, which will be delivered later via webhook.",
+            "default": false
+          },
+          "webhook_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Webhook Id",
+            "description": "Optional specific webhook ID to send the transcription result to. Only valid when webhook is set to true. If not provided, transcription will be sent to all configured speech-to-text webhooks."
+          },
+          "temperature": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2,
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Temperature",
+            "description": "Controls the randomness of the transcription output. Accepts values between 0.0 and 2.0, where higher values result in more diverse and less deterministic results. If omitted, we will use a temperature based on the model you selected which is usually 0."
+          },
+          "seed": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2147483647,
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seed",
+            "description": "If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be an integer between 0 and 2147483647.",
+            "examples": [
+              12345
+            ]
+          },
+          "use_multi_channel": {
+            "type": "boolean",
+            "title": "Use Multi Channel",
+            "description": "Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel will be transcribed independently and the results will be combined. Each word in the response will include a 'channel_index' field indicating which channel it was spoken on. A maximum of 5 channels is supported.",
+            "default": false
+          },
+          "webhook_metadata": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Webhook Metadata",
+            "description": "Optional metadata to be included in the webhook response. This should be a JSON string representing an object with a maximum depth of 2 levels and maximum size of 16KB. Useful for tracking internal IDs, job references, or other contextual information.",
+            "examples": [
+              "{\"user_id\": \"123\", \"session_id\": \"abc-def-ghi\"}",
+              "{\"request_type\": \"interview\", \"participant_name\": \"John Doe\"}"
+            ]
+          },
+          "entity_detection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Detection",
+            "description": "Detect entities in the transcript. Can be 'all' to detect all entities, a single entity type or category string, or a list of entity types/categories. Categories include 'pii', 'phi', 'pci', 'other', 'offensive_language'. When enabled, detected entities will be returned in the 'entities' field with their text, type, and character positions. Usage of this parameter will incur additional costs."
+          },
+          "no_verbatim": {
+            "type": "boolean",
+            "title": "No Verbatim",
+            "description": "If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model.",
+            "default": false
+          },
+          "keyterms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keyterms",
+            "description": "A list of keyterms to bias the transcription towards.           The keyterms are words or phrases you want the model to recognise more accurately.           The number of keyterms cannot exceed 100.           The length of each keyterm must be less than 50 characters.           Keyterms can contain at most 5 words (after normalisation).           For example [\"hello\", \"world\", \"technical term\"].           Usage of this parameter will incur additional costs.  ",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_id"
+        ],
+        "title": "Body_Speech_to_Text_v1_speech_to_text_post"
+      },
+      "DetectedEntity": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The text that was identified as an entity."
+          },
+          "entity_type": {
+            "type": "string",
+            "title": "Entity Type",
+            "description": "The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name')."
+          },
+          "start_char": {
+            "type": "integer",
+            "title": "Start Char",
+            "description": "Start character position in the transcript text."
+          },
+          "end_char": {
+            "type": "integer",
+            "title": "End Char",
+            "description": "End character position in the transcript text."
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "entity_type",
+          "start_char",
+          "end_char"
+        ],
+        "title": "DetectedEntity"
+      },
+      "DocxExportOptions": {
+        "properties": {
+          "include_speakers": {
+            "type": "boolean",
+            "title": "Include Speakers",
+            "default": true
+          },
+          "include_timestamps": {
+            "type": "boolean",
+            "title": "Include Timestamps",
+            "default": true
+          },
+          "format": {
+            "type": "string",
+            "const": "docx",
+            "title": "Format"
+          },
+          "segment_on_silence_longer_than_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segment On Silence Longer Than S"
+          },
+          "max_segment_duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Duration S"
+          },
+          "max_segment_chars": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Chars"
+          }
+        },
+        "type": "object",
+        "required": [
+          "format"
+        ],
+        "title": "DocxExportOptions"
+      },
+      "ExportOptions": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SegmentedJsonExportOptions"
+          },
+          {
+            "$ref": "#/components/schemas/DocxExportOptions"
+          },
+          {
+            "$ref": "#/components/schemas/PdfExportOptions"
+          },
+          {
+            "$ref": "#/components/schemas/TxtExportOptions"
+          },
+          {
+            "$ref": "#/components/schemas/HtmlExportOptions"
+          },
+          {
+            "$ref": "#/components/schemas/SrtExportOptions"
+          }
+        ],
+        "title": "ExportOptions",
+        "discriminator": {
+          "propertyName": "format",
+          "mapping": {
+            "docx": "#/components/schemas/DocxExportOptions",
+            "html": "#/components/schemas/HtmlExportOptions",
+            "pdf": "#/components/schemas/PdfExportOptions",
+            "segmented_json": "#/components/schemas/SegmentedJsonExportOptions",
+            "srt": "#/components/schemas/SrtExportOptions",
+            "txt": "#/components/schemas/TxtExportOptions"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HtmlExportOptions": {
+        "properties": {
+          "include_speakers": {
+            "type": "boolean",
+            "title": "Include Speakers",
+            "default": true
+          },
+          "include_timestamps": {
+            "type": "boolean",
+            "title": "Include Timestamps",
+            "default": true
+          },
+          "format": {
+            "type": "string",
+            "const": "html",
+            "title": "Format"
+          },
+          "segment_on_silence_longer_than_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segment On Silence Longer Than S"
+          },
+          "max_segment_duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Duration S"
+          },
+          "max_segment_chars": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Chars"
+          }
+        },
+        "type": "object",
+        "required": [
+          "format"
+        ],
+        "title": "HtmlExportOptions"
+      },
+      "MultichannelSpeechToTextResponseModel": {
+        "properties": {
+          "transcripts": {
+            "items": {
+              "$ref": "#/components/schemas/SpeechToTextChunkResponseModel"
+            },
+            "type": "array",
+            "title": "Transcripts",
+            "description": "List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel."
+          },
+          "transcription_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcription Id",
+            "description": "The transcription ID of the response."
+          }
+        },
+        "type": "object",
+        "required": [
+          "transcripts"
+        ],
+        "title": "MultichannelSpeechToTextResponseModel",
+        "description": "Response model for multichannel speech-to-text transcription.",
+        "example": {
+          "transcripts": [
+            {
+              "language_code": "en",
+              "language_probability": 0.98,
+              "text": "Hello from channel one.",
+              "words": [
+                {
+                  "end": 0.5,
+                  "logprob": -0.124,
+                  "speaker_id": "speaker_0",
+                  "start": 0,
+                  "text": "Hello",
+                  "type": "word"
+                },
+                {
+                  "end": 0.5,
+                  "logprob": 0,
+                  "speaker_id": "speaker_0",
+                  "start": 0.5,
+                  "text": " ",
+                  "type": "spacing"
+                },
+                {
+                  "end": 0.8,
+                  "logprob": -0.089,
+                  "speaker_id": "speaker_0",
+                  "start": 0.5,
+                  "text": "from",
+                  "type": "word"
+                }
+              ]
+            },
+            {
+              "language_code": "en",
+              "language_probability": 0.97,
+              "text": "Greetings from channel two.",
+              "words": [
+                {
+                  "end": 0.7,
+                  "logprob": -0.156,
+                  "speaker_id": "speaker_1",
+                  "start": 0.1,
+                  "text": "Greetings",
+                  "type": "word"
+                },
+                {
+                  "end": 0.7,
+                  "logprob": 0,
+                  "speaker_id": "speaker_1",
+                  "start": 0.7,
+                  "text": " ",
+                  "type": "spacing"
+                },
+                {
+                  "end": 1,
+                  "logprob": -0.078,
+                  "speaker_id": "speaker_1",
+                  "start": 0.7,
+                  "text": "from",
+                  "type": "word"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "PdfExportOptions": {
+        "properties": {
+          "include_speakers": {
+            "type": "boolean",
+            "title": "Include Speakers",
+            "default": true
+          },
+          "include_timestamps": {
+            "type": "boolean",
+            "title": "Include Timestamps",
+            "default": true
+          },
+          "format": {
+            "type": "string",
+            "const": "pdf",
+            "title": "Format"
+          },
+          "segment_on_silence_longer_than_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segment On Silence Longer Than S"
+          },
+          "max_segment_duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Duration S"
+          },
+          "max_segment_chars": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Chars"
+          }
+        },
+        "type": "object",
+        "required": [
+          "format"
+        ],
+        "title": "PdfExportOptions"
+      },
+      "SegmentedJsonExportOptions": {
+        "properties": {
+          "include_speakers": {
+            "type": "boolean",
+            "title": "Include Speakers",
+            "default": true
+          },
+          "include_timestamps": {
+            "type": "boolean",
+            "title": "Include Timestamps",
+            "default": true
+          },
+          "format": {
+            "type": "string",
+            "const": "segmented_json",
+            "title": "Format"
+          },
+          "segment_on_silence_longer_than_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segment On Silence Longer Than S"
+          },
+          "max_segment_duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Duration S"
+          },
+          "max_segment_chars": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Chars"
+          }
+        },
+        "type": "object",
+        "required": [
+          "format"
+        ],
+        "title": "SegmentedJsonExportOptions"
+      },
+      "SpeechToTextCharacterResponseModel": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The character that was transcribed."
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start",
+            "description": "The start time of the character in seconds."
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End",
+            "description": "The end time of the character in seconds."
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "SpeechToTextCharacterResponseModel",
+        "example": {
+          "end": 0.1,
+          "start": 0,
+          "text": "H"
+        }
+      },
+      "SpeechToTextChunkResponseModel": {
+        "properties": {
+          "language_code": {
+            "type": "string",
+            "title": "Language Code",
+            "description": "The detected language code (e.g. 'eng' for English)."
+          },
+          "language_probability": {
+            "type": "number",
+            "title": "Language Probability",
+            "description": "The confidence score of the language detection (0 to 1)."
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The raw text of the transcription."
+          },
+          "words": {
+            "items": {
+              "$ref": "#/components/schemas/SpeechToTextWordResponseModel"
+            },
+            "type": "array",
+            "title": "Words",
+            "description": "List of words with their timing information."
+          },
+          "channel_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Index",
+            "description": "The channel index this transcript belongs to (for multichannel audio)."
+          },
+          "additional_formats": {
+            "anyOf": [
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/AdditionalFormatResponseModel"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Additional Formats",
+            "description": "Requested additional formats of the transcript."
+          },
+          "transcription_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcription Id",
+            "description": "The transcription ID of the response."
+          },
+          "entities": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DetectedEntity"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entities",
+            "description": "List of detected entities with their text, type, and character positions in the transcript."
+          }
+        },
+        "type": "object",
+        "required": [
+          "language_code",
+          "language_probability",
+          "text",
+          "words"
+        ],
+        "title": "SpeechToTextChunkResponseModel",
+        "description": "Chunk-level detail of the transcription with timing information.",
+        "example": {
+          "language_code": "en",
+          "language_probability": 0.98,
+          "text": "Hello world!",
+          "words": [
+            {
+              "end": 0.5,
+              "logprob": -0.124,
+              "speaker_id": "speaker_1",
+              "start": 0,
+              "text": "Hello",
+              "type": "word"
+            },
+            {
+              "end": 0.5,
+              "logprob": 0,
+              "speaker_id": "speaker_1",
+              "start": 0.5,
+              "text": " ",
+              "type": "spacing"
+            },
+            {
+              "end": 1.2,
+              "logprob": -0.089,
+              "speaker_id": "speaker_1",
+              "start": 0.5,
+              "text": "world!",
+              "type": "word"
+            }
+          ]
+        }
+      },
+      "SpeechToTextWebhookResponseModel": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "The message of the webhook response."
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id",
+            "description": "The request ID of the webhook response."
+          },
+          "transcription_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transcription Id",
+            "description": "The transcription ID of the webhook response."
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "request_id"
+        ],
+        "title": "SpeechToTextWebhookResponseModel",
+        "example": {
+          "message": "Request accepted. Transcription result will be sent to the webhook endpoint.",
+          "request_id": "1234567890"
+        }
+      },
+      "SpeechToTextWordResponseModel": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The word or sound that was transcribed."
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start",
+            "description": "The start time of the word or sound in seconds."
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End",
+            "description": "The end time of the word or sound in seconds."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "word",
+              "spacing",
+              "audio_event"
+            ],
+            "title": "Type",
+            "description": "The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps."
+          },
+          "speaker_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Speaker Id",
+            "description": "Unique identifier for the speaker of this word."
+          },
+          "logprob": {
+            "type": "number",
+            "title": "Logprob",
+            "description": "The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions."
+          },
+          "characters": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SpeechToTextCharacterResponseModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Characters",
+            "description": "The characters that make up the word and their timing information."
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "type",
+          "logprob"
+        ],
+        "title": "SpeechToTextWordResponseModel",
+        "description": "Word-level detail of the transcription with timing information.",
+        "example": {
+          "characters": [
+            {
+              "end": 0.1,
+              "start": 0,
+              "text": "H"
+            },
+            {
+              "end": 0.2,
+              "start": 0.1,
+              "text": "e"
+            },
+            {
+              "end": 0.3,
+              "start": 0.2,
+              "text": "l"
+            },
+            {
+              "end": 0.4,
+              "start": 0.3,
+              "text": "l"
+            },
+            {
+              "end": 0.5,
+              "start": 0.4,
+              "text": "o"
+            }
+          ],
+          "end": 0.5,
+          "logprob": -0.124,
+          "speaker_id": "speaker_1",
+          "start": 0,
+          "text": "Hello",
+          "type": "word"
+        }
+      },
+      "SrtExportOptions": {
+        "properties": {
+          "max_characters_per_line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Characters Per Line",
+            "default": 42
+          },
+          "include_speakers": {
+            "type": "boolean",
+            "title": "Include Speakers",
+            "default": false
+          },
+          "include_timestamps": {
+            "type": "boolean",
+            "title": "Include Timestamps",
+            "default": true
+          },
+          "format": {
+            "type": "string",
+            "const": "srt",
+            "title": "Format"
+          },
+          "segment_on_silence_longer_than_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segment On Silence Longer Than S",
+            "default": 0.8
+          },
+          "max_segment_duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Duration S",
+            "default": 4
+          },
+          "max_segment_chars": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Chars",
+            "default": 84
+          }
+        },
+        "type": "object",
+        "required": [
+          "format"
+        ],
+        "title": "SrtExportOptions"
+      },
+      "TxtExportOptions": {
+        "properties": {
+          "max_characters_per_line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Characters Per Line",
+            "default": 100
+          },
+          "include_speakers": {
+            "type": "boolean",
+            "title": "Include Speakers",
+            "default": true
+          },
+          "include_timestamps": {
+            "type": "boolean",
+            "title": "Include Timestamps",
+            "default": true
+          },
+          "format": {
+            "type": "string",
+            "const": "txt",
+            "title": "Format"
+          },
+          "segment_on_silence_longer_than_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segment On Silence Longer Than S"
+          },
+          "max_segment_duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Duration S"
+          },
+          "max_segment_chars": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Segment Chars"
+          }
+        },
+        "type": "object",
+        "required": [
+          "format"
+        ],
+        "title": "TxtExportOptions"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "speech-to-text",
+      "description": "Transcribe your audio files with detailed speaker annotations and precise timestamps using our cutting-edge model."
+    }
+  ]
+}

@@ -26,6 +26,7 @@ export * as AzureTypes from "./generated/azure/schema"
 export * as SpeechmaticsTypes from "./generated/speechmatics/schema"
 export * as SonioxTypes from "./generated/soniox/schema"
 export * as SonioxStreamingTypes from "./generated/soniox/streaming-types.zod"
+export * as ElevenLabsTypes from "./generated/elevenlabs/schema"
 
 // Zod schemas for runtime field config extraction
 export * as GladiaZodSchemas from "./generated/gladia/api/gladiaControlAPI.zod"
@@ -35,6 +36,7 @@ export * as OpenAIZodSchemas from "./generated/openai/api/openAIAudioRealtimeAPI
 export * as SpeechmaticsZodSchemas from "./generated/speechmatics/api/speechmaticsASRRESTAPI.zod"
 export * as SonioxApiZodSchemas from "./generated/soniox/api/sonioxPublicAPI.zod"
 export * as SonioxStreamingZodSchemas from "./generated/soniox/streaming-types.zod"
+export * as ElevenLabsZodSchemas from "./generated/elevenlabs/api/elevenLabsSpeechToTextAPI.zod"
 
 // Zod-to-field-configs utility
 export { zodToFieldConfigs, filterFields, excludeFields } from "./utils/zod-to-field-configs"

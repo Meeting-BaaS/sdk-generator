@@ -125,6 +125,12 @@ const SPEC_SOURCES = {
       note: "@soniox/speech-to-text-web npm package",
       type: "npm-version"
     }
+  },
+  // ElevenLabs spec from public API - filtered to STT endpoints by fix-elevenlabs-spec.js
+  elevenlabs: {
+    url: "https://api.elevenlabs.io/openapi.json",
+    output: "specs/elevenlabs-openapi.json",
+    format: "json"
   }
 }
 

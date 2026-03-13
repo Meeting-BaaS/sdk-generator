@@ -86,6 +86,10 @@ export {
   createAzureWebhookHandler
 } from "./azure-webhook"
 export { SpeechmaticsWebhookHandler } from "./speechmatics-webhook"
+export {
+  ElevenLabsWebhookHandler,
+  createElevenLabsWebhookHandler
+} from "./elevenlabs-webhook"
 
 // Export router
 export {

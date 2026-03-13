@@ -22,6 +22,7 @@ import type { DeepgramModelType } from "./streaming-enums"
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { SpeechModel as AssemblyAISpeechModel } from "../generated/assemblyai/schema/speechModel"
 import type { SonioxModelCode } from "../generated/soniox/models"
+import type { ElevenLabsModelCode } from "../generated/elevenlabs/models"
 
 // Provider-specific language types for type-safe language selection
 import type { TranscriptLanguageCode as AssemblyAILanguageCode } from "../generated/assemblyai/schema/transcriptLanguageCode"
@@ -30,6 +31,7 @@ import type { DeepgramLanguageCode } from "../generated/deepgram/languages"
 import type { SonioxLanguageCode } from "../generated/soniox/languages"
 import type { SpeechmaticsLanguageCode } from "../generated/speechmatics/languages"
 import type { AzureLocaleCode } from "../generated/azure/locales"
+import type { ElevenLabsLanguageCode } from "../generated/elevenlabs/languages"
 
 // Provider-specific request types for full type safety
 import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
@@ -38,6 +40,7 @@ import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTr
 import type { CodeSwitchingConfigDTO } from "../generated/gladia/schema/codeSwitchingConfigDTO"
 import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
+import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
 
 // Streaming request types for type-safe streaming options
 import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
@@ -46,7 +49,8 @@ import type {
   DeepgramStreamingOptions,
   AssemblyAIStreamingOptions,
   OpenAIStreamingOptions,
-  SonioxStreamingOptions
+  SonioxStreamingOptions,
+  ElevenLabsStreamingOptions
 } from "./provider-streaming-types"
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -103,6 +107,7 @@ export type TranscriptionModel =
   | StreamingSupportedModels
   | AssemblyAISpeechModel
   | SonioxModelCode
+  | ElevenLabsModelCode
   | SpeechmaticsOperatingPoint
 
 /**
@@ -132,6 +137,7 @@ export type TranscriptionLanguage =
   | GladiaLanguageCode
   | DeepgramLanguageCode
   | SonioxLanguageCode
+  | ElevenLabsLanguageCode
   | SpeechmaticsLanguageCode
   | AzureLocaleCode
 
@@ -237,6 +243,25 @@ export interface DeepgramExtendedData {
 /**
  * Map of provider names to their extended data types
  */
+/** ElevenLabs extended data (entities, audio events, language probability) */
+export interface ElevenLabsExtendedData {
+  /** Detected entities (PII, PHI, PCI, etc.) */
+  entities?: Array<{
+    text: string
+    entity_type: string
+    start_char: number
+    end_char: number
+  }>
+  /** Audio events detected (laughter, music, etc.) */
+  audioEvents?: Array<{
+    text: string
+    start: number
+    end: number
+  }>
+  /** Language detection probability */
+  languageProbability?: number
+}
+
 export type ProviderExtendedDataMap = {
   assemblyai: AssemblyAIExtendedData
   gladia: GladiaExtendedData
@@ -245,6 +270,7 @@ export type ProviderExtendedDataMap = {
   "azure-stt": Record<string, never> // No extended data
   speechmatics: Record<string, never> // No extended data
   soniox: Record<string, never> // Extended data via streaming types
+  elevenlabs: ElevenLabsExtendedData
 }
 
 // Re-export core types (browser-safe)
@@ -441,6 +467,12 @@ export interface TranscribeOptions {
    * @see https://platform.openai.com/docs/api-reference/audio/createTranscription
    */
   openai?: Partial<Omit<CreateTranscriptionRequest, "file" | "model">>
+
+  /**
+   * ElevenLabs-specific options (passed directly to API)
+   * @see https://elevenlabs.io/docs/api-reference/speech-to-text
+   */
+  elevenlabs?: Partial<Omit<BodySpeechToTextV1SpeechToTextPost, "file" | "model_id" | "language_code" | "diarize" | "keyterms">>
 }
 
 /**
@@ -689,6 +721,7 @@ export type ProviderRawResponseMap = {
   "azure-stt": AzureTranscription
   speechmatics: unknown // No generated type available yet
   soniox: unknown // Uses streaming types
+  elevenlabs: unknown // Uses generated schema types
 }
 
 /**
@@ -1151,6 +1184,28 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    * ```
    */
   sonioxStreaming?: SonioxStreamingOptions
+
+  /**
+   * ElevenLabs-specific streaming options
+   *
+   * Pass provider-specific options for ElevenLabs realtime transcription.
+   * These override the generic options above.
+   *
+   * @example
+   * ```typescript
+   * import { ElevenLabsRealtimeModel, ElevenLabsAudioFormat } from 'voice-router-dev/constants'
+   *
+   * await adapter.transcribeStream({
+   *   elevenlabsStreaming: {
+   *     model: ElevenLabsRealtimeModel.scribe_v2_realtime,
+   *     audioFormat: ElevenLabsAudioFormat.pcm_16000,
+   *     commitStrategy: 'vad',
+   *     includeTimestamps: true
+   *   }
+   * });
+   * ```
+   */
+  elevenlabsStreaming?: ElevenLabsStreamingOptions
 
   /**
    * Regional endpoint for streaming (Gladia only)

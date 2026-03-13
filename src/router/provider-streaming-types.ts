@@ -37,6 +37,10 @@ import type {
 import type { SonioxLanguageCode } from "../generated/soniox/languages"
 import type { SonioxRealtimeModelCode } from "../generated/soniox/models"
 
+// ElevenLabs types for strict type checking
+import type { ElevenLabsRealtimeModelCode } from "../generated/elevenlabs/models"
+import type { ElevenLabsAudioFormatType } from "../constants"
+
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
 
@@ -725,6 +729,65 @@ export interface SonioxStreamingOptions {
   clientReferenceId?: string
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ElevenLabs Streaming Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * ElevenLabs realtime streaming options
+ *
+ * Based on the WebSocket API at wss://api.elevenlabs.io/v1/speech-to-text/realtime.
+ * Supports VAD-based or manual commit strategies.
+ *
+ * @see https://elevenlabs.io/docs/capabilities/speech-to-text#realtime-streaming
+ */
+export interface ElevenLabsStreamingOptions {
+  /**
+   * Realtime model to use
+   * @default "scribe_v2_realtime"
+   */
+  model?: ElevenLabsRealtimeModelCode
+
+  /**
+   * Audio format specification
+   * PCM formats include sample rate (e.g., "pcm_16000")
+   * @default "pcm_16000"
+   */
+  audioFormat?: ElevenLabsAudioFormatType
+
+  /** ISO 639-1/3 language code to improve recognition accuracy */
+  languageCode?: string
+
+  /** Include word-level timestamps in responses */
+  includeTimestamps?: boolean
+
+  /** Include language detection info in responses */
+  includeLanguageDetection?: boolean
+
+  /**
+   * Commit strategy for finalizing transcript segments
+   * - "manual": Client sends explicit commit messages
+   * - "vad": Automatic voice activity detection
+   * @default "vad"
+   */
+  commitStrategy?: "manual" | "vad"
+
+  /** Silence threshold in seconds for VAD commit strategy */
+  vadSilenceThresholdSecs?: number
+
+  /** VAD activation threshold (0-1) */
+  vadThreshold?: number
+
+  /** Minimum speech duration in ms before triggering transcription */
+  minSpeechDurationMs?: number
+
+  /** Minimum silence duration in ms before committing */
+  minSilenceDurationMs?: number
+
+  /** Context from previous text to improve continuity */
+  previousText?: string
+}
+
 /**
  * Union of all provider-specific streaming options
  */
@@ -734,6 +797,7 @@ export type ProviderStreamingOptions =
   | ({ provider: "assemblyai" } & AssemblyAIStreamingOptions)
   | ({ provider: "openai-whisper" } & OpenAIStreamingOptions)
   | ({ provider: "soniox" } & SonioxStreamingOptions)
+  | ({ provider: "elevenlabs" } & ElevenLabsStreamingOptions)
 
 /**
  * Type-safe streaming options for a specific provider
@@ -748,7 +812,9 @@ export type StreamingOptionsForProvider<P extends StreamingProvider> = P extends
         ? OpenAIStreamingOptions
         : P extends "soniox"
           ? SonioxStreamingOptions
-          : never
+          : P extends "elevenlabs"
+            ? ElevenLabsStreamingOptions
+            : never
 
 /**
  * Type-safe transcribeStream parameters for a specific provider

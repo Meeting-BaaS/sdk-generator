@@ -22,6 +22,7 @@ export type TranscriptionProvider =
   | "azure-stt"
   | "speechmatics"
   | "soniox"
+  | "elevenlabs"
 
 /**
  * Provider capability flags

@@ -44,6 +44,15 @@ export {
 } from "./generated/soniox/languages"
 import { SonioxLanguageCodes } from "./generated/soniox/languages"
 
+// Import ElevenLabs languages from generated file
+export {
+  ElevenLabsLanguageCodes,
+  ElevenLabsLanguages,
+  ElevenLabsLanguageLabels,
+  type ElevenLabsLanguageCode
+} from "./generated/elevenlabs/languages"
+import { ElevenLabsLanguageCodes } from "./generated/elevenlabs/languages"
+
 // Import Speechmatics languages from generated file (derived from documentation)
 export {
   SpeechmaticsLanguageCodes,
@@ -188,6 +197,23 @@ export const SonioxCapabilities = {
 } as const satisfies ProviderCapabilities
 
 /**
+ * ElevenLabs provider capabilities
+ */
+export const ElevenLabsCapabilities = {
+  streaming: true,
+  diarization: true,
+  wordTimestamps: true,
+  languageDetection: true,
+  customVocabulary: true, // Via keyterms parameter
+  summarization: false,
+  sentimentAnalysis: false,
+  entityDetection: true,
+  piiRedaction: true, // Via entity_detection with PII categories
+  listTranscripts: false,
+  deleteTranscript: false
+} as const satisfies ProviderCapabilities
+
+/**
  * All provider capabilities in a single map
  *
  * Uses `as const satisfies` to preserve literal types while ensuring type safety.
@@ -217,7 +243,8 @@ export const ProviderCapabilitiesMap = {
   "openai-whisper": OpenAICapabilities,
   "azure-stt": AzureCapabilities,
   speechmatics: SpeechmaticsCapabilities,
-  soniox: SonioxCapabilities
+  soniox: SonioxCapabilities,
+  elevenlabs: ElevenLabsCapabilities
 } as const satisfies Record<TranscriptionProvider, ProviderCapabilities>
 
 /**
@@ -534,7 +561,8 @@ export const AllLanguageCodes = {
   "openai-whisper": OpenAILanguageCodes,
   "azure-stt": AzureLocaleCodes, // BCP-47 locale codes (e.g., "en-US")
   speechmatics: SpeechmaticsLanguageCodes, // ISO 639-1 codes with multilingual packs
-  soniox: SonioxLanguageCodes
+  soniox: SonioxLanguageCodes,
+  elevenlabs: ElevenLabsLanguageCodes
 } as const
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -551,7 +579,8 @@ export const ProviderDisplayNames: Record<TranscriptionProvider, string> = {
   "openai-whisper": "OpenAI Whisper",
   "azure-stt": "Azure Speech",
   speechmatics: "Speechmatics",
-  soniox: "Soniox"
+  soniox: "Soniox",
+  elevenlabs: "ElevenLabs"
 } as const
 
 /**
@@ -564,7 +593,8 @@ export const ProviderWebsites: Record<TranscriptionProvider, string> = {
   "openai-whisper": "https://openai.com",
   "azure-stt": "https://azure.microsoft.com/services/cognitive-services/speech-to-text/",
   speechmatics: "https://speechmatics.com",
-  soniox: "https://soniox.com"
+  soniox: "https://soniox.com",
+  elevenlabs: "https://elevenlabs.io"
 } as const
 
 /**
@@ -577,7 +607,8 @@ export const ProviderDocs: Record<TranscriptionProvider, string> = {
   "openai-whisper": "https://platform.openai.com/docs/guides/speech-to-text",
   "azure-stt": "https://learn.microsoft.com/azure/cognitive-services/speech-service/",
   speechmatics: "https://docs.speechmatics.com",
-  soniox: "https://soniox.com/docs/stt/"
+  soniox: "https://soniox.com/docs/stt/",
+  elevenlabs: "https://elevenlabs.io/docs/capabilities/speech-to-text"
 } as const
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -594,7 +625,8 @@ export const AllProviders: readonly TranscriptionProvider[] = [
   "openai-whisper",
   "azure-stt",
   "speechmatics",
-  "soniox"
+  "soniox",
+  "elevenlabs"
 ] as const
 
 /**

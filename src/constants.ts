@@ -251,6 +251,115 @@ export {
 export type { AzureLocaleCode } from "./generated/azure/locales"
 
 // ─────────────────────────────────────────────────────────────────────────────
+// ElevenLabs Constants
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Re-export auto-generated ElevenLabs language constants
+import {
+  ElevenLabsLanguage as _ElevenLabsLanguage,
+  ElevenLabsLanguageCodes as _ElevenLabsLanguageCodes,
+  ElevenLabsLanguageLabels as _ElevenLabsLanguageLabels,
+  ElevenLabsLanguages as _ElevenLabsLanguages
+} from "./generated/elevenlabs/languages"
+export {
+  _ElevenLabsLanguage as ElevenLabsLanguage,
+  _ElevenLabsLanguageCodes as ElevenLabsLanguageCodes,
+  _ElevenLabsLanguageLabels as ElevenLabsLanguageLabels,
+  _ElevenLabsLanguages as ElevenLabsLanguages
+}
+export type { ElevenLabsLanguageCode } from "./generated/elevenlabs/languages"
+
+// Re-export auto-generated ElevenLabs model constants
+import {
+  ElevenLabsModel as _ElevenLabsModel,
+  ElevenLabsModelCodes as _ElevenLabsModelCodes,
+  ElevenLabsModelLabels as _ElevenLabsModelLabels,
+  ElevenLabsRealtimeModel as _ElevenLabsRealtimeModel,
+  ElevenLabsRealtimeModelCodes as _ElevenLabsRealtimeModelCodes
+} from "./generated/elevenlabs/models"
+export {
+  _ElevenLabsModel as ElevenLabsModel,
+  _ElevenLabsModelCodes as ElevenLabsModelCodes,
+  _ElevenLabsModelLabels as ElevenLabsModelLabels,
+  _ElevenLabsRealtimeModel as ElevenLabsRealtimeModel,
+  _ElevenLabsRealtimeModelCodes as ElevenLabsRealtimeModelCodes
+}
+export type {
+  ElevenLabsModelCode,
+  ElevenLabsRealtimeModelCode
+} from "./generated/elevenlabs/models"
+
+/**
+ * ElevenLabs regional endpoints
+ *
+ * ElevenLabs offers regional endpoints for data residency.
+ *
+ * | Region | Endpoint |
+ * |--------|----------|
+ * | Global (default) | api.elevenlabs.io |
+ * | US | api.us.elevenlabs.io |
+ * | EU | api.eu.residency.elevenlabs.io |
+ * | India | api.in.residency.elevenlabs.io |
+ *
+ * @example
+ * ```typescript
+ * import { ElevenLabsRegion } from 'voice-router-dev/constants'
+ *
+ * const adapter = createElevenLabsAdapter({
+ *   apiKey: process.env.ELEVENLABS_API_KEY,
+ *   region: ElevenLabsRegion.eu
+ * })
+ * ```
+ */
+export const ElevenLabsRegion = {
+  /** Global endpoint (default) */
+  global: "global",
+  /** United States */
+  us: "us",
+  /** European Union */
+  eu: "eu",
+  /** India */
+  in: "in"
+} as const
+
+/** ElevenLabs region type derived from const object */
+export type ElevenLabsRegionType = (typeof ElevenLabsRegion)[keyof typeof ElevenLabsRegion]
+
+/**
+ * ElevenLabs audio formats for realtime streaming
+ *
+ * @example
+ * ```typescript
+ * import { ElevenLabsAudioFormat } from 'voice-router-dev/constants'
+ *
+ * { audioFormat: ElevenLabsAudioFormat.pcm_16000 }
+ * ```
+ */
+export const ElevenLabsAudioFormat = {
+  pcm_8000: "pcm_8000",
+  pcm_16000: "pcm_16000",
+  pcm_22050: "pcm_22050",
+  pcm_24000: "pcm_24000",
+  pcm_44100: "pcm_44100",
+  pcm_48000: "pcm_48000",
+  ulaw_8000: "ulaw_8000"
+} as const
+
+/** ElevenLabs audio format type derived from const object */
+export type ElevenLabsAudioFormatType =
+  (typeof ElevenLabsAudioFormat)[keyof typeof ElevenLabsAudioFormat]
+
+/** ElevenLabs model type (alias for ElevenLabsModelCode) */
+export type ElevenLabsModelType = (typeof _ElevenLabsModel)[keyof typeof _ElevenLabsModel]
+
+/** ElevenLabs realtime model type */
+export type ElevenLabsRealtimeModelType =
+  (typeof _ElevenLabsRealtimeModel)[keyof typeof _ElevenLabsRealtimeModel]
+
+/** ElevenLabs language type (alias for ElevenLabsLanguageCode) */
+export type ElevenLabsLanguageType = (typeof _ElevenLabsLanguage)[keyof typeof _ElevenLabsLanguage]
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Gladia Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
