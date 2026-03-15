@@ -432,15 +432,34 @@ function fixArrayDefaults(content, filePath) {
 function fixFormDataObjectAppend(content, filePath) {
   const before = content
 
-  // Find FormData.append calls with chunking_strategy (which can be an object)
-  // Only match if not already wrapped with typeof check
-  // Handle both double quotes and backticks
-  // Replace: formData.append("chunking_strategy", value)
-  // With: formData.append("chunking_strategy", typeof value === 'object' ? JSON.stringify(value) : String(value))
-  content = content.replace(
-    /formData\.append\(["`]chunking_strategy["`],\s+(?!typeof\s)([a-zA-Z._\[\]]+)\)/g,
-    'formData.append("chunking_strategy", typeof $1 === "object" ? JSON.stringify($1) : String($1))'
-  )
+  // Fix FormData.append calls where Orval passes objects/arrays instead of strings.
+  // These fields can be objects, unions with objects, or arrays — FormData only accepts string | Blob.
+
+  // Generic fields that may be objects or unions containing objects
+  const objectFields = ["chunking_strategy", "webhook_metadata", "entity_detection"]
+  for (const field of objectFields) {
+    content = content.replace(
+      new RegExp(
+        `formData\\.append\\(["'\`]${field}["'\`],\\s+(?!typeof\\s)([\\w.\\[\\]]+)\\)`,
+        "g"
+      ),
+      `formData.append("${field}", typeof $1 === "object" ? JSON.stringify($1) : String($1))`
+    )
+  }
+
+  // Array .forEach callbacks where each element is an object (not a string)
+  // Pattern: .forEach((value) => formData.append("field", value))
+  // Fix: JSON.stringify each element
+  const objectArrayFields = ["additional_formats"]
+  for (const field of objectArrayFields) {
+    content = content.replace(
+      new RegExp(
+        `formData\\.append\\(["'\`]${field}["'\`],\\s+(?!JSON\\.)([\\w]+)\\)`,
+        "g"
+      ),
+      `formData.append("${field}", JSON.stringify($1))`
+    )
+  }
 
   if (content !== before) {
     fixes.push(`Fixed FormData object append in ${filePath}`)
