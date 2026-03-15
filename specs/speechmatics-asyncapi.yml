@@ -393,6 +393,11 @@ components:
         channel:
           type: string
           description: The channel to request finalized transcript from. This field is only seen in multichannel.
+        timestamp:
+          type: number
+          format: float
+          minimum: 0
+          description: "Timestamp of the audio data that corresponds to the force end of utterance request. It's the number of seconds since the beginning of the audio."
       required:
         - message
     SetRecognitionConfig:

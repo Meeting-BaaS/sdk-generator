@@ -107,7 +107,7 @@ const SPEC_SOURCES = {
     dependsOn: ["speechmatics"]
   },
   deepgramStreaming: {
-    url: "https://raw.githubusercontent.com/deepgram/deepgram-js-sdk/main/src/lib/types/TranscriptionSchema.ts",
+    url: "https://raw.githubusercontent.com/deepgram/deepgram-js-sdk/v4.11.3/src/lib/types/TranscriptionSchema.ts",
     output: "specs/deepgram-streaming-sdk.ts",
     format: "typescript"
   },
