@@ -1,20 +1,13 @@
 /** @type {import('typedoc').TypeDocOptions} */
 export default {
-  // Webhook Normalization - Complete documentation
+  // Soniox Provider Documentation
   entryPoints: [
-    "./src/webhooks/index.ts",
-    "./src/webhooks/types.ts",
-    "./src/webhooks/webhook-router.ts",
-    "./src/webhooks/base-webhook.ts",
-    "./src/webhooks/gladia-webhook.ts",
-    "./src/webhooks/assemblyai-webhook.ts",
-    "./src/webhooks/deepgram-webhook.ts",
-    "./src/webhooks/azure-webhook.ts",
-    "./src/webhooks/speechmatics-webhook.ts",
-    "./src/webhooks/elevenlabs-webhook.ts"
+    "./src/adapters/soniox-adapter.ts",
+    "./src/adapters/base-adapter.ts", // Include shared base types
+    "./src/router/types.ts" // Include shared router types
   ],
 
-  out: "./docs/generated/webhooks",
+  out: "./docs/generated/soniox",
   plugin: ["typedoc-plugin-markdown"],
 
   // Output settings
@@ -24,38 +17,51 @@ export default {
   // Source settings
   disableSources: true,
   excludeExternals: true,
-  excludePrivate: false, // Include private methods for debugging
+  excludePrivate: false, // Show private methods for advanced users
   excludeProtected: false,
   excludeInternal: true,
 
-  // Exclude test files
-  exclude: ["**/*.test.ts", "**/*.spec.ts", "**/test/**/*", "**/examples/**/*"],
+  // Exclude test files and other providers
+  exclude: [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/test/**/*",
+    "**/examples/**/*",
+    "**/src/adapters/gladia-adapter.ts",
+    "**/src/adapters/assemblyai-adapter.ts",
+    "**/src/adapters/deepgram-adapter.ts",
+    "**/src/adapters/azure-stt-adapter.ts",
+    "**/src/adapters/openai-whisper-adapter.ts",
+    "**/src/adapters/speechmatics-adapter.ts",
+    "**/src/adapters/elevenlabs-adapter.ts",
+    "**/src/generated/**/*" // Exclude all generated types to avoid build errors
+  ],
 
   includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization
   categorizeByGroup: true,
-  defaultCategory: "Webhooks",
+  defaultCategory: "Soniox",
 
   sort: ["kind", "required-first", "alphabetical"],
   sortEntryPoints: true,
 
   kindSortOrder: ["Class", "Interface", "TypeAlias", "Function", "Enum"],
 
-  // Keep readable - don't expand too deeply
+  // Keep readable
   maxTypeConversionDepth: 5,
 
   hideGenerator: true,
   githubPages: false,
 
-  name: "Voice Router SDK - Webhook Normalization",
+  name: "Voice Router SDK - Soniox Provider",
 
   // Enhanced documentation options
   includeVersion: true,
 
   // Better categorization
-  groupOrder: ["Router", "Handlers", "Types", "Validation", "*"],
+  groupOrder: ["Adapter", "Configuration", "Methods", "Types", "*"],
 
   // Enhanced navigation
   navigation: {
@@ -68,7 +74,7 @@ export default {
   parametersFormat: "table",
   enumMembersFormat: "table",
 
-  // Include type hierarchy for better understanding
+  // Include type hierarchy
   visibilityFilters: {
     protected: true,
     private: true,

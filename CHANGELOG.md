@@ -10,8 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Pin Deepgram streaming SDK source to v4.11.3 tag (v5.0.0 Fern rewrite removed `TranscriptionSchema.ts`)
+- Fix ElevenLabs FormData append for object/array fields (`additional_formats`, `webhook_metadata`, `entity_detection`)
+- Add `elevenlabs` to `ProviderWebhookPayloadMap` for typed webhook payloads
 
 ### Added
+
+- Documentation generation for ElevenLabs and Soniox providers (typedoc configs + scripts)
+- Speechmatics and ElevenLabs webhook handlers added to webhook documentation
 
 #### ElevenLabs ScribeV2 — 9th Provider
 

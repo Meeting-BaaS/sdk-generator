@@ -261,9 +261,7 @@ async function checkReference(name, ref, checksumData) {
     }
 
     if (changed) {
-      const oldDisplay = ref.type === "npm-version"
-        ? `v${oldValue}`
-        : oldValue.slice(0, 12)
+      const oldDisplay = ref.type === "npm-version" ? `v${oldValue}` : oldValue.slice(0, 12)
       console.log(`    ⚠️  Reference CHANGED: ${ref.note} (${oldDisplay} → ${displayValue})`)
       console.log(`       Manual spec may need updating`)
     } else if (isNew) {

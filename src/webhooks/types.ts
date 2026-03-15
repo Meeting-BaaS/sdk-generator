@@ -16,13 +16,15 @@ import type { CallbackTranscriptionSuccessPayload as GladiaWebhookSuccessPayload
 import type { CallbackTranscriptionErrorPayload as GladiaWebhookErrorPayload } from "../generated/gladia/schema/callbackTranscriptionErrorPayload"
 import type { TranscriptWebhookNotification as AssemblyAIWebhookPayload } from "../generated/assemblyai/schema/transcriptWebhookNotification"
 import type { ListenV1Response as DeepgramWebhookPayload } from "../generated/deepgram/schema/listenV1Response"
+import type { SpeechToTextChunkResponseModel as ElevenLabsWebhookPayload } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
 
 // Re-export webhook payload types for direct access
 export type {
   GladiaWebhookSuccessPayload,
   GladiaWebhookErrorPayload,
   AssemblyAIWebhookPayload,
-  DeepgramWebhookPayload
+  DeepgramWebhookPayload,
+  ElevenLabsWebhookPayload
 }
 
 /**
@@ -40,6 +42,7 @@ export type ProviderWebhookPayloadMap = {
   "azure-stt": unknown
   "openai-whisper": never // No webhooks
   speechmatics: unknown
+  elevenlabs: ElevenLabsWebhookPayload
 }
 
 /**

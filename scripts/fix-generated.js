@@ -453,10 +453,7 @@ function fixFormDataObjectAppend(content, filePath) {
   const objectArrayFields = ["additional_formats"]
   for (const field of objectArrayFields) {
     content = content.replace(
-      new RegExp(
-        `formData\\.append\\(["'\`]${field}["'\`],\\s+(?!JSON\\.)([\\w]+)\\)`,
-        "g"
-      ),
+      new RegExp(`formData\\.append\\(["'\`]${field}["'\`],\\s+(?!JSON\\.)([\\w]+)\\)`, "g"),
       `formData.append("${field}", JSON.stringify($1))`
     )
   }
