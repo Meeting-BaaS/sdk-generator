@@ -14,6 +14,18 @@
     "indentWidth": 2,
     "lineWidth": 100
   },
+  "overrides": [
+    {
+      "includes": ["src/generated/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noShadowRestrictedNames": "off"
+          }
+        }
+      }
+    }
+  ],
   "linter": {
     "rules": {
       "suspicious": {
