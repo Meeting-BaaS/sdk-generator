@@ -5,6 +5,64 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.3] - 2026-03-19
+
+### Added
+
+#### AssemblyAI Regional Endpoints (EU Data Residency)
+
+Region support for AssemblyAI, matching the pattern used by Deepgram, Speechmatics, and Soniox:
+
+```typescript
+import { createAssemblyAIAdapter, AssemblyAIRegion } from 'voice-router-dev'
+
+const adapter = createAssemblyAIAdapter({
+  apiKey: process.env.ASSEMBLYAI_API_KEY,
+  region: AssemblyAIRegion.eu  // All data stays in the EU
+})
+
+// Dynamic region switching
+adapter.setRegion(AssemblyAIRegion.us)
+console.log(adapter.getRegion())
+// { api: "https://api.assemblyai.com", websocket: "wss://streaming.assemblyai.com/v3/ws" }
+```
+
+| Region | REST API | Streaming |
+|--------|----------|-----------|
+| `us` (default) | api.assemblyai.com | streaming.assemblyai.com |
+| `eu` | api.eu.assemblyai.com | streaming.eu.assemblyai.com |
+
+**New exports:**
+
+| Export | Entry Point |
+|--------|-------------|
+| `AssemblyAIRegion` | `voice-router-dev/constants` |
+| `AssemblyAIRegionType` | `voice-router-dev/constants` |
+| `AssemblyAIConfig` | `voice-router-dev` |
+
+**Priority:** `baseUrl`/`wsBaseUrl` > `region` > default (US)
+
+**Region support summary (updated):**
+
+| Provider | Regions | Dynamic Switch |
+|----------|---------|----------------|
+| **Deepgram** | `global`, `eu` | `setRegion()` |
+| **AssemblyAI** | `us`, `eu` | `setRegion()` |
+| **Speechmatics** | `eu1`, `eu2`\*, `us1`, `us2`\*, `au1` | `setRegion()` |
+| **Soniox** | `us`, `eu`, `jp` | `setRegion()` |
+| **Gladia** | `us-west`, `eu-west` | Per-request |
+| **ElevenLabs** | `global`, `us`, `eu`, `in` | Adapter init |
+| **Azure** | Via `speechConfig` | Reinitialize |
+| **OpenAI** | N/A | N/A |
+
+\* Enterprise only
+
+### Fixed
+
+- Suppress `noShadowRestrictedNames` biome errors during orval generation of `src/generated/`
+
+---
+
 ## [0.8.2] - 2026-03-15
 
 ### Fixed

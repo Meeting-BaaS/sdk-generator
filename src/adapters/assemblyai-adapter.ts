@@ -19,6 +19,37 @@ import type {
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 import { mapEncodingToProvider } from "../router/audio-encoding-types"
+import type { AssemblyAIRegionType } from "../constants"
+
+/**
+ * AssemblyAI adapter configuration
+ *
+ * Extends the base config with AssemblyAI-specific options like regional endpoints.
+ *
+ * @example
+ * ```typescript
+ * import { createAssemblyAIAdapter, AssemblyAIRegion } from 'voice-router-dev'
+ *
+ * const adapter = createAssemblyAIAdapter({
+ *   apiKey: process.env.ASSEMBLYAI_API_KEY,
+ *   region: AssemblyAIRegion.eu  // EU data residency
+ * })
+ * ```
+ */
+export interface AssemblyAIConfig extends ProviderConfig {
+  /**
+   * Regional endpoint for data residency
+   *
+   * Available regions:
+   * - `us` - United States (default): api.assemblyai.com
+   * - `eu` - European Union: api.eu.assemblyai.com
+   *
+   * The EU endpoint guarantees audio and transcription data never leaves the EU.
+   *
+   * @see https://www.assemblyai.com/docs/getting-started/cloud-endpoints
+   */
+  region?: AssemblyAIRegionType
+}
 
 // Import generated API client functions - FULL TYPE SAFETY!
 import {
@@ -124,12 +155,67 @@ export class AssemblyAIAdapter extends BaseAdapter {
   protected baseUrl = "https://api.assemblyai.com" // Generated functions already include /v2 path
   private wsBaseUrl = "wss://streaming.assemblyai.com/v3/ws" // v3 Universal Streaming endpoint
 
-  initialize(config: ProviderConfig): void {
+  /**
+   * Get regional hosts for AssemblyAI
+   *
+   * @param region - Regional endpoint identifier
+   * @returns Object with api and streaming hosts
+   */
+  private getRegionalHosts(region?: AssemblyAIRegionType): { api: string; streaming: string } {
+    if (region === "eu") {
+      return { api: "api.eu.assemblyai.com", streaming: "streaming.eu.assemblyai.com" }
+    }
+    return { api: "api.assemblyai.com", streaming: "streaming.assemblyai.com" }
+  }
+
+  initialize(config: AssemblyAIConfig): void {
     super.initialize(config)
-    if (config.wsBaseUrl) {
-      this.wsBaseUrl = config.wsBaseUrl
-    } else if (config.baseUrl) {
-      this.wsBaseUrl = `${this.deriveWsUrl(config.baseUrl)}/v3/ws`
+
+    // Set URLs based on region (unless explicit baseUrl/wsBaseUrl is provided)
+    const hosts = this.getRegionalHosts(config.region)
+    this.baseUrl = config.baseUrl || `https://${hosts.api}`
+    this.wsBaseUrl = config.wsBaseUrl
+      || (config.baseUrl ? `${this.deriveWsUrl(config.baseUrl)}/v3/ws` : `wss://${hosts.streaming}/v3/ws`)
+  }
+
+  /**
+   * Change the regional endpoint dynamically
+   *
+   * Useful for switching between US and EU endpoints without reinitializing.
+   * Affects both REST API and WebSocket streaming endpoints.
+   *
+   * @param region - New regional endpoint to use (`us` or `eu`)
+   *
+   * @example Switch to EU region
+   * ```typescript
+   * import { AssemblyAIRegion } from 'voice-router-dev/constants'
+   *
+   * adapter.setRegion(AssemblyAIRegion.eu)
+   * await adapter.transcribe(audio) // Uses EU endpoint
+   * ```
+   */
+  setRegion(region: AssemblyAIRegionType): void {
+    this.validateConfig()
+
+    // Don't override explicit baseUrl/wsBaseUrl from config
+    if (!this.config!.baseUrl) {
+      const hosts = this.getRegionalHosts(region)
+      this.baseUrl = `https://${hosts.api}`
+      if (!this.config!.wsBaseUrl) {
+        this.wsBaseUrl = `wss://${hosts.streaming}/v3/ws`
+      }
+    }
+  }
+
+  /**
+   * Get the current regional endpoints being used
+   *
+   * @returns Object with current API and WebSocket URLs
+   */
+  getRegion(): { api: string; websocket: string } {
+    return {
+      api: this.baseUrl,
+      websocket: this.wsBaseUrl
     }
   }
 
@@ -1202,8 +1288,18 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
 /**
  * Factory function to create an AssemblyAI adapter
+ *
+ * @example
+ * ```typescript
+ * import { createAssemblyAIAdapter, AssemblyAIRegion } from 'voice-router-dev'
+ *
+ * const adapter = createAssemblyAIAdapter({
+ *   apiKey: process.env.ASSEMBLYAI_API_KEY,
+ *   region: AssemblyAIRegion.eu  // EU data residency
+ * })
+ * ```
  */
-export function createAssemblyAIAdapter(config: ProviderConfig): AssemblyAIAdapter {
+export function createAssemblyAIAdapter(config: AssemblyAIConfig): AssemblyAIAdapter {
   const adapter = new AssemblyAIAdapter()
   adapter.initialize(config)
   return adapter

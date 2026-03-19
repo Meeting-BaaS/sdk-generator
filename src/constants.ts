@@ -610,6 +610,35 @@ import { TranscriptionControllerListV2StatusItem } from "./generated/gladia/sche
 export const AssemblyAIStatus = TranscriptStatus
 
 /**
+ * AssemblyAI regional endpoints for data residency
+ *
+ * | Region | REST API | Streaming |
+ * |--------|----------|-----------|
+ * | US (default) | api.assemblyai.com | streaming.assemblyai.com |
+ * | EU | api.eu.assemblyai.com | streaming.eu.assemblyai.com |
+ *
+ * The EU endpoint guarantees audio and transcription data never leaves the EU.
+ *
+ * @example
+ * ```typescript
+ * import { AssemblyAIRegion } from 'voice-router-dev/constants'
+ *
+ * const adapter = createAssemblyAIAdapter({
+ *   apiKey: process.env.ASSEMBLYAI_API_KEY,
+ *   region: AssemblyAIRegion.eu
+ * })
+ * ```
+ *
+ * @see https://www.assemblyai.com/docs/getting-started/cloud-endpoints - Official docs
+ */
+export const AssemblyAIRegion = {
+  /** United States (default) */
+  us: "us",
+  /** European Union — data never leaves the EU */
+  eu: "eu"
+} as const
+
+/**
  * Gladia job status values for filtering
  *
  * Values: `queued`, `processing`, `done`, `error`
@@ -736,6 +765,9 @@ export type AssemblyAISampleRateType =
 
 /** AssemblyAI status type derived from const object */
 export type AssemblyAIStatusType = (typeof AssemblyAIStatus)[keyof typeof AssemblyAIStatus]
+
+/** AssemblyAI region type derived from const object */
+export type AssemblyAIRegionType = (typeof AssemblyAIRegion)[keyof typeof AssemblyAIRegion]
 
 /** Gladia status type derived from const object */
 export type GladiaStatusType = (typeof GladiaStatus)[keyof typeof GladiaStatus]
