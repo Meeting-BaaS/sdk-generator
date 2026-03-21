@@ -4,6 +4,8 @@ node_modules/
 
 # Generated files
 dist/
+*.tgz
+specs/internal/gladia-openapi-internal.json
 
 # Environment variables
 .env
