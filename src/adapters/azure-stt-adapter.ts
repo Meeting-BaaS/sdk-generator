@@ -19,7 +19,10 @@ import {
   transcriptionsDelete,
   transcriptionsGet,
   transcriptionsList,
-  transcriptionsListFiles
+  transcriptionsListFiles,
+  webHooksCreate,
+  webHooksDelete,
+  webHooksList
 } from "../generated/azure/api/speechServicesAPIVersion32"
 
 // Import Azure generated types for list
@@ -32,6 +35,8 @@ import { ProfanityFilterMode } from "../generated/azure/schema/profanityFilterMo
 import { PunctuationMode } from "../generated/azure/schema/punctuationMode"
 import type { Transcription } from "../generated/azure/schema/transcription"
 import type { TranscriptionProperties } from "../generated/azure/schema/transcriptionProperties"
+import type { WebHook } from "../generated/azure/schema/webHook"
+import type { WebHookEvents } from "../generated/azure/schema/webHookEvents"
 
 /**
  * Azure Speech-to-Text transcription provider adapter
@@ -184,19 +189,10 @@ export class AzureSTTAdapter extends BaseAdapter {
       )
 
       const transcription = response.data
+      const transcriptId = transcription.self?.split("/").pop() || ""
 
-      return {
-        success: true,
-        provider: this.name,
-        data: {
-          id: transcription.self?.split("/").pop() || "",
-          text: "", // Will be populated after polling
-          status: this.normalizeStatus(transcription.status),
-          language: transcription.locale,
-          createdAt: transcription.createdDateTime
-        },
-        raw: transcription
-      }
+      // Poll for results (Azure webhooks are subscription-wide, not per-job)
+      return await this.pollForCompletion(transcriptId)
     } catch (error) {
       return this.createErrorResponse(error)
     }
@@ -391,6 +387,56 @@ export class AzureSTTAdapter extends BaseAdapter {
   }
 
   /**
+   * Register a subscription-wide webhook for transcription events
+   *
+   * Azure webhooks are subscription-wide (not per-transcription).
+   * Call this once during setup to receive callbacks for all transcription events.
+   * The webhook URL will receive POST requests for transcription lifecycle events.
+   *
+   * @param url - The webhook URL to receive events
+   * @param options - Optional: event filters and display name
+   * @returns Created webhook object
+   */
+  async registerWebhook(url: string, options?: {
+    displayName?: string
+    events?: Partial<WebHookEvents>
+  }): Promise<WebHook> {
+    this.validateConfig()
+    const webhook: Partial<WebHook> = {
+      webUrl: url,
+      displayName: options?.displayName || "SDK Webhook",
+      events: options?.events || {
+        transcriptionCreation: true,
+        transcriptionProcessing: true,
+        transcriptionCompletion: true
+      }
+    }
+    const response = await webHooksCreate(webhook as WebHook, this.getAxiosConfig())
+    return response.data
+  }
+
+  /**
+   * Unregister a subscription-wide webhook by ID
+   *
+   * @param webhookId - The webhook ID to delete
+   */
+  async unregisterWebhook(webhookId: string): Promise<void> {
+    this.validateConfig()
+    await webHooksDelete(webhookId, this.getAxiosConfig())
+  }
+
+  /**
+   * List all registered webhooks for the subscription
+   *
+   * @returns Array of registered webhooks
+   */
+  async listWebhooks(): Promise<WebHook[]> {
+    this.validateConfig()
+    const response = await webHooksList(undefined, this.getAxiosConfig())
+    return [...(response.data.values || [])]
+  }
+
+  /**
    * Map unified status to Azure status format using generated enum
    */
   private mapStatusToAzure(status: string): AzureStatus {
@@ -574,7 +620,10 @@ export {
   transcriptionsDelete,
   transcriptionsGet,
   transcriptionsList,
-  transcriptionsListFiles
+  transcriptionsListFiles,
+  webHooksCreate,
+  webHooksDelete,
+  webHooksList
 } from "../generated/azure/api/speechServicesAPIVersion32"
 
 // Request/Response types
@@ -582,7 +631,9 @@ export type {
   PaginatedTranscriptions,
   Transcription,
   TranscriptionProperties,
-  TranscriptionsListParams
+  TranscriptionsListParams,
+  WebHook,
+  WebHookEvents
 }
 
 // Enums (from official Azure spec)

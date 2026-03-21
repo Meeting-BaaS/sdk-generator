@@ -5,6 +5,96 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.4] - 2026-03-21
+
+### Added
+
+#### Speechmatics Webhook Callbacks + Polling
+
+Speechmatics `transcribe()` now supports the same `webhookUrl` pattern as Gladia, AssemblyAI, and Deepgram:
+
+```typescript
+// With webhook: returns immediately, callback delivers result
+const result = await adapter.transcribe(audio, {
+  language: 'en',
+  webhookUrl: 'https://myapp.com/webhook/speechmatics'
+})
+console.log(result.data.id) // Job ID returned immediately
+
+// Without webhook: polls until complete (new default)
+const result = await adapter.transcribe(audio, { language: 'en' })
+console.log(result.data.text) // Full transcript after polling
+```
+
+The webhook URL is wired to Speechmatics' per-job `notification_config` with `transcript` content type. Without a webhook, `transcribe()` now polls via `pollForCompletion()` instead of returning a queued job ID.
+
+#### Azure STT Webhook Management + Polling
+
+Azure uses subscription-wide webhooks (not per-job). New helper methods to manage them:
+
+```typescript
+// Register a webhook for transcription events (one-time setup)
+const webhook = await adapter.registerWebhook('https://myapp.com/webhook/azure', {
+  displayName: 'My App Webhook',
+  events: {
+    transcriptionCompletion: true,
+    transcriptionFailed: true
+  }
+})
+
+// List registered webhooks
+const webhooks = await adapter.listWebhooks()
+
+// Unregister a webhook
+await adapter.unregisterWebhook(webhook.self?.split('/').pop()!)
+```
+
+Azure `transcribe()` now polls via `pollForCompletion()` instead of returning immediately with a queued status.
+
+**New exports:**
+
+| Export | Description |
+|--------|-------------|
+| `webHooksCreate` | Azure API: create subscription-wide webhook |
+| `webHooksDelete` | Azure API: delete webhook by ID |
+| `webHooksList` | Azure API: list registered webhooks |
+| `WebHook` | Azure webhook type |
+| `WebHookEvents` | Azure webhook event filter type |
+
+#### Typed Webhook Payloads for Azure & Speechmatics
+
+`ProviderWebhookPayloadMap` now has concrete types instead of `unknown`:
+
+| Provider | Before | After |
+|----------|--------|-------|
+| `azure-stt` | `unknown` | `AzureWebhookPayload` |
+| `speechmatics` | `unknown` | `SpeechmaticsWebhookPayload` (`RetrieveTranscriptResponse`) |
+
+```typescript
+import type { UnifiedWebhookEvent } from 'voice-router-dev/webhooks'
+
+// event.raw is now fully typed
+const event: UnifiedWebhookEvent<'speechmatics'> = handler.parse(payload)
+event.raw.results // ✅ Typed as RetrieveTranscriptResponse
+
+const azureEvent: UnifiedWebhookEvent<'azure-stt'> = handler.parse(payload)
+azureEvent.raw.action // ✅ Typed as string
+```
+
+**Webhook + polling support summary (updated):**
+
+| Provider | webhookUrl wired | Auto-poll | API webhook model |
+|----------|-----------------|-----------|-------------------|
+| Gladia | ✅ `callback_config.url` | ✅ `pollForCompletion` | Per-job |
+| AssemblyAI | ✅ `webhook_url` | ✅ `pollForCompletion` | Per-job |
+| Deepgram | ✅ `params.callback` | N/A (sync) | Per-request |
+| **Speechmatics** | ✅ `notification_config` | ✅ `pollForCompletion` | Per-job |
+| **Azure STT** | ✅ `registerWebhook()` | ✅ `pollForCompletion` | Subscription-wide |
+| ElevenLabs | N/A (sync) | N/A (sync) | N/A |
+| OpenAI | N/A (sync) | N/A (sync) | N/A |
+
+---
+
 ## [0.8.3] - 2026-03-19
 
 ### Added

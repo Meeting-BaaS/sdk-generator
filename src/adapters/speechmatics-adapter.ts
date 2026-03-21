@@ -38,6 +38,7 @@ import type { JobConfig } from "../generated/speechmatics/schema/jobConfig"
 import type { CreateJobResponse } from "../generated/speechmatics/schema/createJobResponse"
 import type { RetrieveJobResponse } from "../generated/speechmatics/schema/retrieveJobResponse"
 import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+import { NotificationConfigContentsItem } from "../generated/speechmatics/schema/notificationConfigContentsItem"
 // Import generated enums/constants (avoid hardcoding values)
 import { OperatingPoint } from "../generated/speechmatics/schema/operatingPoint"
 import { TranscriptionConfigDiarization } from "../generated/speechmatics/schema/transcriptionConfigDiarization"
@@ -292,6 +293,14 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         }))
       }
 
+      // Wire webhook callback (per-job notification)
+      if (options?.webhookUrl) {
+        jobConfig.notification_config = [{
+          url: options.webhookUrl,
+          contents: [NotificationConfigContentsItem.transcript]
+        }]
+      }
+
       // Handle audio input
       let requestBody: FormData | Record<string, any>
       let headers: Record<string, string> = {}
@@ -324,16 +333,24 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       // Submit job
       const response = await this.client!.post<CreateJobResponse>("/jobs", requestBody, { headers })
 
-      return {
-        success: true,
-        provider: this.name,
-        data: {
-          id: response.data.id,
-          text: "",
-          status: "queued"
-        },
-        raw: response.data
+      const jobId = response.data.id
+
+      // If webhook is provided, return immediately with job ID
+      if (options?.webhookUrl) {
+        return {
+          success: true,
+          provider: this.name,
+          data: {
+            id: jobId,
+            text: "",
+            status: "queued"
+          },
+          raw: response.data
+        }
       }
+
+      // Otherwise, poll for results
+      return await this.pollForCompletion(jobId)
     } catch (error) {
       return this.createErrorResponse(error)
     }

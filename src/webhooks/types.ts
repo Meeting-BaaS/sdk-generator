@@ -17,6 +17,8 @@ import type { CallbackTranscriptionErrorPayload as GladiaWebhookErrorPayload } f
 import type { TranscriptWebhookNotification as AssemblyAIWebhookPayload } from "../generated/assemblyai/schema/transcriptWebhookNotification"
 import type { ListenV1Response as DeepgramWebhookPayload } from "../generated/deepgram/schema/listenV1Response"
 import type { SpeechToTextChunkResponseModel as ElevenLabsWebhookPayload } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
+import type { AzureWebhookPayload } from "./azure-webhook"
+import type { RetrieveTranscriptResponse as SpeechmaticsWebhookPayload } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
 
 // Re-export webhook payload types for direct access
 export type {
@@ -24,7 +26,9 @@ export type {
   GladiaWebhookErrorPayload,
   AssemblyAIWebhookPayload,
   DeepgramWebhookPayload,
-  ElevenLabsWebhookPayload
+  ElevenLabsWebhookPayload,
+  AzureWebhookPayload,
+  SpeechmaticsWebhookPayload
 }
 
 /**
@@ -39,9 +43,9 @@ export type ProviderWebhookPayloadMap = {
   gladia: GladiaWebhookPayload
   assemblyai: AssemblyAIWebhookPayload
   deepgram: DeepgramWebhookPayload
-  "azure-stt": unknown
+  "azure-stt": AzureWebhookPayload
   "openai-whisper": never // No webhooks
-  speechmatics: unknown
+  speechmatics: SpeechmaticsWebhookPayload
   elevenlabs: ElevenLabsWebhookPayload
 }
 

@@ -12,7 +12,7 @@ import crypto from "node:crypto"
  * Azure webhook event payload structure
  * Based on Azure Speech Services v3.1 webhook format
  */
-interface AzureWebhookPayload {
+export interface AzureWebhookPayload {
   /** Event action (e.g., "TranscriptionCreated", "TranscriptionSucceeded", "TranscriptionFailed") */
   action: string
   /** Timestamp of the event */
