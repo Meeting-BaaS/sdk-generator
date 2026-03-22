@@ -10,6 +10,10 @@ import type { CreateTranscriptionResponseDiarizedJson } from "../../generated/op
 import type { CreateTranscriptionResponseVerboseJson } from "../../generated/openai/schema/createTranscriptionResponseVerboseJson"
 import { OpenAIModel, OpenAIResponseFormat } from "../../constants"
 
+function generateRequestId(): string {
+  return `openai-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+}
+
 export function selectOpenAIModel(options?: TranscribeOptions): CreateTranscriptionRequestModel {
   if (options?.model) {
     return options.model as CreateTranscriptionRequestModel
@@ -40,14 +44,13 @@ export function mapToTranscriptionRequest(
 
   if (isDiarization) {
     request.response_format = OpenAIResponseFormat.verbose_json
-  } else if (needsWords || options?.diarization) {
+  } else if (needsWords) {
+    // options.diarization is already handled above via isDiarization + model selection
     request.response_format = OpenAIResponseFormat.verbose_json
-    if (needsWords) {
-      request.timestamp_granularities = [
-        CreateTranscriptionRequestTimestampGranularitiesItem.word,
-        CreateTranscriptionRequestTimestampGranularitiesItem.segment
-      ]
-    }
+    request.timestamp_granularities = [
+      CreateTranscriptionRequestTimestampGranularitiesItem.word,
+      CreateTranscriptionRequestTimestampGranularitiesItem.segment
+    ]
   } else {
     request.response_format = OpenAIResponseFormat.json
   }
@@ -64,8 +67,14 @@ export function mapFromOpenAIResponse(
   isDiarization: boolean,
   provider: "openai-whisper"
 ): UnifiedTranscriptResponse {
-  if ("text" in response && Object.keys(response).length === 1) {
-    const requestId = `openai-${Date.now()}`
+  if (
+    "text" in response &&
+    typeof response.text === "string" &&
+    !("duration" in response) &&
+    !("segments" in response) &&
+    !("language" in response)
+  ) {
+    const requestId = generateRequestId()
     return {
       success: true,
       provider,
@@ -97,7 +106,7 @@ export function mapFromOpenAIResponse(
       confidence: undefined,
       words: [] as import("../../router/types").Word[]
     }))
-    const requestId = `openai-${Date.now()}`
+    const requestId = generateRequestId()
     return {
       success: true,
       provider,
@@ -124,7 +133,7 @@ export function mapFromOpenAIResponse(
       end: w.end,
       confidence: undefined
     }))
-    const requestId = `openai-${Date.now()}`
+    const requestId = generateRequestId()
     return {
       success: true,
       provider,
@@ -142,7 +151,7 @@ export function mapFromOpenAIResponse(
     }
   }
 
-  const requestId = `openai-${Date.now()}`
+  const requestId = generateRequestId()
   return {
     success: true,
     provider,

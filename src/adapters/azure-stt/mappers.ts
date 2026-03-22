@@ -12,16 +12,12 @@ import type { TranscriptionProperties } from "../../generated/azure/schema/trans
 import { PunctuationMode } from "../../generated/azure/schema/punctuationMode"
 import { ProfanityFilterMode } from "../../generated/azure/schema/profanityFilterMode"
 import { Status as AzureStatus } from "../../generated/azure/schema/status"
+import { normalizeStatus } from "../../utils/transcription-helpers"
 
 export function normalizeAzureStatus(
   status: unknown
 ): "queued" | "processing" | "completed" | "error" {
-  const statusStr = status?.toString().toLowerCase() || ""
-  if (statusStr.includes("succeeded")) return "completed"
-  if (statusStr.includes("running")) return "processing"
-  if (statusStr.includes("notstarted")) return "queued"
-  if (statusStr.includes("failed")) return "error"
-  return "queued"
+  return normalizeStatus(status?.toString(), "azure")
 }
 
 export function mapStatusToAzure(status: string): AzureStatus {

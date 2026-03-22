@@ -197,9 +197,10 @@ export class DeepgramAdapter extends BaseAdapter {
           mapFromDeepgramRequestItem(item, this.name, this.capabilities)
       )
 
+      const limit = data.limit || 10
       return {
         transcripts,
-        hasMore: (data.page || 1) * (data.limit || 10) < (data.requests?.length || 0)
+        hasMore: transcripts.length === limit
       }
     } catch (error) {
       return {

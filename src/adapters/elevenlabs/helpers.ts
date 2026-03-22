@@ -19,7 +19,7 @@ export function createElevenLabsClient(
 ): AxiosInstance {
   return axios.create({
     baseURL: baseUrl,
-    timeout: config.timeout || 120000,
+    timeout: config.timeout ?? 120000,
     headers: {
       "xi-api-key": config.apiKey,
       ...config.headers
@@ -293,18 +293,20 @@ export async function createElevenLabsStreamingSession(args: {
       reject(new Error("WebSocket connection timeout"))
     }, 10000)
 
-    const checkOpen = () => {
-      if (status === "open") {
-        clearTimeout(timeout)
-        resolve()
-      } else if (status === "closed") {
-        clearTimeout(timeout)
-        reject(new Error("WebSocket connection failed"))
-      } else {
-        setTimeout(checkOpen, 100)
-      }
-    }
-    checkOpen()
+    ws.once("open", () => {
+      clearTimeout(timeout)
+      resolve()
+    })
+
+    ws.once("close", () => {
+      clearTimeout(timeout)
+      reject(new Error("WebSocket connection failed"))
+    })
+
+    ws.once("error", (err) => {
+      clearTimeout(timeout)
+      reject(err)
+    })
   })
 
   return {
@@ -336,11 +338,24 @@ export async function createElevenLabsStreamingSession(args: {
       ws.send(message)
     },
     close: async () => {
-      if (status === "open") {
-        status = "closing"
-        ws.send(JSON.stringify({ message_type: "end_of_stream" }))
-        ws.close(1000, "Client requested close")
-      }
+      if (status !== "open") return
+
+      status = "closing"
+      ws.send(JSON.stringify({ message_type: "end_of_stream" }))
+      ws.close(1000, "Client requested close")
+
+      await new Promise<void>((resolve) => {
+        const timeout = setTimeout(() => {
+          ws.terminate()
+          resolve()
+        }, 5000)
+
+        ws.once("close", () => {
+          clearTimeout(timeout)
+          status = "closed"
+          resolve()
+        })
+      })
     }
   }
 }

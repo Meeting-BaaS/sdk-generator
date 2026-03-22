@@ -62,11 +62,14 @@ export function mapToTranscribeRequest(
 
   if (options.language || options.codeSwitching || options.codeSwitchingConfig) {
     request.language_config = {
+      ...request.language_config,
       ...options.codeSwitchingConfig,
       languages: options.language
         ? [options.language as TranscriptionLanguageCodeEnum]
-        : request.language_config?.languages,
-      code_switching: options.codeSwitching ?? request.language_config?.code_switching
+        : options.codeSwitchingConfig?.languages ?? request.language_config?.languages,
+      code_switching: options.codeSwitching
+        ?? options.codeSwitchingConfig?.code_switching
+        ?? request.language_config?.code_switching
     }
   }
 

@@ -18,7 +18,7 @@ export function createSonioxClient(
 ): AxiosInstance {
   return axios.create({
     baseURL: baseUrl,
-    timeout: config.timeout || 120000,
+    timeout: config.timeout ?? 120000,
     headers: {
       Authorization: `Bearer ${config.apiKey}`,
       "Content-Type": "application/json",
@@ -251,10 +251,11 @@ export async function createSonioxStreamingSession(args: {
     }
   })
 
-  ws.on("error", () => {
+  ws.on("error", (err: Error) => {
     callbacks?.onError?.({
       code: "WEBSOCKET_ERROR",
-      message: "WebSocket error occurred"
+      message: err.message || "WebSocket error occurred",
+      details: err
     })
   })
 
@@ -289,18 +290,20 @@ export async function createSonioxStreamingSession(args: {
       reject(new Error("WebSocket connection timeout"))
     }, 10000)
 
-    const checkOpen = () => {
-      if (status === "open") {
-        clearTimeout(timeout)
-        resolve()
-      } else if (status === "closed") {
-        clearTimeout(timeout)
-        reject(new Error("WebSocket connection failed"))
-      } else {
-        setTimeout(checkOpen, 100)
-      }
-    }
-    checkOpen()
+    ws.once("open", () => {
+      clearTimeout(timeout)
+      resolve()
+    })
+
+    ws.once("close", () => {
+      clearTimeout(timeout)
+      reject(new Error("WebSocket connection failed"))
+    })
+
+    ws.once("error", (err) => {
+      clearTimeout(timeout)
+      reject(err)
+    })
   })
 
   return {
@@ -331,10 +334,23 @@ export async function createSonioxStreamingSession(args: {
       ws.send(chunk.data)
     },
     close: async () => {
-      if (status === "open") {
-        status = "closing"
-        ws.close(1000, "Client requested close")
-      }
+      if (status !== "open") return
+
+      status = "closing"
+      ws.close(1000, "Client requested close")
+
+      await new Promise<void>((resolve) => {
+        const timeout = setTimeout(() => {
+          ws.terminate()
+          resolve()
+        }, 5000)
+
+        ws.once("close", () => {
+          clearTimeout(timeout)
+          status = "closed"
+          resolve()
+        })
+      })
     }
   }
 }

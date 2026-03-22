@@ -57,7 +57,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
     this.client = axios.create({
       baseURL: this.baseUrl,
-      timeout: config.timeout || 120000,
+      timeout: config.timeout ?? 120000,
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
         ...config.headers
@@ -72,7 +72,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
     this.baseUrl = endpoints.api
     this.client = axios.create({
       baseURL: this.baseUrl,
-      timeout: this.config!.timeout || 120000,
+      timeout: this.config!.timeout ?? 120000,
       headers: {
         Authorization: `Bearer ${this.config!.apiKey}`,
         ...this.config!.headers
@@ -92,21 +92,27 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
     try {
       const jobConfig = mapToJobConfig(options)
-      let requestBody: FormData | Record<string, any>
-      let headers: Record<string, string> = {}
+      let requestBody: FormData
 
       if (audio.type === "url") {
         jobConfig.fetch_data = {
           url: audio.url
         }
-        requestBody = { config: JSON.stringify(jobConfig) }
-        headers = { "Content-Type": "application/json" }
+        const formData = new FormData()
+        formData.append("config", JSON.stringify(jobConfig))
+        requestBody = formData
       } else if (audio.type === "file") {
-        requestBody = {
-          config: JSON.stringify(jobConfig),
-          data_file: audio.file
+        const formData = new FormData()
+        formData.append("config", JSON.stringify(jobConfig))
+        if (!audio.mimeType || !audio.filename) {
+          console.warn("[Speechmatics] Audio metadata missing — using generic defaults. Pass mimeType and filename for best results.")
         }
-        headers = { "Content-Type": "multipart/form-data" }
+        const audioBlob =
+          audio.file instanceof Blob
+            ? audio.file
+            : new Blob([audio.file], { type: audio.mimeType ?? "application/octet-stream" })
+        formData.append("data_file", audioBlob, audio.filename ?? "audio")
+        requestBody = formData
       } else {
         return {
           success: false,
@@ -118,7 +124,9 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         }
       }
 
-      const response = await this.client!.post<CreateJobResponse>("/jobs", requestBody, { headers })
+      const response = await this.client!.post<CreateJobResponse>("/jobs", requestBody, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
       const jobId = response.data.id
 
       if (options?.webhookUrl) {

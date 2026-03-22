@@ -242,9 +242,11 @@ export function buildAssemblyAIStreamingUrl(
   if (aaiOpts.filterProfanity) params.append("filter_profanity", "true")
 
   const keyterms = options?.customVocabulary || aaiOpts.keyterms
-  if (keyterms?.length) keyterms.forEach((t) => params.append("keyterms", t))
+  if (keyterms?.length) {
+    for (const t of keyterms) { params.append("keyterms", t); }
+  }
   if (aaiOpts.keytermsPrompt?.length) {
-    aaiOpts.keytermsPrompt.forEach((p) => params.append("keyterms_prompt", p))
+    for (const p of aaiOpts.keytermsPrompt) { params.append("keyterms_prompt", p); }
   }
   if (aaiOpts.inactivityTimeout !== undefined) {
     params.append("inactivity_timeout", String(aaiOpts.inactivityTimeout))

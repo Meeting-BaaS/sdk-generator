@@ -32,7 +32,7 @@ export function createDeepgramClient(
 ): AxiosInstance {
   return axios.create({
     baseURL: baseUrl,
-    timeout: config.timeout || 60000,
+    timeout: config.timeout ?? 60000,
     headers: {
       Authorization: `Token ${config.apiKey}`,
       "Content-Type": "application/json",

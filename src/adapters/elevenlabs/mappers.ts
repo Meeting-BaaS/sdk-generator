@@ -47,7 +47,7 @@ export function mapFromElevenLabsResponse(
         start: typeof w.start === "number" ? w.start : 0,
         end: typeof w.end === "number" ? w.end : 0,
         confidence: w.logprob !== undefined ? Math.exp(w.logprob) : undefined,
-        speaker: speakerId ?? undefined
+        speaker: speakerId
       }
       words.push(word)
 
