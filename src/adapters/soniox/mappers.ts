@@ -36,16 +36,7 @@ function tokensToWords(tokens: SonioxToken[]): Word[] {
 }
 
 function tokensToUtterances(tokens: SonioxToken[]): Utterance[] {
-  const words = tokens
-    .filter((t) => t.is_final && t.start_ms !== undefined && t.end_ms !== undefined)
-    .map((token) => ({
-      word: token.text || "",
-      start: token.start_ms! / 1000,
-      end: token.end_ms! / 1000,
-      confidence: token.confidence,
-      speaker: token.speaker
-    }))
-  return buildUtterancesFromWords(words)
+  return buildUtterancesFromWords(tokensToWords(tokens))
 }
 
 export function buildUtterancesFromSonioxTokens(tokens: SonioxToken[]): Utterance[] {

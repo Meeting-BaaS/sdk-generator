@@ -74,7 +74,6 @@ export async function createAssemblyAIStreamingSession(args: {
   const sessionId = `assemblyai-${Date.now()}-${Math.random().toString(36).substring(7)}`
   let audioBuffer = Buffer.alloc(0)
   const MIN_CHUNK_SIZE = 1600
-  const MAX_CHUNK_SIZE = 32000
 
   const flushAudioBuffer = () => {
     if (audioBuffer.length > 0 && ws.readyState === WebSocket.OPEN) {

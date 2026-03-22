@@ -174,7 +174,7 @@ export function getProviderEndpoints(
     }
     case "soniox": {
       const r = (region as "us" | "eu" | "jp") || "us"
-      const ep = SONIOX_REGION_ENDPOINTS[r]
+      const ep = SONIOX_REGION_ENDPOINTS[r] ?? SONIOX_REGION_ENDPOINTS.us
       return {
         ...ep,
         websocket: overrides?.wsBaseUrl ?? ep.websocket

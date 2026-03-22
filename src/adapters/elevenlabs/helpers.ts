@@ -19,7 +19,7 @@ export function createElevenLabsClient(
 ): AxiosInstance {
   return axios.create({
     baseURL: baseUrl,
-    timeout: config.timeout || 120000,
+    timeout: config.timeout ?? 120000,
     headers: {
       "xi-api-key": config.apiKey,
       ...config.headers

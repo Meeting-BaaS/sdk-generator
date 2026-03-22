@@ -276,7 +276,7 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
 
     return {
       baseURL: this.config!.baseUrl || this.baseUrl,
-      timeout: this.config!.timeout || DEFAULT_TIMEOUTS.HTTP_REQUEST,
+      timeout: this.config!.timeout ?? DEFAULT_TIMEOUTS.HTTP_REQUEST,
       headers: {
         [authHeaderName]: authValue,
         "Content-Type": "application/json",

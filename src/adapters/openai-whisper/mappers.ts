@@ -47,12 +47,10 @@ export function mapToTranscriptionRequest(
   } else if (needsWords) {
     // options.diarization is already handled above via isDiarization + model selection
     request.response_format = OpenAIResponseFormat.verbose_json
-    if (needsWords) {
-      request.timestamp_granularities = [
-        CreateTranscriptionRequestTimestampGranularitiesItem.word,
-        CreateTranscriptionRequestTimestampGranularitiesItem.segment
-      ]
-    }
+    request.timestamp_granularities = [
+      CreateTranscriptionRequestTimestampGranularitiesItem.word,
+      CreateTranscriptionRequestTimestampGranularitiesItem.segment
+    ]
   } else {
     request.response_format = OpenAIResponseFormat.json
   }
@@ -153,7 +151,7 @@ export function mapFromOpenAIResponse(
     }
   }
 
-  const requestId = `openai-${Date.now()}`
+  const requestId = generateRequestId()
   return {
     success: true,
     provider,

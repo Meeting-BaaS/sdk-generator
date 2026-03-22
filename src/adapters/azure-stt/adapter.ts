@@ -164,7 +164,7 @@ export class AzureSTTAdapter extends BaseAdapter {
       }
 
       const contentResponse = await axios.get(resultFile.links.contentUrl, {
-        timeout: this.config?.timeout || 120000
+        timeout: this.config?.timeout ?? 120000
       })
       return mapFromAzureResponse(transcription, contentResponse.data, this.name)
     } catch (error) {
