@@ -1,53 +1,38 @@
+export * from "./openai-whisper"
 /**
  * OpenAI Whisper transcription provider adapter
  * Documentation: https://platform.openai.com/docs/guides/speech-to-text
  */
 
-import axios from "axios"
-import WebSocket from "ws"
 import type {
-  AudioChunk,
   AudioInput,
   ProviderCapabilities,
   StreamingCallbacks,
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse,
-  RawWebSocketMessage
+  UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-
-// Import OpenAI Realtime streaming types
-import type {
-  RealtimeServerEvent,
-  ConversationItemInputAudioTranscriptionCompletedEvent,
-  InputAudioBufferSpeechStartedEvent,
-  InputAudioBufferSpeechStoppedEvent,
-  SessionCreatedEvent,
-  ErrorEvent as RealtimeErrorEvent
-} from "../generated/openai/streaming-types"
-import { getOpenAIRealtimeUrl, REALTIME_SERVER_EVENTS } from "../generated/openai/streaming-types"
+import { getProviderEndpoints } from "./provider-endpoints"
+import {
+  selectOpenAIModel,
+  mapToTranscriptionRequest,
+  mapFromOpenAIResponse
+} from "./mappers/openai-whisper-mappers"
 
 // Import generated API client function - FULL TYPE SAFETY!
 import { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
 
 // Import OpenAI generated types (all from official Stainless-hosted spec)
-import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
-import { CreateTranscriptionRequestTimestampGranularitiesItem } from "../generated/openai/schema/createTranscriptionRequestTimestampGranularitiesItem"
-import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
-import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
 
 // Import model and response format constants (derived from official spec)
+import { OpenAIModel } from "../constants"
 import {
-  OpenAIModel,
-  OpenAIResponseFormat,
-  OpenAIRealtimeModel,
-  OpenAIRealtimeAudioFormat,
-  OpenAIRealtimeTurnDetection,
-  OpenAIRealtimeTranscriptionModel
-} from "../constants"
+  createOpenAIRealtimeSession,
+  loadOpenAIAudioInput
+} from "./helpers/openai-whisper-helpers"
 
 /**
  * OpenAI Whisper transcription provider adapter
@@ -150,7 +135,13 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
     deleteTranscript: false
   }
 
-  protected baseUrl = "https://api.openai.com/v1"
+  protected baseUrl: string
+
+  constructor() {
+    super()
+    const defaults = getProviderEndpoints("openai-whisper")
+    this.baseUrl = defaults.api
+  }
 
   /**
    * Get axios config for generated API client functions
@@ -181,79 +172,23 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      // Fetch audio if URL provided
-      let audioData: Buffer | Blob
-      let fileName = "audio.mp3"
-
-      if (audio.type === "url") {
-        const response = await axios.get(audio.url, {
-          responseType: "arraybuffer"
-        })
-        audioData = Buffer.from(response.data)
-
-        // Extract filename from URL if possible
-        const urlPath = new URL(audio.url).pathname
-        const extractedName = urlPath.split("/").pop()
-        if (extractedName) {
-          fileName = extractedName
-        }
-      } else if (audio.type === "file") {
-        audioData = audio.file
-        fileName = audio.filename || fileName
-      } else {
-        return {
-          success: false,
-          provider: this.name,
-          error: {
-            code: "INVALID_INPUT",
-            message: "OpenAI Whisper only supports URL and File audio input (not stream)"
-          }
-        }
-      }
-
-      // Determine model based on options
-      const model = this.selectModel(options)
-
-      // Set response format based on requirements
+      const audioData = await loadOpenAIAudioInput(audio)
+      const model = selectOpenAIModel(options)
       const isDiarization = model === OpenAIModel["gpt-4o-transcribe-diarize"]
-      const needsWords = options?.wordTimestamps === true
+      const request = mapToTranscriptionRequest(
+        audioData as Buffer,
+        options,
+        model as CreateTranscriptionRequestModel
+      )
 
-      // Build typed request using generated types
-      // Start with provider-specific options (fully typed from OpenAPI)
-      const request: CreateTranscriptionRequest = {
-        ...options?.openai,
-        file: audioData as any, // Generated type expects Blob
-        model: model as CreateTranscriptionRequestModel
-      }
-
-      // Map normalized options (take precedence over openai-specific)
-      if (options?.language) {
-        request.language = options.language
-      }
-
-      if (isDiarization) {
-        // Diarization model uses verbose_json format with speaker info
-        request.response_format = OpenAIResponseFormat.verbose_json
-      } else if (needsWords || options?.diarization) {
-        // Use verbose_json for word timestamps
-        request.response_format = OpenAIResponseFormat.verbose_json
-
-        // Add timestamp granularities using generated enum
-        if (needsWords) {
-          request.timestamp_granularities = [
-            CreateTranscriptionRequestTimestampGranularitiesItem.word,
-            CreateTranscriptionRequestTimestampGranularitiesItem.segment
-          ]
-        }
-      } else {
-        // Simple json format for basic transcription
-        request.response_format = OpenAIResponseFormat.json
-      }
-
-      // Use generated API client function - FULLY TYPED!
       const response = await createTranscription(request, this.getAxiosConfig())
 
-      return this.normalizeResponse(response.data as any, model, isDiarization)
+      return mapFromOpenAIResponse(
+        response.data as any,
+        model as CreateTranscriptionRequestModel,
+        isDiarization,
+        this.name
+      )
     } catch (error) {
       return this.createErrorResponse(error)
     }
@@ -314,441 +249,12 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
     callbacks?: StreamingCallbacks
   ): Promise<StreamingSession> {
     this.validateConfig()
-
-    const openaiOpts = options?.openaiStreaming || {}
-    const model = openaiOpts.model || OpenAIRealtimeModel["gpt-4o-realtime-preview"]
-
-    // Build WebSocket URL
-    const wsUrl = getOpenAIRealtimeUrl(model)
-
-    // Create WebSocket connection with auth header
-    const ws = new WebSocket(wsUrl, {
-      headers: {
-        Authorization: `Bearer ${this.config!.apiKey}`,
-        "OpenAI-Beta": "realtime=v1"
-      }
-    })
-
-    let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
-    const sessionId = `openai-realtime-${Date.now()}-${Math.random().toString(36).substring(7)}`
-    let currentTranscript = ""
-
-    // Handle WebSocket events
-    ws.on("open", () => {
-      sessionStatus = "open"
-
-      // Configure session for transcription-only mode
-      const sessionConfig = {
-        type: "session.update",
-        session: {
-          modalities: ["audio", "text"],
-          input_audio_format: openaiOpts.inputAudioFormat || OpenAIRealtimeAudioFormat.pcm16,
-          input_audio_transcription: {
-            model: OpenAIRealtimeTranscriptionModel["whisper-1"]
-          },
-          // Use server VAD for turn detection; OpenAI defaults: threshold=0.5, prefix=300ms, silence=500ms
-          turn_detection: openaiOpts.turnDetection
-            ? {
-                type: openaiOpts.turnDetection.type || OpenAIRealtimeTurnDetection.server_vad,
-                threshold: openaiOpts.turnDetection.threshold,
-                prefix_padding_ms: openaiOpts.turnDetection.prefixPaddingMs,
-                silence_duration_ms: openaiOpts.turnDetection.silenceDurationMs
-              }
-            : {
-                type: OpenAIRealtimeTurnDetection.server_vad
-              },
-          instructions: openaiOpts.instructions
-        }
-      }
-
-      const sessionConfigMessage = JSON.stringify(sessionConfig)
-
-      // Capture outgoing session config message
-      if (callbacks?.onRawMessage) {
-        callbacks.onRawMessage({
-          provider: this.name,
-          direction: "outgoing",
-          timestamp: Date.now(),
-          payload: sessionConfigMessage,
-          messageType: "session.update"
-        })
-      }
-
-      ws.send(sessionConfigMessage)
-      callbacks?.onOpen?.()
-    })
-
-    ws.on("message", (data: Buffer) => {
-      // Capture raw message BEFORE any parsing/processing
-      const rawPayload = data.toString()
-
-      try {
-        const message = JSON.parse(rawPayload) as RealtimeServerEvent
-
-        // Invoke raw message callback with original payload and derived type
-        if (callbacks?.onRawMessage) {
-          callbacks.onRawMessage({
-            provider: this.name,
-            direction: "incoming",
-            timestamp: Date.now(),
-            payload: rawPayload,
-            messageType: message.type // OpenAI Realtime uses 'type' field
-          })
-        }
-
-        this.handleRealtimeMessage(message, callbacks, (text) => {
-          currentTranscript = text
-        })
-      } catch (error) {
-        // Still capture raw message even if parse fails
-        if (callbacks?.onRawMessage) {
-          callbacks.onRawMessage({
-            provider: this.name,
-            direction: "incoming",
-            timestamp: Date.now(),
-            payload: rawPayload,
-            messageType: "parse_error"
-          })
-        }
-
-        callbacks?.onError?.({
-          code: "PARSE_ERROR",
-          message: "Failed to parse WebSocket message",
-          details: error
-        })
-      }
-    })
-
-    ws.on("error", (error: Error) => {
-      callbacks?.onError?.({
-        code: "WEBSOCKET_ERROR",
-        message: error.message,
-        details: error
-      })
-    })
-
-    ws.on("close", (code: number, reason: Buffer) => {
-      sessionStatus = "closed"
-      callbacks?.onClose?.(code, reason.toString())
-    })
-
-    // Wait for connection to open
-    await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error("WebSocket connection timeout"))
-      }, 10000)
-
-      ws.once("open", () => {
-        clearTimeout(timeout)
-        resolve()
-      })
-
-      ws.once("error", (error) => {
-        clearTimeout(timeout)
-        reject(error)
-      })
-    })
-
-    // Return StreamingSession interface
-    return {
-      id: sessionId,
+    return await createOpenAIRealtimeSession({
+      apiKey: this.config!.apiKey,
       provider: this.name,
-      createdAt: new Date(),
-      getStatus: () => sessionStatus,
-      sendAudio: async (chunk: AudioChunk) => {
-        if (sessionStatus !== "open") {
-          throw new Error(`Cannot send audio: session is ${sessionStatus}`)
-        }
-
-        if (ws.readyState !== WebSocket.OPEN) {
-          throw new Error("WebSocket is not open")
-        }
-
-        // OpenAI Realtime expects base64-encoded audio
-        const base64Audio = Buffer.from(chunk.data).toString("base64")
-
-        // Send audio buffer append event
-        const appendMessage = JSON.stringify({
-          type: "input_audio_buffer.append",
-          audio: base64Audio
-        })
-
-        // Capture outgoing raw message
-        if (callbacks?.onRawMessage) {
-          callbacks.onRawMessage({
-            provider: this.name,
-            direction: "outgoing",
-            timestamp: Date.now(),
-            payload: appendMessage,
-            messageType: "input_audio_buffer.append"
-          })
-        }
-
-        ws.send(appendMessage)
-
-        // Commit the buffer if this is the last chunk
-        if (chunk.isLast) {
-          const commitMessage = JSON.stringify({ type: "input_audio_buffer.commit" })
-
-          // Capture outgoing commit message
-          if (callbacks?.onRawMessage) {
-            callbacks.onRawMessage({
-              provider: this.name,
-              direction: "outgoing",
-              timestamp: Date.now(),
-              payload: commitMessage,
-              messageType: "input_audio_buffer.commit"
-            })
-          }
-
-          ws.send(commitMessage)
-        }
-      },
-      close: async () => {
-        if (sessionStatus === "closed" || sessionStatus === "closing") {
-          return
-        }
-
-        sessionStatus = "closing"
-
-        // Commit any remaining audio before closing
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({ type: "input_audio_buffer.commit" }))
-        }
-
-        // Close WebSocket
-        return new Promise<void>((resolve) => {
-          const timeout = setTimeout(() => {
-            ws.terminate()
-            resolve()
-          }, 5000)
-
-          ws.close()
-
-          ws.once("close", () => {
-            clearTimeout(timeout)
-            sessionStatus = "closed"
-            resolve()
-          })
-        })
-      }
-    }
-  }
-
-  /**
-   * Handle incoming Realtime API messages
-   */
-  private handleRealtimeMessage(
-    message: RealtimeServerEvent,
-    callbacks?: StreamingCallbacks,
-    onTranscriptUpdate?: (text: string) => void
-  ): void {
-    switch (message.type) {
-      case REALTIME_SERVER_EVENTS.SessionCreated: {
-        const sessionMsg = message as SessionCreatedEvent
-        callbacks?.onMetadata?.({
-          sessionId: sessionMsg.session.id,
-          model: sessionMsg.session.model
-        })
-        break
-      }
-
-      case REALTIME_SERVER_EVENTS.InputAudioBufferSpeechStarted: {
-        const speechStart = message as InputAudioBufferSpeechStartedEvent
-        callbacks?.onSpeechStart?.({
-          type: "speech_start",
-          timestamp: speechStart.audio_start_ms / 1000, // Convert ms to seconds
-          sessionId: speechStart.item_id
-        })
-        break
-      }
-
-      case REALTIME_SERVER_EVENTS.InputAudioBufferSpeechStopped: {
-        const speechStop = message as InputAudioBufferSpeechStoppedEvent
-        callbacks?.onSpeechEnd?.({
-          type: "speech_end",
-          timestamp: speechStop.audio_end_ms / 1000, // Convert ms to seconds
-          sessionId: speechStop.item_id
-        })
-        break
-      }
-
-      case REALTIME_SERVER_EVENTS.ConversationItemInputAudioTranscriptionCompleted: {
-        const transcription = message as ConversationItemInputAudioTranscriptionCompletedEvent
-        onTranscriptUpdate?.(transcription.transcript)
-
-        callbacks?.onTranscript?.({
-          type: "transcript",
-          text: transcription.transcript,
-          isFinal: true
-        })
-
-        // Also emit as utterance for consistency with other providers
-        // Note: OpenAI Realtime API doesn't provide timing info for transcriptions
-        callbacks?.onUtterance?.({
-          text: transcription.transcript,
-          start: 0,
-          end: 0,
-          words: []
-        })
-        break
-      }
-
-      case REALTIME_SERVER_EVENTS.Error: {
-        const errorMsg = message as RealtimeErrorEvent
-        callbacks?.onError?.({
-          code: errorMsg.error.code || "REALTIME_ERROR",
-          message: errorMsg.error.message,
-          details: errorMsg.error
-        })
-        break
-      }
-
-      // Ignore other message types (response.*, rate_limits.*, etc.)
-      // These are for conversational AI, not transcription-only mode
-    }
-  }
-
-  /**
-   * Select appropriate model based on transcription options
-   */
-  private selectModel(options?: TranscribeOptions): CreateTranscriptionRequestModel {
-    // Use model from normalized options if provided
-    if (options?.model) {
-      return options.model as CreateTranscriptionRequestModel
-    }
-
-    // Auto-select based on diarization requirement
-    if (options?.diarization) {
-      return OpenAIModel["gpt-4o-transcribe-diarize"]
-    }
-
-    // Default to gpt-4o-transcribe (better accuracy than whisper-1)
-    return OpenAIModel["gpt-4o-transcribe"]
-  }
-
-  /**
-   * Normalize OpenAI response to unified format
-   */
-  private normalizeResponse(
-    response:
-      | CreateTranscriptionResponseVerboseJson
-      | CreateTranscriptionResponseDiarizedJson
-      | { text: string },
-    model: CreateTranscriptionRequestModel,
-    isDiarization: boolean
-  ): UnifiedTranscriptResponse {
-    // Handle simple json format
-    if ("text" in response && Object.keys(response).length === 1) {
-      const requestId = `openai-${Date.now()}`
-      return {
-        success: true,
-        provider: this.name,
-        data: {
-          id: requestId,
-          text: response.text,
-          status: "completed",
-          language: undefined,
-          confidence: undefined
-        },
-        extended: {},
-        tracking: {
-          requestId
-        },
-        raw: response
-      }
-    }
-
-    // Handle diarized format
-    if (isDiarization && "segments" in response) {
-      const diarizedResponse = response as CreateTranscriptionResponseDiarizedJson
-
-      // Extract unique speakers
-      const speakerSet = new Set(diarizedResponse.segments.map((seg) => seg.speaker))
-      const speakers = Array.from(speakerSet).map((speaker) => ({
-        id: speaker,
-        label: speaker // Already labeled by OpenAI (A, B, C or custom names)
-      }))
-
-      // Build utterances from segments
-      const utterances = diarizedResponse.segments.map((segment) => ({
-        speaker: segment.speaker,
-        text: segment.text,
-        start: segment.start,
-        end: segment.end,
-        confidence: undefined,
-        words: [] as import("../router/types").Word[]
-      }))
-
-      const requestId = `openai-${Date.now()}`
-      return {
-        success: true,
-        provider: this.name,
-        data: {
-          id: requestId,
-          text: diarizedResponse.text,
-          status: "completed",
-          language: undefined,
-          duration: diarizedResponse.duration,
-          speakers,
-          utterances
-        },
-        extended: {},
-        tracking: {
-          requestId
-        },
-        raw: response
-      }
-    }
-
-    // Handle verbose format
-    if ("duration" in response && "language" in response) {
-      const verboseResponse = response as CreateTranscriptionResponseVerboseJson
-
-      // Extract words if available
-      const words = verboseResponse.words?.map((w) => ({
-        word: w.word,
-        start: w.start,
-        end: w.end,
-        confidence: undefined
-      }))
-
-      const requestId = `openai-${Date.now()}`
-      return {
-        success: true,
-        provider: this.name,
-        data: {
-          id: requestId,
-          text: verboseResponse.text,
-          status: "completed",
-          language: verboseResponse.language,
-          duration: verboseResponse.duration,
-          words
-        },
-        extended: {},
-        tracking: {
-          requestId
-        },
-        raw: response
-      }
-    }
-
-    // Fallback (shouldn't reach here)
-    const requestId = `openai-${Date.now()}`
-    return {
-      success: true,
-      provider: this.name,
-      data: {
-        id: requestId,
-        text: "text" in response ? response.text : "",
-        status: "completed"
-      },
-      extended: {},
-      tracking: {
-        requestId
-      },
-      raw: response
-    }
+      options,
+      callbacks
+    })
   }
 }
 
@@ -761,17 +267,4 @@ export function createOpenAIWhisperAdapter(config: ProviderConfig): OpenAIWhispe
   return adapter
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Re-export generated types for direct SDK access
-// ─────────────────────────────────────────────────────────────────────────────
-
-// API client function
-export { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
-
-// Request/Response types (all from official OpenAI spec)
-export type {
-  CreateTranscriptionRequest,
-  CreateTranscriptionRequestModel,
-  CreateTranscriptionResponseDiarizedJson,
-  CreateTranscriptionResponseVerboseJson
-}
+export * from "./openai-whisper/exports"
