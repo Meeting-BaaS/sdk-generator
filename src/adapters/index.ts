@@ -5,7 +5,6 @@
 export * from "./base-adapter"
 export * from "./shared-types"
 export { getProviderEndpoints, type ProviderEndpoints } from "./provider-endpoints"
-export * from "./mappers"
 export * from "./gladia"
 export * from "./assemblyai"
 export * from "./deepgram"
