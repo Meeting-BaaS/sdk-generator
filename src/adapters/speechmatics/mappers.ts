@@ -47,6 +47,9 @@ export function mapToJobConfig(options?: TranscribeOptions): JobConfig {
   if (options?.diarization) {
     jobConfig.transcription_config!.diarization = TranscriptionConfigDiarization.speaker
     if (options.speakersExpected) {
+      // Map speakersExpected to Speechmatics speaker_sensitivity (0–1 range).
+      // Heuristic: divide by 10 and clamp at 1 (e.g., 1→0.1, 5→0.5, 10+→1.0).
+      // Higher sensitivity increases speaker separation aggressiveness.
       jobConfig.transcription_config!.speaker_diarization_config = {
         speaker_sensitivity: Math.min(1, options.speakersExpected / 10)
       }

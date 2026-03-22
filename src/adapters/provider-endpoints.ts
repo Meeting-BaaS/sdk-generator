@@ -167,11 +167,14 @@ export function getProviderEndpoints(
     case "speechmatics": {
       const r = region || "eu1"
       const ep = SPEECHMATICS_REGION_ENDPOINTS[r] ?? SPEECHMATICS_REGION_ENDPOINTS.eu1
-      return { ...ep }
+      return {
+        ...ep,
+        websocket: overrides?.wsBaseUrl ?? ep.websocket
+      }
     }
     case "soniox": {
       const r = (region as "us" | "eu" | "jp") || "us"
-      const ep = SONIOX_REGION_ENDPOINTS[r] ?? SONIOX_REGION_ENDPOINTS.us
+      const ep = SONIOX_REGION_ENDPOINTS[r]
       return {
         ...ep,
         websocket: overrides?.wsBaseUrl ?? ep.websocket
@@ -190,6 +193,6 @@ export function getProviderEndpoints(
       return { api: `https://${r}.api.cognitive.microsoft.com/speechtotext/v3.1` }
     }
     default:
-      return { api: "" }
+      throw new Error(`Unknown transcription provider: ${provider}`)
   }
 }

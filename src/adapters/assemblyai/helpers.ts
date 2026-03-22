@@ -187,7 +187,7 @@ export async function createAssemblyAIStreamingSession(args: {
       }
 
       audioBuffer = Buffer.concat([audioBuffer, chunk.data])
-      if (audioBuffer.length >= MIN_CHUNK_SIZE || audioBuffer.length >= MAX_CHUNK_SIZE) {
+      if (audioBuffer.length >= MIN_CHUNK_SIZE) {
         if (callbacks?.onRawMessage) {
           const audioPayload = audioBuffer.buffer.slice(
             audioBuffer.byteOffset,

@@ -79,12 +79,6 @@ export function handleOpenAIRealtimeMessage(
         text: transcription.transcript,
         isFinal: true
       })
-      callbacks?.onUtterance?.({
-        text: transcription.transcript,
-        start: 0,
-        end: 0,
-        words: []
-      })
       break
     }
     case REALTIME_SERVER_EVENTS.Error: {

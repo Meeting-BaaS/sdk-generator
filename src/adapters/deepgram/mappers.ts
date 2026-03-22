@@ -298,23 +298,29 @@ export function buildDeepgramStreamingUrl(
   if (options?.sentimentAnalysis || dgOpts.sentiment) params.append("sentiment", "true")
   if (options?.entityDetection || dgOpts.detectEntities) params.append("detect_entities", "true")
   if (dgOpts.topics) params.append("topics", "true")
-  if (dgOpts.customTopic?.length) dgOpts.customTopic.forEach((t) => params.append("custom_topic", t))
+  if (dgOpts.customTopic?.length) {
+    for (const t of dgOpts.customTopic) { params.append("custom_topic", t); }
+  }
   if (dgOpts.customTopicMode) params.append("custom_topic_mode", dgOpts.customTopicMode)
   if (dgOpts.intents) params.append("intents", "true")
   if (dgOpts.customIntent?.length) {
-    dgOpts.customIntent.forEach((i) => params.append("custom_intent", i))
+    for (const i of dgOpts.customIntent) { params.append("custom_intent", i); }
   }
   if (dgOpts.customIntentMode) params.append("custom_intent_mode", dgOpts.customIntentMode)
 
   const keywords = options?.customVocabulary || dgOpts.keywords
   if (keywords) {
     const list = Array.isArray(keywords) ? keywords : [keywords]
-    list.forEach((kw) => params.append("keywords", kw))
+    for (const kw of list) { params.append("keywords", kw); }
   }
-  if (dgOpts.keyterm?.length) dgOpts.keyterm.forEach((t) => params.append("keyterm", t))
+  if (dgOpts.keyterm?.length) {
+    for (const t of dgOpts.keyterm) { params.append("keyterm", t); }
+  }
 
   if (options?.piiRedaction || dgOpts.redact) {
-    if (Array.isArray(dgOpts.redact)) dgOpts.redact.forEach((r) => params.append("redact", r))
+    if (Array.isArray(dgOpts.redact)) {
+      for (const r of dgOpts.redact) { params.append("redact", r); }
+    }
     else {
       params.append("redact", "pii")
       params.append("redact", "pci")
@@ -322,7 +328,9 @@ export function buildDeepgramStreamingUrl(
   }
 
   if (dgOpts.callback) params.append("callback", dgOpts.callback)
-  if (dgOpts.tag?.length) dgOpts.tag.forEach((t) => params.append("tag", t))
+  if (dgOpts.tag?.length) {
+    for (const t of dgOpts.tag) { params.append("tag", t); }
+  }
   if (dgOpts.extra) params.append("extra", JSON.stringify(dgOpts.extra))
 
   if (options?.endpointing !== undefined || dgOpts.endpointing !== undefined) {

@@ -36,13 +36,15 @@ function tokensToWords(tokens: SonioxToken[]): Word[] {
 }
 
 function tokensToUtterances(tokens: SonioxToken[]): Utterance[] {
-  const words = tokens.map((token) => ({
-    word: token.text || "",
-    start: token.start_ms ? token.start_ms / 1000 : 0,
-    end: token.end_ms ? token.end_ms / 1000 : 0,
-    confidence: token.confidence,
-    speaker: token.speaker
-  }))
+  const words = tokens
+    .filter((t) => t.is_final && t.start_ms !== undefined && t.end_ms !== undefined)
+    .map((token) => ({
+      word: token.text || "",
+      start: token.start_ms! / 1000,
+      end: token.end_ms! / 1000,
+      confidence: token.confidence,
+      speaker: token.speaker
+    }))
   return buildUtterancesFromWords(words)
 }
 
@@ -59,8 +61,9 @@ export function mapFromSonioxResponse(
     (response.tokens
       ? response.tokens
           .filter((t) => t.is_final)
-          .map((t) => t.text)
-          .join("")
+          .map((t) => (t.text || "").trim())
+          .join(" ")
+          .trim()
       : "")
 
   const words: Word[] = response.tokens ? tokensToWords(response.tokens) : []
@@ -81,7 +84,7 @@ export function mapFromSonioxResponse(
       : undefined
 
   const utterances = response.tokens
-    ? tokensToUtterances(response.tokens.filter((t) => t.is_final))
+    ? tokensToUtterances(response.tokens)
     : []
 
   const language = response.tokens?.find((t) => t.language)?.language

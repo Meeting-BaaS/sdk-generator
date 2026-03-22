@@ -149,13 +149,8 @@ export class SonioxAdapter extends BaseAdapter {
   async getModels(): Promise<SonioxModelInfo[]> {
     this.validateConfig()
 
-    try {
-      const response = await this.client!.get("/models")
-      return response.data.models || []
-    } catch (error) {
-      console.error("Failed to fetch Soniox models:", error)
-      return []
-    }
+    const response = await this.client!.get("/models")
+    return response.data.models || []
   }
 
   async getLanguagesForModel(modelId: SonioxModelCode): Promise<SonioxLanguageInfo[]> {

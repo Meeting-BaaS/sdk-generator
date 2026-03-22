@@ -251,10 +251,11 @@ export async function createSonioxStreamingSession(args: {
     }
   })
 
-  ws.on("error", () => {
+  ws.on("error", (err: Error) => {
     callbacks?.onError?.({
       code: "WEBSOCKET_ERROR",
-      message: "WebSocket error occurred"
+      message: err.message || "WebSocket error occurred",
+      details: err
     })
   })
 
@@ -289,18 +290,20 @@ export async function createSonioxStreamingSession(args: {
       reject(new Error("WebSocket connection timeout"))
     }, 10000)
 
-    const checkOpen = () => {
-      if (status === "open") {
-        clearTimeout(timeout)
-        resolve()
-      } else if (status === "closed") {
-        clearTimeout(timeout)
-        reject(new Error("WebSocket connection failed"))
-      } else {
-        setTimeout(checkOpen, 100)
-      }
-    }
-    checkOpen()
+    ws.once("open", () => {
+      clearTimeout(timeout)
+      resolve()
+    })
+
+    ws.once("close", () => {
+      clearTimeout(timeout)
+      reject(new Error("WebSocket connection failed"))
+    })
+
+    ws.once("error", (err) => {
+      clearTimeout(timeout)
+      reject(err)
+    })
   })
 
   return {

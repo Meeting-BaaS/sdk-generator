@@ -23,6 +23,12 @@ import { createTranscription } from "../../generated/openai/api/openAIAudioRealt
 import type {
   CreateTranscriptionRequestModel
 } from "../../generated/openai/schema/createTranscriptionRequestModel"
+import type {
+  CreateTranscriptionResponseVerboseJson
+} from "../../generated/openai/schema/createTranscriptionResponseVerboseJson"
+import type {
+  CreateTranscriptionResponseDiarizedJson
+} from "../../generated/openai/schema/createTranscriptionResponseDiarizedJson"
 import { OpenAIModel } from "../../constants"
 import {
   createOpenAIRealtimeSession,
@@ -76,7 +82,10 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       const response = await createTranscription(request, this.getAxiosConfig())
 
       return mapFromOpenAIResponse(
-        response.data as any,
+        response.data as
+          | CreateTranscriptionResponseVerboseJson
+          | CreateTranscriptionResponseDiarizedJson
+          | { text: string },
         model as CreateTranscriptionRequestModel,
         isDiarization,
         this.name
