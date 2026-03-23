@@ -222,12 +222,12 @@ export const createRealtimeClientSecretBody = zod.object({
   "audio": zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
   "model": zod.string().or(zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize'])).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
@@ -235,7 +235,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\n')
 }).optional(),
   "noise_reduction": zod.object({
-  "type": zod.enum(['near_field', 'far_field']).optional().describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
+  "type": zod.enum(['near_field', 'far_field']).describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).optional().describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
   "turn_detection": zod.discriminatedUnion('type', [zod.object({
   "type": zod.string().describe('Type of turn detection, `server_vad` to turn on simple Server VAD.\n'),
@@ -254,12 +254,12 @@ export const createRealtimeClientSecretBody = zod.object({
 }).optional(),
   "output": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "voice": zod.string().or(zod.enum(['alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar'])).optional(),
   "speed": zod.number().min(createRealtimeClientSecretBodySessionAudioOutputSpeedMin).max(createRealtimeClientSecretBodySessionAudioOutputSpeedMax).default(createRealtimeClientSecretBodySessionAudioOutputSpeedDefault).describe('The speed of the model\'s spoken response as a multiple of the original speed.\n1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed. This value can only be changed in between model turns, not while a response is in progress.\n\nThis parameter is a post-processing adjustment to the audio after it is generated, it\'s\nalso possible to prompt the model to speak faster or slower.\n')
@@ -274,7 +274,7 @@ export const createRealtimeClientSecretBody = zod.object({
 }).optional().describe('The arbitrary metadata to attach to this trace to enable\nfiltering in the Traces Dashboard.\n')
 }).describe('Granular configuration for tracing.\n')).nullish().describe('Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once\ntracing is enabled for a session, the configuration cannot be modified.\n\n`auto` will create a trace for the session with default values for the\nworkflow name, group id, and metadata.\n'),
   "tools": zod.array(zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['function']).optional().describe('The type of the tool, i.e. `function`.'),
+  "type": zod.enum(['function']).describe('The type of the tool, i.e. `function`.'),
   "name": zod.string().optional().describe('The name of the function.'),
   "description": zod.string().optional().describe('The description of the function, including guidance on when and how\nto call it, and guidance about what to tell the user when calling\n(if anything).\n'),
   "parameters": zod.object({
@@ -284,7 +284,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "type": zod.enum(['mcp']).describe('The type of the MCP tool. Always `mcp`.'),
   "server_label": zod.string().describe('A label for this MCP server, used to identify it in tool calls.\n'),
   "server_url": zod.string().optional().describe('The URL for the MCP server. One of `server_url` or `connector_id` must be\nprovided.\n'),
-  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).optional().describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url` or `connector_id` must be provided. Learn more about service\nconnectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
+  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url` or `connector_id` must be provided. Learn more about service\nconnectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
   "authorization": zod.string().optional().describe('An OAuth access token that can be used with a remote MCP server, either\nwith a custom MCP server URL or a service connector. Your application\nmust handle the OAuth authorization flow and provide the token here.\n'),
   "server_description": zod.string().optional().describe('Optional description of the MCP server, used to provide more context.\n'),
   "headers": zod.record(zod.string(), zod.string()).describe('Optional HTTP headers to send to the MCP server. Use for authentication\nor other purposes.\n').or(zod.null()).optional(),
@@ -343,12 +343,12 @@ export const createRealtimeClientSecretBody = zod.object({
   "audio": zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
   "model": zod.string().or(zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize'])).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
@@ -356,7 +356,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\n')
 }).optional(),
   "noise_reduction": zod.object({
-  "type": zod.enum(['near_field', 'far_field']).optional().describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
+  "type": zod.enum(['near_field', 'far_field']).describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).optional().describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
   "turn_detection": zod.discriminatedUnion('type', [zod.object({
   "type": zod.string().describe('Type of turn detection, `server_vad` to turn on simple Server VAD.\n'),
@@ -405,12 +405,12 @@ export const createRealtimeClientSecretResponse = zod.object({
   "audio": zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
   "model": zod.string().or(zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize'])).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
@@ -418,7 +418,7 @@ export const createRealtimeClientSecretResponse = zod.object({
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\n')
 }).optional(),
   "noise_reduction": zod.object({
-  "type": zod.enum(['near_field', 'far_field']).optional().describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
+  "type": zod.enum(['near_field', 'far_field']).describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).optional().describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
   "turn_detection": zod.discriminatedUnion('type', [zod.object({
   "type": zod.string().describe('Type of turn detection, `server_vad` to turn on simple Server VAD.\n'),
@@ -437,12 +437,12 @@ export const createRealtimeClientSecretResponse = zod.object({
 }).optional(),
   "output": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "voice": zod.string().or(zod.enum(['alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar'])).optional(),
   "speed": zod.number().min(createRealtimeClientSecretResponseSessionAudioOutputSpeedMin).max(createRealtimeClientSecretResponseSessionAudioOutputSpeedMax).default(createRealtimeClientSecretResponseSessionAudioOutputSpeedDefault).describe('The speed of the model\'s spoken response as a multiple of the original speed.\n1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed. This value can only be changed in between model turns, not while a response is in progress.\n\nThis parameter is a post-processing adjustment to the audio after it is generated, it\'s\nalso possible to prompt the model to speak faster or slower.\n')
@@ -457,7 +457,7 @@ export const createRealtimeClientSecretResponse = zod.object({
 }).optional().describe('The arbitrary metadata to attach to this trace to enable\nfiltering in the Traces Dashboard.\n')
 }).describe('Granular configuration for tracing.\n')).describe('Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once\ntracing is enabled for a session, the configuration cannot be modified.\n\n`auto` will create a trace for the session with default values for the\nworkflow name, group id, and metadata.\n').or(zod.null()).optional(),
   "tools": zod.array(zod.object({
-  "type": zod.enum(['function']).optional().describe('The type of the tool, i.e. `function`.'),
+  "type": zod.enum(['function']).describe('The type of the tool, i.e. `function`.'),
   "name": zod.string().optional().describe('The name of the function.'),
   "description": zod.string().optional().describe('The description of the function, including guidance on when and how\nto call it, and guidance about what to tell the user when calling\n(if anything).\n'),
   "parameters": zod.object({
@@ -467,7 +467,7 @@ export const createRealtimeClientSecretResponse = zod.object({
   "type": zod.enum(['mcp']).describe('The type of the MCP tool. Always `mcp`.'),
   "server_label": zod.string().describe('A label for this MCP server, used to identify it in tool calls.\n'),
   "server_url": zod.string().optional().describe('The URL for the MCP server. One of `server_url` or `connector_id` must be\nprovided.\n'),
-  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).optional().describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url` or `connector_id` must be provided. Learn more about service\nconnectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
+  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url` or `connector_id` must be provided. Learn more about service\nconnectors [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
   "authorization": zod.string().optional().describe('An OAuth access token that can be used with a remote MCP server, either\nwith a custom MCP server URL or a service connector. Your application\nmust handle the OAuth authorization flow and provide the token here.\n'),
   "server_description": zod.string().optional().describe('Optional description of the MCP server, used to provide more context.\n'),
   "headers": zod.record(zod.string(), zod.string()).describe('Optional HTTP headers to send to the MCP server. Use for authentication\nor other purposes.\n').or(zod.null()).optional(),
@@ -530,12 +530,12 @@ export const createRealtimeClientSecretResponse = zod.object({
   "audio": zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
   "model": zod.string().or(zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize'])).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
@@ -543,7 +543,7 @@ export const createRealtimeClientSecretResponse = zod.object({
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](https://platform.openai.com/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\n')
 }).optional(),
   "noise_reduction": zod.object({
-  "type": zod.enum(['near_field', 'far_field']).optional().describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
+  "type": zod.enum(['near_field', 'far_field']).describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).optional().describe('Configuration for input audio noise reduction.\n'),
   "turn_detection": zod.object({
   "type": zod.string().optional().describe('Type of turn detection, only `server_vad` is currently supported.\n'),
@@ -657,12 +657,12 @@ export const createRealtimeSessionResponse = zod.object({
   "audio": zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
   "model": zod.string().or(zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize'])).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
@@ -681,12 +681,12 @@ export const createRealtimeSessionResponse = zod.object({
 }).optional(),
   "output": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
-  "type": zod.enum(['audio/pcm']).optional().describe('The audio format. Always `audio/pcm`.'),
+  "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
   "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
-  "type": zod.enum(['audio/pcmu']).optional().describe('The audio format. Always `audio/pcmu`.')
+  "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
-  "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio/pcma`.')
+  "type": zod.enum(['audio/pcma']).describe('The audio format. Always `audio/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "voice": zod.string().or(zod.enum(['alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar'])).optional(),
   "speed": zod.number().optional()
