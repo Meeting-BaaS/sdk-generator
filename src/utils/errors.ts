@@ -29,6 +29,15 @@ export const ERROR_CODES = {
   /** Invalid input provided to API */
   INVALID_INPUT: "INVALID_INPUT",
 
+  /** Authentication failed (invalid or missing API key) */
+  AUTHENTICATION_ERROR: "AUTHENTICATION_ERROR",
+
+  /** Rate limit exceeded */
+  RATE_LIMIT: "RATE_LIMIT",
+
+  /** Provider server error (5xx) */
+  SERVER_ERROR: "SERVER_ERROR",
+
   /** Requested operation not supported by provider */
   NOT_SUPPORTED: "NOT_SUPPORTED",
 
@@ -53,6 +62,9 @@ export const ERROR_MESSAGES: Record<ErrorCode, string> = {
   TRANSCRIPTION_ERROR: "Transcription processing failed",
   CONNECTION_TIMEOUT: "Connection attempt timed out",
   INVALID_INPUT: "Invalid input provided",
+  AUTHENTICATION_ERROR: "Authentication failed (invalid or missing API key)",
+  RATE_LIMIT: "Rate limit exceeded",
+  SERVER_ERROR: "Provider server error",
   NOT_SUPPORTED: "Operation not supported by this provider",
   NO_RESULTS: "No transcription results available",
   UNKNOWN_ERROR: "An unknown error occurred"
@@ -143,4 +155,54 @@ export function createErrorFromException(
     statusCode,
     details: error
   }
+}
+
+/**
+ * Map an HTTP status code to a semantic error code
+ */
+export function httpStatusToErrorCode(status: number): ErrorCode {
+  switch (status) {
+    case 400:
+    case 404:
+    case 422:
+      return ERROR_CODES.INVALID_INPUT
+    case 401:
+    case 403:
+      return ERROR_CODES.AUTHENTICATION_ERROR
+    case 408:
+      return ERROR_CODES.CONNECTION_TIMEOUT
+    case 429:
+      return ERROR_CODES.RATE_LIMIT
+    default:
+      if (status >= 500) return ERROR_CODES.SERVER_ERROR
+      return ERROR_CODES.UNKNOWN_ERROR
+  }
+}
+
+/**
+ * Extract the real error message from a provider's HTTP error response body
+ *
+ * Tries common field paths across all providers (paths are largely disjoint):
+ * - OpenAI: `{ error: { message: "..." } }`
+ * - AssemblyAI, Speechmatics: `{ error: "message string" }`
+ * - Gladia, Soniox, Azure, Deepgram modern: `{ message: "..." }`
+ * - Deepgram legacy: `{ err_msg: "..." }`
+ * - ElevenLabs: `{ detail: { message: "..." } }`
+ */
+export function extractProviderMessage(data: unknown): string | undefined {
+  if (!data || typeof data !== "object") {
+    return typeof data === "string" ? data : undefined
+  }
+  const d = data as Record<string, any>
+  // OpenAI: { error: { message: "..." } }
+  if (d.error && typeof d.error === "object" && d.error.message) return String(d.error.message)
+  // AssemblyAI, Speechmatics: { error: "message string" }
+  if (typeof d.error === "string") return d.error
+  // ElevenLabs: { detail: { message: "..." } }
+  if (d.detail && typeof d.detail === "object" && d.detail.message) return String(d.detail.message)
+  // Gladia, Soniox, Azure, Deepgram modern: { message: "..." }
+  if (typeof d.message === "string") return d.message
+  // Deepgram legacy: { err_msg: "..." }
+  if (typeof d.err_msg === "string") return d.err_msg
+  return undefined
 }

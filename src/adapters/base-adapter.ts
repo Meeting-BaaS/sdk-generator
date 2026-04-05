@@ -16,7 +16,12 @@ import type {
   UnifiedTranscriptResponse
 } from "../router/types"
 import { DEFAULT_TIMEOUTS, DEFAULT_POLLING } from "../constants/defaults"
-import { ERROR_CODES, type ErrorCode } from "../utils/errors"
+import {
+  ERROR_CODES,
+  type ErrorCode,
+  httpStatusToErrorCode,
+  extractProviderMessage
+} from "../utils/errors"
 
 /**
  * Provider configuration
@@ -204,12 +209,22 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
     const httpStatusText = err.response?.statusText
     const responseData = err.response?.data
 
+    // Derive semantic error code from HTTP status when no explicit code given
+    const errorCode =
+      code ||
+      (httpStatus ? httpStatusToErrorCode(httpStatus) : undefined) ||
+      ERROR_CODES.UNKNOWN_ERROR
+
+    // Surface the real provider error message instead of axios's generic one
+    const providerMessage = extractProviderMessage(responseData)
+    const message = providerMessage || err.message || "An unknown error occurred"
+
     return {
       success: false,
       provider: this.name,
       error: {
-        code: code || err.code || ERROR_CODES.UNKNOWN_ERROR,
-        message: err.message || "An unknown error occurred",
+        code: errorCode,
+        message,
         statusCode: httpStatus,
         details: {
           // Include full error object

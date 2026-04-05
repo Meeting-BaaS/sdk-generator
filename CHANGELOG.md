@@ -5,6 +5,69 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.1] - 2026-04-05
+
+### Fixed
+
+#### Unified Error Normalization Across All Providers
+
+HTTP errors from all 8 providers now return semantic error codes and the actual provider error message instead of axios internals.
+
+**Before:**
+```typescript
+{
+  code: "ERR_BAD_REQUEST",                  // axios internal code
+  message: "Request failed with status code 400",  // generic axios message
+  statusCode: 400,
+  details: { responseData: { error: "audio_url is required" } }  // real message buried
+}
+```
+
+**After:**
+```typescript
+{
+  code: "INVALID_INPUT",                    // semantic error code
+  message: "audio_url is required",         // actual provider message surfaced
+  statusCode: 400,
+  details: { responseData: { error: "audio_url is required" } }  // still preserved
+}
+```
+
+Error codes are now mapped from HTTP status:
+
+| HTTP Status | Error Code |
+|-------------|------------|
+| 400, 404, 422 | `INVALID_INPUT` |
+| 401, 403 | `AUTHENTICATION_ERROR` |
+| 408 | `CONNECTION_TIMEOUT` |
+| 429 | `RATE_LIMIT` |
+| 5xx | `SERVER_ERROR` |
+
+Provider error messages are extracted from all response body shapes:
+
+| Provider | Error body shape | Extracted field |
+|----------|-----------------|-----------------|
+| AssemblyAI | `{ error: "string" }` | `error` |
+| OpenAI | `{ error: { message: "..." } }` | `error.message` |
+| Gladia, Azure, Soniox, Deepgram | `{ message: "..." }` | `message` |
+| Speechmatics | `{ error: "string" }` | `error` |
+| Deepgram legacy | `{ err_msg: "..." }` | `err_msg` |
+| ElevenLabs | `{ detail: { message: "..." } }` | `detail.message` |
+
+**New exports:**
+
+| Export | Description |
+|--------|-------------|
+| `AUTHENTICATION_ERROR` | New error code for 401/403 |
+| `RATE_LIMIT` | New error code for 429 |
+| `SERVER_ERROR` | New error code for 5xx |
+| `httpStatusToErrorCode()` | Map HTTP status → semantic error code |
+| `extractProviderMessage()` | Extract real error message from any provider's response body |
+
+**No breaking changes.** The `details` object is unchanged — consumers that already read `details.responseData` continue to work. The `code` field now contains our taxonomy codes instead of axios codes, which is what consumers should have been getting all along. Any adapter that passes an explicit `code` to `createErrorResponse()` (e.g. `TRANSCRIPTION_ERROR` from polling) still takes priority.
+
+---
+
 ## [0.8.4] - 2026-03-21
 
 ### Added
