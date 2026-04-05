@@ -223,7 +223,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
@@ -237,7 +237,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "noise_reduction": zod.object({
   "type": zod.enum(['near_field', 'far_field']).describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).optional().describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
-  "turn_detection": zod.discriminatedUnion('type', [zod.object({
+  "turn_detection": zod.union([zod.object({
   "type": zod.string().describe('Type of turn detection, `server_vad` to turn on simple Server VAD.\n'),
   "threshold": zod.number().optional().describe('Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A\nhigher threshold will require louder audio to activate the model, and\nthus might perform better in noisy environments.\n'),
   "prefix_padding_ms": zod.number().optional().describe('Used only for `server_vad` mode. Amount of audio to include before the VAD detected speech (in\nmilliseconds). Defaults to 300ms.\n'),
@@ -255,7 +255,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "output": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
@@ -273,7 +273,7 @@ export const createRealtimeClientSecretBody = zod.object({
 
 }).optional().describe('The arbitrary metadata to attach to this trace to enable\nfiltering in the Traces Dashboard.\n')
 }).describe('Granular configuration for tracing.\n')).nullish().describe('Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once\ntracing is enabled for a session, the configuration cannot be modified.\n\n`auto` will create a trace for the session with default values for the\nworkflow name, group id, and metadata.\n'),
-  "tools": zod.array(zod.discriminatedUnion('type', [zod.object({
+  "tools": zod.array(zod.union([zod.object({
   "type": zod.enum(['function']).describe('The type of the tool, i.e. `function`.'),
   "name": zod.string().optional().describe('The name of the function.'),
   "description": zod.string().optional().describe('The description of the function, including guidance on when and how\nto call it, and guidance about what to tell the user when calling\n(if anything).\n'),
@@ -344,7 +344,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
@@ -358,7 +358,7 @@ export const createRealtimeClientSecretBody = zod.object({
   "noise_reduction": zod.object({
   "type": zod.enum(['near_field', 'far_field']).describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).optional().describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
-  "turn_detection": zod.discriminatedUnion('type', [zod.object({
+  "turn_detection": zod.union([zod.object({
   "type": zod.string().describe('Type of turn detection, `server_vad` to turn on simple Server VAD.\n'),
   "threshold": zod.number().optional().describe('Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A\nhigher threshold will require louder audio to activate the model, and\nthus might perform better in noisy environments.\n'),
   "prefix_padding_ms": zod.number().optional().describe('Used only for `server_vad` mode. Amount of audio to include before the VAD detected speech (in\nmilliseconds). Defaults to 300ms.\n'),
@@ -406,7 +406,7 @@ export const createRealtimeClientSecretResponse = zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
@@ -420,7 +420,7 @@ export const createRealtimeClientSecretResponse = zod.object({
   "noise_reduction": zod.object({
   "type": zod.enum(['near_field', 'far_field']).describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).optional().describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
-  "turn_detection": zod.discriminatedUnion('type', [zod.object({
+  "turn_detection": zod.union([zod.object({
   "type": zod.string().describe('Type of turn detection, `server_vad` to turn on simple Server VAD.\n'),
   "threshold": zod.number().optional().describe('Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this defaults to 0.5. A\nhigher threshold will require louder audio to activate the model, and\nthus might perform better in noisy environments.\n'),
   "prefix_padding_ms": zod.number().optional().describe('Used only for `server_vad` mode. Amount of audio to include before the VAD detected speech (in\nmilliseconds). Defaults to 300ms.\n'),
@@ -438,7 +438,7 @@ export const createRealtimeClientSecretResponse = zod.object({
   "output": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
@@ -531,7 +531,7 @@ export const createRealtimeClientSecretResponse = zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
@@ -658,7 +658,7 @@ export const createRealtimeSessionResponse = zod.object({
   "input": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({
@@ -682,7 +682,7 @@ export const createRealtimeSessionResponse = zod.object({
   "output": zod.object({
   "format": zod.discriminatedUnion('type', [zod.object({
   "type": zod.enum(['audio/pcm']).describe('The audio format. Always `audio/pcm`.'),
-  "rate": zod.literal(24000).optional().describe('The sample rate of the audio. Always `24000`.')
+  "rate": zod.literal(24000).describe('The sample rate of the audio. Always `24000`.')
 }).describe('The PCM audio format. Only a 24kHz sample rate is supported.'),zod.object({
   "type": zod.enum(['audio/pcmu']).describe('The audio format. Always `audio/pcmu`.')
 }).describe('The G.711 μ-law format.'),zod.object({

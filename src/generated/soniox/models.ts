@@ -12,7 +12,9 @@
  * Derived from GetModelsResponse in OpenAPI spec
  */
 export const SonioxModels = [
+  { id: "stt-rt-v4", name: "Speech-to-Text Real-time v4", mode: "real_time" },
   { id: "stt-rt-v3", name: "Speech-to-Text Real-time v3", mode: "real_time" },
+  { id: "stt-async-v4", name: "Speech-to-Text Async v4", mode: "async" },
   { id: "stt-async-v3", name: "Speech-to-Text Async v3", mode: "async" },
   { id: "stt-rt-preview", name: "Speech-to-Text Real-time Preview", mode: "real_time", aliasOf: "stt-rt-v3" },
   { id: "stt-async-preview", name: "Speech-to-Text Async Preview", mode: "async", aliasOf: "stt-async-v3" },
@@ -25,7 +27,9 @@ export const SonioxModels = [
  * Soniox model IDs
  */
 export const SonioxModelCodes = [
+  "stt-rt-v4",
   "stt-rt-v3",
+  "stt-async-v4",
   "stt-async-v3",
   "stt-rt-preview",
   "stt-async-preview",
@@ -43,6 +47,7 @@ export type SonioxModelCode = (typeof SonioxModelCodes)[number]
  * Real-time streaming model IDs
  */
 export const SonioxRealtimeModelCodes = [
+  "stt-rt-v4",
   "stt-rt-v3",
   "stt-rt-preview",
   "stt-rt-v3-preview",
@@ -58,6 +63,7 @@ export type SonioxRealtimeModelCode = (typeof SonioxRealtimeModelCodes)[number]
  * Async/batch model IDs
  */
 export const SonioxAsyncModelCodes = [
+  "stt-async-v4",
   "stt-async-v3",
   "stt-async-preview",
   "stt-async-preview-v1"
@@ -72,7 +78,9 @@ export type SonioxAsyncModelCode = (typeof SonioxAsyncModelCodes)[number]
  * Model ID to display name mapping
  */
 export const SonioxModelLabels: Record<SonioxModelCode, string> = {
+  "stt-rt-v4": "Speech-to-Text Real-time v4",
   "stt-rt-v3": "Speech-to-Text Real-time v3",
+  "stt-async-v4": "Speech-to-Text Async v4",
   "stt-async-v3": "Speech-to-Text Async v3",
   "stt-rt-preview": "Speech-to-Text Real-time Preview",
   "stt-async-preview": "Speech-to-Text Async Preview",
@@ -96,7 +104,9 @@ export const SonioxModelLabels: Record<SonioxModelCode, string> = {
  * ```
  */
 export const SonioxModel = {
+  stt_rt_v4: "stt-rt-v4",
   stt_rt_v3: "stt-rt-v3",
+  stt_async_v4: "stt-async-v4",
   stt_async_v3: "stt-async-v3",
   stt_rt_preview: "stt-rt-preview",
   stt_async_preview: "stt-async-preview",
@@ -109,6 +119,7 @@ export const SonioxModel = {
  * Real-time models only (for streaming)
  */
 export const SonioxRealtimeModel = {
+  stt_rt_v4: "stt-rt-v4",
   stt_rt_v3: "stt-rt-v3",
   stt_rt_preview: "stt-rt-preview",
   stt_rt_v3_preview: "stt-rt-v3-preview",
@@ -119,6 +130,7 @@ export const SonioxRealtimeModel = {
  * Async models only (for batch transcription)
  */
 export const SonioxAsyncModel = {
+  stt_async_v4: "stt-async-v4",
   stt_async_v3: "stt-async-v3",
   stt_async_preview: "stt-async-preview",
   stt_async_preview_v1: "stt-async-preview-v1"

@@ -16,6 +16,7 @@
 export const SpeechmaticsLanguages = [
   { code: "auto", name: "Automatic Detection" },
   { code: "ar", name: "Arabic" },
+  { code: "ar_en", name: "Arabic / English" },
   { code: "ba", name: "Bashkir" },
   { code: "be", name: "Belarusian" },
   { code: "bg", name: "Bulgarian" },
@@ -84,6 +85,7 @@ export const SpeechmaticsLanguages = [
 export const SpeechmaticsLanguageCodes = [
   "auto",
   "ar",
+  "ar_en",
   "ba",
   "be",
   "bg",
@@ -157,6 +159,7 @@ export type SpeechmaticsLanguageCode = (typeof SpeechmaticsLanguageCodes)[number
 export const SpeechmaticsLanguageLabels: Record<SpeechmaticsLanguageCode, string> = {
   "auto": "Automatic Detection",
   "ar": "Arabic",
+  "ar_en": "Arabic / English",
   "ba": "Bashkir",
   "be": "Belarusian",
   "bg": "Bulgarian",
@@ -237,6 +240,7 @@ export const SpeechmaticsLanguageLabels: Record<SpeechmaticsLanguageCode, string
 export const SpeechmaticsLanguage = {
   "auto": "auto",
   "ar": "ar",
+  "ar_en": "ar_en",
   "ba": "ba",
   "be": "be",
   "bg": "bg",
