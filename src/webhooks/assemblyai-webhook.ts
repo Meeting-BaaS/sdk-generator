@@ -3,8 +3,13 @@
  * Parses and normalizes AssemblyAI webhook callbacks
  */
 
-import type { TranscriptReadyNotification } from "../generated/assemblyai/schema/transcriptReadyNotification"
 import type { Transcript } from "../generated/assemblyai/schema/transcript"
+
+/** Lightweight webhook notification format (webhook schemas dropped from docs spec) */
+interface TranscriptReadyNotification {
+  transcript_id: string
+  status: string
+}
 import { BaseWebhookHandler } from "./base-webhook"
 import type { UnifiedWebhookEvent, WebhookVerificationOptions } from "./types"
 import type { TranscriptionProvider, Word, Utterance } from "../router/types"

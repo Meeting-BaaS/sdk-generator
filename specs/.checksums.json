@@ -7,10 +7,10 @@
       "size": 125132
     },
     "assemblyai": {
-      "sha256": "2b5fc59fb23679f6f745da605c96cebf803575c8e3c454da6813d682adf40c5b",
-      "url": "https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/main/openapi.json",
-      "syncedAt": "2026-04-05T18:54:26.618Z",
-      "size": 264826
+      "sha256": "d90f92867b9346876b7d554e8bbb9e877d099a14defb950583fc0bdb5dfd167a",
+      "url": "https://www.assemblyai.com/docs/openapi.json",
+      "syncedAt": "2026-04-06T20:05:19.625Z",
+      "size": 109789
     },
     "assemblyaiAsync": {
       "sha256": "b92cb1a8f1995cfaacd4651121052c62edcdd56f5db49cf8c7180bd58f9d7c70",
@@ -113,5 +113,5 @@
       "checkedAt": "2026-04-05T18:54:29.446Z"
     }
   },
-  "updatedAt": "2026-04-05T18:54:29.791Z"
+  "updatedAt": "2026-04-06T20:05:19.626Z"
 }

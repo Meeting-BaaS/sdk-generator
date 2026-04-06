@@ -35,7 +35,7 @@ import type { ElevenLabsLanguageCode } from "../generated/elevenlabs/languages"
 
 // Provider-specific request types for full type safety
 import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
-import type { TranscriptOptionalParams } from "../generated/assemblyai/schema/transcriptOptionalParams"
+import type { TranscriptParams as AssemblyAITranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
 import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
 import type { CodeSwitchingConfigDTO } from "../generated/gladia/schema/codeSwitchingConfigDTO"
 import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
@@ -143,7 +143,7 @@ export type TranscriptionLanguage =
 
 // Re-export provider-specific types for direct access
 export type { ListenV1MediaTranscribeParams as DeepgramOptions }
-export type { TranscriptOptionalParams as AssemblyAIOptions }
+export type { AssemblyAITranscriptParams as AssemblyAIOptions }
 export type { InitTranscriptionRequest as GladiaOptions }
 export type { CodeSwitchingConfigDTO as GladiaCodeSwitchingConfig }
 export type { AudioToLlmListConfigDTO as GladiaAudioToLlmConfig }
@@ -454,7 +454,7 @@ export interface TranscribeOptions {
    * AssemblyAI-specific options (passed directly to API)
    * @see https://www.assemblyai.com/docs/api-reference/transcripts/submit
    */
-  assemblyai?: Partial<TranscriptOptionalParams>
+  assemblyai?: Partial<AssemblyAITranscriptParams>
 
   /**
    * Gladia-specific options (passed directly to API)

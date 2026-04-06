@@ -14,7 +14,10 @@ import type {
 // Provider-specific webhook payload types (fully typed from OpenAPI)
 import type { CallbackTranscriptionSuccessPayload as GladiaWebhookSuccessPayload } from "../generated/gladia/schema/callbackTranscriptionSuccessPayload"
 import type { CallbackTranscriptionErrorPayload as GladiaWebhookErrorPayload } from "../generated/gladia/schema/callbackTranscriptionErrorPayload"
-import type { TranscriptWebhookNotification as AssemblyAIWebhookPayload } from "../generated/assemblyai/schema/transcriptWebhookNotification"
+import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai/schema/transcript"
+
+/** AssemblyAI webhook payload — either a full Transcript or a lightweight notification (webhook schemas dropped from docs spec) */
+type AssemblyAIWebhookPayload = AssemblyAITranscript | { transcript_id: string; status: string }
 import type { ListenV1Response as DeepgramWebhookPayload } from "../generated/deepgram/schema/listenV1Response"
 import type { SpeechToTextChunkResponseModel as ElevenLabsWebhookPayload } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
 import type { AzureWebhookPayload } from "./azure-webhook"

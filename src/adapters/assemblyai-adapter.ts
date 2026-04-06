@@ -67,7 +67,7 @@ import type { TranscriptListItem } from "../generated/assemblyai/schema/transcri
 import type { ListTranscriptsParams } from "../generated/assemblyai/schema/listTranscriptsParams"
 import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
 import type { TranscriptUtterance } from "../generated/assemblyai/schema/transcriptUtterance"
-import type { TranscriptOptionalParamsSpeechModel } from "../generated/assemblyai/schema/transcriptOptionalParamsSpeechModel"
+import type { SpeechModel } from "../generated/assemblyai/schema/speechModel"
 
 // Import AssemblyAI v3 Streaming types (auto-synced from SDK)
 import type {
@@ -549,7 +549,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
         const languageCode = options.language.includes("_")
           ? options.language
           : `${options.language}_us`
-        request.language_code = languageCode
+        request.language_code = languageCode as TranscriptParams["language_code"]
       }
 
       if (options.languageDetection) {
@@ -1329,7 +1329,7 @@ export type {
   ListTranscriptsParams,
   TranscriptWord,
   TranscriptUtterance,
-  TranscriptOptionalParamsSpeechModel
+  SpeechModel
 }
 
 // Streaming types (v3 API)
