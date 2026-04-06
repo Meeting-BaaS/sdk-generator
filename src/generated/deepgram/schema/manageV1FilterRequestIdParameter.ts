@@ -10,4 +10,4 @@
 /**
  * Filter for a specific request id
  */
-export type ManageV1FilterRequestIdParameter = string;
+export type ManageV1FilterRequestIdParameter = string

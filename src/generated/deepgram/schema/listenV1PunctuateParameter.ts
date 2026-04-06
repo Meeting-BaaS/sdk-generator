@@ -10,4 +10,4 @@
 /**
  * Add punctuation and capitalization to the transcript
  */
-export type ListenV1PunctuateParameter = boolean;
+export type ListenV1PunctuateParameter = boolean

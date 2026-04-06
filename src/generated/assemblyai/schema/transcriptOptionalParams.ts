@@ -5,133 +5,190 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
+import type { TranscriptCustomSpelling } from './transcriptCustomSpelling';
+import type { TranscriptOptionalParamsDomain } from './transcriptOptionalParamsDomain';
 import type { TranscriptOptionalParamsLanguageCode } from './transcriptOptionalParamsLanguageCode';
-import type { TranscriptOptionalParamsSpeechModel } from './transcriptOptionalParamsSpeechModel';
-import type { TranscriptOptionalParamsWebhookAuthHeaderName } from './transcriptOptionalParamsWebhookAuthHeaderName';
-import type { TranscriptOptionalParamsWebhookAuthHeaderValue } from './transcriptOptionalParamsWebhookAuthHeaderValue';
-import type { TranscriptBoostParam } from './transcriptBoostParam';
+import type { TranscriptOptionalParamsLanguageCodes } from './transcriptOptionalParamsLanguageCodes';
+import type { TranscriptOptionalParamsLanguageDetectionOptions } from './transcriptOptionalParamsLanguageDetectionOptions';
+import type { TranscriptOptionalParamsRedactPiiAudioOptions } from './transcriptOptionalParamsRedactPiiAudioOptions';
 import type { RedactPiiAudioQuality } from './redactPiiAudioQuality';
 import type { PiiPolicy } from './piiPolicy';
 import type { TranscriptOptionalParamsRedactPiiSub } from './transcriptOptionalParamsRedactPiiSub';
+import type { TranscriptOptionalParamsSpeakerOptions } from './transcriptOptionalParamsSpeakerOptions';
 import type { TranscriptOptionalParamsSpeakersExpected } from './transcriptOptionalParamsSpeakersExpected';
-import type { TranscriptCustomSpelling } from './transcriptCustomSpelling';
+import type { SpeechModel } from './speechModel';
 import type { TranscriptOptionalParamsSpeechThreshold } from './transcriptOptionalParamsSpeechThreshold';
+import type { TranscriptOptionalParamsSpeechUnderstanding } from './transcriptOptionalParamsSpeechUnderstanding';
 import type { SummaryModel } from './summaryModel';
 import type { SummaryType } from './summaryType';
+import type { TranscriptOptionalParamsRemoveAudioTags } from './transcriptOptionalParamsRemoveAudioTags';
+import type { TranscriptOptionalParamsWebhookAuthHeaderName } from './transcriptOptionalParamsWebhookAuthHeaderName';
+import type { TranscriptOptionalParamsWebhookAuthHeaderValue } from './transcriptOptionalParamsWebhookAuthHeaderValue';
+import type { TranscriptOptionalParamsSpeechModel } from './transcriptOptionalParamsSpeechModel';
 
 /**
  * The parameters for creating a transcript
  */
 export interface TranscriptOptionalParams {
-  /** The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
+  /** The point in time, in milliseconds, to stop transcribing in your media file. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details. */
+  audio_end_at?: number;
+  /** The point in time, in milliseconds, to begin transcribing in your media file. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details. */
+  audio_start_from?: number;
+  /**
+   * Enable [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.
+
+Note: This parameter is only supported for the Universal-2 model.
+
+   * @deprecated
+   */
+  auto_chapters?: boolean;
+  /** Enable [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases), either true or false */
+  auto_highlights?: boolean;
+  /** Enable [Content Moderation](https://www.assemblyai.com/docs/content-moderation), can be true or false */
+  content_safety?: boolean;
+  /**
+   * The confidence threshold for the [Content Moderation](https://www.assemblyai.com/docs/content-moderation) model. Values must be between 25 and 100.
+   * @minimum 25
+   * @maximum 100
+   */
+  content_safety_confidence?: number;
+  /** Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details. */
+  custom_spelling?: TranscriptCustomSpelling[];
+  /** Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like "umm", in your media file; can be true or false */
+  disfluencies?: boolean;
+  /** Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages.
+
+Supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned.
+ */
+  domain?: TranscriptOptionalParamsDomain;
+  /** Enable [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection), can be true or false */
+  entity_detection?: boolean;
+  /** Filter profanity from the transcribed text, can be true or false. See [Profanity Filtering](https://www.assemblyai.com/docs/profanity-filtering) for more details. */
+  filter_profanity?: boolean;
+  /** Enable [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false */
+  format_text?: boolean;
+  /** Enable [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection), can be true or false */
+  iab_categories?: boolean;
+  /** Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.
+ */
+  keyterms_prompt?: string[];
+  /** The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
 The default value is 'en_us'.
  */
   language_code?: TranscriptOptionalParamsLanguageCode;
-  /** Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false. */
-  language_detection?: boolean;
+  /** The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)
+One of the values specified must be `en`.
+ */
+  language_codes?: TranscriptOptionalParamsLanguageCodes;
   /**
    * The confidence threshold for the automatically detected language.
 An error will be returned if the language confidence is below this threshold.
-Defaults to 0.
+Defaults to 0. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
 
    * @minimum 0
    * @maximum 1
    */
   language_confidence_threshold?: number;
-  /** The speech model to use for the transcription. When `null`, the "best" model is used. */
-  speech_model?: TranscriptOptionalParamsSpeechModel;
-  /** Enable Automatic Punctuation, can be true or false */
-  punctuate?: boolean;
-  /** Enable Text Formatting, can be true or false */
-  format_text?: boolean;
-  /** Transcribe Filler Words, like "umm", in your media file; can be true or false */
-  disfluencies?: boolean;
-  /** Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false. */
+  /** Enable [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection), either true or false. */
+  language_detection?: boolean;
+  /** Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection). */
+  language_detection_options?: TranscriptOptionalParamsLanguageDetectionOptions;
+  /** Enable [Multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) transcription, can be true or false. */
   multichannel?: boolean;
-  /** The URL to which we send webhook requests.
-We sends two different types of webhook requests.
-One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+  /** Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.
+
+Note: This parameter is only supported for the Universal-3 Pro model.
  */
-  webhook_url?: string;
-  /** The header name to be sent with the transcript completed or failed webhook requests */
-  webhook_auth_header_name?: TranscriptOptionalParamsWebhookAuthHeaderName;
-  /** The header value to send back with the transcript completed or failed webhook requests for added security */
-  webhook_auth_header_value?: TranscriptOptionalParamsWebhookAuthHeaderValue;
-  /** Enable Key Phrases, either true or false */
-  auto_highlights?: boolean;
-  /** The point in time, in milliseconds, to begin transcribing in your media file */
-  audio_start_from?: number;
-  /** The point in time, in milliseconds, to stop transcribing in your media file */
-  audio_end_at?: number;
-  /**
-   * The list of custom vocabulary to boost transcription probability for
-   * @deprecated
-   */
-  word_boost?: string[];
-  /** How much to boost specified words */
-  boost_param?: TranscriptBoostParam;
-  /** Filter profanity from the transcribed text, can be true or false */
-  filter_profanity?: boolean;
-  /** Redact PII from the transcribed text using the Redact PII model, can be true or false */
-  redact_pii?: boolean;
-  /** Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details. */
-  redact_pii_audio?: boolean;
-  /** Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details. */
-  redact_pii_audio_quality?: RedactPiiAudioQuality;
-  /** The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details. */
-  redact_pii_policies?: PiiPolicy[];
-  /** The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details. */
-  redact_pii_sub?: TranscriptOptionalParamsRedactPiiSub;
-  /** Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false */
-  speaker_labels?: boolean;
-  /** Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details. */
-  speakers_expected?: TranscriptOptionalParamsSpeakersExpected;
-  /** Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false */
-  content_safety?: boolean;
-  /**
-   * The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
-   * @minimum 25
-   * @maximum 100
-   */
-  content_safety_confidence?: number;
-  /** Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false */
-  iab_categories?: boolean;
-  /** Customize how words are spelled and formatted using to and from values */
-  custom_spelling?: TranscriptCustomSpelling[];
-  /** <Warning>`keyterms_prompt` is only supported when the `speech_model` is specified as `slam-1`</Warning>
-Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
- */
-  keyterms_prompt?: string[];
-  /**
-   * This parameter does not currently have any functionality attached to it.
-   * @deprecated
-   */
   prompt?: string;
-  /** Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false */
+  /** Enable [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false */
+  punctuate?: boolean;
+  /** Redact PII from the transcribed text using the Redact PII model, can be true or false. See [PII Redaction](https://www.assemblyai.com/docs/pii-redaction) for more details. */
+  redact_pii?: boolean;
+  /** Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details. */
+  redact_pii_audio?: boolean;
+  /** Specify options for [PII redacted audio](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) files. */
+  redact_pii_audio_options?: TranscriptOptionalParamsRedactPiiAudioOptions;
+  /** Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details. */
+  redact_pii_audio_quality?: RedactPiiAudioQuality;
+  /** The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details. */
+  redact_pii_policies?: PiiPolicy[];
+  /** The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details. */
+  redact_pii_sub?: TranscriptOptionalParamsRedactPiiSub;
+  /** Enable [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis), can be true or false */
   sentiment_analysis?: boolean;
-  /** Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false */
-  auto_chapters?: boolean;
-  /** Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false */
-  entity_detection?: boolean;
+  /** Enable [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization), can be true or false */
+  speaker_labels?: boolean;
+  /** Specify options for [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers). Use this to set a range of possible speakers. */
+  speaker_options?: TranscriptOptionalParamsSpeakerOptions;
+  /** Tells the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details. */
+  speakers_expected?: TranscriptOptionalParamsSpeakersExpected;
+  /** List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
+ */
+  speech_models: SpeechModel[];
   /**
    * Reject audio files that contain less than this fraction of speech.
-Valid values are in the range [0, 1] inclusive.
+Valid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.
 
    * @minimum 0
    * @maximum 1
    */
   speech_threshold?: TranscriptOptionalParamsSpeechThreshold;
-  /** Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false */
-  summarization?: boolean;
-  /** The model to summarize the transcript */
-  summary_model?: SummaryModel;
-  /** The type of summary */
-  summary_type?: SummaryType;
+  /** Enable speech understanding tasks like [Translation](https://www.assemblyai.com/docs/speech-understanding/translation), [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification), and [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting). See the task-specific docs for available options and configuration.
+ */
+  speech_understanding?: TranscriptOptionalParamsSpeechUnderstanding;
   /**
-   * Enable custom topics, either true or false
+   * Enable [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.
+
+Note: This parameter is only supported for the Universal-2 model.
+
+   * @deprecated
+   */
+  summarization?: boolean;
+  /**
+   * The model to summarize the transcript. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.
+   * @deprecated
+   */
+  summary_model?: SummaryModel;
+  /**
+   * The type of summary. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.
+   * @deprecated
+   */
+  summary_type?: SummaryType;
+  /** Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `"all"` to remove all audio tags.
+
+Note: This parameter is only supported for the Universal-3 Pro model.
+ */
+  remove_audio_tags?: TranscriptOptionalParamsRemoveAudioTags;
+  /**
+   * Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.
+
+Note: This parameter can only be used with the Universal-3 Pro model.
+
+   * @minimum 0
+   * @maximum 1
+   */
+  temperature?: number;
+  /** The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests */
+  webhook_auth_header_name?: TranscriptOptionalParamsWebhookAuthHeaderName;
+  /** The header value to send back with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests for added security */
+  webhook_auth_header_value?: TranscriptOptionalParamsWebhookAuthHeaderValue;
+  /** The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.
+ */
+  webhook_url?: string;
+  /**
+   * This parameter does not currently have any functionality attached to it.
    * @deprecated
    */
   custom_topics?: boolean;
-  /** The list of custom topics */
+  /**
+   * This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+
+   * @deprecated
+   */
+  speech_model?: TranscriptOptionalParamsSpeechModel;
+  /**
+   * This parameter does not currently have any functionality attached to it.
+   * @deprecated
+   */
   topics?: string[];
 }

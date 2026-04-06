@@ -5,12 +5,12 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormatsAnyOfSixType } from './realtimeAudioFormatsAnyOfSixType';
+import type { RealtimeAudioFormatsAnyOfSixType } from "./realtimeAudioFormatsAnyOfSixType"
 
 /**
  * The G.711 A-law format.
  */
 export type RealtimeAudioFormatsAnyOfSix = {
   /** The audio format. Always `audio/pcma`. */
-  type?: RealtimeAudioFormatsAnyOfSixType;
-};
+  type?: RealtimeAudioFormatsAnyOfSixType
+}

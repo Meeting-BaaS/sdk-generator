@@ -6,7 +6,7 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { GetModelV1ResponseOneOf } from './getModelV1ResponseOneOf';
-import type { GetModelV1ResponseOneOfTwo } from './getModelV1ResponseOneOfTwo';
+import type { GetModelV1ResponseOneOf } from "./getModelV1ResponseOneOf"
+import type { GetModelV1ResponseOneOfTwo } from "./getModelV1ResponseOneOfTwo"
 
-export type GetModelV1Response = GetModelV1ResponseOneOf | GetModelV1ResponseOneOfTwo;
+export type GetModelV1Response = GetModelV1ResponseOneOf | GetModelV1ResponseOneOfTwo

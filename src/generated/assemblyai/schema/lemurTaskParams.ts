@@ -6,6 +6,5 @@
  * OpenAPI spec version: 1.3.4
  */
 import type { LemurTaskParamsAllOf } from './lemurTaskParamsAllOf';
-import type { LemurBaseParams } from './lemurBaseParams';
 
-export type LemurTaskParams = LemurTaskParamsAllOf & LemurBaseParams;
+export type LemurTaskParams = LemurTaskParamsAllOf;

@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false
+ * Whether [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, can be true or false
  */
 export type TranscriptSpeakerLabels = boolean | null;

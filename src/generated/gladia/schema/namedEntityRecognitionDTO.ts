@@ -4,20 +4,20 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { NamedEntityRecognitionDTOError } from './namedEntityRecognitionDTOError';
+import type { NamedEntityRecognitionDTOError } from "./namedEntityRecognitionDTOError"
 
 export interface NamedEntityRecognitionDTO {
   /** The audio intelligence model succeeded to get a valid output */
-  success: boolean;
+  success: boolean
   /** The audio intelligence model returned an empty value */
-  is_empty: boolean;
+  is_empty: boolean
   /** Time audio intelligence model took to complete the task */
-  exec_time: number;
+  exec_time: number
   /**
    * `null` if `success` is `true`. Contains the error details of the failed model
    * @nullable
    */
-  error: NamedEntityRecognitionDTOError;
+  error: NamedEntityRecognitionDTOError
   /** If `named_entity_recognition` has been enabled, the detected entities. */
-  entity: string;
+  entity: string
 }

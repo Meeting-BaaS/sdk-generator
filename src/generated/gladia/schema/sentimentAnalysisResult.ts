@@ -6,10 +6,10 @@
  */
 
 export interface SentimentAnalysisResult {
-  sentiment: string;
-  emotion: string;
-  text: string;
-  start: number;
-  end: number;
-  channel: number;
+  sentiment: string
+  emotion: string
+  text: string
+  start: number
+  end: number
+  channel: number
 }

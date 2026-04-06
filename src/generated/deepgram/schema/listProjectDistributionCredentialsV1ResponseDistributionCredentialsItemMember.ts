@@ -9,7 +9,7 @@
 
 export type ListProjectDistributionCredentialsV1ResponseDistributionCredentialsItemMember = {
   /** Unique identifier for the member */
-  member_id: string;
+  member_id: string
   /** Email address of the member */
-  email: string;
-};
+  email: string
+}

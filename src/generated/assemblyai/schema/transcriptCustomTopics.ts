@@ -7,7 +7,7 @@
  */
 
 /**
- * Whether custom topics is enabled, either true or false
+ * This parameter does not currently have any functionality attached to it.
  * @deprecated
  */
 export type TranscriptCustomTopics = boolean | null;

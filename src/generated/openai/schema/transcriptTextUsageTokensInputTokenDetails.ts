@@ -11,7 +11,7 @@
  */
 export type TranscriptTextUsageTokensInputTokenDetails = {
   /** Number of text tokens billed for this request. */
-  text_tokens?: number;
+  text_tokens?: number
   /** Number of audio tokens billed for this request. */
-  audio_tokens?: number;
-};
+  audio_tokens?: number
+}

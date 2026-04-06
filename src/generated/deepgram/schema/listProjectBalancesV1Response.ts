@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListProjectBalancesV1ResponseBalancesItem } from './listProjectBalancesV1ResponseBalancesItem';
+import type { ListProjectBalancesV1ResponseBalancesItem } from "./listProjectBalancesV1ResponseBalancesItem"
 
 export interface ListProjectBalancesV1Response {
-  balances?: ListProjectBalancesV1ResponseBalancesItem[];
+  balances?: ListProjectBalancesV1ResponseBalancesItem[]
 }

@@ -6,7 +6,10 @@
 import { BaseWebhookHandler } from "./base-webhook"
 import type { UnifiedWebhookEvent } from "./types"
 import type { TranscriptionProvider, Word } from "../router/types"
-import { buildUtterancesFromWords, buildTextFromSpeechmaticsResults } from "../utils/transcription-helpers"
+import {
+  buildUtterancesFromWords,
+  buildTextFromSpeechmaticsResults
+} from "../utils/transcription-helpers"
 import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
 
 /**
@@ -160,9 +163,7 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
         const text = buildTextFromSpeechmaticsResults(transcript.results)
 
         // Extract words with timestamps (seconds — Speechmatics uses seconds natively)
-        const wordResults = transcript.results.filter(
-          (r) => r.type === "word" && r.alternatives
-        )
+        const wordResults = transcript.results.filter((r) => r.type === "word" && r.alternatives)
 
         const words: Word[] = wordResults
           .filter((r) => r.start_time !== undefined && r.end_time !== undefined)

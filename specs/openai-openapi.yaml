@@ -357,7 +357,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -460,7 +460,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -577,7 +577,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -725,7 +725,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -886,7 +886,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -1015,7 +1015,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -1163,7 +1163,7 @@ paths:
                       OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                       TranslationCreateParams params = TranslationCreateParams.builder()
-                          .file(ByteArrayInputStream("Example data".getBytes()))
+                          .file(new ByteArrayInputStream("Example data".getBytes()))
                           .model(AudioModel.WHISPER_1)
                           .build();
                       TranslationCreateResponse translation = client.audio().translations().create(params);
@@ -2884,7 +2884,7 @@ components:
           title: Tracing Configuration
           default: null
           description: |
-            Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+            Realtime API can write session traces to the [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to disable tracing. Once
             tracing is enabled for a session, the configuration cannot be modified.
 
             `auto` will create a trace for the session with default values for the
@@ -3312,7 +3312,7 @@ components:
             - title: Tracing Configuration
               default: null
               description: |
-                Realtime API can write session traces to the [Traces Dashboard](/logs?api=traces). Set to null to disable tracing. Once
+                Realtime API can write session traces to the [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to disable tracing. Once
                 tracing is enabled for a session, the configuration cannot be modified.
 
                 `auto` will create a trace for the session with default values for the

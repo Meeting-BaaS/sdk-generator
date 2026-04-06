@@ -56,8 +56,7 @@ import {
   createTranscript,
   getTranscript as getTranscriptAPI,
   deleteTranscript as deleteTranscriptAPI,
-  listTranscripts as listTranscriptsAPI,
-  createTemporaryToken
+  listTranscripts as listTranscriptsAPI
 } from "../generated/assemblyai/api/assemblyAIAPI"
 
 // Import AssemblyAI generated types
@@ -174,8 +173,11 @@ export class AssemblyAIAdapter extends BaseAdapter {
     // Set URLs based on region (unless explicit baseUrl/wsBaseUrl is provided)
     const hosts = this.getRegionalHosts(config.region)
     this.baseUrl = config.baseUrl || `https://${hosts.api}`
-    this.wsBaseUrl = config.wsBaseUrl
-      || (config.baseUrl ? `${this.deriveWsUrl(config.baseUrl)}/v3/ws` : `wss://${hosts.streaming}/v3/ws`)
+    this.wsBaseUrl =
+      config.wsBaseUrl ||
+      (config.baseUrl
+        ? `${this.deriveWsUrl(config.baseUrl)}/v3/ws`
+        : `wss://${hosts.streaming}/v3/ws`)
   }
 
   /**
@@ -526,6 +528,8 @@ export class AssemblyAIAdapter extends BaseAdapter {
     const request: TranscriptParams = {
       ...options?.assemblyai,
       audio_url: audioUrl,
+      // speech_models is required — default to universal-3-pro
+      speech_models: options?.assemblyai?.speech_models ?? ["universal-3-pro"],
       // Enable punctuation and formatting by default
       punctuate: options?.assemblyai?.punctuate ?? true,
       format_text: options?.assemblyai?.format_text ?? true
@@ -533,10 +537,10 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     // Map normalized options (take precedence over assemblyai-specific)
     if (options) {
-      // Model selection (best, slam-1, universal)
-      // TranscriptionModel includes AssemblyAI's SpeechModel type
+      // Model selection (universal-3-pro, universal-2, etc.)
+      // Uses speech_models (plural, array) — speech_model (singular) is deprecated
       if (options.model) {
-        request.speech_model = options.model as TranscriptOptionalParamsSpeechModel
+        request.speech_models = [options.model as string]
       }
 
       // Language configuration
@@ -560,10 +564,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
         }
       }
 
-      // Custom vocabulary (word boost)
+      // Custom vocabulary (keyterms_prompt replaces deprecated word_boost)
       if (options.customVocabulary && options.customVocabulary.length > 0) {
-        request.word_boost = options.customVocabulary
-        request.boost_param = request.boost_param ?? "high" // default to high boost
+        request.keyterms_prompt = options.customVocabulary
       }
 
       // Summarization
@@ -1314,8 +1317,7 @@ export {
   createTranscript,
   getTranscript as getTranscriptAPI,
   deleteTranscript as deleteTranscriptAPI,
-  listTranscripts as listTranscriptsAPI,
-  createTemporaryToken
+  listTranscripts as listTranscriptsAPI
 } from "../generated/assemblyai/api/assemblyAIAPI"
 
 // Response/Request types

@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveStopRecordingAckMessageEvent = typeof CallbackLiveStopRecordingAckMessageEvent[keyof typeof CallbackLiveStopRecordingAckMessageEvent];
-
+export type CallbackLiveStopRecordingAckMessageEvent =
+  (typeof CallbackLiveStopRecordingAckMessageEvent)[keyof typeof CallbackLiveStopRecordingAckMessageEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveStopRecordingAckMessageEvent = {
-  livestop_recording: 'live.stop_recording',
-} as const;
+  livestop_recording: "live.stop_recording"
+} as const

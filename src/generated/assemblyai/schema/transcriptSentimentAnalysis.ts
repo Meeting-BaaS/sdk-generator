@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false
+ * Whether [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) is enabled, can be true or false
  */
 export type TranscriptSentimentAnalysis = boolean | null;

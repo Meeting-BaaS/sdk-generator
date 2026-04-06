@@ -6,7 +6,6 @@
  * OpenAPI spec version: 1.3.4
  */
 
-/**
- * The word boost parameter value
- */
-export type TranscriptBoostParamProperty = string | null;
+export type TranslationResponseTranslation = {
+  status?: string;
+};

@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
+ * Whether [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) is enabled, can be true or false
  */
 export type TranscriptIabCategories = boolean | null;

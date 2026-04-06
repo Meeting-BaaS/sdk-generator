@@ -8,12 +8,11 @@
 /**
  * The type of summarization to apply
  */
-export type SummaryTypesEnum = typeof SummaryTypesEnum[keyof typeof SummaryTypesEnum];
-
+export type SummaryTypesEnum = (typeof SummaryTypesEnum)[keyof typeof SummaryTypesEnum]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummaryTypesEnum = {
-  general: 'general',
-  bullet_points: 'bullet_points',
-  concise: 'concise',
-} as const;
+  general: "general",
+  bullet_points: "bullet_points",
+  concise: "concise"
+} as const

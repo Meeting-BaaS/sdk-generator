@@ -10,15 +10,15 @@ export interface DiarizationConfigDTO {
    * Exact number of speakers in the audio
    * @minimum 1
    */
-  number_of_speakers?: number;
+  number_of_speakers?: number
   /**
    * Minimum number of speakers in the audio
    * @minimum 0
    */
-  min_speakers?: number;
+  min_speakers?: number
   /**
    * Maximum number of speakers in the audio
    * @minimum 0
    */
-  max_speakers?: number;
+  max_speakers?: number
 }

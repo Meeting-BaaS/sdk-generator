@@ -7,7 +7,7 @@
  */
 
 /**
- * The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
+ * The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence). See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
  * @minimum 0
  * @maximum 1
  */

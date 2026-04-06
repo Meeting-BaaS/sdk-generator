@@ -9,5 +9,5 @@
 
 export interface ReadV1RequestText {
   /** The plain text to analyze */
-  text: string;
+  text: string
 }

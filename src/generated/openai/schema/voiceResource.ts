@@ -5,18 +5,18 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { VoiceResourceObject } from './voiceResourceObject';
+import type { VoiceResourceObject } from "./voiceResourceObject"
 
 /**
  * A custom voice that can be used for audio output.
  */
 export interface VoiceResource {
   /** The object type, which is always `audio.voice`. */
-  object: VoiceResourceObject;
+  object: VoiceResourceObject
   /** The voice identifier, which can be referenced in API endpoints. */
-  id: string;
+  id: string
   /** The name of the voice. */
-  name: string;
+  name: string
   /** The Unix timestamp (in seconds) for when the voice was created. */
-  created_at: number;
+  created_at: number
 }

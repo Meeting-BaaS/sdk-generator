@@ -5,13 +5,13 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PreRecordedControllerGetPreRecordedJobsV2StatusItem = typeof PreRecordedControllerGetPreRecordedJobsV2StatusItem[keyof typeof PreRecordedControllerGetPreRecordedJobsV2StatusItem];
-
+export type PreRecordedControllerGetPreRecordedJobsV2StatusItem =
+  (typeof PreRecordedControllerGetPreRecordedJobsV2StatusItem)[keyof typeof PreRecordedControllerGetPreRecordedJobsV2StatusItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PreRecordedControllerGetPreRecordedJobsV2StatusItem = {
-  queued: 'queued',
-  processing: 'processing',
-  done: 'done',
-  error: 'error',
-} as const;
+  queued: "queued",
+  processing: "processing",
+  done: "done",
+  error: "error"
+} as const

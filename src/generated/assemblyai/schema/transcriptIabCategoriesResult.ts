@@ -9,7 +9,7 @@ import type { TopicDetectionModelResult } from './topicDetectionModelResult';
 
 /**
  * The result of the Topic Detection model, if it is enabled.
-See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
+See [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.
 
  */
 export type TranscriptIabCategoriesResult = TopicDetectionModelResult | null;

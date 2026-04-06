@@ -8,6 +8,6 @@
  */
 
 export type ListProjectKeysV1ResponseApiKeysItemMember = {
-  member_id?: string;
-  email?: string;
-};
+  member_id?: string
+  email?: string
+}

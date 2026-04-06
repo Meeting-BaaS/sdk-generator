@@ -6,10 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type RealtimeTranscriptionSessionCreateResponseGAIncludeItem = typeof RealtimeTranscriptionSessionCreateResponseGAIncludeItem[keyof typeof RealtimeTranscriptionSessionCreateResponseGAIncludeItem];
-
+export type RealtimeTranscriptionSessionCreateResponseGAIncludeItem =
+  (typeof RealtimeTranscriptionSessionCreateResponseGAIncludeItem)[keyof typeof RealtimeTranscriptionSessionCreateResponseGAIncludeItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeTranscriptionSessionCreateResponseGAIncludeItem = {
-  iteminput_audio_transcriptionlogprobs: 'item.input_audio_transcription.logprobs',
-} as const;
+  iteminput_audio_transcriptionlogprobs: "item.input_audio_transcription.logprobs"
+} as const

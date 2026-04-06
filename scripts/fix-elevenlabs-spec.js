@@ -34,9 +34,7 @@ let fixCount = 0
 // Step 1: Keep only speech-to-text paths
 console.log("📋 Step 1: Filtering paths to speech-to-text endpoints")
 
-const allowedPathPrefixes = [
-  "/v1/speech-to-text"
-]
+const allowedPathPrefixes = ["/v1/speech-to-text"]
 
 const removedPaths = []
 if (spec.paths) {

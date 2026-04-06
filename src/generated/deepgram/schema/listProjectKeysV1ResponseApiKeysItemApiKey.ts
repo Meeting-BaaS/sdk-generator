@@ -8,8 +8,8 @@
  */
 
 export type ListProjectKeysV1ResponseApiKeysItemApiKey = {
-  api_key_id?: string;
-  comment?: string;
-  scopes?: string[];
-  created?: string;
-};
+  api_key_id?: string
+  comment?: string
+  scopes?: string[]
+  created?: string
+}

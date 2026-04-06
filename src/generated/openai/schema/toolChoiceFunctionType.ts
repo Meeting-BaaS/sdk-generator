@@ -9,10 +9,10 @@
 /**
  * For function calling, the type is always `function`.
  */
-export type ToolChoiceFunctionType = typeof ToolChoiceFunctionType[keyof typeof ToolChoiceFunctionType];
-
+export type ToolChoiceFunctionType =
+  (typeof ToolChoiceFunctionType)[keyof typeof ToolChoiceFunctionType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ToolChoiceFunctionType = {
-  function: 'function',
-} as const;
+  function: "function"
+} as const

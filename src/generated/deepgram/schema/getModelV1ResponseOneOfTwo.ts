@@ -6,14 +6,14 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { GetModelV1ResponseOneOfTwoMetadata } from './getModelV1ResponseOneOfTwoMetadata';
+import type { GetModelV1ResponseOneOfTwoMetadata } from "./getModelV1ResponseOneOfTwoMetadata"
 
 export type GetModelV1ResponseOneOfTwo = {
-  name?: string;
-  canonical_name?: string;
-  architecture?: string;
-  languages?: string[];
-  version?: string;
-  uuid?: string;
-  metadata?: GetModelV1ResponseOneOfTwoMetadata;
-};
+  name?: string
+  canonical_name?: string
+  architecture?: string
+  languages?: string[]
+  version?: string
+  uuid?: string
+  metadata?: GetModelV1ResponseOneOfTwoMetadata
+}

@@ -10,4 +10,4 @@
 /**
  * The response of the request
  */
-export type ProjectRequestResponseResponse = { [key: string]: unknown };
+export type ProjectRequestResponseResponse = { [key: string]: unknown }

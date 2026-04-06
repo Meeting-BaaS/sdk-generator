@@ -6,10 +6,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListModelsV1ResponseSttModels } from './listModelsV1ResponseSttModels';
-import type { ListModelsV1ResponseTtsModels } from './listModelsV1ResponseTtsModels';
+import type { ListModelsV1ResponseSttModels } from "./listModelsV1ResponseSttModels"
+import type { ListModelsV1ResponseTtsModels } from "./listModelsV1ResponseTtsModels"
 
 export interface ListModelsV1Response {
-  stt?: ListModelsV1ResponseSttModels[];
-  tts?: ListModelsV1ResponseTtsModels[];
+  stt?: ListModelsV1ResponseSttModels[]
+  tts?: ListModelsV1ResponseTtsModels[]
 }

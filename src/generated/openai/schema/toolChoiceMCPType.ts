@@ -9,10 +9,9 @@
 /**
  * For MCP tools, the type is always `mcp`.
  */
-export type ToolChoiceMCPType = typeof ToolChoiceMCPType[keyof typeof ToolChoiceMCPType];
-
+export type ToolChoiceMCPType = (typeof ToolChoiceMCPType)[keyof typeof ToolChoiceMCPType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ToolChoiceMCPType = {
-  mcp: 'mcp',
-} as const;
+  mcp: "mcp"
+} as const

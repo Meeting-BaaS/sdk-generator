@@ -293,9 +293,7 @@ export class ElevenLabsAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      const response = await this.client!.get(
-        `/v1/speech-to-text/transcripts/${transcriptId}`
-      )
+      const response = await this.client!.get(`/v1/speech-to-text/transcripts/${transcriptId}`)
       return this.normalizeResponse(response.data)
     } catch (error) {
       return this.createErrorResponse(error)
@@ -318,8 +316,11 @@ export class ElevenLabsAdapter extends BaseAdapter {
     const createdAt = new Date()
 
     // Build WebSocket URL
-    const wsBase = this.config?.wsBaseUrl
-      || (this.config?.baseUrl ? this.deriveWsUrl(this.config.baseUrl) : `wss://${this.getRegionalHost()}`)
+    const wsBase =
+      this.config?.wsBaseUrl ||
+      (this.config?.baseUrl
+        ? this.deriveWsUrl(this.config.baseUrl)
+        : `wss://${this.getRegionalHost()}`)
     const wsUrl = new URL(`${wsBase}/v1/speech-to-text/realtime`)
 
     // Add query parameters

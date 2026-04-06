@@ -8,6 +8,6 @@
  */
 
 export type SharedSentimentsAverage = {
-  sentiment?: string;
-  sentiment_score?: number;
-};
+  sentiment?: string
+  sentiment_score?: number
+}

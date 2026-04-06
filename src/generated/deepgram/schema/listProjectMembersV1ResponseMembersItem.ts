@@ -9,6 +9,6 @@
 
 export type ListProjectMembersV1ResponseMembersItem = {
   /** The unique identifier of the member */
-  member_id?: string;
-  email?: string;
-};
+  member_id?: string
+  email?: string
+}

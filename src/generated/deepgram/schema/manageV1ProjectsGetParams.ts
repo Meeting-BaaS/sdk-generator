@@ -6,16 +6,16 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ManageV1LimitParameter } from './manageV1LimitParameter';
-import type { ManageV1PageParameter } from './manageV1PageParameter';
+import type { ManageV1LimitParameter } from "./manageV1LimitParameter"
+import type { ManageV1PageParameter } from "./manageV1PageParameter"
 
 export type ManageV1ProjectsGetParams = {
-/**
- * Number of results to return per page. Default 10. Range [1,1000]
- */
-limit?: ManageV1LimitParameter;
-/**
- * Navigate and return the results to retrieve specific portions of information of the response
- */
-page?: ManageV1PageParameter;
-};
+  /**
+   * Number of results to return per page. Default 10. Range [1,1000]
+   */
+  limit?: ManageV1LimitParameter
+  /**
+   * Navigate and return the results to retrieve specific portions of information of the response
+   */
+  page?: ManageV1PageParameter
+}

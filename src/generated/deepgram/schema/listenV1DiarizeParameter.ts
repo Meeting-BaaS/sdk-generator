@@ -10,4 +10,4 @@
 /**
  * Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0
  */
-export type ListenV1DiarizeParameter = boolean;
+export type ListenV1DiarizeParameter = boolean

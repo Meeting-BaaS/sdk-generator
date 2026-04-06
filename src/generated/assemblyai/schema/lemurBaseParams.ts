@@ -22,7 +22,7 @@ Use either transcript_ids or input_text as input into LeMUR.
   /** The model that is used for the final prompt after compression is performed.
  */
   final_model: LemurBaseParamsFinalModel;
-  /** Max output size in tokens. */
+  /** Maximum output size in tokens, up to the `final_model`'s max [(see chart)](/docs/lemur/customize-parameters#change-the-maximum-output-size). */
   max_output_size?: number;
   /**
    * The temperature to use for the model.

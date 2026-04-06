@@ -9,7 +9,7 @@ import type { AutoHighlightsResult } from './autoHighlightsResult';
 
 /**
  * An array of results for the Key Phrases model, if it is enabled.
-See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
+See [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.
 
  */
 export type TranscriptAutoHighlightsResult = AutoHighlightsResult | null;

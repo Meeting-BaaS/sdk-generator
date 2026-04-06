@@ -26,6 +26,6 @@ export interface TranscriptSentence {
   words: TranscriptWord[];
   /** The channel of the sentence. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially. */
   channel?: TranscriptSentenceChannel;
-  /** The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null */
+  /** The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null */
   speaker: TranscriptSentenceSpeaker;
 }

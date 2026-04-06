@@ -10,4 +10,4 @@
 /**
  * Filter for requests where sentiment was used
  */
-export type ManageV1FilterSentimentParameter = boolean;
+export type ManageV1FilterSentimentParameter = boolean

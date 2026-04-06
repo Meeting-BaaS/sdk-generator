@@ -9,7 +9,7 @@ import type { Entity } from './entity';
 
 /**
  * An array of results for the Entity Detection model, if it is enabled.
-See [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.
+See [Entity detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) for more information.
 
  */
 export type TranscriptEntities = Entity[] | null;

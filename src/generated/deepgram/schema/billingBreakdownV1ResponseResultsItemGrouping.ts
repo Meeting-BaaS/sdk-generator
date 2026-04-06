@@ -9,27 +9,27 @@
 
 export type BillingBreakdownV1ResponseResultsItemGrouping = {
   /** Start date for this group */
-  start?: string;
+  start?: string
   /** End date for this group */
-  end?: string;
+  end?: string
   /**
    * Optional accessor identifier, null unless grouped by accessor.
    * @nullable
    */
-  accessor?: string | null;
+  accessor?: string | null
   /**
    * Optional deployment identifier, null unless grouped by deployment.
    * @nullable
    */
-  deployment?: string | null;
+  deployment?: string | null
   /**
    * Optional line item identifier, null unless grouped by line item.
    * @nullable
    */
-  line_item?: string | null;
+  line_item?: string | null
   /**
    * Optional list of tags, null unless grouped by tags.
    * @nullable
    */
-  tags?: string[] | null;
-};
+  tags?: string[] | null
+}

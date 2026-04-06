@@ -7,6 +7,6 @@
  */
 
 /**
- * The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
+ * The status code we received from your server when delivering the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) request, if a webhook URL was provided
  */
 export type TranscriptWebhookStatusCode = number | null;

@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ReadV1ResponseResultsSummaryResultsSummary } from './readV1ResponseResultsSummaryResultsSummary';
+import type { ReadV1ResponseResultsSummaryResultsSummary } from "./readV1ResponseResultsSummaryResultsSummary"
 
 export type ReadV1ResponseResultsSummaryResults = {
-  summary?: ReadV1ResponseResultsSummaryResultsSummary;
-};
+  summary?: ReadV1ResponseResultsSummaryResultsSummary
+}

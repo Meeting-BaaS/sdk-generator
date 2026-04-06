@@ -6,13 +6,13 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseMetadata } from './listenV1ResponseMetadata';
-import type { ListenV1ResponseResults } from './listenV1ResponseResults';
+import type { ListenV1ResponseMetadata } from "./listenV1ResponseMetadata"
+import type { ListenV1ResponseResults } from "./listenV1ResponseResults"
 
 /**
  * The standard transcription response
  */
 export interface ListenV1Response {
-  metadata: ListenV1ResponseMetadata;
-  results: ListenV1ResponseResults;
+  metadata: ListenV1ResponseMetadata
+  results: ListenV1ResponseResults
 }

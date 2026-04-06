@@ -472,7 +472,12 @@ export interface TranscribeOptions {
    * ElevenLabs-specific options (passed directly to API)
    * @see https://elevenlabs.io/docs/api-reference/speech-to-text
    */
-  elevenlabs?: Partial<Omit<BodySpeechToTextV1SpeechToTextPost, "file" | "model_id" | "language_code" | "diarize" | "keyterms">>
+  elevenlabs?: Partial<
+    Omit<
+      BodySpeechToTextV1SpeechToTextPost,
+      "file" | "model_id" | "language_code" | "diarize" | "keyterms"
+    >
+  >
 }
 
 /**

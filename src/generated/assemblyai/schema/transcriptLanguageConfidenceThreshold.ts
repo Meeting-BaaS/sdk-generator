@@ -9,6 +9,7 @@
 /**
  * The confidence threshold for the automatically detected language.
 An error will be returned if the language confidence is below this threshold.
+See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
 
  * @minimum 0
  * @maximum 1

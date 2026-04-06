@@ -10,4 +10,4 @@
 /**
  * Filter for requests where summarize was used
  */
-export type ManageV1FilterSummarizeParameter = boolean;
+export type ManageV1FilterSummarizeParameter = boolean

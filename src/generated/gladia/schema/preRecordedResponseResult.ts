@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionResultDTO } from './transcriptionResultDTO';
+import type { TranscriptionResultDTO } from "./transcriptionResultDTO"
 
 /**
  * Pre-recorded transcription's result when status is "done"
  * @nullable
  */
-export type PreRecordedResponseResult = TranscriptionResultDTO | null;
+export type PreRecordedResponseResult = TranscriptionResultDTO | null

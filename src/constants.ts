@@ -479,7 +479,6 @@ export const GladiaRegion = StreamingSupportedRegions
 // AssemblyAI Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { SpeechModel } from "./generated/assemblyai/schema/speechModel"
 import { TranscriptLanguageCode } from "./generated/assemblyai/schema/transcriptLanguageCode"
 
 /**
@@ -502,22 +501,25 @@ export const AssemblyAIEncoding = {
 /**
  * AssemblyAI batch transcription models
  *
- * Values: `best`, `slam-1`, `universal`
+ * Uses the `speech_models` (plural) API parameter — pass as array.
+ * AssemblyAI routes audio to the best available model from the list.
  *
- * - `best`: Highest accuracy, best for most use cases (default)
- * - `slam-1`: Speech-Language Aligned Model, optimized for specific domains
- * - `universal`: General-purpose model with broad language support
+ * - `universal-3-pro`: Highest accuracy, latest generation
+ * - `universal-2`: Previous generation, broad language support
  *
  * @example
  * ```typescript
  * import { AssemblyAITranscriptionModel } from 'voice-router-dev/constants'
  *
  * await router.transcribe('assemblyai', audioUrl, {
- *   speechModel: AssemblyAITranscriptionModel.best
+ *   model: AssemblyAITranscriptionModel["universal-3-pro"]
  * })
  * ```
  */
-export const AssemblyAITranscriptionModel = SpeechModel
+export const AssemblyAITranscriptionModel = {
+  "universal-3-pro": "universal-3-pro",
+  "universal-2": "universal-2"
+} as const
 
 /**
  * AssemblyAI language codes for transcription

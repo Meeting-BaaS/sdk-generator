@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type EndRecordingMessageType = typeof EndRecordingMessageType[keyof typeof EndRecordingMessageType];
-
+export type EndRecordingMessageType =
+  (typeof EndRecordingMessageType)[keyof typeof EndRecordingMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EndRecordingMessageType = {
-  end_recording: 'end_recording',
-} as const;
+  end_recording: "end_recording"
+} as const

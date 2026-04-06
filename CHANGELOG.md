@@ -5,9 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.1] - 2026-04-05
+## [0.8.4] - 2026-04-06
 
 ### Fixed
+
+#### AssemblyAI: Migrate `speech_model` → `speech_models` (API Breaking Change)
+
+AssemblyAI deprecated the singular `speech_model` parameter and now requires `speech_models` (plural, array). The old field is rejected with HTTP 400:
+
+```
+"speech_models" must be a non-empty list containing one or more of: "universal-3-pro", "universal-2"
+```
+
+**What changed:**
+
+| | Before (0.8.3) | After (0.8.4) |
+|---|---|---|
+| **API field** | `speech_model: "best"` (singular, deprecated) | `speech_models: ["universal-3-pro"]` (array, required) |
+| **Model values** | `best`, `slam-1`, `universal` | `universal-3-pro`, `universal-2` |
+| **Constants** | `AssemblyAITranscriptionModel.best` | `AssemblyAITranscriptionModel["universal-3-pro"]` |
+
+**Adapter fix:** `options.model` now maps to `request.speech_models = [model]` instead of `request.speech_model = model`.
+
+**Generated types regenerated** from AssemblyAI's updated OpenAPI spec (v1.3.4):
+- `SpeechModel` is now `string` (no enum — AssemblyAI removed the fixed list)
+- `TranscriptOptionalParams.speech_models` added (required `SpeechModel[]`)
+- `TranscriptOptionalParams.speech_model` marked `@deprecated`
+- New response field: `speech_model_used` (which model actually ran)
+
+**Migration:**
+
+```typescript
+// Before
+import { AssemblyAITranscriptionModel } from 'voice-router-dev/constants'
+{ model: AssemblyAITranscriptionModel.best }
+
+// After
+import { AssemblyAITranscriptionModel } from 'voice-router-dev/constants'
+{ model: AssemblyAITranscriptionModel["universal-3-pro"] }
+
+// Or pass directly via assemblyai-specific options for multi-model routing
+{ assemblyai: { speech_models: ["universal-3-pro", "universal-2"] } }
+```
+
+**Note:** Streaming is unaffected — it still uses `speech_model` query parameter with streaming-specific model names (`universal-streaming-english`, `universal-streaming-multilingual`).
 
 #### Unified Error Normalization Across All Providers
 

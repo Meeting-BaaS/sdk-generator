@@ -8,10 +8,10 @@
  */
 
 export type GetProjectKeyV1ResponseItemMemberApiKey = {
-  api_key_id?: string;
-  comment?: string;
-  scopes?: string[];
-  tags?: string[];
-  expiration_date?: string;
-  created?: string;
-};
+  api_key_id?: string
+  comment?: string
+  scopes?: string[]
+  tags?: string[]
+  expiration_date?: string
+  created?: string
+}

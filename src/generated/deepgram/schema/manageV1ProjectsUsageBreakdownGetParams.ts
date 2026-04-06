@@ -6,231 +6,231 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ManageV1StartDateParameter } from './manageV1StartDateParameter';
-import type { ManageV1EndDateParameter } from './manageV1EndDateParameter';
-import type { ManageV1GroupingParameter } from './manageV1GroupingParameter';
-import type { ManageV1FilterAccessorParameter } from './manageV1FilterAccessorParameter';
-import type { ManageV1FilterAlternativesParameter } from './manageV1FilterAlternativesParameter';
-import type { ManageV1FilterCallbackMethodParameter } from './manageV1FilterCallbackMethodParameter';
-import type { ManageV1FilterCallbackParameter } from './manageV1FilterCallbackParameter';
-import type { ManageV1FilterChannelsParameter } from './manageV1FilterChannelsParameter';
-import type { ManageV1FilterCustomIntentModeParameter } from './manageV1FilterCustomIntentModeParameter';
-import type { ManageV1FilterCustomIntentParameter } from './manageV1FilterCustomIntentParameter';
-import type { ManageV1FilterCustomTopicModeParameter } from './manageV1FilterCustomTopicModeParameter';
-import type { ManageV1FilterCustomTopicParameter } from './manageV1FilterCustomTopicParameter';
-import type { ManageV1FilterDeploymentParameter } from './manageV1FilterDeploymentParameter';
-import type { ManageV1FilterDetectEntitiesParameter } from './manageV1FilterDetectEntitiesParameter';
-import type { ManageV1FilterDetectLanguageParameter } from './manageV1FilterDetectLanguageParameter';
-import type { ManageV1FilterDiarizeParameter } from './manageV1FilterDiarizeParameter';
-import type { ManageV1FilterDictationParameter } from './manageV1FilterDictationParameter';
-import type { ManageV1FilterEncodingParameter } from './manageV1FilterEncodingParameter';
-import type { ManageV1FilterEndpointParameter } from './manageV1FilterEndpointParameter';
-import type { ManageV1FilterExtraParameter } from './manageV1FilterExtraParameter';
-import type { ManageV1FilterFillerWordsParameter } from './manageV1FilterFillerWordsParameter';
-import type { ManageV1FilterIntentsParameter } from './manageV1FilterIntentsParameter';
-import type { ManageV1FilterKeytermParameter } from './manageV1FilterKeytermParameter';
-import type { ManageV1FilterKeywordsParameter } from './manageV1FilterKeywordsParameter';
-import type { ManageV1FilterLanguageParameter } from './manageV1FilterLanguageParameter';
-import type { ManageV1FilterMeasurementsParameter } from './manageV1FilterMeasurementsParameter';
-import type { ManageV1FilterMethodParameter } from './manageV1FilterMethodParameter';
-import type { ManageV1FilterModelParameter } from './manageV1FilterModelParameter';
-import type { ManageV1FilterMultichannelParameter } from './manageV1FilterMultichannelParameter';
-import type { ManageV1FilterNumeralsParameter } from './manageV1FilterNumeralsParameter';
-import type { ManageV1FilterParagraphsParameter } from './manageV1FilterParagraphsParameter';
-import type { ManageV1FilterProfanityFilterParameter } from './manageV1FilterProfanityFilterParameter';
-import type { ManageV1FilterPunctuateParameter } from './manageV1FilterPunctuateParameter';
-import type { ManageV1FilterRedactParameter } from './manageV1FilterRedactParameter';
-import type { ManageV1FilterReplaceParameter } from './manageV1FilterReplaceParameter';
-import type { ManageV1FilterSampleRateParameter } from './manageV1FilterSampleRateParameter';
-import type { ManageV1FilterSearchParameter } from './manageV1FilterSearchParameter';
-import type { ManageV1FilterSentimentParameter } from './manageV1FilterSentimentParameter';
-import type { ManageV1FilterSmartFormatParameter } from './manageV1FilterSmartFormatParameter';
-import type { ManageV1FilterSummarizeParameter } from './manageV1FilterSummarizeParameter';
-import type { ManageV1FilterTagParameter } from './manageV1FilterTagParameter';
-import type { ManageV1FilterTopicsParameter } from './manageV1FilterTopicsParameter';
-import type { ManageV1FilterUttSplitParameter } from './manageV1FilterUttSplitParameter';
-import type { ManageV1FilterUtterancesParameter } from './manageV1FilterUtterancesParameter';
-import type { ManageV1FilterVersionParameter } from './manageV1FilterVersionParameter';
+import type { ManageV1StartDateParameter } from "./manageV1StartDateParameter"
+import type { ManageV1EndDateParameter } from "./manageV1EndDateParameter"
+import type { ManageV1GroupingParameter } from "./manageV1GroupingParameter"
+import type { ManageV1FilterAccessorParameter } from "./manageV1FilterAccessorParameter"
+import type { ManageV1FilterAlternativesParameter } from "./manageV1FilterAlternativesParameter"
+import type { ManageV1FilterCallbackMethodParameter } from "./manageV1FilterCallbackMethodParameter"
+import type { ManageV1FilterCallbackParameter } from "./manageV1FilterCallbackParameter"
+import type { ManageV1FilterChannelsParameter } from "./manageV1FilterChannelsParameter"
+import type { ManageV1FilterCustomIntentModeParameter } from "./manageV1FilterCustomIntentModeParameter"
+import type { ManageV1FilterCustomIntentParameter } from "./manageV1FilterCustomIntentParameter"
+import type { ManageV1FilterCustomTopicModeParameter } from "./manageV1FilterCustomTopicModeParameter"
+import type { ManageV1FilterCustomTopicParameter } from "./manageV1FilterCustomTopicParameter"
+import type { ManageV1FilterDeploymentParameter } from "./manageV1FilterDeploymentParameter"
+import type { ManageV1FilterDetectEntitiesParameter } from "./manageV1FilterDetectEntitiesParameter"
+import type { ManageV1FilterDetectLanguageParameter } from "./manageV1FilterDetectLanguageParameter"
+import type { ManageV1FilterDiarizeParameter } from "./manageV1FilterDiarizeParameter"
+import type { ManageV1FilterDictationParameter } from "./manageV1FilterDictationParameter"
+import type { ManageV1FilterEncodingParameter } from "./manageV1FilterEncodingParameter"
+import type { ManageV1FilterEndpointParameter } from "./manageV1FilterEndpointParameter"
+import type { ManageV1FilterExtraParameter } from "./manageV1FilterExtraParameter"
+import type { ManageV1FilterFillerWordsParameter } from "./manageV1FilterFillerWordsParameter"
+import type { ManageV1FilterIntentsParameter } from "./manageV1FilterIntentsParameter"
+import type { ManageV1FilterKeytermParameter } from "./manageV1FilterKeytermParameter"
+import type { ManageV1FilterKeywordsParameter } from "./manageV1FilterKeywordsParameter"
+import type { ManageV1FilterLanguageParameter } from "./manageV1FilterLanguageParameter"
+import type { ManageV1FilterMeasurementsParameter } from "./manageV1FilterMeasurementsParameter"
+import type { ManageV1FilterMethodParameter } from "./manageV1FilterMethodParameter"
+import type { ManageV1FilterModelParameter } from "./manageV1FilterModelParameter"
+import type { ManageV1FilterMultichannelParameter } from "./manageV1FilterMultichannelParameter"
+import type { ManageV1FilterNumeralsParameter } from "./manageV1FilterNumeralsParameter"
+import type { ManageV1FilterParagraphsParameter } from "./manageV1FilterParagraphsParameter"
+import type { ManageV1FilterProfanityFilterParameter } from "./manageV1FilterProfanityFilterParameter"
+import type { ManageV1FilterPunctuateParameter } from "./manageV1FilterPunctuateParameter"
+import type { ManageV1FilterRedactParameter } from "./manageV1FilterRedactParameter"
+import type { ManageV1FilterReplaceParameter } from "./manageV1FilterReplaceParameter"
+import type { ManageV1FilterSampleRateParameter } from "./manageV1FilterSampleRateParameter"
+import type { ManageV1FilterSearchParameter } from "./manageV1FilterSearchParameter"
+import type { ManageV1FilterSentimentParameter } from "./manageV1FilterSentimentParameter"
+import type { ManageV1FilterSmartFormatParameter } from "./manageV1FilterSmartFormatParameter"
+import type { ManageV1FilterSummarizeParameter } from "./manageV1FilterSummarizeParameter"
+import type { ManageV1FilterTagParameter } from "./manageV1FilterTagParameter"
+import type { ManageV1FilterTopicsParameter } from "./manageV1FilterTopicsParameter"
+import type { ManageV1FilterUttSplitParameter } from "./manageV1FilterUttSplitParameter"
+import type { ManageV1FilterUtterancesParameter } from "./manageV1FilterUtterancesParameter"
+import type { ManageV1FilterVersionParameter } from "./manageV1FilterVersionParameter"
 
 export type ManageV1ProjectsUsageBreakdownGetParams = {
-/**
- * Start date of the requested date range. Format accepted is YYYY-MM-DD
- */
-start?: ManageV1StartDateParameter;
-/**
- * End date of the requested date range. Format accepted is YYYY-MM-DD
- */
-end?: ManageV1EndDateParameter;
-/**
- * Common usage grouping parameters
- */
-grouping?: ManageV1GroupingParameter;
-/**
- * Filter for requests where a specific accessor was used
- */
-accessor?: ManageV1FilterAccessorParameter;
-/**
- * Filter for requests where alternatives were used
- */
-alternatives?: ManageV1FilterAlternativesParameter;
-/**
- * Filter for requests where callback method was used
- */
-callback_method?: ManageV1FilterCallbackMethodParameter;
-/**
- * Filter for requests where callback was used
- */
-callback?: ManageV1FilterCallbackParameter;
-/**
- * Filter for requests where channels were used
- */
-channels?: ManageV1FilterChannelsParameter;
-/**
- * Filter for requests where custom intent mode was used
- */
-custom_intent_mode?: ManageV1FilterCustomIntentModeParameter;
-/**
- * Filter for requests where custom intent was used
- */
-custom_intent?: ManageV1FilterCustomIntentParameter;
-/**
- * Filter for requests where custom topic mode was used
- */
-custom_topic_mode?: ManageV1FilterCustomTopicModeParameter;
-/**
- * Filter for requests where custom topic was used
- */
-custom_topic?: ManageV1FilterCustomTopicParameter;
-/**
- * Filter for requests where a specific deployment was used
- */
-deployment?: ManageV1FilterDeploymentParameter;
-/**
- * Filter for requests where detect entities was used
- */
-detect_entities?: ManageV1FilterDetectEntitiesParameter;
-/**
- * Filter for requests where detect language was used
- */
-detect_language?: ManageV1FilterDetectLanguageParameter;
-/**
- * Filter for requests where diarize was used
- */
-diarize?: ManageV1FilterDiarizeParameter;
-/**
- * Filter for requests where dictation was used
- */
-dictation?: ManageV1FilterDictationParameter;
-/**
- * Filter for requests where encoding was used
- */
-encoding?: ManageV1FilterEncodingParameter;
-/**
- * Filter for requests where a specific endpoint was used
- */
-endpoint?: ManageV1FilterEndpointParameter;
-/**
- * Filter for requests where extra was used
- */
-extra?: ManageV1FilterExtraParameter;
-/**
- * Filter for requests where filler words was used
- */
-filler_words?: ManageV1FilterFillerWordsParameter;
-/**
- * Filter for requests where intents was used
- */
-intents?: ManageV1FilterIntentsParameter;
-/**
- * Filter for requests where keyterm was used
- */
-keyterm?: ManageV1FilterKeytermParameter;
-/**
- * Filter for requests where keywords was used
- */
-keywords?: ManageV1FilterKeywordsParameter;
-/**
- * Filter for requests where language was used
- */
-language?: ManageV1FilterLanguageParameter;
-/**
- * Filter for requests where measurements were used
- */
-measurements?: ManageV1FilterMeasurementsParameter;
-/**
- * Filter for requests where a specific method was used
- */
-method?: ManageV1FilterMethodParameter;
-/**
- * Filter for requests where a specific model uuid was used
- */
-model?: ManageV1FilterModelParameter;
-/**
- * Filter for requests where multichannel was used
- */
-multichannel?: ManageV1FilterMultichannelParameter;
-/**
- * Filter for requests where numerals were used
- */
-numerals?: ManageV1FilterNumeralsParameter;
-/**
- * Filter for requests where paragraphs were used
- */
-paragraphs?: ManageV1FilterParagraphsParameter;
-/**
- * Filter for requests where profanity filter was used
- */
-profanity_filter?: ManageV1FilterProfanityFilterParameter;
-/**
- * Filter for requests where punctuate was used
- */
-punctuate?: ManageV1FilterPunctuateParameter;
-/**
- * Filter for requests where redact was used
- */
-redact?: ManageV1FilterRedactParameter;
-/**
- * Filter for requests where replace was used
- */
-replace?: ManageV1FilterReplaceParameter;
-/**
- * Filter for requests where sample rate was used
- */
-sample_rate?: ManageV1FilterSampleRateParameter;
-/**
- * Filter for requests where search was used
- */
-search?: ManageV1FilterSearchParameter;
-/**
- * Filter for requests where sentiment was used
- */
-sentiment?: ManageV1FilterSentimentParameter;
-/**
- * Filter for requests where smart format was used
- */
-smart_format?: ManageV1FilterSmartFormatParameter;
-/**
- * Filter for requests where summarize was used
- */
-summarize?: ManageV1FilterSummarizeParameter;
-/**
- * Filter for requests where a specific tag was used
- */
-tag?: ManageV1FilterTagParameter;
-/**
- * Filter for requests where topics was used
- */
-topics?: ManageV1FilterTopicsParameter;
-/**
- * Filter for requests where utt split was used
- */
-utt_split?: ManageV1FilterUttSplitParameter;
-/**
- * Filter for requests where utterances was used
- */
-utterances?: ManageV1FilterUtterancesParameter;
-/**
- * Filter for requests where version was used
- */
-version?: ManageV1FilterVersionParameter;
-};
+  /**
+   * Start date of the requested date range. Format accepted is YYYY-MM-DD
+   */
+  start?: ManageV1StartDateParameter
+  /**
+   * End date of the requested date range. Format accepted is YYYY-MM-DD
+   */
+  end?: ManageV1EndDateParameter
+  /**
+   * Common usage grouping parameters
+   */
+  grouping?: ManageV1GroupingParameter
+  /**
+   * Filter for requests where a specific accessor was used
+   */
+  accessor?: ManageV1FilterAccessorParameter
+  /**
+   * Filter for requests where alternatives were used
+   */
+  alternatives?: ManageV1FilterAlternativesParameter
+  /**
+   * Filter for requests where callback method was used
+   */
+  callback_method?: ManageV1FilterCallbackMethodParameter
+  /**
+   * Filter for requests where callback was used
+   */
+  callback?: ManageV1FilterCallbackParameter
+  /**
+   * Filter for requests where channels were used
+   */
+  channels?: ManageV1FilterChannelsParameter
+  /**
+   * Filter for requests where custom intent mode was used
+   */
+  custom_intent_mode?: ManageV1FilterCustomIntentModeParameter
+  /**
+   * Filter for requests where custom intent was used
+   */
+  custom_intent?: ManageV1FilterCustomIntentParameter
+  /**
+   * Filter for requests where custom topic mode was used
+   */
+  custom_topic_mode?: ManageV1FilterCustomTopicModeParameter
+  /**
+   * Filter for requests where custom topic was used
+   */
+  custom_topic?: ManageV1FilterCustomTopicParameter
+  /**
+   * Filter for requests where a specific deployment was used
+   */
+  deployment?: ManageV1FilterDeploymentParameter
+  /**
+   * Filter for requests where detect entities was used
+   */
+  detect_entities?: ManageV1FilterDetectEntitiesParameter
+  /**
+   * Filter for requests where detect language was used
+   */
+  detect_language?: ManageV1FilterDetectLanguageParameter
+  /**
+   * Filter for requests where diarize was used
+   */
+  diarize?: ManageV1FilterDiarizeParameter
+  /**
+   * Filter for requests where dictation was used
+   */
+  dictation?: ManageV1FilterDictationParameter
+  /**
+   * Filter for requests where encoding was used
+   */
+  encoding?: ManageV1FilterEncodingParameter
+  /**
+   * Filter for requests where a specific endpoint was used
+   */
+  endpoint?: ManageV1FilterEndpointParameter
+  /**
+   * Filter for requests where extra was used
+   */
+  extra?: ManageV1FilterExtraParameter
+  /**
+   * Filter for requests where filler words was used
+   */
+  filler_words?: ManageV1FilterFillerWordsParameter
+  /**
+   * Filter for requests where intents was used
+   */
+  intents?: ManageV1FilterIntentsParameter
+  /**
+   * Filter for requests where keyterm was used
+   */
+  keyterm?: ManageV1FilterKeytermParameter
+  /**
+   * Filter for requests where keywords was used
+   */
+  keywords?: ManageV1FilterKeywordsParameter
+  /**
+   * Filter for requests where language was used
+   */
+  language?: ManageV1FilterLanguageParameter
+  /**
+   * Filter for requests where measurements were used
+   */
+  measurements?: ManageV1FilterMeasurementsParameter
+  /**
+   * Filter for requests where a specific method was used
+   */
+  method?: ManageV1FilterMethodParameter
+  /**
+   * Filter for requests where a specific model uuid was used
+   */
+  model?: ManageV1FilterModelParameter
+  /**
+   * Filter for requests where multichannel was used
+   */
+  multichannel?: ManageV1FilterMultichannelParameter
+  /**
+   * Filter for requests where numerals were used
+   */
+  numerals?: ManageV1FilterNumeralsParameter
+  /**
+   * Filter for requests where paragraphs were used
+   */
+  paragraphs?: ManageV1FilterParagraphsParameter
+  /**
+   * Filter for requests where profanity filter was used
+   */
+  profanity_filter?: ManageV1FilterProfanityFilterParameter
+  /**
+   * Filter for requests where punctuate was used
+   */
+  punctuate?: ManageV1FilterPunctuateParameter
+  /**
+   * Filter for requests where redact was used
+   */
+  redact?: ManageV1FilterRedactParameter
+  /**
+   * Filter for requests where replace was used
+   */
+  replace?: ManageV1FilterReplaceParameter
+  /**
+   * Filter for requests where sample rate was used
+   */
+  sample_rate?: ManageV1FilterSampleRateParameter
+  /**
+   * Filter for requests where search was used
+   */
+  search?: ManageV1FilterSearchParameter
+  /**
+   * Filter for requests where sentiment was used
+   */
+  sentiment?: ManageV1FilterSentimentParameter
+  /**
+   * Filter for requests where smart format was used
+   */
+  smart_format?: ManageV1FilterSmartFormatParameter
+  /**
+   * Filter for requests where summarize was used
+   */
+  summarize?: ManageV1FilterSummarizeParameter
+  /**
+   * Filter for requests where a specific tag was used
+   */
+  tag?: ManageV1FilterTagParameter
+  /**
+   * Filter for requests where topics was used
+   */
+  topics?: ManageV1FilterTopicsParameter
+  /**
+   * Filter for requests where utt split was used
+   */
+  utt_split?: ManageV1FilterUttSplitParameter
+  /**
+   * Filter for requests where utterances was used
+   */
+  utterances?: ManageV1FilterUtterancesParameter
+  /**
+   * Filter for requests where version was used
+   */
+  version?: ManageV1FilterVersionParameter
+}

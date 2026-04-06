@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PostSummarizationMessageData } from './postSummarizationMessageData';
+import type { PostSummarizationMessageData } from "./postSummarizationMessageData"
 
 /**
  * The message data. "null" if the addon failed
  * @nullable
  */
-export type PostSummarizationMessageDataProperty = PostSummarizationMessageData | null;
+export type PostSummarizationMessageDataProperty = PostSummarizationMessageData | null

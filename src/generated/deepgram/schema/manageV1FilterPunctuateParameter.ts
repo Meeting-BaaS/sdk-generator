@@ -10,4 +10,4 @@
 /**
  * Filter for requests where punctuate was used
  */
-export type ManageV1FilterPunctuateParameter = boolean;
+export type ManageV1FilterPunctuateParameter = boolean

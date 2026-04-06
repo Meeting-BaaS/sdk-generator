@@ -9,9 +9,9 @@
 
 export interface ErrorResponseLegacyError {
   /** The error code */
-  err_code?: string;
+  err_code?: string
   /** The error message */
-  err_msg?: string;
+  err_msg?: string
   /** The request ID */
-  request_id?: string;
+  request_id?: string
 }

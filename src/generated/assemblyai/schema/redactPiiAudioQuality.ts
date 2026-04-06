@@ -7,7 +7,7 @@
  */
 
 /**
- * Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+ * Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.
  */
 export type RedactPiiAudioQuality = typeof RedactPiiAudioQuality[keyof typeof RedactPiiAudioQuality];
 

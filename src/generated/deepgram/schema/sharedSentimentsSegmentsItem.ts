@@ -8,9 +8,9 @@
  */
 
 export type SharedSentimentsSegmentsItem = {
-  text?: string;
-  start_word?: number;
-  end_word?: number;
-  sentiment?: string;
-  sentiment_score?: number;
-};
+  text?: string
+  start_word?: number
+  end_word?: number
+  sentiment?: string
+  sentiment_score?: number
+}

@@ -6,11 +6,11 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ManageV1IncludeOutdatedModelsParameter } from './manageV1IncludeOutdatedModelsParameter';
+import type { ManageV1IncludeOutdatedModelsParameter } from "./manageV1IncludeOutdatedModelsParameter"
 
 export type ManageV1ModelsListParams = {
-/**
- * returns non-latest versions of models
- */
-include_outdated?: ManageV1IncludeOutdatedModelsParameter;
-};
+  /**
+   * returns non-latest versions of models
+   */
+  include_outdated?: ManageV1IncludeOutdatedModelsParameter
+}

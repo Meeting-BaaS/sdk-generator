@@ -7,6 +7,6 @@
  */
 
 /**
- * Transcribe Filler Words, like "umm", in your media file; can be true or false
+ * Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like "umm", in your media file; can be true or false
  */
 export type TranscriptDisfluencies = boolean | null;

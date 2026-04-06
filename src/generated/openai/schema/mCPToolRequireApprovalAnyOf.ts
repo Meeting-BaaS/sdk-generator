@@ -5,9 +5,9 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolRequireApprovalAnyOfAnyOf } from './mCPToolRequireApprovalAnyOfAnyOf';
+import type { MCPToolRequireApprovalAnyOfAnyOf } from "./mCPToolRequireApprovalAnyOfAnyOf"
 
 /**
  * Specify which of the MCP server's tools require approval.
  */
-export type MCPToolRequireApprovalAnyOf = MCPToolRequireApprovalAnyOfAnyOf | 'always' | 'never';
+export type MCPToolRequireApprovalAnyOf = MCPToolRequireApprovalAnyOfAnyOf | "always" | "never"

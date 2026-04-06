@@ -4,29 +4,29 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionMetadataDTO } from './transcriptionMetadataDTO';
-import type { TranscriptionDTO } from './transcriptionDTO';
-import type { TranslationDTO } from './translationDTO';
-import type { SummarizationDTO } from './summarizationDTO';
-import type { NamedEntityRecognitionDTO } from './namedEntityRecognitionDTO';
-import type { SentimentAnalysisDTO } from './sentimentAnalysisDTO';
-import type { ChapterizationDTO } from './chapterizationDTO';
+import type { TranscriptionMetadataDTO } from "./transcriptionMetadataDTO"
+import type { TranscriptionDTO } from "./transcriptionDTO"
+import type { TranslationDTO } from "./translationDTO"
+import type { SummarizationDTO } from "./summarizationDTO"
+import type { NamedEntityRecognitionDTO } from "./namedEntityRecognitionDTO"
+import type { SentimentAnalysisDTO } from "./sentimentAnalysisDTO"
+import type { ChapterizationDTO } from "./chapterizationDTO"
 
 export interface StreamingTranscriptionResultWithMessagesDTO {
   /** Metadata for the given transcription & audio file */
-  metadata: TranscriptionMetadataDTO;
+  metadata: TranscriptionMetadataDTO
   /** Transcription of the audio speech */
-  transcription?: TranscriptionDTO;
+  transcription?: TranscriptionDTO
   /** If `translation` has been enabled, translation of the audio speech transcription */
-  translation?: TranslationDTO;
+  translation?: TranslationDTO
   /** If `summarization` has been enabled, summarization of the audio speech transcription */
-  summarization?: SummarizationDTO;
+  summarization?: SummarizationDTO
   /** If `named_entity_recognition` has been enabled, the detected entities */
-  named_entity_recognition?: NamedEntityRecognitionDTO;
+  named_entity_recognition?: NamedEntityRecognitionDTO
   /** If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription */
-  sentiment_analysis?: SentimentAnalysisDTO;
+  sentiment_analysis?: SentimentAnalysisDTO
   /** If `chapterization` has been enabled, will generate chapters name for different parts of the given audio. */
-  chapterization?: ChapterizationDTO;
+  chapterization?: ChapterizationDTO
   /** Real-Time messages sent by the server during the live transcription */
-  messages?: string[];
+  messages?: string[]
 }

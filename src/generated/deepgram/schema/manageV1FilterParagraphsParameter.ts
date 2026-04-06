@@ -10,4 +10,4 @@
 /**
  * Filter for requests where paragraphs were used
  */
-export type ManageV1FilterParagraphsParameter = boolean;
+export type ManageV1FilterParagraphsParameter = boolean

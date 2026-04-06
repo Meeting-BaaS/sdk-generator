@@ -11,7 +11,10 @@ import type {
   UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-import { buildUtterancesFromWords, buildTextFromSpeechmaticsResults } from "../utils/transcription-helpers"
+import {
+  buildUtterancesFromWords,
+  buildTextFromSpeechmaticsResults
+} from "../utils/transcription-helpers"
 import type { SpeechmaticsRegionType } from "../constants"
 
 /**
@@ -295,10 +298,12 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
       // Wire webhook callback (per-job notification)
       if (options?.webhookUrl) {
-        jobConfig.notification_config = [{
-          url: options.webhookUrl,
-          contents: [NotificationConfigContentsItem.transcript]
-        }]
+        jobConfig.notification_config = [
+          {
+            url: options.webhookUrl,
+            contents: [NotificationConfigContentsItem.transcript]
+          }
+        ]
       }
 
       // Handle audio input

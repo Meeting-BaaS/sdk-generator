@@ -397,10 +397,13 @@ export class AzureSTTAdapter extends BaseAdapter {
    * @param options - Optional: event filters and display name
    * @returns Created webhook object
    */
-  async registerWebhook(url: string, options?: {
-    displayName?: string
-    events?: Partial<WebHookEvents>
-  }): Promise<WebHook> {
+  async registerWebhook(
+    url: string,
+    options?: {
+      displayName?: string
+      events?: Partial<WebHookEvents>
+    }
+  ): Promise<WebHook> {
     this.validateConfig()
     const webhook: Partial<WebHook> = {
       webUrl: url,

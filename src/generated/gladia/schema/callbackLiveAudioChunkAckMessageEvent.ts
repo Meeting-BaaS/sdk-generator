@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveAudioChunkAckMessageEvent = typeof CallbackLiveAudioChunkAckMessageEvent[keyof typeof CallbackLiveAudioChunkAckMessageEvent];
-
+export type CallbackLiveAudioChunkAckMessageEvent =
+  (typeof CallbackLiveAudioChunkAckMessageEvent)[keyof typeof CallbackLiveAudioChunkAckMessageEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveAudioChunkAckMessageEvent = {
-  liveaudio_chunk: 'live.audio_chunk',
-} as const;
+  liveaudio_chunk: "live.audio_chunk"
+} as const

@@ -8,6 +8,6 @@
 import type { TranscriptCustomSpelling } from './transcriptCustomSpelling';
 
 /**
- * Customize how words are spelled and formatted using to and from values
+ * Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details.
  */
 export type TranscriptCustomSpellingProperty = TranscriptCustomSpelling[] | null;

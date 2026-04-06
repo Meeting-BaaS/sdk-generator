@@ -7,6 +7,7 @@
  */
 import type { TranscriptWord } from './transcriptWord';
 import type { TranscriptUtteranceChannel } from './transcriptUtteranceChannel';
+import type { TranscriptUtteranceTranslatedTexts } from './transcriptUtteranceTranslatedTexts';
 
 export interface TranscriptUtterance {
   /**
@@ -27,4 +28,6 @@ export interface TranscriptUtterance {
   channel?: TranscriptUtteranceChannel;
   /** The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc. */
   speaker: string;
+  /** Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation. */
+  translated_texts?: TranscriptUtteranceTranslatedTexts;
 }

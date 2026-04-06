@@ -10,4 +10,4 @@
 /**
  * Recognizes the sentiment throughout a transcript or text
  */
-export type SharedSentimentParameter = boolean;
+export type SharedSentimentParameter = boolean

@@ -4,17 +4,17 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { ChapterizationSentence } from './chapterizationSentence';
+import type { ChapterizationSentence } from "./chapterizationSentence"
 
 export interface PostChapterizationResult {
-  abstractive_summary?: string;
-  extractive_summary?: string;
-  summary?: string;
-  headline: string;
-  gist: string;
-  keywords: string[];
-  start: number;
-  end: number;
-  sentences: ChapterizationSentence[];
-  text: string;
+  abstractive_summary?: string
+  extractive_summary?: string
+  summary?: string
+  headline: string
+  gist: string
+  keywords: string[]
+  start: number
+  end: number
+  sentences: ChapterizationSentence[]
+  text: string
 }

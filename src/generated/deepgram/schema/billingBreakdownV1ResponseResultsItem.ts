@@ -6,10 +6,10 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { BillingBreakdownV1ResponseResultsItemGrouping } from './billingBreakdownV1ResponseResultsItemGrouping';
+import type { BillingBreakdownV1ResponseResultsItemGrouping } from "./billingBreakdownV1ResponseResultsItemGrouping"
 
 export type BillingBreakdownV1ResponseResultsItem = {
   /** USD cost of the billing for this grouping */
-  dollars: number;
-  grouping: BillingBreakdownV1ResponseResultsItemGrouping;
-};
+  dollars: number
+  grouping: BillingBreakdownV1ResponseResultsItemGrouping
+}

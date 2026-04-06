@@ -4,20 +4,20 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionLanguageCodeEnum } from './transcriptionLanguageCodeEnum';
-import type { SentencesDTO } from './sentencesDTO';
-import type { SubtitleDTO } from './subtitleDTO';
-import type { UtteranceDTO } from './utteranceDTO';
+import type { TranscriptionLanguageCodeEnum } from "./transcriptionLanguageCodeEnum"
+import type { SentencesDTO } from "./sentencesDTO"
+import type { SubtitleDTO } from "./subtitleDTO"
+import type { UtteranceDTO } from "./utteranceDTO"
 
 export interface TranscriptionDTO {
   /** All transcription on text format without any other information */
-  full_transcript: string;
+  full_transcript: string
   /** All the detected languages in the audio sorted from the most detected to the less detected */
-  languages: TranscriptionLanguageCodeEnum[];
+  languages: TranscriptionLanguageCodeEnum[]
   /** If `sentences` has been enabled, sentences results */
-  sentences?: SentencesDTO[];
+  sentences?: SentencesDTO[]
   /** If `subtitles` has been enabled, subtitles results */
-  subtitles?: SubtitleDTO[];
+  subtitles?: SubtitleDTO[]
   /** Transcribed speech utterances present in the audio */
-  utterances: UtteranceDTO[];
+  utterances: UtteranceDTO[]
 }

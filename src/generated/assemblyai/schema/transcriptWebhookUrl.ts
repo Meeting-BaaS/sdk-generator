@@ -7,9 +7,7 @@
  */
 
 /**
- * The URL to which we send webhook requests.
-We sends two different types of webhook requests.
-One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+ * The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.
 
  */
 export type TranscriptWebhookUrl = string | null;

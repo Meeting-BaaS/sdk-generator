@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false
+ * Whether [Profanity Filtering](https://www.assemblyai.com/docs/profanity-filtering) is enabled, either true or false
  */
 export type TranscriptFilterProfanity = boolean | null;

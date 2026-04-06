@@ -6,8 +6,8 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedIntentsResultsIntents } from './sharedIntentsResultsIntents';
+import type { SharedIntentsResultsIntents } from "./sharedIntentsResultsIntents"
 
 export type SharedIntentsResults = {
-  intents?: SharedIntentsResultsIntents;
-};
+  intents?: SharedIntentsResultsIntents
+}

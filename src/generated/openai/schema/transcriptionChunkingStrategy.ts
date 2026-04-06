@@ -5,6 +5,6 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptionChunkingStrategyAnyOf } from './transcriptionChunkingStrategyAnyOf';
+import type { TranscriptionChunkingStrategyAnyOf } from "./transcriptionChunkingStrategyAnyOf"
 
-export type TranscriptionChunkingStrategy = TranscriptionChunkingStrategyAnyOf | null;
+export type TranscriptionChunkingStrategy = TranscriptionChunkingStrategyAnyOf | null

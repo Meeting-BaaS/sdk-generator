@@ -6,14 +6,14 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListModelsV1ResponseTtsModelsMetadata } from './listModelsV1ResponseTtsModelsMetadata';
+import type { ListModelsV1ResponseTtsModelsMetadata } from "./listModelsV1ResponseTtsModelsMetadata"
 
 export interface ListModelsV1ResponseTtsModels {
-  name?: string;
-  canonical_name?: string;
-  architecture?: string;
-  languages?: string[];
-  version?: string;
-  uuid?: string;
-  metadata?: ListModelsV1ResponseTtsModelsMetadata;
+  name?: string
+  canonical_name?: string
+  architecture?: string
+  languages?: string[]
+  version?: string
+  uuid?: string
+  metadata?: ListModelsV1ResponseTtsModelsMetadata
 }

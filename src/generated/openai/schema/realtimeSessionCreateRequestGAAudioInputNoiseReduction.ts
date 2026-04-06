@@ -5,7 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { NoiseReductionType } from './noiseReductionType';
+import type { NoiseReductionType } from "./noiseReductionType"
 
 /**
  * Configuration for input audio noise reduction. This can be set to `null` to turn off.
@@ -14,5 +14,5 @@ Filtering the audio can improve VAD and turn detection accuracy (reducing false 
 
  */
 export type RealtimeSessionCreateRequestGAAudioInputNoiseReduction = {
-  type?: NoiseReductionType;
-};
+  type?: NoiseReductionType
+}

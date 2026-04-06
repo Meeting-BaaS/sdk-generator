@@ -429,7 +429,7 @@
               }
             ],
             "title": "File",
-            "description": "The file to transcribe. All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB."
+            "description": "The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB."
           },
           "language_code": {
             "anyOf": [
@@ -536,11 +536,30 @@
             ],
             "title": "Cloud Storage Url",
             "description": "The HTTPS URL of the file to transcribe. Exactly one of the file or cloud_storage_url parameters must be provided. The file must be accessible via HTTPS and the file size must be less than 2GB. Any valid HTTPS URL is accepted, including URLs from cloud storage providers (AWS S3, Google Cloud Storage, Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs can be pre-signed or include authentication tokens in query parameters.",
+            "deprecated": true,
             "examples": [
               "https://storage.googleapis.com/my-bucket/folder/audio.mp3",
               "https://my-bucket.s3.us-west-2.amazonaws.com/folder/audio.mp3",
               "https://account123.r2.cloudflarestorage.com/my-bucket/audio.mp3",
               "https://cdn.example.com/media/audio.wav"
+            ],
+            "x-fern-ignore": true
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url",
+            "description": "The URL of an audio or video file to transcribe. Supports hosted video or audio files, YouTube video URLs, TikTok video URLs, and other video hosting services.",
+            "examples": [
+              "https://storage.googleapis.com/my-bucket/folder/audio.mp3",
+              "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+              "https://www.tiktok.com/@barstoolsports/video/7285745795779939614"
             ]
           },
           "webhook": {
@@ -642,13 +661,37 @@
             "description": "If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model.",
             "default": false
           },
+          "entity_redaction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Redaction",
+            "description": "Redact entities from the transcript text. Accepts the same format as entity_detection: 'all', a category ('pii', 'phi'), or specific entity types. Must be a subset of entity_detection. When redaction is enabled, the entities field will not be returned."
+          },
+          "entity_redaction_mode": {
+            "type": "string",
+            "title": "Entity Redaction Mode",
+            "description": "How to format redacted entities. 'redacted' replaces with {REDACTED}, 'entity_type' replaces with {ENTITY_TYPE}, 'enumerated_entity_type' replaces with {ENTITY_TYPE_N} where N enumerates each occurrence. Only used when entity_redaction is set.",
+            "default": "enumerated_entity_type"
+          },
           "keyterms": {
             "items": {
               "type": "string"
             },
             "type": "array",
             "title": "Keyterms",
-            "description": "A list of keyterms to bias the transcription towards.           The keyterms are words or phrases you want the model to recognise more accurately.           The number of keyterms cannot exceed 100.           The length of each keyterm must be less than 50 characters.           Keyterms can contain at most 5 words (after normalisation).           For example [\"hello\", \"world\", \"technical term\"].           Usage of this parameter will incur additional costs.  ",
+            "description": "A list of keyterms to bias the transcription towards.           The keyterms are words or phrases you want the model to recognise more accurately.           The number of keyterms cannot exceed 1000.           The length of each keyterm must be less than 50 characters.           Keyterms can contain at most 5 words (after normalisation).           For example [\"hello\", \"world\", \"technical term\"].           Usage of this parameter will incur additional costs.           When more than 100 keyterms are provided, a minimum billable duration of 20 seconds applies per request.",
             "default": []
           }
         },
@@ -872,6 +915,18 @@
             ],
             "title": "Transcription Id",
             "description": "The transcription ID of the response."
+          },
+          "audio_duration_secs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audio Duration Secs",
+            "description": "The duration of the audio that was transcribed across all channels in seconds."
           }
         },
         "type": "object",
@@ -1189,6 +1244,18 @@
             ],
             "title": "Entities",
             "description": "List of detected entities with their text, type, and character positions in the transcript."
+          },
+          "audio_duration_secs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audio Duration Secs",
+            "description": "The duration of the audio that was transcribed in seconds."
           }
         },
         "type": "object",

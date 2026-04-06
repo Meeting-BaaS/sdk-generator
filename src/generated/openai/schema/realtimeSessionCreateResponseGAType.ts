@@ -10,10 +10,10 @@
  * The type of session to create. Always `realtime` for the Realtime API.
 
  */
-export type RealtimeSessionCreateResponseGAType = typeof RealtimeSessionCreateResponseGAType[keyof typeof RealtimeSessionCreateResponseGAType];
-
+export type RealtimeSessionCreateResponseGAType =
+  (typeof RealtimeSessionCreateResponseGAType)[keyof typeof RealtimeSessionCreateResponseGAType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeSessionCreateResponseGAType = {
-  realtime: 'realtime',
-} as const;
+  realtime: "realtime"
+} as const

@@ -9,7 +9,6 @@ import type { TranscriptWord } from './transcriptWord';
 
 /**
  * An array of temporally-sequential word objects, one for each word in the transcript.
-See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
 
  */
 export type TranscriptWords = TranscriptWord[] | null;

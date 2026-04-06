@@ -8,13 +8,13 @@
  */
 
 export interface ListModelsV1ResponseSttModels {
-  name?: string;
-  canonical_name?: string;
-  architecture?: string;
-  languages?: string[];
-  version?: string;
-  uuid?: string;
-  batch?: boolean;
-  streaming?: boolean;
-  formatted_output?: boolean;
+  name?: string
+  canonical_name?: string
+  architecture?: string
+  languages?: string[]
+  version?: string
+  uuid?: string
+  batch?: boolean
+  streaming?: boolean
+  formatted_output?: boolean
 }

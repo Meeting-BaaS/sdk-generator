@@ -9,7 +9,7 @@ import type { SentimentAnalysisResult } from './sentimentAnalysisResult';
 
 /**
  * An array of results for the Sentiment Analysis model, if it is enabled.
-See [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) for more information.
+See [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) for more information.
 
  */
 export type TranscriptSentimentAnalysisResults = SentimentAnalysisResult[] | null;

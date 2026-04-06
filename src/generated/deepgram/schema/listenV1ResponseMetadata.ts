@@ -6,25 +6,25 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseMetadataModelInfo } from './listenV1ResponseMetadataModelInfo';
-import type { ListenV1ResponseMetadataSummaryInfo } from './listenV1ResponseMetadataSummaryInfo';
-import type { ListenV1ResponseMetadataSentimentInfo } from './listenV1ResponseMetadataSentimentInfo';
-import type { ListenV1ResponseMetadataTopicsInfo } from './listenV1ResponseMetadataTopicsInfo';
-import type { ListenV1ResponseMetadataIntentsInfo } from './listenV1ResponseMetadataIntentsInfo';
+import type { ListenV1ResponseMetadataModelInfo } from "./listenV1ResponseMetadataModelInfo"
+import type { ListenV1ResponseMetadataSummaryInfo } from "./listenV1ResponseMetadataSummaryInfo"
+import type { ListenV1ResponseMetadataSentimentInfo } from "./listenV1ResponseMetadataSentimentInfo"
+import type { ListenV1ResponseMetadataTopicsInfo } from "./listenV1ResponseMetadataTopicsInfo"
+import type { ListenV1ResponseMetadataIntentsInfo } from "./listenV1ResponseMetadataIntentsInfo"
 
 export interface ListenV1ResponseMetadata {
   /** @deprecated */
-  transaction_key?: string;
-  request_id: string;
-  sha256: string;
-  created: string;
-  duration: number;
-  channels: number;
-  models: string[];
-  model_info: ListenV1ResponseMetadataModelInfo;
-  summary_info?: ListenV1ResponseMetadataSummaryInfo;
-  sentiment_info?: ListenV1ResponseMetadataSentimentInfo;
-  topics_info?: ListenV1ResponseMetadataTopicsInfo;
-  intents_info?: ListenV1ResponseMetadataIntentsInfo;
-  tags?: string[];
+  transaction_key?: string
+  request_id: string
+  sha256: string
+  created: string
+  duration: number
+  channels: number
+  models: string[]
+  model_info: ListenV1ResponseMetadataModelInfo
+  summary_info?: ListenV1ResponseMetadataSummaryInfo
+  sentiment_info?: ListenV1ResponseMetadataSentimentInfo
+  topics_info?: ListenV1ResponseMetadataTopicsInfo
+  intents_info?: ListenV1ResponseMetadataIntentsInfo
+  tags?: string[]
 }

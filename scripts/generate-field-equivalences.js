@@ -58,12 +58,7 @@ const SEMANTIC_CATEGORIES = {
   punctuation: {
     label: "Punctuation & Formatting",
     description: "Add punctuation, capitalization, and smart formatting",
-    patterns: [
-      /^punctuat/i,
-      /smart_format/i,
-      /format_text/i,
-      /auto_punctuation/i
-    ],
+    patterns: [/^punctuat/i, /smart_format/i, /format_text/i, /auto_punctuation/i],
     notes: [
       "Gladia: `punctuation_enhanced` (boolean) - enhanced algorithm",
       "Deepgram: `punctuate` (boolean) OR `smart_format` (boolean, includes more than punctuation)",
@@ -111,11 +106,7 @@ const SEMANTIC_CATEGORIES = {
   model: {
     label: "Model Selection",
     description: "Choose transcription model/tier",
-    patterns: [
-      /^model$/i,
-      /speech_model/i,
-      /operating_point/i
-    ],
+    patterns: [/^model$/i, /speech_model/i, /operating_point/i],
     notes: [
       "Gladia: `model` (select: solaria-1, accurate, fast)",
       "Deepgram: `model` (nova-2, nova, enhanced, base, whisper)",
@@ -157,9 +148,7 @@ const SEMANTIC_CATEGORIES = {
   sentiment: {
     label: "Sentiment Analysis",
     description: "Detect emotional tone in speech",
-    patterns: [
-      /sentiment/i
-    ],
+    patterns: [/sentiment/i],
     notes: [
       "Gladia: `sentiment_analysis` (boolean)",
       "AssemblyAI: `sentiment_analysis` (boolean)",
@@ -177,11 +166,7 @@ const SEMANTIC_CATEGORIES = {
   entities: {
     label: "Entity Detection (NER)",
     description: "Detect named entities (people, places, organizations)",
-    patterns: [
-      /entity/i,
-      /named_entity/i,
-      /detect_entities/i
-    ],
+    patterns: [/entity/i, /named_entity/i, /detect_entities/i],
     notes: [
       "Gladia: `named_entity_recognition` (boolean)",
       "AssemblyAI: `entity_detection` (boolean)",
@@ -199,10 +184,7 @@ const SEMANTIC_CATEGORIES = {
   profanity: {
     label: "Profanity Filtering",
     description: "Censor or filter profane language",
-    patterns: [
-      /profanity/i,
-      /filter_profanity/i
-    ],
+    patterns: [/profanity/i, /filter_profanity/i],
     notes: [
       "Gladia: Not available",
       "Deepgram: `profanity_filter` (boolean)",
@@ -220,10 +202,7 @@ const SEMANTIC_CATEGORIES = {
   redaction: {
     label: "PII Redaction",
     description: "Redact personally identifiable information",
-    patterns: [
-      /redact/i,
-      /pii/i
-    ],
+    patterns: [/redact/i, /pii/i],
     notes: [
       "Deepgram: `redact` (array of PII types)",
       "AssemblyAI: `redact_pii` (boolean) + `redact_pii_policies` (array)",
@@ -232,20 +211,13 @@ const SEMANTIC_CATEGORIES = {
       "Soniox: Not available",
       "OpenAI: Not available"
     ],
-    nonEquivalences: [
-      "PII categories differ by provider",
-      "Audio vs text redaction options vary"
-    ]
+    nonEquivalences: ["PII categories differ by provider", "Audio vs text redaction options vary"]
   },
 
   timestamps: {
     label: "Word Timestamps",
     description: "Get precise timing for each word",
-    patterns: [
-      /timestamp/i,
-      /words$/i,
-      /word_timestamps/i
-    ],
+    patterns: [/timestamp/i, /words$/i, /word_timestamps/i],
     notes: [
       "Gladia: `words_accurate_timestamps` (if available)",
       "Deepgram: Always included in response",
@@ -254,19 +226,13 @@ const SEMANTIC_CATEGORIES = {
       "Soniox: Always included",
       "OpenAI: `timestamp_granularities` (array: word, segment)"
     ],
-    nonEquivalences: [
-      "Most providers include by default",
-      "OpenAI requires explicit request"
-    ]
+    nonEquivalences: ["Most providers include by default", "OpenAI requires explicit request"]
   },
 
   callback: {
     label: "Webhook/Callback",
     description: "Send results to a webhook URL",
-    patterns: [
-      /callback/i,
-      /webhook/i
-    ],
+    patterns: [/callback/i, /webhook/i],
     notes: [
       "Gladia: `callback` (boolean) + `callback_config` (object)",
       "Deepgram: `callback` (string URL)",
@@ -276,10 +242,7 @@ const SEMANTIC_CATEGORIES = {
       "Soniox: Not available",
       "OpenAI: Not available"
     ],
-    nonEquivalences: [
-      "Config structure varies significantly",
-      "Auth header support differs"
-    ]
+    nonEquivalences: ["Config structure varies significantly", "Auth header support differs"]
   }
 }
 
@@ -297,8 +260,14 @@ function parseFieldMetadata() {
   const providerConfigs = [
     { key: "gladia", patterns: ["GLADIA_TRANSCRIPTION_FIELDS", "GLADIA_STREAMING_FIELDS"] },
     { key: "deepgram", patterns: ["DEEPGRAM_TRANSCRIPTION_FIELDS", "DEEPGRAM_STREAMING_FIELDS"] },
-    { key: "assemblyai", patterns: ["ASSEMBLYAI_TRANSCRIPTION_FIELDS", "ASSEMBLYAI_STREAMING_FIELDS"] },
-    { key: "speechmatics", patterns: ["SPEECHMATICS_TRANSCRIPTION_FIELDS", "SPEECHMATICS_STREAMING_FIELDS"] },
+    {
+      key: "assemblyai",
+      patterns: ["ASSEMBLYAI_TRANSCRIPTION_FIELDS", "ASSEMBLYAI_STREAMING_FIELDS"]
+    },
+    {
+      key: "speechmatics",
+      patterns: ["SPEECHMATICS_TRANSCRIPTION_FIELDS", "SPEECHMATICS_STREAMING_FIELDS"]
+    },
     { key: "soniox", patterns: ["SONIOX_TRANSCRIPTION_FIELDS", "SONIOX_STREAMING_FIELDS"] },
     { key: "azure", patterns: ["AZURE_TRANSCRIPTION_FIELDS"] },
     { key: "openai", patterns: ["OPENAI_TRANSCRIPTION_FIELDS"] }
@@ -308,7 +277,10 @@ function parseFieldMetadata() {
     providers[key] = { transcription: [], streaming: [] }
 
     for (const pattern of patterns) {
-      const regex = new RegExp(`export const ${pattern}\\s*=\\s*\\[([\\s\\S]*?)\\]\\s*as const`, "m")
+      const regex = new RegExp(
+        `export const ${pattern}\\s*=\\s*\\[([\\s\\S]*?)\\]\\s*as const`,
+        "m"
+      )
       const match = content.match(regex)
 
       if (match) {
@@ -336,9 +308,7 @@ function parseFieldMetadata() {
  * Find fields matching semantic category patterns
  */
 function findMatchingFields(fields, patterns) {
-  return fields.filter(field =>
-    patterns.some(pattern => pattern.test(field))
-  )
+  return fields.filter((field) => patterns.some((pattern) => pattern.test(field)))
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -385,12 +355,12 @@ function generateMarkdown(providers) {
       const transcriptionMatches = findMatchingFields(providerFields.transcription, config.patterns)
       const streamingMatches = findMatchingFields(providerFields.streaming, config.patterns)
 
-      const transcriptionCell = transcriptionMatches.length > 0
-        ? transcriptionMatches.map(f => `\`${f}\``).join(", ")
-        : "—"
-      const streamingCell = streamingMatches.length > 0
-        ? streamingMatches.map(f => `\`${f}\``).join(", ")
-        : "—"
+      const transcriptionCell =
+        transcriptionMatches.length > 0
+          ? transcriptionMatches.map((f) => `\`${f}\``).join(", ")
+          : "—"
+      const streamingCell =
+        streamingMatches.length > 0 ? streamingMatches.map((f) => `\`${f}\``).join(", ") : "—"
 
       const providerName = providerKey.charAt(0).toUpperCase() + providerKey.slice(1)
       lines.push(`| ${providerName} | ${transcriptionCell} | ${streamingCell} |`)
@@ -469,13 +439,19 @@ function generateTypeScript(providers) {
   lines.push(` *`)
   lines.push(` * @example`)
   lines.push(` * \`\`\`typescript`)
-  lines.push(` * import { FIELD_EQUIVALENCES, getEquivalentField } from 'voice-router-dev/field-equivalences'`)
+  lines.push(
+    ` * import { FIELD_EQUIVALENCES, getEquivalentField } from 'voice-router-dev/field-equivalences'`
+  )
   lines.push(` *`)
   lines.push(` * // Get diarization field for Deepgram`)
-  lines.push(` * const field = FIELD_EQUIVALENCES.diarization.deepgram.transcription[0] // 'diarize'`)
+  lines.push(
+    ` * const field = FIELD_EQUIVALENCES.diarization.deepgram.transcription[0] // 'diarize'`
+  )
   lines.push(` *`)
   lines.push(` * // Or use the helper`)
-  lines.push(` * const field = getEquivalentField('diarization', 'deepgram', 'transcription') // 'diarize'`)
+  lines.push(
+    ` * const field = getEquivalentField('diarization', 'deepgram', 'transcription') // 'diarize'`
+  )
   lines.push(` * \`\`\``)
   lines.push(` *`)
   lines.push(` * @packageDocumentation`)
@@ -484,12 +460,20 @@ function generateTypeScript(providers) {
 
   // Provider type
   lines.push(`/** Supported providers */`)
-  lines.push(`export type Provider = ${Object.keys(providers).map(p => `"${p}"`).join(" | ")}`)
+  lines.push(
+    `export type Provider = ${Object.keys(providers)
+      .map((p) => `"${p}"`)
+      .join(" | ")}`
+  )
   lines.push(``)
 
   // Category type
   lines.push(`/** Semantic field categories */`)
-  lines.push(`export type FieldCategory = ${Object.keys(SEMANTIC_CATEGORIES).map(c => `"${c}"`).join(" | ")}`)
+  lines.push(
+    `export type FieldCategory = ${Object.keys(SEMANTIC_CATEGORIES)
+      .map((c) => `"${c}"`)
+      .join(" | ")}`
+  )
   lines.push(``)
 
   // Mode type

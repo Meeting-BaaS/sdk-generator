@@ -50,9 +50,7 @@ function main() {
     }
   })
 
-  const realtimeModels = [
-    { id: "scribe_v2_realtime", name: "Scribe V2 Realtime" }
-  ]
+  const realtimeModels = [{ id: "scribe_v2_realtime", name: "Scribe V2 Realtime" }]
 
   const toIdentifier = (id) => id.replace(/-/g, "_")
 

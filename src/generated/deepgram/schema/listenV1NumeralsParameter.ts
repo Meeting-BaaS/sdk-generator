@@ -10,4 +10,4 @@
 /**
  * Numerals converts numbers from written format to numerical format
  */
-export type ListenV1NumeralsParameter = boolean;
+export type ListenV1NumeralsParameter = boolean

@@ -9,10 +9,10 @@
 /**
  * The type of the event. Always `transcript.text.segment`.
  */
-export type TranscriptTextSegmentEventType = typeof TranscriptTextSegmentEventType[keyof typeof TranscriptTextSegmentEventType];
-
+export type TranscriptTextSegmentEventType =
+  (typeof TranscriptTextSegmentEventType)[keyof typeof TranscriptTextSegmentEventType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptTextSegmentEventType = {
-  transcripttextsegment: 'transcript.text.segment',
-} as const;
+  transcripttextsegment: "transcript.text.segment"
+} as const

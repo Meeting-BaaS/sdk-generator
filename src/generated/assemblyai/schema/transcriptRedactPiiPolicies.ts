@@ -9,7 +9,7 @@ import type { PiiPolicy } from './piiPolicy';
 
 /**
  * The list of PII Redaction policies that were enabled, if PII Redaction is enabled.
-See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
+See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.
 
  */
 export type TranscriptRedactPiiPolicies = PiiPolicy[] | null;

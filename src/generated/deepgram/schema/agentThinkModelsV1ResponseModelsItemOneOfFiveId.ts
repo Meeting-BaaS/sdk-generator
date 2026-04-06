@@ -10,12 +10,12 @@
 /**
  * The unique identifier of the Google model
  */
-export type AgentThinkModelsV1ResponseModelsItemOneOfFiveId = typeof AgentThinkModelsV1ResponseModelsItemOneOfFiveId[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfFiveId];
-
+export type AgentThinkModelsV1ResponseModelsItemOneOfFiveId =
+  (typeof AgentThinkModelsV1ResponseModelsItemOneOfFiveId)[keyof typeof AgentThinkModelsV1ResponseModelsItemOneOfFiveId]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AgentThinkModelsV1ResponseModelsItemOneOfFiveId = {
-  'gemini-25-flash': 'gemini-2.5-flash',
-  'gemini-20-flash': 'gemini-2.0-flash',
-  'gemini-20-flash-lite': 'gemini-2.0-flash-lite',
-} as const;
+  "gemini-25-flash": "gemini-2.5-flash",
+  "gemini-20-flash": "gemini-2.0-flash",
+  "gemini-20-flash-lite": "gemini-2.0-flash-lite"
+} as const

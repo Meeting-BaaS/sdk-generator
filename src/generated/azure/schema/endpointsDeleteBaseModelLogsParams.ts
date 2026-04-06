@@ -7,10 +7,10 @@
  */
 
 export type EndpointsDeleteBaseModelLogsParams = {
-/**
+  /**
  * The end date of the audio logs deletion (specific day, UTC).
             Expected format: "yyyy-mm-dd". For instance, "2023-03-15" results in deleting all logs on March 15th, 2023 and before.
             Deletes all existing logs when date is not specified.
  */
-endDate?: string;
-};
+  endDate?: string
+}

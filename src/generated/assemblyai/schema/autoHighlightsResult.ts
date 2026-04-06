@@ -10,7 +10,7 @@ import type { AutoHighlightResult } from './autoHighlightResult';
 
 /**
  * An array of results for the Key Phrases model, if it is enabled.
-See [Key phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
+See [Key phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.
 
  */
 export interface AutoHighlightsResult {

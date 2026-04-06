@@ -247,8 +247,9 @@ export class DeepgramAdapter extends BaseAdapter {
     // Set URLs based on region (unless explicit baseUrl/wsBaseUrl is provided)
     const host = this.getRegionalHost(config.region)
     this.baseUrl = config.baseUrl || `https://${host}/v1`
-    this.wsBaseUrl = config.wsBaseUrl
-      || (config.baseUrl ? `${this.deriveWsUrl(config.baseUrl)}/listen` : `wss://${host}/v1/listen`)
+    this.wsBaseUrl =
+      config.wsBaseUrl ||
+      (config.baseUrl ? `${this.deriveWsUrl(config.baseUrl)}/listen` : `wss://${host}/v1/listen`)
 
     this.client = axios.create({
       baseURL: this.baseUrl,
@@ -658,12 +659,13 @@ export class DeepgramAdapter extends BaseAdapter {
       end: utterance.end || 0,
       speaker: utterance.speaker?.toString(),
       confidence: utterance.confidence,
-      words: utterance.words?.map((w) => ({
-        word: w.word || "",
-        start: w.start || 0,
-        end: w.end || 0,
-        confidence: w.confidence
-      })) ?? []
+      words:
+        utterance.words?.map((w) => ({
+          word: w.word || "",
+          start: w.start || 0,
+          end: w.end || 0,
+          confidence: w.confidence
+        })) ?? []
     }))
   }
 
@@ -1160,12 +1162,13 @@ export class DeepgramAdapter extends BaseAdapter {
             start: message.start,
             end: message.start + message.duration,
             confidence: channel.confidence,
-            words: channel.words?.map((w) => ({
-              word: w.punctuated_word || w.word,
-              start: w.start,
-              end: w.end,
-              confidence: w.confidence
-            })) ?? []
+            words:
+              channel.words?.map((w) => ({
+                word: w.punctuated_word || w.word,
+                start: w.start,
+                end: w.end,
+                confidence: w.confidence
+              })) ?? []
           })
         }
         break

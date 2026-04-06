@@ -5,7 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateResponseTracingAnyOf } from './realtimeSessionCreateResponseTracingAnyOf';
+import type { RealtimeSessionCreateResponseTracingAnyOf } from "./realtimeSessionCreateResponseTracingAnyOf"
 
 /**
  * Configuration options for tracing. Set to null to disable tracing. Once
@@ -15,4 +15,6 @@ tracing is enabled for a session, the configuration cannot be modified.
 workflow name, group id, and metadata.
 
  */
-export type RealtimeSessionCreateResponseTracing = 'auto' | RealtimeSessionCreateResponseTracingAnyOf;
+export type RealtimeSessionCreateResponseTracing =
+  | "auto"
+  | RealtimeSessionCreateResponseTracingAnyOf

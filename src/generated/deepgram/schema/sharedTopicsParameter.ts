@@ -10,4 +10,4 @@
 /**
  * Detect topics throughout a transcript or text
  */
-export type SharedTopicsParameter = boolean;
+export type SharedTopicsParameter = boolean

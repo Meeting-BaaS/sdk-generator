@@ -7,7 +7,7 @@
  */
 
 /**
- * Whether speed boost is enabled
+ * This parameter does not currently have any functionality attached to it.
  * @deprecated
  */
 export type TranscriptSpeedBoost = boolean | null;

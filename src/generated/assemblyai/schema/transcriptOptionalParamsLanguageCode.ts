@@ -8,7 +8,7 @@
 import type { TranscriptOptionalParamsLanguageCodeOneOf } from './transcriptOptionalParamsLanguageCodeOneOf';
 
 /**
- * The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
+ * The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
 The default value is 'en_us'.
 
  */

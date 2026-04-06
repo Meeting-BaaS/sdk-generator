@@ -10,8 +10,10 @@ import {
 } from 'zod';
 
 /**
- * <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
-Upload a media file to AssemblyAI's servers.
+ * Upload a media file to AssemblyAI's servers.
+
+<Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+<Warning>Requests to transcribe uploaded files must use an API key from the same project as the key that was used to upload the file. If you use an API key from a different project you will get a `403` error and "Cannot access uploaded file" message.</Warning>
 
  * @summary Upload a media file
  */
@@ -26,88 +28,123 @@ Create a transcript from a media file that is accessible via a URL.
 
  * @summary Transcribe audio
  */
-export const createTranscriptBodyLanguageCodeDefault = "en_us";export const createTranscriptBodyLanguageDetectionDefault = false;export const createTranscriptBodyLanguageConfidenceThresholdDefault = 0;
-export const createTranscriptBodyLanguageConfidenceThresholdMin = 0;
-
-export const createTranscriptBodyLanguageConfidenceThresholdMax = 1;
-export const createTranscriptBodySpeechModelDefault = "best";export const createTranscriptBodyPunctuateDefault = true;export const createTranscriptBodyFormatTextDefault = true;export const createTranscriptBodyDisfluenciesDefault = false;export const createTranscriptBodyMultichannelDefault = false;export const createTranscriptBodyWebhookAuthHeaderNameDefault = null;export const createTranscriptBodyWebhookAuthHeaderValueDefault = null;export const createTranscriptBodyAutoHighlightsDefault = false;export const createTranscriptBodyFilterProfanityDefault = false;export const createTranscriptBodyRedactPiiDefault = false;export const createTranscriptBodyRedactPiiAudioDefault = false;export const createTranscriptBodyRedactPiiSubDefault = "hash";export const createTranscriptBodySpeakerLabelsDefault = false;export const createTranscriptBodySpeakersExpectedDefault = null;export const createTranscriptBodyContentSafetyDefault = false;export const createTranscriptBodyContentSafetyConfidenceDefault = 50;
+export const createTranscriptBodyAutoChaptersDefault = false;export const createTranscriptBodyAutoHighlightsDefault = false;export const createTranscriptBodyContentSafetyDefault = false;export const createTranscriptBodyContentSafetyConfidenceDefault = 50;
 export const createTranscriptBodyContentSafetyConfidenceMin = 25;
 
 export const createTranscriptBodyContentSafetyConfidenceMax = 100;
-export const createTranscriptBodyIabCategoriesDefault = false;export const createTranscriptBodySentimentAnalysisDefault = false;export const createTranscriptBodyAutoChaptersDefault = false;export const createTranscriptBodyEntityDetectionDefault = false;export const createTranscriptBodySpeechThresholdDefault = 0;
+export const createTranscriptBodyDisfluenciesDefault = false;export const createTranscriptBodyDomainDefault = null;export const createTranscriptBodyEntityDetectionDefault = false;export const createTranscriptBodyFilterProfanityDefault = false;export const createTranscriptBodyFormatTextDefault = true;export const createTranscriptBodyIabCategoriesDefault = false;export const createTranscriptBodyLanguageCodeDefault = "en_us";export const createTranscriptBodyLanguageConfidenceThresholdDefault = 0;
+export const createTranscriptBodyLanguageConfidenceThresholdMin = 0;
+
+export const createTranscriptBodyLanguageConfidenceThresholdMax = 1;
+export const createTranscriptBodyLanguageDetectionDefault = false;export const createTranscriptBodyLanguageDetectionOptionsFallbackLanguageDefault = "auto";export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingDefault = false;export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault = 0.3;
+export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin = 0;
+
+export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax = 1;
+export const createTranscriptBodyMultichannelDefault = false;export const createTranscriptBodyPunctuateDefault = true;export const createTranscriptBodyRedactPiiDefault = false;export const createTranscriptBodyRedactPiiAudioDefault = false;export const createTranscriptBodyRedactPiiAudioOptionsReturnRedactedNoSpeechAudioDefault = false;export const createTranscriptBodyRedactPiiSubDefault = "hash";export const createTranscriptBodySentimentAnalysisDefault = false;export const createTranscriptBodySpeakerLabelsDefault = false;export const createTranscriptBodySpeakerOptionsMinSpeakersExpectedDefault = 1;export const createTranscriptBodySpeakersExpectedDefault = null;export const createTranscriptBodySpeechThresholdDefault = 0;
 export const createTranscriptBodySpeechThresholdMin = 0;
 
 export const createTranscriptBodySpeechThresholdMax = 1;
-export const createTranscriptBodySummarizationDefault = false;export const createTranscriptBodyCustomTopicsDefault = false;
+export const createTranscriptBodySpeechUnderstandingRequestTranslationFormalDefault = true;export const createTranscriptBodySpeechUnderstandingRequestTranslationMatchOriginalUtteranceDefault = false;export const createTranscriptBodySummarizationDefault = false;export const createTranscriptBodyRemoveAudioTagsDefault = null;export const createTranscriptBodyTemperatureDefault = 0;
+export const createTranscriptBodyTemperatureMin = 0;
+
+export const createTranscriptBodyTemperatureMax = 1;
+export const createTranscriptBodyWebhookAuthHeaderNameDefault = null;export const createTranscriptBodyWebhookAuthHeaderValueDefault = null;export const createTranscriptBodyCustomTopicsDefault = false;
 
 export const createTranscriptBody = zod.object({
   "audio_url": zod.string().describe('The URL of the audio or video file to transcribe.')
 }).and(zod.object({
-  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).or(zod.null()).default(createTranscriptBodyLanguageCodeDefault).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n'),
-  "language_detection": zod.boolean().optional().describe('Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.'),
-  "language_confidence_threshold": zod.number().min(createTranscriptBodyLanguageConfidenceThresholdMin).max(createTranscriptBodyLanguageConfidenceThresholdMax).optional().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nDefaults to 0.\n'),
-  "speech_model": zod.enum(['best', 'slam-1', 'universal']).describe('The speech model to use for the transcription.').or(zod.null()).default(createTranscriptBodySpeechModelDefault).describe('The speech model to use for the transcription. When `null`, the \"best\" model is used.'),
-  "punctuate": zod.boolean().default(createTranscriptBodyPunctuateDefault).describe('Enable Automatic Punctuation, can be true or false'),
-  "format_text": zod.boolean().default(createTranscriptBodyFormatTextDefault).describe('Enable Text Formatting, can be true or false'),
-  "disfluencies": zod.boolean().optional().describe('Transcribe Filler Words, like \"umm\", in your media file; can be true or false'),
-  "multichannel": zod.boolean().optional().describe('Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.'),
-  "webhook_url": zod.string().optional().describe('The URL to which we send webhook requests.\nWe sends two different types of webhook requests.\nOne request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.\n'),
-  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed webhook requests'),
-  "webhook_auth_header_value": zod.string().nullish().describe('The header value to send back with the transcript completed or failed webhook requests for added security'),
-  "auto_highlights": zod.boolean().optional().describe('Enable Key Phrases, either true or false'),
-  "audio_start_from": zod.number().optional().describe('The point in time, in milliseconds, to begin transcribing in your media file'),
-  "audio_end_at": zod.number().optional().describe('The point in time, in milliseconds, to stop transcribing in your media file'),
-  "word_boost": zod.array(zod.string()).optional().describe('The list of custom vocabulary to boost transcription probability for'),
-  "boost_param": zod.enum(['low', 'default', 'high']).optional().describe('How much to boost specified words'),
-  "filter_profanity": zod.boolean().optional().describe('Filter profanity from the transcribed text, can be true or false'),
-  "redact_pii": zod.boolean().optional().describe('Redact PII from the transcribed text using the Redact PII model, can be true or false'),
-  "redact_pii_audio": zod.boolean().optional().describe('Generate a copy of the original media file with spoken PII \"beeped\" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'),
-  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).optional().describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'),
-  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).optional().describe('The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'),
-  "redact_pii_sub": zod.enum(['entity_name', 'hash']).describe('The replacement logic for detected PII, can be \"entity_name\" or \"hash\". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.').or(zod.null()).default(createTranscriptBodyRedactPiiSubDefault).describe('The replacement logic for detected PII, can be \"entity_type\" or \"hash\". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'),
-  "speaker_labels": zod.boolean().optional().describe('Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false'),
-  "speakers_expected": zod.number().nullish().describe('Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'),
-  "content_safety": zod.boolean().optional().describe('Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false'),
-  "content_safety_confidence": zod.number().min(createTranscriptBodyContentSafetyConfidenceMin).max(createTranscriptBodyContentSafetyConfidenceMax).default(createTranscriptBodyContentSafetyConfidenceDefault).describe('The confidence threshold for the Content Moderation model. Values must be between 25 and 100.'),
-  "iab_categories": zod.boolean().optional().describe('Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false'),
+  "audio_end_at": zod.number().optional().describe('The point in time, in milliseconds, to stop transcribing in your media file. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "audio_start_from": zod.number().optional().describe('The point in time, in milliseconds, to begin transcribing in your media file. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "auto_chapters": zod.boolean().optional().describe('Enable [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
+  "auto_highlights": zod.boolean().optional().describe('Enable [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases), either true or false'),
+  "content_safety": zod.boolean().optional().describe('Enable [Content Moderation](https://www.assemblyai.com/docs/content-moderation), can be true or false'),
+  "content_safety_confidence": zod.number().min(createTranscriptBodyContentSafetyConfidenceMin).max(createTranscriptBodyContentSafetyConfidenceMax).default(createTranscriptBodyContentSafetyConfidenceDefault).describe('The confidence threshold for the [Content Moderation](https://www.assemblyai.com/docs/content-moderation) model. Values must be between 25 and 100.'),
   "custom_spelling": zod.array(zod.object({
   "from": zod.array(zod.string().describe('Word or phrase to replace')).describe('Words or phrases to replace'),
   "to": zod.string().describe('Word to replace with')
-}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).optional().describe('Customize how words are spelled and formatted using to and from values'),
-  "keyterms_prompt": zod.array(zod.string()).optional().describe('<Warning>`keyterms_prompt` is only supported when the `speech_model` is specified as `slam-1`</Warning>\nImprove accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).\n'),
-  "prompt": zod.string().optional().describe('This parameter does not currently have any functionality attached to it.'),
-  "sentiment_analysis": zod.boolean().optional().describe('Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false'),
-  "auto_chapters": zod.boolean().optional().describe('Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false'),
-  "entity_detection": zod.boolean().optional().describe('Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false'),
-  "speech_threshold": zod.number().min(createTranscriptBodySpeechThresholdMin).max(createTranscriptBodySpeechThresholdMax).nullish().describe('Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive.\n'),
-  "summarization": zod.boolean().optional().describe('Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false'),
+}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).optional().describe('Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details.'),
+  "disfluencies": zod.boolean().optional().describe('Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like \"umm\", in your media file; can be true or false'),
+  "domain": zod.string().or(zod.null()).optional().describe('Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `\"medical-v1\"` to enable [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages.\n\nSupported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned.\n'),
+  "entity_detection": zod.boolean().optional().describe('Enable [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection), can be true or false'),
+  "filter_profanity": zod.boolean().optional().describe('Filter profanity from the transcribed text, can be true or false. See [Profanity Filtering](https://www.assemblyai.com/docs/profanity-filtering) for more details.'),
+  "format_text": zod.boolean().default(createTranscriptBodyFormatTextDefault).describe('Enable [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false'),
+  "iab_categories": zod.boolean().optional().describe('Enable [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection), can be true or false'),
+  "keyterms_prompt": zod.array(zod.string()).optional().describe('Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n'),
+  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).or(zod.null()).default(createTranscriptBodyLanguageCodeDefault).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n'),
+  "language_codes": zod.array(zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n')).nullish().describe('The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)\nOne of the values specified must be `en`.\n'),
+  "language_confidence_threshold": zod.number().min(createTranscriptBodyLanguageConfidenceThresholdMin).max(createTranscriptBodyLanguageConfidenceThresholdMax).optional().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nDefaults to 0. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "language_detection": zod.boolean().optional().describe('Enable [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection), either true or false.'),
+  "language_detection_options": zod.object({
+  "expected_languages": zod.array(zod.string()).optional().describe('List of languages expected in the audio file. Defaults to `[\"all\"]` when unspecified. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.'),
+  "fallback_language": zod.string().default(createTranscriptBodyLanguageDetectionOptionsFallbackLanguageDefault).describe('If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `[\"auto\"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "code_switching": zod.boolean().optional().describe('Whether [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) should be detected.\n'),
+  "code_switching_confidence_threshold": zod.number().min(createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin).max(createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax).default(createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault).describe('The confidence threshold for [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.\n')
+}).optional().describe('Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection).'),
+  "multichannel": zod.boolean().optional().describe('Enable [Multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) transcription, can be true or false.'),
+  "prompt": zod.string().optional().describe('Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "punctuate": zod.boolean().default(createTranscriptBodyPunctuateDefault).describe('Enable [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false'),
+  "redact_pii": zod.boolean().optional().describe('Redact PII from the transcribed text using the Redact PII model, can be true or false. See [PII Redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.'),
+  "redact_pii_audio": zod.boolean().optional().describe('Generate a copy of the original media file with spoken PII \"beeped\" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.'),
+  "redact_pii_audio_options": zod.object({
+  "return_redacted_no_speech_audio": zod.boolean().optional().describe('By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.'),
+  "override_audio_redaction_method": zod.enum(['silence']).optional().describe('Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.')
+}).optional().describe('Specify options for [PII redacted audio](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) files.'),
+  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).optional().describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.'),
+  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).optional().describe('The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.'),
+  "redact_pii_sub": zod.enum(['entity_name', 'hash']).describe('The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.').or(zod.null()).default(createTranscriptBodyRedactPiiSubDefault).describe('The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.'),
+  "sentiment_analysis": zod.boolean().optional().describe('Enable [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis), can be true or false'),
+  "speaker_labels": zod.boolean().optional().describe('Enable [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization), can be true or false'),
+  "speaker_options": zod.object({
+  "min_speakers_expected": zod.number().default(createTranscriptBodySpeakerOptionsMinSpeakersExpectedDefault).describe('The minimum number of speakers expected in the audio file. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers) for more details.'),
+  "max_speakers_expected": zod.number().optional().describe('<Warning>Setting this parameter too high may hurt model accuracy</Warning>\nThe maximum number of speakers expected in the audio file. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers) for more details.\n')
+}).optional().describe('Specify options for [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers). Use this to set a range of possible speakers.'),
+  "speakers_expected": zod.number().nullish().describe('Tells the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details.'),
+  "speech_models": zod.array(zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.')).describe('List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n'),
+  "speech_threshold": zod.number().min(createTranscriptBodySpeechThresholdMin).max(createTranscriptBodySpeechThresholdMax).nullish().describe('Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.\n'),
+  "speech_understanding": zod.object({
+  "request": zod.object({
+  "translation": zod.object({
+  "target_languages": zod.array(zod.string()).describe('List of target language codes (e.g., `[\"es\", \"de\"]`). See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for supported languages.'),
+  "formal": zod.boolean().default(createTranscriptBodySpeechUnderstandingRequestTranslationFormalDefault).describe('Use formal language style. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.'),
+  "match_original_utterance": zod.boolean().optional().describe('When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.')
+})
+}).describe('Request body for [Translation](https://www.assemblyai.com/docs/speech-understanding/translation).').or(zod.object({
+  "speaker_identification": zod.object({
+  "speaker_type": zod.enum(['role', 'name']).describe('Type of speaker identification. See [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification) for details on each type.'),
+  "known_values": zod.array(zod.string()).optional().describe('Required if speaker_type is \"role\". Each value must be 35 characters or less.'),
+  "speakers": zod.array(zod.object({
+  "role": zod.string().optional().describe('The role of the speaker. Required when `speaker_type` is \"role\".'),
+  "name": zod.string().optional().describe('The name of the speaker. Required when `speaker_type` is \"name\".'),
+  "description": zod.string().optional().describe('A description of the speaker to help the model identify them based on conversational context.')
+})).optional().describe('An array of speaker objects with metadata to improve identification accuracy. Each object should include a `role` or `name` (depending on `speaker_type`) and an optional `description` to help the model identify the speaker. You can also include any additional custom properties (e.g., `company`, `title`) to provide more context. Use this as an alternative to `known_values` when you want to provide additional context about each speaker.')
+})
+}).describe('Request body for [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification).')).or(zod.object({
+  "custom_formatting": zod.object({
+  "date": zod.string().optional().describe('Date format pattern (e.g., `\"mm/dd/yyyy\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "phone_number": zod.string().optional().describe('Phone number format pattern (e.g., `\"(xxx)xxx-xxxx\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "email": zod.string().optional().describe('Email format pattern (e.g., `\"username@domain.com\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.')
+})
+}).describe('Request body for [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting).'))
+}).optional().describe('Enable speech understanding tasks like [Translation](https://www.assemblyai.com/docs/speech-understanding/translation), [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification), and [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting). See the task-specific docs for available options and configuration.\n'),
+  "summarization": zod.boolean().optional().describe('Enable [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
   "summary_model": zod.enum(['informative', 'conversational', 'catchy']).optional().describe('The model to summarize the transcript'),
   "summary_type": zod.enum(['bullets', 'bullets_verbose', 'gist', 'headline', 'paragraph']).optional().describe('The type of summary'),
-  "custom_topics": zod.boolean().optional().describe('Enable custom topics, either true or false'),
-  "topics": zod.array(zod.string()).optional().describe('The list of custom topics')
+  "remove_audio_tags": zod.enum(['all']).or(zod.null()).optional().describe('Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "temperature": zod.number().min(createTranscriptBodyTemperatureMin).max(createTranscriptBodyTemperatureMax).optional().describe('Control the amount of randomness injected into the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
+  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests'),
+  "webhook_auth_header_value": zod.string().nullish().describe('The header value to send back with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests for added security'),
+  "webhook_url": zod.string().optional().describe('The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.\n'),
+  "custom_topics": zod.boolean().optional().describe('This parameter does not currently have any functionality attached to it.'),
+  "speech_model": zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.').or(zod.null()).optional().describe('This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).\n'),
+  "topics": zod.array(zod.string()).optional().describe('This parameter does not currently have any functionality attached to it.')
 }).describe('The parameters for creating a transcript')).describe('The parameters for creating a transcript')
 
-export const createTranscriptResponseLanguageConfidenceThresholdMin = 0;
-
-export const createTranscriptResponseLanguageConfidenceThresholdMax = 1;
-export const createTranscriptResponseLanguageConfidenceMin = 0;
-
-export const createTranscriptResponseLanguageConfidenceMax = 1;
-export const createTranscriptResponseSpeechModelDefault = null;export const createTranscriptResponseWordsItemConfidenceMin = 0;
-
-export const createTranscriptResponseWordsItemConfidenceMax = 1;
-export const createTranscriptResponseUtterancesItemConfidenceMin = 0;
-
-export const createTranscriptResponseUtterancesItemConfidenceMax = 1;
-export const createTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
-
-export const createTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
-export const createTranscriptResponseConfidenceMin = 0;
-
-export const createTranscriptResponseConfidenceMax = 1;
 export const createTranscriptResponseAutoHighlightsResultResultsItemRankMin = 0;
 
 export const createTranscriptResponseAutoHighlightsResultResultsItemRankMax = 1;
+export const createTranscriptResponseConfidenceMin = 0;
+
+export const createTranscriptResponseConfidenceMax = 1;
 export const createTranscriptResponseContentSafetyLabelsResultsItemLabelsItemConfidenceMin = 0;
 
 export const createTranscriptResponseContentSafetyLabelsResultsItemLabelsItemConfidenceMax = 1;
@@ -130,61 +167,44 @@ export const createTranscriptResponseIabCategoriesResultResultsItemLabelsItemRel
 export const createTranscriptResponseIabCategoriesResultResultsItemLabelsItemRelevanceMax = 1;
 export const createTranscriptResponseIabCategoriesResultSummaryMinOne = 0;
 export const createTranscriptResponseIabCategoriesResultSummaryMaxOne = 1;
-export const createTranscriptResponseSentimentAnalysisResultsItemConfidenceMin = 0;
+export const createTranscriptResponseLanguageConfidenceMin = 0;
+
+export const createTranscriptResponseLanguageConfidenceMax = 1;
+export const createTranscriptResponseLanguageConfidenceThresholdMin = 0;
+
+export const createTranscriptResponseLanguageConfidenceThresholdMax = 1;
+export const createTranscriptResponseLanguageDetectionOptionsFallbackLanguageDefault = "auto";export const createTranscriptResponseLanguageDetectionOptionsCodeSwitchingDefault = false;export const createTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault = 0.3;
+export const createTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin = 0;
+
+export const createTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax = 1;
+export const createTranscriptResponseRedactPiiAudioOptionsReturnRedactedNoSpeechAudioDefault = false;export const createTranscriptResponseSentimentAnalysisResultsItemConfidenceMin = 0;
 
 export const createTranscriptResponseSentimentAnalysisResultsItemConfidenceMax = 1;
 export const createTranscriptResponseSpeechThresholdMin = 0;
 
 export const createTranscriptResponseSpeechThresholdMax = 1;
+export const createTranscriptResponseSpeechUnderstandingRequestTranslationFormalDefault = true;export const createTranscriptResponseSpeechUnderstandingRequestTranslationMatchOriginalUtteranceDefault = false;export const createTranscriptResponseTemperatureMin = 0;
+
+export const createTranscriptResponseTemperatureMax = 1;
+export const createTranscriptResponseUtterancesItemConfidenceMin = 0;
+
+export const createTranscriptResponseUtterancesItemConfidenceMax = 1;
+export const createTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
+
+export const createTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
+export const createTranscriptResponseWordsItemConfidenceMin = 0;
+
+export const createTranscriptResponseWordsItemConfidenceMax = 1;
 
 
 export const createTranscriptResponse = zod.object({
-  "id": zod.string().uuid().describe('The unique identifier of your transcript'),
-  "audio_url": zod.string().describe('The URL of the media that was transcribed'),
-  "status": zod.enum(['queued', 'processing', 'completed', 'error']).describe('The status of your transcript. Possible values are queued, processing, completed, or error.'),
-  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).optional().describe('The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n'),
-  "language_detection": zod.boolean().nullish().describe('Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false'),
-  "language_confidence_threshold": zod.number().min(createTranscriptResponseLanguageConfidenceThresholdMin).max(createTranscriptResponseLanguageConfidenceThresholdMax).nullable().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\n'),
-  "language_confidence": zod.number().min(createTranscriptResponseLanguageConfidenceMin).max(createTranscriptResponseLanguageConfidenceMax).nullable().describe('The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)'),
-  "speech_model": zod.enum(['best', 'slam-1', 'universal']).describe('The speech model to use for the transcription.').or(zod.null()).describe('The speech model used for the transcription. When `null`, the default model is used.'),
-  "text": zod.string().nullish().describe('The textual transcript of your media file'),
-  "words": zod.array(zod.object({
-  "confidence": zod.number().min(createTranscriptResponseWordsItemConfidenceMin).max(createTranscriptResponseWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
-  "text": zod.string().describe('The text of the word'),
-  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-})).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\nSee [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.\n'),
-  "utterances": zod.array(zod.object({
-  "confidence": zod.number().min(createTranscriptResponseUtterancesItemConfidenceMin).max(createTranscriptResponseUtterancesItemConfidenceMax).describe('The confidence score for the transcript of this utterance'),
-  "start": zod.number().describe('The starting time, in milliseconds, of the utterance in the audio file'),
-  "end": zod.number().describe('The ending time, in milliseconds, of the utterance in the audio file'),
-  "text": zod.string().describe('The text for this utterance'),
-  "words": zod.array(zod.object({
-  "confidence": zod.number().min(createTranscriptResponseUtterancesItemWordsItemConfidenceMin).max(createTranscriptResponseUtterancesItemWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
-  "text": zod.string().describe('The text of the word'),
-  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-})).describe('The words in the utterance.'),
-  "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.')
-})).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.\n'),
-  "confidence": zod.number().min(createTranscriptResponseConfidenceMin).max(createTranscriptResponseConfidenceMax).nullish().describe('The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'),
+  "audio_channels": zod.number().optional().describe('The number of audio channels in the audio file. This is only present when [multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) is enabled.'),
   "audio_duration": zod.number().nullish().describe('The duration of this transcript object\'s media file, in seconds'),
-  "punctuate": zod.boolean().nullish().describe('Whether Automatic Punctuation is enabled, either true or false'),
-  "format_text": zod.boolean().nullish().describe('Whether Text Formatting is enabled, either true or false'),
-  "disfluencies": zod.boolean().nullish().describe('Transcribe Filler Words, like \"umm\", in your media file; can be true or false'),
-  "multichannel": zod.boolean().nullish().describe('Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false'),
-  "audio_channels": zod.number().optional().describe('The number of audio channels in the audio file. This is only present when multichannel is enabled.'),
-  "webhook_url": zod.string().nullish().describe('The URL to which we send webhook requests.\nWe sends two different types of webhook requests.\nOne request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.\n'),
-  "webhook_status_code": zod.number().nullish().describe('The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided'),
-  "webhook_auth": zod.boolean().describe('Whether webhook authentication details were provided'),
-  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed webhook requests'),
-  "speed_boost": zod.boolean().nullish().describe('Whether speed boost is enabled'),
-  "auto_highlights": zod.boolean().describe('Whether Key Phrases is enabled, either true or false'),
+  "audio_end_at": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was terminated. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "audio_start_from": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was started. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "audio_url": zod.string().describe('The URL of the media that was transcribed'),
+  "auto_chapters": zod.boolean().nullish().describe('Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
+  "auto_highlights": zod.boolean().describe('Whether [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) is enabled, either true or false'),
   "auto_highlights_result": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -196,20 +216,16 @@ export const createTranscriptResponse = zod.object({
   "end": zod.number().describe('The end time in milliseconds')
 }).describe('Timestamp containing a start and end property in milliseconds')).describe('The timestamp of the of the key phrase')
 })).describe('A temporally-sequential array of Key Phrases')
-}).describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.\n').or(zod.null()).optional().describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.\n'),
-  "audio_start_from": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was started'),
-  "audio_end_at": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was terminated'),
-  "word_boost": zod.array(zod.string()).optional().describe('The list of custom vocabulary to boost transcription probability for'),
-  "boost_param": zod.string().nullish().describe('The word boost parameter value'),
-  "filter_profanity": zod.boolean().nullish().describe('Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false'),
-  "redact_pii": zod.boolean().describe('Whether [PII Redaction](https://www.assemblyai.com/docs/models/pii-redaction) is enabled, either true or false'),
-  "redact_pii_audio": zod.boolean().nullish().describe('Whether a redacted version of the audio file was generated,\neither true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.').or(zod.null()).optional().describe('The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).nullish().describe('The list of PII Redaction policies that were enabled, if PII Redaction is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_sub": zod.enum(['entity_name', 'hash']).optional().describe('The replacement logic for detected PII, can be \"entity_name\" or \"hash\". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'),
-  "speaker_labels": zod.boolean().nullish().describe('Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false'),
-  "speakers_expected": zod.number().nullish().describe('Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'),
-  "content_safety": zod.boolean().nullish().describe('Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false'),
+}).describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n').or(zod.null()).optional().describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n'),
+  "chapters": zod.array(zod.object({
+  "gist": zod.string().describe('An ultra-short summary (just a few words) of the content spoken in the chapter'),
+  "headline": zod.string().describe('A single sentence summary of the content spoken during the chapter'),
+  "summary": zod.string().describe('A one paragraph summary of the content spoken during the chapter'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the chapter'),
+  "end": zod.number().describe('The starting time, in milliseconds, for the chapter')
+}).describe('Chapter of the audio file')).nullish().describe('An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for more information.'),
+  "confidence": zod.number().min(createTranscriptResponseConfidenceMin).max(createTranscriptResponseConfidenceMax).nullish().describe('The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'),
+  "content_safety": zod.boolean().nullish().describe('Whether [Content Moderation](https://www.assemblyai.com/docs/content-moderation) is enabled, can be true or false'),
   "content_safety_labels": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -232,8 +248,24 @@ export const createTranscriptResponse = zod.object({
   "medium": zod.number().min(createTranscriptResponseContentSafetyLabelsSeverityScoreSummaryMediumMin).max(createTranscriptResponseContentSafetyLabelsSeverityScoreSummaryMediumMax),
   "high": zod.number().min(createTranscriptResponseContentSafetyLabelsSeverityScoreSummaryHighMin).max(createTranscriptResponseContentSafetyLabelsSeverityScoreSummaryHighMax)
 })).describe('A summary of the Content Moderation severity results for the entire audio file')
-}).describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.\n').or(zod.null()).optional().describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.\n'),
-  "iab_categories": zod.boolean().nullish().describe('Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false'),
+}).describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/content-moderation) for more information.\n').or(zod.null()).optional().describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/content-moderation) for more information.\n'),
+  "custom_spelling": zod.array(zod.object({
+  "from": zod.array(zod.string().describe('Word or phrase to replace')).describe('Words or phrases to replace'),
+  "to": zod.string().describe('Word to replace with')
+}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).nullish().describe('Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details.'),
+  "disfluencies": zod.boolean().nullish().describe('Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like \"umm\", in your media file; can be true or false'),
+  "domain": zod.string().nullish().describe('The domain-specific model applied to the transcript. When set to `\"medical-v1\"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medical terminology.\n'),
+  "entities": zod.array(zod.object({
+  "entity_type": zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of entity for the detected entity'),
+  "text": zod.string().describe('The text for the detected entity'),
+  "start": zod.number().describe('The starting time, in milliseconds, at which the detected entity appears in the audio file'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the detected entity in the audio file')
+}).describe('A detected entity')).nullish().describe('An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) for more information.\n'),
+  "entity_detection": zod.boolean().nullish().describe('Whether [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) is enabled, can be true or false'),
+  "error": zod.string().optional().describe('Error message of why the transcript failed'),
+  "filter_profanity": zod.boolean().nullish().describe('Whether [Profanity Filtering](https://www.assemblyai.com/docs/profanity-filtering) is enabled, either true or false'),
+  "format_text": zod.boolean().nullish().describe('Whether [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false'),
+  "iab_categories": zod.boolean().nullish().describe('Whether [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) is enabled, can be true or false'),
   "iab_categories_result": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -248,28 +280,33 @@ export const createTranscriptResponse = zod.object({
 }).optional().describe('Timestamp containing a start and end property in milliseconds')
 }).describe('The result of the topic detection model')).describe('An array of results for the Topic Detection model'),
   "summary": zod.record(zod.string(), zod.number().min(createTranscriptResponseIabCategoriesResultSummaryMinOne).max(createTranscriptResponseIabCategoriesResultSummaryMaxOne)).describe('The overall relevance of topic to the entire audio file')
-}).describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.\n').or(zod.null()).optional().describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.\n'),
-  "custom_spelling": zod.array(zod.object({
-  "from": zod.array(zod.string().describe('Word or phrase to replace')).describe('Words or phrases to replace'),
-  "to": zod.string().describe('Word to replace with')
-}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).nullish().describe('Customize how words are spelled and formatted using to and from values'),
-  "keyterms_prompt": zod.array(zod.string()).optional().describe('Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).\n'),
-  "prompt": zod.string().optional().describe('This parameter does not currently have any functionality attached to it.'),
-  "auto_chapters": zod.boolean().nullish().describe('Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false'),
-  "chapters": zod.array(zod.object({
-  "gist": zod.string().describe('An ultra-short summary (just a few words) of the content spoken in the chapter'),
-  "headline": zod.string().describe('A single sentence summary of the content spoken during the chapter'),
-  "summary": zod.string().describe('A one paragraph summary of the content spoken during the chapter'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the chapter'),
-  "end": zod.number().describe('The starting time, in milliseconds, for the chapter')
-}).describe('Chapter of the audio file')).nullish().describe('An array of temporally sequential chapters for the audio file'),
-  "summarization": zod.boolean().describe('Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false'),
-  "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'),
-  "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled\n'),
-  "summary": zod.string().nullish().describe('The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'),
-  "custom_topics": zod.boolean().nullish().describe('Whether custom topics is enabled, either true or false'),
-  "topics": zod.array(zod.string()).optional().describe('The list of custom topics provided if custom topics is enabled'),
-  "sentiment_analysis": zod.boolean().nullish().describe('Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false'),
+}).describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n').or(zod.null()).optional().describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n'),
+  "id": zod.string().uuid().describe('The unique identifier of your transcript'),
+  "keyterms_prompt": zod.array(zod.string()).optional().describe('Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n'),
+  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).optional().describe('The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n'),
+  "language_codes": zod.array(zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n')).nullish().describe('The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)\nOne of the values specified must be `en`.\n'),
+  "language_confidence": zod.number().min(createTranscriptResponseLanguageConfidenceMin).max(createTranscriptResponseLanguageConfidenceMax).nullable().describe('The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence). See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.'),
+  "language_confidence_threshold": zod.number().min(createTranscriptResponseLanguageConfidenceThresholdMin).max(createTranscriptResponseLanguageConfidenceThresholdMax).nullable().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nSee [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "language_detection": zod.boolean().nullish().describe('Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false'),
+  "language_detection_options": zod.object({
+  "expected_languages": zod.array(zod.string()).optional().describe('List of languages expected in the audio file. Defaults to `[\"all\"]` when unspecified. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.'),
+  "fallback_language": zod.string().default(createTranscriptResponseLanguageDetectionOptionsFallbackLanguageDefault).describe('If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `[\"auto\"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "code_switching": zod.boolean().optional().describe('Whether [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) should be detected.\n'),
+  "code_switching_confidence_threshold": zod.number().min(createTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin).max(createTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax).default(createTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault).describe('The confidence threshold for [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.\n')
+}).optional().describe('Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection).'),
+  "multichannel": zod.boolean().nullish().describe('Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) was enabled in the transcription request, either true or false'),
+  "prompt": zod.string().optional().describe('Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "punctuate": zod.boolean().nullish().describe('Whether [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false'),
+  "redact_pii": zod.boolean().describe('Whether [PII Redaction](https://www.assemblyai.com/docs/pii-redaction) is enabled, either true or false'),
+  "redact_pii_audio": zod.boolean().nullish().describe('Whether a redacted version of the audio file was generated,\neither true or false. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_audio_options": zod.object({
+  "return_redacted_no_speech_audio": zod.boolean().optional().describe('By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.'),
+  "override_audio_redaction_method": zod.enum(['silence']).optional().describe('Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.')
+}).optional().describe('The options for PII-redacted audio, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.').or(zod.null()).optional().describe('The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).nullish().describe('The list of PII Redaction policies that were enabled, if PII Redaction is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n'),
+  "redact_pii_sub": zod.enum(['entity_name', 'hash']).optional().describe('The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.'),
+  "sentiment_analysis": zod.boolean().nullish().describe('Whether [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) is enabled, can be true or false'),
   "sentiment_analysis_results": zod.array(zod.object({
   "text": zod.string().describe('The transcript of the sentence'),
   "start": zod.number().describe('The starting time, in milliseconds, of the sentence'),
@@ -277,29 +314,118 @@ export const createTranscriptResponse = zod.object({
   "sentiment": zod.enum(['POSITIVE', 'NEUTRAL', 'NEGATIVE']),
   "confidence": zod.number().min(createTranscriptResponseSentimentAnalysisResultsItemConfidenceMin).max(createTranscriptResponseSentimentAnalysisResultsItemConfidenceMax).describe('The confidence score for the detected sentiment of the sentence, from 0 to 1'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-}).describe('The result of the Sentiment Analysis model')).nullish().describe('An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) for more information.\n'),
-  "entity_detection": zod.boolean().nullish().describe('Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false'),
-  "entities": zod.array(zod.object({
-  "entity_type": zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of entity for the detected entity'),
-  "text": zod.string().describe('The text for the detected entity'),
-  "start": zod.number().describe('The starting time, in milliseconds, at which the detected entity appears in the audio file'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the detected entity in the audio file')
-}).describe('A detected entity')).nullish().describe('An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.\n'),
-  "speech_threshold": zod.number().min(createTranscriptResponseSpeechThresholdMin).max(createTranscriptResponseSpeechThresholdMax).nullish().describe('Defaults to null. Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive.\n'),
+  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+}).describe('The result of the Sentiment Analysis model')).nullish().describe('An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) for more information.\n'),
+  "speaker_labels": zod.boolean().nullish().describe('Whether [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, can be true or false'),
+  "speakers_expected": zod.number().nullish().describe('Tell the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details.'),
+  "speech_model_used": zod.string().optional().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.'),
+  "speech_models": zod.array(zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.')).nullish().describe('List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n'),
+  "speech_threshold": zod.number().min(createTranscriptResponseSpeechThresholdMin).max(createTranscriptResponseSpeechThresholdMax).nullish().describe('Defaults to null. Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.\n'),
+  "speech_understanding": zod.object({
+  "request": zod.object({
+  "translation": zod.object({
+  "target_languages": zod.array(zod.string()).describe('List of target language codes (e.g., `[\"es\", \"de\"]`). See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for supported languages.'),
+  "formal": zod.boolean().default(createTranscriptResponseSpeechUnderstandingRequestTranslationFormalDefault).describe('Use formal language style. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.'),
+  "match_original_utterance": zod.boolean().optional().describe('When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.')
+})
+}).describe('Request body for [Translation](https://www.assemblyai.com/docs/speech-understanding/translation).').or(zod.object({
+  "speaker_identification": zod.object({
+  "speaker_type": zod.enum(['role', 'name']).describe('Type of speaker identification. See [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification) for details on each type.'),
+  "known_values": zod.array(zod.string()).optional().describe('Required if speaker_type is \"role\". Each value must be 35 characters or less.'),
+  "speakers": zod.array(zod.object({
+  "role": zod.string().optional().describe('The role of the speaker. Required when `speaker_type` is \"role\".'),
+  "name": zod.string().optional().describe('The name of the speaker. Required when `speaker_type` is \"name\".'),
+  "description": zod.string().optional().describe('A description of the speaker to help the model identify them based on conversational context.')
+})).optional().describe('An array of speaker objects with metadata to improve identification accuracy. Each object should include a `role` or `name` (depending on `speaker_type`) and an optional `description` to help the model identify the speaker. You can also include any additional custom properties (e.g., `company`, `title`) to provide more context. Use this as an alternative to `known_values` when you want to provide additional context about each speaker.')
+})
+}).describe('Request body for [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification).')).or(zod.object({
+  "custom_formatting": zod.object({
+  "date": zod.string().optional().describe('Date format pattern (e.g., `\"mm/dd/yyyy\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "phone_number": zod.string().optional().describe('Phone number format pattern (e.g., `\"(xxx)xxx-xxxx\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "email": zod.string().optional().describe('Email format pattern (e.g., `\"username@domain.com\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.')
+})
+}).describe('Request body for [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting).')).optional(),
+  "response": zod.object({
+  "translation": zod.object({
+  "status": zod.string().optional()
+}).optional()
+}).or(zod.object({
+  "speaker_identification": zod.object({
+  "mapping": zod.record(zod.string(), zod.string()).optional().describe('A mapping of the original generic speaker labels (e.g., \"A\", \"B\") to the identified speaker names or roles.'),
+  "status": zod.string().optional()
+}).optional()
+})).or(zod.object({
+  "custom_formatting": zod.object({
+  "mapping": zod.record(zod.string(), zod.string()).optional(),
+  "formatted_text": zod.string().optional()
+}).optional()
+})).optional()
+}).optional().describe('Speech understanding tasks like [Translation](https://www.assemblyai.com/docs/speech-understanding/translation), [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification), and [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting). See the task-specific docs for available options and configuration.\n'),
+  "status": zod.enum(['queued', 'processing', 'completed', 'error']).describe('The status of your transcript. Possible values are queued, processing, completed, or error.'),
+  "summarization": zod.boolean().describe('Whether [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled, either true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
+  "summary": zod.string().nullish().describe('The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
+  "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n'),
+  "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
+  "remove_audio_tags": zod.enum(['all']).or(zod.null()).optional().describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "temperature": zod.number().min(createTranscriptResponseTemperatureMin).max(createTranscriptResponseTemperatureMax).nullish().describe('The temperature that was used for the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
+  "text": zod.string().nullish().describe('The textual transcript of your media file'),
   "throttled": zod.boolean().nullish().describe('True while a request is throttled and false when a request is no longer throttled'),
-  "error": zod.string().optional().describe('Error message of why the transcript failed'),
-  "language_model": zod.string().describe('The language model that was used for the transcript'),
-  "acoustic_model": zod.string().describe('The acoustic model that was used for the transcript')
+  "utterances": zod.array(zod.object({
+  "confidence": zod.number().min(createTranscriptResponseUtterancesItemConfidenceMin).max(createTranscriptResponseUtterancesItemConfidenceMax).describe('The confidence score for the transcript of this utterance'),
+  "start": zod.number().describe('The starting time, in milliseconds, of the utterance in the audio file'),
+  "end": zod.number().describe('The ending time, in milliseconds, of the utterance in the audio file'),
+  "text": zod.string().describe('The text for this utterance'),
+  "words": zod.array(zod.object({
+  "confidence": zod.number().min(createTranscriptResponseUtterancesItemWordsItemConfidenceMin).max(createTranscriptResponseUtterancesItemWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
+  "text": zod.string().describe('The text of the word'),
+  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+})).describe('The words in the utterance.'),
+  "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
+})).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) for more information.\n'),
+  "webhook_auth": zod.boolean().describe('Whether [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) authentication details were provided'),
+  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests'),
+  "webhook_status_code": zod.number().nullish().describe('The status code we received from your server when delivering the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) request, if a webhook URL was provided'),
+  "webhook_url": zod.string().nullish().describe('The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.\n'),
+  "words": zod.array(zod.object({
+  "confidence": zod.number().min(createTranscriptResponseWordsItemConfidenceMin).max(createTranscriptResponseWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
+  "text": zod.string().describe('The text of the word'),
+  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+})).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\n'),
+  "acoustic_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
+  "custom_topics": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
+  "language_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
+  "speech_model": zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.').or(zod.null()).describe('This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).\n'),
+  "speed_boost": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
+  "topics": zod.array(zod.string()).optional().describe('This parameter does not currently have any functionality attached to it.'),
+  "translated_texts": zod.object({
+  "language_code": zod.string().optional().describe('Translated text for this language code')
+}).optional().describe('Translated text keyed by language code. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.')
 }).describe('A transcript object')
 
 
 /**
  * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
-Retrieve a list of transcripts you created. 
+Retrieve a list of transcripts you created.
 Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
 
 If you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.
+
+**Pagination**
+
+This endpoint returns paginated results. The response includes a `page_details` object with the following properties:
+- `page_details.limit` - Maximum number of transcripts per page.
+- `page_details.result_count` - Total number of transcripts returned on the current page.
+- `page_details.current_url` - URL to the current page.
+- `page_details.prev_url` - URL to the previous page of older transcripts.
+- `page_details.next_url` - URL to the next page of newer transcripts.
 
  * @summary List transcripts
  */
@@ -350,27 +476,12 @@ export const getTranscriptParams = zod.object({
   "transcript_id": zod.string().describe('ID of the transcript')
 })
 
-export const getTranscriptResponseLanguageConfidenceThresholdMin = 0;
-
-export const getTranscriptResponseLanguageConfidenceThresholdMax = 1;
-export const getTranscriptResponseLanguageConfidenceMin = 0;
-
-export const getTranscriptResponseLanguageConfidenceMax = 1;
-export const getTranscriptResponseSpeechModelDefault = null;export const getTranscriptResponseWordsItemConfidenceMin = 0;
-
-export const getTranscriptResponseWordsItemConfidenceMax = 1;
-export const getTranscriptResponseUtterancesItemConfidenceMin = 0;
-
-export const getTranscriptResponseUtterancesItemConfidenceMax = 1;
-export const getTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
-
-export const getTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
-export const getTranscriptResponseConfidenceMin = 0;
-
-export const getTranscriptResponseConfidenceMax = 1;
 export const getTranscriptResponseAutoHighlightsResultResultsItemRankMin = 0;
 
 export const getTranscriptResponseAutoHighlightsResultResultsItemRankMax = 1;
+export const getTranscriptResponseConfidenceMin = 0;
+
+export const getTranscriptResponseConfidenceMax = 1;
 export const getTranscriptResponseContentSafetyLabelsResultsItemLabelsItemConfidenceMin = 0;
 
 export const getTranscriptResponseContentSafetyLabelsResultsItemLabelsItemConfidenceMax = 1;
@@ -393,61 +504,44 @@ export const getTranscriptResponseIabCategoriesResultResultsItemLabelsItemReleva
 export const getTranscriptResponseIabCategoriesResultResultsItemLabelsItemRelevanceMax = 1;
 export const getTranscriptResponseIabCategoriesResultSummaryMinOne = 0;
 export const getTranscriptResponseIabCategoriesResultSummaryMaxOne = 1;
-export const getTranscriptResponseSentimentAnalysisResultsItemConfidenceMin = 0;
+export const getTranscriptResponseLanguageConfidenceMin = 0;
+
+export const getTranscriptResponseLanguageConfidenceMax = 1;
+export const getTranscriptResponseLanguageConfidenceThresholdMin = 0;
+
+export const getTranscriptResponseLanguageConfidenceThresholdMax = 1;
+export const getTranscriptResponseLanguageDetectionOptionsFallbackLanguageDefault = "auto";export const getTranscriptResponseLanguageDetectionOptionsCodeSwitchingDefault = false;export const getTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault = 0.3;
+export const getTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin = 0;
+
+export const getTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax = 1;
+export const getTranscriptResponseRedactPiiAudioOptionsReturnRedactedNoSpeechAudioDefault = false;export const getTranscriptResponseSentimentAnalysisResultsItemConfidenceMin = 0;
 
 export const getTranscriptResponseSentimentAnalysisResultsItemConfidenceMax = 1;
 export const getTranscriptResponseSpeechThresholdMin = 0;
 
 export const getTranscriptResponseSpeechThresholdMax = 1;
+export const getTranscriptResponseSpeechUnderstandingRequestTranslationFormalDefault = true;export const getTranscriptResponseSpeechUnderstandingRequestTranslationMatchOriginalUtteranceDefault = false;export const getTranscriptResponseTemperatureMin = 0;
+
+export const getTranscriptResponseTemperatureMax = 1;
+export const getTranscriptResponseUtterancesItemConfidenceMin = 0;
+
+export const getTranscriptResponseUtterancesItemConfidenceMax = 1;
+export const getTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
+
+export const getTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
+export const getTranscriptResponseWordsItemConfidenceMin = 0;
+
+export const getTranscriptResponseWordsItemConfidenceMax = 1;
 
 
 export const getTranscriptResponse = zod.object({
-  "id": zod.string().uuid().describe('The unique identifier of your transcript'),
-  "audio_url": zod.string().describe('The URL of the media that was transcribed'),
-  "status": zod.enum(['queued', 'processing', 'completed', 'error']).describe('The status of your transcript. Possible values are queued, processing, completed, or error.'),
-  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).optional().describe('The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n'),
-  "language_detection": zod.boolean().nullish().describe('Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false'),
-  "language_confidence_threshold": zod.number().min(getTranscriptResponseLanguageConfidenceThresholdMin).max(getTranscriptResponseLanguageConfidenceThresholdMax).nullable().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\n'),
-  "language_confidence": zod.number().min(getTranscriptResponseLanguageConfidenceMin).max(getTranscriptResponseLanguageConfidenceMax).nullable().describe('The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)'),
-  "speech_model": zod.enum(['best', 'slam-1', 'universal']).describe('The speech model to use for the transcription.').or(zod.null()).describe('The speech model used for the transcription. When `null`, the default model is used.'),
-  "text": zod.string().nullish().describe('The textual transcript of your media file'),
-  "words": zod.array(zod.object({
-  "confidence": zod.number().min(getTranscriptResponseWordsItemConfidenceMin).max(getTranscriptResponseWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
-  "text": zod.string().describe('The text of the word'),
-  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-})).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\nSee [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.\n'),
-  "utterances": zod.array(zod.object({
-  "confidence": zod.number().min(getTranscriptResponseUtterancesItemConfidenceMin).max(getTranscriptResponseUtterancesItemConfidenceMax).describe('The confidence score for the transcript of this utterance'),
-  "start": zod.number().describe('The starting time, in milliseconds, of the utterance in the audio file'),
-  "end": zod.number().describe('The ending time, in milliseconds, of the utterance in the audio file'),
-  "text": zod.string().describe('The text for this utterance'),
-  "words": zod.array(zod.object({
-  "confidence": zod.number().min(getTranscriptResponseUtterancesItemWordsItemConfidenceMin).max(getTranscriptResponseUtterancesItemWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
-  "text": zod.string().describe('The text of the word'),
-  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-})).describe('The words in the utterance.'),
-  "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.')
-})).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.\n'),
-  "confidence": zod.number().min(getTranscriptResponseConfidenceMin).max(getTranscriptResponseConfidenceMax).nullish().describe('The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'),
+  "audio_channels": zod.number().optional().describe('The number of audio channels in the audio file. This is only present when [multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) is enabled.'),
   "audio_duration": zod.number().nullish().describe('The duration of this transcript object\'s media file, in seconds'),
-  "punctuate": zod.boolean().nullish().describe('Whether Automatic Punctuation is enabled, either true or false'),
-  "format_text": zod.boolean().nullish().describe('Whether Text Formatting is enabled, either true or false'),
-  "disfluencies": zod.boolean().nullish().describe('Transcribe Filler Words, like \"umm\", in your media file; can be true or false'),
-  "multichannel": zod.boolean().nullish().describe('Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false'),
-  "audio_channels": zod.number().optional().describe('The number of audio channels in the audio file. This is only present when multichannel is enabled.'),
-  "webhook_url": zod.string().nullish().describe('The URL to which we send webhook requests.\nWe sends two different types of webhook requests.\nOne request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.\n'),
-  "webhook_status_code": zod.number().nullish().describe('The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided'),
-  "webhook_auth": zod.boolean().describe('Whether webhook authentication details were provided'),
-  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed webhook requests'),
-  "speed_boost": zod.boolean().nullish().describe('Whether speed boost is enabled'),
-  "auto_highlights": zod.boolean().describe('Whether Key Phrases is enabled, either true or false'),
+  "audio_end_at": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was terminated. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "audio_start_from": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was started. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "audio_url": zod.string().describe('The URL of the media that was transcribed'),
+  "auto_chapters": zod.boolean().nullish().describe('Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
+  "auto_highlights": zod.boolean().describe('Whether [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) is enabled, either true or false'),
   "auto_highlights_result": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -459,20 +553,16 @@ export const getTranscriptResponse = zod.object({
   "end": zod.number().describe('The end time in milliseconds')
 }).describe('Timestamp containing a start and end property in milliseconds')).describe('The timestamp of the of the key phrase')
 })).describe('A temporally-sequential array of Key Phrases')
-}).describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.\n').or(zod.null()).optional().describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.\n'),
-  "audio_start_from": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was started'),
-  "audio_end_at": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was terminated'),
-  "word_boost": zod.array(zod.string()).optional().describe('The list of custom vocabulary to boost transcription probability for'),
-  "boost_param": zod.string().nullish().describe('The word boost parameter value'),
-  "filter_profanity": zod.boolean().nullish().describe('Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false'),
-  "redact_pii": zod.boolean().describe('Whether [PII Redaction](https://www.assemblyai.com/docs/models/pii-redaction) is enabled, either true or false'),
-  "redact_pii_audio": zod.boolean().nullish().describe('Whether a redacted version of the audio file was generated,\neither true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.').or(zod.null()).optional().describe('The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).nullish().describe('The list of PII Redaction policies that were enabled, if PII Redaction is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_sub": zod.enum(['entity_name', 'hash']).optional().describe('The replacement logic for detected PII, can be \"entity_name\" or \"hash\". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'),
-  "speaker_labels": zod.boolean().nullish().describe('Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false'),
-  "speakers_expected": zod.number().nullish().describe('Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'),
-  "content_safety": zod.boolean().nullish().describe('Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false'),
+}).describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n').or(zod.null()).optional().describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n'),
+  "chapters": zod.array(zod.object({
+  "gist": zod.string().describe('An ultra-short summary (just a few words) of the content spoken in the chapter'),
+  "headline": zod.string().describe('A single sentence summary of the content spoken during the chapter'),
+  "summary": zod.string().describe('A one paragraph summary of the content spoken during the chapter'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the chapter'),
+  "end": zod.number().describe('The starting time, in milliseconds, for the chapter')
+}).describe('Chapter of the audio file')).nullish().describe('An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for more information.'),
+  "confidence": zod.number().min(getTranscriptResponseConfidenceMin).max(getTranscriptResponseConfidenceMax).nullish().describe('The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'),
+  "content_safety": zod.boolean().nullish().describe('Whether [Content Moderation](https://www.assemblyai.com/docs/content-moderation) is enabled, can be true or false'),
   "content_safety_labels": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -495,8 +585,24 @@ export const getTranscriptResponse = zod.object({
   "medium": zod.number().min(getTranscriptResponseContentSafetyLabelsSeverityScoreSummaryMediumMin).max(getTranscriptResponseContentSafetyLabelsSeverityScoreSummaryMediumMax),
   "high": zod.number().min(getTranscriptResponseContentSafetyLabelsSeverityScoreSummaryHighMin).max(getTranscriptResponseContentSafetyLabelsSeverityScoreSummaryHighMax)
 })).describe('A summary of the Content Moderation severity results for the entire audio file')
-}).describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.\n').or(zod.null()).optional().describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.\n'),
-  "iab_categories": zod.boolean().nullish().describe('Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false'),
+}).describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/content-moderation) for more information.\n').or(zod.null()).optional().describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/content-moderation) for more information.\n'),
+  "custom_spelling": zod.array(zod.object({
+  "from": zod.array(zod.string().describe('Word or phrase to replace')).describe('Words or phrases to replace'),
+  "to": zod.string().describe('Word to replace with')
+}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).nullish().describe('Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details.'),
+  "disfluencies": zod.boolean().nullish().describe('Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like \"umm\", in your media file; can be true or false'),
+  "domain": zod.string().nullish().describe('The domain-specific model applied to the transcript. When set to `\"medical-v1\"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medical terminology.\n'),
+  "entities": zod.array(zod.object({
+  "entity_type": zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of entity for the detected entity'),
+  "text": zod.string().describe('The text for the detected entity'),
+  "start": zod.number().describe('The starting time, in milliseconds, at which the detected entity appears in the audio file'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the detected entity in the audio file')
+}).describe('A detected entity')).nullish().describe('An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) for more information.\n'),
+  "entity_detection": zod.boolean().nullish().describe('Whether [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) is enabled, can be true or false'),
+  "error": zod.string().optional().describe('Error message of why the transcript failed'),
+  "filter_profanity": zod.boolean().nullish().describe('Whether [Profanity Filtering](https://www.assemblyai.com/docs/profanity-filtering) is enabled, either true or false'),
+  "format_text": zod.boolean().nullish().describe('Whether [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false'),
+  "iab_categories": zod.boolean().nullish().describe('Whether [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) is enabled, can be true or false'),
   "iab_categories_result": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -511,28 +617,33 @@ export const getTranscriptResponse = zod.object({
 }).optional().describe('Timestamp containing a start and end property in milliseconds')
 }).describe('The result of the topic detection model')).describe('An array of results for the Topic Detection model'),
   "summary": zod.record(zod.string(), zod.number().min(getTranscriptResponseIabCategoriesResultSummaryMinOne).max(getTranscriptResponseIabCategoriesResultSummaryMaxOne)).describe('The overall relevance of topic to the entire audio file')
-}).describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.\n').or(zod.null()).optional().describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.\n'),
-  "custom_spelling": zod.array(zod.object({
-  "from": zod.array(zod.string().describe('Word or phrase to replace')).describe('Words or phrases to replace'),
-  "to": zod.string().describe('Word to replace with')
-}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).nullish().describe('Customize how words are spelled and formatted using to and from values'),
-  "keyterms_prompt": zod.array(zod.string()).optional().describe('Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).\n'),
-  "prompt": zod.string().optional().describe('This parameter does not currently have any functionality attached to it.'),
-  "auto_chapters": zod.boolean().nullish().describe('Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false'),
-  "chapters": zod.array(zod.object({
-  "gist": zod.string().describe('An ultra-short summary (just a few words) of the content spoken in the chapter'),
-  "headline": zod.string().describe('A single sentence summary of the content spoken during the chapter'),
-  "summary": zod.string().describe('A one paragraph summary of the content spoken during the chapter'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the chapter'),
-  "end": zod.number().describe('The starting time, in milliseconds, for the chapter')
-}).describe('Chapter of the audio file')).nullish().describe('An array of temporally sequential chapters for the audio file'),
-  "summarization": zod.boolean().describe('Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false'),
-  "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'),
-  "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled\n'),
-  "summary": zod.string().nullish().describe('The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'),
-  "custom_topics": zod.boolean().nullish().describe('Whether custom topics is enabled, either true or false'),
-  "topics": zod.array(zod.string()).optional().describe('The list of custom topics provided if custom topics is enabled'),
-  "sentiment_analysis": zod.boolean().nullish().describe('Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false'),
+}).describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n').or(zod.null()).optional().describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n'),
+  "id": zod.string().uuid().describe('The unique identifier of your transcript'),
+  "keyterms_prompt": zod.array(zod.string()).optional().describe('Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n'),
+  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).optional().describe('The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n'),
+  "language_codes": zod.array(zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n')).nullish().describe('The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)\nOne of the values specified must be `en`.\n'),
+  "language_confidence": zod.number().min(getTranscriptResponseLanguageConfidenceMin).max(getTranscriptResponseLanguageConfidenceMax).nullable().describe('The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence). See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.'),
+  "language_confidence_threshold": zod.number().min(getTranscriptResponseLanguageConfidenceThresholdMin).max(getTranscriptResponseLanguageConfidenceThresholdMax).nullable().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nSee [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "language_detection": zod.boolean().nullish().describe('Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false'),
+  "language_detection_options": zod.object({
+  "expected_languages": zod.array(zod.string()).optional().describe('List of languages expected in the audio file. Defaults to `[\"all\"]` when unspecified. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.'),
+  "fallback_language": zod.string().default(getTranscriptResponseLanguageDetectionOptionsFallbackLanguageDefault).describe('If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `[\"auto\"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "code_switching": zod.boolean().optional().describe('Whether [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) should be detected.\n'),
+  "code_switching_confidence_threshold": zod.number().min(getTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin).max(getTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax).default(getTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault).describe('The confidence threshold for [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.\n')
+}).optional().describe('Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection).'),
+  "multichannel": zod.boolean().nullish().describe('Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) was enabled in the transcription request, either true or false'),
+  "prompt": zod.string().optional().describe('Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "punctuate": zod.boolean().nullish().describe('Whether [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false'),
+  "redact_pii": zod.boolean().describe('Whether [PII Redaction](https://www.assemblyai.com/docs/pii-redaction) is enabled, either true or false'),
+  "redact_pii_audio": zod.boolean().nullish().describe('Whether a redacted version of the audio file was generated,\neither true or false. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_audio_options": zod.object({
+  "return_redacted_no_speech_audio": zod.boolean().optional().describe('By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.'),
+  "override_audio_redaction_method": zod.enum(['silence']).optional().describe('Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.')
+}).optional().describe('The options for PII-redacted audio, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.').or(zod.null()).optional().describe('The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).nullish().describe('The list of PII Redaction policies that were enabled, if PII Redaction is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n'),
+  "redact_pii_sub": zod.enum(['entity_name', 'hash']).optional().describe('The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.'),
+  "sentiment_analysis": zod.boolean().nullish().describe('Whether [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) is enabled, can be true or false'),
   "sentiment_analysis_results": zod.array(zod.object({
   "text": zod.string().describe('The transcript of the sentence'),
   "start": zod.number().describe('The starting time, in milliseconds, of the sentence'),
@@ -540,20 +651,100 @@ export const getTranscriptResponse = zod.object({
   "sentiment": zod.enum(['POSITIVE', 'NEUTRAL', 'NEGATIVE']),
   "confidence": zod.number().min(getTranscriptResponseSentimentAnalysisResultsItemConfidenceMin).max(getTranscriptResponseSentimentAnalysisResultsItemConfidenceMax).describe('The confidence score for the detected sentiment of the sentence, from 0 to 1'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-}).describe('The result of the Sentiment Analysis model')).nullish().describe('An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) for more information.\n'),
-  "entity_detection": zod.boolean().nullish().describe('Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false'),
-  "entities": zod.array(zod.object({
-  "entity_type": zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of entity for the detected entity'),
-  "text": zod.string().describe('The text for the detected entity'),
-  "start": zod.number().describe('The starting time, in milliseconds, at which the detected entity appears in the audio file'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the detected entity in the audio file')
-}).describe('A detected entity')).nullish().describe('An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.\n'),
-  "speech_threshold": zod.number().min(getTranscriptResponseSpeechThresholdMin).max(getTranscriptResponseSpeechThresholdMax).nullish().describe('Defaults to null. Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive.\n'),
+  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+}).describe('The result of the Sentiment Analysis model')).nullish().describe('An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) for more information.\n'),
+  "speaker_labels": zod.boolean().nullish().describe('Whether [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, can be true or false'),
+  "speakers_expected": zod.number().nullish().describe('Tell the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details.'),
+  "speech_model_used": zod.string().optional().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.'),
+  "speech_models": zod.array(zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.')).nullish().describe('List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n'),
+  "speech_threshold": zod.number().min(getTranscriptResponseSpeechThresholdMin).max(getTranscriptResponseSpeechThresholdMax).nullish().describe('Defaults to null. Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.\n'),
+  "speech_understanding": zod.object({
+  "request": zod.object({
+  "translation": zod.object({
+  "target_languages": zod.array(zod.string()).describe('List of target language codes (e.g., `[\"es\", \"de\"]`). See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for supported languages.'),
+  "formal": zod.boolean().default(getTranscriptResponseSpeechUnderstandingRequestTranslationFormalDefault).describe('Use formal language style. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.'),
+  "match_original_utterance": zod.boolean().optional().describe('When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.')
+})
+}).describe('Request body for [Translation](https://www.assemblyai.com/docs/speech-understanding/translation).').or(zod.object({
+  "speaker_identification": zod.object({
+  "speaker_type": zod.enum(['role', 'name']).describe('Type of speaker identification. See [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification) for details on each type.'),
+  "known_values": zod.array(zod.string()).optional().describe('Required if speaker_type is \"role\". Each value must be 35 characters or less.'),
+  "speakers": zod.array(zod.object({
+  "role": zod.string().optional().describe('The role of the speaker. Required when `speaker_type` is \"role\".'),
+  "name": zod.string().optional().describe('The name of the speaker. Required when `speaker_type` is \"name\".'),
+  "description": zod.string().optional().describe('A description of the speaker to help the model identify them based on conversational context.')
+})).optional().describe('An array of speaker objects with metadata to improve identification accuracy. Each object should include a `role` or `name` (depending on `speaker_type`) and an optional `description` to help the model identify the speaker. You can also include any additional custom properties (e.g., `company`, `title`) to provide more context. Use this as an alternative to `known_values` when you want to provide additional context about each speaker.')
+})
+}).describe('Request body for [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification).')).or(zod.object({
+  "custom_formatting": zod.object({
+  "date": zod.string().optional().describe('Date format pattern (e.g., `\"mm/dd/yyyy\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "phone_number": zod.string().optional().describe('Phone number format pattern (e.g., `\"(xxx)xxx-xxxx\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "email": zod.string().optional().describe('Email format pattern (e.g., `\"username@domain.com\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.')
+})
+}).describe('Request body for [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting).')).optional(),
+  "response": zod.object({
+  "translation": zod.object({
+  "status": zod.string().optional()
+}).optional()
+}).or(zod.object({
+  "speaker_identification": zod.object({
+  "mapping": zod.record(zod.string(), zod.string()).optional().describe('A mapping of the original generic speaker labels (e.g., \"A\", \"B\") to the identified speaker names or roles.'),
+  "status": zod.string().optional()
+}).optional()
+})).or(zod.object({
+  "custom_formatting": zod.object({
+  "mapping": zod.record(zod.string(), zod.string()).optional(),
+  "formatted_text": zod.string().optional()
+}).optional()
+})).optional()
+}).optional().describe('Speech understanding tasks like [Translation](https://www.assemblyai.com/docs/speech-understanding/translation), [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification), and [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting). See the task-specific docs for available options and configuration.\n'),
+  "status": zod.enum(['queued', 'processing', 'completed', 'error']).describe('The status of your transcript. Possible values are queued, processing, completed, or error.'),
+  "summarization": zod.boolean().describe('Whether [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled, either true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
+  "summary": zod.string().nullish().describe('The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
+  "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n'),
+  "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
+  "remove_audio_tags": zod.enum(['all']).or(zod.null()).optional().describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "temperature": zod.number().min(getTranscriptResponseTemperatureMin).max(getTranscriptResponseTemperatureMax).nullish().describe('The temperature that was used for the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
+  "text": zod.string().nullish().describe('The textual transcript of your media file'),
   "throttled": zod.boolean().nullish().describe('True while a request is throttled and false when a request is no longer throttled'),
-  "error": zod.string().optional().describe('Error message of why the transcript failed'),
-  "language_model": zod.string().describe('The language model that was used for the transcript'),
-  "acoustic_model": zod.string().describe('The acoustic model that was used for the transcript')
+  "utterances": zod.array(zod.object({
+  "confidence": zod.number().min(getTranscriptResponseUtterancesItemConfidenceMin).max(getTranscriptResponseUtterancesItemConfidenceMax).describe('The confidence score for the transcript of this utterance'),
+  "start": zod.number().describe('The starting time, in milliseconds, of the utterance in the audio file'),
+  "end": zod.number().describe('The ending time, in milliseconds, of the utterance in the audio file'),
+  "text": zod.string().describe('The text for this utterance'),
+  "words": zod.array(zod.object({
+  "confidence": zod.number().min(getTranscriptResponseUtterancesItemWordsItemConfidenceMin).max(getTranscriptResponseUtterancesItemWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
+  "text": zod.string().describe('The text of the word'),
+  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+})).describe('The words in the utterance.'),
+  "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
+})).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) for more information.\n'),
+  "webhook_auth": zod.boolean().describe('Whether [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) authentication details were provided'),
+  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests'),
+  "webhook_status_code": zod.number().nullish().describe('The status code we received from your server when delivering the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) request, if a webhook URL was provided'),
+  "webhook_url": zod.string().nullish().describe('The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.\n'),
+  "words": zod.array(zod.object({
+  "confidence": zod.number().min(getTranscriptResponseWordsItemConfidenceMin).max(getTranscriptResponseWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
+  "text": zod.string().describe('The text of the word'),
+  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+})).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\n'),
+  "acoustic_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
+  "custom_topics": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
+  "language_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
+  "speech_model": zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.').or(zod.null()).describe('This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).\n'),
+  "speed_boost": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
+  "topics": zod.array(zod.string()).optional().describe('This parameter does not currently have any functionality attached to it.'),
+  "translated_texts": zod.object({
+  "language_code": zod.string().optional().describe('Translated text for this language code')
+}).optional().describe('Translated text keyed by language code. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.')
 }).describe('A transcript object')
 
 
@@ -568,27 +759,12 @@ export const deleteTranscriptParams = zod.object({
   "transcript_id": zod.string().describe('ID of the transcript')
 })
 
-export const deleteTranscriptResponseLanguageConfidenceThresholdMin = 0;
-
-export const deleteTranscriptResponseLanguageConfidenceThresholdMax = 1;
-export const deleteTranscriptResponseLanguageConfidenceMin = 0;
-
-export const deleteTranscriptResponseLanguageConfidenceMax = 1;
-export const deleteTranscriptResponseSpeechModelDefault = null;export const deleteTranscriptResponseWordsItemConfidenceMin = 0;
-
-export const deleteTranscriptResponseWordsItemConfidenceMax = 1;
-export const deleteTranscriptResponseUtterancesItemConfidenceMin = 0;
-
-export const deleteTranscriptResponseUtterancesItemConfidenceMax = 1;
-export const deleteTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
-
-export const deleteTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
-export const deleteTranscriptResponseConfidenceMin = 0;
-
-export const deleteTranscriptResponseConfidenceMax = 1;
 export const deleteTranscriptResponseAutoHighlightsResultResultsItemRankMin = 0;
 
 export const deleteTranscriptResponseAutoHighlightsResultResultsItemRankMax = 1;
+export const deleteTranscriptResponseConfidenceMin = 0;
+
+export const deleteTranscriptResponseConfidenceMax = 1;
 export const deleteTranscriptResponseContentSafetyLabelsResultsItemLabelsItemConfidenceMin = 0;
 
 export const deleteTranscriptResponseContentSafetyLabelsResultsItemLabelsItemConfidenceMax = 1;
@@ -611,61 +787,44 @@ export const deleteTranscriptResponseIabCategoriesResultResultsItemLabelsItemRel
 export const deleteTranscriptResponseIabCategoriesResultResultsItemLabelsItemRelevanceMax = 1;
 export const deleteTranscriptResponseIabCategoriesResultSummaryMinOne = 0;
 export const deleteTranscriptResponseIabCategoriesResultSummaryMaxOne = 1;
-export const deleteTranscriptResponseSentimentAnalysisResultsItemConfidenceMin = 0;
+export const deleteTranscriptResponseLanguageConfidenceMin = 0;
+
+export const deleteTranscriptResponseLanguageConfidenceMax = 1;
+export const deleteTranscriptResponseLanguageConfidenceThresholdMin = 0;
+
+export const deleteTranscriptResponseLanguageConfidenceThresholdMax = 1;
+export const deleteTranscriptResponseLanguageDetectionOptionsFallbackLanguageDefault = "auto";export const deleteTranscriptResponseLanguageDetectionOptionsCodeSwitchingDefault = false;export const deleteTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault = 0.3;
+export const deleteTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin = 0;
+
+export const deleteTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax = 1;
+export const deleteTranscriptResponseRedactPiiAudioOptionsReturnRedactedNoSpeechAudioDefault = false;export const deleteTranscriptResponseSentimentAnalysisResultsItemConfidenceMin = 0;
 
 export const deleteTranscriptResponseSentimentAnalysisResultsItemConfidenceMax = 1;
 export const deleteTranscriptResponseSpeechThresholdMin = 0;
 
 export const deleteTranscriptResponseSpeechThresholdMax = 1;
+export const deleteTranscriptResponseSpeechUnderstandingRequestTranslationFormalDefault = true;export const deleteTranscriptResponseSpeechUnderstandingRequestTranslationMatchOriginalUtteranceDefault = false;export const deleteTranscriptResponseTemperatureMin = 0;
+
+export const deleteTranscriptResponseTemperatureMax = 1;
+export const deleteTranscriptResponseUtterancesItemConfidenceMin = 0;
+
+export const deleteTranscriptResponseUtterancesItemConfidenceMax = 1;
+export const deleteTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
+
+export const deleteTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
+export const deleteTranscriptResponseWordsItemConfidenceMin = 0;
+
+export const deleteTranscriptResponseWordsItemConfidenceMax = 1;
 
 
 export const deleteTranscriptResponse = zod.object({
-  "id": zod.string().uuid().describe('The unique identifier of your transcript'),
-  "audio_url": zod.string().describe('The URL of the media that was transcribed'),
-  "status": zod.enum(['queued', 'processing', 'completed', 'error']).describe('The status of your transcript. Possible values are queued, processing, completed, or error.'),
-  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).optional().describe('The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is \'en_us\'.\n'),
-  "language_detection": zod.boolean().nullish().describe('Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false'),
-  "language_confidence_threshold": zod.number().min(deleteTranscriptResponseLanguageConfidenceThresholdMin).max(deleteTranscriptResponseLanguageConfidenceThresholdMax).nullable().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\n'),
-  "language_confidence": zod.number().min(deleteTranscriptResponseLanguageConfidenceMin).max(deleteTranscriptResponseLanguageConfidenceMax).nullable().describe('The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)'),
-  "speech_model": zod.enum(['best', 'slam-1', 'universal']).describe('The speech model to use for the transcription.').or(zod.null()).describe('The speech model used for the transcription. When `null`, the default model is used.'),
-  "text": zod.string().nullish().describe('The textual transcript of your media file'),
-  "words": zod.array(zod.object({
-  "confidence": zod.number().min(deleteTranscriptResponseWordsItemConfidenceMin).max(deleteTranscriptResponseWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
-  "text": zod.string().describe('The text of the word'),
-  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-})).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\nSee [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.\n'),
-  "utterances": zod.array(zod.object({
-  "confidence": zod.number().min(deleteTranscriptResponseUtterancesItemConfidenceMin).max(deleteTranscriptResponseUtterancesItemConfidenceMax).describe('The confidence score for the transcript of this utterance'),
-  "start": zod.number().describe('The starting time, in milliseconds, of the utterance in the audio file'),
-  "end": zod.number().describe('The ending time, in milliseconds, of the utterance in the audio file'),
-  "text": zod.string().describe('The text for this utterance'),
-  "words": zod.array(zod.object({
-  "confidence": zod.number().min(deleteTranscriptResponseUtterancesItemWordsItemConfidenceMin).max(deleteTranscriptResponseUtterancesItemWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
-  "text": zod.string().describe('The text of the word'),
-  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-})).describe('The words in the utterance.'),
-  "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.')
-})).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.\n'),
-  "confidence": zod.number().min(deleteTranscriptResponseConfidenceMin).max(deleteTranscriptResponseConfidenceMax).nullish().describe('The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'),
+  "audio_channels": zod.number().optional().describe('The number of audio channels in the audio file. This is only present when [multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) is enabled.'),
   "audio_duration": zod.number().nullish().describe('The duration of this transcript object\'s media file, in seconds'),
-  "punctuate": zod.boolean().nullish().describe('Whether Automatic Punctuation is enabled, either true or false'),
-  "format_text": zod.boolean().nullish().describe('Whether Text Formatting is enabled, either true or false'),
-  "disfluencies": zod.boolean().nullish().describe('Transcribe Filler Words, like \"umm\", in your media file; can be true or false'),
-  "multichannel": zod.boolean().nullish().describe('Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false'),
-  "audio_channels": zod.number().optional().describe('The number of audio channels in the audio file. This is only present when multichannel is enabled.'),
-  "webhook_url": zod.string().nullish().describe('The URL to which we send webhook requests.\nWe sends two different types of webhook requests.\nOne request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.\n'),
-  "webhook_status_code": zod.number().nullish().describe('The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided'),
-  "webhook_auth": zod.boolean().describe('Whether webhook authentication details were provided'),
-  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed webhook requests'),
-  "speed_boost": zod.boolean().nullish().describe('Whether speed boost is enabled'),
-  "auto_highlights": zod.boolean().describe('Whether Key Phrases is enabled, either true or false'),
+  "audio_end_at": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was terminated. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "audio_start_from": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was started. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
+  "audio_url": zod.string().describe('The URL of the media that was transcribed'),
+  "auto_chapters": zod.boolean().nullish().describe('Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
+  "auto_highlights": zod.boolean().describe('Whether [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) is enabled, either true or false'),
   "auto_highlights_result": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -677,20 +836,16 @@ export const deleteTranscriptResponse = zod.object({
   "end": zod.number().describe('The end time in milliseconds')
 }).describe('Timestamp containing a start and end property in milliseconds')).describe('The timestamp of the of the key phrase')
 })).describe('A temporally-sequential array of Key Phrases')
-}).describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.\n').or(zod.null()).optional().describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.\n'),
-  "audio_start_from": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was started'),
-  "audio_end_at": zod.number().nullish().describe('The point in time, in milliseconds, in the file at which the transcription was terminated'),
-  "word_boost": zod.array(zod.string()).optional().describe('The list of custom vocabulary to boost transcription probability for'),
-  "boost_param": zod.string().nullish().describe('The word boost parameter value'),
-  "filter_profanity": zod.boolean().nullish().describe('Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false'),
-  "redact_pii": zod.boolean().describe('Whether [PII Redaction](https://www.assemblyai.com/docs/models/pii-redaction) is enabled, either true or false'),
-  "redact_pii_audio": zod.boolean().nullish().describe('Whether a redacted version of the audio file was generated,\neither true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.').or(zod.null()).optional().describe('The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).nullish().describe('The list of PII Redaction policies that were enabled, if PII Redaction is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.\n'),
-  "redact_pii_sub": zod.enum(['entity_name', 'hash']).optional().describe('The replacement logic for detected PII, can be \"entity_name\" or \"hash\". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'),
-  "speaker_labels": zod.boolean().nullish().describe('Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false'),
-  "speakers_expected": zod.number().nullish().describe('Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'),
-  "content_safety": zod.boolean().nullish().describe('Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false'),
+}).describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n').or(zod.null()).optional().describe('An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n'),
+  "chapters": zod.array(zod.object({
+  "gist": zod.string().describe('An ultra-short summary (just a few words) of the content spoken in the chapter'),
+  "headline": zod.string().describe('A single sentence summary of the content spoken during the chapter'),
+  "summary": zod.string().describe('A one paragraph summary of the content spoken during the chapter'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the chapter'),
+  "end": zod.number().describe('The starting time, in milliseconds, for the chapter')
+}).describe('Chapter of the audio file')).nullish().describe('An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for more information.'),
+  "confidence": zod.number().min(deleteTranscriptResponseConfidenceMin).max(deleteTranscriptResponseConfidenceMax).nullish().describe('The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'),
+  "content_safety": zod.boolean().nullish().describe('Whether [Content Moderation](https://www.assemblyai.com/docs/content-moderation) is enabled, can be true or false'),
   "content_safety_labels": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -713,8 +868,24 @@ export const deleteTranscriptResponse = zod.object({
   "medium": zod.number().min(deleteTranscriptResponseContentSafetyLabelsSeverityScoreSummaryMediumMin).max(deleteTranscriptResponseContentSafetyLabelsSeverityScoreSummaryMediumMax),
   "high": zod.number().min(deleteTranscriptResponseContentSafetyLabelsSeverityScoreSummaryHighMin).max(deleteTranscriptResponseContentSafetyLabelsSeverityScoreSummaryHighMax)
 })).describe('A summary of the Content Moderation severity results for the entire audio file')
-}).describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.\n').or(zod.null()).optional().describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.\n'),
-  "iab_categories": zod.boolean().nullish().describe('Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false'),
+}).describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/content-moderation) for more information.\n').or(zod.null()).optional().describe('An array of results for the Content Moderation model, if it is enabled.\nSee [Content moderation](https://www.assemblyai.com/docs/content-moderation) for more information.\n'),
+  "custom_spelling": zod.array(zod.object({
+  "from": zod.array(zod.string().describe('Word or phrase to replace')).describe('Words or phrases to replace'),
+  "to": zod.string().describe('Word to replace with')
+}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).nullish().describe('Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details.'),
+  "disfluencies": zod.boolean().nullish().describe('Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like \"umm\", in your media file; can be true or false'),
+  "domain": zod.string().nullish().describe('The domain-specific model applied to the transcript. When set to `\"medical-v1\"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medical terminology.\n'),
+  "entities": zod.array(zod.object({
+  "entity_type": zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of entity for the detected entity'),
+  "text": zod.string().describe('The text for the detected entity'),
+  "start": zod.number().describe('The starting time, in milliseconds, at which the detected entity appears in the audio file'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the detected entity in the audio file')
+}).describe('A detected entity')).nullish().describe('An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) for more information.\n'),
+  "entity_detection": zod.boolean().nullish().describe('Whether [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) is enabled, can be true or false'),
+  "error": zod.string().optional().describe('Error message of why the transcript failed'),
+  "filter_profanity": zod.boolean().nullish().describe('Whether [Profanity Filtering](https://www.assemblyai.com/docs/profanity-filtering) is enabled, either true or false'),
+  "format_text": zod.boolean().nullish().describe('Whether [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false'),
+  "iab_categories": zod.boolean().nullish().describe('Whether [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) is enabled, can be true or false'),
   "iab_categories_result": zod.object({
   "status": zod.enum(['success', 'unavailable']).describe('Either success, or unavailable in the rare case that the model failed'),
   "results": zod.array(zod.object({
@@ -729,28 +900,33 @@ export const deleteTranscriptResponse = zod.object({
 }).optional().describe('Timestamp containing a start and end property in milliseconds')
 }).describe('The result of the topic detection model')).describe('An array of results for the Topic Detection model'),
   "summary": zod.record(zod.string(), zod.number().min(deleteTranscriptResponseIabCategoriesResultSummaryMinOne).max(deleteTranscriptResponseIabCategoriesResultSummaryMaxOne)).describe('The overall relevance of topic to the entire audio file')
-}).describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.\n').or(zod.null()).optional().describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.\n'),
-  "custom_spelling": zod.array(zod.object({
-  "from": zod.array(zod.string().describe('Word or phrase to replace')).describe('Words or phrases to replace'),
-  "to": zod.string().describe('Word to replace with')
-}).describe('Object containing words or phrases to replace, and the word or phrase to replace with')).nullish().describe('Customize how words are spelled and formatted using to and from values'),
-  "keyterms_prompt": zod.array(zod.string()).optional().describe('Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).\n'),
-  "prompt": zod.string().optional().describe('This parameter does not currently have any functionality attached to it.'),
-  "auto_chapters": zod.boolean().nullish().describe('Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false'),
-  "chapters": zod.array(zod.object({
-  "gist": zod.string().describe('An ultra-short summary (just a few words) of the content spoken in the chapter'),
-  "headline": zod.string().describe('A single sentence summary of the content spoken during the chapter'),
-  "summary": zod.string().describe('A one paragraph summary of the content spoken during the chapter'),
-  "start": zod.number().describe('The starting time, in milliseconds, for the chapter'),
-  "end": zod.number().describe('The starting time, in milliseconds, for the chapter')
-}).describe('Chapter of the audio file')).nullish().describe('An array of temporally sequential chapters for the audio file'),
-  "summarization": zod.boolean().describe('Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false'),
-  "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'),
-  "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled\n'),
-  "summary": zod.string().nullish().describe('The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'),
-  "custom_topics": zod.boolean().nullish().describe('Whether custom topics is enabled, either true or false'),
-  "topics": zod.array(zod.string()).optional().describe('The list of custom topics provided if custom topics is enabled'),
-  "sentiment_analysis": zod.boolean().nullish().describe('Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false'),
+}).describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n').or(zod.null()).optional().describe('The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n'),
+  "id": zod.string().uuid().describe('The unique identifier of your transcript'),
+  "keyterms_prompt": zod.array(zod.string()).optional().describe('Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n'),
+  "language_code": zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n').or(zod.string()).optional().describe('The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n'),
+  "language_codes": zod.array(zod.enum(['en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo']).describe('The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is \'en_us\'.\n')).nullish().describe('The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)\nOne of the values specified must be `en`.\n'),
+  "language_confidence": zod.number().min(deleteTranscriptResponseLanguageConfidenceMin).max(deleteTranscriptResponseLanguageConfidenceMax).nullable().describe('The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence). See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.'),
+  "language_confidence_threshold": zod.number().min(deleteTranscriptResponseLanguageConfidenceThresholdMin).max(deleteTranscriptResponseLanguageConfidenceThresholdMax).nullable().describe('The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nSee [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "language_detection": zod.boolean().nullish().describe('Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false'),
+  "language_detection_options": zod.object({
+  "expected_languages": zod.array(zod.string()).optional().describe('List of languages expected in the audio file. Defaults to `[\"all\"]` when unspecified. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.'),
+  "fallback_language": zod.string().default(deleteTranscriptResponseLanguageDetectionOptionsFallbackLanguageDefault).describe('If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `[\"auto\"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n'),
+  "code_switching": zod.boolean().optional().describe('Whether [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) should be detected.\n'),
+  "code_switching_confidence_threshold": zod.number().min(deleteTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMin).max(deleteTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdMax).default(deleteTranscriptResponseLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault).describe('The confidence threshold for [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.\n')
+}).optional().describe('Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection).'),
+  "multichannel": zod.boolean().nullish().describe('Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) was enabled in the transcription request, either true or false'),
+  "prompt": zod.string().optional().describe('Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "punctuate": zod.boolean().nullish().describe('Whether [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false'),
+  "redact_pii": zod.boolean().describe('Whether [PII Redaction](https://www.assemblyai.com/docs/pii-redaction) is enabled, either true or false'),
+  "redact_pii_audio": zod.boolean().nullish().describe('Whether a redacted version of the audio file was generated,\neither true or false. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_audio_options": zod.object({
+  "return_redacted_no_speech_audio": zod.boolean().optional().describe('By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.'),
+  "override_audio_redaction_method": zod.enum(['silence']).optional().describe('Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.')
+}).optional().describe('The options for PII-redacted audio, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_audio_quality": zod.enum(['mp3', 'wav']).describe('Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.').or(zod.null()).optional().describe('The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n'),
+  "redact_pii_policies": zod.array(zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of PII to redact')).nullish().describe('The list of PII Redaction policies that were enabled, if PII Redaction is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n'),
+  "redact_pii_sub": zod.enum(['entity_name', 'hash']).optional().describe('The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.'),
+  "sentiment_analysis": zod.boolean().nullish().describe('Whether [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) is enabled, can be true or false'),
   "sentiment_analysis_results": zod.array(zod.object({
   "text": zod.string().describe('The transcript of the sentence'),
   "start": zod.number().describe('The starting time, in milliseconds, of the sentence'),
@@ -758,20 +934,100 @@ export const deleteTranscriptResponse = zod.object({
   "sentiment": zod.enum(['POSITIVE', 'NEUTRAL', 'NEGATIVE']),
   "confidence": zod.number().min(deleteTranscriptResponseSentimentAnalysisResultsItemConfidenceMin).max(deleteTranscriptResponseSentimentAnalysisResultsItemConfidenceMax).describe('The confidence score for the detected sentiment of the sentence, from 0 to 1'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
-}).describe('The result of the Sentiment Analysis model')).nullish().describe('An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) for more information.\n'),
-  "entity_detection": zod.boolean().nullish().describe('Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false'),
-  "entities": zod.array(zod.object({
-  "entity_type": zod.enum(['account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number', 'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename', 'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition', 'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number', 'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion', 'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign']).describe('The type of entity for the detected entity'),
-  "text": zod.string().describe('The text for the detected entity'),
-  "start": zod.number().describe('The starting time, in milliseconds, at which the detected entity appears in the audio file'),
-  "end": zod.number().describe('The ending time, in milliseconds, for the detected entity in the audio file')
-}).describe('A detected entity')).nullish().describe('An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.\n'),
-  "speech_threshold": zod.number().min(deleteTranscriptResponseSpeechThresholdMin).max(deleteTranscriptResponseSpeechThresholdMax).nullish().describe('Defaults to null. Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive.\n'),
+  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+}).describe('The result of the Sentiment Analysis model')).nullish().describe('An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) for more information.\n'),
+  "speaker_labels": zod.boolean().nullish().describe('Whether [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, can be true or false'),
+  "speakers_expected": zod.number().nullish().describe('Tell the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details.'),
+  "speech_model_used": zod.string().optional().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.'),
+  "speech_models": zod.array(zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.')).nullish().describe('List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n'),
+  "speech_threshold": zod.number().min(deleteTranscriptResponseSpeechThresholdMin).max(deleteTranscriptResponseSpeechThresholdMax).nullish().describe('Defaults to null. Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.\n'),
+  "speech_understanding": zod.object({
+  "request": zod.object({
+  "translation": zod.object({
+  "target_languages": zod.array(zod.string()).describe('List of target language codes (e.g., `[\"es\", \"de\"]`). See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for supported languages.'),
+  "formal": zod.boolean().default(deleteTranscriptResponseSpeechUnderstandingRequestTranslationFormalDefault).describe('Use formal language style. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.'),
+  "match_original_utterance": zod.boolean().optional().describe('When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.')
+})
+}).describe('Request body for [Translation](https://www.assemblyai.com/docs/speech-understanding/translation).').or(zod.object({
+  "speaker_identification": zod.object({
+  "speaker_type": zod.enum(['role', 'name']).describe('Type of speaker identification. See [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification) for details on each type.'),
+  "known_values": zod.array(zod.string()).optional().describe('Required if speaker_type is \"role\". Each value must be 35 characters or less.'),
+  "speakers": zod.array(zod.object({
+  "role": zod.string().optional().describe('The role of the speaker. Required when `speaker_type` is \"role\".'),
+  "name": zod.string().optional().describe('The name of the speaker. Required when `speaker_type` is \"name\".'),
+  "description": zod.string().optional().describe('A description of the speaker to help the model identify them based on conversational context.')
+})).optional().describe('An array of speaker objects with metadata to improve identification accuracy. Each object should include a `role` or `name` (depending on `speaker_type`) and an optional `description` to help the model identify the speaker. You can also include any additional custom properties (e.g., `company`, `title`) to provide more context. Use this as an alternative to `known_values` when you want to provide additional context about each speaker.')
+})
+}).describe('Request body for [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification).')).or(zod.object({
+  "custom_formatting": zod.object({
+  "date": zod.string().optional().describe('Date format pattern (e.g., `\"mm/dd/yyyy\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "phone_number": zod.string().optional().describe('Phone number format pattern (e.g., `\"(xxx)xxx-xxxx\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'),
+  "email": zod.string().optional().describe('Email format pattern (e.g., `\"username@domain.com\"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.')
+})
+}).describe('Request body for [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting).')).optional(),
+  "response": zod.object({
+  "translation": zod.object({
+  "status": zod.string().optional()
+}).optional()
+}).or(zod.object({
+  "speaker_identification": zod.object({
+  "mapping": zod.record(zod.string(), zod.string()).optional().describe('A mapping of the original generic speaker labels (e.g., \"A\", \"B\") to the identified speaker names or roles.'),
+  "status": zod.string().optional()
+}).optional()
+})).or(zod.object({
+  "custom_formatting": zod.object({
+  "mapping": zod.record(zod.string(), zod.string()).optional(),
+  "formatted_text": zod.string().optional()
+}).optional()
+})).optional()
+}).optional().describe('Speech understanding tasks like [Translation](https://www.assemblyai.com/docs/speech-understanding/translation), [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification), and [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting). See the task-specific docs for available options and configuration.\n'),
+  "status": zod.enum(['queued', 'processing', 'completed', 'error']).describe('The status of your transcript. Possible values are queued, processing, completed, or error.'),
+  "summarization": zod.boolean().describe('Whether [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled, either true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n'),
+  "summary": zod.string().nullish().describe('The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
+  "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n'),
+  "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
+  "remove_audio_tags": zod.enum(['all']).or(zod.null()).optional().describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
+  "temperature": zod.number().min(deleteTranscriptResponseTemperatureMin).max(deleteTranscriptResponseTemperatureMax).nullish().describe('The temperature that was used for the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
+  "text": zod.string().nullish().describe('The textual transcript of your media file'),
   "throttled": zod.boolean().nullish().describe('True while a request is throttled and false when a request is no longer throttled'),
-  "error": zod.string().optional().describe('Error message of why the transcript failed'),
-  "language_model": zod.string().describe('The language model that was used for the transcript'),
-  "acoustic_model": zod.string().describe('The acoustic model that was used for the transcript')
+  "utterances": zod.array(zod.object({
+  "confidence": zod.number().min(deleteTranscriptResponseUtterancesItemConfidenceMin).max(deleteTranscriptResponseUtterancesItemConfidenceMax).describe('The confidence score for the transcript of this utterance'),
+  "start": zod.number().describe('The starting time, in milliseconds, of the utterance in the audio file'),
+  "end": zod.number().describe('The ending time, in milliseconds, of the utterance in the audio file'),
+  "text": zod.string().describe('The text for this utterance'),
+  "words": zod.array(zod.object({
+  "confidence": zod.number().min(deleteTranscriptResponseUtterancesItemWordsItemConfidenceMin).max(deleteTranscriptResponseUtterancesItemWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
+  "text": zod.string().describe('The text of the word'),
+  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+})).describe('The words in the utterance.'),
+  "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
+})).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) for more information.\n'),
+  "webhook_auth": zod.boolean().describe('Whether [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) authentication details were provided'),
+  "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests'),
+  "webhook_status_code": zod.number().nullish().describe('The status code we received from your server when delivering the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) request, if a webhook URL was provided'),
+  "webhook_url": zod.string().nullish().describe('The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.\n'),
+  "words": zod.array(zod.object({
+  "confidence": zod.number().min(deleteTranscriptResponseWordsItemConfidenceMin).max(deleteTranscriptResponseWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
+  "start": zod.number().describe('The starting time, in milliseconds, for the word'),
+  "end": zod.number().describe('The ending time, in milliseconds, for the word'),
+  "text": zod.string().describe('The text of the word'),
+  "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
+})).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\n'),
+  "acoustic_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
+  "custom_topics": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
+  "language_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
+  "speech_model": zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.').or(zod.null()).describe('This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).\n'),
+  "speed_boost": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
+  "topics": zod.array(zod.string()).optional().describe('This parameter does not currently have any functionality attached to it.'),
+  "translated_texts": zod.object({
+  "language_code": zod.string().optional().describe('Translated text for this language code')
+}).optional().describe('Translated text keyed by language code. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.')
 }).describe('A transcript object')
 
 
@@ -827,10 +1083,10 @@ export const getTranscriptSentencesResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
 })).describe('An array of words in the sentence'),
   "channel": zod.string().nullish().describe('The channel of the sentence. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
 })).describe('An array of sentences in the transcript')
 })
 
@@ -871,7 +1127,7 @@ export const getTranscriptParagraphsResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null')
 })).describe('An array of words in the paragraph')
 })).describe('An array of paragraphs in the transcript')
 })
@@ -904,7 +1160,8 @@ export const wordSearchResponse = zod.object({
 
 
 /**
- * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
+<Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>
 Retrieve the redacted audio object containing the status and URL to the redacted audio.
 
  * @summary Get redacted audio
@@ -916,198 +1173,4 @@ export const getRedactedAudioParams = zod.object({
 export const getRedactedAudioResponse = zod.object({
   "status": zod.enum(['redacted_audio_ready']).describe('The status of the redacted audio'),
   "redacted_audio_url": zod.string().describe('The URL of the redacted audio file')
-})
-
-
-/**
- * <Warning>Streaming Speech-to-Text is currently not available on the EU endpoint.</Warning>
-<Note>Any usage associated with a temporary token will be attributed to the API key that generated it.</Note>
-Create a temporary authentication token for Streaming Speech-to-Text
-
- * @summary Create temporary authentication token for Streaming STT
- */
-export const createTemporaryTokenBodyExpiresInMin = 60;
-
-
-export const createTemporaryTokenBody = zod.object({
-  "expires_in": zod.number().min(createTemporaryTokenBodyExpiresInMin).describe('The amount of time until the token expires in seconds')
-})
-
-export const createTemporaryTokenResponse = zod.object({
-  "token": zod.string().describe('The temporary authentication token for Streaming Speech-to-Text')
-})
-
-
-/**
- * Use the LeMUR task endpoint to input your own LLM prompt.
-
- * @summary Run a task using LeMUR
- */
-export const lemurTaskBodyFinalModelDefault = "default";export const lemurTaskBodyMaxOutputSizeDefault = 2000;export const lemurTaskBodyTemperatureDefault = 0;
-export const lemurTaskBodyTemperatureMin = 0;
-
-export const lemurTaskBodyTemperatureMax = 1;
-
-
-export const lemurTaskBody = zod.object({
-  "prompt": zod.string().describe('Your text to prompt the model to produce a desired output, including any context you want to pass into the model.')
-}).and(zod.object({
-  "transcript_ids": zod.array(zod.string().uuid()).optional().describe('A list of completed transcripts with text. Up to a maximum of 100 hours of audio.\nUse either transcript_ids or input_text as input into LeMUR.\n'),
-  "input_text": zod.string().optional().describe('Custom formatted transcript data. Maximum size is the context limit of the selected model.\nUse either transcript_ids or input_text as input into LeMUR.\n'),
-  "context": zod.string().or(zod.record(zod.string(), zod.any())).optional().describe('Context to provide the model. This can be a string or a free-form JSON value.'),
-  "final_model": zod.enum(['anthropic/claude-3-5-sonnet', 'anthropic/claude-3-opus', 'anthropic/claude-3-haiku']).describe('The model that is used for the final prompt after compression is performed.\n').or(zod.string()).describe('The model that is used for the final prompt after compression is performed.\n'),
-  "max_output_size": zod.number().default(lemurTaskBodyMaxOutputSizeDefault).describe('Max output size in tokens.'),
-  "temperature": zod.number().min(lemurTaskBodyTemperatureMin).max(lemurTaskBodyTemperatureMax).optional().describe('The temperature to use for the model.\nHigher values result in answers that are more creative, lower values are more conservative.\nCan be any value between 0.0 and 1.0 inclusive.\n')
-}))
-
-export const lemurTaskResponseUsageInputTokensMin = 0;
-export const lemurTaskResponseUsageOutputTokensMin = 0;
-
-
-export const lemurTaskResponse = zod.object({
-  "response": zod.string().describe('The response generated by LeMUR.')
-}).and(zod.object({
-  "request_id": zod.string().uuid().describe('The ID of the LeMUR request'),
-  "usage": zod.object({
-  "input_tokens": zod.number().min(lemurTaskResponseUsageInputTokensMin).describe('The number of input tokens used by the model'),
-  "output_tokens": zod.number().min(lemurTaskResponseUsageOutputTokensMin).describe('The number of output tokens generated by the model')
-}).describe('The usage numbers for the LeMUR request')
-}))
-
-
-/**
- * Custom Summary allows you to distill a piece of audio into a few impactful sentences.
-You can give the model context to obtain more targeted results while outputting the results in a variety of formats described in human language.
-
- * @summary Summarize a transcript using LeMUR
- */
-export const lemurSummaryBodyFinalModelDefault = "default";export const lemurSummaryBodyMaxOutputSizeDefault = 2000;export const lemurSummaryBodyTemperatureDefault = 0;
-export const lemurSummaryBodyTemperatureMin = 0;
-
-export const lemurSummaryBodyTemperatureMax = 1;
-
-
-export const lemurSummaryBody = zod.object({
-  "transcript_ids": zod.array(zod.string().uuid()).optional().describe('A list of completed transcripts with text. Up to a maximum of 100 hours of audio.\nUse either transcript_ids or input_text as input into LeMUR.\n'),
-  "input_text": zod.string().optional().describe('Custom formatted transcript data. Maximum size is the context limit of the selected model.\nUse either transcript_ids or input_text as input into LeMUR.\n'),
-  "context": zod.string().or(zod.record(zod.string(), zod.any())).optional().describe('Context to provide the model. This can be a string or a free-form JSON value.'),
-  "final_model": zod.enum(['anthropic/claude-3-5-sonnet', 'anthropic/claude-3-opus', 'anthropic/claude-3-haiku']).describe('The model that is used for the final prompt after compression is performed.\n').or(zod.string()).describe('The model that is used for the final prompt after compression is performed.\n'),
-  "max_output_size": zod.number().default(lemurSummaryBodyMaxOutputSizeDefault).describe('Max output size in tokens.'),
-  "temperature": zod.number().min(lemurSummaryBodyTemperatureMin).max(lemurSummaryBodyTemperatureMax).optional().describe('The temperature to use for the model.\nHigher values result in answers that are more creative, lower values are more conservative.\nCan be any value between 0.0 and 1.0 inclusive.\n')
-}).and(zod.object({
-  "answer_format": zod.string().optional().describe('How you want the summary to be returned. This can be any text. Examples: \"TLDR\", \"bullet points\"\n')
-}))
-
-export const lemurSummaryResponseUsageInputTokensMin = 0;
-export const lemurSummaryResponseUsageOutputTokensMin = 0;
-
-
-export const lemurSummaryResponse = zod.object({
-  "response": zod.string().describe('The response generated by LeMUR.')
-}).and(zod.object({
-  "request_id": zod.string().uuid().describe('The ID of the LeMUR request'),
-  "usage": zod.object({
-  "input_tokens": zod.number().min(lemurSummaryResponseUsageInputTokensMin).describe('The number of input tokens used by the model'),
-  "output_tokens": zod.number().min(lemurSummaryResponseUsageOutputTokensMin).describe('The number of output tokens generated by the model')
-}).describe('The usage numbers for the LeMUR request')
-}))
-
-
-/**
- * Question & Answer allows you to ask free-form questions about a single transcript or a group of transcripts.
-The questions can be any whose answers you find useful, such as judging whether a caller is likely to become a customer or whether all items on a meeting's agenda were covered.
-
- * @summary Ask questions using LeMUR
- */
-export const lemurQuestionAnswerBodyFinalModelDefault = "default";export const lemurQuestionAnswerBodyMaxOutputSizeDefault = 2000;export const lemurQuestionAnswerBodyTemperatureDefault = 0;
-export const lemurQuestionAnswerBodyTemperatureMin = 0;
-
-export const lemurQuestionAnswerBodyTemperatureMax = 1;
-
-
-export const lemurQuestionAnswerBody = zod.object({
-  "transcript_ids": zod.array(zod.string().uuid()).optional().describe('A list of completed transcripts with text. Up to a maximum of 100 hours of audio.\nUse either transcript_ids or input_text as input into LeMUR.\n'),
-  "input_text": zod.string().optional().describe('Custom formatted transcript data. Maximum size is the context limit of the selected model.\nUse either transcript_ids or input_text as input into LeMUR.\n'),
-  "context": zod.string().or(zod.record(zod.string(), zod.any())).optional().describe('Context to provide the model. This can be a string or a free-form JSON value.'),
-  "final_model": zod.enum(['anthropic/claude-3-5-sonnet', 'anthropic/claude-3-opus', 'anthropic/claude-3-haiku']).describe('The model that is used for the final prompt after compression is performed.\n').or(zod.string()).describe('The model that is used for the final prompt after compression is performed.\n'),
-  "max_output_size": zod.number().default(lemurQuestionAnswerBodyMaxOutputSizeDefault).describe('Max output size in tokens.'),
-  "temperature": zod.number().min(lemurQuestionAnswerBodyTemperatureMin).max(lemurQuestionAnswerBodyTemperatureMax).optional().describe('The temperature to use for the model.\nHigher values result in answers that are more creative, lower values are more conservative.\nCan be any value between 0.0 and 1.0 inclusive.\n')
-}).and(zod.object({
-  "questions": zod.array(zod.object({
-  "question": zod.string().describe('The question you wish to ask. For more complex questions use default model.'),
-  "context": zod.string().or(zod.record(zod.string(), zod.any())).optional().describe('Any context about the transcripts you wish to provide. This can be a string or any object.'),
-  "answer_format": zod.string().optional().describe('How you want the answer to be returned. This can be any text. Can\'t be used with answer_options. Examples: \"short sentence\", \"bullet points\"\n'),
-  "answer_options": zod.array(zod.string()).optional().describe('What discrete options to return. Useful for precise responses. Can\'t be used with answer_format. Example: [\"Yes\", \"No\"]\n')
-})).describe('A list of questions to ask')
-}))
-
-export const lemurQuestionAnswerResponseUsageInputTokensMin = 0;
-export const lemurQuestionAnswerResponseUsageOutputTokensMin = 0;
-
-
-export const lemurQuestionAnswerResponse = zod.object({
-  "request_id": zod.string().uuid().describe('The ID of the LeMUR request'),
-  "usage": zod.object({
-  "input_tokens": zod.number().min(lemurQuestionAnswerResponseUsageInputTokensMin).describe('The number of input tokens used by the model'),
-  "output_tokens": zod.number().min(lemurQuestionAnswerResponseUsageOutputTokensMin).describe('The number of output tokens generated by the model')
-}).describe('The usage numbers for the LeMUR request')
-}).and(zod.object({
-  "response": zod.array(zod.object({
-  "question": zod.string().describe('The question for LeMUR to answer'),
-  "answer": zod.string().describe('The answer generated by LeMUR')
-}).describe('An answer generated by LeMUR and its question')).describe('The answers generated by LeMUR and their questions')
-}))
-
-
-/**
- * Retrieve a LeMUR response that was previously generated.
-
- * @summary Retrieve LeMUR response
- */
-export const getLemurResponseParams = zod.object({
-  "request_id": zod.string().describe('The ID of the LeMUR request you previously made.\nThis would be found in the response of the original request.\n')
-})
-
-export const getLemurResponseResponseUsageInputTokensMin = 0;
-export const getLemurResponseResponseUsageOutputTokensMin = 0;
-export const getLemurResponseResponseUsageInputTokensMinOne = 0;
-export const getLemurResponseResponseUsageOutputTokensMinOne = 0;
-
-
-export const getLemurResponseResponse = zod.object({
-  "response": zod.string().describe('The response generated by LeMUR.')
-}).and(zod.object({
-  "request_id": zod.string().uuid().describe('The ID of the LeMUR request'),
-  "usage": zod.object({
-  "input_tokens": zod.number().min(getLemurResponseResponseUsageInputTokensMin).describe('The number of input tokens used by the model'),
-  "output_tokens": zod.number().min(getLemurResponseResponseUsageOutputTokensMin).describe('The number of output tokens generated by the model')
-}).describe('The usage numbers for the LeMUR request')
-})).or(zod.object({
-  "request_id": zod.string().uuid().describe('The ID of the LeMUR request'),
-  "usage": zod.object({
-  "input_tokens": zod.number().min(getLemurResponseResponseUsageInputTokensMinOne).describe('The number of input tokens used by the model'),
-  "output_tokens": zod.number().min(getLemurResponseResponseUsageOutputTokensMinOne).describe('The number of output tokens generated by the model')
-}).describe('The usage numbers for the LeMUR request')
-}).and(zod.object({
-  "response": zod.array(zod.object({
-  "question": zod.string().describe('The question for LeMUR to answer'),
-  "answer": zod.string().describe('The answer generated by LeMUR')
-}).describe('An answer generated by LeMUR and its question')).describe('The answers generated by LeMUR and their questions')
-})))
-
-
-/**
- * Delete the data for a previously submitted LeMUR request.
-The LLM response data, as well as any context provided in the original request will be removed.
-
- * @summary Purge LeMUR request data
- */
-export const purgeLemurRequestDataParams = zod.object({
-  "request_id": zod.string().describe('The ID of the LeMUR request whose data you want to delete. This would be found in the response of the original request.')
-})
-
-export const purgeLemurRequestDataResponse = zod.object({
-  "request_id": zod.string().uuid().describe('The ID of the deletion request of the LeMUR request'),
-  "request_id_to_purge": zod.string().uuid().describe('The ID of the LeMUR request to purge the data for'),
-  "deleted": zod.boolean().describe('Whether the request data was deleted')
 })

@@ -4,15 +4,15 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptMessageType } from './transcriptMessageType';
-import type { TranscriptMessageData } from './transcriptMessageData';
+import type { TranscriptMessageType } from "./transcriptMessageType"
+import type { TranscriptMessageData } from "./transcriptMessageData"
 
 export interface TranscriptMessage {
   /** Id of the live session */
-  session_id: string;
+  session_id: string
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string;
-  type: TranscriptMessageType;
+  created_at: string
+  type: TranscriptMessageType
   /** The message data */
-  data: TranscriptMessageData;
+  data: TranscriptMessageData
 }

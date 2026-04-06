@@ -4,12 +4,12 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { EndSessionMessageType } from './endSessionMessageType';
+import type { EndSessionMessageType } from "./endSessionMessageType"
 
 export interface EndSessionMessage {
   /** Id of the live session */
-  session_id: string;
+  session_id: string
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string;
-  type: EndSessionMessageType;
+  created_at: string
+  type: EndSessionMessageType
 }

@@ -5,14 +5,14 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { TranscriptionConfigTranscriptFilteringConfigReplacementsItem } from './transcriptionConfigTranscriptFilteringConfigReplacementsItem';
+import type { TranscriptionConfigTranscriptFilteringConfigReplacementsItem } from "./transcriptionConfigTranscriptFilteringConfigReplacementsItem"
 
 /**
  * Configuration for applying filtering to the transcription
  */
 export type TranscriptionConfigTranscriptFilteringConfig = {
   /** If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'. */
-  remove_disfluencies?: boolean;
+  remove_disfluencies?: boolean
   /** A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text. */
-  replacements?: TranscriptionConfigTranscriptFilteringConfigReplacementsItem[];
-};
+  replacements?: TranscriptionConfigTranscriptFilteringConfigReplacementsItem[]
+}

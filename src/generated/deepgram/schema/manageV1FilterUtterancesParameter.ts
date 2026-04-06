@@ -10,4 +10,4 @@
 /**
  * Filter for requests where utterances was used
  */
-export type ManageV1FilterUtterancesParameter = boolean;
+export type ManageV1FilterUtterancesParameter = boolean

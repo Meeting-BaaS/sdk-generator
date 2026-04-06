@@ -210,13 +210,14 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
               speaker: utterance.speaker?.toString(),
               channel: utterance.channel,
               confidence: utterance.confidence,
-              words: utterance.words?.map((w) => ({
-                word: w.word || "",
-                start: w.start || 0,
-                end: w.end || 0,
-                confidence: w.confidence,
-                speaker: w.speaker?.toString()
-              })) ?? []
+              words:
+                utterance.words?.map((w) => ({
+                  word: w.word || "",
+                  start: w.start || 0,
+                  end: w.end || 0,
+                  confidence: w.confidence,
+                  speaker: w.speaker?.toString()
+                })) ?? []
             }))
           : undefined
 

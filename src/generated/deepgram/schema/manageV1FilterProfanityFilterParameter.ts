@@ -10,4 +10,4 @@
 /**
  * Filter for requests where profanity filter was used
  */
-export type ManageV1FilterProfanityFilterParameter = boolean;
+export type ManageV1FilterProfanityFilterParameter = boolean

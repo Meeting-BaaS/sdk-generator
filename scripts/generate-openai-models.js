@@ -225,8 +225,12 @@ ${sortedAll
     fs.writeFileSync(OUTPUT_PATH, output, "utf-8")
     console.log(`✅ Generated ${OUTPUT_PATH}`)
     console.log(`   - Exports: OpenAIModelCodes, OpenAIModelCode`)
-    console.log(`   - Exports: OpenAITranscriptionModelCodes, OpenAITranscriptionModelCode, OpenAITranscriptionModel`)
-    console.log(`   - Exports: OpenAIRealtimeModelCodes, OpenAIRealtimeModelCode, OpenAIRealtimeModel`)
+    console.log(
+      `   - Exports: OpenAITranscriptionModelCodes, OpenAITranscriptionModelCode, OpenAITranscriptionModel`
+    )
+    console.log(
+      `   - Exports: OpenAIRealtimeModelCodes, OpenAIRealtimeModelCode, OpenAIRealtimeModel`
+    )
     console.log(`   - Exports: OpenAIModelLabels`)
   } catch (error) {
     console.error(`❌ Failed to generate OpenAI models: ${error.message}`)

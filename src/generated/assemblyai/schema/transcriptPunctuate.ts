@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether Automatic Punctuation is enabled, either true or false
+ * Whether [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false
  */
 export type TranscriptPunctuate = boolean | null;

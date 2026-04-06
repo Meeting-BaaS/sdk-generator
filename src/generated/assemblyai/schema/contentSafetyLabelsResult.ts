@@ -12,7 +12,7 @@ import type { ContentSafetyLabelsResultSeverityScoreSummary } from './contentSaf
 
 /**
  * An array of results for the Content Moderation model, if it is enabled.
-See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
+See [Content moderation](https://www.assemblyai.com/docs/content-moderation) for more information.
 
  */
 export interface ContentSafetyLabelsResult {

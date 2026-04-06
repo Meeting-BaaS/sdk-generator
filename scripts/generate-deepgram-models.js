@@ -140,7 +140,9 @@ ${models
     fs.writeFileSync(OUTPUT_PATH, output, "utf-8")
     console.log(`✅ Generated ${OUTPUT_PATH}`)
     console.log(`   - ${models.length} models`)
-    console.log(`   - Exports: DeepgramModelCodes, DeepgramModelCode, DeepgramModel, DeepgramModelLabels`)
+    console.log(
+      `   - Exports: DeepgramModelCodes, DeepgramModelCode, DeepgramModel, DeepgramModelLabels`
+    )
   } catch (error) {
     console.error(`❌ Failed to fetch Deepgram models: ${error.message}`)
     process.exit(1)

@@ -410,8 +410,11 @@ export class SonioxAdapter extends BaseAdapter {
 
     // Build WebSocket URL with query parameters (using regional WebSocket host)
     // Respect wsBaseUrl > baseUrl > regional default
-    const wsBase = this.config?.wsBaseUrl
-      || (this.config?.baseUrl ? this.deriveWsUrl(this.config.baseUrl) : `wss://${this.getRegionalWsHost()}`)
+    const wsBase =
+      this.config?.wsBaseUrl ||
+      (this.config?.baseUrl
+        ? this.deriveWsUrl(this.config.baseUrl)
+        : `wss://${this.getRegionalWsHost()}`)
     const wsUrl = new URL(`${wsBase}/transcribe-websocket`)
     wsUrl.searchParams.set("api_key", this.config!.apiKey)
     // Prefer sonioxStreaming.model over generic model option

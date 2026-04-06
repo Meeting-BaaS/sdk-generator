@@ -4,54 +4,54 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranscriptionMetadataDTO } from './transcriptionMetadataDTO';
-import type { TranscriptionDTO } from './transcriptionDTO';
-import type { TranslationDTO } from './translationDTO';
-import type { SummarizationDTO } from './summarizationDTO';
-import type { ModerationDTO } from './moderationDTO';
-import type { NamedEntityRecognitionDTO } from './namedEntityRecognitionDTO';
-import type { NamesConsistencyDTO } from './namesConsistencyDTO';
-import type { SpeakerReidentificationDTO } from './speakerReidentificationDTO';
-import type { StructuredDataExtractionDTO } from './structuredDataExtractionDTO';
-import type { SentimentAnalysisDTO } from './sentimentAnalysisDTO';
-import type { AudioToLlmListDTO } from './audioToLlmListDTO';
-import type { SentencesDTO } from './sentencesDTO';
-import type { DisplayModeDTO } from './displayModeDTO';
-import type { ChapterizationDTO } from './chapterizationDTO';
-import type { DiarizationDTO } from './diarizationDTO';
+import type { TranscriptionMetadataDTO } from "./transcriptionMetadataDTO"
+import type { TranscriptionDTO } from "./transcriptionDTO"
+import type { TranslationDTO } from "./translationDTO"
+import type { SummarizationDTO } from "./summarizationDTO"
+import type { ModerationDTO } from "./moderationDTO"
+import type { NamedEntityRecognitionDTO } from "./namedEntityRecognitionDTO"
+import type { NamesConsistencyDTO } from "./namesConsistencyDTO"
+import type { SpeakerReidentificationDTO } from "./speakerReidentificationDTO"
+import type { StructuredDataExtractionDTO } from "./structuredDataExtractionDTO"
+import type { SentimentAnalysisDTO } from "./sentimentAnalysisDTO"
+import type { AudioToLlmListDTO } from "./audioToLlmListDTO"
+import type { SentencesDTO } from "./sentencesDTO"
+import type { DisplayModeDTO } from "./displayModeDTO"
+import type { ChapterizationDTO } from "./chapterizationDTO"
+import type { DiarizationDTO } from "./diarizationDTO"
 
 export interface TranscriptionResultDTO {
   /** Metadata for the given transcription & audio file */
-  metadata: TranscriptionMetadataDTO;
+  metadata: TranscriptionMetadataDTO
   /** Transcription of the audio speech */
-  transcription?: TranscriptionDTO;
+  transcription?: TranscriptionDTO
   /** If `translation` has been enabled, translation of the audio speech transcription */
-  translation?: TranslationDTO;
+  translation?: TranslationDTO
   /** If `summarization` has been enabled, summarization of the audio speech transcription */
-  summarization?: SummarizationDTO;
+  summarization?: SummarizationDTO
   /** If `moderation` has been enabled, moderation of the audio speech transcription */
-  moderation?: ModerationDTO;
+  moderation?: ModerationDTO
   /** If `named_entity_recognition` has been enabled, the detected entities */
-  named_entity_recognition?: NamedEntityRecognitionDTO;
+  named_entity_recognition?: NamedEntityRecognitionDTO
   /** If `name_consistency` has been enabled, Gladia will improve consistency of the names accross the transcription */
-  name_consistency?: NamesConsistencyDTO;
+  name_consistency?: NamesConsistencyDTO
   /** If `speaker_reidentification` has been enabled, results of the AI speaker reidentification. */
-  speaker_reidentification?: SpeakerReidentificationDTO;
+  speaker_reidentification?: SpeakerReidentificationDTO
   /** If `structured_data_extraction` has been enabled, structured data extraction results */
-  structured_data_extraction?: StructuredDataExtractionDTO;
+  structured_data_extraction?: StructuredDataExtractionDTO
   /** If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription */
-  sentiment_analysis?: SentimentAnalysisDTO;
+  sentiment_analysis?: SentimentAnalysisDTO
   /** If `audio_to_llm` has been enabled, audio to llm results of the audio speech transcription */
-  audio_to_llm?: AudioToLlmListDTO;
+  audio_to_llm?: AudioToLlmListDTO
   /**
    * If `sentences` has been enabled, sentences of the audio speech transcription. Deprecated: content will move to the `transcription` object.
    * @deprecated
    */
-  sentences?: SentencesDTO;
+  sentences?: SentencesDTO
   /** If `display_mode` has been enabled, the output will be reordered, creating new utterances when speakers overlapped */
-  display_mode?: DisplayModeDTO;
+  display_mode?: DisplayModeDTO
   /** If `chapterization` has been enabled, will generate chapters name for different parts of the given audio. */
-  chapterization?: ChapterizationDTO;
+  chapterization?: ChapterizationDTO
   /** If `diarization` has been requested and an error has occurred, the result will appear here */
-  diarization?: DiarizationDTO;
+  diarization?: DiarizationDTO
 }

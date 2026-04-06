@@ -527,6 +527,20 @@
                     "$ref": "#/components/examples/VttSubtitlesResponse"
                   }
                 }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "example": "WEBVTT\n00:12.340 --> 00:16.220\nLast year I showed these two slides said that demonstrate\n00:16.200 --> 00:20.040\nthat the Arctic ice cap which for most of the last 3,000,000 years has been the\n00:20.020 --> 00:25.040\nsize of the lower 48 States has shrunk by 40% but this understates\n"
+                },
+                "examples": {
+                  "srt": {
+                    "$ref": "#/components/examples/SrtSubtitlesResponse"
+                  },
+                  "vtt": {
+                    "$ref": "#/components/examples/VttSubtitlesResponse"
+                  }
+                }
               }
             }
           },
@@ -1006,12 +1020,7 @@
             {
               "text": "wildfires",
               "count": 4,
-              "timestamps": [
-                [1668, 2346],
-                [33852, 34546],
-                [50118, 51110],
-                [231356, 232354]
-              ],
+              "timestamps": [[1668, 2346], [33852, 34546], [50118, 51110], [231356, 232354]],
               "indexes": [4, 90, 140, 716]
             }
           ]
@@ -1123,7 +1132,7 @@
           },
           "auto_chapters": {
             "x-label": "Auto chapters",
-            "description": "Enable [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.",
+            "description": "Enable [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n",
             "type": "boolean",
             "default": false,
             "deprecated": true
@@ -1163,6 +1172,19 @@
             "type": "boolean",
             "default": false
           },
+          "domain": {
+            "x-label": "Domain",
+            "description": "Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `\"medical-v1\"` to enable [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages.\n\nSupported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned.\n",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
           "entity_detection": {
             "x-label": "Entity Detection",
             "description": "Enable [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection), can be true or false",
@@ -1189,7 +1211,7 @@
           },
           "keyterms_prompt": {
             "x-label": "Keyterms prompt",
-            "description": "Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n",
+            "description": "Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n",
             "type": "array",
             "items": {
               "x-label": "Keyterm",
@@ -1286,7 +1308,7 @@
           },
           "prompt": {
             "x-label": "Prompt",
-            "description": "Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3-Pro model.\n",
+            "description": "Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
             "type": "string"
           },
           "punctuate": {
@@ -1318,6 +1340,12 @@
                 "description": "By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.",
                 "type": "boolean",
                 "default": false
+              },
+              "override_audio_redaction_method": {
+                "x-label": "Override audio redaction method",
+                "description": "Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.",
+                "type": "string",
+                "enum": ["silence"]
               }
             }
           },
@@ -1375,9 +1403,8 @@
               },
               "max_speakers_expected": {
                 "x-label": "Maximum speakers expected",
-                "description": "<Warning>Setting this parameter too high may hurt model accuracy</Warning>\nThe maximum number of speakers expected in the audio file. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers) for more details.\n",
-                "type": "integer",
-                "default": 10
+                "description": "<Warning>Setting this parameter too high may hurt model accuracy</Warning>\nThe maximum number of speakers expected in the audio file. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers) for more details.\n",
+                "type": "integer"
               }
             }
           },
@@ -1428,7 +1455,7 @@
           },
           "summarization": {
             "x-label": "Enable Summarization",
-            "description": "Enable [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.",
+            "description": "Enable [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n",
             "type": "boolean",
             "default": false,
             "deprecated": true
@@ -1449,7 +1476,7 @@
           },
           "remove_audio_tags": {
             "x-label": "Remove audio tags",
-            "description": "Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3-Pro model.\n",
+            "description": "Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
             "oneOf": [
               {
                 "type": "string",
@@ -1463,7 +1490,7 @@
           },
           "temperature": {
             "x-label": "Temperature",
-            "description": "Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3-Pro model.\n",
+            "description": "Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n",
             "type": "number",
             "minimum": 0,
             "maximum": 1,
@@ -1536,10 +1563,7 @@
           "redact_pii": true,
           "redact_pii_audio": true,
           "redact_pii_audio_quality": "mp3",
-          "redact_pii_policies": [
-            "us_social_security_number",
-            "credit_card_number"
-          ],
+          "redact_pii_policies": ["us_social_security_number", "credit_card_number"],
           "redact_pii_sub": "hash",
           "speaker_labels": true,
           "speakers_expected": 2,
@@ -1557,6 +1581,7 @@
           "custom_topics": true,
           "topics": [],
           "remove_audio_tags": null,
+          "domain": null,
           "speech_understanding": {
             "request": {
               "translation": {
@@ -1611,10 +1636,7 @@
           "redact_pii": true,
           "redact_pii_audio": true,
           "redact_pii_audio_quality": "mp3",
-          "redact_pii_policies": [
-            "us_social_security_number",
-            "credit_card_number"
-          ],
+          "redact_pii_policies": ["us_social_security_number", "credit_card_number"],
           "redact_pii_sub": "hash",
           "speaker_labels": true,
           "speakers_expected": 2,
@@ -1632,6 +1654,7 @@
           "custom_topics": true,
           "topics": [],
           "remove_audio_tags": null,
+          "domain": null,
           "speech_understanding": {
             "request": {
               "translation": {
@@ -2036,7 +2059,7 @@
             "description": "Medications, vitamins, or supplements (e.g., Advil, Acetaminophen, Panadol)"
           },
           "duration": {
-            "description": "Periods of time, specified as a number and a unit of time (e.g., 8 months, 2 years)"
+            "description": "Measurements of time expressed as a numerical value plus a unit (e.g., 8 months, 2 years)"
           },
           "email_address": {
             "description": "Email address (e.g., support@assemblyai.com)"
@@ -2105,7 +2128,7 @@
             "description": "Telephone or fax number"
           },
           "physical_attribute": {
-            "description": "Distinctive bodily attributes, including terms indicating race (e.g., I'm 190cm tall, He belongs to the Black students' association)"
+            "description": "Distinctive bodily attributes, including race (e.g., I'm 190cm tall, He belongs to the Black students' association)"
           },
           "political_affiliation": {
             "description": "Terms referring to a political party, movement, or ideology (e.g., Republican, Liberal)"
@@ -2787,7 +2810,7 @@
           },
           "auto_chapters": {
             "x-label": "Auto Chapters enabled",
-            "description": "Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.",
+            "description": "Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n",
             "type": ["boolean", "null"],
             "deprecated": true
           },
@@ -2856,6 +2879,11 @@
             "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like \"umm\", in your media file; can be true or false",
             "type": ["boolean", "null"]
           },
+          "domain": {
+            "x-label": "Domain",
+            "description": "The domain-specific model applied to the transcript. When set to `\"medical-v1\"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medical terminology.\n",
+            "type": ["string", "null"]
+          },
           "entities": {
             "x-label": "Entities",
             "description": "An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) for more information.\n",
@@ -2910,7 +2938,7 @@
           },
           "keyterms_prompt": {
             "x-label": "Keyterms prompt",
-            "description": "Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n",
+            "description": "Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/keyterms-prompting) for more details.\n",
             "type": "array",
             "items": {
               "x-label": "Keyterm",
@@ -3004,7 +3032,7 @@
           },
           "prompt": {
             "x-label": "Prompt",
-            "description": "Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3-Pro model.\n",
+            "description": "Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
             "type": "string"
           },
           "punctuate": {
@@ -3021,6 +3049,26 @@
             "x-label": "Redact PII audio",
             "description": "Whether a redacted version of the audio file was generated,\neither true or false. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n",
             "type": ["boolean", "null"]
+          },
+          "redact_pii_audio_options": {
+            "x-label": "Redact PII audio options",
+            "description": "The options for PII-redacted audio, if redact_pii_audio is enabled.\nSee [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.\n",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "return_redacted_no_speech_audio": {
+                "x-label": "Return redacted no speech audio",
+                "description": "By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.",
+                "type": "boolean",
+                "default": false
+              },
+              "override_audio_redaction_method": {
+                "x-label": "Override audio redaction method",
+                "description": "Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.",
+                "type": "string",
+                "enum": ["silence"]
+              }
+            }
           },
           "redact_pii_audio_quality": {
             "x-label": "Redact PII audio quality",
@@ -3135,7 +3183,7 @@
           },
           "summarization": {
             "x-label": "Summarization enabled",
-            "description": "Whether [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled, either true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.",
+            "description": "Whether [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled, either true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n",
             "type": "boolean",
             "deprecated": true
           },
@@ -3159,7 +3207,7 @@
           },
           "remove_audio_tags": {
             "x-label": "Remove audio tags",
-            "description": "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3-Pro model.\n",
+            "description": "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
             "oneOf": [
               {
                 "type": "string",
@@ -3172,7 +3220,7 @@
           },
           "temperature": {
             "x-label": "Temperature",
-            "description": "The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3-Pro model.\n",
+            "description": "The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n",
             "type": ["number", "null"],
             "minimum": 0,
             "maximum": 1
@@ -3753,10 +3801,7 @@
           "redact_pii": true,
           "redact_pii_audio": true,
           "redact_pii_audio_quality": "mp3",
-          "redact_pii_policies": [
-            "us_social_security_number",
-            "credit_card_number"
-          ],
+          "redact_pii_policies": ["us_social_security_number", "credit_card_number"],
           "redact_pii_sub": "hash",
           "speaker_labels": true,
           "content_safety": true,
@@ -3884,6 +3929,7 @@
           "topics": [],
           "speech_threshold": 0.5,
           "remove_audio_tags": null,
+          "domain": null,
           "disfluencies": false,
           "sentiment_analysis": true,
           "sentiment_analysis_results": null,
@@ -4321,7 +4367,7 @@
             "description": "Medications, vitamins, or supplements (e.g., Advil, Acetaminophen, Panadol)"
           },
           "duration": {
-            "description": "Periods of time, specified as a number and a unit of time (e.g., 8 months, 2 years)"
+            "description": "Measurements of time expressed as a numerical value plus a unit (e.g., 8 months, 2 years)"
           },
           "email_address": {
             "description": "Email address (e.g., support@assemblyai.com)"
@@ -4390,7 +4436,7 @@
             "description": "Telephone or fax number"
           },
           "physical_attribute": {
-            "description": "Distinctive bodily attributes, including terms indicating race (e.g., I'm 190cm tall, He belongs to the Black students' association)"
+            "description": "Distinctive bodily attributes, including race (e.g., I'm 190cm tall, He belongs to the Black students' association)"
           },
           "political_affiliation": {
             "description": "Terms referring to a political party, movement, or ideology (e.g., Republican, Liberal)"
@@ -4561,14 +4607,7 @@
         "x-fern-sdk-group-name": "transcripts",
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "text",
-          "start",
-          "end",
-          "sentiment",
-          "confidence",
-          "speaker"
-        ],
+        "required": ["text", "start", "end", "sentiment", "confidence", "speaker"],
         "properties": {
           "text": {
             "x-label": "Text",
@@ -4768,13 +4807,7 @@
         "type": "object",
         "x-fern-sdk-group-name": "transcripts",
         "additionalProperties": false,
-        "required": [
-          "text",
-          "labels",
-          "sentences_idx_start",
-          "sentences_idx_end",
-          "timestamp"
-        ],
+        "required": ["text", "labels", "sentences_idx_start", "sentences_idx_end", "timestamp"],
         "properties": {
           "text": {
             "x-label": "Text",
@@ -5591,13 +5624,7 @@
         "type": "object",
         "x-fern-sdk-group-name": "transcripts",
         "additionalProperties": false,
-        "required": [
-          "limit",
-          "result_count",
-          "current_url",
-          "prev_url",
-          "next_url"
-        ],
+        "required": ["limit", "result_count", "current_url", "prev_url", "next_url"],
         "properties": {
           "limit": {
             "x-label": "Limit",
@@ -5695,15 +5722,7 @@
         "type": "object",
         "x-fern-sdk-group-name": "transcripts",
         "additionalProperties": false,
-        "required": [
-          "id",
-          "resource_url",
-          "status",
-          "created",
-          "completed",
-          "audio_url",
-          "error"
-        ],
+        "required": ["id", "resource_url", "status", "created", "completed", "audio_url", "error"],
         "properties": {
           "id": {
             "x-label": "ID",

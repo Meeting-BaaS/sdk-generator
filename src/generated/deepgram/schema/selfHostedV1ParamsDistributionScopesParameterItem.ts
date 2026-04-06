@@ -7,17 +7,17 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SelfHostedV1ParamsDistributionScopesParameterItem = typeof SelfHostedV1ParamsDistributionScopesParameterItem[keyof typeof SelfHostedV1ParamsDistributionScopesParameterItem];
-
+export type SelfHostedV1ParamsDistributionScopesParameterItem =
+  (typeof SelfHostedV1ParamsDistributionScopesParameterItem)[keyof typeof SelfHostedV1ParamsDistributionScopesParameterItem]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SelfHostedV1ParamsDistributionScopesParameterItem = {
-  'self-hosted:products': 'self-hosted:products',
-  'self-hosted:product:api': 'self-hosted:product:api',
-  'self-hosted:product:engine': 'self-hosted:product:engine',
-  'self-hosted:product:license-proxy': 'self-hosted:product:license-proxy',
-  'self-hosted:product:dgtools': 'self-hosted:product:dgtools',
-  'self-hosted:product:billing': 'self-hosted:product:billing',
-  'self-hosted:product:hotpepper': 'self-hosted:product:hotpepper',
-  'self-hosted:product:metrics-server': 'self-hosted:product:metrics-server',
-} as const;
+  "self-hosted:products": "self-hosted:products",
+  "self-hosted:product:api": "self-hosted:product:api",
+  "self-hosted:product:engine": "self-hosted:product:engine",
+  "self-hosted:product:license-proxy": "self-hosted:product:license-proxy",
+  "self-hosted:product:dgtools": "self-hosted:product:dgtools",
+  "self-hosted:product:billing": "self-hosted:product:billing",
+  "self-hosted:product:hotpepper": "self-hosted:product:hotpepper",
+  "self-hosted:product:metrics-server": "self-hosted:product:metrics-server"
+} as const

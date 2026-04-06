@@ -140,7 +140,10 @@ ${regionalVariants.map((l) => `  "${l}": "${l}"`).join(",\n")}
  * Deepgram model architectures
  */
 export const DeepgramArchitectures = [
-${Object.keys(sortedArchLanguages).sort().map((a) => `  "${a}"`).join(",\n")}
+${Object.keys(sortedArchLanguages)
+  .sort()
+  .map((a) => `  "${a}"`)
+  .join(",\n")}
 ] as const
 
 /**
@@ -200,9 +203,13 @@ export type DeepgramMultilingualArchitecture = (typeof DeepgramMultilingualArchi
     console.log(`✅ Generated ${OUTPUT_PATH}`)
     console.log(`   - ${primaryCodes.length} primary codes`)
     console.log(`   - ${regionalVariants.length} regional variants`)
-    console.log(`   - ${Object.keys(sortedArchLanguages).length} architectures with language mappings`)
+    console.log(
+      `   - ${Object.keys(sortedArchLanguages).length} architectures with language mappings`
+    )
     console.log(`   - Exports: DeepgramLanguageCodes, DeepgramLanguageCode, DeepgramLanguage`)
-    console.log(`   - Exports: DeepgramArchitectures, DeepgramArchitecture, DeepgramArchitectureLanguages`)
+    console.log(
+      `   - Exports: DeepgramArchitectures, DeepgramArchitecture, DeepgramArchitectureLanguages`
+    )
     console.log(`   - Exports: DeepgramMultilingualArchitectures, DeepgramMultilingualArchitecture`)
   } catch (error) {
     console.error(`❌ Failed to fetch Deepgram models: ${error.message}`)

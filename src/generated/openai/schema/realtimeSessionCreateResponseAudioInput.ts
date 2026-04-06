@@ -5,20 +5,20 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormats } from './realtimeAudioFormats';
-import type { AudioTranscription } from './audioTranscription';
-import type { RealtimeSessionCreateResponseAudioInputNoiseReduction } from './realtimeSessionCreateResponseAudioInputNoiseReduction';
-import type { RealtimeSessionCreateResponseAudioInputTurnDetection } from './realtimeSessionCreateResponseAudioInputTurnDetection';
+import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
+import type { AudioTranscription } from "./audioTranscription"
+import type { RealtimeSessionCreateResponseAudioInputNoiseReduction } from "./realtimeSessionCreateResponseAudioInputNoiseReduction"
+import type { RealtimeSessionCreateResponseAudioInputTurnDetection } from "./realtimeSessionCreateResponseAudioInputTurnDetection"
 
 export type RealtimeSessionCreateResponseAudioInput = {
-  format?: RealtimeAudioFormats;
+  format?: RealtimeAudioFormats
   /** Configuration for input audio transcription.
- */
-  transcription?: AudioTranscription;
+   */
+  transcription?: AudioTranscription
   /** Configuration for input audio noise reduction.
- */
-  noise_reduction?: RealtimeSessionCreateResponseAudioInputNoiseReduction;
+   */
+  noise_reduction?: RealtimeSessionCreateResponseAudioInputNoiseReduction
   /** Configuration for turn detection.
- */
-  turn_detection?: RealtimeSessionCreateResponseAudioInputTurnDetection;
-};
+   */
+  turn_detection?: RealtimeSessionCreateResponseAudioInputTurnDetection
+}

@@ -9,11 +9,11 @@
 /**
  * The kind of text normalization.
  */
-export type TextNormalizationKind = typeof TextNormalizationKind[keyof typeof TextNormalizationKind];
-
+export type TextNormalizationKind =
+  (typeof TextNormalizationKind)[keyof typeof TextNormalizationKind]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TextNormalizationKind = {
-  Default: 'Default',
-  None: 'None',
-} as const;
+  Default: "Default",
+  None: "None"
+} as const

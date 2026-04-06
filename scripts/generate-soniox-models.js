@@ -155,7 +155,9 @@ ${asyncModels.map((m) => `  ${toIdentifier(m.id)}: "${m.id}"`).join(",\n")}
   fs.writeFileSync(OUTPUT_PATH, output, "utf-8")
   console.log(`✅ Generated ${OUTPUT_PATH}`)
   console.log(`   - ${models.length} model codes`)
-  console.log(`   - SonioxModels, SonioxModelCodes, SonioxModelCode, SonioxModelLabels, SonioxModel`)
+  console.log(
+    `   - SonioxModels, SonioxModelCodes, SonioxModelCode, SonioxModelLabels, SonioxModel`
+  )
   console.log(`   - SonioxRealtimeModel, SonioxAsyncModel (separated by mode)`)
 }
 

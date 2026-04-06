@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false
+ * Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false
  */
 export type TranscriptLanguageDetection = boolean | null;

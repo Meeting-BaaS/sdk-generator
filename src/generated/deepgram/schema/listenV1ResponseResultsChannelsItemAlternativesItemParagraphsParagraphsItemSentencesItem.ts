@@ -7,8 +7,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem = {
-  text?: string;
-  start?: number;
-  end?: number;
-};
+export type ListenV1ResponseResultsChannelsItemAlternativesItemParagraphsParagraphsItemSentencesItem =
+  {
+    text?: string
+    start?: number
+    end?: number
+  }

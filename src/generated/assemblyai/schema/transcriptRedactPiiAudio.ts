@@ -8,7 +8,7 @@
 
 /**
  * Whether a redacted version of the audio file was generated,
-either true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
+either true or false. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.
 
  */
 export type TranscriptRedactPiiAudio = boolean | null;

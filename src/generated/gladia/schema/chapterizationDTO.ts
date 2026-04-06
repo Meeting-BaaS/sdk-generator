@@ -4,21 +4,21 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { ChapterizationDTOError } from './chapterizationDTOError';
-import type { ChapterizationDTOResults } from './chapterizationDTOResults';
+import type { ChapterizationDTOError } from "./chapterizationDTOError"
+import type { ChapterizationDTOResults } from "./chapterizationDTOResults"
 
 export interface ChapterizationDTO {
   /** The audio intelligence model succeeded to get a valid output */
-  success: boolean;
+  success: boolean
   /** The audio intelligence model returned an empty value */
-  is_empty: boolean;
+  is_empty: boolean
   /** Time audio intelligence model took to complete the task */
-  exec_time: number;
+  exec_time: number
   /**
    * `null` if `success` is `true`. Contains the error details of the failed model
    * @nullable
    */
-  error: ChapterizationDTOError;
+  error: ChapterizationDTOError
   /** If `chapterization` has been enabled, will generate chapters name for different parts of the given audio. */
-  results: ChapterizationDTOResults;
+  results: ChapterizationDTOResults
 }

@@ -9,7 +9,7 @@
 
 export type BillingBreakdownV1ResponseResolution = {
   /** Time unit for the resolution */
-  units: string;
+  units: string
   /** Amount of units */
-  amount: number;
-};
+  amount: number
+}

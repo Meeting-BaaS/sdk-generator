@@ -9,5 +9,5 @@
 
 export interface UpdateProjectMemberScopesV1Response {
   /** confirmation message */
-  message?: string;
+  message?: string
 }

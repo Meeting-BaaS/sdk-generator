@@ -20,7 +20,25 @@
  * All OpenAI audio model codes (transcription + realtime)
  */
 export const OpenAIModelCodes = [
-
+  "gpt-4o-mini-realtime-preview",
+  "gpt-4o-mini-realtime-preview-2024-12-17",
+  "gpt-4o-mini-transcribe",
+  "gpt-4o-mini-transcribe-2025-12-15",
+  "gpt-4o-realtime-preview",
+  "gpt-4o-realtime-preview-2024-10-01",
+  "gpt-4o-realtime-preview-2024-12-17",
+  "gpt-4o-realtime-preview-2025-06-03",
+  "gpt-4o-transcribe",
+  "gpt-4o-transcribe-diarize",
+  "gpt-audio-mini",
+  "gpt-audio-mini-2025-10-06",
+  "gpt-audio-mini-2025-12-15",
+  "gpt-realtime",
+  "gpt-realtime-2025-08-28",
+  "gpt-realtime-mini",
+  "gpt-realtime-mini-2025-10-06",
+  "gpt-realtime-mini-2025-12-15",
+  "whisper-1"
 ] as const
 
 /**
@@ -36,7 +54,11 @@ export type OpenAIModelCode = (typeof OpenAIModelCodes)[number]
  * OpenAI transcription model codes (for batch transcription)
  */
 export const OpenAITranscriptionModelCodes = [
-
+  "gpt-4o-mini-transcribe",
+  "gpt-4o-mini-transcribe-2025-12-15",
+  "gpt-4o-transcribe",
+  "gpt-4o-transcribe-diarize",
+  "whisper-1"
 ] as const
 
 /**
@@ -56,7 +78,11 @@ export type OpenAITranscriptionModelCode = (typeof OpenAITranscriptionModelCodes
  * ```
  */
 export const OpenAITranscriptionModel = {
-
+  "gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
+  "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
+  "gpt-4o-transcribe": "gpt-4o-transcribe",
+  "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize",
+  "whisper-1": "whisper-1"
 } as const satisfies Record<string, OpenAITranscriptionModelCode>
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -67,7 +93,20 @@ export const OpenAITranscriptionModel = {
  * OpenAI realtime model codes (for streaming)
  */
 export const OpenAIRealtimeModelCodes = [
-
+  "gpt-4o-mini-realtime-preview",
+  "gpt-4o-mini-realtime-preview-2024-12-17",
+  "gpt-4o-realtime-preview",
+  "gpt-4o-realtime-preview-2024-10-01",
+  "gpt-4o-realtime-preview-2024-12-17",
+  "gpt-4o-realtime-preview-2025-06-03",
+  "gpt-audio-mini",
+  "gpt-audio-mini-2025-10-06",
+  "gpt-audio-mini-2025-12-15",
+  "gpt-realtime",
+  "gpt-realtime-2025-08-28",
+  "gpt-realtime-mini",
+  "gpt-realtime-mini-2025-10-06",
+  "gpt-realtime-mini-2025-12-15"
 ] as const
 
 /**
@@ -86,7 +125,20 @@ export type OpenAIRealtimeModelCode = (typeof OpenAIRealtimeModelCodes)[number]
  * ```
  */
 export const OpenAIRealtimeModel = {
-
+  "gpt-4o-mini-realtime-preview": "gpt-4o-mini-realtime-preview",
+  "gpt-4o-mini-realtime-preview-2024-12-17": "gpt-4o-mini-realtime-preview-2024-12-17",
+  "gpt-4o-realtime-preview": "gpt-4o-realtime-preview",
+  "gpt-4o-realtime-preview-2024-10-01": "gpt-4o-realtime-preview-2024-10-01",
+  "gpt-4o-realtime-preview-2024-12-17": "gpt-4o-realtime-preview-2024-12-17",
+  "gpt-4o-realtime-preview-2025-06-03": "gpt-4o-realtime-preview-2025-06-03",
+  "gpt-audio-mini": "gpt-audio-mini",
+  "gpt-audio-mini-2025-10-06": "gpt-audio-mini-2025-10-06",
+  "gpt-audio-mini-2025-12-15": "gpt-audio-mini-2025-12-15",
+  "gpt-realtime": "gpt-realtime",
+  "gpt-realtime-2025-08-28": "gpt-realtime-2025-08-28",
+  "gpt-realtime-mini": "gpt-realtime-mini",
+  "gpt-realtime-mini-2025-10-06": "gpt-realtime-mini-2025-10-06",
+  "gpt-realtime-mini-2025-12-15": "gpt-realtime-mini-2025-12-15"
 } as const satisfies Record<string, OpenAIRealtimeModelCode>
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -97,5 +149,23 @@ export const OpenAIRealtimeModel = {
  * Model name to display label mapping
  */
 export const OpenAIModelLabels: Record<OpenAIModelCode, string> = {
-
+  "gpt-4o-mini-realtime-preview": "GPT-4o Mini Realtime Preview",
+  "gpt-4o-mini-realtime-preview-2024-12-17": "GPT-4o Mini Realtime Preview 2024 12 17",
+  "gpt-4o-mini-transcribe": "GPT-4o Mini Transcribe",
+  "gpt-4o-mini-transcribe-2025-12-15": "GPT-4o Mini Transcribe 2025 12 15",
+  "gpt-4o-realtime-preview": "GPT-4o Realtime Preview",
+  "gpt-4o-realtime-preview-2024-10-01": "GPT-4o Realtime Preview 2024 10 01",
+  "gpt-4o-realtime-preview-2024-12-17": "GPT-4o Realtime Preview 2024 12 17",
+  "gpt-4o-realtime-preview-2025-06-03": "GPT-4o Realtime Preview 2025 06 03",
+  "gpt-4o-transcribe": "GPT-4o Transcribe",
+  "gpt-4o-transcribe-diarize": "GPT-4o Transcribe Diarize",
+  "gpt-audio-mini": "gpt Audio Mini",
+  "gpt-audio-mini-2025-10-06": "gpt Audio Mini 2025 10 06",
+  "gpt-audio-mini-2025-12-15": "gpt Audio Mini 2025 12 15",
+  "gpt-realtime": "GPT Realtime",
+  "gpt-realtime-2025-08-28": "GPT Realtime 2025 08 28",
+  "gpt-realtime-mini": "GPT Realtime Mini",
+  "gpt-realtime-mini-2025-10-06": "GPT Realtime Mini 2025 10 06",
+  "gpt-realtime-mini-2025-12-15": "GPT Realtime Mini 2025 12 15",
+  "whisper-1": "Whisper V2"
 }

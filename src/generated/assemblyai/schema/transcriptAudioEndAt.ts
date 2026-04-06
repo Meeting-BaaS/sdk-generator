@@ -7,6 +7,6 @@
  */
 
 /**
- * The point in time, in milliseconds, in the file at which the transcription was terminated
+ * The point in time, in milliseconds, in the file at which the transcription was terminated. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.
  */
 export type TranscriptAudioEndAt = number | null;

@@ -1302,17 +1302,17 @@ components:
               member_id:
                 type: string
                 description: The unique identifier of the member
-                scopes:
-                  type: array
-                  items:
-                    type: string
-                  description: The API scopes of the member
+              scopes:
+                type: array
+                items:
+                  type: string
+                description: The API scopes of the member
               email:
                 type: string
-                first_name:
-                  type: string
-                last_name:
-                  type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
     DeleteProjectMemberV1Response:
       type: object
       properties:

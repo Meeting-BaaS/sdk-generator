@@ -8,7 +8,7 @@
 
 /**
  * Defaults to null. Reject audio files that contain less than this fraction of speech.
-Valid values are in the range [0, 1] inclusive.
+Valid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.
 
  * @minimum 0
  * @maximum 1

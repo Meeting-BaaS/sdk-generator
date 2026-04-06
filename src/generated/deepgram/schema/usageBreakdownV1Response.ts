@@ -6,14 +6,14 @@
 
  * OpenAPI spec version: 1.0.0
  */
-import type { UsageBreakdownV1ResponseResolution } from './usageBreakdownV1ResponseResolution';
-import type { UsageBreakdownV1ResponseResultsItem } from './usageBreakdownV1ResponseResultsItem';
+import type { UsageBreakdownV1ResponseResolution } from "./usageBreakdownV1ResponseResolution"
+import type { UsageBreakdownV1ResponseResultsItem } from "./usageBreakdownV1ResponseResultsItem"
 
 export interface UsageBreakdownV1Response {
   /** Start date of the usage period */
-  start: string;
+  start: string
   /** End date of the usage period */
-  end: string;
-  resolution: UsageBreakdownV1ResponseResolution;
-  results: UsageBreakdownV1ResponseResultsItem[];
+  end: string
+  resolution: UsageBreakdownV1ResponseResolution
+  results: UsageBreakdownV1ResponseResultsItem[]
 }

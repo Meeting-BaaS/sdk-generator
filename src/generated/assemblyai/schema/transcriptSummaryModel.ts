@@ -8,7 +8,8 @@
 
 /**
  * The Summarization model used to generate the summary,
-if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
+if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.
 
+ * @deprecated
  */
 export type TranscriptSummaryModel = string | null;

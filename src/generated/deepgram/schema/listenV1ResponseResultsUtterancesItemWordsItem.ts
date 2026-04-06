@@ -8,11 +8,11 @@
  */
 
 export type ListenV1ResponseResultsUtterancesItemWordsItem = {
-  word?: string;
-  start?: number;
-  end?: number;
-  confidence?: number;
-  speaker?: number;
-  speaker_confidence?: number;
-  punctuated_word?: string;
-};
+  word?: string
+  start?: number
+  end?: number
+  confidence?: number
+  speaker?: number
+  speaker_confidence?: number
+  punctuated_word?: string
+}

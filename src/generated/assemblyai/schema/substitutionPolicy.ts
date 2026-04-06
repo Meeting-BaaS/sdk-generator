@@ -7,7 +7,7 @@
  */
 
 /**
- * The replacement logic for detected PII, can be "entity_name" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+ * The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.
  */
 export type SubstitutionPolicy = typeof SubstitutionPolicy[keyof typeof SubstitutionPolicy];
 

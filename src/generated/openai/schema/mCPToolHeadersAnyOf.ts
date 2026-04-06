@@ -11,4 +11,4 @@
 or other purposes.
 
  */
-export type MCPToolHeadersAnyOf = {[key: string]: string};
+export type MCPToolHeadersAnyOf = { [key: string]: string }

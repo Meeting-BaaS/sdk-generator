@@ -7,14 +7,6 @@
  */
 
 /**
- * The speech model to use for the transcription.
+ * The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.
  */
-export type SpeechModel = typeof SpeechModel[keyof typeof SpeechModel];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SpeechModel = {
-  best: 'best',
-  'slam-1': 'slam-1',
-  universal: 'universal',
-} as const;
+export type SpeechModel = string;

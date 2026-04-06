@@ -160,7 +160,9 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
         }
       })
       const speakers =
-        speakerIds.size > 0 ? Array.from(speakerIds).map((id) => ({ id: String(id), label: `Speaker ${id}` })) : undefined
+        speakerIds.size > 0
+          ? Array.from(speakerIds).map((id) => ({ id: String(id), label: `Speaker ${id}` }))
+          : undefined
 
       // Build the summary field only if summarization succeeded
       const summary =

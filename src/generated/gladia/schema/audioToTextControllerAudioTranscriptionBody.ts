@@ -4,25 +4,25 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour } from './audioToTextControllerAudioTranscriptionBodyLanguageBehaviour';
-import type { AudioToTextControllerAudioTranscriptionBodyLanguage } from './audioToTextControllerAudioTranscriptionBodyLanguage';
-import type { AudioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage } from './audioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage';
-import type { AudioToTextControllerAudioTranscriptionBodyOutputFormat } from './audioToTextControllerAudioTranscriptionBodyOutputFormat';
+import type { AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour } from "./audioToTextControllerAudioTranscriptionBodyLanguageBehaviour"
+import type { AudioToTextControllerAudioTranscriptionBodyLanguage } from "./audioToTextControllerAudioTranscriptionBodyLanguage"
+import type { AudioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage } from "./audioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage"
+import type { AudioToTextControllerAudioTranscriptionBodyOutputFormat } from "./audioToTextControllerAudioTranscriptionBodyOutputFormat"
 
 export type AudioToTextControllerAudioTranscriptionBody = {
-  audio?: Blob;
-  audio_url?: string;
-  language_behaviour?: AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour;
-  language?: AudioToTextControllerAudioTranscriptionBodyLanguage;
-  transcription_hint?: string;
-  toggle_diarization?: boolean;
-  diarization_num_speakers?: number;
-  diarization_min_speakers?: number;
-  diarization_max_speakers?: number;
-  toggle_direct_translate?: boolean;
-  target_translation_language?: AudioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage;
-  output_format?: AudioToTextControllerAudioTranscriptionBodyOutputFormat;
-  toggle_noise_reduction?: boolean;
-  toggle_accurate_words_timestamps?: boolean;
-  webhook_url?: string;
-};
+  audio?: Blob
+  audio_url?: string
+  language_behaviour?: AudioToTextControllerAudioTranscriptionBodyLanguageBehaviour
+  language?: AudioToTextControllerAudioTranscriptionBodyLanguage
+  transcription_hint?: string
+  toggle_diarization?: boolean
+  diarization_num_speakers?: number
+  diarization_min_speakers?: number
+  diarization_max_speakers?: number
+  toggle_direct_translate?: boolean
+  target_translation_language?: AudioToTextControllerAudioTranscriptionBodyTargetTranslationLanguage
+  output_format?: AudioToTextControllerAudioTranscriptionBodyOutputFormat
+  toggle_noise_reduction?: boolean
+  toggle_accurate_words_timestamps?: boolean
+  webhook_url?: string
+}

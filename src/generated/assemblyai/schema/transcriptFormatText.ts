@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether Text Formatting is enabled, either true or false
+ * Whether [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio) is enabled, either true or false
  */
 export type TranscriptFormatText = boolean | null;

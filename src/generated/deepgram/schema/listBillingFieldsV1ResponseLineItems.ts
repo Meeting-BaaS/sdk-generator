@@ -10,4 +10,4 @@
 /**
  * Map of line item names to human-readable descriptions for the time period
  */
-export type ListBillingFieldsV1ResponseLineItems = {[key: string]: string};
+export type ListBillingFieldsV1ResponseLineItems = { [key: string]: string }

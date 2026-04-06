@@ -5,8 +5,31 @@
  * AssemblyAI API
  * OpenAPI spec version: 1.3.4
  */
+import type { LemurModel } from './lemurModel';
 
 export type LemurTaskParamsAllOf = {
   /** Your text to prompt the model to produce a desired output, including any context you want to pass into the model. */
   prompt: string;
+  /** A list of completed transcripts with text. Up to a maximum of 100 hours of audio.
+Use either transcript_ids or input_text as input into LeMUR.
+ */
+  transcript_ids?: string[];
+  /** Custom formatted transcript data. Maximum size is the context limit of the selected model.
+Use either transcript_ids or input_text as input into LeMUR.
+ */
+  input_text?: string;
+  /** The model that is used for the final prompt after compression is performed.
+ */
+  final_model: LemurModel;
+  /** Maximum output size in tokens, up to the `final_model`'s max [(see chart)](/docs/lemur/customize-parameters#change-the-maximum-output-size). */
+  max_output_size?: number;
+  /**
+   * The temperature to use for the model.
+Higher values result in answers that are more creative, lower values are more conservative.
+Can be any value between 0.0 and 1.0 inclusive.
+
+   * @minimum 0
+   * @maximum 1
+   */
+  temperature?: number;
 };

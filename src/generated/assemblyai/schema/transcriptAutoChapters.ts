@@ -7,6 +7,10 @@
  */
 
 /**
- * Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
+ * Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.
+
+Note: This parameter is only supported for the Universal-2 model.
+
+ * @deprecated
  */
 export type TranscriptAutoChapters = boolean | null;

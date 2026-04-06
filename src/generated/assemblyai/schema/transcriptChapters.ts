@@ -8,6 +8,6 @@
 import type { Chapter } from './chapter';
 
 /**
- * An array of temporally sequential chapters for the audio file
+ * An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for more information.
  */
 export type TranscriptChapters = Chapter[] | null;

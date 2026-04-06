@@ -8,4 +8,4 @@
 /**
  * Custom metadata you can attach to this transcription
  */
-export type InitTranscriptionRequestCustomMetadata = { [key: string]: unknown };
+export type InitTranscriptionRequestCustomMetadata = { [key: string]: unknown }

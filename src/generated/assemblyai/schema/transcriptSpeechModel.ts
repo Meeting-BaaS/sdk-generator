@@ -8,6 +8,8 @@
 import type { SpeechModel } from './speechModel';
 
 /**
- * The speech model used for the transcription. When `null`, the default model is used.
+ * This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+
+ * @deprecated
  */
 export type TranscriptSpeechModel = SpeechModel | null;

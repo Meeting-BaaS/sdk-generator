@@ -9,12 +9,12 @@
 /**
  * Action to take if all of the predicted languages are below the confidence threshold
  */
-export type LanguageIdentificationConfigLowConfidenceAction = typeof LanguageIdentificationConfigLowConfidenceAction[keyof typeof LanguageIdentificationConfigLowConfidenceAction];
-
+export type LanguageIdentificationConfigLowConfidenceAction =
+  (typeof LanguageIdentificationConfigLowConfidenceAction)[keyof typeof LanguageIdentificationConfigLowConfidenceAction]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LanguageIdentificationConfigLowConfidenceAction = {
-  allow: 'allow',
-  reject: 'reject',
-  use_default_language: 'use_default_language',
-} as const;
+  allow: "allow",
+  reject: "reject",
+  use_default_language: "use_default_language"
+} as const
