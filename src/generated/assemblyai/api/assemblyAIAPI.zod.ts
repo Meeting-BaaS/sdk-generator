@@ -113,7 +113,6 @@ export const createTranscriptBody = zod.object({
   "webhook_auth_header_value": zod.string().nullish().describe('The header value to send back with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests for added security'),
   "webhook_url": zod.string().optional().describe('The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.\n'),
   "custom_topics": zod.boolean().optional().describe('This parameter does not currently have any functionality attached to it.'),
-  "speech_model": zod.string().describe('The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.').or(zod.null()).optional().describe('This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).\n'),
   "topics": zod.array(zod.string()).optional().describe('This parameter does not currently have any functionality attached to it.'),
   "audio_url": zod.string().describe('The URL of the audio or video file to transcribe.')
 }).describe('The parameters for creating a transcript')

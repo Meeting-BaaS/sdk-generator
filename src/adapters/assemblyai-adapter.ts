@@ -524,15 +524,25 @@ export class AssemblyAIAdapter extends BaseAdapter {
       )
     }
 
+    // Migrate deprecated speech_model → speech_models before building request.
+    // AssemblyAI rejects requests containing both fields (HTTP 400).
+    const aaiOpts = { ...options?.assemblyai } as Record<string, unknown>
+    if ("speech_model" in aaiOpts && aaiOpts.speech_model != null) {
+      if (!aaiOpts.speech_models) {
+        aaiOpts.speech_models = [aaiOpts.speech_model as string]
+      }
+      delete aaiOpts.speech_model
+    }
+
     // Start with provider-specific options (fully typed from OpenAPI)
     const request: TranscriptParams = {
-      ...options?.assemblyai,
+      ...(aaiOpts as Partial<TranscriptParams>),
       audio_url: audioUrl,
       // speech_models is required — default to universal-3-pro
-      speech_models: options?.assemblyai?.speech_models ?? ["universal-3-pro"],
+      speech_models: (aaiOpts.speech_models as TranscriptParams["speech_models"]) ?? ["universal-3-pro"],
       // Enable punctuation and formatting by default
-      punctuate: options?.assemblyai?.punctuate ?? true,
-      format_text: options?.assemblyai?.format_text ?? true
+      punctuate: (aaiOpts.punctuate as boolean) ?? true,
+      format_text: (aaiOpts.format_text as boolean) ?? true
     }
 
     // Map normalized options (take precedence over assemblyai-specific)

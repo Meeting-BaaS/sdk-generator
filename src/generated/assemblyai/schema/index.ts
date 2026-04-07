@@ -104,7 +104,6 @@ export * from './transcriptParamsLanguageCodes';
 export * from './transcriptParamsRedactPiiSub';
 export * from './transcriptParamsRemoveAudioTags';
 export * from './transcriptParamsSpeakersExpected';
-export * from './transcriptParamsSpeechModel';
 export * from './transcriptParamsSpeechThreshold';
 export * from './transcriptParamsWebhookAuthHeaderName';
 export * from './transcriptParamsWebhookAuthHeaderValue';

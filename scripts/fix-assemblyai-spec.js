@@ -265,7 +265,34 @@ if (paramFixes > 0) {
   console.log(`   ✅ No missing path parameters`)
 }
 
-// Step 9: Update spec metadata
+// Step 9: Remove deprecated request fields that conflict with their replacements
+//
+// The docs spec includes `speech_model` (singular, deprecated) alongside `speech_models`
+// (plural, required array) on TranscriptParams. The API rejects requests containing both:
+//   "speech_model and speech_models cannot be used in the same request"
+// Strip the deprecated field from the request schema only — the Transcript response schema
+// keeps it (read-only, tells you which model was used).
+console.log("\n📋 Step 9: Removing deprecated conflicting fields from TranscriptParams")
+
+const DEPRECATED_REQUEST_FIELDS = ["speech_model"]
+const transcriptParamsSchema = spec.components?.schemas?.TranscriptParams
+if (transcriptParamsSchema?.properties) {
+  for (const field of DEPRECATED_REQUEST_FIELDS) {
+    if (transcriptParamsSchema.properties[field]) {
+      delete transcriptParamsSchema.properties[field]
+      // Also remove from required array if present
+      if (Array.isArray(transcriptParamsSchema.required)) {
+        transcriptParamsSchema.required = transcriptParamsSchema.required.filter((r) => r !== field)
+      }
+      console.log(`   🗑️  Removed deprecated ${field} from TranscriptParams`)
+      fixCount++
+    }
+  }
+} else {
+  console.log(`   ⏭️  TranscriptParams not found (skipped)`)
+}
+
+// Step 10: Update spec metadata
 console.log("\n📋 Step 9: Updating spec metadata")
 
 spec.info.title = "AssemblyAI API"

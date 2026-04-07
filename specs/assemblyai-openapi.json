@@ -1901,17 +1901,6 @@
             "default": false,
             "description": "This parameter does not currently have any functionality attached to it."
           },
-          "speech_model": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SpeechModel"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).\n"
-          },
           "topics": {
             "type": "array",
             "items": {

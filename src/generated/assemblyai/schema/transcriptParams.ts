@@ -24,7 +24,6 @@ import type { SummaryType } from './summaryType';
 import type { TranscriptParamsRemoveAudioTags } from './transcriptParamsRemoveAudioTags';
 import type { TranscriptParamsWebhookAuthHeaderName } from './transcriptParamsWebhookAuthHeaderName';
 import type { TranscriptParamsWebhookAuthHeaderValue } from './transcriptParamsWebhookAuthHeaderValue';
-import type { TranscriptParamsSpeechModel } from './transcriptParamsSpeechModel';
 
 /**
  * The parameters for creating a transcript
@@ -149,9 +148,6 @@ Note: This parameter can only be used with the Universal-3 Pro model.
   webhook_url?: string;
   /** This parameter does not currently have any functionality attached to it. */
   custom_topics?: boolean;
-  /** This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
- */
-  speech_model?: TranscriptParamsSpeechModel;
   /** This parameter does not currently have any functionality attached to it. */
   topics?: string[];
   /** The URL of the audio or video file to transcribe. */
