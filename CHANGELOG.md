@@ -5,6 +5,71 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.5] - 2026-04-07
+
+### Changed
+
+#### AssemblyAI: Migrate to Live Docs Spec (100% OpenAPI Pipeline)
+
+AssemblyAI deleted their `assemblyai-api-spec` GitHub repo, breaking `pnpm openapi:sync` with 404 errors. The spec source is now the live Fern-generated docs spec at `https://www.assemblyai.com/docs/openapi.json`.
+
+**New pipeline** (follows the same pattern as ElevenLabs/OpenAI):
+
+```
+assemblyai.com/docs/openapi.json → fix-assemblyai-spec.js → Orval → adapter
+```
+
+**`fix-assemblyai-spec.js`** normalizes the docs spec before Orval generation:
+1. Filters paths to `/v2/*` STT endpoints (drops `/chat/completions`, `/understanding`, `/v3/token`)
+2. Maps operationIds back to descriptive names (`submit` → `createTranscript`, `get` → `getTranscript`, etc.)
+3. Strips inline `Authorization` header parameters (Orval handles auth via security schemes)
+4. Collects `$ref` references, resolves transitive deps, removes unreferenced schemas
+5. Fixes malformed array schemas and missing path parameters
+6. Strips deprecated `speech_model` from `TranscriptParams` (see fix below)
+
+**Schema changes from new spec:**
+
+| Aspect | Old (v1.3.4, dead repo) | New (docs, live) |
+|--------|------------------------|-------------------|
+| `TranscriptParams` | Split: `TranscriptParams` + `TranscriptOptionalParams` | Single merged `TranscriptParams` |
+| `language_code` | `string` | `TranscriptParamsLanguageCode` (proper enum) |
+| `ListTranscriptParams` | Separate schema + 5 scalar types | Inline query params on `GET /v2/transcript` |
+| LeMUR schemas | 7 schemas | Dropped (not STT) |
+| Webhook notification schemas | 3 schemas | Dropped (handler uses local types) |
+
+**Deleted:** `scripts/fix-assemblyai-missing-schemas.js` — the 5 scalar types (`AfterId`, `BeforeId`, `CreatedOn`, `Limit`, `ThrottledOnly`) are now inline query parameters in the new spec.
+
+**No breaking changes for consumers.** API function names (`createTranscript`, `getTranscript`, etc.) are preserved via operationId mapping. The `assemblyai` passthrough options type changed from `Partial<TranscriptOptionalParams>` to `Partial<TranscriptParams>` — all fields from the old type exist in the new one.
+
+### Fixed
+
+#### AssemblyAI: Strip Deprecated `speech_model` from Request Schema
+
+The docs spec includes both `speech_model` (singular, deprecated) and `speech_models` (plural, required array) on `TranscriptParams`. The API rejects requests containing both fields with HTTP 400:
+
+```
+"speech_model and speech_models cannot be used in the same request"
+```
+
+**Two-level fix:**
+
+1. **Spec level:** `fix-assemblyai-spec.js` strips `speech_model` from `TranscriptParams` before Orval generates types. This prevents it from appearing in generated Zod schemas and DynamicFieldForm UI.
+
+2. **Adapter level:** If users pass `speech_model` via passthrough options (e.g., from older code), the adapter gracefully migrates it to `speech_models: [value]` instead of sending both fields.
+
+```typescript
+// This still works — adapter migrates automatically
+{ assemblyai: { speech_model: "universal-3-pro" } }
+// → sent as: { speech_models: ["universal-3-pro"] }
+
+// Preferred: use the new field directly
+{ assemblyai: { speech_models: ["universal-3-pro", "universal-2"] } }
+```
+
+**Note:** `speech_model` is preserved in the `Transcript` response schema (read-only — tells you which model was used).
+
+---
+
 ## [0.8.4] - 2026-04-06
 
 ### Fixed
