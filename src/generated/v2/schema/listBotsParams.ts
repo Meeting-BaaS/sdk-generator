@@ -18,6 +18,14 @@ Example: "Sales" would match "Sales Meeting", "Quarterly Sales", etc.
  */
   bot_name?: string | null
   /**
+ * Filter bots by participant name.
+
+Performs a case-insensitive partial match on participant names in the meeting.
+
+Example: "John" would match meetings where "John Smith" participated.
+ */
+  participant_name?: string | null
+  /**
  * Filter bots by ID containing this string.
 
 Performs a case-insensitive partial match on the bot's ID. Useful for finding bots with specific IDs or to locate a particular bot when you don't have its ID.

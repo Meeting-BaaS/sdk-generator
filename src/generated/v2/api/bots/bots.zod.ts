@@ -27,7 +27,14 @@ import { z as zod } from "zod"
  * @summary Create a bot
  */
 export const createBotBodyBotNameMax = 255
+export const createBotBodyBotImageMaxThree = 5
 export const createBotBodyBotImageDefault = null
+export const createBotBodyBotImageConfigLoopModeDefault = "auto"
+export const createBotBodyBotImageConfigImageDurationDefault = 30
+export const createBotBodyBotImageConfigImageDurationMin = 10
+
+export const createBotBodyBotImageConfigImageDurationMax = 120
+export const createBotBodyBotImageConfigDefault = null
 export const createBotBodyAllowMultipleBotsDefault = true
 export const createBotBodyRecordingModeDefault = "speaker_view"
 export const createBotBodyEntryMessageMaxOne = 500
@@ -79,10 +86,33 @@ export const createBotBody = zod.object({
   bot_image: zod
     .string()
     .url()
+    .or(zod.array(zod.string().url()).min(1).max(createBotBodyBotImageMaxThree))
     .or(zod.null())
     .optional()
     .describe(
-      "The image URL of the bot's avatar.\n\nMust be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.\n\nThe recommended aspect ratio is 16:9 for best display across different platforms."
+      "The bot's avatar image(s).\n\nAccepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings."
+    ),
+  bot_image_config: zod
+    .object({
+      loop_mode: zod
+        .enum(["auto", "bot_status"])
+        .default(createBotBodyBotImageConfigLoopModeDefault)
+        .describe(
+          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+        ),
+      image_duration: zod
+        .number()
+        .min(createBotBodyBotImageConfigImageDurationMin)
+        .max(createBotBodyBotImageConfigImageDurationMax)
+        .default(createBotBodyBotImageConfigImageDurationDefault)
+        .describe(
+          "Duration in seconds each image is displayed before switching to the next. Only used when loop_mode is 'auto'.\n\nDefault: 30. Range: 10-120."
+        )
+    })
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
     ),
   meeting_url: zod
     .string()
@@ -108,7 +138,7 @@ export const createBotBody = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.\n\nMaximum: 500 characters"
+      "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
     ),
   timeout_config: zod
     .object({
@@ -306,6 +336,7 @@ export const createBotBody = zod.object({
  * @summary List bots
  */
 export const listBotsQueryBotNameDefault = null
+export const listBotsQueryParticipantNameDefault = null
 export const listBotsQueryBotIdDefault = null
 export const listBotsQueryCreatedBeforeRegExpOne =
   /^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$/
@@ -329,6 +360,13 @@ export const listBotsQueryParams = zod.object({
     .optional()
     .describe(
       'Filter bots by name containing this string.\n\nPerforms a case-insensitive partial match on the bot\'s name. Useful for finding bots with specific naming conventions or to locate a particular bot when you don\'t have its ID.\n\nExample: \"Sales\" would match \"Sales Meeting\", \"Quarterly Sales\", etc.'
+    ),
+  participant_name: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      'Filter bots by participant name.\n\nPerforms a case-insensitive partial match on participant names in the meeting.\n\nExample: \"John\" would match meetings where \"John Smith\" participated.'
     ),
   bot_id: zod
     .string()
@@ -495,7 +533,18 @@ export const listBotsResponse = zod.object({
       error_message: zod
         .string()
         .or(zod.null())
-        .describe("Human-readable error message if the bot failed (null if no error)")
+        .describe("Human-readable error message if the bot failed (null if no error)"),
+      tokens: zod
+        .object({
+          recording: zod.number().describe("Recording tokens consumed"),
+          transcription: zod.number().describe("Transcription tokens consumed"),
+          byok_transcription: zod.number().describe("BYOK transcription tokens consumed"),
+          streaming_input: zod.number().describe("Streaming input tokens consumed"),
+          streaming_output: zod.number().describe("Streaming output tokens consumed"),
+          total: zod.number().describe("Total tokens consumed")
+        })
+        .or(zod.null())
+        .describe("Token consumption breakdown (null if not yet consumed)")
     })
   ),
   cursor: zod.string().or(zod.null()).describe("Cursor for the next page (null if no more pages)"),
@@ -526,7 +575,14 @@ export const listBotsResponse = zod.object({
  * @summary Create multiple bots
  */
 export const batchCreateBotsBodyBotNameMax = 255
+export const batchCreateBotsBodyBotImageMaxThree = 5
 export const batchCreateBotsBodyBotImageDefault = null
+export const batchCreateBotsBodyBotImageConfigLoopModeDefault = "auto"
+export const batchCreateBotsBodyBotImageConfigImageDurationDefault = 30
+export const batchCreateBotsBodyBotImageConfigImageDurationMin = 10
+
+export const batchCreateBotsBodyBotImageConfigImageDurationMax = 120
+export const batchCreateBotsBodyBotImageConfigDefault = null
 export const batchCreateBotsBodyAllowMultipleBotsDefault = true
 export const batchCreateBotsBodyRecordingModeDefault = "speaker_view"
 export const batchCreateBotsBodyEntryMessageMaxOne = 500
@@ -578,10 +634,33 @@ export const batchCreateBotsBodyItem = zod.object({
   bot_image: zod
     .string()
     .url()
+    .or(zod.array(zod.string().url()).min(1).max(batchCreateBotsBodyBotImageMaxThree))
     .or(zod.null())
     .optional()
     .describe(
-      "The image URL of the bot's avatar.\n\nMust be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.\n\nThe recommended aspect ratio is 16:9 for best display across different platforms."
+      "The bot's avatar image(s).\n\nAccepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings."
+    ),
+  bot_image_config: zod
+    .object({
+      loop_mode: zod
+        .enum(["auto", "bot_status"])
+        .default(batchCreateBotsBodyBotImageConfigLoopModeDefault)
+        .describe(
+          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+        ),
+      image_duration: zod
+        .number()
+        .min(batchCreateBotsBodyBotImageConfigImageDurationMin)
+        .max(batchCreateBotsBodyBotImageConfigImageDurationMax)
+        .default(batchCreateBotsBodyBotImageConfigImageDurationDefault)
+        .describe(
+          "Duration in seconds each image is displayed before switching to the next. Only used when loop_mode is 'auto'.\n\nDefault: 30. Range: 10-120."
+        )
+    })
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
     ),
   meeting_url: zod
     .string()
@@ -607,7 +686,7 @@ export const batchCreateBotsBodyItem = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.\n\nMaximum: 500 characters"
+      "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
     ),
   timeout_config: zod
     .object({
@@ -961,6 +1040,13 @@ export const getBotDetailsResponse = zod.object({
       .url()
       .or(zod.null())
       .describe("Signed URL to the transcription file (valid for 4 hours, null if not available)"),
+    chat_messages: zod
+      .string()
+      .url()
+      .or(zod.null())
+      .describe(
+        "Signed URL to the chat messages JSON file (valid for 4 hours, null if not available)"
+      ),
     transcription_ids: zod
       .array(zod.string())
       .or(zod.null())
@@ -979,6 +1065,17 @@ export const getBotDetailsResponse = zod.object({
       .string()
       .or(zod.null())
       .describe("Human-readable error message if the bot failed (null if no error)"),
+    tokens: zod
+      .object({
+        recording: zod.number().describe("Recording tokens consumed"),
+        transcription: zod.number().describe("Transcription tokens consumed"),
+        byok_transcription: zod.number().describe("BYOK transcription tokens consumed"),
+        streaming_input: zod.number().describe("Streaming input tokens consumed"),
+        streaming_output: zod.number().describe("Streaming output tokens consumed"),
+        total: zod.number().describe("Total tokens consumed")
+      })
+      .or(zod.null())
+      .describe("Token consumption breakdown (null if not yet consumed)"),
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())
@@ -1190,6 +1287,50 @@ export const leaveBotParams = zod.object({
 
 export const leaveBotResponse = zod.object({
   success: zod.boolean(),
+  data: zod.object({
+    message: zod.string().describe("Success message")
+  })
+})
+
+/**
+ * Send a chat message to the meeting through the bot.
+
+    The message will be sent as the bot in the meeting's chat. The bot must be actively in the meeting to send messages. Messages are limited to 500 characters and cannot be empty or whitespace-only.
+
+    **Status Requirements:** The bot must be in one of the following statuses: `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`. If the bot is in any other state (e.g., `queued`, `joining_call`, `in_waiting_room`, `completed`, `failed`), the request will fail with a 409 Conflict error (`FST_ERR_BOT_STATUS`).
+
+    **Chat Disabled:** Some meetings have chat disabled by the host or meeting policy. If the bot attempts to send a message in a meeting where chat is not available, the request will fail with a 422 Unprocessable Entity error (`FST_ERR_CHAT_DISABLED`). This is determined at runtime by the meeting platform and cannot be known in advance. Chat disabled detection works for Zoom and Microsoft Teams meetings. For Google Meet, message delivery is best-effort — the bot may report success even if the host has restricted chat permissions for external participants.
+
+    **Message Delivery:** The message is forwarded to the bot process which sends it through the meeting platform's chat API (Google Meet, Microsoft Teams, or Zoom). Delivery is best-effort — if the bot process is unreachable or the platform rejects the message, the request will fail with a 500 Internal Server Error (`FST_ERR_SEND_CHAT_MESSAGE_FAILED`).
+
+    **Message Persistence:** Successfully sent messages are included in the `chat_messages` artifact alongside received messages when the bot completes. Bot-sent messages have `sender_id: null` and the bot's display name as `sender_name`.
+
+    Returns 404 if the bot is not found, 409 if the bot's status does not allow this operation, or 422 if chat is disabled in the meeting.
+ * @summary Send chat message
+ */
+export const sendChatMessagePathBotIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+
+export const sendChatMessageParams = zod.object({
+  bot_id: zod
+    .string()
+    .uuid()
+    .regex(sendChatMessagePathBotIdRegExp)
+    .describe("The UUID of the bot to send the chat message through.")
+})
+
+export const sendChatMessageBodyMessageMax = 500
+
+export const sendChatMessageBody = zod.object({
+  message: zod
+    .string()
+    .min(1)
+    .max(sendChatMessageBodyMessageMax)
+    .describe("The chat message text to send in the meeting.")
+})
+
+export const sendChatMessageResponse = zod.object({
+  success: zod.literal(true),
   data: zod.object({
     message: zod.string().describe("Success message")
   })
@@ -1425,7 +1566,14 @@ export const updateBotConfigResponse = zod.object({
  * @summary Create scheduled bot
  */
 export const createScheduledBotBodyBotNameMax = 255
+export const createScheduledBotBodyBotImageMaxThree = 5
 export const createScheduledBotBodyBotImageDefault = null
+export const createScheduledBotBodyBotImageConfigLoopModeDefault = "auto"
+export const createScheduledBotBodyBotImageConfigImageDurationDefault = 30
+export const createScheduledBotBodyBotImageConfigImageDurationMin = 10
+
+export const createScheduledBotBodyBotImageConfigImageDurationMax = 120
+export const createScheduledBotBodyBotImageConfigDefault = null
 export const createScheduledBotBodyAllowMultipleBotsDefault = true
 export const createScheduledBotBodyRecordingModeDefault = "speaker_view"
 export const createScheduledBotBodyEntryMessageMaxOne = 500
@@ -1480,10 +1628,33 @@ export const createScheduledBotBody = zod
     bot_image: zod
       .string()
       .url()
+      .or(zod.array(zod.string().url()).min(1).max(createScheduledBotBodyBotImageMaxThree))
       .or(zod.null())
       .optional()
       .describe(
-        "The image URL of the bot's avatar.\n\nMust be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.\n\nThe recommended aspect ratio is 16:9 for best display across different platforms."
+        "The bot's avatar image(s).\n\nAccepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings."
+      ),
+    bot_image_config: zod
+      .object({
+        loop_mode: zod
+          .enum(["auto", "bot_status"])
+          .default(createScheduledBotBodyBotImageConfigLoopModeDefault)
+          .describe(
+            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+          ),
+        image_duration: zod
+          .number()
+          .min(createScheduledBotBodyBotImageConfigImageDurationMin)
+          .max(createScheduledBotBodyBotImageConfigImageDurationMax)
+          .default(createScheduledBotBodyBotImageConfigImageDurationDefault)
+          .describe(
+            "Duration in seconds each image is displayed before switching to the next. Only used when loop_mode is 'auto'.\n\nDefault: 30. Range: 10-120."
+          )
+      })
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
       ),
     meeting_url: zod
       .string()
@@ -1509,7 +1680,7 @@ export const createScheduledBotBody = zod
       .or(zod.null())
       .optional()
       .describe(
-        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.\n\nMaximum: 500 characters"
+        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
       ),
     timeout_config: zod
       .object({
@@ -1880,7 +2051,14 @@ export const listScheduledBotsResponse = zod.object({
  * @summary Create multiple scheduled bots
  */
 export const batchCreateScheduledBotsBodyBotNameMax = 255
+export const batchCreateScheduledBotsBodyBotImageMaxThree = 5
 export const batchCreateScheduledBotsBodyBotImageDefault = null
+export const batchCreateScheduledBotsBodyBotImageConfigLoopModeDefault = "auto"
+export const batchCreateScheduledBotsBodyBotImageConfigImageDurationDefault = 30
+export const batchCreateScheduledBotsBodyBotImageConfigImageDurationMin = 10
+
+export const batchCreateScheduledBotsBodyBotImageConfigImageDurationMax = 120
+export const batchCreateScheduledBotsBodyBotImageConfigDefault = null
 export const batchCreateScheduledBotsBodyAllowMultipleBotsDefault = true
 export const batchCreateScheduledBotsBodyRecordingModeDefault = "speaker_view"
 export const batchCreateScheduledBotsBodyEntryMessageMaxOne = 500
@@ -1935,10 +2113,33 @@ export const batchCreateScheduledBotsBodyItem = zod
     bot_image: zod
       .string()
       .url()
+      .or(zod.array(zod.string().url()).min(1).max(batchCreateScheduledBotsBodyBotImageMaxThree))
       .or(zod.null())
       .optional()
       .describe(
-        "The image URL of the bot's avatar.\n\nMust be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.\n\nThe recommended aspect ratio is 16:9 for best display across different platforms."
+        "The bot's avatar image(s).\n\nAccepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings."
+      ),
+    bot_image_config: zod
+      .object({
+        loop_mode: zod
+          .enum(["auto", "bot_status"])
+          .default(batchCreateScheduledBotsBodyBotImageConfigLoopModeDefault)
+          .describe(
+            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+          ),
+        image_duration: zod
+          .number()
+          .min(batchCreateScheduledBotsBodyBotImageConfigImageDurationMin)
+          .max(batchCreateScheduledBotsBodyBotImageConfigImageDurationMax)
+          .default(batchCreateScheduledBotsBodyBotImageConfigImageDurationDefault)
+          .describe(
+            "Duration in seconds each image is displayed before switching to the next. Only used when loop_mode is 'auto'.\n\nDefault: 30. Range: 10-120."
+          )
+      })
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
       ),
     meeting_url: zod
       .string()
@@ -1964,7 +2165,7 @@ export const batchCreateScheduledBotsBodyItem = zod
       .or(zod.null())
       .optional()
       .describe(
-        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.\n\nMaximum: 500 characters"
+        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
       ),
     timeout_config: zod
       .object({
@@ -2382,7 +2583,14 @@ export const updateScheduledBotParams = zod.object({
 })
 
 export const updateScheduledBotBodyBotNameMax = 255
+export const updateScheduledBotBodyBotImageMaxThree = 5
 export const updateScheduledBotBodyBotImageDefault = null
+export const updateScheduledBotBodyBotImageConfigLoopModeDefault = "auto"
+export const updateScheduledBotBodyBotImageConfigImageDurationDefault = 30
+export const updateScheduledBotBodyBotImageConfigImageDurationMin = 10
+
+export const updateScheduledBotBodyBotImageConfigImageDurationMax = 120
+export const updateScheduledBotBodyBotImageConfigDefault = null
 export const updateScheduledBotBodyAllowMultipleBotsDefault = true
 export const updateScheduledBotBodyRecordingModeDefault = "speaker_view"
 export const updateScheduledBotBodyEntryMessageMaxOne = 500
@@ -2437,10 +2645,33 @@ export const updateScheduledBotBody = zod.object({
   bot_image: zod
     .string()
     .url()
+    .or(zod.array(zod.string().url()).min(1).max(updateScheduledBotBodyBotImageMaxThree))
     .or(zod.null())
     .optional()
     .describe(
-      "The image URL of the bot's avatar.\n\nMust be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.\n\nThe recommended aspect ratio is 16:9 for best display across different platforms."
+      "The bot's avatar image(s).\n\nAccepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings."
+    ),
+  bot_image_config: zod
+    .object({
+      loop_mode: zod
+        .enum(["auto", "bot_status"])
+        .default(updateScheduledBotBodyBotImageConfigLoopModeDefault)
+        .describe(
+          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+        ),
+      image_duration: zod
+        .number()
+        .min(updateScheduledBotBodyBotImageConfigImageDurationMin)
+        .max(updateScheduledBotBodyBotImageConfigImageDurationMax)
+        .default(updateScheduledBotBodyBotImageConfigImageDurationDefault)
+        .describe(
+          "Duration in seconds each image is displayed before switching to the next. Only used when loop_mode is 'auto'.\n\nDefault: 30. Range: 10-120."
+        )
+    })
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
     ),
   meeting_url: zod
     .string()
@@ -2467,7 +2698,7 @@ export const updateScheduledBotBody = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.\n\nMaximum: 500 characters"
+      "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
     ),
   timeout_config: zod
     .object({

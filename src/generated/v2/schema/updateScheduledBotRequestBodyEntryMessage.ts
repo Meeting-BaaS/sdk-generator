@@ -11,7 +11,7 @@
 
 This message will be posted in the meeting chat when the bot successfully joins.
 
-Available for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.
+Available for Google Meet, Microsoft Teams, and Zoom meetings.
 
 Maximum: 500 characters
  */

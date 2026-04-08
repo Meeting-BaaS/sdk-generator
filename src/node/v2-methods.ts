@@ -52,6 +52,8 @@ import type {
   RetryCallbackResponseData,
   SyncCalendarResponseData,
   UpdateBotConfig200Data,
+  SendChatMessage200Data,
+  SendChatMessageBody,
   UpdateBotConfigBody,
   UpdateCalendarBotRequestBodyInput,
   UpdateCalendarBotResponseDataItem,
@@ -291,6 +293,29 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         z.object({
           bot_id: updateBotConfigParams.shape.bot_id,
           body: updateBotConfigBody
+        }),
+        params,
+        state.getOptions()
+      )
+    },
+
+    async sendChatMessage(params: {
+      bot_id: string
+      body: SendChatMessageBody
+    }): Promise<ApiResponseV2<SendChatMessage200Data>> {
+      const { sendChatMessage: sendChatMessageApi } = await import(
+        "../generated/v2/api/bots/bots.js"
+      )
+      const { sendChatMessageParams, sendChatMessageBody } = await import(
+        "../generated/v2/api/bots/bots.zod.js"
+      )
+
+      return apiWrapperV2<SendChatMessage200Data, { bot_id: string; body: SendChatMessageBody }>(
+        (params: { bot_id: string; body: SendChatMessageBody }, options) =>
+          sendChatMessageApi(params.bot_id, params.body, options),
+        z.object({
+          bot_id: sendChatMessageParams.shape.bot_id,
+          body: sendChatMessageBody
         }),
         params,
         state.getOptions()

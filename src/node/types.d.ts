@@ -82,6 +82,8 @@ import type {
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponseData,
   UpdateZoomCredential200Data,
+  SendChatMessage200Data,
+  SendChatMessageBody,
   UpdateZoomCredentialBody
 } from "../generated/v2/schema"
 import type { ApiResponse, ApiResponseV2, BatchApiResponseV2, ListApiResponseV2 } from "./api"
@@ -217,6 +219,10 @@ export interface BaasClientV2Methods {
     bot_id: string
     body: UpdateBotConfigBody
   }): Promise<ApiResponseV2<UpdateBotConfig200Data>>
+  sendChatMessage(params: {
+    bot_id: string
+    body: SendChatMessageBody
+  }): Promise<ApiResponseV2<SendChatMessage200Data>>
   createScheduledBot(
     params: CreateScheduledBotRequestBodyInput
   ): Promise<ApiResponseV2<CreateScheduledBotResponseData>>

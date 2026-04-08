@@ -25,6 +25,7 @@ import type {
   ListScheduledBotsResponse,
   ResendFinalWebhookResponse,
   RetryCallbackResponse,
+  SendChatMessage200,
   UpdateBotConfig200,
   UpdateScheduledBotResponse
 } from "../../schema"
@@ -93,7 +94,18 @@ export const getListBotsResponseMock = (
       "meeting_error"
     ] as const),
     error_code: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    error_message: faker.helpers.arrayElement([faker.string.alpha(20), null])
+    error_message: faker.helpers.arrayElement([faker.string.alpha(20), null]),
+    tokens: faker.helpers.arrayElement([
+      {
+        recording: faker.number.int({ min: undefined, max: undefined }),
+        transcription: faker.number.int({ min: undefined, max: undefined }),
+        byok_transcription: faker.number.int({ min: undefined, max: undefined }),
+        streaming_input: faker.number.int({ min: undefined, max: undefined }),
+        streaming_output: faker.number.int({ min: undefined, max: undefined }),
+        total: faker.number.int({ min: undefined, max: undefined })
+      },
+      null
+    ])
   })),
   cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
   prev_cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
@@ -210,6 +222,7 @@ export const getGetBotDetailsResponseMock = (
     diarization: faker.helpers.arrayElement([faker.internet.url(), null]),
     raw_transcription: faker.helpers.arrayElement([faker.internet.url(), null]),
     transcription: faker.helpers.arrayElement([faker.internet.url(), null]),
+    chat_messages: faker.helpers.arrayElement([faker.internet.url(), null]),
     transcription_ids: faker.helpers.arrayElement([
       Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
         faker.string.alpha(20)
@@ -222,6 +235,17 @@ export const getGetBotDetailsResponseMock = (
     ]),
     error_code: faker.helpers.arrayElement([faker.string.alpha(20), null]),
     error_message: faker.helpers.arrayElement([faker.string.alpha(20), null]),
+    tokens: faker.helpers.arrayElement([
+      {
+        recording: faker.number.int({ min: undefined, max: undefined }),
+        transcription: faker.number.int({ min: undefined, max: undefined }),
+        byok_transcription: faker.number.int({ min: undefined, max: undefined }),
+        streaming_input: faker.number.int({ min: undefined, max: undefined }),
+        streaming_output: faker.number.int({ min: undefined, max: undefined }),
+        total: faker.number.int({ min: undefined, max: undefined })
+      },
+      null
+    ]),
     extra: faker.helpers.arrayElement([
       {
         [faker.string.alphanumeric(5)]: {}
@@ -312,6 +336,14 @@ export const getLeaveBotResponseMock = (
   overrideResponse: Partial<LeaveBotResponse> = {}
 ): LeaveBotResponse => ({
   success: true,
+  data: { message: faker.string.alpha(20) },
+  ...overrideResponse
+})
+
+export const getSendChatMessageResponseMock = (
+  overrideResponse: Partial<SendChatMessage200> = {}
+): SendChatMessage200 => ({
+  success: faker.datatype.boolean(),
   data: { message: faker.string.alpha(20) },
   ...overrideResponse
 })
@@ -689,6 +721,29 @@ export const getLeaveBotMockHandler = (
   })
 }
 
+export const getSendChatMessageMockHandler = (
+  overrideResponse?:
+    | SendChatMessage200
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0]
+      ) => Promise<SendChatMessage200> | SendChatMessage200)
+) => {
+  return http.post("https://api.meetingbaas.com/v2/bots/:botId/send-chat-message", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getSendChatMessageResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
+  })
+}
+
 export const getDeleteBotDataMockHandler = (
   overrideResponse?:
     | DeleteBotDataResponse
@@ -926,6 +981,7 @@ export const getBotsMock = () => [
   getGetBotStatusMockHandler(),
   getGetBotScreenshotsMockHandler(),
   getLeaveBotMockHandler(),
+  getSendChatMessageMockHandler(),
   getDeleteBotDataMockHandler(),
   getResendFinalWebhookMockHandler(),
   getRetryCallbackMockHandler(),

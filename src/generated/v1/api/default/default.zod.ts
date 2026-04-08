@@ -209,6 +209,7 @@ export const getMeetingDataResponse = zod.object({
       event_id: zod.number().nullish(),
       extra: zod.record(zod.string(), zod.any()).describe("Custom data object"),
       id: zod.number(),
+      is_stopped: zod.boolean(),
       meeting_url: zod.string(),
       mp4_s3_path: zod.string(),
       noone_joined_timeout: zod.number().nullish(),

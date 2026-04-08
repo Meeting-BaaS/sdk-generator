@@ -1212,7 +1212,14 @@ export const createCalendarBotParams = zod.object({
 })
 
 export const createCalendarBotBodyBotNameMax = 255
+export const createCalendarBotBodyBotImageMaxThree = 5
 export const createCalendarBotBodyBotImageDefault = null
+export const createCalendarBotBodyBotImageConfigLoopModeDefault = "auto"
+export const createCalendarBotBodyBotImageConfigImageDurationDefault = 30
+export const createCalendarBotBodyBotImageConfigImageDurationMin = 10
+
+export const createCalendarBotBodyBotImageConfigImageDurationMax = 120
+export const createCalendarBotBodyBotImageConfigDefault = null
 export const createCalendarBotBodyRecordingModeDefault = "speaker_view"
 export const createCalendarBotBodyEntryMessageMaxOne = 500
 export const createCalendarBotBodyEntryMessageDefault = null
@@ -1269,10 +1276,33 @@ export const createCalendarBotBody = zod
     bot_image: zod
       .string()
       .url()
+      .or(zod.array(zod.string().url()).min(1).max(createCalendarBotBodyBotImageMaxThree))
       .or(zod.null())
       .optional()
       .describe(
-        "The image URL of the bot's avatar.\n\nMust be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.\n\nThe recommended aspect ratio is 16:9 for best display across different platforms."
+        "The bot's avatar image(s).\n\nAccepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings."
+      ),
+    bot_image_config: zod
+      .object({
+        loop_mode: zod
+          .enum(["auto", "bot_status"])
+          .default(createCalendarBotBodyBotImageConfigLoopModeDefault)
+          .describe(
+            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+          ),
+        image_duration: zod
+          .number()
+          .min(createCalendarBotBodyBotImageConfigImageDurationMin)
+          .max(createCalendarBotBodyBotImageConfigImageDurationMax)
+          .default(createCalendarBotBodyBotImageConfigImageDurationDefault)
+          .describe(
+            "Duration in seconds each image is displayed before switching to the next. Only used when loop_mode is 'auto'.\n\nDefault: 30. Range: 10-120."
+          )
+      })
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
       ),
     recording_mode: zod
       .enum(["audio_only", "speaker_view", "gallery_view"])
@@ -1286,7 +1316,7 @@ export const createCalendarBotBody = zod
       .or(zod.null())
       .optional()
       .describe(
-        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.\n\nMaximum: 500 characters"
+        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
       ),
     timeout_config: zod
       .object({
@@ -1529,7 +1559,14 @@ export const updateCalendarBotBodyAllOccurrencesDefault = false
 export const updateCalendarBotBodyEventIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 export const updateCalendarBotBodyBotNameMax = 255
+export const updateCalendarBotBodyBotImageMaxThree = 5
 export const updateCalendarBotBodyBotImageDefault = null
+export const updateCalendarBotBodyBotImageConfigLoopModeDefault = "auto"
+export const updateCalendarBotBodyBotImageConfigImageDurationDefault = 30
+export const updateCalendarBotBodyBotImageConfigImageDurationMin = 10
+
+export const updateCalendarBotBodyBotImageConfigImageDurationMax = 120
+export const updateCalendarBotBodyBotImageConfigDefault = null
 export const updateCalendarBotBodyRecordingModeDefault = "speaker_view"
 export const updateCalendarBotBodyEntryMessageMaxOne = 500
 export const updateCalendarBotBodyEntryMessageDefault = null
@@ -1600,10 +1637,33 @@ export const updateCalendarBotBody = zod
         bot_image: zod
           .string()
           .url()
+          .or(zod.array(zod.string().url()).min(1).max(updateCalendarBotBodyBotImageMaxThree))
           .or(zod.null())
           .optional()
           .describe(
-            "The image URL of the bot's avatar.\n\nMust be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.\n\nThe recommended aspect ratio is 16:9 for best display across different platforms."
+            "The bot's avatar image(s).\n\nAccepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings."
+          ),
+        bot_image_config: zod
+          .object({
+            loop_mode: zod
+              .enum(["auto", "bot_status"])
+              .default(updateCalendarBotBodyBotImageConfigLoopModeDefault)
+              .describe(
+                "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+              ),
+            image_duration: zod
+              .number()
+              .min(updateCalendarBotBodyBotImageConfigImageDurationMin)
+              .max(updateCalendarBotBodyBotImageConfigImageDurationMax)
+              .default(updateCalendarBotBodyBotImageConfigImageDurationDefault)
+              .describe(
+                "Duration in seconds each image is displayed before switching to the next. Only used when loop_mode is 'auto'.\n\nDefault: 30. Range: 10-120."
+              )
+          })
+          .or(zod.null())
+          .optional()
+          .describe(
+            "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
           ),
         recording_mode: zod
           .enum(["audio_only", "speaker_view", "gallery_view"])
@@ -1617,7 +1677,7 @@ export const updateCalendarBotBody = zod
           .or(zod.null())
           .optional()
           .describe(
-            "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.\n\nMaximum: 500 characters"
+            "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
           ),
         timeout_config: zod
           .object({

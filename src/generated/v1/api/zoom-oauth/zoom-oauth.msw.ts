@@ -13,6 +13,7 @@ import type { ZoomOAuthConnectionResponse } from "../../schema"
 
 export const getListZoomOauthConnectionsResponseMock = (): ZoomOAuthConnectionResponse[] =>
   Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+    connection_failure_data: faker.helpers.arrayElement([{}, undefined]),
     created_at: faker.string.alpha(20),
     scopes: faker.helpers.arrayElement([
       faker.helpers.arrayElement([faker.string.alpha(20), null]),
@@ -31,6 +32,7 @@ export const getListZoomOauthConnectionsResponseMock = (): ZoomOAuthConnectionRe
 export const getCreateZoomOauthConnectionResponseMock = (
   overrideResponse: Partial<void | ZoomOAuthConnectionResponse> = {}
 ): void | ZoomOAuthConnectionResponse => ({
+  connection_failure_data: faker.helpers.arrayElement([{}, undefined]),
   created_at: faker.string.alpha(20),
   scopes: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
@@ -50,6 +52,7 @@ export const getCreateZoomOauthConnectionResponseMock = (
 export const getGetZoomOauthConnectionResponseMock = (
   overrideResponse: Partial<ZoomOAuthConnectionResponse> = {}
 ): ZoomOAuthConnectionResponse => ({
+  connection_failure_data: faker.helpers.arrayElement([{}, undefined]),
   created_at: faker.string.alpha(20),
   scopes: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
