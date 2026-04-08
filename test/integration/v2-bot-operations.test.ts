@@ -335,11 +335,7 @@ describe("v2 Bot Operations Integration Tests", () => {
       server.use(
         http.post(`https://api.meetingbaas.com/v2/bots/${botId}/send-chat-message`, () => {
           return HttpResponse.json(
-            createMockV2ErrorResponse(
-              "Bot is not in a call",
-              "FST_ERR_BOT_STATUS",
-              409
-            ),
+            createMockV2ErrorResponse("Bot is not in a call", "FST_ERR_BOT_STATUS", 409),
             { status: 409 }
           )
         })
@@ -390,10 +386,9 @@ describe("v2 Bot Operations Integration Tests", () => {
         http.post(
           "https://api.meetingbaas.com/v2/bots/00000000-0000-0000-0000-000000000000/send-chat-message",
           () => {
-            return HttpResponse.json(
-              createMockV2ErrorResponse("Bot not found", "NOT_FOUND", 404),
-              { status: 404 }
-            )
+            return HttpResponse.json(createMockV2ErrorResponse("Bot not found", "NOT_FOUND", 404), {
+              status: 404
+            })
           }
         )
       )
@@ -415,11 +410,7 @@ describe("v2 Bot Operations Integration Tests", () => {
       server.use(
         http.post(`https://api.meetingbaas.com/v2/bots/${botId}/send-chat-message`, () => {
           return HttpResponse.json(
-            createMockV2ErrorResponse(
-              "Rate limit exceeded",
-              "FST_ERR_RATE_LIMIT",
-              429
-            ),
+            createMockV2ErrorResponse("Rate limit exceeded", "FST_ERR_RATE_LIMIT", 429),
             { status: 429 }
           )
         })

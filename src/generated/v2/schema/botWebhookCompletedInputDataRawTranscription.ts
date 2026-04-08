@@ -9,4 +9,4 @@
 /**
  * Signed URL to download the raw transcription file. Valid for 4 hours. Null if raw transcription is not available or has been deleted
  */
-export type BotWebhookCompletedInputDataRawTranscription = string | null;
+export type BotWebhookCompletedInputDataRawTranscription = string | null

@@ -9,4 +9,4 @@
 /**
  * Sequential participant ID (1, 2, 3...). Null if not available
  */
-export type BotWebhookCompletedInputDataSpeakersItemId = number | null;
+export type BotWebhookCompletedInputDataSpeakersItemId = number | null
