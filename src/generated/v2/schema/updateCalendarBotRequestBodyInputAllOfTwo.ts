@@ -6,6 +6,7 @@
  * OpenAPI spec version: 2.0.0
  */
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoBotImage } from "./updateCalendarBotRequestBodyInputAllOfTwoBotImage"
+import type { UpdateCalendarBotRequestBodyInputAllOfTwoBotImageConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoBotImageConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoCallbackConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoCallbackConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoEntryMessage } from "./updateCalendarBotRequestBodyInputAllOfTwoEntryMessage"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoExtra } from "./updateCalendarBotRequestBodyInputAllOfTwoExtra"
@@ -27,12 +28,12 @@ This name will be displayed as the bot's name in the meeting.
    * @maxLength 255
    */
   bot_name?: string
-  /** The image URL of the bot's avatar.
+  /** The bot's avatar image(s).
 
-Must be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.
-
-The recommended aspect ratio is 16:9 for best display across different platforms. */
+Accepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings. */
   bot_image?: UpdateCalendarBotRequestBodyInputAllOfTwoBotImage
+  /** Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image. */
+  bot_image_config?: UpdateCalendarBotRequestBodyInputAllOfTwoBotImageConfig
   /** The recording mode of the bot.
 
 Determines what the bot records during the meeting:
@@ -47,7 +48,7 @@ Default: `speaker_view` */
 
 This message will be posted in the meeting chat when the bot successfully joins.
 
-Available for Google Meet and Zoom meetings. Microsoft Teams does not support entry messages for guests outside of an organization.
+Available for Google Meet, Microsoft Teams, and Zoom meetings.
 
 Maximum: 500 characters */
   entry_message?: UpdateCalendarBotRequestBodyInputAllOfTwoEntryMessage

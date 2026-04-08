@@ -34,6 +34,8 @@ import type {
   ResendFinalWebhookResponse,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponse,
+  SendChatMessage200,
+  SendChatMessageBody,
   UpdateBotConfig200,
   UpdateBotConfigBody,
   UpdateScheduledBotRequestBodyInput,
@@ -214,6 +216,29 @@ export const leaveBot = <TData = AxiosResponse<LeaveBotResponse>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
   return axios.post(`/v2/bots/${botId}/leave`, undefined, options)
+}
+/**
+ * Send a chat message to the meeting through the bot.
+
+    The message will be sent as the bot in the meeting's chat. The bot must be actively in the meeting to send messages. Messages are limited to 500 characters and cannot be empty or whitespace-only.
+
+    **Status Requirements:** The bot must be in one of the following statuses: `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`. If the bot is in any other state (e.g., `queued`, `joining_call`, `in_waiting_room`, `completed`, `failed`), the request will fail with a 409 Conflict error (`FST_ERR_BOT_STATUS`).
+
+    **Chat Disabled:** Some meetings have chat disabled by the host or meeting policy. If the bot attempts to send a message in a meeting where chat is not available, the request will fail with a 422 Unprocessable Entity error (`FST_ERR_CHAT_DISABLED`). This is determined at runtime by the meeting platform and cannot be known in advance. Chat disabled detection works for Zoom and Microsoft Teams meetings. For Google Meet, message delivery is best-effort — the bot may report success even if the host has restricted chat permissions for external participants.
+
+    **Message Delivery:** The message is forwarded to the bot process which sends it through the meeting platform's chat API (Google Meet, Microsoft Teams, or Zoom). Delivery is best-effort — if the bot process is unreachable or the platform rejects the message, the request will fail with a 500 Internal Server Error (`FST_ERR_SEND_CHAT_MESSAGE_FAILED`).
+
+    **Message Persistence:** Successfully sent messages are included in the `chat_messages` artifact alongside received messages when the bot completes. Bot-sent messages have `sender_id: null` and the bot's display name as `sender_name`.
+
+    Returns 404 if the bot is not found, 409 if the bot's status does not allow this operation, or 422 if chat is disabled in the meeting.
+ * @summary Send chat message
+ */
+export const sendChatMessage = <TData = AxiosResponse<SendChatMessage200>>(
+  botId: string,
+  sendChatMessageBody: SendChatMessageBody,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post(`/v2/bots/${botId}/send-chat-message`, sendChatMessageBody, options)
 }
 /**
  * Permanently delete all bot data including recordings, transcripts, summaries, and screenshots.
@@ -495,6 +520,7 @@ export type GetBotDetailsResult = AxiosResponse<GetBotDetailsResponse>
 export type GetBotStatusResult = AxiosResponse<GetBotStatusResponse>
 export type GetBotScreenshotsResult = AxiosResponse<GetBotScreenshotsResponse>
 export type LeaveBotResult = AxiosResponse<LeaveBotResponse>
+export type SendChatMessageResult = AxiosResponse<SendChatMessage200>
 export type DeleteBotDataResult = AxiosResponse<DeleteBotDataResponse>
 export type ResendFinalWebhookResult = AxiosResponse<ResendFinalWebhookResponse>
 export type RetryCallbackResult = AxiosResponse<RetryCallbackResponse>

@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type CreateCalendarBotRequestBodyInputAllOfTwosix = {
+export type CreateCalendarBotRequestBodyInputAllOfThreezero = {
   /**
    * The UUID of the event series to schedule bots for.
 

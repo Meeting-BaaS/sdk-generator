@@ -15,6 +15,7 @@ import type { ListBotsResponseDataItemExtra } from "./listBotsResponseDataItemEx
 import type { ListBotsResponseDataItemJoinedAt } from "./listBotsResponseDataItemJoinedAt"
 import type { ListBotsResponseDataItemMeetingPlatform } from "./listBotsResponseDataItemMeetingPlatform"
 import type { ListBotsResponseDataItemStatus } from "./listBotsResponseDataItemStatus"
+import type { ListBotsResponseDataItemTokens } from "./listBotsResponseDataItemTokens"
 
 export type ListBotsResponseDataItem = {
   /**
@@ -49,4 +50,6 @@ export type ListBotsResponseDataItem = {
   error_code: ListBotsResponseDataItemErrorCode
   /** Human-readable error message if the bot failed (null if no error) */
   error_message: ListBotsResponseDataItemErrorMessage
+  /** Token consumption breakdown (null if not yet consumed) */
+  tokens: ListBotsResponseDataItemTokens
 }

@@ -27,6 +27,7 @@ export interface Bot2 {
   errors?: Bot2Errors
   event_id?: Bot2EventId
   id: number
+  is_stopped: boolean
   meeting_url: string
   mp4_s3_path: string
   reserved: boolean

@@ -12,11 +12,13 @@ import type { ZoomOAuthConnectionResponseZoomAccountId } from "./zoomOAuthConnec
  * A stored Zoom OAuth connection. Tokens are managed server-side and never exposed.
  */
 export interface ZoomOAuthConnectionResponse {
+  /** Details about why the connection failed. Only present when `state` is `refresh_failed`. */
+  connection_failure_data?: unknown
   /** Timestamp when the connection was first created. */
   created_at: string
   /** OAuth scopes granted by the user during authorization (e.g. `user:read:user`). */
   scopes?: ZoomOAuthConnectionResponseScopes
-  /** Connection state. `connected` means tokens are valid; `disconnected` means the user needs to re-authorize. */
+  /** Connection state. `connected` means tokens are valid; `refresh_failed` means the token refresh failed and the user needs to re-authorize. */
   state: string
   /** Timestamp when the connection was last updated (e.g. token refresh). */
   updated_at: string

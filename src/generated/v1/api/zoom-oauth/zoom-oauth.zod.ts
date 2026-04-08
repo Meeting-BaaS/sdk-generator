@@ -13,6 +13,12 @@ import { z as zod } from "zod"
  */
 export const listZoomOauthConnectionsResponseItem = zod
   .object({
+    connection_failure_data: zod
+      .any()
+      .optional()
+      .describe(
+        "Details about why the connection failed. Only present when `state` is `refresh_failed`."
+      ),
     created_at: zod.string().describe("Timestamp when the connection was first created."),
     scopes: zod
       .string()
@@ -21,7 +27,7 @@ export const listZoomOauthConnectionsResponseItem = zod
     state: zod
       .string()
       .describe(
-        "Connection state. `connected` means tokens are valid; `disconnected` means the user needs to re-authorize."
+        "Connection state. `connected` means tokens are valid; `refresh_failed` means the token refresh failed and the user needs to re-authorize."
       ),
     updated_at: zod
       .string()
@@ -77,6 +83,12 @@ export const getZoomOauthConnectionParams = zod.object({
 
 export const getZoomOauthConnectionResponse = zod
   .object({
+    connection_failure_data: zod
+      .any()
+      .optional()
+      .describe(
+        "Details about why the connection failed. Only present when `state` is `refresh_failed`."
+      ),
     created_at: zod.string().describe("Timestamp when the connection was first created."),
     scopes: zod
       .string()
@@ -85,7 +97,7 @@ export const getZoomOauthConnectionResponse = zod
     state: zod
       .string()
       .describe(
-        "Connection state. `connected` means tokens are valid; `disconnected` means the user needs to re-authorize."
+        "Connection state. `connected` means tokens are valid; `refresh_failed` means the token refresh failed and the user needs to re-authorize."
       ),
     updated_at: zod
       .string()

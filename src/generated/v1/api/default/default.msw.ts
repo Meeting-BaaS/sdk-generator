@@ -68,6 +68,7 @@ export const getGetMeetingDataResponseMock = (
         [faker.string.alphanumeric(5)]: {}
       },
       id: faker.number.int({ min: undefined, max: undefined }),
+      is_stopped: faker.datatype.boolean(),
       meeting_url: faker.string.alpha(20),
       mp4_s3_path: faker.string.alpha(20),
       noone_joined_timeout: faker.helpers.arrayElement([

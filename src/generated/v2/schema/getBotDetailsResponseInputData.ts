@@ -7,6 +7,7 @@
  */
 
 import type { GetBotDetailsResponseInputDataAudio } from "./getBotDetailsResponseInputDataAudio"
+import type { GetBotDetailsResponseInputDataChatMessages } from "./getBotDetailsResponseInputDataChatMessages"
 import type { GetBotDetailsResponseInputDataDiarization } from "./getBotDetailsResponseInputDataDiarization"
 import type { GetBotDetailsResponseInputDataDurationSeconds } from "./getBotDetailsResponseInputDataDurationSeconds"
 import type { GetBotDetailsResponseInputDataErrorCode } from "./getBotDetailsResponseInputDataErrorCode"
@@ -20,6 +21,7 @@ import type { GetBotDetailsResponseInputDataRawTranscription } from "./getBotDet
 import type { GetBotDetailsResponseInputDataRecordingMode } from "./getBotDetailsResponseInputDataRecordingMode"
 import type { GetBotDetailsResponseInputDataSpeakersItem } from "./getBotDetailsResponseInputDataSpeakersItem"
 import type { GetBotDetailsResponseInputDataStatus } from "./getBotDetailsResponseInputDataStatus"
+import type { GetBotDetailsResponseInputDataTokens } from "./getBotDetailsResponseInputDataTokens"
 import type { GetBotDetailsResponseInputDataTranscription } from "./getBotDetailsResponseInputDataTranscription"
 import type { GetBotDetailsResponseInputDataTranscriptionIds } from "./getBotDetailsResponseInputDataTranscriptionIds"
 import type { GetBotDetailsResponseInputDataTranscriptionProvider } from "./getBotDetailsResponseInputDataTranscriptionProvider"
@@ -69,6 +71,8 @@ export type GetBotDetailsResponseInputData = {
   raw_transcription: GetBotDetailsResponseInputDataRawTranscription
   /** Signed URL to the transcription file (valid for 4 hours, null if not available) */
   transcription: GetBotDetailsResponseInputDataTranscription
+  /** Signed URL to the chat messages JSON file (valid for 4 hours, null if not available) */
+  chat_messages: GetBotDetailsResponseInputDataChatMessages
   /** Array of transcription job IDs from the transcription provider */
   transcription_ids: GetBotDetailsResponseInputDataTranscriptionIds
   /** The transcription provider used (null if transcription is disabled or provider is 'none') */
@@ -77,6 +81,8 @@ export type GetBotDetailsResponseInputData = {
   error_code: GetBotDetailsResponseInputDataErrorCode
   /** Human-readable error message if the bot failed (null if no error) */
   error_message: GetBotDetailsResponseInputDataErrorMessage
+  /** Token consumption breakdown (null if not yet consumed) */
+  tokens: GetBotDetailsResponseInputDataTokens
   /** Custom metadata associated with the bot */
   extra: GetBotDetailsResponseInputDataExtra
   /** Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided) */

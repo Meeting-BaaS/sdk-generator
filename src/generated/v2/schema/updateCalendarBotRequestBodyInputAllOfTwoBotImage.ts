@@ -5,12 +5,12 @@
  * API for managing meeting bots, calendar integrations, and webhooks
  * OpenAPI spec version: 2.0.0
  */
+import type { UpdateCalendarBotRequestBodyInputAllOfTwoBotImageAnyOf } from "./updateCalendarBotRequestBodyInputAllOfTwoBotImageAnyOf"
 
 /**
- * The image URL of the bot's avatar.
+ * The bot's avatar image(s).
 
-Must be a valid HTTPS URL pointing to a JPEG or PNG image. This image will be displayed as the bot's avatar in the meeting.
-
-The recommended aspect ratio is 16:9 for best display across different platforms.
+Accepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image files (JPEG, PNG, or WebP). When multiple images are provided, they will be cycled based on the bot_image_config settings.
  */
-export type UpdateCalendarBotRequestBodyInputAllOfTwoBotImage = string | null
+export type UpdateCalendarBotRequestBodyInputAllOfTwoBotImage =
+  UpdateCalendarBotRequestBodyInputAllOfTwoBotImageAnyOf | null

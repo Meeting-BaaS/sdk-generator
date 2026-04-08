@@ -7,6 +7,7 @@
  */
 
 import type { GetBotDetailsResponseDataAudio } from "./getBotDetailsResponseDataAudio"
+import type { GetBotDetailsResponseDataChatMessages } from "./getBotDetailsResponseDataChatMessages"
 import type { GetBotDetailsResponseDataDiarization } from "./getBotDetailsResponseDataDiarization"
 import type { GetBotDetailsResponseDataDurationSeconds } from "./getBotDetailsResponseDataDurationSeconds"
 import type { GetBotDetailsResponseDataErrorCode } from "./getBotDetailsResponseDataErrorCode"
@@ -20,6 +21,7 @@ import type { GetBotDetailsResponseDataRawTranscription } from "./getBotDetailsR
 import type { GetBotDetailsResponseDataRecordingMode } from "./getBotDetailsResponseDataRecordingMode"
 import type { GetBotDetailsResponseDataSpeakersItem } from "./getBotDetailsResponseDataSpeakersItem"
 import type { GetBotDetailsResponseDataStatus } from "./getBotDetailsResponseDataStatus"
+import type { GetBotDetailsResponseDataTokens } from "./getBotDetailsResponseDataTokens"
 import type { GetBotDetailsResponseDataTranscription } from "./getBotDetailsResponseDataTranscription"
 import type { GetBotDetailsResponseDataTranscriptionIds } from "./getBotDetailsResponseDataTranscriptionIds"
 import type { GetBotDetailsResponseDataTranscriptionProvider } from "./getBotDetailsResponseDataTranscriptionProvider"
@@ -69,6 +71,8 @@ export type GetBotDetailsResponseData = {
   raw_transcription: GetBotDetailsResponseDataRawTranscription
   /** Signed URL to the transcription file (valid for 4 hours, null if not available) */
   transcription: GetBotDetailsResponseDataTranscription
+  /** Signed URL to the chat messages JSON file (valid for 4 hours, null if not available) */
+  chat_messages: GetBotDetailsResponseDataChatMessages
   /** Array of transcription job IDs from the transcription provider */
   transcription_ids: GetBotDetailsResponseDataTranscriptionIds
   /** The transcription provider used (null if transcription is disabled or provider is 'none') */
@@ -77,6 +81,8 @@ export type GetBotDetailsResponseData = {
   error_code: GetBotDetailsResponseDataErrorCode
   /** Human-readable error message if the bot failed (null if no error) */
   error_message: GetBotDetailsResponseDataErrorMessage
+  /** Token consumption breakdown (null if not yet consumed) */
+  tokens: GetBotDetailsResponseDataTokens
   /** Custom metadata associated with the bot */
   extra: GetBotDetailsResponseDataExtra
   /** Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided) */

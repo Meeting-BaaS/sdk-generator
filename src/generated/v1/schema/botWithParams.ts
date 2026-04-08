@@ -51,6 +51,7 @@ export interface BotWithParams {
   event_id?: BotWithParamsEventId
   extra: Extra
   id: number
+  is_stopped: boolean
   meeting_url: string
   mp4_s3_path: string
   noone_joined_timeout?: BotWithParamsNooneJoinedTimeout

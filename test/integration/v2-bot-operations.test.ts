@@ -305,6 +305,129 @@ describe("v2 Bot Operations Integration Tests", () => {
     })
   })
 
+  describe("sendChatMessage", () => {
+    it("should send a chat message successfully", async () => {
+      const botId = createMockBotId()
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/send-chat-message`, () => {
+          return HttpResponse.json(
+            createMockV2SuccessResponse({ message: "Message sent successfully" }),
+            { status: 200 }
+          )
+        })
+      )
+
+      const result = await client.sendChatMessage({
+        bot_id: botId,
+        body: { message: "Hello from the bot!" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.message).toBe("Message sent successfully")
+      }
+    })
+
+    it("should handle bot not in call error (409)", async () => {
+      const botId = createMockBotId()
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/send-chat-message`, () => {
+          return HttpResponse.json(
+            createMockV2ErrorResponse("Bot is not in a call", "FST_ERR_BOT_STATUS", 409),
+            { status: 409 }
+          )
+        })
+      )
+
+      const result = await client.sendChatMessage({
+        bot_id: botId,
+        body: { message: "Hello!" }
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.statusCode).toBe(409)
+        expect(result.code).toBe("FST_ERR_BOT_STATUS")
+      }
+    })
+
+    it("should handle chat disabled error (422)", async () => {
+      const botId = createMockBotId()
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/send-chat-message`, () => {
+          return HttpResponse.json(
+            createMockV2ErrorResponse(
+              "Chat is disabled in the meeting",
+              "FST_ERR_CHAT_DISABLED",
+              422
+            ),
+            { status: 422 }
+          )
+        })
+      )
+
+      const result = await client.sendChatMessage({
+        bot_id: botId,
+        body: { message: "Hello!" }
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.statusCode).toBe(422)
+        expect(result.code).toBe("FST_ERR_CHAT_DISABLED")
+      }
+    })
+
+    it("should handle bot not found error (404)", async () => {
+      server.use(
+        http.post(
+          "https://api.meetingbaas.com/v2/bots/00000000-0000-0000-0000-000000000000/send-chat-message",
+          () => {
+            return HttpResponse.json(createMockV2ErrorResponse("Bot not found", "NOT_FOUND", 404), {
+              status: 404
+            })
+          }
+        )
+      )
+
+      const result = await client.sendChatMessage({
+        bot_id: "00000000-0000-0000-0000-000000000000",
+        body: { message: "Hello!" }
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.statusCode).toBe(404)
+      }
+    })
+
+    it("should handle rate limit error (429)", async () => {
+      const botId = createMockBotId()
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/send-chat-message`, () => {
+          return HttpResponse.json(
+            createMockV2ErrorResponse("Rate limit exceeded", "FST_ERR_RATE_LIMIT", 429),
+            { status: 429 }
+          )
+        })
+      )
+
+      const result = await client.sendChatMessage({
+        bot_id: botId,
+        body: { message: "Hello!" }
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.statusCode).toBe(429)
+      }
+    })
+  })
+
   describe("deleteBotData", () => {
     it("should delete bot data successfully", async () => {
       const botId = createMockBotId()
