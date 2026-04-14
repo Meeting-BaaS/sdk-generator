@@ -63,7 +63,7 @@ export const deleteData = <TData = AxiosResponse<DeleteResponse>>(
   uuid: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/bots/${uuid}/delete_data`, undefined, options)
+  return axios.post(`/bots/${uuid}/delete_data`, {}, options)
 }
 /**
  * Retrieves a paginated list of the user's bots with essential metadata, including IDs, names, and meeting details. Supports filtering, sorting, and advanced querying options.

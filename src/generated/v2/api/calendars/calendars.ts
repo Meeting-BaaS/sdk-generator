@@ -207,7 +207,7 @@ export const syncCalendar = <TData = AxiosResponse<SyncCalendarResponse>>(
   calendarId: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/calendars/${calendarId}/sync`, undefined, options)
+  return axios.post(`/v2/calendars/${calendarId}/sync`, {}, options)
 }
 /**
  * Renew or recreate the push subscription for a calendar connection.
@@ -236,7 +236,7 @@ export const resubscribeCalendar = <TData = AxiosResponse<ResubscribeCalendarRes
   calendarId: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/calendars/${calendarId}/resubscribe`, undefined, options)
+  return axios.post(`/v2/calendars/${calendarId}/resubscribe`, {}, options)
 }
 /**
  * Retrieve a paginated list of calendar events.

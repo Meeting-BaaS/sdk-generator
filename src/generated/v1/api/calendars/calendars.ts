@@ -71,10 +71,14 @@ export const resyncAllCalendars = <TData = AxiosResponse<ResyncAllCalendarsRespo
   params?: ResyncAllCalendarsParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post("/calendars/resync_all", undefined, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  return axios.post(
+    "/calendars/resync_all",
+    {},
+    {
+      ...options,
+      params: { ...params, ...options?.params }
+    }
+  )
 }
 /**
  * Retrieves detailed information about a specific calendar integration by its UUID. Returns comprehensive calendar data including the calendar name, email address, provider details (Google, Microsoft), sync status, and other metadata. This endpoint is useful for displaying calendar information to users or verifying the status of a calendar integration before performing operations on its events.
