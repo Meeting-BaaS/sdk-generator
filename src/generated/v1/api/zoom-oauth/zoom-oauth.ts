@@ -25,7 +25,7 @@ export const listZoomOauthConnections = <TData = AxiosResponse<ZoomOAuthConnecti
  * @summary Create Zoom OAuth Connection
  */
 export const createZoomOauthConnection = <
-  TData = AxiosResponse<undefined | ZoomOAuthConnectionResponse>
+  TData = AxiosResponse<void | ZoomOAuthConnectionResponse>
 >(
   createConnectionRequest: CreateConnectionRequest,
   options?: AxiosRequestConfig
@@ -53,6 +53,6 @@ export const deleteZoomOauthConnection = <TData = AxiosResponse<void>>(
   return axios.delete(`/zoom_oauth_connections/${uuid}`, options)
 }
 export type ListZoomOauthConnectionsResult = AxiosResponse<ZoomOAuthConnectionResponse[]>
-export type CreateZoomOauthConnectionResult = AxiosResponse<undefined | ZoomOAuthConnectionResponse>
+export type CreateZoomOauthConnectionResult = AxiosResponse<void | ZoomOAuthConnectionResponse>
 export type GetZoomOauthConnectionResult = AxiosResponse<ZoomOAuthConnectionResponse>
 export type DeleteZoomOauthConnectionResult = AxiosResponse<void>

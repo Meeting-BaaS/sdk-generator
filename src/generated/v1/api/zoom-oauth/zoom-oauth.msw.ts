@@ -30,8 +30,8 @@ export const getListZoomOauthConnectionsResponseMock = (): ZoomOAuthConnectionRe
   }))
 
 export const getCreateZoomOauthConnectionResponseMock = (
-  overrideResponse: Partial<undefined | ZoomOAuthConnectionResponse> = {}
-): undefined | ZoomOAuthConnectionResponse => ({
+  overrideResponse: Partial<void | ZoomOAuthConnectionResponse> = {}
+): void | ZoomOAuthConnectionResponse => ({
   connection_failure_data: faker.helpers.arrayElement([{}, undefined]),
   created_at: faker.string.alpha(20),
   scopes: faker.helpers.arrayElement([
@@ -94,14 +94,11 @@ export const getListZoomOauthConnectionsMockHandler = (
 
 export const getCreateZoomOauthConnectionMockHandler = (
   overrideResponse?:
-    | undefined
+    | void
     | ZoomOAuthConnectionResponse
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) =>
-        | Promise<undefined | ZoomOAuthConnectionResponse>
-        | undefined
-        | ZoomOAuthConnectionResponse)
+      ) => Promise<void | ZoomOAuthConnectionResponse> | void | ZoomOAuthConnectionResponse)
 ) => {
   return http.post("https://api.meetingbaas.com/zoom_oauth_connections/", async (info) => {
     await delay(1000)

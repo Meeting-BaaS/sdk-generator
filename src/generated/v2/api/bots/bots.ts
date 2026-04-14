@@ -215,7 +215,7 @@ export const leaveBot = <TData = AxiosResponse<LeaveBotResponse>>(
   botId: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/leave`, undefined, options)
+  return axios.post(`/v2/bots/${botId}/leave`, {}, options)
 }
 /**
  * Send a chat message to the meeting through the bot.
@@ -294,7 +294,7 @@ export const resendFinalWebhook = <TData = AxiosResponse<ResendFinalWebhookRespo
   botId: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/resend-webhook`, undefined, options)
+  return axios.post(`/v2/bots/${botId}/resend-webhook`, {}, options)
 }
 /**
  * Retry sending the transcription callback for a bot.
