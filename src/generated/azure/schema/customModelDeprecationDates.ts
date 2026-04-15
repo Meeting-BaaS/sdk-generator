@@ -8,5 +8,5 @@
 
 export interface CustomModelDeprecationDates {
   /** The date when transcription becomes deprecated. */
-  readonly transcriptionDateTime?: string
+  readonly transcriptionDateTime?: string;
 }

@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type RecognitionDisplayDirection =
-  (typeof RecognitionDisplayDirection)[keyof typeof RecognitionDisplayDirection]
+export type RecognitionDisplayDirection = typeof RecognitionDisplayDirection[keyof typeof RecognitionDisplayDirection];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RecognitionDisplayDirection = {
-  ltr: "ltr",
-  rtl: "rtl"
-} as const
+  ltr: 'ltr',
+  rtl: 'rtl',
+} as const;

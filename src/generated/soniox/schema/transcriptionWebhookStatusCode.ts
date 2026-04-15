@@ -8,4 +8,4 @@
 /**
  * HTTP status code received from your server when webhook was delivered. `null` if not yet sent.
  */
-export type TranscriptionWebhookStatusCode = number | null
+export type TranscriptionWebhookStatusCode = number | null;

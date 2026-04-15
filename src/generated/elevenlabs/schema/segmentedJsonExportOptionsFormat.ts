@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SegmentedJsonExportOptionsFormat =
-  (typeof SegmentedJsonExportOptionsFormat)[keyof typeof SegmentedJsonExportOptionsFormat]
+export type SegmentedJsonExportOptionsFormat = typeof SegmentedJsonExportOptionsFormat[keyof typeof SegmentedJsonExportOptionsFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SegmentedJsonExportOptionsFormat = {
-  segmented_json: "segmented_json"
-} as const
+  segmented_json: 'segmented_json',
+} as const;

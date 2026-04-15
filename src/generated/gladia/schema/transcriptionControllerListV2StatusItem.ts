@@ -5,13 +5,13 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TranscriptionControllerListV2StatusItem =
-  (typeof TranscriptionControllerListV2StatusItem)[keyof typeof TranscriptionControllerListV2StatusItem]
+export type TranscriptionControllerListV2StatusItem = typeof TranscriptionControllerListV2StatusItem[keyof typeof TranscriptionControllerListV2StatusItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptionControllerListV2StatusItem = {
-  queued: "queued",
-  processing: "processing",
-  done: "done",
-  error: "error"
-} as const
+  queued: 'queued',
+  processing: 'processing',
+  done: 'done',
+  error: 'error',
+} as const;

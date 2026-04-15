@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type HtmlExportOptionsSegmentOnSilenceLongerThanS = number | null
+export type HtmlExportOptionsSegmentOnSilenceLongerThanS = number | null;

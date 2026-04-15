@@ -5,11 +5,11 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StreamingSupportedRegions =
-  (typeof StreamingSupportedRegions)[keyof typeof StreamingSupportedRegions]
+export type StreamingSupportedRegions = typeof StreamingSupportedRegions[keyof typeof StreamingSupportedRegions];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingSupportedRegions = {
-  "us-west": "us-west",
-  "eu-west": "eu-west"
-} as const
+  'us-west': 'us-west',
+  'eu-west': 'eu-west',
+} as const;

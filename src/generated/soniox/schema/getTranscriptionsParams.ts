@@ -6,12 +6,12 @@
  */
 
 export type GetTranscriptionsParams = {
-  /**
-   * Maximum number of transcriptions to return.
-   */
-  limit?: number
-  /**
-   * Pagination cursor for the next page of results.
-   */
-  cursor?: string | null
-}
+/**
+ * Maximum number of transcriptions to return.
+ */
+limit?: number;
+/**
+ * Pagination cursor for the next page of results.
+ */
+cursor?: string | null;
+};

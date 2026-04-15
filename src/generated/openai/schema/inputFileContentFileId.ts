@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type InputFileContentFileId = string | null
+export type InputFileContentFileId = string | null;

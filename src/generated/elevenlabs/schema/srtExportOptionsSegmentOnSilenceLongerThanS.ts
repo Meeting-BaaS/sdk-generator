@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SrtExportOptionsSegmentOnSilenceLongerThanS = number | null
+export type SrtExportOptionsSegmentOnSilenceLongerThanS = number | null;

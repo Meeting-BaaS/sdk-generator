@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SrtExportOptionsMaxSegmentChars = number | null
+export type SrtExportOptionsMaxSegmentChars = number | null;

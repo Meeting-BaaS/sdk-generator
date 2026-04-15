@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SentimentAnalysisData } from "./sentimentAnalysisData"
+import type { SentimentAnalysisData } from './sentimentAnalysisData';
 
 /**
  * The message data. "null" if the addon failed
  * @nullable
  */
-export type SentimentAnalysisMessageData = SentimentAnalysisData | null
+export type SentimentAnalysisMessageData = SentimentAnalysisData | null;

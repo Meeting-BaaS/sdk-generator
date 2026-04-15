@@ -9,10 +9,10 @@
 /**
  * The audio format. Always `audio/pcma`.
  */
-export type RealtimeAudioFormatsAnyOfSixType =
-  (typeof RealtimeAudioFormatsAnyOfSixType)[keyof typeof RealtimeAudioFormatsAnyOfSixType]
+export type RealtimeAudioFormatsAnyOfSixType = typeof RealtimeAudioFormatsAnyOfSixType[keyof typeof RealtimeAudioFormatsAnyOfSixType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeAudioFormatsAnyOfSixType = {
-  "audio/pcma": "audio/pcma"
-} as const
+  'audio/pcma': 'audio/pcma',
+} as const;

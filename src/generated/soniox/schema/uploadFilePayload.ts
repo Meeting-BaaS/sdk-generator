@@ -4,9 +4,9 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { UploadFilePayloadClientReferenceId } from "./uploadFilePayloadClientReferenceId"
+import type { UploadFilePayloadClientReferenceId } from './uploadFilePayloadClientReferenceId';
 
 export interface UploadFilePayload {
   /** Optional tracking identifier string. Does not need to be unique. */
-  client_reference_id?: UploadFilePayloadClientReferenceId
+  client_reference_id?: UploadFilePayloadClientReferenceId;
 }

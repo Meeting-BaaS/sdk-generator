@@ -6,6 +6,4 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export interface SentimentAnalysisConfig {
-  [key: string]: unknown
-}
+export interface SentimentAnalysisConfig { [key: string]: unknown }

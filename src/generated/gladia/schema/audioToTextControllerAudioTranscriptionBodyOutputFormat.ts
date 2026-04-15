@@ -5,14 +5,14 @@
  * OpenAPI spec version: 1.0
  */
 
-export type AudioToTextControllerAudioTranscriptionBodyOutputFormat =
-  (typeof AudioToTextControllerAudioTranscriptionBodyOutputFormat)[keyof typeof AudioToTextControllerAudioTranscriptionBodyOutputFormat]
+export type AudioToTextControllerAudioTranscriptionBodyOutputFormat = typeof AudioToTextControllerAudioTranscriptionBodyOutputFormat[keyof typeof AudioToTextControllerAudioTranscriptionBodyOutputFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AudioToTextControllerAudioTranscriptionBodyOutputFormat = {
-  json: "json",
-  srt: "srt",
-  vtt: "vtt",
-  plain: "plain",
-  txt: "txt"
-} as const
+  json: 'json',
+  srt: 'srt',
+  vtt: 'vtt',
+  plain: 'plain',
+  txt: 'txt',
+} as const;

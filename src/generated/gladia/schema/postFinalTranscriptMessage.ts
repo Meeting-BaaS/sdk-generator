@@ -4,15 +4,15 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PostFinalTranscriptMessageType } from "./postFinalTranscriptMessageType"
-import type { StreamingTranscriptionResultDTO } from "./streamingTranscriptionResultDTO"
+import type { PostFinalTranscriptMessageType } from './postFinalTranscriptMessageType';
+import type { StreamingTranscriptionResultDTO } from './streamingTranscriptionResultDTO';
 
 export interface PostFinalTranscriptMessage {
   /** Id of the live session */
-  session_id: string
+  session_id: string;
   /** Date of creation of the message. The date is formatted as an ISO 8601 string */
-  created_at: string
-  type: PostFinalTranscriptMessageType
+  created_at: string;
+  type: PostFinalTranscriptMessageType;
   /** The message data */
-  data: StreamingTranscriptionResultDTO
+  data: StreamingTranscriptionResultDTO;
 }

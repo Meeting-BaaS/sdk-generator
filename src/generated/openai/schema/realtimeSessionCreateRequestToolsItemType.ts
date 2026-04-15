@@ -9,10 +9,10 @@
 /**
  * The type of the tool, i.e. `function`.
  */
-export type RealtimeSessionCreateRequestToolsItemType =
-  (typeof RealtimeSessionCreateRequestToolsItemType)[keyof typeof RealtimeSessionCreateRequestToolsItemType]
+export type RealtimeSessionCreateRequestToolsItemType = typeof RealtimeSessionCreateRequestToolsItemType[keyof typeof RealtimeSessionCreateRequestToolsItemType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeSessionCreateRequestToolsItemType = {
-  function: "function"
-} as const
+  function: 'function',
+} as const;

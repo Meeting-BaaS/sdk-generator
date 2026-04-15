@@ -6,12 +6,12 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type GetJobsJobidTranscriptFormat =
-  (typeof GetJobsJobidTranscriptFormat)[keyof typeof GetJobsJobidTranscriptFormat]
+export type GetJobsJobidTranscriptFormat = typeof GetJobsJobidTranscriptFormat[keyof typeof GetJobsJobidTranscriptFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetJobsJobidTranscriptFormat = {
-  "json-v2": "json-v2",
-  txt: "txt",
-  srt: "srt"
-} as const
+  'json-v2': 'json-v2',
+  txt: 'txt',
+  srt: 'srt',
+} as const;

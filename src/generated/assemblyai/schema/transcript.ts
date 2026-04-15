@@ -49,7 +49,6 @@ import type { TranscriptSummary } from './transcriptSummary';
 import type { TranscriptSummaryModel } from './transcriptSummaryModel';
 import type { TranscriptSummaryType } from './transcriptSummaryType';
 import type { TranscriptRemoveAudioTagsProperty } from './transcriptRemoveAudioTagsProperty';
-import type { TranscriptTemperature } from './transcriptTemperature';
 import type { TranscriptText } from './transcriptText';
 import type { TranscriptThrottled } from './transcriptThrottled';
 import type { TranscriptUtterances } from './transcriptUtterances';
@@ -218,11 +217,6 @@ if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summariz
 Note: This parameter is only supported for the Universal-3 Pro model.
  */
   remove_audio_tags?: TranscriptRemoveAudioTagsProperty;
-  /** The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.
-
-Note: This parameter can only be used with the Universal-3 Pro model.
- */
-  temperature?: TranscriptTemperature;
   /** The textual transcript of your media file */
   text?: TranscriptText;
   /** True while a request is throttled and false when a request is no longer throttled */

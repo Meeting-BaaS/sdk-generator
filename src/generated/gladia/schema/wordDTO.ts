@@ -7,11 +7,11 @@
 
 export interface WordDTO {
   /** Spoken word */
-  word: string
+  word: string;
   /** Start timestamps in seconds of the spoken word */
-  start: number
+  start: number;
   /** End timestamps in seconds of the spoken word */
-  end: number
+  end: number;
   /** Confidence on the transcribed word (1 = 100% confident) */
-  confidence: number
+  confidence: number;
 }

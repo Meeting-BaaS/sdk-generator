@@ -4,25 +4,25 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { TranslationLanguageCodeEnum } from "./translationLanguageCodeEnum"
-import type { TranslationModelEnum } from "./translationModelEnum"
+import type { TranslationLanguageCodeEnum } from './translationLanguageCodeEnum';
+import type { TranslationModelEnum } from './translationModelEnum';
 
 export interface TranslationConfigDTO {
   /**
    * Target language in `iso639-1` format you want the transcription translated to
    * @minItems 1
    */
-  target_languages: TranslationLanguageCodeEnum[]
+  target_languages: TranslationLanguageCodeEnum[];
   /** Model you want the translation model to use to translate */
-  model?: TranslationModelEnum
+  model?: TranslationModelEnum;
   /** Align translated utterances with the original ones */
-  match_original_utterances?: boolean
+  match_original_utterances?: boolean;
   /** Whether to apply lipsync to the translated transcription.  */
-  lipsync?: boolean
+  lipsync?: boolean;
   /** Enables or disables context-aware translation features that allow the model to adapt translations based on provided context. */
-  context_adaptation?: boolean
+  context_adaptation?: boolean;
   /** Context information to improve translation accuracy */
-  context?: string
+  context?: string;
   /** Forces the translation to use informal language forms when available in the target language. */
-  informal?: boolean
+  informal?: boolean;
 }

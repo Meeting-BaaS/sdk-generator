@@ -4,15 +4,15 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CustomVocabularyConfigDTOVocabularyItem } from "./customVocabularyConfigDTOVocabularyItem"
+import type { CustomVocabularyConfigDTOVocabularyItem } from './customVocabularyConfigDTOVocabularyItem';
 
 export interface CustomVocabularyConfigDTO {
   /** Specific vocabulary list to feed the transcription model with. Each item can be a string or an object with the following properties: value, intensity, pronunciations, language. */
-  vocabulary: CustomVocabularyConfigDTOVocabularyItem[]
+  vocabulary: CustomVocabularyConfigDTOVocabularyItem[];
   /**
    * Default intensity for the custom vocabulary
    * @minimum 0
    * @maximum 1
    */
-  default_intensity?: number
+  default_intensity?: number;
 }

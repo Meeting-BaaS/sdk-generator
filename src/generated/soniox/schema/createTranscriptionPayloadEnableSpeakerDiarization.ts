@@ -8,4 +8,4 @@
 /**
  * When `true`, speakers are identified and separated in the transcription output.
  */
-export type CreateTranscriptionPayloadEnableSpeakerDiarization = boolean | null
+export type CreateTranscriptionPayloadEnableSpeakerDiarization = boolean | null;

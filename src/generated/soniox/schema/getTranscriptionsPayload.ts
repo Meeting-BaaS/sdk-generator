@@ -4,7 +4,7 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { GetTranscriptionsPayloadCursor } from "./getTranscriptionsPayloadCursor"
+import type { GetTranscriptionsPayloadCursor } from './getTranscriptionsPayloadCursor';
 
 export interface GetTranscriptionsPayload {
   /**
@@ -12,7 +12,7 @@ export interface GetTranscriptionsPayload {
    * @minimum 1
    * @maximum 1000
    */
-  limit?: number
+  limit?: number;
   /** Pagination cursor for the next page of results. */
-  cursor?: GetTranscriptionsPayloadCursor
+  cursor?: GetTranscriptionsPayloadCursor;
 }

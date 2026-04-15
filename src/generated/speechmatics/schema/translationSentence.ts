@@ -7,9 +7,9 @@
  */
 
 export interface TranslationSentence {
-  start_time?: number
-  end_time?: number
-  content?: string
-  speaker?: string
-  channel?: string
+  start_time?: number;
+  end_time?: number;
+  content?: string;
+  speaker?: string;
+  channel?: string;
 }

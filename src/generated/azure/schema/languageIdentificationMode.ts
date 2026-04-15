@@ -9,11 +9,11 @@
 /**
  * The mode used for language identification.
  */
-export type LanguageIdentificationMode =
-  (typeof LanguageIdentificationMode)[keyof typeof LanguageIdentificationMode]
+export type LanguageIdentificationMode = typeof LanguageIdentificationMode[keyof typeof LanguageIdentificationMode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LanguageIdentificationMode = {
-  Continuous: "Continuous",
-  Single: "Single"
-} as const
+  Continuous: 'Continuous',
+  Single: 'Single',
+} as const;

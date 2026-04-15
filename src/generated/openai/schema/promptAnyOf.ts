@@ -5,17 +5,17 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { PromptAnyOfVersion } from "./promptAnyOfVersion"
-import type { ResponsePromptVariables } from "./responsePromptVariables"
+import type { PromptAnyOfVersion } from './promptAnyOfVersion';
+import type { ResponsePromptVariables } from './responsePromptVariables';
 
 /**
  * Reference to a prompt template and its variables.
-[Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+[Learn more](/docs/guides/text?api-mode=responses#reusable-prompts).
 
  */
 export type PromptAnyOf = {
   /** The unique identifier of the prompt template to use. */
-  id: string
-  version?: PromptAnyOfVersion
-  variables?: ResponsePromptVariables
-}
+  id: string;
+  version?: PromptAnyOfVersion;
+  variables?: ResponsePromptVariables;
+};

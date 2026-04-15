@@ -8,5 +8,5 @@
 
 export interface OperationResult {
   /** The link to the result of the operation. */
-  readonly link?: string
+  readonly link?: string;
 }

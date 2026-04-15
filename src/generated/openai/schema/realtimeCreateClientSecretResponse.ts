@@ -5,7 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeCreateClientSecretResponseSession } from "./realtimeCreateClientSecretResponseSession"
+import type { RealtimeCreateClientSecretResponseSession } from './realtimeCreateClientSecretResponseSession';
 
 /**
  * Response from creating a session and client secret for the Realtime API.
@@ -13,10 +13,10 @@ import type { RealtimeCreateClientSecretResponseSession } from "./realtimeCreate
  */
 export interface RealtimeCreateClientSecretResponse {
   /** The generated client secret value. */
-  value: string
+  value: string;
   /** Expiration timestamp for the client secret, in seconds since epoch. */
-  expires_at: number
+  expires_at: number;
   /** The session configuration for either a realtime or transcription session.
-   */
-  session: RealtimeCreateClientSecretResponseSession
+ */
+  session: RealtimeCreateClientSecretResponseSession;
 }

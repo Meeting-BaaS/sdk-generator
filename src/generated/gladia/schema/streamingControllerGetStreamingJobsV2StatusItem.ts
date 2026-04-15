@@ -5,13 +5,13 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StreamingControllerGetStreamingJobsV2StatusItem =
-  (typeof StreamingControllerGetStreamingJobsV2StatusItem)[keyof typeof StreamingControllerGetStreamingJobsV2StatusItem]
+export type StreamingControllerGetStreamingJobsV2StatusItem = typeof StreamingControllerGetStreamingJobsV2StatusItem[keyof typeof StreamingControllerGetStreamingJobsV2StatusItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingControllerGetStreamingJobsV2StatusItem = {
-  queued: "queued",
-  processing: "processing",
-  done: "done",
-  error: "error"
-} as const
+  queued: 'queued',
+  processing: 'processing',
+  done: 'done',
+  error: 'error',
+} as const;

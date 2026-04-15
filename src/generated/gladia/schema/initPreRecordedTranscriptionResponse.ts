@@ -7,7 +7,7 @@
 
 export interface InitPreRecordedTranscriptionResponse {
   /** Id of the job */
-  id: string
+  id: string;
   /** Prebuilt URL with your transcription `id` to fetch the result */
-  result_url: string
+  result_url: string;
 }

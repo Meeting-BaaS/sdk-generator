@@ -10,7 +10,10 @@ import {
 } from 'zod';
 
 /**
- * Upload a media file to AssemblyAI's servers.
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+Upload a media file to AssemblyAI's servers.
 
 <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 <Warning>Requests to transcribe uploaded files must use an API key from the same project as the key that was used to upload the file. If you use an API key from a different project you will get a `403` error and "Cannot access uploaded file" message.</Warning>
@@ -23,12 +26,15 @@ export const uploadFileResponse = zod.object({
 
 
 /**
- * <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Create a transcript from a media file that is accessible via a URL.
 
  * @summary Transcribe audio
  */
-export const createTranscriptBodyAutoChaptersDefault = false;export const createTranscriptBodyAutoHighlightsDefault = false;export const createTranscriptBodyContentSafetyDefault = false;export const createTranscriptBodyContentSafetyConfidenceDefault = 50;export const createTranscriptBodyDisfluenciesDefault = false;export const createTranscriptBodyEntityDetectionDefault = false;export const createTranscriptBodyFilterProfanityDefault = false;export const createTranscriptBodyFormatTextDefault = true;export const createTranscriptBodyIabCategoriesDefault = false;export const createTranscriptBodyLanguageDetectionDefault = false;export const createTranscriptBodyLanguageDetectionOptionsFallbackLanguageDefault = "auto";export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingDefault = false;export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault = 0.3;export const createTranscriptBodyMultichannelDefault = false;export const createTranscriptBodyPunctuateDefault = true;export const createTranscriptBodyRedactPiiDefault = false;export const createTranscriptBodyRedactPiiAudioDefault = false;export const createTranscriptBodyRedactPiiAudioOptionsReturnRedactedNoSpeechAudioDefault = false;export const createTranscriptBodySentimentAnalysisDefault = false;export const createTranscriptBodySpeakerLabelsDefault = false;export const createTranscriptBodySpeakerOptionsMinSpeakersExpectedDefault = 1;export const createTranscriptBodySpeechUnderstandingRequestTranslationFormalDefault = true;export const createTranscriptBodySpeechUnderstandingRequestTranslationMatchOriginalUtteranceDefault = false;export const createTranscriptBodySummarizationDefault = false;export const createTranscriptBodyTemperatureDefault = 0;export const createTranscriptBodyCustomTopicsDefault = false;
+export const createTranscriptBodyAutoChaptersDefault = false;export const createTranscriptBodyAutoHighlightsDefault = false;export const createTranscriptBodyContentSafetyDefault = false;export const createTranscriptBodyContentSafetyConfidenceDefault = 50;export const createTranscriptBodyDisfluenciesDefault = false;export const createTranscriptBodyEntityDetectionDefault = false;export const createTranscriptBodyFilterProfanityDefault = false;export const createTranscriptBodyFormatTextDefault = true;export const createTranscriptBodyIabCategoriesDefault = false;export const createTranscriptBodyLanguageDetectionDefault = false;export const createTranscriptBodyLanguageDetectionOptionsFallbackLanguageDefault = "auto";export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingDefault = false;export const createTranscriptBodyLanguageDetectionOptionsCodeSwitchingConfidenceThresholdDefault = 0.3;export const createTranscriptBodyMultichannelDefault = false;export const createTranscriptBodyPunctuateDefault = true;export const createTranscriptBodyRedactPiiDefault = false;export const createTranscriptBodyRedactPiiAudioDefault = false;export const createTranscriptBodyRedactPiiAudioOptionsReturnRedactedNoSpeechAudioDefault = false;export const createTranscriptBodySentimentAnalysisDefault = false;export const createTranscriptBodySpeakerLabelsDefault = false;export const createTranscriptBodySpeakerOptionsMinSpeakersExpectedDefault = 1;export const createTranscriptBodySpeechUnderstandingRequestTranslationFormalDefault = true;export const createTranscriptBodySpeechUnderstandingRequestTranslationMatchOriginalUtteranceDefault = false;export const createTranscriptBodySummarizationDefault = false;export const createTranscriptBodyCustomTopicsDefault = false;
 
 export const createTranscriptBody = zod.object({
   "audio_end_at": zod.number().optional().describe('The point in time, in milliseconds, to stop transcribing in your media file. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details.'),
@@ -108,7 +114,6 @@ export const createTranscriptBody = zod.object({
   "summary_model": zod.enum(['informative', 'conversational', 'catchy']).optional().describe('The model to summarize the transcript'),
   "summary_type": zod.enum(['bullets', 'bullets_verbose', 'gist', 'headline', 'paragraph']).optional().describe('The type of summary'),
   "remove_audio_tags": zod.enum(['all']).describe('Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n').or(zod.null()).optional().describe('Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
-  "temperature": zod.number().optional().describe('Control the amount of randomness injected into the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
   "webhook_auth_header_name": zod.string().nullish().describe('The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests'),
   "webhook_auth_header_value": zod.string().nullish().describe('The header value to send back with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests for added security'),
   "webhook_url": zod.string().optional().describe('The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.\n'),
@@ -289,7 +294,6 @@ export const createTranscriptResponse = zod.object({
   "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n'),
   "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
   "remove_audio_tags": zod.enum(['all']).describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n').or(zod.null()).optional().describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
-  "temperature": zod.number().nullish().describe('The temperature that was used for the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
   "text": zod.string().nullish().describe('The textual transcript of your media file'),
   "throttled": zod.boolean().nullish().describe('True while a request is throttled and false when a request is no longer throttled'),
   "utterances": zod.array(zod.object({
@@ -334,7 +338,10 @@ export const createTranscriptResponse = zod.object({
 
 
 /**
- * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Retrieve a list of transcripts you created.
 Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
 
@@ -383,7 +390,10 @@ export const listTranscriptsResponse = zod.object({
 
 
 /**
- * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Get the transcript resource. The transcript is ready when the "status" is "completed".
 
  * @summary Get transcript
@@ -564,7 +574,6 @@ export const getTranscriptResponse = zod.object({
   "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n'),
   "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
   "remove_audio_tags": zod.enum(['all']).describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n').or(zod.null()).optional().describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
-  "temperature": zod.number().nullish().describe('The temperature that was used for the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
   "text": zod.string().nullish().describe('The textual transcript of your media file'),
   "throttled": zod.boolean().nullish().describe('True while a request is throttled and false when a request is no longer throttled'),
   "utterances": zod.array(zod.object({
@@ -609,7 +618,10 @@ export const getTranscriptResponse = zod.object({
 
 
 /**
- * <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Remove the data from the transcript and mark it as deleted.
 <Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>
 
@@ -791,7 +803,6 @@ export const deleteTranscriptResponse = zod.object({
   "summary_model": zod.string().nullish().describe('The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n'),
   "summary_type": zod.string().nullish().describe('The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.'),
   "remove_audio_tags": zod.enum(['all']).describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n').or(zod.null()).optional().describe('Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'),
-  "temperature": zod.number().nullish().describe('The temperature that was used for the model\'s response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n'),
   "text": zod.string().nullish().describe('The textual transcript of your media file'),
   "throttled": zod.boolean().nullish().describe('True while a request is throttled and false when a request is no longer throttled'),
   "utterances": zod.array(zod.object({
@@ -836,7 +847,10 @@ export const deleteTranscriptResponse = zod.object({
 
 
 /**
- * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Get the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.
 
  * @summary Get sentences in transcript
@@ -869,7 +883,10 @@ export const getTranscriptSentencesResponse = zod.object({
 
 
 /**
- * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Get the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.
 
  * @summary Get paragraphs in transcript
@@ -900,7 +917,10 @@ export const getTranscriptParagraphsResponse = zod.object({
 
 
 /**
- * <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Export your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.
 
  * @summary Get subtitles for transcript
@@ -920,7 +940,10 @@ export const getSubtitlesResponse = zod.object({
 
 
 /**
- * <Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
 <Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>
 Retrieve the redacted audio object containing the status and URL to the redacted audio.
 
@@ -937,7 +960,10 @@ export const getRedactedAudioResponse = zod.object({
 
 
 /**
- * <Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+ * <llms-only>
+> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)
+</llms-only>
+<Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
 Search through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.
 
  * @summary Search words in transcript

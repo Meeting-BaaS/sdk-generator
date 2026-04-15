@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { UtteranceDTO } from "./utteranceDTO"
+import type { UtteranceDTO } from './utteranceDTO';
 
 export interface TranscriptMessageData {
   /** Id of the utterance */
-  id: string
+  id: string;
   /** Flag to indicate if the transcript is final or not */
-  is_final: boolean
+  is_final: boolean;
   /** The transcribed utterance */
-  utterance: UtteranceDTO
+  utterance: UtteranceDTO;
 }

@@ -9,11 +9,11 @@
 /**
  * The ID of the model to use for transcription.
  */
-export type BodySpeechToTextV1SpeechToTextPostModelId =
-  (typeof BodySpeechToTextV1SpeechToTextPostModelId)[keyof typeof BodySpeechToTextV1SpeechToTextPostModelId]
+export type BodySpeechToTextV1SpeechToTextPostModelId = typeof BodySpeechToTextV1SpeechToTextPostModelId[keyof typeof BodySpeechToTextV1SpeechToTextPostModelId];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BodySpeechToTextV1SpeechToTextPostModelId = {
-  scribe_v1: "scribe_v1",
-  scribe_v2: "scribe_v2"
-} as const
+  scribe_v1: 'scribe_v1',
+  scribe_v2: 'scribe_v2',
+} as const;

@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AddonErrorDTO } from "./addonErrorDTO"
+import type { AddonErrorDTO } from './addonErrorDTO';
 
 /**
  * Contains the error details of the failed addon
  * @nullable
  */
-export type TranslationResultDTOError = AddonErrorDTO | null
+export type TranslationResultDTOError = AddonErrorDTO | null;

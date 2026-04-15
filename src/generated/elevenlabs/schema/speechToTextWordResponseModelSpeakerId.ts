@@ -9,4 +9,4 @@
 /**
  * Unique identifier for the speaker of this word.
  */
-export type SpeechToTextWordResponseModelSpeakerId = string | null
+export type SpeechToTextWordResponseModelSpeakerId = string | null;

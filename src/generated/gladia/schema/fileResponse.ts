@@ -7,26 +7,26 @@
 
 export interface FileResponse {
   /** The file id */
-  id: string
+  id: string;
   /**
    * The name of the uploaded file
    * @nullable
    */
-  filename: string | null
+  filename: string | null;
   /**
    * The link used to download the file if audio_url was used
    * @nullable
    */
-  source: string | null
+  source: string | null;
   /**
    * Duration of the audio file
    * @nullable
    */
-  audio_duration: number | null
+  audio_duration: number | null;
   /**
    * Number of channels in the audio file
    * @minimum 1
    * @nullable
    */
-  number_of_channels: number | null
+  number_of_channels: number | null;
 }

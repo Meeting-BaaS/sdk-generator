@@ -11,10 +11,10 @@ export interface DiarizationSpeakersProperties {
    * A hint for the minimum number of speakers for diarization. Must be smaller than or equal to the maxSpeakers property.
    * @minimum 1
    */
-  minCount?: number
+  minCount?: number;
   /**
    * The maximum number of speakers for diarization. Must be less than 36 and larger than or equal to the minSpeakers property.
    * @minimum 1
    */
-  maxCount?: number
+  maxCount?: number;
 }

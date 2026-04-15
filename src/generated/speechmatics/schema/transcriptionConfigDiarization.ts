@@ -15,12 +15,12 @@ The default is `none`.
   - **channel**: multiple input channels are processed individually and collated
             into a single transcript.
  */
-export type TranscriptionConfigDiarization =
-  (typeof TranscriptionConfigDiarization)[keyof typeof TranscriptionConfigDiarization]
+export type TranscriptionConfigDiarization = typeof TranscriptionConfigDiarization[keyof typeof TranscriptionConfigDiarization];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptionConfigDiarization = {
-  none: "none",
-  speaker: "speaker",
-  channel: "channel"
-} as const
+  none: 'none',
+  speaker: 'speaker',
+  channel: 'channel',
+} as const;

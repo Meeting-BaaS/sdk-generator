@@ -5,18 +5,11 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
+import type { SegmentedJsonExportOptions } from './segmentedJsonExportOptions';
+import type { DocxExportOptions } from './docxExportOptions';
+import type { PdfExportOptions } from './pdfExportOptions';
+import type { TxtExportOptions } from './txtExportOptions';
+import type { HtmlExportOptions } from './htmlExportOptions';
+import type { SrtExportOptions } from './srtExportOptions';
 
-import type { DocxExportOptions } from "./docxExportOptions"
-import type { HtmlExportOptions } from "./htmlExportOptions"
-import type { PdfExportOptions } from "./pdfExportOptions"
-import type { SegmentedJsonExportOptions } from "./segmentedJsonExportOptions"
-import type { SrtExportOptions } from "./srtExportOptions"
-import type { TxtExportOptions } from "./txtExportOptions"
-
-export type ExportOptions =
-  | SegmentedJsonExportOptions
-  | DocxExportOptions
-  | PdfExportOptions
-  | TxtExportOptions
-  | HtmlExportOptions
-  | SrtExportOptions
+export type ExportOptions = SegmentedJsonExportOptions | DocxExportOptions | PdfExportOptions | TxtExportOptions | HtmlExportOptions | SrtExportOptions;

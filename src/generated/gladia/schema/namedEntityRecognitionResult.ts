@@ -6,8 +6,8 @@
  */
 
 export interface NamedEntityRecognitionResult {
-  entity_type: string
-  text: string
-  start: number
-  end: number
+  entity_type: string;
+  text: string;
+  start: number;
+  end: number;
 }

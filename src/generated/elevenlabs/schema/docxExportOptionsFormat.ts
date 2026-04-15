@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type DocxExportOptionsFormat =
-  (typeof DocxExportOptionsFormat)[keyof typeof DocxExportOptionsFormat]
+export type DocxExportOptionsFormat = typeof DocxExportOptionsFormat[keyof typeof DocxExportOptionsFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DocxExportOptionsFormat = {
-  docx: "docx"
-} as const
+  docx: 'docx',
+} as const;

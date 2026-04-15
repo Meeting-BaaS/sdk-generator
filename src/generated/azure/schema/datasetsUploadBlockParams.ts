@@ -7,8 +7,8 @@
  */
 
 export type DatasetsUploadBlockParams = {
-  /**
-   * A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block. Note that the Base64 string must be URL-encoded.
-   */
-  blockid: string
-}
+/**
+ * A valid Base64 string value that identifies the block. Prior to encoding, the string must be less than or equal to 64 bytes in size. For a given blob, the length of the value specified for the blockid parameter must be the same size for each block. Note that the Base64 string must be URL-encoded.
+ */
+blockid: string;
+};

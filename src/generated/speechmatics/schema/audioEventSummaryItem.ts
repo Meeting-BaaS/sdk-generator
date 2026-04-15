@@ -11,7 +11,7 @@
  */
 export interface AudioEventSummaryItem {
   /** Total duration (in seconds) of all audio events of this type */
-  total_duration?: number
+  total_duration?: number;
   /** Number of events of this type */
-  count?: number
+  count?: number;
 }

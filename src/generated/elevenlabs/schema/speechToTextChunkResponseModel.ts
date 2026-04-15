@@ -5,31 +5,33 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-
-import type { SpeechToTextChunkResponseModelAdditionalFormats } from "./speechToTextChunkResponseModelAdditionalFormats"
-import type { SpeechToTextChunkResponseModelChannelIndex } from "./speechToTextChunkResponseModelChannelIndex"
-import type { SpeechToTextChunkResponseModelEntities } from "./speechToTextChunkResponseModelEntities"
-import type { SpeechToTextChunkResponseModelTranscriptionId } from "./speechToTextChunkResponseModelTranscriptionId"
-import type { SpeechToTextWordResponseModel } from "./speechToTextWordResponseModel"
+import type { SpeechToTextWordResponseModel } from './speechToTextWordResponseModel';
+import type { SpeechToTextChunkResponseModelChannelIndex } from './speechToTextChunkResponseModelChannelIndex';
+import type { SpeechToTextChunkResponseModelAdditionalFormats } from './speechToTextChunkResponseModelAdditionalFormats';
+import type { SpeechToTextChunkResponseModelTranscriptionId } from './speechToTextChunkResponseModelTranscriptionId';
+import type { SpeechToTextChunkResponseModelEntities } from './speechToTextChunkResponseModelEntities';
+import type { SpeechToTextChunkResponseModelAudioDurationSecs } from './speechToTextChunkResponseModelAudioDurationSecs';
 
 /**
  * Chunk-level detail of the transcription with timing information.
  */
 export interface SpeechToTextChunkResponseModel {
   /** The detected language code (e.g. 'eng' for English). */
-  language_code: string
+  language_code: string;
   /** The confidence score of the language detection (0 to 1). */
-  language_probability: number
+  language_probability: number;
   /** The raw text of the transcription. */
-  text: string
+  text: string;
   /** List of words with their timing information. */
-  words: SpeechToTextWordResponseModel[]
+  words: SpeechToTextWordResponseModel[];
   /** The channel index this transcript belongs to (for multichannel audio). */
-  channel_index?: SpeechToTextChunkResponseModelChannelIndex
+  channel_index?: SpeechToTextChunkResponseModelChannelIndex;
   /** Requested additional formats of the transcript. */
-  additional_formats?: SpeechToTextChunkResponseModelAdditionalFormats
+  additional_formats?: SpeechToTextChunkResponseModelAdditionalFormats;
   /** The transcription ID of the response. */
-  transcription_id?: SpeechToTextChunkResponseModelTranscriptionId
+  transcription_id?: SpeechToTextChunkResponseModelTranscriptionId;
   /** List of detected entities with their text, type, and character positions in the transcript. */
-  entities?: SpeechToTextChunkResponseModelEntities
+  entities?: SpeechToTextChunkResponseModelEntities;
+  /** The duration of the audio that was transcribed in seconds. */
+  audio_duration_secs?: SpeechToTextChunkResponseModelAudioDurationSecs;
 }

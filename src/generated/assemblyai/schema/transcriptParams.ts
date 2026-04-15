@@ -134,11 +134,6 @@ Note: This parameter is only supported for the Universal-2 model.
 Note: This parameter is only supported for the Universal-3 Pro model.
  */
   remove_audio_tags?: TranscriptParamsRemoveAudioTags;
-  /** Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.
-
-Note: This parameter can only be used with the Universal-3 Pro model.
- */
-  temperature?: number;
   /** The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests */
   webhook_auth_header_name?: TranscriptParamsWebhookAuthHeaderName;
   /** The header value to send back with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests for added security */

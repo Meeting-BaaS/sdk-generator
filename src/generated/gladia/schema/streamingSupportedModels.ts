@@ -8,10 +8,10 @@
 /**
  * The model used to process the audio. "solaria-1" is used by default.
  */
-export type StreamingSupportedModels =
-  (typeof StreamingSupportedModels)[keyof typeof StreamingSupportedModels]
+export type StreamingSupportedModels = typeof StreamingSupportedModels[keyof typeof StreamingSupportedModels];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingSupportedModels = {
-  "solaria-1": "solaria-1"
-} as const
+  'solaria-1': 'solaria-1',
+} as const;

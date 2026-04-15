@@ -9,4 +9,4 @@
 /**
  * The end time of the character in seconds.
  */
-export type SpeechToTextCharacterResponseModelEnd = number | null
+export type SpeechToTextCharacterResponseModelEnd = number | null;

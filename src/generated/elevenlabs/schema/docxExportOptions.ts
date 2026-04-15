@@ -5,16 +5,16 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { DocxExportOptionsFormat } from "./docxExportOptionsFormat"
-import type { DocxExportOptionsMaxSegmentChars } from "./docxExportOptionsMaxSegmentChars"
-import type { DocxExportOptionsMaxSegmentDurationS } from "./docxExportOptionsMaxSegmentDurationS"
-import type { DocxExportOptionsSegmentOnSilenceLongerThanS } from "./docxExportOptionsSegmentOnSilenceLongerThanS"
+import type { DocxExportOptionsFormat } from './docxExportOptionsFormat';
+import type { DocxExportOptionsSegmentOnSilenceLongerThanS } from './docxExportOptionsSegmentOnSilenceLongerThanS';
+import type { DocxExportOptionsMaxSegmentDurationS } from './docxExportOptionsMaxSegmentDurationS';
+import type { DocxExportOptionsMaxSegmentChars } from './docxExportOptionsMaxSegmentChars';
 
 export interface DocxExportOptions {
-  include_speakers?: boolean
-  include_timestamps?: boolean
-  format: DocxExportOptionsFormat
-  segment_on_silence_longer_than_s?: DocxExportOptionsSegmentOnSilenceLongerThanS
-  max_segment_duration_s?: DocxExportOptionsMaxSegmentDurationS
-  max_segment_chars?: DocxExportOptionsMaxSegmentChars
+  include_speakers?: boolean;
+  include_timestamps?: boolean;
+  format: DocxExportOptionsFormat;
+  segment_on_silence_longer_than_s?: DocxExportOptionsSegmentOnSilenceLongerThanS;
+  max_segment_duration_s?: DocxExportOptionsMaxSegmentDurationS;
+  max_segment_chars?: DocxExportOptionsMaxSegmentChars;
 }

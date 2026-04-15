@@ -4,9 +4,9 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { StructuredContextTranslationTerm } from "./structuredContextTranslationTerm"
+import type { StructuredContextTranslationTerm } from './structuredContextTranslationTerm';
 
 /**
  * Hints how to translate specific terms. Ignored if translation is not enabled.
  */
-export type StructuredContextTranslationTerms = StructuredContextTranslationTerm[] | null
+export type StructuredContextTranslationTerms = StructuredContextTranslationTerm[] | null;

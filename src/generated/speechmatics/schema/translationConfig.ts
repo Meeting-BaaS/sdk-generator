@@ -8,5 +8,5 @@
 
 export interface TranslationConfig {
   /** @maxItems 5 */
-  target_languages: string[]
+  target_languages: string[];
 }

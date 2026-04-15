@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PdfExportOptionsMaxSegmentChars = number | null
+export type PdfExportOptionsMaxSegmentChars = number | null;

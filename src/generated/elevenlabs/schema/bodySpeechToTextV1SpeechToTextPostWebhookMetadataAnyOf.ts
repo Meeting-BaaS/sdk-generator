@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type BodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf = { [key: string]: unknown }
+export type BodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf = { [key: string]: unknown };

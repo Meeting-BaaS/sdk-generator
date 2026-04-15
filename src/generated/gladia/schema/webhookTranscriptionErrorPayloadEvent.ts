@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type WebhookTranscriptionErrorPayloadEvent =
-  (typeof WebhookTranscriptionErrorPayloadEvent)[keyof typeof WebhookTranscriptionErrorPayloadEvent]
+export type WebhookTranscriptionErrorPayloadEvent = typeof WebhookTranscriptionErrorPayloadEvent[keyof typeof WebhookTranscriptionErrorPayloadEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookTranscriptionErrorPayloadEvent = {
-  transcriptionerror: "transcription.error"
-} as const
+  transcriptionerror: 'transcription.error',
+} as const;

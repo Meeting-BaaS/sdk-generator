@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type HtmlExportOptionsMaxSegmentDurationS = number | null
+export type HtmlExportOptionsMaxSegmentDurationS = number | null;

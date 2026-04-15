@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StopRecordingAckData } from "./stopRecordingAckData"
+import type { StopRecordingAckData } from './stopRecordingAckData';
 
 /**
  * The message data. "null" if the action was not successfully acknowledged
  * @nullable
  */
-export type StopRecordingAckMessageData = StopRecordingAckData | null
+export type StopRecordingAckMessageData = StopRecordingAckData | null;

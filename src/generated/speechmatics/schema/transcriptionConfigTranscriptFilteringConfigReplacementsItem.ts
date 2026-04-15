@@ -7,6 +7,6 @@
  */
 
 export type TranscriptionConfigTranscriptFilteringConfigReplacementsItem = {
-  from: string
-  to: string
-}
+  from: string;
+  to: string;
+};

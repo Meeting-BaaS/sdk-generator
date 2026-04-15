@@ -7,5 +7,5 @@
 
 export interface EndRecordingMessageData {
   /** Total audio duration in seconds */
-  recording_duration: number
+  recording_duration: number;
 }

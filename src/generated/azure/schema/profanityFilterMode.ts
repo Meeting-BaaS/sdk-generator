@@ -9,12 +9,13 @@
 /**
  * Mode of profanity filtering.
  */
-export type ProfanityFilterMode = (typeof ProfanityFilterMode)[keyof typeof ProfanityFilterMode]
+export type ProfanityFilterMode = typeof ProfanityFilterMode[keyof typeof ProfanityFilterMode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProfanityFilterMode = {
-  None: "None",
-  Removed: "Removed",
-  Tags: "Tags",
-  Masked: "Masked"
-} as const
+  None: 'None',
+  Removed: 'Removed',
+  Tags: 'Tags',
+  Masked: 'Masked',
+} as const;

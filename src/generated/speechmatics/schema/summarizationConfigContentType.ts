@@ -6,12 +6,12 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type SummarizationConfigContentType =
-  (typeof SummarizationConfigContentType)[keyof typeof SummarizationConfigContentType]
+export type SummarizationConfigContentType = typeof SummarizationConfigContentType[keyof typeof SummarizationConfigContentType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummarizationConfigContentType = {
-  auto: "auto",
-  informative: "informative",
-  conversational: "conversational"
-} as const
+  auto: 'auto',
+  informative: 'informative',
+  conversational: 'conversational',
+} as const;

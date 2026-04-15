@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SegmentedJsonExportOptionsMaxSegmentDurationS = number | null
+export type SegmentedJsonExportOptionsMaxSegmentDurationS = number | null;

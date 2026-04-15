@@ -8,4 +8,4 @@
 /**
  * Detected language code for this token. Only present when language identification is enabled.
  */
-export type TranscriptionTranscriptTokenLanguage = string | null
+export type TranscriptionTranscriptTokenLanguage = string | null;

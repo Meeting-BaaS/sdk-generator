@@ -10,7 +10,7 @@
       "post": {
         "operationId": "uploadFile",
         "summary": "Upload a media file",
-        "description": "Upload a media file to AssemblyAI's servers.\n\n<Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\n<Warning>Requests to transcribe uploaded files must use an API key from the same project as the key that was used to upload the file. If you use an API key from a different project you will get a `403` error and \"Cannot access uploaded file\" message.</Warning>\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\nUpload a media file to AssemblyAI's servers.\n\n<Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\n<Warning>Requests to transcribe uploaded files must use an API key from the same project as the key that was used to upload the file. If you use an API key from a different project you will get a `403` error and \"Cannot access uploaded file\" message.</Warning>\n",
         "tags": [
           "subpackage_files"
         ],
@@ -122,7 +122,7 @@
       "post": {
         "operationId": "createTranscript",
         "summary": "Transcribe audio",
-        "description": "<Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nCreate a transcript from a media file that is accessible via a URL.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nCreate a transcript from a media file that is accessible via a URL.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -222,7 +222,7 @@
       "get": {
         "operationId": "listTranscripts",
         "summary": "List transcripts",
-        "description": "<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nRetrieve a list of transcripts you created.\nTranscripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.\n\nIf you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.\n\n**Pagination**\n\nThis endpoint returns paginated results. The response includes a `page_details` object with the following properties:\n- `page_details.limit` - Maximum number of transcripts per page.\n- `page_details.result_count` - Total number of transcripts returned on the current page.\n- `page_details.current_url` - URL to the current page.\n- `page_details.prev_url` - URL to the previous page of older transcripts.\n- `page_details.next_url` - URL to the next page of newer transcripts.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nRetrieve a list of transcripts you created.\nTranscripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.\n\nIf you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.\n\n**Pagination**\n\nThis endpoint returns paginated results. The response includes a `page_details` object with the following properties:\n- `page_details.limit` - Maximum number of transcripts per page.\n- `page_details.result_count` - Total number of transcripts returned on the current page.\n- `page_details.current_url` - URL to the current page.\n- `page_details.prev_url` - URL to the previous page of older transcripts.\n- `page_details.next_url` - URL to the next page of newer transcripts.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -375,7 +375,7 @@
       "get": {
         "operationId": "getTranscript",
         "summary": "Get transcript",
-        "description": "<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nGet the transcript resource. The transcript is ready when the \"status\" is \"completed\".\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nGet the transcript resource. The transcript is ready when the \"status\" is \"completed\".\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -476,7 +476,7 @@
       "delete": {
         "operationId": "deleteTranscript",
         "summary": "Delete transcript",
-        "description": "<Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nRemove the data from the transcript and mark it as deleted.\n<Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nRemove the data from the transcript and mark it as deleted.\n<Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -579,7 +579,7 @@
       "get": {
         "operationId": "getTranscriptSentences",
         "summary": "Get sentences in transcript",
-        "description": "<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nGet the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nGet the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -682,7 +682,7 @@
       "get": {
         "operationId": "getTranscriptParagraphs",
         "summary": "Get paragraphs in transcript",
-        "description": "<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nGet the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nGet the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -785,7 +785,7 @@
       "get": {
         "operationId": "getSubtitles",
         "summary": "Get subtitles for transcript",
-        "description": "<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nExport your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nExport your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -907,7 +907,7 @@
       "get": {
         "operationId": "getRedactedAudio",
         "summary": "Get redacted audio",
-        "description": "<Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>\n<Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>\nRetrieve the redacted audio object containing the status and URL to the redacted audio.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>\n<Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>\nRetrieve the redacted audio object containing the status and URL to the redacted audio.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -1010,7 +1010,7 @@
       "get": {
         "operationId": "wordSearch",
         "summary": "Search words in transcript",
-        "description": "<Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nSearch through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nSearch through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -1870,12 +1870,6 @@
               }
             ],
             "description": "Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
-          },
-          "temperature": {
-            "type": "number",
-            "format": "double",
-            "default": 0,
-            "description": "Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n"
           },
           "webhook_auth_header_name": {
             "type": [
@@ -3040,14 +3034,6 @@
               }
             ],
             "description": "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
-          },
-          "temperature": {
-            "type": [
-              "number",
-              "null"
-            ],
-            "format": "double",
-            "description": "The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n"
           },
           "text": {
             "type": [

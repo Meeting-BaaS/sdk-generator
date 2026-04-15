@@ -5,11 +5,11 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { SasValidityQueryParameterParameter } from "./sasValidityQueryParameterParameter"
+import type { SasValidityQueryParameterParameter } from './sasValidityQueryParameterParameter';
 
 export type EndpointsGetLogParams = {
-  /**
-   * The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.
-   */
-  sasValidityInSeconds?: SasValidityQueryParameterParameter
-}
+/**
+ * The duration in seconds that an SAS url should be valid. The default duration is 12 hours. When using BYOS (https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-encryption-of-data-at-rest#bring-your-own-storage-byos-for-customization-and-logging): A value of 0 means that a plain blob URI without SAS token will be generated.
+ */
+sasValidityInSeconds?: SasValidityQueryParameterParameter;
+};

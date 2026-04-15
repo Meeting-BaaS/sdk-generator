@@ -6,9 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type TranscriptionInclude = (typeof TranscriptionInclude)[keyof typeof TranscriptionInclude]
+export type TranscriptionInclude = typeof TranscriptionInclude[keyof typeof TranscriptionInclude];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptionInclude = {
-  logprobs: "logprobs"
-} as const
+  logprobs: 'logprobs',
+} as const;

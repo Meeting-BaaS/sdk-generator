@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TxtExportOptionsMaxSegmentDurationS = number | null
+export type TxtExportOptionsMaxSegmentDurationS = number | null;

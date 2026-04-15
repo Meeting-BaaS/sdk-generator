@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StreamingTranscriptionResultWithMessagesDTO } from "./streamingTranscriptionResultWithMessagesDTO"
+import type { StreamingTranscriptionResultWithMessagesDTO } from './streamingTranscriptionResultWithMessagesDTO';
 
 /**
  * Live transcription's result when status is "done"
  * @nullable
  */
-export type StreamingResponseResult = StreamingTranscriptionResultWithMessagesDTO | null
+export type StreamingResponseResult = StreamingTranscriptionResultWithMessagesDTO | null;

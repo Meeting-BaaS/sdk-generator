@@ -7,7 +7,7 @@
 
 export interface StructuredContextGeneralItem {
   /** Item key (e.g. "Domain"). */
-  key: string
+  key: string;
   /** Item value (e.g. "medicine"). */
-  value: string
+  value: string;
 }

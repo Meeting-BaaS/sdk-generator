@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type HtmlExportOptionsFormat =
-  (typeof HtmlExportOptionsFormat)[keyof typeof HtmlExportOptionsFormat]
+export type HtmlExportOptionsFormat = typeof HtmlExportOptionsFormat[keyof typeof HtmlExportOptionsFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HtmlExportOptionsFormat = {
-  html: "html"
-} as const
+  html: 'html',
+} as const;

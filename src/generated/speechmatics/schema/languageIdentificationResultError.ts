@@ -6,14 +6,14 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type LanguageIdentificationResultError =
-  (typeof LanguageIdentificationResultError)[keyof typeof LanguageIdentificationResultError]
+export type LanguageIdentificationResultError = typeof LanguageIdentificationResultError[keyof typeof LanguageIdentificationResultError];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LanguageIdentificationResultError = {
-  LOW_CONFIDENCE: "LOW_CONFIDENCE",
-  UNEXPECTED_LANGUAGE: "UNEXPECTED_LANGUAGE",
-  NO_SPEECH: "NO_SPEECH",
-  FILE_UNREADABLE: "FILE_UNREADABLE",
-  OTHER: "OTHER"
-} as const
+  LOW_CONFIDENCE: 'LOW_CONFIDENCE',
+  UNEXPECTED_LANGUAGE: 'UNEXPECTED_LANGUAGE',
+  NO_SPEECH: 'NO_SPEECH',
+  FILE_UNREADABLE: 'FILE_UNREADABLE',
+  OTHER: 'OTHER',
+} as const;

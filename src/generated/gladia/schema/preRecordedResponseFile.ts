@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { FileResponse } from "./fileResponse"
+import type { FileResponse } from './fileResponse';
 
 /**
  * The file data you uploaded. Can be null if status is "error"
  * @nullable
  */
-export type PreRecordedResponseFile = FileResponse | null
+export type PreRecordedResponseFile = FileResponse | null;

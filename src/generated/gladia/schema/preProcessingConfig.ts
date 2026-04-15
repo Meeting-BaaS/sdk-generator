@@ -7,11 +7,11 @@
 
 export interface PreProcessingConfig {
   /** If true, apply pre-processing to the audio stream to enhance the quality. */
-  audio_enhancer?: boolean
+  audio_enhancer?: boolean;
   /**
    * Sensitivity configuration for Speech Threshold. A value close to 1 will apply stricter thresholds, making it less likely to detect background sounds as speech.
    * @minimum 0
    * @maximum 1
    */
-  speech_threshold?: number
+  speech_threshold?: number;
 }

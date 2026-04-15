@@ -8,4 +8,4 @@
 /**
  * Translation status ("none", "original" or "translation"). Only when if translation is enabled.
  */
-export type TranscriptionTranscriptTokenTranslationStatus = string | null
+export type TranscriptionTranscriptTokenTranslationStatus = string | null;

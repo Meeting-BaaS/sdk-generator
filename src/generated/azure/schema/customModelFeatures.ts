@@ -5,9 +5,9 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { SharedModelFeatures } from "./sharedModelFeatures"
+import type { SharedModelFeatures } from './sharedModelFeatures';
 
 /**
  * Features supported by the model.
  */
-export type CustomModelFeatures = SharedModelFeatures
+export type CustomModelFeatures = SharedModelFeatures;

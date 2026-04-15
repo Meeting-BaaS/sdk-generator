@@ -8,4 +8,4 @@
 /**
  * Optional tracking identifier string. Does not need to be unique.
  */
-export type UploadFilePayloadClientReferenceId = string | null
+export type UploadFilePayloadClientReferenceId = string | null;

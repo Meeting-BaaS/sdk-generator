@@ -7,12 +7,7 @@
  */
 
 /**
- * One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
+ * One of the available [TTS models](/docs/models#tts): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
 
  */
-export type CreateSpeechRequestModel =
-  | string
-  | "tts-1"
-  | "tts-1-hd"
-  | "gpt-4o-mini-tts"
-  | "gpt-4o-mini-tts-2025-12-15"
+export type CreateSpeechRequestModel = string | 'tts-1' | 'tts-1-hd' | 'gpt-4o-mini-tts' | 'gpt-4o-mini-tts-2025-12-15';

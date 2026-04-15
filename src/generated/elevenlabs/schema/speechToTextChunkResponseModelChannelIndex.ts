@@ -9,4 +9,4 @@
 /**
  * The channel index this transcript belongs to (for multichannel audio).
  */
-export type SpeechToTextChunkResponseModelChannelIndex = number | null
+export type SpeechToTextChunkResponseModelChannelIndex = number | null;

@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type CreateTranscriptionRequestTimestampGranularitiesItem =
-  (typeof CreateTranscriptionRequestTimestampGranularitiesItem)[keyof typeof CreateTranscriptionRequestTimestampGranularitiesItem]
+export type CreateTranscriptionRequestTimestampGranularitiesItem = typeof CreateTranscriptionRequestTimestampGranularitiesItem[keyof typeof CreateTranscriptionRequestTimestampGranularitiesItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateTranscriptionRequestTimestampGranularitiesItem = {
-  word: "word",
-  segment: "segment"
-} as const
+  word: 'word',
+  segment: 'segment',
+} as const;

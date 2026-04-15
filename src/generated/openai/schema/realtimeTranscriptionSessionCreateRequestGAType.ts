@@ -10,10 +10,10 @@
  * The type of session to create. Always `transcription` for transcription sessions.
 
  */
-export type RealtimeTranscriptionSessionCreateRequestGAType =
-  (typeof RealtimeTranscriptionSessionCreateRequestGAType)[keyof typeof RealtimeTranscriptionSessionCreateRequestGAType]
+export type RealtimeTranscriptionSessionCreateRequestGAType = typeof RealtimeTranscriptionSessionCreateRequestGAType[keyof typeof RealtimeTranscriptionSessionCreateRequestGAType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeTranscriptionSessionCreateRequestGAType = {
-  transcription: "transcription"
-} as const
+  transcription: 'transcription',
+} as const;

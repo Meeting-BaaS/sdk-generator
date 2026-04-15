@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SrtExportOptionsMaxCharactersPerLine = number | null
+export type SrtExportOptionsMaxCharactersPerLine = number | null;

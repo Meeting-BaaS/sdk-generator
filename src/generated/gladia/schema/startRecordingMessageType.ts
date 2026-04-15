@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StartRecordingMessageType =
-  (typeof StartRecordingMessageType)[keyof typeof StartRecordingMessageType]
+export type StartRecordingMessageType = typeof StartRecordingMessageType[keyof typeof StartRecordingMessageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StartRecordingMessageType = {
-  start_recording: "start_recording"
-} as const
+  start_recording: 'start_recording',
+} as const;

@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveEndSessionMessageEvent } from "./callbackLiveEndSessionMessageEvent"
-import type { EndSessionMessage } from "./endSessionMessage"
+import type { CallbackLiveEndSessionMessageEvent } from './callbackLiveEndSessionMessageEvent';
+import type { EndSessionMessage } from './endSessionMessage';
 
 export interface CallbackLiveEndSessionMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLiveEndSessionMessageEvent
+  id: string;
+  event: CallbackLiveEndSessionMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: EndSessionMessage
+  payload: EndSessionMessage;
 }

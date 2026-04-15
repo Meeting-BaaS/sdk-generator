@@ -6,7 +6,7 @@
  */
 
 export interface TranslationTarget {
-  target_language: string
-  source_languages: string[]
-  exclude_source_languages: string[]
+  target_language: string;
+  source_languages: string[];
+  exclude_source_languages: string[];
 }

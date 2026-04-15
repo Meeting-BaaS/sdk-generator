@@ -10,10 +10,10 @@
  * The type of the event. Always `speech.audio.done`.
 
  */
-export type SpeechAudioDoneEventType =
-  (typeof SpeechAudioDoneEventType)[keyof typeof SpeechAudioDoneEventType]
+export type SpeechAudioDoneEventType = typeof SpeechAudioDoneEventType[keyof typeof SpeechAudioDoneEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeechAudioDoneEventType = {
-  speechaudiodone: "speech.audio.done"
-} as const
+  speechaudiodone: 'speech.audio.done',
+} as const;

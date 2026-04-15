@@ -5,29 +5,28 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-
-import type { SpeechToTextWordResponseModelCharacters } from "./speechToTextWordResponseModelCharacters"
-import type { SpeechToTextWordResponseModelEnd } from "./speechToTextWordResponseModelEnd"
-import type { SpeechToTextWordResponseModelSpeakerId } from "./speechToTextWordResponseModelSpeakerId"
-import type { SpeechToTextWordResponseModelStart } from "./speechToTextWordResponseModelStart"
-import type { SpeechToTextWordResponseModelType } from "./speechToTextWordResponseModelType"
+import type { SpeechToTextWordResponseModelStart } from './speechToTextWordResponseModelStart';
+import type { SpeechToTextWordResponseModelEnd } from './speechToTextWordResponseModelEnd';
+import type { SpeechToTextWordResponseModelType } from './speechToTextWordResponseModelType';
+import type { SpeechToTextWordResponseModelSpeakerId } from './speechToTextWordResponseModelSpeakerId';
+import type { SpeechToTextWordResponseModelCharacters } from './speechToTextWordResponseModelCharacters';
 
 /**
  * Word-level detail of the transcription with timing information.
  */
 export interface SpeechToTextWordResponseModel {
   /** The word or sound that was transcribed. */
-  text: string
+  text: string;
   /** The start time of the word or sound in seconds. */
-  start?: SpeechToTextWordResponseModelStart
+  start?: SpeechToTextWordResponseModelStart;
   /** The end time of the word or sound in seconds. */
-  end?: SpeechToTextWordResponseModelEnd
+  end?: SpeechToTextWordResponseModelEnd;
   /** The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps. */
-  type: SpeechToTextWordResponseModelType
+  type: SpeechToTextWordResponseModelType;
   /** Unique identifier for the speaker of this word. */
-  speaker_id?: SpeechToTextWordResponseModelSpeakerId
+  speaker_id?: SpeechToTextWordResponseModelSpeakerId;
   /** The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions. */
-  logprob: number
+  logprob: number;
   /** The characters that make up the word and their timing information. */
-  characters?: SpeechToTextWordResponseModelCharacters
+  characters?: SpeechToTextWordResponseModelCharacters;
 }

@@ -8,9 +8,9 @@
 
 export interface TranscriptionWord {
   /** The text content of the word. */
-  word: string
+  word: string;
   /** Start time of the word in seconds. */
-  start: number
+  start: number;
   /** End time of the word in seconds. */
-  end: number
+  end: number;
 }

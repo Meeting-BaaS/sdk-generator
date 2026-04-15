@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type DocxExportOptionsSegmentOnSilenceLongerThanS = number | null
+export type DocxExportOptionsSegmentOnSilenceLongerThanS = number | null;

@@ -4,11 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SubtitlesFormatEnum } from "./subtitlesFormatEnum"
+import type { SubtitlesFormatEnum } from './subtitlesFormatEnum';
 
 export interface SubtitleDTO {
   /** Format of the current subtitle */
-  format: SubtitlesFormatEnum
+  format: SubtitlesFormatEnum;
   /** Transcription on the asked subtitle format */
-  subtitles: string
+  subtitles: string;
 }

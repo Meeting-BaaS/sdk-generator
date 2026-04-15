@@ -133,7 +133,6 @@ export * from './transcriptStatus';
 export * from './transcriptSummary';
 export * from './transcriptSummaryModel';
 export * from './transcriptSummaryType';
-export * from './transcriptTemperature';
 export * from './transcriptText';
 export * from './transcriptThrottled';
 export * from './transcriptTranslatedTexts';

@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveSpeechEndMessageEvent } from "./callbackLiveSpeechEndMessageEvent"
-import type { SpeechEndMessage } from "./speechEndMessage"
+import type { CallbackLiveSpeechEndMessageEvent } from './callbackLiveSpeechEndMessageEvent';
+import type { SpeechEndMessage } from './speechEndMessage';
 
 export interface CallbackLiveSpeechEndMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLiveSpeechEndMessageEvent
+  id: string;
+  event: CallbackLiveSpeechEndMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: SpeechEndMessage
+  payload: SpeechEndMessage;
 }

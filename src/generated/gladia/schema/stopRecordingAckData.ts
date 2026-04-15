@@ -7,7 +7,7 @@
 
 export interface StopRecordingAckData {
   /** Total audio duration in seconds */
-  recording_duration: number
+  recording_duration: number;
   /** Audio duration left to process in seconds */
-  recording_left_to_process: number
+  recording_left_to_process: number;
 }

@@ -4,10 +4,10 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { AudioToLlmResultDTO } from "./audioToLlmResultDTO"
+import type { AudioToLlmResultDTO } from './audioToLlmResultDTO';
 
 /**
  * The result from a specific prompt
  * @nullable
  */
-export type AudioToLlmDTOResults = AudioToLlmResultDTO | null
+export type AudioToLlmDTOResults = AudioToLlmResultDTO | null;

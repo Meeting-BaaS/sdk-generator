@@ -8,4 +8,4 @@
 /**
  * Version of context supported.
  */
-export type ModelContextVersion = number | null
+export type ModelContextVersion = number | null;

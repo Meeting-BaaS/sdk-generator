@@ -6,10 +6,11 @@
  * OpenAPI spec version: 3.2
  */
 
-export type OutputFormatType = (typeof OutputFormatType)[keyof typeof OutputFormatType]
+export type OutputFormatType = typeof OutputFormatType[keyof typeof OutputFormatType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OutputFormatType = {
-  Lexical: "Lexical",
-  Display: "Display"
-} as const
+  Lexical: 'Lexical',
+  Display: 'Display',
+} as const;

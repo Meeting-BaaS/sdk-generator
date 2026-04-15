@@ -9,4 +9,4 @@
 /**
  * Number of datasets that will be skipped.
  */
-export type SkipQueryParameterParameter = number
+export type SkipQueryParameterParameter = number;

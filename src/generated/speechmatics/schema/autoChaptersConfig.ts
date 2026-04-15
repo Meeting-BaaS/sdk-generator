@@ -6,6 +6,4 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export interface AutoChaptersConfig {
-  [key: string]: unknown
-}
+export interface AutoChaptersConfig { [key: string]: unknown }

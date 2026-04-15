@@ -7,6 +7,6 @@
  */
 
 /**
- * The file to transcribe. All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB.
+ * The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB.
  */
-export type BodySpeechToTextV1SpeechToTextPostFile = Blob | null
+export type BodySpeechToTextV1SpeechToTextPostFile = Blob | null;

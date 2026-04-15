@@ -8,5 +8,5 @@
 
 export interface EvaluationLinks {
   /** The location to get all files of this entity. See operation "Evaluations_ListFiles" for more details. */
-  readonly files?: string
+  readonly files?: string;
 }

@@ -5,12 +5,12 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { BaseModelDeprecationDates } from "./baseModelDeprecationDates"
-import type { BaseModelFeatures } from "./baseModelFeatures"
+import type { BaseModelDeprecationDates } from './baseModelDeprecationDates';
+import type { BaseModelFeatures } from './baseModelFeatures';
 
 export interface BaseModelProperties {
-  deprecationDates?: BaseModelDeprecationDates
-  features?: BaseModelFeatures
+  deprecationDates?: BaseModelDeprecationDates;
+  features?: BaseModelFeatures;
   /** A value indicating whether model adaptation is charged. */
-  readonly chargeForAdaptation?: boolean
+  readonly chargeForAdaptation?: boolean;
 }

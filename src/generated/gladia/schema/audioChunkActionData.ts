@@ -7,5 +7,5 @@
 
 export interface AudioChunkActionData {
   /** Chunk encoded in base64. The chunk must contains complete frames */
-  chunk: string
+  chunk: string;
 }

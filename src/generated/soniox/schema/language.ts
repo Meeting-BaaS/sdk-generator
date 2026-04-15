@@ -7,7 +7,7 @@
 
 export interface Language {
   /** 2-letter language code. */
-  code: string
+  code: string;
   /** Language name. */
-  name: string
+  name: string;
 }

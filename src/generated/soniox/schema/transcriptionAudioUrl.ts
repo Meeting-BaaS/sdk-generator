@@ -8,4 +8,4 @@
 /**
  * URL of the file being transcribed.
  */
-export type TranscriptionAudioUrl = string | null
+export type TranscriptionAudioUrl = string | null;

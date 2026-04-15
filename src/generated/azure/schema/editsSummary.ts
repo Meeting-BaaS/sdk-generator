@@ -8,7 +8,7 @@
 
 export interface EditsSummary {
   /** The optional number of edits for a given type of error of the recognized transcription in comparison with the human transcription. */
-  readonly numberOfEdits?: number
+  readonly numberOfEdits?: number;
   /** The optional percentage of edits for a given type of error of the recognized transcription in comparison with the human transcription. */
-  readonly percentageOfAllEdits?: number
+  readonly percentageOfAllEdits?: number;
 }

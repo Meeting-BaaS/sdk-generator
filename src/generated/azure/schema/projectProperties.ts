@@ -8,13 +8,13 @@
 
 export interface ProjectProperties {
   /** The number of datasets associated to this project. */
-  readonly datasetCount?: number
+  readonly datasetCount?: number;
   /** The number of evaluations associated to this project. */
-  readonly evaluationCount?: number
+  readonly evaluationCount?: number;
   /** The number of models associated to this project. */
-  readonly modelCount?: number
+  readonly modelCount?: number;
   /** The number of transcriptions associated to this project. */
-  readonly transcriptionCount?: number
+  readonly transcriptionCount?: number;
   /** The number of endpoints associated to this project. */
-  readonly endpointCount?: number
+  readonly endpointCount?: number;
 }

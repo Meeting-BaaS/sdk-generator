@@ -8,4 +8,4 @@
 /**
  * If this is an alias, the id of the aliased model.
  */
-export type ModelAliasedModelId = string | null
+export type ModelAliasedModelId = string | null;

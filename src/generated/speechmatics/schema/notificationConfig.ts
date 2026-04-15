@@ -5,8 +5,8 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { NotificationConfigContentsItem } from "./notificationConfigContentsItem"
-import type { NotificationConfigMethod } from "./notificationConfigMethod"
+import type { NotificationConfigContentsItem } from './notificationConfigContentsItem';
+import type { NotificationConfigMethod } from './notificationConfigMethod';
 
 export interface NotificationConfig {
   /** The url to which a notification message will be sent upon
@@ -37,11 +37,11 @@ available.
 The user-agent header is set to `Speechmatics-API/2.0`, or
 `Speechmatics API V2` in older API versions.
  */
-  url: string
+  url: string;
   /** Specifies a list of items to be attached to the notification message. When multiple items are requested, they are included as named file attachments. */
-  contents?: NotificationConfigContentsItem[]
+  contents?: NotificationConfigContentsItem[];
   /** The method to be used with http and https urls. The default is post. */
-  method?: NotificationConfigMethod
+  method?: NotificationConfigMethod;
   /** A list of additional headers to be added to the notification request when using http or https. This is intended to support authentication or authorization, for example by supplying an OAuth2 bearer token. */
-  auth_headers?: string[]
+  auth_headers?: string[];
 }

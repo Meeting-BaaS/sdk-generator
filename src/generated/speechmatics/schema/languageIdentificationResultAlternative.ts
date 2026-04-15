@@ -7,6 +7,6 @@
  */
 
 export interface LanguageIdentificationResultAlternative {
-  language?: string
-  confidence?: number
+  language?: string;
+  confidence?: number;
 }

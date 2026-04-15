@@ -6,10 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type TranslationErrorType = (typeof TranslationErrorType)[keyof typeof TranslationErrorType]
+export type TranslationErrorType = typeof TranslationErrorType[keyof typeof TranslationErrorType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranslationErrorType = {
-  translation_failed: "translation_failed",
-  unsupported_translation_pair: "unsupported_translation_pair"
-} as const
+  translation_failed: 'translation_failed',
+  unsupported_translation_pair: 'unsupported_translation_pair',
+} as const;

@@ -5,20 +5,20 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { LanguagePackInfoWritingDirection } from "./languagePackInfoWritingDirection"
+import type { LanguagePackInfoWritingDirection } from './languagePackInfoWritingDirection';
 
 /**
  * Properties of the language pack.
  */
 export interface LanguagePackInfo {
   /** Full descriptive name of the language, e.g. 'Japanese'. */
-  language_description?: string
+  language_description?: string;
   /** The character to use to separate words. */
-  word_delimiter: string
+  word_delimiter: string;
   /** The direction that words in the language should be written and read in. */
-  writing_direction?: LanguagePackInfoWritingDirection
+  writing_direction?: LanguagePackInfoWritingDirection;
   /** Whether or not ITN (inverse text normalization) is available for the language pack. */
-  itn?: boolean
+  itn?: boolean;
   /** Whether or not language model adaptation has been applied to the language pack. */
-  adapted?: boolean
+  adapted?: boolean;
 }

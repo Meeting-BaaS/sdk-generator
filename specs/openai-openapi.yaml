@@ -74,8 +74,8 @@ paths:
                 )
                 speech = client.audio.speech.create(
                     input="input",
-                    model="string",
-                    voice="string",
+                    model="tts-1",
+                    voice="alloy",
                 )
                 print(speech)
                 content = speech.read()
@@ -127,15 +127,15 @@ paths:
 
                 const speech = await client.audio.speech.create({
                   input: 'input',
-                  model: 'string',
-                  voice: 'string',
+                  model: 'tts-1',
+                  voice: 'alloy',
                 });
 
                 console.log(speech);
 
                 const content = await speech.blob();
                 console.log(content);
-              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfString: openai.String(\"string\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
+              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfAudioSpeechNewsVoiceString2: openai.String(\"alloy\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
               java: |-
                 package com.openai.example;
 
@@ -154,7 +154,7 @@ paths:
                         SpeechCreateParams params = SpeechCreateParams.builder()
                             .input("input")
                             .model(SpeechModel.TTS_1)
-                            .voice("string")
+                            .voice(SpeechCreateParams.Voice.UnionMember1.ALLOY)
                             .build();
                         HttpResponse speech = client.audio().speech().create(params);
                     }
@@ -164,7 +164,7 @@ paths:
 
                 openai = OpenAI::Client.new(api_key: "My API Key")
 
-                speech = openai.audio.speech.create(input: "input", model: :"tts-1", voice: "string")
+                speech = openai.audio.speech.create(input: "input", model: :"tts-1", voice: :alloy)
 
                 puts(speech)
           - title: SSE Stream Format
@@ -188,8 +188,8 @@ paths:
 
                 const speech = await client.audio.speech.create({
                   input: 'input',
-                  model: 'string',
-                  voice: 'string',
+                  model: 'tts-1',
+                  voice: 'alloy',
                 });
 
                 console.log(speech);
@@ -205,13 +205,13 @@ paths:
                 )
                 speech = client.audio.speech.create(
                     input="input",
-                    model="string",
-                    voice="string",
+                    model="tts-1",
+                    voice="alloy",
                 )
                 print(speech)
                 content = speech.read()
                 print(content)
-              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfString: openai.String(\"string\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
+              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfAudioSpeechNewsVoiceString2: openai.String(\"alloy\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
               java: |-
                 package com.openai.example;
 
@@ -230,7 +230,7 @@ paths:
                         SpeechCreateParams params = SpeechCreateParams.builder()
                             .input("input")
                             .model(SpeechModel.TTS_1)
-                            .voice("string")
+                            .voice(SpeechCreateParams.Voice.UnionMember1.ALLOY)
                             .build();
                         HttpResponse speech = client.audio().speech().create(params);
                     }
@@ -240,7 +240,7 @@ paths:
 
                 openai = OpenAI::Client.new(api_key: "My API Key")
 
-                speech = openai.audio.speech.create(input: "input", model: :"tts-1", voice: "string")
+                speech = openai.audio.speech.create(input: "input", model: :"tts-1", voice: :alloy)
 
                 puts(speech)
       parameters: []
@@ -327,6 +327,7 @@ paths:
 
                 Console.WriteLine($"{transcription.Text}");
               node.js: |-
+                import fs from 'fs';
                 import OpenAI from 'openai';
 
                 const client = new OpenAI({
@@ -430,6 +431,7 @@ paths:
 
                 console.log(transcript.segments);
               node.js: |-
+                import fs from 'fs';
                 import OpenAI from 'openai';
 
                 const client = new OpenAI({
@@ -547,6 +549,7 @@ paths:
                   console.log(event);
                 }
               node.js: |-
+                import fs from 'fs';
                 import OpenAI from 'openai';
 
                 const client = new OpenAI({
@@ -695,6 +698,7 @@ paths:
                 }
                 main();
               node.js: |-
+                import fs from 'fs';
                 import OpenAI from 'openai';
 
                 const client = new OpenAI({
@@ -856,6 +860,7 @@ paths:
 
                 Console.WriteLine($"{transcription.Text}");
               node.js: |-
+                import fs from 'fs';
                 import OpenAI from 'openai';
 
                 const client = new OpenAI({
@@ -985,6 +990,7 @@ paths:
 
                 Console.WriteLine($"{transcription.Text}");
               node.js: |-
+                import fs from 'fs';
                 import OpenAI from 'openai';
 
                 const client = new OpenAI({
@@ -1133,6 +1139,7 @@ paths:
 
               Console.WriteLine($"{transcription.Text}");
             node.js: |-
+              import fs from 'fs';
               import OpenAI from 'openai';
 
               const client = new OpenAI({
@@ -4483,6 +4490,11 @@ components:
         - detail
       title: Input image
       description: An image input to the model. Learn about [image inputs](/docs/guides/vision).
+    FileInputDetail:
+      type: string
+      enum:
+        - low
+        - high
     InputFileContent:
       properties:
         type:
@@ -4507,6 +4519,9 @@ components:
         file_url:
           type: string
           description: The URL of the file to be sent to the model.
+        detail:
+          $ref: '#/components/schemas/FileInputDetail'
+          description: The detail level of the file to be sent to the model. Use `low` for the default rendering behavior, or `high` to render the file at higher quality. Defaults to `low`.
       type: object
       required:
         - type

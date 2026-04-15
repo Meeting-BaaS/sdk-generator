@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveTranslationMessageEvent =
-  (typeof CallbackLiveTranslationMessageEvent)[keyof typeof CallbackLiveTranslationMessageEvent]
+export type CallbackLiveTranslationMessageEvent = typeof CallbackLiveTranslationMessageEvent[keyof typeof CallbackLiveTranslationMessageEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveTranslationMessageEvent = {
-  livetranslation: "live.translation"
-} as const
+  livetranslation: 'live.translation',
+} as const;

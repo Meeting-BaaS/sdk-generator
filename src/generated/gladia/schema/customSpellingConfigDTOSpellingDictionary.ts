@@ -8,4 +8,4 @@
 /**
  * The list of spelling applied on the audio transcription
  */
-export type CustomSpellingConfigDTOSpellingDictionary = { [key: string]: string[] }
+export type CustomSpellingConfigDTOSpellingDictionary = {[key: string]: string[]};

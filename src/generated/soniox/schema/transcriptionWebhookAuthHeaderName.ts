@@ -8,4 +8,4 @@
 /**
  * Name of the authentication header sent with webhook notifications.
  */
-export type TranscriptionWebhookAuthHeaderName = string | null
+export type TranscriptionWebhookAuthHeaderName = string | null;

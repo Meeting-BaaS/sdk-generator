@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type SummarizationConfigSummaryLength =
-  (typeof SummarizationConfigSummaryLength)[keyof typeof SummarizationConfigSummaryLength]
+export type SummarizationConfigSummaryLength = typeof SummarizationConfigSummaryLength[keyof typeof SummarizationConfigSummaryLength];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummarizationConfigSummaryLength = {
-  brief: "brief",
-  detailed: "detailed"
-} as const
+  brief: 'brief',
+  detailed: 'detailed',
+} as const;

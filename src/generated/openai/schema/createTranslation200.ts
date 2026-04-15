@@ -5,9 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { CreateTranslationResponseJson } from "./createTranslationResponseJson"
-import type { CreateTranslationResponseVerboseJson } from "./createTranslationResponseVerboseJson"
+import type { CreateTranslationResponseJson } from './createTranslationResponseJson';
+import type { CreateTranslationResponseVerboseJson } from './createTranslationResponseVerboseJson';
 
-export type CreateTranslation200 =
-  | CreateTranslationResponseJson
-  | CreateTranslationResponseVerboseJson
+export type CreateTranslation200 = CreateTranslationResponseJson | CreateTranslationResponseVerboseJson;

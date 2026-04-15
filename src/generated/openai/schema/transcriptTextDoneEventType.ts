@@ -10,10 +10,10 @@
  * The type of the event. Always `transcript.text.done`.
 
  */
-export type TranscriptTextDoneEventType =
-  (typeof TranscriptTextDoneEventType)[keyof typeof TranscriptTextDoneEventType]
+export type TranscriptTextDoneEventType = typeof TranscriptTextDoneEventType[keyof typeof TranscriptTextDoneEventType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptTextDoneEventType = {
-  transcripttextdone: "transcript.text.done"
-} as const
+  transcripttextdone: 'transcript.text.done',
+} as const;

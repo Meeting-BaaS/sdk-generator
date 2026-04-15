@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type ValidationErrorLocItem = string | number
+export type ValidationErrorLocItem = string | number;

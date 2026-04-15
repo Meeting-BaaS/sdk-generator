@@ -7,8 +7,8 @@
  */
 
 export type SpeechToTextParams = {
-  /**
-   * When enable_logging is set to false zero retention mode will be used for the request. This will mean log and transcript storage features are unavailable for this request. Zero retention mode may only be used by enterprise customers.
-   */
-  enable_logging?: boolean
-}
+/**
+ * When enable_logging is set to false zero retention mode will be used for the request. This will mean log and transcript storage features are unavailable for this request. Zero retention mode may only be used by enterprise customers.
+ */
+enable_logging?: boolean;
+};

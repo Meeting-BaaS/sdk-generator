@@ -4,15 +4,15 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { File } from "./file"
-import type { GetFilesResponseNextPageCursor } from "./getFilesResponseNextPageCursor"
+import type { File } from './file';
+import type { GetFilesResponseNextPageCursor } from './getFilesResponseNextPageCursor';
 
 /**
  * A list of files.
  */
 export interface GetFilesResponse {
   /** List of uploaded files. */
-  files: File[]
+  files: File[];
   /** A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available. */
-  next_page_cursor?: GetFilesResponseNextPageCursor
+  next_page_cursor?: GetFilesResponseNextPageCursor;
 }

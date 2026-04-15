@@ -5,16 +5,16 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { DatasetUpdateCustomProperties } from "./datasetUpdateCustomProperties"
-import type { EntityReference } from "./entityReference"
+import type { DatasetUpdateCustomProperties } from './datasetUpdateCustomProperties';
+import type { EntityReference } from './entityReference';
 
 export interface DatasetUpdate {
   /** The name of the object. */
-  displayName?: string
+  displayName?: string;
   /** The description of the object. */
-  description?: string
+  description?: string;
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: DatasetUpdateCustomProperties
-  project?: EntityReference
+  customProperties?: DatasetUpdateCustomProperties;
+  project?: EntityReference;
 }

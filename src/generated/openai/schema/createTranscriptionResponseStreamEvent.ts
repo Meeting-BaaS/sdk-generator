@@ -5,11 +5,8 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { TranscriptTextSegmentEvent } from "./transcriptTextSegmentEvent"
-import type { TranscriptTextDeltaEvent } from "./transcriptTextDeltaEvent"
-import type { TranscriptTextDoneEvent } from "./transcriptTextDoneEvent"
+import type { TranscriptTextSegmentEvent } from './transcriptTextSegmentEvent';
+import type { TranscriptTextDeltaEvent } from './transcriptTextDeltaEvent';
+import type { TranscriptTextDoneEvent } from './transcriptTextDoneEvent';
 
-export type CreateTranscriptionResponseStreamEvent =
-  | TranscriptTextSegmentEvent
-  | TranscriptTextDeltaEvent
-  | TranscriptTextDoneEvent
+export type CreateTranscriptionResponseStreamEvent = TranscriptTextSegmentEvent | TranscriptTextDeltaEvent | TranscriptTextDoneEvent;

@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type DocxExportOptionsMaxSegmentChars = number | null
+export type DocxExportOptionsMaxSegmentChars = number | null;

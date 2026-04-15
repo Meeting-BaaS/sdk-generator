@@ -11,27 +11,27 @@ export interface ModelCopyAuthorization {
    * The region (aka location) of the target speech resource (e.g., westus2).
    * @minLength 1
    */
-  targetResourceRegion: string
+  targetResourceRegion: string;
   /**
    * The Azure Resource ID of the target speech resource.
    * @minLength 1
    */
-  targetResourceId: string
+  targetResourceId: string;
   /**
    * The endpoint (base url) of the target resource (with custom domain name when it is used).
    * @minLength 1
    */
-  targetResourceEndpoint: string
+  targetResourceEndpoint: string;
   /**
    * The Azure Resource ID of the source speech resource.
    * @minLength 1
    */
-  sourceResourceId: string
+  sourceResourceId: string;
   /** The expiration date of this copy authorization. */
-  expirationDateTime: string
+  expirationDateTime: string;
   /**
    * The ID of this copy authorization.
    * @minLength 1
    */
-  id: string
+  id: string;
 }

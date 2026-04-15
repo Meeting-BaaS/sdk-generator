@@ -8,13 +8,13 @@
 
 export interface ProjectLinks {
   /** The location to get a list of all evaluations of this project. See operation "Projects_ListEvaluations" for more details. */
-  readonly evaluations?: string
+  readonly evaluations?: string;
   /** The location to get a list of all datasets of this project. See operation "Projects_ListDatasets" for more details. */
-  readonly datasets?: string
+  readonly datasets?: string;
   /** The location to get a list of all models of this project. See operation "Projects_ListModels" for more details. */
-  readonly models?: string
+  readonly models?: string;
   /** The location to get a list of all endpoints of this project. See operation "Projects_ListEndpoints" for more details. */
-  readonly endpoints?: string
+  readonly endpoints?: string;
   /** The location to get a list of all transcriptions of this project. See operation "Projects_ListTranscriptions" for more details. */
-  readonly transcriptions?: string
+  readonly transcriptions?: string;
 }

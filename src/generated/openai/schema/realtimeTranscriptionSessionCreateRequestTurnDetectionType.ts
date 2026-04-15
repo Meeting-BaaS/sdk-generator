@@ -10,10 +10,10 @@
  * Type of turn detection. Only `server_vad` is currently supported for transcription sessions.
 
  */
-export type RealtimeTranscriptionSessionCreateRequestTurnDetectionType =
-  (typeof RealtimeTranscriptionSessionCreateRequestTurnDetectionType)[keyof typeof RealtimeTranscriptionSessionCreateRequestTurnDetectionType]
+export type RealtimeTranscriptionSessionCreateRequestTurnDetectionType = typeof RealtimeTranscriptionSessionCreateRequestTurnDetectionType[keyof typeof RealtimeTranscriptionSessionCreateRequestTurnDetectionType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeTranscriptionSessionCreateRequestTurnDetectionType = {
-  server_vad: "server_vad"
-} as const
+  server_vad: 'server_vad',
+} as const;

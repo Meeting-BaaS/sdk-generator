@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLivePostChapterizationMessageEvent } from "./callbackLivePostChapterizationMessageEvent"
-import type { PostChapterizationMessage } from "./postChapterizationMessage"
+import type { CallbackLivePostChapterizationMessageEvent } from './callbackLivePostChapterizationMessageEvent';
+import type { PostChapterizationMessage } from './postChapterizationMessage';
 
 export interface CallbackLivePostChapterizationMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLivePostChapterizationMessageEvent
+  id: string;
+  event: CallbackLivePostChapterizationMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: PostChapterizationMessage
+  payload: PostChapterizationMessage;
 }

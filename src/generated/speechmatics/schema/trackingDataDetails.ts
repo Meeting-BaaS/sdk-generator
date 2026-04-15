@@ -9,4 +9,4 @@
 /**
  * Customer-defined JSON structure.
  */
-export type TrackingDataDetails = { [key: string]: unknown }
+export type TrackingDataDetails = { [key: string]: unknown };

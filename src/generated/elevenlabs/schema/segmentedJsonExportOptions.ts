@@ -5,16 +5,16 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { SegmentedJsonExportOptionsFormat } from "./segmentedJsonExportOptionsFormat"
-import type { SegmentedJsonExportOptionsMaxSegmentChars } from "./segmentedJsonExportOptionsMaxSegmentChars"
-import type { SegmentedJsonExportOptionsMaxSegmentDurationS } from "./segmentedJsonExportOptionsMaxSegmentDurationS"
-import type { SegmentedJsonExportOptionsSegmentOnSilenceLongerThanS } from "./segmentedJsonExportOptionsSegmentOnSilenceLongerThanS"
+import type { SegmentedJsonExportOptionsFormat } from './segmentedJsonExportOptionsFormat';
+import type { SegmentedJsonExportOptionsSegmentOnSilenceLongerThanS } from './segmentedJsonExportOptionsSegmentOnSilenceLongerThanS';
+import type { SegmentedJsonExportOptionsMaxSegmentDurationS } from './segmentedJsonExportOptionsMaxSegmentDurationS';
+import type { SegmentedJsonExportOptionsMaxSegmentChars } from './segmentedJsonExportOptionsMaxSegmentChars';
 
 export interface SegmentedJsonExportOptions {
-  include_speakers?: boolean
-  include_timestamps?: boolean
-  format: SegmentedJsonExportOptionsFormat
-  segment_on_silence_longer_than_s?: SegmentedJsonExportOptionsSegmentOnSilenceLongerThanS
-  max_segment_duration_s?: SegmentedJsonExportOptionsMaxSegmentDurationS
-  max_segment_chars?: SegmentedJsonExportOptionsMaxSegmentChars
+  include_speakers?: boolean;
+  include_timestamps?: boolean;
+  format: SegmentedJsonExportOptionsFormat;
+  segment_on_silence_longer_than_s?: SegmentedJsonExportOptionsSegmentOnSilenceLongerThanS;
+  max_segment_duration_s?: SegmentedJsonExportOptionsMaxSegmentDurationS;
+  max_segment_chars?: SegmentedJsonExportOptionsMaxSegmentChars;
 }

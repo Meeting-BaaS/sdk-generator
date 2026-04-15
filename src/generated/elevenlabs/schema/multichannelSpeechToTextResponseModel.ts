@@ -5,16 +5,18 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-
-import type { MultichannelSpeechToTextResponseModelTranscriptionId } from "./multichannelSpeechToTextResponseModelTranscriptionId"
-import type { SpeechToTextChunkResponseModel } from "./speechToTextChunkResponseModel"
+import type { SpeechToTextChunkResponseModel } from './speechToTextChunkResponseModel';
+import type { MultichannelSpeechToTextResponseModelTranscriptionId } from './multichannelSpeechToTextResponseModelTranscriptionId';
+import type { MultichannelSpeechToTextResponseModelAudioDurationSecs } from './multichannelSpeechToTextResponseModelAudioDurationSecs';
 
 /**
  * Response model for multichannel speech-to-text transcription.
  */
 export interface MultichannelSpeechToTextResponseModel {
   /** List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel. */
-  transcripts: SpeechToTextChunkResponseModel[]
+  transcripts: SpeechToTextChunkResponseModel[];
   /** The transcription ID of the response. */
-  transcription_id?: MultichannelSpeechToTextResponseModelTranscriptionId
+  transcription_id?: MultichannelSpeechToTextResponseModelTranscriptionId;
+  /** The duration of the audio that was transcribed across all channels in seconds. */
+  audio_duration_secs?: MultichannelSpeechToTextResponseModelAudioDurationSecs;
 }

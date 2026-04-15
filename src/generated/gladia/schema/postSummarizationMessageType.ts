@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PostSummarizationMessageType =
-  (typeof PostSummarizationMessageType)[keyof typeof PostSummarizationMessageType]
+export type PostSummarizationMessageType = typeof PostSummarizationMessageType[keyof typeof PostSummarizationMessageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostSummarizationMessageType = {
-  post_summarization: "post_summarization"
-} as const
+  post_summarization: 'post_summarization',
+} as const;

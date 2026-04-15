@@ -10,8 +10,8 @@
  * Holds sentiment information for a specific channel.
  */
 export interface SentimentChannelSummary {
-  channel?: string
-  positive_count?: number
-  negative_count?: number
-  neutral_count?: number
+  channel?: string;
+  positive_count?: number;
+  negative_count?: number;
+  neutral_count?: number;
 }

@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type SummarizationErrorType =
-  (typeof SummarizationErrorType)[keyof typeof SummarizationErrorType]
+export type SummarizationErrorType = typeof SummarizationErrorType[keyof typeof SummarizationErrorType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummarizationErrorType = {
-  summarization_failed: "summarization_failed",
-  unsupported_language: "unsupported_language"
-} as const
+  summarization_failed: 'summarization_failed',
+  unsupported_language: 'unsupported_language',
+} as const;

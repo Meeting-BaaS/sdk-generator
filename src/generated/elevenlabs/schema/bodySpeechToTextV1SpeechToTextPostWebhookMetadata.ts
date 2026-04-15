@@ -5,12 +5,9 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { BodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf } from "./bodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf"
+import type { BodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf } from './bodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf';
 
 /**
  * Optional metadata to be included in the webhook response. This should be a JSON string representing an object with a maximum depth of 2 levels and maximum size of 16KB. Useful for tracking internal IDs, job references, or other contextual information.
  */
-export type BodySpeechToTextV1SpeechToTextPostWebhookMetadata =
-  | string
-  | BodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf
-  | null
+export type BodySpeechToTextV1SpeechToTextPostWebhookMetadata = string | BodySpeechToTextV1SpeechToTextPostWebhookMetadataAnyOf | null;

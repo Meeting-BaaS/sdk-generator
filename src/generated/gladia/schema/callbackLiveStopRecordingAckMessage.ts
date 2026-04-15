@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveStopRecordingAckMessageEvent } from "./callbackLiveStopRecordingAckMessageEvent"
-import type { StopRecordingAckMessage } from "./stopRecordingAckMessage"
+import type { CallbackLiveStopRecordingAckMessageEvent } from './callbackLiveStopRecordingAckMessageEvent';
+import type { StopRecordingAckMessage } from './stopRecordingAckMessage';
 
 export interface CallbackLiveStopRecordingAckMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLiveStopRecordingAckMessageEvent
+  id: string;
+  event: CallbackLiveStopRecordingAckMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: StopRecordingAckMessage
+  payload: StopRecordingAckMessage;
 }

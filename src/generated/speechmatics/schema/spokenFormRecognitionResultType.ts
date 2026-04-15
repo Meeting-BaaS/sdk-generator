@@ -9,11 +9,11 @@
 /**
  * What kind of object this is. See #/Definitions/RecognitionResult for definitions of the enums.
  */
-export type SpokenFormRecognitionResultType =
-  (typeof SpokenFormRecognitionResultType)[keyof typeof SpokenFormRecognitionResultType]
+export type SpokenFormRecognitionResultType = typeof SpokenFormRecognitionResultType[keyof typeof SpokenFormRecognitionResultType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpokenFormRecognitionResultType = {
-  word: "word",
-  punctuation: "punctuation"
-} as const
+  word: 'word',
+  punctuation: 'punctuation',
+} as const;

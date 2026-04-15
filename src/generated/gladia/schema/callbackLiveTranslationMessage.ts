@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveTranslationMessageEvent } from "./callbackLiveTranslationMessageEvent"
-import type { TranslationMessage } from "./translationMessage"
+import type { CallbackLiveTranslationMessageEvent } from './callbackLiveTranslationMessageEvent';
+import type { TranslationMessage } from './translationMessage';
 
 export interface CallbackLiveTranslationMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLiveTranslationMessageEvent
+  id: string;
+  event: CallbackLiveTranslationMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: TranslationMessage
+  payload: TranslationMessage;
 }

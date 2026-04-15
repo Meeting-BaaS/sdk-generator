@@ -8,10 +8,11 @@
 /**
  * Subtitles formats you want your transcription to be formatted to
  */
-export type SubtitlesFormatEnum = (typeof SubtitlesFormatEnum)[keyof typeof SubtitlesFormatEnum]
+export type SubtitlesFormatEnum = typeof SubtitlesFormatEnum[keyof typeof SubtitlesFormatEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SubtitlesFormatEnum = {
-  srt: "srt",
-  vtt: "vtt"
-} as const
+  srt: 'srt',
+  vtt: 'vtt',
+} as const;

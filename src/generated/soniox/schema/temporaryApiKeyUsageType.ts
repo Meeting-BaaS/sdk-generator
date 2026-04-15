@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type TemporaryApiKeyUsageType =
-  (typeof TemporaryApiKeyUsageType)[keyof typeof TemporaryApiKeyUsageType]
+export type TemporaryApiKeyUsageType = typeof TemporaryApiKeyUsageType[keyof typeof TemporaryApiKeyUsageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TemporaryApiKeyUsageType = {
-  transcribe_websocket: "transcribe_websocket"
-} as const
+  transcribe_websocket: 'transcribe_websocket',
+} as const;

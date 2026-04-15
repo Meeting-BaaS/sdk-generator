@@ -6,12 +6,12 @@
  */
 
 export type GetFilesParams = {
-  /**
-   * Maximum number of files to return.
-   */
-  limit?: number
-  /**
-   * Pagination cursor for the next page of results.
-   */
-  cursor?: string | null
-}
+/**
+ * Maximum number of files to return.
+ */
+limit?: number;
+/**
+ * Pagination cursor for the next page of results.
+ */
+cursor?: string | null;
+};

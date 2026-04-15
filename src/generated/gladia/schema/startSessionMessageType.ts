@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type StartSessionMessageType =
-  (typeof StartSessionMessageType)[keyof typeof StartSessionMessageType]
+export type StartSessionMessageType = typeof StartSessionMessageType[keyof typeof StartSessionMessageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StartSessionMessageType = {
-  start_session: "start_session"
-} as const
+  start_session: 'start_session',
+} as const;

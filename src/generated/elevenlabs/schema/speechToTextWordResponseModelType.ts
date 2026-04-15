@@ -9,12 +9,12 @@
 /**
  * The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps.
  */
-export type SpeechToTextWordResponseModelType =
-  (typeof SpeechToTextWordResponseModelType)[keyof typeof SpeechToTextWordResponseModelType]
+export type SpeechToTextWordResponseModelType = typeof SpeechToTextWordResponseModelType[keyof typeof SpeechToTextWordResponseModelType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeechToTextWordResponseModelType = {
-  word: "word",
-  spacing: "spacing",
-  audio_event: "audio_event"
-} as const
+  word: 'word',
+  spacing: 'spacing',
+  audio_event: 'audio_event',
+} as const;

@@ -8,4 +8,4 @@
 /**
  * When `true`, language is detected for each part of the transcription.
  */
-export type CreateTranscriptionPayloadEnableLanguageIdentification = boolean | null
+export type CreateTranscriptionPayloadEnableLanguageIdentification = boolean | null;

@@ -9,4 +9,4 @@
 /**
  * Parameters of the function in JSON Schema.
  */
-export type RealtimeFunctionToolParameters = { [key: string]: unknown }
+export type RealtimeFunctionToolParameters = { [key: string]: unknown };

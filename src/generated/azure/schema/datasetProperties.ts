@@ -5,20 +5,20 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { TextNormalizationKind } from "./textNormalizationKind"
-import type { EntityError } from "./entityError"
+import type { TextNormalizationKind } from './textNormalizationKind';
+import type { EntityError } from './entityError';
 
 export interface DatasetProperties {
-  textNormalizationKind?: TextNormalizationKind
+  textNormalizationKind?: TextNormalizationKind;
   /** The number of lines accepted for this data set. */
-  readonly acceptedLineCount?: number
+  readonly acceptedLineCount?: number;
   /** The number of lines rejected for this data set. */
-  readonly rejectedLineCount?: number
+  readonly rejectedLineCount?: number;
   /** The total duration of the datasets if it contains audio files. The duration is encoded as ISO 8601 duration
 ("PnYnMnDTnHnMnS", see https://en.wikipedia.org/wiki/ISO_8601#Durations). */
-  readonly duration?: string
+  readonly duration?: string;
   /** The email address to send email notifications to in case the operation completes.
 The value will be removed after successfully sending the email. */
-  email?: string
-  error?: EntityError
+  email?: string;
+  error?: EntityError;
 }

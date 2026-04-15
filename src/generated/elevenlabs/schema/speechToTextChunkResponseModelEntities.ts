@@ -5,9 +5,9 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { DetectedEntity } from "./detectedEntity"
+import type { DetectedEntity } from './detectedEntity';
 
 /**
  * List of detected entities with their text, type, and character positions in the transcript.
  */
-export type SpeechToTextChunkResponseModelEntities = DetectedEntity[] | null
+export type SpeechToTextChunkResponseModelEntities = DetectedEntity[] | null;

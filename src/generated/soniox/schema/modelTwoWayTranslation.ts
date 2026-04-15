@@ -8,4 +8,4 @@
 /**
  * When contains string 'all_languages',' any laguage pair from languages can be used
  */
-export type ModelTwoWayTranslation = string | null
+export type ModelTwoWayTranslation = string | null;

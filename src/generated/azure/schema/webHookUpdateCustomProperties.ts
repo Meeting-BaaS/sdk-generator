@@ -10,4 +10,4 @@
  * The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10.
  */
-export type WebHookUpdateCustomProperties = { [key: string]: string }
+export type WebHookUpdateCustomProperties = {[key: string]: string};

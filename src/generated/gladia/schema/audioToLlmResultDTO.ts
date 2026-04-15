@@ -10,10 +10,10 @@ export interface AudioToLlmResultDTO {
    * The prompt used
    * @nullable
    */
-  prompt: string | null
+  prompt: string | null;
   /**
    * The result of the AI analysis
    * @nullable
    */
-  response: string | null
+  response: string | null;
 }

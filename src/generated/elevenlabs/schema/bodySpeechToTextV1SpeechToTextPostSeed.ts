@@ -9,4 +9,4 @@
 /**
  * If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be an integer between 0 and 2147483647.
  */
-export type BodySpeechToTextV1SpeechToTextPostSeed = number | null
+export type BodySpeechToTextV1SpeechToTextPostSeed = number | null;

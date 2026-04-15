@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLiveStartSessionMessageEvent } from "./callbackLiveStartSessionMessageEvent"
-import type { StartSessionMessage } from "./startSessionMessage"
+import type { CallbackLiveStartSessionMessageEvent } from './callbackLiveStartSessionMessageEvent';
+import type { StartSessionMessage } from './startSessionMessage';
 
 export interface CallbackLiveStartSessionMessage {
   /** Id of the job */
-  id: string
-  event: CallbackLiveStartSessionMessageEvent
+  id: string;
+  event: CallbackLiveStartSessionMessageEvent;
   /** The live message payload as sent to the WebSocket */
-  payload: StartSessionMessage
+  payload: StartSessionMessage;
 }

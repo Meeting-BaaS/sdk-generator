@@ -9,4 +9,4 @@
 /**
  * The end time of the word or sound in seconds.
  */
-export type SpeechToTextWordResponseModelEnd = number | null
+export type SpeechToTextWordResponseModelEnd = number | null;

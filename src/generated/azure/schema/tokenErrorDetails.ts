@@ -5,12 +5,12 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { EditsSummary } from "./editsSummary"
+import type { EditsSummary } from './editsSummary';
 
 export interface TokenErrorDetails {
-  readonly punctuation?: EditsSummary
-  readonly capitalization?: EditsSummary
-  readonly inverseTextNormalization?: EditsSummary
-  readonly lexical?: EditsSummary
-  readonly others?: EditsSummary
+  readonly punctuation?: EditsSummary;
+  readonly capitalization?: EditsSummary;
+  readonly inverseTextNormalization?: EditsSummary;
+  readonly lexical?: EditsSummary;
+  readonly others?: EditsSummary;
 }

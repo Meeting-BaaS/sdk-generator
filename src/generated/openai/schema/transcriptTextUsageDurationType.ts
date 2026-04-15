@@ -9,10 +9,10 @@
 /**
  * The type of the usage object. Always `duration` for this variant.
  */
-export type TranscriptTextUsageDurationType =
-  (typeof TranscriptTextUsageDurationType)[keyof typeof TranscriptTextUsageDurationType]
+export type TranscriptTextUsageDurationType = typeof TranscriptTextUsageDurationType[keyof typeof TranscriptTextUsageDurationType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptTextUsageDurationType = {
-  duration: "duration"
-} as const
+  duration: 'duration',
+} as const;

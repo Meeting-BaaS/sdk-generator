@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLivePostSummarizationMessageEvent =
-  (typeof CallbackLivePostSummarizationMessageEvent)[keyof typeof CallbackLivePostSummarizationMessageEvent]
+export type CallbackLivePostSummarizationMessageEvent = typeof CallbackLivePostSummarizationMessageEvent[keyof typeof CallbackLivePostSummarizationMessageEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLivePostSummarizationMessageEvent = {
-  livepost_summarization: "live.post_summarization"
-} as const
+  livepost_summarization: 'live.post_summarization',
+} as const;

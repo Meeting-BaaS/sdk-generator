@@ -5,16 +5,13 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceOptions } from "./toolChoiceOptions"
-import type { ToolChoiceFunction } from "./toolChoiceFunction"
-import type { ToolChoiceMCP } from "./toolChoiceMCP"
+import type { ToolChoiceOptions } from './toolChoiceOptions';
+import type { ToolChoiceFunction } from './toolChoiceFunction';
+import type { ToolChoiceMCP } from './toolChoiceMCP';
 
 /**
  * How the model chooses tools. Provide one of the string modes or force a specific
 function/MCP tool.
 
  */
-export type RealtimeSessionCreateResponseGAToolChoice =
-  | ToolChoiceOptions
-  | ToolChoiceFunction
-  | ToolChoiceMCP
+export type RealtimeSessionCreateResponseGAToolChoice = ToolChoiceOptions | ToolChoiceFunction | ToolChoiceMCP;

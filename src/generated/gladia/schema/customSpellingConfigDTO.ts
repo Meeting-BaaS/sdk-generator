@@ -4,9 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CustomSpellingConfigDTOSpellingDictionary } from "./customSpellingConfigDTOSpellingDictionary"
+import type { CustomSpellingConfigDTOSpellingDictionary } from './customSpellingConfigDTOSpellingDictionary';
 
 export interface CustomSpellingConfigDTO {
   /** The list of spelling applied on the audio transcription */
-  spelling_dictionary: CustomSpellingConfigDTOSpellingDictionary
+  spelling_dictionary: CustomSpellingConfigDTOSpellingDictionary;
 }

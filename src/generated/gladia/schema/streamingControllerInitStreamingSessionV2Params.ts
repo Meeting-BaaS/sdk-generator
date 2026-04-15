@@ -4,11 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { StreamingSupportedRegions } from "./streamingSupportedRegions"
+import type { StreamingSupportedRegions } from './streamingSupportedRegions';
 
 export type StreamingControllerInitStreamingSessionV2Params = {
-  /**
-   * The region used to process the audio.
-   */
-  region?: StreamingSupportedRegions
-}
+/**
+ * The region used to process the audio.
+ */
+region?: StreamingSupportedRegions;
+};

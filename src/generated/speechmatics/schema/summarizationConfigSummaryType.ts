@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type SummarizationConfigSummaryType =
-  (typeof SummarizationConfigSummaryType)[keyof typeof SummarizationConfigSummaryType]
+export type SummarizationConfigSummaryType = typeof SummarizationConfigSummaryType[keyof typeof SummarizationConfigSummaryType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummarizationConfigSummaryType = {
-  paragraphs: "paragraphs",
-  bullets: "bullets"
-} as const
+  paragraphs: 'paragraphs',
+  bullets: 'bullets',
+} as const;

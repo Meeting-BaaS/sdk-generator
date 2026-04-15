@@ -5,12 +5,12 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { NoiseReductionType } from "./noiseReductionType"
+import type { NoiseReductionType } from './noiseReductionType';
 
 /**
  * Configuration for input audio noise reduction.
 
  */
 export type RealtimeSessionCreateResponseAudioInputNoiseReduction = {
-  type?: NoiseReductionType
-}
+  type?: NoiseReductionType;
+};

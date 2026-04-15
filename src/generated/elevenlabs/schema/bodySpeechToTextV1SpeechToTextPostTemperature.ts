@@ -9,4 +9,4 @@
 /**
  * Controls the randomness of the transcription output. Accepts values between 0.0 and 2.0, where higher values result in more diverse and less deterministic results. If omitted, we will use a temperature based on the model you selected which is usually 0.
  */
-export type BodySpeechToTextV1SpeechToTextPostTemperature = number | null
+export type BodySpeechToTextV1SpeechToTextPostTemperature = number | null;

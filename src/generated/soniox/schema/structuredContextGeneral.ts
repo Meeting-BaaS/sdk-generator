@@ -4,9 +4,9 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { StructuredContextGeneralItem } from "./structuredContextGeneralItem"
+import type { StructuredContextGeneralItem } from './structuredContextGeneralItem';
 
 /**
  * General context items.
  */
-export type StructuredContextGeneral = StructuredContextGeneralItem[] | null
+export type StructuredContextGeneral = StructuredContextGeneralItem[] | null;

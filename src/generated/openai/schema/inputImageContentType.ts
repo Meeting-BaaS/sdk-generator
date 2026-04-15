@@ -9,10 +9,10 @@
 /**
  * The type of the input item. Always `input_image`.
  */
-export type InputImageContentType =
-  (typeof InputImageContentType)[keyof typeof InputImageContentType]
+export type InputImageContentType = typeof InputImageContentType[keyof typeof InputImageContentType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InputImageContentType = {
-  input_image: "input_image"
-} as const
+  input_image: 'input_image',
+} as const;

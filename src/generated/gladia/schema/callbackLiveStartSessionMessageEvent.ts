@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type CallbackLiveStartSessionMessageEvent =
-  (typeof CallbackLiveStartSessionMessageEvent)[keyof typeof CallbackLiveStartSessionMessageEvent]
+export type CallbackLiveStartSessionMessageEvent = typeof CallbackLiveStartSessionMessageEvent[keyof typeof CallbackLiveStartSessionMessageEvent];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackLiveStartSessionMessageEvent = {
-  livestart_session: "live.start_session"
-} as const
+  livestart_session: 'live.start_session',
+} as const;

@@ -9,9 +9,10 @@
 /**
  * The object type, which is always `audio.voice`.
  */
-export type VoiceResourceObject = (typeof VoiceResourceObject)[keyof typeof VoiceResourceObject]
+export type VoiceResourceObject = typeof VoiceResourceObject[keyof typeof VoiceResourceObject];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VoiceResourceObject = {
-  audiovoice: "audio.voice"
-} as const
+  audiovoice: 'audio.voice',
+} as const;

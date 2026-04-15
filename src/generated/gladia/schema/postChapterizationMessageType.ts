@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PostChapterizationMessageType =
-  (typeof PostChapterizationMessageType)[keyof typeof PostChapterizationMessageType]
+export type PostChapterizationMessageType = typeof PostChapterizationMessageType[keyof typeof PostChapterizationMessageType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostChapterizationMessageType = {
-  post_chapterization: "post_chapterization"
-} as const
+  post_chapterization: 'post_chapterization',
+} as const;

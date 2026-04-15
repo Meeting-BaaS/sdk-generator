@@ -8,4 +8,4 @@
 /**
  * Custom metadata you can attach to this live transcription
  */
-export type StreamingRequestCustomMetadata = { [key: string]: unknown }
+export type StreamingRequestCustomMetadata = { [key: string]: unknown };

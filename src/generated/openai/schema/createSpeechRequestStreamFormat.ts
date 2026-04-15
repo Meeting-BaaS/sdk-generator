@@ -9,11 +9,11 @@
 /**
  * The format to stream the audio in. Supported formats are `sse` and `audio`. `sse` is not supported for `tts-1` or `tts-1-hd`.
  */
-export type CreateSpeechRequestStreamFormat =
-  (typeof CreateSpeechRequestStreamFormat)[keyof typeof CreateSpeechRequestStreamFormat]
+export type CreateSpeechRequestStreamFormat = typeof CreateSpeechRequestStreamFormat[keyof typeof CreateSpeechRequestStreamFormat];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateSpeechRequestStreamFormat = {
-  sse: "sse",
-  audio: "audio"
-} as const
+  sse: 'sse',
+  audio: 'audio',
+} as const;
