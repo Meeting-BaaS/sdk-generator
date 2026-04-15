@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.6] - 2026-04-15
+
+### Changed
+
+#### Regenerated All Provider Specs from Upstream
+
+All 8 provider OpenAPI/AsyncAPI specs synced to latest upstream versions. Generated types, Zod schemas, and API clients regenerated via Orval.
+
+### Fixed
+
+#### Deepgram: Adapt to Upstream Breaking Spec Changes
+
+Deepgram's upstream OpenAPI spec introduced duplicate operationIds (all endpoints now use bare CRUD verbs like `list`, `get`, `create`) and renamed array item schemas from singular to plural naming.
+
+**`fix-deepgram-spec.js` rewritten** to follow the ElevenLabs/OpenAI pattern: filter to 7 SDK-needed endpoints, assign unique operationIds derived from paths, and remove unreferenced schemas.
+
+| Method | Path | operationId |
+|--------|------|-------------|
+| POST | `/v1/listen` | `listenTranscribe` |
+| POST | `/v1/speak` | `speakGenerate` |
+| POST | `/v1/read` | `readAnalyze` |
+| GET | `/v1/models` | `listModels` |
+| GET | `/v1/models/{model_id}` | `getModel` |
+| GET | `/v1/projects/{project_id}/requests` | `listProjectRequests` |
+| GET | `/v1/projects/{project_id}/requests/{request_id}` | `getProjectRequest` |
+
+~42 endpoints dropped (agents, keys, members, invites, billing, usage, scopes, distribution credentials, auth, projects CRUD).
+
+**SDK import renames** (all consumers updated):
+
+| Old | New |
+|-----|-----|
+| `ListenV1MediaTranscribeParams` | `ListenTranscribeParams` |
+| `ManageV1ProjectsRequestsListParams` | `ListProjectRequestsParams` |
+| `ListenV1EncodingParameter` | `V1ListenPostParametersEncoding` |
+| `SharedCallbackMethodParameter` | `V1ListenPostParametersCallbackMethod` |
+| `SpeakV1ContainerParameter` | `V1SpeakPostParametersContainer` |
+| `SpeakV1EncodingParameter` | `V1SpeakPostParametersEncoding` |
+| `SpeakV1ModelParameter` | `V1SpeakPostParametersModel` |
+| `SpeakV1SampleRateParameter` | `V1SpeakPostParametersSampleRate` |
+
+#### Gladia: Replace Deleted `CodeSwitchingConfigDTO`
+
+Upstream Gladia spec removed `CodeSwitchingConfigDTO`. Replaced with `LanguageConfig` (superset of the old type) in `src/router/types.ts`. The re-export `GladiaCodeSwitchingConfig` is preserved for backwards compatibility.
+
+#### OpenAI: Fix Model Extraction from Generated Types
+
+`scripts/generate-openai-models.js` regex only matched double-quoted string literals, but Orval generates single quotes. Fixed to handle both quote styles. `models.ts` now correctly populated with 21 models (5 transcription + 16 realtime).
+
+#### ElevenLabs: Fix `entity_redaction` FormData Append
+
+`entity_redaction` is typed `string | string[]` but `FormData.append()` only accepts `string | Blob`. Added idempotent fix in `scripts/fix-generated.js` that wraps the append in an `Array.isArray` guard.
+
+---
+
 ## [0.8.5] - 2026-04-07
 
 ### Changed
