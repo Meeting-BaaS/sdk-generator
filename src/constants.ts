@@ -20,11 +20,11 @@
 // Deepgram Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { ListenV1EncodingParameter } from "./generated/deepgram/schema/listenV1EncodingParameter"
-import { ListenV1RedactParameterOneOfItem } from "./generated/deepgram/schema/listenV1RedactParameterOneOfItem"
-import { SharedCallbackMethodParameter } from "./generated/deepgram/schema/sharedCallbackMethodParameter"
-import { SharedCustomIntentModeParameter } from "./generated/deepgram/schema/sharedCustomIntentModeParameter"
-import { SharedCustomTopicModeParameter } from "./generated/deepgram/schema/sharedCustomTopicModeParameter"
+import { V1ListenPostParametersEncoding } from "./generated/deepgram/schema/v1ListenPostParametersEncoding"
+import { V1ListenPostParametersRedactSchemaOneOf1Items } from "./generated/deepgram/schema/v1ListenPostParametersRedactSchemaOneOf1Items"
+import { V1ListenPostParametersCallbackMethod } from "./generated/deepgram/schema/v1ListenPostParametersCallbackMethod"
+import { V1ListenPostParametersCustomIntentMode } from "./generated/deepgram/schema/v1ListenPostParametersCustomIntentMode"
+import { V1ListenPostParametersCustomTopicMode } from "./generated/deepgram/schema/v1ListenPostParametersCustomTopicMode"
 
 /**
  * Deepgram audio encoding formats
@@ -39,7 +39,7 @@ import { SharedCustomTopicModeParameter } from "./generated/deepgram/schema/shar
  * { encoding: DeepgramEncoding.opus }
  * ```
  */
-export const DeepgramEncoding = ListenV1EncodingParameter
+export const DeepgramEncoding = V1ListenPostParametersEncoding
 
 /**
  * Deepgram redaction options for PII removal
@@ -53,7 +53,7 @@ export const DeepgramEncoding = ListenV1EncodingParameter
  * { redact: [DeepgramRedact.pii, DeepgramRedact.ssn] }
  * ```
  */
-export const DeepgramRedact = ListenV1RedactParameterOneOfItem
+export const DeepgramRedact = V1ListenPostParametersRedactSchemaOneOf1Items
 
 /**
  * Deepgram topic detection modes
@@ -67,7 +67,7 @@ export const DeepgramRedact = ListenV1RedactParameterOneOfItem
  * { customTopicMode: DeepgramTopicMode.extended }
  * ```
  */
-export const DeepgramTopicMode = SharedCustomTopicModeParameter
+export const DeepgramTopicMode = V1ListenPostParametersCustomTopicMode
 
 /**
  * Deepgram intent detection modes
@@ -81,7 +81,7 @@ export const DeepgramTopicMode = SharedCustomTopicModeParameter
  * { customIntentMode: DeepgramIntentMode.extended }
  * ```
  */
-export const DeepgramIntentMode = SharedCustomIntentModeParameter
+export const DeepgramIntentMode = V1ListenPostParametersCustomIntentMode
 
 /**
  * Deepgram callback HTTP methods for async transcription
@@ -95,7 +95,7 @@ export const DeepgramIntentMode = SharedCustomIntentModeParameter
  * { callbackMethod: DeepgramCallbackMethod.POST }
  * ```
  */
-export const DeepgramCallbackMethod = SharedCallbackMethodParameter
+export const DeepgramCallbackMethod = V1ListenPostParametersCallbackMethod
 
 /**
  * Deepgram supported sample rates (Hz)
@@ -592,7 +592,7 @@ export const AssemblyAISampleRate = {
 
 import { TranscriptStatus } from "./generated/assemblyai/schema/transcriptStatus"
 import { Status } from "./generated/azure/schema/status"
-import { ManageV1FilterStatusParameter } from "./generated/deepgram/schema/manageV1FilterStatusParameter"
+import { V1ProjectsProjectIdRequestsGetParametersStatus } from "./generated/deepgram/schema/v1ProjectsProjectIdRequestsGetParametersStatus"
 import { TranscriptionControllerListV2StatusItem } from "./generated/gladia/schema/transcriptionControllerListV2StatusItem"
 
 /**
@@ -693,7 +693,7 @@ export const AzureStatus = Status
  * })
  * ```
  */
-export const DeepgramStatus = ManageV1FilterStatusParameter
+export const DeepgramStatus = V1ProjectsProjectIdRequestsGetParametersStatus
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type exports
@@ -918,7 +918,7 @@ export type SonioxRegionType = (typeof SonioxRegion)[keyof typeof SonioxRegion]
 
 import { SpeakV1ContainerParameter } from "./generated/deepgram/schema/speakV1ContainerParameter"
 import { SpeakV1EncodingParameter } from "./generated/deepgram/schema/speakV1EncodingParameter"
-import { SpeakV1ModelParameter } from "./generated/deepgram/schema/speakV1ModelParameter"
+import { V1SpeakPostParametersModel } from "./generated/deepgram/schema/v1SpeakPostParametersModel"
 import { SpeakV1SampleRateParameter } from "./generated/deepgram/schema/speakV1SampleRateParameter"
 
 /**
@@ -935,7 +935,7 @@ import { SpeakV1SampleRateParameter } from "./generated/deepgram/schema/speakV1S
  * { model: DeepgramTTSModel["aura-2-sirio-es"] }
  * ```
  */
-export const DeepgramTTSModel = SpeakV1ModelParameter
+export const DeepgramTTSModel = V1SpeakPostParametersModel
 
 /**
  * Deepgram TTS audio encoding formats

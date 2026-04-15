@@ -30,7 +30,7 @@ export * as ElevenLabsTypes from "./generated/elevenlabs/schema"
 
 // Zod schemas for runtime field config extraction
 export * as GladiaZodSchemas from "./generated/gladia/api/gladiaControlAPI.zod"
-export * as DeepgramZodSchemas from "./generated/deepgram/api/deepgramAPISpecification.zod"
+export * as DeepgramZodSchemas from "./generated/deepgram/api/deepgramAPI.zod"
 export * as AssemblyAIZodSchemas from "./generated/assemblyai/api/assemblyAIAPI.zod"
 export * as OpenAIZodSchemas from "./generated/openai/api/openAIAudioRealtimeAPI.zod"
 export * as SpeechmaticsZodSchemas from "./generated/speechmatics/api/speechmaticsASRRESTAPI.zod"

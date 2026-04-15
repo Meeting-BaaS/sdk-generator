@@ -19,9 +19,8 @@ import type { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/
 import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
 
 // Deepgram types - from OpenAPI-generated schema
-import type { ListenV1EncodingParameter } from "../generated/deepgram/schema/listenV1EncodingParameter"
-import type { ListenV1LanguageParameter } from "../generated/deepgram/schema/listenV1LanguageParameter"
-import type { ListenV1VersionParameter } from "../generated/deepgram/schema/listenV1VersionParameter"
+import type { V1ListenPostParametersEncoding } from "../generated/deepgram/schema/v1ListenPostParametersEncoding"
+import type { V1ListenPostParametersVersion } from "../generated/deepgram/schema/v1ListenPostParametersVersion"
 
 // New typed enums for better autocomplete
 import type {
@@ -116,7 +115,7 @@ export interface DeepgramStreamingOptions {
    * { encoding: DeepgramEncoding.linear16 }
    * ```
    */
-  encoding?: (typeof ListenV1EncodingParameter)[keyof typeof ListenV1EncodingParameter]
+  encoding?: (typeof V1ListenPostParametersEncoding)[keyof typeof V1ListenPostParametersEncoding]
 
   /** Sample rate in Hz */
   sampleRate?: number
@@ -129,7 +128,7 @@ export interface DeepgramStreamingOptions {
   // ─────────────────────────────────────────────────────────────────
 
   /** Language code (BCP-47 format, e.g., 'en', 'en-US', 'es') */
-  language?: ListenV1LanguageParameter
+  language?: string
 
   /**
    * Model to use for transcription
@@ -148,7 +147,7 @@ export interface DeepgramStreamingOptions {
   model?: DeepgramModelType
 
   /** Model version (e.g., 'latest') */
-  version?: ListenV1VersionParameter
+  version?: V1ListenPostParametersVersion
 
   /** Enable language detection */
   languageDetection?: boolean

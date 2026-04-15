@@ -147,10 +147,9 @@ export type {
  * Deepgram Raw Parameter Enums (from OpenAPI spec)
  * @deprecated Use DeepgramEncoding, DeepgramModel etc. for better autocomplete
  */
-export { ListenV1EncodingParameter } from "../generated/deepgram/schema/listenV1EncodingParameter"
-export { ListenV1LanguageParameter } from "../generated/deepgram/schema/listenV1LanguageParameter"
-export { ListenV1ModelParameter } from "../generated/deepgram/schema/listenV1ModelParameter"
-export { ListenV1VersionParameter } from "../generated/deepgram/schema/listenV1VersionParameter"
+export { V1ListenPostParametersEncoding } from "../generated/deepgram/schema/v1ListenPostParametersEncoding"
+export { V1ListenPostParametersModel } from "../generated/deepgram/schema/v1ListenPostParametersModel"
+export { V1ListenPostParametersVersion } from "../generated/deepgram/schema/v1ListenPostParametersVersion"
 export { SpeakV1EncodingParameter } from "../generated/deepgram/schema/speakV1EncodingParameter"
 export { SpeakV1ContainerParameter } from "../generated/deepgram/schema/speakV1ContainerParameter"
 export { SpeakV1SampleRateParameter } from "../generated/deepgram/schema/speakV1SampleRateParameter"

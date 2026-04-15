@@ -63,9 +63,9 @@ import { zodToFieldConfigs, type ZodFieldConfig } from "./utils/zod-to-field-con
 
 // Import Zod schemas from generated code
 import {
-  listenV1MediaTranscribeQueryParams as deepgramTranscribeParams,
-  manageV1ProjectsRequestsListQueryParams as deepgramListParams
-} from "./generated/deepgram/api/deepgramAPISpecification.zod"
+  listenTranscribeQueryParams as deepgramTranscribeParams,
+  listProjectRequestsQueryParams as deepgramListParams
+} from "./generated/deepgram/api/deepgramAPI.zod"
 
 import { deepgramStreamingOnlyParams } from "./generated/deepgram/streaming-types.zod"
 

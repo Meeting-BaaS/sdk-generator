@@ -447,6 +447,23 @@ function fixFormDataObjectAppend(content, filePath) {
     )
   }
 
+  // Fix FormData.append for string|string[] union fields
+  // Pattern: formData.append(`field`, obj.field) where field is string|string[]
+  // Fix: add Array.isArray guard
+  // Only applies once (idempotent) - checks if already fixed before replacing
+  const stringOrArrayFields = ["entity_redaction"]
+  for (const field of stringOrArrayFields) {
+    // Skip if already fixed (contains Array.isArray for this field)
+    if (content.includes(`Array.isArray`) && content.match(new RegExp(`Array\\.isArray\\([\\w.]+\\.${field}\\)`))) {
+      continue
+    }
+    content = content.replace(
+      new RegExp(`( )formData\\.append\\(\`${field}\`, ([\\w.]+\\.${field})\\)`),
+      (match, indent, varRef) =>
+        `${indent}Array.isArray(${varRef}) ? ${varRef}.forEach(value => formData.append(\`${field}\`, value)) : formData.append(\`${field}\`, ${varRef})`
+    )
+  }
+
   // Array .forEach callbacks where each element is an object (not a string)
   // Pattern: .forEach((value) => formData.append("field", value))
   // Fix: JSON.stringify each element

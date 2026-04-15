@@ -50,18 +50,18 @@ export interface DeepgramConfig extends ProviderConfig {
 
 // Import Deepgram generated types
 import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
-import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
-import type { ListenV1ResponseResultsChannelsItemAlternativesItem } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemAlternativesItem"
-import type { ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemAlternativesItemWordsItem"
-import type { ListenV1ResponseResultsUtterancesItem } from "../generated/deepgram/schema/listenV1ResponseResultsUtterancesItem"
+import type { ListenTranscribeParams } from "../generated/deepgram/schema/listenTranscribeParams"
+import type { ListenV1ResponseResultsChannelsItemsAlternativesItems } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemsAlternativesItems"
+import type { ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems"
+import type { ListenV1ResponseResultsUtterancesItems } from "../generated/deepgram/schema/listenV1ResponseResultsUtterancesItems"
 
 // Import Deepgram request history types for listTranscripts
 import type { ListProjectRequestsV1Response } from "../generated/deepgram/schema/listProjectRequestsV1Response"
-import type { ManageV1ProjectsRequestsListParams } from "../generated/deepgram/schema/manageV1ProjectsRequestsListParams"
+import type { ListProjectRequestsParams } from "../generated/deepgram/schema/listProjectRequestsParams"
 import type { ProjectRequestResponse } from "../generated/deepgram/schema/projectRequestResponse"
 import type { GetProjectRequestV1Response } from "../generated/deepgram/schema/getProjectRequestV1Response"
-import { ManageV1FilterStatusParameter } from "../generated/deepgram/schema/manageV1FilterStatusParameter"
-import { ManageV1FilterEndpointParameter } from "../generated/deepgram/schema/manageV1FilterEndpointParameter"
+import { V1ProjectsProjectIdRequestsGetParametersStatus } from "../generated/deepgram/schema/v1ProjectsProjectIdRequestsGetParametersStatus"
+import { V1ProjectsProjectIdRequestsGetParametersEndpoint } from "../generated/deepgram/schema/v1ProjectsProjectIdRequestsGetParametersEndpoint"
 
 // Import ListTranscriptsOptions for Deepgram-specific params
 import type { ListTranscriptsOptions } from "../router/types"
@@ -481,7 +481,7 @@ export class DeepgramAdapter extends BaseAdapter {
   /**
    * Build Deepgram transcription parameters from unified options
    */
-  private buildTranscriptionParams(options?: TranscribeOptions): ListenV1MediaTranscribeParams {
+  private buildTranscriptionParams(options?: TranscribeOptions): ListenTranscribeParams {
     if (!options) {
       return {
         punctuate: true,
@@ -491,7 +491,7 @@ export class DeepgramAdapter extends BaseAdapter {
     }
 
     // Start with provider-specific options (fully typed from OpenAPI)
-    const params: ListenV1MediaTranscribeParams = {
+    const params: ListenTranscribeParams = {
       ...options.deepgram,
       // Enable features for better results (can be overridden by deepgram options)
       punctuate: options.deepgram?.punctuate ?? true,
@@ -608,7 +608,7 @@ export class DeepgramAdapter extends BaseAdapter {
 
     // Extract unique speakers from utterances
     const speakerSet = new Set<number>()
-    utterances.forEach((utterance: ListenV1ResponseResultsUtterancesItem) => {
+    utterances.forEach((utterance: ListenV1ResponseResultsUtterancesItems) => {
       if (utterance.speaker !== undefined) {
         speakerSet.add(utterance.speaker)
       }
@@ -627,13 +627,13 @@ export class DeepgramAdapter extends BaseAdapter {
   /**
    * Extract word timestamps from Deepgram response
    */
-  private extractWords(alternative: ListenV1ResponseResultsChannelsItemAlternativesItem) {
+  private extractWords(alternative: ListenV1ResponseResultsChannelsItemsAlternativesItems) {
     if (!alternative.words || alternative.words.length === 0) {
       return undefined
     }
 
     return alternative.words.map(
-      (w: ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem) => ({
+      (w: ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems) => ({
         word: w.word || "",
         start: w.start || 0,
         end: w.end || 0,
@@ -653,7 +653,7 @@ export class DeepgramAdapter extends BaseAdapter {
       return undefined
     }
 
-    return utterances.map((utterance: ListenV1ResponseResultsUtterancesItem) => ({
+    return utterances.map((utterance: ListenV1ResponseResultsUtterancesItems) => ({
       text: utterance.transcript || "",
       start: utterance.start || 0,
       end: utterance.end || 0,
@@ -673,7 +673,7 @@ export class DeepgramAdapter extends BaseAdapter {
    * Extract summary from Deepgram response
    */
   private extractSummary(
-    alternative: ListenV1ResponseResultsChannelsItemAlternativesItem
+    alternative: ListenV1ResponseResultsChannelsItemsAlternativesItems
   ): string | undefined {
     if (!alternative.summaries || alternative.summaries.length === 0) {
       return undefined
@@ -1284,9 +1284,9 @@ export class DeepgramAdapter extends BaseAdapter {
 
     try {
       // Build params from unified options using generated types
-      const params: ManageV1ProjectsRequestsListParams = {
+      const params: ListProjectRequestsParams = {
         // Filter to only transcription requests (listen endpoint)
-        endpoint: ManageV1FilterEndpointParameter.listen,
+        endpoint: V1ProjectsProjectIdRequestsGetParametersEndpoint.listen,
         ...options?.deepgram
       }
 
@@ -1302,11 +1302,11 @@ export class DeepgramAdapter extends BaseAdapter {
       }
       if (options?.status) {
         // Map unified status to Deepgram status
-        const statusMap: Record<string, ManageV1FilterStatusParameter> = {
-          completed: ManageV1FilterStatusParameter.succeeded,
-          succeeded: ManageV1FilterStatusParameter.succeeded,
-          error: ManageV1FilterStatusParameter.failed,
-          failed: ManageV1FilterStatusParameter.failed
+        const statusMap: Record<string, V1ProjectsProjectIdRequestsGetParametersStatus> = {
+          completed: V1ProjectsProjectIdRequestsGetParametersStatus.succeeded,
+          succeeded: V1ProjectsProjectIdRequestsGetParametersStatus.succeeded,
+          error: V1ProjectsProjectIdRequestsGetParametersStatus.failed,
+          failed: V1ProjectsProjectIdRequestsGetParametersStatus.failed
         }
         params.status = statusMap[options.status.toLowerCase()]
       }
@@ -1406,19 +1406,19 @@ export function createDeepgramAdapter(config: DeepgramConfig): DeepgramAdapter {
 // Response types
 export type {
   ListenV1Response,
-  ListenV1MediaTranscribeParams,
-  ListenV1ResponseResultsChannelsItemAlternativesItem,
-  ListenV1ResponseResultsChannelsItemAlternativesItemWordsItem,
-  ListenV1ResponseResultsUtterancesItem
+  ListenTranscribeParams,
+  ListenV1ResponseResultsChannelsItemsAlternativesItems,
+  ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems,
+  ListenV1ResponseResultsUtterancesItems
 }
 
 // Request history types (for listTranscripts)
 export type {
   ListProjectRequestsV1Response,
-  ManageV1ProjectsRequestsListParams,
+  ListProjectRequestsParams,
   ProjectRequestResponse,
   GetProjectRequestV1Response
 }
 
 // Enum constants for filtering
-export { ManageV1FilterStatusParameter, ManageV1FilterEndpointParameter }
+export { V1ProjectsProjectIdRequestsGetParametersStatus, V1ProjectsProjectIdRequestsGetParametersEndpoint }

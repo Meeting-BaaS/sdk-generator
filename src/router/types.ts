@@ -34,10 +34,10 @@ import type { AzureLocaleCode } from "../generated/azure/locales"
 import type { ElevenLabsLanguageCode } from "../generated/elevenlabs/languages"
 
 // Provider-specific request types for full type safety
-import type { ListenV1MediaTranscribeParams } from "../generated/deepgram/schema/listenV1MediaTranscribeParams"
+import type { ListenTranscribeParams } from "../generated/deepgram/schema/listenTranscribeParams"
 import type { TranscriptParams as AssemblyAITranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
 import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
-import type { CodeSwitchingConfigDTO } from "../generated/gladia/schema/codeSwitchingConfigDTO"
+import type { LanguageConfig as GladiaLanguageConfig } from "../generated/gladia/schema/languageConfig"
 import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
@@ -142,10 +142,10 @@ export type TranscriptionLanguage =
   | AzureLocaleCode
 
 // Re-export provider-specific types for direct access
-export type { ListenV1MediaTranscribeParams as DeepgramOptions }
+export type { ListenTranscribeParams as DeepgramOptions }
 export type { AssemblyAITranscriptParams as AssemblyAIOptions }
 export type { InitTranscriptionRequest as GladiaOptions }
-export type { CodeSwitchingConfigDTO as GladiaCodeSwitchingConfig }
+export type { GladiaLanguageConfig as GladiaCodeSwitchingConfig }
 export type { AudioToLlmListConfigDTO as GladiaAudioToLlmConfig }
 export type { CreateTranscriptionRequest as OpenAIWhisperOptions }
 // Note: GladiaStreamingOptions is defined in provider-streaming-types.ts
@@ -306,7 +306,7 @@ export type SessionStatus = "connecting" | "open" | "closing" | "closed"
 // Provider-specific list params for type-safe passthrough
 import type { ListTranscriptsParams as AssemblyAIListParams } from "../generated/assemblyai/schema/listTranscriptsParams"
 import type { TranscriptionControllerListV2Params as GladiaListParams } from "../generated/gladia/schema/transcriptionControllerListV2Params"
-import type { ManageV1ProjectsRequestsListParams as DeepgramListParams } from "../generated/deepgram/schema/manageV1ProjectsRequestsListParams"
+import type { ListProjectRequestsParams as DeepgramListParams } from "../generated/deepgram/schema/listProjectRequestsParams"
 
 /**
  * Options for listing transcripts with date/time filtering
@@ -403,7 +403,7 @@ export interface TranscribeOptions {
    * Code switching configuration (Gladia-specific)
    * @see GladiaCodeSwitchingConfig
    */
-  codeSwitchingConfig?: CodeSwitchingConfigDTO
+  codeSwitchingConfig?: GladiaLanguageConfig
 
   /** Enable speaker diarization */
   diarization?: boolean
@@ -448,7 +448,7 @@ export interface TranscribeOptions {
    * Deepgram-specific options (passed directly to API)
    * @see https://developers.deepgram.com/reference/listen-file
    */
-  deepgram?: Partial<ListenV1MediaTranscribeParams>
+  deepgram?: Partial<ListenTranscribeParams>
 
   /**
    * AssemblyAI-specific options (passed directly to API)

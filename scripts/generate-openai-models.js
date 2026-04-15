@@ -41,13 +41,13 @@ const MODEL_SOURCES = [
 function extractModelsFromFile(filePath) {
   const content = fs.readFileSync(filePath, "utf-8")
 
-  // Match quoted string literals in union types (e.g., | "whisper-1")
-  const modelRegex = /\|\s*"([^"]+)"/g
+  // Match quoted string literals in union types (e.g., | "whisper-1" or | 'whisper-1')
+  const modelRegex = /\|\s*(['"])([^'"]+)\1/g
   const models = []
 
   let match
   while ((match = modelRegex.exec(content)) !== null) {
-    const model = match[1]
+    const model = match[2]
     // Skip generic "string" type
     if (model !== "string") {
       models.push(model)
