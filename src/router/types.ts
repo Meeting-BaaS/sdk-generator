@@ -50,7 +50,8 @@ import type {
   AssemblyAIStreamingOptions,
   OpenAIStreamingOptions,
   SonioxStreamingOptions,
-  ElevenLabsStreamingOptions
+  ElevenLabsStreamingOptions,
+  SpeechmaticsStreamingOptions
 } from "./provider-streaming-types"
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -292,7 +293,6 @@ export type StreamingProvider = StreamingProviderType
  * Providers that only support batch/async transcription
  *
  * Automatically derived from providers where streaming is false or undefined.
- * Note: Speechmatics has a WebSocket API but streaming is not yet implemented in this SDK.
  */
 export type BatchOnlyProvider = BatchOnlyProviderType
 
@@ -1211,6 +1211,30 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    * ```
    */
   elevenlabsStreaming?: ElevenLabsStreamingOptions
+
+  /**
+   * Speechmatics-specific streaming options
+   *
+   * Configure the Speechmatics WebSocket connection for real-time transcription.
+   * Supports speaker diarization, partial transcripts, custom vocabulary, and domain models.
+   *
+   * @see https://docs.speechmatics.com/rt-api-ref
+   *
+   * @example
+   * ```typescript
+   * await adapter.transcribeStream({
+   *   speechmaticsStreaming: {
+   *     language: 'en',
+   *     operatingPoint: 'enhanced',
+   *     enablePartials: true,
+   *     diarization: 'speaker',
+   *     maxDelay: 2,
+   *     maxDelayMode: 'flexible'
+   *   }
+   * });
+   * ```
+   */
+  speechmaticsStreaming?: SpeechmaticsStreamingOptions
 
   /**
    * Regional endpoint for streaming (Gladia only)

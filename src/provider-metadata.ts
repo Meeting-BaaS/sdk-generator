@@ -166,7 +166,7 @@ export const AzureCapabilities = {
  * Speechmatics provider capabilities
  */
 export const SpeechmaticsCapabilities = {
-  streaming: false,
+  streaming: true,
   diarization: true,
   wordTimestamps: true,
   languageDetection: false,

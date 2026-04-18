@@ -7,7 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.8.7] - 2026-04-18
 
+### Added
+
+#### Speechmatics: Real-Time Streaming (`transcribeStream()`)
+
+Speechmatics now supports WebSocket-based real-time transcription via `wss://{region}.rt.speechmatics.com/v2`. The adapter follows the same pattern as Deepgram/Gladia/AssemblyAI streaming.
+
+**Protocol flow:**
+1. Connect with `Authorization: Bearer` header
+2. Send `StartRecognition` JSON with `audio_format` + `transcription_config`
+3. Wait for `RecognitionStarted` acknowledgment
+4. Stream binary audio frames via `sendAudio()`
+5. Receive `AddPartialTranscript` (partials) and `AddTranscript` (finals)
+6. `EndOfUtterance` boundaries trigger `onUtterance()` callback
+7. `EndOfStream` → `EndOfTranscript` for clean shutdown
+
+**Streaming options** (`speechmaticsStreaming`): `encoding`, `sampleRate`, `language`, `domain`, `operatingPoint`, `maxDelay`, `maxDelayMode`, `enablePartials`, `enableEntities`, `diarization`, `maxSpeakers`, `additionalVocab`, `conversationConfig`, `region`.
+
+**Type changes:**
+- `SpeechmaticsCapabilities.streaming` is now `true` — Speechmatics is included in `StreamingProviderType`
+- `SpeechmaticsStreamingOptions` added to `ProviderStreamingOptions` union and `StreamingOptionsForProvider<P>` conditional type
+- `StreamingOptions.speechmaticsStreaming` field added
+
 ### Fixed
+
+#### Soniox: Fix Streaming WebSocket Initialization
+
+Three bugs in the Soniox streaming adapter:
+
+| Bug | Before (broken) | After (fixed) |
+|-----|-----------------|----------------|
+| **Init message** | Config sent as URL query params | JSON text frame sent after `ws.onopen` (Soniox requires first frame to be JSON) |
+| **Default model** | `stt-rt-preview` (deprecated/removed) | `stt-rt-v4` |
+| **Close detection** | 1s threshold for early-close detection | 5s threshold (Soniox takes ~3s to close) |
+
+The JSON init frame now includes `api_key`, `model`, `audio_format`, `sample_rate`, `num_channels`, and all optional config (diarization, language hints, context, etc.).
 
 #### Speechmatics: Fix Content-Type for URL-Based Batch Transcription
 

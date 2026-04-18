@@ -40,6 +40,9 @@ import type { SonioxRealtimeModelCode } from "../generated/soniox/models"
 import type { ElevenLabsRealtimeModelCode } from "../generated/elevenlabs/models"
 import type { ElevenLabsAudioFormatType } from "../constants"
 
+// Speechmatics types for strict type checking
+import type { SpeechmaticsRegionType } from "../constants"
+
 // Common callback types
 import type { StreamingCallbacks, StreamingProvider } from "./types"
 
@@ -787,6 +790,91 @@ export interface ElevenLabsStreamingOptions {
   previousText?: string
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Speechmatics Streaming Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Speechmatics realtime streaming options
+ *
+ * Based on the WebSocket API at wss://{region}.rt.speechmatics.com/v2.
+ * Uses the StartRecognition message to configure the session.
+ *
+ * @see https://docs.speechmatics.com/rt-api-ref
+ */
+export interface SpeechmaticsStreamingOptions {
+  /**
+   * Audio encoding format
+   * @default "pcm_s16le"
+   */
+  encoding?: "pcm_f32le" | "pcm_s16le" | "mulaw"
+
+  /**
+   * Sample rate in Hz
+   * @default 16000
+   */
+  sampleRate?: number
+
+  /** Language code (ISO 639-1, required by Speechmatics) */
+  language?: string
+
+  /**
+   * Specialized domain model (e.g., "finance", "medical")
+   * Optimizes the language model for a particular field
+   */
+  domain?: string
+
+  /**
+   * Operating point (model accuracy tier)
+   * @default "enhanced"
+   */
+  operatingPoint?: "standard" | "enhanced"
+
+  /**
+   * Maximum delay in seconds between spoken word and final transcript (0.7-4)
+   * @see https://docs.speechmatics.com/speech-to-text/realtime/output#latency
+   */
+  maxDelay?: number
+
+  /**
+   * How max_delay is applied
+   * - "flexible": delay is a guideline (lower latency)
+   * - "fixed": delay is strictly enforced
+   */
+  maxDelayMode?: "flexible" | "fixed"
+
+  /** Enable partial transcripts (AddPartialTranscript messages) */
+  enablePartials?: boolean
+
+  /** Enable entity detection in transcripts */
+  enableEntities?: boolean
+
+  /**
+   * Diarization mode
+   * - "none": no diarization
+   * - "speaker": speaker diarization enabled
+   */
+  diarization?: "none" | "speaker"
+
+  /** Maximum number of speakers to detect (min 2) */
+  maxSpeakers?: number
+
+  /** Additional vocabulary terms to boost recognition */
+  additionalVocab?: string[]
+
+  /** Conversation configuration for VAD/end-of-utterance */
+  conversationConfig?: {
+    /** Silence duration in seconds to trigger end-of-utterance (0-2) */
+    endOfUtteranceSilenceTrigger?: number
+  }
+
+  /**
+   * Regional endpoint override
+   * Defaults to region from adapter config, or "eu1"
+   */
+  region?: SpeechmaticsRegionType
+}
+
 /**
  * Union of all provider-specific streaming options
  */
@@ -797,6 +885,7 @@ export type ProviderStreamingOptions =
   | ({ provider: "openai-whisper" } & OpenAIStreamingOptions)
   | ({ provider: "soniox" } & SonioxStreamingOptions)
   | ({ provider: "elevenlabs" } & ElevenLabsStreamingOptions)
+  | ({ provider: "speechmatics" } & SpeechmaticsStreamingOptions)
 
 /**
  * Type-safe streaming options for a specific provider
@@ -813,7 +902,9 @@ export type StreamingOptionsForProvider<P extends StreamingProvider> = P extends
           ? SonioxStreamingOptions
           : P extends "elevenlabs"
             ? ElevenLabsStreamingOptions
-            : never
+            : P extends "speechmatics"
+              ? SpeechmaticsStreamingOptions
+              : never
 
 /**
  * Type-safe transcribeStream parameters for a specific provider
