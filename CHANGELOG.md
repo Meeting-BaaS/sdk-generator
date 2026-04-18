@@ -30,6 +30,10 @@ The batch transcription adapter was using the old `/speech/transcribe` endpoint 
 
 **No breaking changes for consumers.** The adapter's public API (`transcribe()`, `getTranscript()`) is unchanged.
 
+#### Azure STT: Add Utterance Extraction to Batch Transcription
+
+Azure batch transcription had words with speaker labels but wasn't building utterances from them. Now uses `buildUtterancesFromWords()` to group speaker-labeled words into utterances, matching all other adapters.
+
 ---
 
 ## [0.8.6] - 2026-04-15

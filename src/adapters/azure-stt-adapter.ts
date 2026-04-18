@@ -12,6 +12,7 @@ import type {
   UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
+import { buildUtterancesFromWords } from "../utils/transcription-helpers"
 
 // Import generated API client functions - FULL TYPE SAFETY!
 import {
@@ -573,6 +574,9 @@ export class AzureSTTAdapter extends BaseAdapter {
           }))
         : undefined
 
+    // Build utterances from speaker-labeled words
+    const utterances = words.length > 0 ? buildUtterancesFromWords(words) : undefined
+
     const transcriptionId = transcription.self?.split("/").pop() || ""
 
     return {
@@ -587,6 +591,7 @@ export class AzureSTTAdapter extends BaseAdapter {
         duration: transcriptionData.duration ? transcriptionData.duration / 10000000 : undefined,
         speakers,
         words: words.length > 0 ? words : undefined,
+        utterances: utterances && utterances.length > 0 ? utterances : undefined,
         createdAt: transcription.createdDateTime,
         completedAt: transcription.lastActionDateTime
       },
