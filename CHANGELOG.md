@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.7] - 2026-04-18
+
+### Fixed
+
+#### Speechmatics: Fix Content-Type for URL-Based Batch Transcription
+
+Speechmatics `POST /v2/jobs` always requires `multipart/form-data`, but the URL path was sending a JSON body with `Content-Type: application/json`, causing HTTP 400 errors.
+
+The `config` field is now sent as a FormData field for both URL and file inputs. Also fixed the file upload path to properly convert `Buffer` to `Blob` before appending to FormData (pre-existing type error).
+
+#### Soniox: Migrate to Current Async Transcription API
+
+The batch transcription adapter was using the old `/speech/transcribe` endpoint which no longer exists (HTTP 404). Soniox migrated to an async job-based API.
+
+| | Before (broken) | After (fixed) |
+|---|---|---|
+| **Create job (URL)** | `POST /speech/transcribe` (JSON) | `POST /transcriptions` (JSON with `audio_url`) |
+| **Create job (file)** | `POST /speech/transcribe` (multipart) | `POST /files` → `POST /transcriptions` with `file_id` |
+| **Get result** | `GET /speech/transcripts/{id}` | `GET /transcriptions/{id}` (status) + `GET /transcriptions/{id}/transcript` (result) |
+| **Flow** | Synchronous (immediate result) | Async with `pollForCompletion()` |
+
+`normalizeResponse` updated to handle batch transcript tokens (no `is_final` field — all tokens are final) and read `audio_duration_ms` from job metadata.
+
+**No breaking changes for consumers.** The adapter's public API (`transcribe()`, `getTranscript()`) is unchanged.
+
+---
+
 ## [0.8.6] - 2026-04-15
 
 ### Changed

@@ -311,18 +311,24 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       let headers: Record<string, string> = {}
 
       if (audio.type === "url") {
-        // Use fetch_data for URL input (JSON request)
+        // Use fetch_data for URL input — still requires multipart/form-data
         jobConfig.fetch_data = {
           url: audio.url
         }
-        requestBody = { config: JSON.stringify(jobConfig) }
-        headers = { "Content-Type": "application/json" }
+        const formData = new FormData()
+        formData.append("config", JSON.stringify(jobConfig))
+        requestBody = formData
+        headers = { "Content-Type": "multipart/form-data" }
       } else if (audio.type === "file") {
         // Upload file directly with multipart form
-        requestBody = {
-          config: JSON.stringify(jobConfig),
-          data_file: audio.file
-        }
+        const formData = new FormData()
+        formData.append("config", JSON.stringify(jobConfig))
+        const audioBlob =
+          audio.file instanceof Blob
+            ? audio.file
+            : new Blob([audio.file], { type: audio.mimeType || "audio/wav" })
+        formData.append("data_file", audioBlob, audio.filename || "audio.wav")
+        requestBody = formData
         headers = { "Content-Type": "multipart/form-data" }
       } else {
         return {

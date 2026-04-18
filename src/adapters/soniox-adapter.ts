@@ -288,7 +288,7 @@ export class SonioxAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      // Build request body
+      // Build request body for POST /v1/transcriptions
       const requestBody: Record<string, unknown> = {
         model: options?.model || this.defaultModel
       }
@@ -297,36 +297,21 @@ export class SonioxAdapter extends BaseAdapter {
       if (audio.type === "url") {
         requestBody.audio_url = audio.url
       } else if (audio.type === "file") {
-        // For file uploads, we need to use multipart form data
+        // Upload file first via POST /v1/files, then use file_id
         const formData = new FormData()
-        // Convert Buffer to Blob if needed
         const audioBlob =
           audio.file instanceof Blob
             ? audio.file
             : new Blob([audio.file], { type: audio.mimeType || "audio/wav" })
-        formData.append("audio", audioBlob, audio.filename || "audio.wav")
-        formData.append("model", requestBody.model as string)
+        formData.append("file", audioBlob, audio.filename || "audio.wav")
 
-        if (options?.language) {
-          formData.append("language_hints", JSON.stringify([options.language]))
-        }
-        if (options?.diarization) {
-          formData.append("enable_speaker_diarization", "true")
-        }
-        if (options?.languageDetection) {
-          formData.append("enable_language_identification", "true")
-        }
-        if (options?.customVocabulary) {
-          formData.append("context", JSON.stringify({ terms: options.customVocabulary }))
-        }
-
-        const response = await this.client!.post("/speech/transcribe", formData, {
+        const uploadResponse = await this.client!.post("/files", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
         })
 
-        return this.normalizeResponse(response.data)
+        requestBody.file_id = uploadResponse.data.id
       } else {
         return {
           success: false,
@@ -360,10 +345,13 @@ export class SonioxAdapter extends BaseAdapter {
         }
       }
 
-      // Submit transcription job
-      const response = await this.client!.post("/speech/transcribe", requestBody)
+      // Submit async transcription job
+      const response = await this.client!.post("/transcriptions", requestBody)
 
-      return this.normalizeResponse(response.data)
+      const transcriptionId = response.data.id
+
+      // Poll for completion
+      return await this.pollForCompletion(transcriptionId)
     } catch (error) {
       return this.createErrorResponse(error)
     }
@@ -372,8 +360,9 @@ export class SonioxAdapter extends BaseAdapter {
   /**
    * Get transcription result by ID
    *
-   * Soniox batch transcription is synchronous (returns immediately),
-   * but this method can be used for consistency with other providers.
+   * Checks job status via GET /v1/transcriptions/{id}, then fetches
+   * the full transcript via GET /v1/transcriptions/{id}/transcript
+   * when completed.
    *
    * @param transcriptId - Transcript ID
    * @returns Transcription response
@@ -382,8 +371,45 @@ export class SonioxAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      const response = await this.client!.get(`/speech/transcripts/${transcriptId}`)
-      return this.normalizeResponse(response.data)
+      // Check job status
+      const statusResponse = await this.client!.get(`/transcriptions/${transcriptId}`)
+      const job = statusResponse.data
+
+      if (job.status === "error") {
+        return {
+          success: false,
+          provider: this.name,
+          error: {
+            code: "TRANSCRIPTION_ERROR",
+            message: job.error_message || "Transcription failed"
+          }
+        }
+      }
+
+      if (job.status !== "completed") {
+        // Return queued/processing status for polling
+        return {
+          success: true,
+          provider: this.name,
+          data: {
+            id: job.id,
+            text: "",
+            status: job.status
+          },
+          raw: job
+        }
+      }
+
+      // Fetch full transcript
+      const transcriptResponse = await this.client!.get(
+        `/transcriptions/${transcriptId}/transcript`
+      )
+      return this.normalizeResponse({
+        ...transcriptResponse.data,
+        // Carry over job metadata
+        id: job.id,
+        audio_duration_ms: job.audio_duration_ms
+      })
     } catch (error) {
       return this.createErrorResponse(error)
     }
@@ -757,20 +783,24 @@ export class SonioxAdapter extends BaseAdapter {
    * Normalize Soniox response to unified format
    */
   private normalizeResponse(response: any): UnifiedTranscriptResponse {
-    // Extract full text from tokens
+    // Extract full text — batch transcript has .text directly,
+    // streaming tokens need filtering by is_final
     const text =
       response.text ||
       (response.tokens
         ? response.tokens
-            .filter((t: any) => t.is_final)
+            .filter((t: any) => t.is_final !== false)
             .map((t: any) => t.text)
             .join("")
         : "")
 
     // Extract words with timestamps
+    // Batch transcript tokens don't have is_final (all are final)
     const words: Word[] = response.tokens
       ? response.tokens
-          .filter((t: any) => t.is_final && t.start_ms !== undefined && t.end_ms !== undefined)
+          .filter(
+            (t: any) => t.is_final !== false && t.start_ms !== undefined && t.end_ms !== undefined
+          )
           .map((token: any) => ({
             word: token.text,
             start: token.start_ms / 1000,
@@ -796,10 +826,11 @@ export class SonioxAdapter extends BaseAdapter {
           }))
         : undefined
 
-    // Build utterances from speaker changes (only final tokens, matching words/text)
-    const utterances = response.tokens
-      ? this.buildUtterancesFromTokens(response.tokens.filter((t: any) => t.is_final))
+    // Build utterances from speaker changes
+    const tokens = response.tokens
+      ? response.tokens.filter((t: any) => t.is_final !== false)
       : []
+    const utterances = tokens.length > 0 ? this.buildUtterancesFromTokens(tokens) : []
 
     // Detect language from tokens
     const language = response.tokens?.find((t: any) => t.language)?.language
@@ -812,7 +843,11 @@ export class SonioxAdapter extends BaseAdapter {
         text,
         status: SonioxTranscriptionStatus.completed,
         language,
-        duration: response.total_audio_proc_ms ? response.total_audio_proc_ms / 1000 : undefined,
+        duration: response.audio_duration_ms
+          ? response.audio_duration_ms / 1000
+          : response.total_audio_proc_ms
+            ? response.total_audio_proc_ms / 1000
+            : undefined,
         speakers,
         words: words.length > 0 ? words : undefined,
         utterances: utterances.length > 0 ? utterances : undefined
