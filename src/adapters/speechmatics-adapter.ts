@@ -480,8 +480,20 @@ export class SpeechmaticsAdapter extends BaseAdapter {
     if (this.config?.wsBaseUrl) {
       return this.config.wsBaseUrl
     }
-    const regionPrefix = region || "eu1"
-    return `wss://${regionPrefix}.rt.speechmatics.com/v2`
+    // RT API hostnames differ from batch API:
+    //   Batch: eu1.asr.api.speechmatics.com, us1.asr.api.speechmatics.com
+    //   RT:    eu.rt.speechmatics.com,        us.rt.speechmatics.com
+    // Only "eu" and "us" are documented public RT endpoints (no au, no numbered variants)
+    // See: https://docs.speechmatics.com/introduction/authentication
+    const rtRegionMap: Record<string, string> = {
+      eu1: "eu",
+      eu2: "eu",
+      us1: "us",
+      us2: "us",
+      au1: "eu" // No AU RT endpoint — fall back to EU
+    }
+    const rtPrefix = rtRegionMap[region || ""] || "eu"
+    return `wss://${rtPrefix}.rt.speechmatics.com/v2`
   }
 
   /**
@@ -606,8 +618,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         // Conversation config (VAD/end-of-utterance)
         if (smOpts.conversationConfig) {
           txConfig.conversation_config = {
-            end_of_utterance_silence_trigger:
-              smOpts.conversationConfig.endOfUtteranceSilenceTrigger
+            end_of_utterance_silence_trigger: smOpts.conversationConfig.endOfUtteranceSilenceTrigger
           }
         }
 
