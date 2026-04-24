@@ -11,6 +11,7 @@ const yaml = require("js-yaml")
 const ASYNCAPI_SPEC = path.join(__dirname, "../specs/speechmatics-asyncapi.yml")
 const OUTPUT_DIR = path.join(__dirname, "../src/generated/speechmatics")
 const STREAMING_ZOD_OUTPUT = path.join(OUTPUT_DIR, "streaming-types.zod.ts")
+const STREAMING_MSG_OUTPUT = path.join(OUTPUT_DIR, "streaming-message-types.ts")
 
 /**
  * Convert JSON Schema type to Zod type string
@@ -76,6 +77,94 @@ function jsonSchemaToZod(schema, indent = "  ", refs = {}) {
     default:
       return "zod.unknown()"
   }
+}
+
+/**
+ * Convert JSON Schema type to TypeScript type string
+ */
+function jsonSchemaToTS(schema, indent = "", refs = {}) {
+  if (!schema) return "unknown"
+
+  // Handle $ref
+  if (schema.$ref) {
+    const refName = schema.$ref.split("/").pop()
+    if (refs[refName]) return refs[refName]
+    return `unknown /* TODO: resolve ${refName} */`
+  }
+
+  // Handle const
+  if (schema.const !== undefined) {
+    return JSON.stringify(schema.const)
+  }
+
+  // Handle enum
+  if (schema.enum) {
+    return schema.enum.map((v) => JSON.stringify(v)).join(" | ")
+  }
+
+  // Handle oneOf
+  if (schema.oneOf) {
+    const options = schema.oneOf.map((s) => jsonSchemaToTS(s, indent, refs))
+    return options.join(" | ")
+  }
+
+  // Handle type
+  switch (schema.type) {
+    case "string":
+      return "string"
+    case "number":
+    case "integer":
+      return "number"
+    case "boolean":
+      return "boolean"
+    case "array": {
+      const itemType = schema.items ? jsonSchemaToTS(schema.items, indent, refs) : "unknown"
+      return itemType.includes("|") ? `(${itemType})[]` : `${itemType}[]`
+    }
+    case "object": {
+      if (!schema.properties) return "Record<string, unknown>"
+      const required = schema.required || []
+      const props = Object.entries(schema.properties)
+        .map(([key, propSchema]) => {
+          const isRequired = required.includes(key)
+          const tsType = jsonSchemaToTS(propSchema, indent + "  ", refs)
+          const opt = isRequired ? "" : "?"
+          return `${indent}  ${key}${opt}: ${tsType}`
+        })
+        .join("\n")
+      return `{\n${props}\n${indent}}`
+    }
+    default:
+      return "unknown"
+  }
+}
+
+/**
+ * Generate a TypeScript interface from a JSON Schema object definition
+ */
+function generateTSInterface(name, schema, refs) {
+  const required = schema.required || []
+  const props = schema.properties || {}
+  const lines = []
+
+  if (schema.description) {
+    lines.push(`/** ${schema.description.replace(/\n/g, " ").trim()} */`)
+  }
+  lines.push(`export interface ${name} {`)
+
+  for (const [key, propSchema] of Object.entries(props)) {
+    const isRequired = required.includes(key)
+    const tsType = jsonSchemaToTS(propSchema, "  ", refs)
+    const opt = isRequired ? "" : "?"
+
+    if (propSchema.description) {
+      lines.push(`  /** ${propSchema.description.replace(/\n/g, " ").trim()} */`)
+    }
+    lines.push(`  ${key}${opt}: ${tsType}`)
+  }
+
+  lines.push(`}`)
+  return lines.join("\n")
 }
 
 /**
@@ -281,6 +370,132 @@ ${updateParams.join(",\n")}
 `
 }
 
+/**
+ * Generate TypeScript interfaces for server→client WS messages from AsyncAPI spec
+ */
+function generateMessageTypesFromAsyncAPI(specPath) {
+  const specContent = fs.readFileSync(specPath, "utf-8")
+  const spec = yaml.load(specContent)
+  const schemas = spec.components?.schemas || {}
+  const info = spec.info || {}
+
+  // Map schema names → TypeScript type names for $ref resolution
+  const refs = {
+    RecognitionResult: "RecognitionResult",
+    InfoTypeEnum: "InfoType",
+    WarningTypeEnum: "WarningType",
+    ErrorTypeEnum: "ErrorType",
+    WritingDirectionEnum: "WritingDirection",
+    LanguagePackInfo: "LanguagePackInfo",
+    RecognitionMetadata: "RecognitionMetadata",
+    EndOfUtteranceMetadata: "EndOfUtteranceMetadata",
+    TranslatedSentence: "TranslatedSentence",
+    AudioEventStartData: "AudioEventStartData",
+    AudioEventEndData: "AudioEventEndData",
+    AudioEventType: "string",
+  }
+
+  const sections = []
+
+  // ── Header ──
+  sections.push(`/**
+ * Speechmatics Streaming Message Types
+ * AUTO-GENERATED from AsyncAPI spec - DO NOT EDIT MANUALLY
+ *
+ * @source ${ASYNCAPI_SPEC.replace(process.cwd() + "/", "")}
+ * @version ${info.version || "unknown"}
+ * @see ${info.externalDocs?.url || "https://docs.speechmatics.com/rt-api-ref"}
+ *
+ * Regenerate with: pnpm openapi:sync-speechmatics-streaming
+ */
+
+import type { RecognitionResult } from "./schema/recognitionResult"`)
+
+  // ── Enum Types ──
+  sections.push(`\n// ── Enum Types ──────────────────────────────────────────────────────────────`)
+
+  const enumTypes = [
+    ["InfoTypeEnum", "InfoType"],
+    ["WarningTypeEnum", "WarningType"],
+    ["ErrorTypeEnum", "ErrorType"],
+    ["WritingDirectionEnum", "WritingDirection"],
+  ]
+
+  for (const [schemaName, typeName] of enumTypes) {
+    const schema = schemas[schemaName]
+    if (schema?.enum) {
+      const desc = schema.description ? schema.description.split("\n")[0].trim() : ""
+      if (desc) sections.push(`\n/** ${desc} */`)
+      sections.push(`export type ${typeName} =\n  | ${schema.enum.map((v) => JSON.stringify(v)).join("\n  | ")}`)
+    }
+  }
+
+  // ── Helper Interfaces ──
+  sections.push(`\n// ── Helper Interfaces ───────────────────────────────────────────────────────`)
+
+  const helperSchemas = [
+    ["LanguagePackInfo", "LanguagePackInfo"],
+    ["RecognitionMetadata", "RecognitionMetadata"],
+    ["EndOfUtteranceMetadata", "EndOfUtteranceMetadata"],
+    ["TranslatedSentence", "TranslatedSentence"],
+    ["AudioEventStartData", "AudioEventStartData"],
+    ["AudioEventEndData", "AudioEventEndData"],
+  ]
+
+  for (const [schemaName, typeName] of helperSchemas) {
+    const schema = schemas[schemaName]
+    if (schema) {
+      sections.push(`\n${generateTSInterface(typeName, schema, refs)}`)
+    }
+  }
+
+  // ── Server → Client Messages ──
+  sections.push(`\n// ── Server → Client Messages ────────────────────────────────────────────────`)
+
+  const serverMessages = [
+    "RecognitionStarted",
+    "AudioAdded",
+    "ChannelAudioAdded",
+    "AddPartialTranscript",
+    "AddTranscript",
+    "EndOfUtterance",
+    "EndOfTranscript",
+    "AudioEventStarted",
+    "AudioEventEnded",
+    "Info",
+    "Warning",
+    "Error",
+    "AddPartialTranslation",
+    "AddTranslation",
+  ]
+
+  for (const msgName of serverMessages) {
+    const schema = schemas[msgName]
+    if (schema) {
+      sections.push(`\n${generateTSInterface(msgName, schema, refs)}`)
+    }
+  }
+
+  // ── Convenience Aliases ──
+  sections.push(`\n// ── Convenience Aliases ─────────────────────────────────────────────────────`)
+
+  sections.push(`
+/** Combined transcript message (partial + final) */
+export type SpeechmaticsTranscriptMessage = AddPartialTranscript | AddTranscript`)
+
+  sections.push(`
+/** Error message alias for adapter compatibility */
+export type SpeechmaticsErrorMessage = Error`)
+
+  sections.push(`
+/** Discriminated union of all server→client messages */
+export type SpeechmaticsRealtimeMessage =
+  | ${serverMessages.join("\n  | ")}
+`)
+
+  return sections.join("\n")
+}
+
 async function main() {
   try {
     console.log("📥 Generating Speechmatics streaming types from AsyncAPI spec...")
@@ -303,6 +518,13 @@ async function main() {
 
     fs.writeFileSync(STREAMING_ZOD_OUTPUT, zodContent)
     console.log(`  ✅ Generated ${path.relative(process.cwd(), STREAMING_ZOD_OUTPUT)}`)
+
+    // Generate TypeScript message types from AsyncAPI spec
+    console.log("  → Generating streaming message types...")
+    const msgContent = generateMessageTypesFromAsyncAPI(ASYNCAPI_SPEC)
+
+    fs.writeFileSync(STREAMING_MSG_OUTPUT, msgContent)
+    console.log(`  ✅ Generated ${path.relative(process.cwd(), STREAMING_MSG_OUTPUT)}`)
 
     console.log("✅ Successfully generated Speechmatics streaming types!")
     process.exit(0)

@@ -304,7 +304,12 @@ console.log(`   ✅ Updated title and description`)
 if (spec.tags) {
   spec.tags = spec.tags.filter((tag) => {
     const name = tag.name?.toLowerCase() || ""
-    return name.includes("listen") || name.includes("speak") || name.includes("read") || name.includes("model")
+    return (
+      name.includes("listen") ||
+      name.includes("speak") ||
+      name.includes("read") ||
+      name.includes("model")
+    )
   })
   console.log(`   ✅ Filtered tags`)
 }

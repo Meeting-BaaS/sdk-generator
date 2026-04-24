@@ -122,7 +122,7 @@
       "post": {
         "operationId": "createTranscript",
         "summary": "Transcribe audio",
-        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\nCreate a transcript from a media file that is accessible via a URL.\n",
+        "description": "<llms-only>\n> For the complete documentation index, see [llms.txt](https://www.assemblyai.com/docs/llms.txt)\n</llms-only>\n<Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>\n<Tip>Building a load test or submitting a large batch? [See our guide →](/docs/pre-recorded-audio/guides/bulk-transcription-and-load-tests-at-scale)</Tip>\nCreate a transcript from a media file that is accessible via a URL.\n",
         "tags": [
           "subpackage_transcripts"
         ],
@@ -1436,14 +1436,14 @@
           "min_speakers_expected": {
             "type": "integer",
             "default": 1,
-            "description": "The minimum number of speakers expected in the audio file. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers) for more details."
+            "description": "The minimum number of speakers expected in the audio file. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers) for more details."
           },
           "max_speakers_expected": {
             "type": "integer",
-            "description": "<Warning>Setting this parameter too high may hurt model accuracy</Warning>\nThe maximum number of speakers expected in the audio file. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers) for more details.\n"
+            "description": "<Warning>Setting this parameter too high may hurt model accuracy</Warning>\nThe maximum number of speakers expected in the audio file. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers) for more details.\n"
           }
         },
-        "description": "Specify options for [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers). Use this to set a range of possible speakers.",
+        "description": "Specify options for [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers). Use this to set a range of possible speakers.",
         "title": "TranscriptOptionalParamsSpeakerOptions"
       },
       "SpeechModel": {
@@ -1659,12 +1659,12 @@
           "auto_chapters": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
+            "description": "Enable [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/create-summarized-chapters), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/create-summarized-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
           },
           "auto_highlights": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases), either true or false"
+            "description": "Enable [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/identify-highlights), either true or false"
           },
           "content_safety": {
             "type": "boolean",
@@ -1681,12 +1681,12 @@
             "items": {
               "$ref": "#/components/schemas/TranscriptCustomSpelling"
             },
-            "description": "Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details."
+            "description": "Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/correct-spelling-of-terms) for more details."
           },
           "disfluencies": {
             "type": "boolean",
             "default": false,
-            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like \"umm\", in your media file; can be true or false"
+            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like \"umm\", in your media file; can be true or false"
           },
           "domain": {
             "type": [
@@ -1698,7 +1698,7 @@
           "entity_detection": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection), can be true or false"
+            "description": "Enable [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/detect-entities-in-transcript), can be true or false"
           },
           "filter_profanity": {
             "type": "boolean",
@@ -1713,7 +1713,7 @@
           "iab_categories": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection), can be true or false"
+            "description": "Enable [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/detect-discussion-topics), can be true or false"
           },
           "keyterms_prompt": {
             "type": "array",
@@ -1760,7 +1760,7 @@
           "multichannel": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) transcription, can be true or false."
+            "description": "Enable [Multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) transcription, can be true or false."
           },
           "prompt": {
             "type": "string",
@@ -1810,23 +1810,23 @@
           "sentiment_analysis": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis), can be true or false"
+            "description": "Enable [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/analyze-sentiment-of-speech), can be true or false"
           },
           "speaker_labels": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization), can be true or false"
+            "description": "Enable [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers), can be true or false"
           },
           "speaker_options": {
             "$ref": "#/components/schemas/TranscriptOptionalParamsSpeakerOptions",
-            "description": "Specify options for [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-a-range-of-possible-speakers). Use this to set a range of possible speakers."
+            "description": "Specify options for [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers). Use this to set a range of possible speakers."
           },
           "speakers_expected": {
             "type": [
               "integer",
               "null"
             ],
-            "description": "Tells the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details."
+            "description": "Tells the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-number-of-speakers-expected) for more details."
           },
           "speech_models": {
             "type": "array",
@@ -1850,15 +1850,15 @@
           "summarization": {
             "type": "boolean",
             "default": false,
-            "description": "Enable [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
+            "description": "Enable [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts), can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
           },
           "summary_model": {
             "$ref": "#/components/schemas/SummaryModel",
-            "description": "The model to summarize the transcript. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details."
+            "description": "The model to summarize the transcript. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
           },
           "summary_type": {
             "$ref": "#/components/schemas/SummaryType",
-            "description": "The type of summary. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details."
+            "description": "The type of summary. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
           },
           "remove_audio_tags": {
             "oneOf": [
@@ -1870,6 +1870,12 @@
               }
             ],
             "description": "Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "default": 0,
+            "description": "Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n"
           },
           "webhook_auth_header_name": {
             "type": [
@@ -1994,7 +2000,7 @@
           "status",
           "results"
         ],
-        "description": "An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n",
+        "description": "An array of results for the Key Phrases model, if it is enabled.\nSee [Key phrases](https://www.assemblyai.com/docs/speech-understanding/identify-highlights) for more information.\n",
         "title": "AutoHighlightsResult"
       },
       "Chapter": {
@@ -2305,7 +2311,7 @@
           "results",
           "summary"
         ],
-        "description": "The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n",
+        "description": "The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/detect-discussion-topics) for more information.\n",
         "title": "TopicDetectionModelResult"
       },
       "TranscriptLanguageDetectionOptions": {
@@ -2407,7 +2413,7 @@
               "string",
               "null"
             ],
-            "description": "The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null"
+            "description": "The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
           }
         },
         "required": [
@@ -2580,7 +2586,7 @@
               "string",
               "null"
             ],
-            "description": "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null"
+            "description": "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
           }
         },
         "required": [
@@ -2664,7 +2670,7 @@
         "properties": {
           "audio_channels": {
             "type": "integer",
-            "description": "The number of audio channels in the audio file. This is only present when [multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) is enabled."
+            "description": "The number of audio channels in the audio file. This is only present when [multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) is enabled."
           },
           "audio_duration": {
             "type": [
@@ -2697,11 +2703,11 @@
               "boolean",
               "null"
             ],
-            "description": "Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
+            "description": "Whether [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/create-summarized-chapters) is enabled, can be true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/create-summarized-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
           },
           "auto_highlights": {
             "type": "boolean",
-            "description": "Whether [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) is enabled, either true or false"
+            "description": "Whether [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/identify-highlights) is enabled, either true or false"
           },
           "auto_highlights_result": {
             "oneOf": [
@@ -2712,7 +2718,7 @@
                 "type": "null"
               }
             ],
-            "description": "An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases) for more information.\n"
+            "description": "An array of results for the Key Phrases model, if it is enabled.\nSee [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/identify-highlights) for more information.\n"
           },
           "chapters": {
             "type": [
@@ -2722,7 +2728,7 @@
             "items": {
               "$ref": "#/components/schemas/Chapter"
             },
-            "description": "An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for more information."
+            "description": "An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/create-summarized-chapters) for more information."
           },
           "confidence": {
             "type": [
@@ -2758,14 +2764,14 @@
             "items": {
               "$ref": "#/components/schemas/TranscriptCustomSpelling"
             },
-            "description": "Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details."
+            "description": "Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/correct-spelling-of-terms) for more details."
           },
           "disfluencies": {
             "type": [
               "boolean",
               "null"
             ],
-            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/filler-words), like \"umm\", in your media file; can be true or false"
+            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like \"umm\", in your media file; can be true or false"
           },
           "domain": {
             "type": [
@@ -2782,14 +2788,14 @@
             "items": {
               "$ref": "#/components/schemas/Entity"
             },
-            "description": "An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) for more information.\n"
+            "description": "An array of results for the Entity Detection model, if it is enabled.\nSee [Entity detection](https://www.assemblyai.com/docs/speech-understanding/detect-entities-in-transcript) for more information.\n"
           },
           "entity_detection": {
             "type": [
               "boolean",
               "null"
             ],
-            "description": "Whether [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) is enabled, can be true or false"
+            "description": "Whether [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/detect-entities-in-transcript) is enabled, can be true or false"
           },
           "error": {
             "type": "string",
@@ -2814,7 +2820,7 @@
               "boolean",
               "null"
             ],
-            "description": "Whether [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) is enabled, can be true or false"
+            "description": "Whether [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/detect-discussion-topics) is enabled, can be true or false"
           },
           "iab_categories_result": {
             "oneOf": [
@@ -2825,7 +2831,7 @@
                 "type": "null"
               }
             ],
-            "description": "The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.\n"
+            "description": "The result of the Topic Detection model, if it is enabled.\nSee [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/detect-discussion-topics) for more information.\n"
           },
           "id": {
             "type": "string",
@@ -2885,7 +2891,7 @@
               "boolean",
               "null"
             ],
-            "description": "Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) was enabled in the transcription request, either true or false"
+            "description": "Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) was enabled in the transcription request, either true or false"
           },
           "prompt": {
             "type": "string",
@@ -2943,7 +2949,7 @@
               "boolean",
               "null"
             ],
-            "description": "Whether [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) is enabled, can be true or false"
+            "description": "Whether [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/analyze-sentiment-of-speech) is enabled, can be true or false"
           },
           "sentiment_analysis_results": {
             "type": [
@@ -2953,21 +2959,21 @@
             "items": {
               "$ref": "#/components/schemas/SentimentAnalysisResult"
             },
-            "description": "An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) for more information.\n"
+            "description": "An array of results for the Sentiment Analysis model, if it is enabled.\nSee [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/analyze-sentiment-of-speech) for more information.\n"
           },
           "speaker_labels": {
             "type": [
               "boolean",
               "null"
             ],
-            "description": "Whether [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, can be true or false"
+            "description": "Whether [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, can be true or false"
           },
           "speakers_expected": {
             "type": [
               "integer",
               "null"
             ],
-            "description": "Tell the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details."
+            "description": "Tell the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-number-of-speakers-expected) for more details."
           },
           "speech_model_used": {
             "$ref": "#/components/schemas/SpeechModel",
@@ -3001,28 +3007,28 @@
           },
           "summarization": {
             "type": "boolean",
-            "description": "Whether [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled, either true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
+            "description": "Whether [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled, either true or false. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n"
           },
           "summary": {
             "type": [
               "string",
               "null"
             ],
-            "description": "The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details."
+            "description": "The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
           },
           "summary_model": {
             "type": [
               "string",
               "null"
             ],
-            "description": "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n"
+            "description": "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
           },
           "summary_type": {
             "type": [
               "string",
               "null"
             ],
-            "description": "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details."
+            "description": "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
           },
           "remove_audio_tags": {
             "oneOf": [
@@ -3034,6 +3040,14 @@
               }
             ],
             "description": "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+          },
+          "temperature": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n"
           },
           "text": {
             "type": [
@@ -3057,7 +3071,7 @@
             "items": {
               "$ref": "#/components/schemas/TranscriptUtterance"
             },
-            "description": "When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) for more information.\n"
+            "description": "When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) for more information.\n"
           },
           "webhook_auth": {
             "type": "boolean",
@@ -3196,7 +3210,7 @@
               "string",
               "null"
             ],
-            "description": "The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null"
+            "description": "The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
           }
         },
         "required": [

@@ -915,11 +915,9 @@ components:
         model_uuid:
           type: string
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ListenV1ResponseMetadataSummaryInfo
     ListenV1ResponseMetadataSentimentInfo:
       type: object
@@ -927,11 +925,9 @@ components:
         model_uuid:
           type: string
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ListenV1ResponseMetadataSentimentInfo
     ListenV1ResponseMetadataTopicsInfo:
       type: object
@@ -939,11 +935,9 @@ components:
         model_uuid:
           type: string
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ListenV1ResponseMetadataTopicsInfo
     ListenV1ResponseMetadataIntentsInfo:
       type: object
@@ -951,11 +945,9 @@ components:
         model_uuid:
           type: string
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ListenV1ResponseMetadataIntentsInfo
     ListenV1ResponseMetadata:
       type: object
@@ -975,8 +967,7 @@ components:
           type: number
           format: double
         channels:
-          type: number
-          format: double
+          type: integer
         models:
           type: array
           items:
@@ -1743,11 +1734,9 @@ components:
           type: string
           format: uuid
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ReadV1ResponseMetadataMetadataSummaryInfo
     ReadV1ResponseMetadataMetadataSentimentInfo:
       type: object
@@ -1756,11 +1745,9 @@ components:
           type: string
           format: uuid
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ReadV1ResponseMetadataMetadataSentimentInfo
     ReadV1ResponseMetadataMetadataTopicsInfo:
       type: object
@@ -1769,11 +1756,9 @@ components:
           type: string
           format: uuid
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ReadV1ResponseMetadataMetadataTopicsInfo
     ReadV1ResponseMetadataMetadataIntentsInfo:
       type: object
@@ -1782,11 +1767,9 @@ components:
           type: string
           format: uuid
         input_tokens:
-          type: number
-          format: double
+          type: integer
         output_tokens:
-          type: number
-          format: double
+          type: integer
       title: ReadV1ResponseMetadataMetadataIntentsInfo
     ReadV1ResponseMetadataMetadata:
       type: object
