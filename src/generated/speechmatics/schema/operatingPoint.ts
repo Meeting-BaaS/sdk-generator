@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type OperatingPoint = typeof OperatingPoint[keyof typeof OperatingPoint];
-
+export type OperatingPoint = (typeof OperatingPoint)[keyof typeof OperatingPoint]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OperatingPoint = {
-  standard: 'standard',
-  enhanced: 'enhanced',
-} as const;
+  standard: "standard",
+  enhanced: "enhanced"
+} as const

@@ -7,6 +7,6 @@
  */
 
 /**
- * Tells the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization#set-number-of-speakers-expected) for more details.
+ * Tells the speaker label model how many speakers it should attempt to identify. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-number-of-speakers-expected) for more details.
  */
-export type TranscriptParamsSpeakersExpected = number | null;
+export type TranscriptParamsSpeakersExpected = number | null

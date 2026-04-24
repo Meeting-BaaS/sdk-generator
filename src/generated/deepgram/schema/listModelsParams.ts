@@ -7,8 +7,8 @@
  */
 
 export type ListModelsParams = {
-/**
- * returns non-latest versions of models
- */
-include_outdated?: boolean;
-};
+  /**
+   * returns non-latest versions of models
+   */
+  include_outdated?: boolean
+}

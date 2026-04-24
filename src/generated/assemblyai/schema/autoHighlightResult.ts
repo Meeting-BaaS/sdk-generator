@@ -5,15 +5,15 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { Timestamp } from './timestamp';
+import type { Timestamp } from "./timestamp"
 
 export interface AutoHighlightResult {
   /** The total number of times the key phrase appears in the audio file */
-  count: number;
+  count: number
   /** The total relevancy to the overall audio file of this key phrase - a greater number means more relevant */
-  rank: number;
+  rank: number
   /** The text itself of the key phrase */
-  text: string;
+  text: string
   /** The timestamp of the of the key phrase */
-  timestamps: Timestamp[];
+  timestamps: Timestamp[]
 }

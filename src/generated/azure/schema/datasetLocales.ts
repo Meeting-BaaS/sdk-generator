@@ -5,6 +5,8 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { DatasetKind } from './datasetKind';
+import type { DatasetKind } from "./datasetKind"
 
-export interface DatasetLocales {[key: string]: DatasetKind[]}
+export interface DatasetLocales {
+  [key: string]: DatasetKind[]
+}

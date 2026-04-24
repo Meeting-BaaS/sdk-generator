@@ -5,7 +5,7 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod } from './transcriptRedactPiiAudioOptionsOverrideAudioRedactionMethod';
+import type { TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod } from "./transcriptRedactPiiAudioOptionsOverrideAudioRedactionMethod"
 
 /**
  * The options for PII-redacted audio, if redact_pii_audio is enabled.
@@ -14,7 +14,7 @@ See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-re
  */
 export interface TranscriptRedactPiiAudioOptions {
   /** By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`. */
-  return_redacted_no_speech_audio?: boolean;
+  return_redacted_no_speech_audio?: boolean
   /** Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep. */
-  override_audio_redaction_method?: TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod;
+  override_audio_redaction_method?: TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod
 }

@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) is enabled, can be true or false
+ * Whether [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/detect-entities-in-transcript) is enabled, can be true or false
  */
-export type TranscriptEntityDetection = boolean | null;
+export type TranscriptEntityDetection = boolean | null

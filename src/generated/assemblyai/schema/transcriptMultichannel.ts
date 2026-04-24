@@ -7,6 +7,6 @@
  */
 
 /**
- * Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) was enabled in the transcription request, either true or false
+ * Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) was enabled in the transcription request, either true or false
  */
-export type TranscriptMultichannel = boolean | null;
+export type TranscriptMultichannel = boolean | null

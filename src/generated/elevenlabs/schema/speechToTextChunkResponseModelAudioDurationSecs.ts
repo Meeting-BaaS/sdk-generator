@@ -9,4 +9,4 @@
 /**
  * The duration of the audio that was transcribed in seconds.
  */
-export type SpeechToTextChunkResponseModelAudioDurationSecs = number | null;
+export type SpeechToTextChunkResponseModelAudioDurationSecs = number | null

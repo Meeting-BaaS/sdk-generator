@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SrtExportOptionsFormat = typeof SrtExportOptionsFormat[keyof typeof SrtExportOptionsFormat];
-
+export type SrtExportOptionsFormat =
+  (typeof SrtExportOptionsFormat)[keyof typeof SrtExportOptionsFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SrtExportOptionsFormat = {
-  srt: 'srt',
-} as const;
+  srt: "srt"
+} as const

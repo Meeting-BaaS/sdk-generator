@@ -5,13 +5,13 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ErrorDetails } from './errorDetails';
+import type { ErrorDetails } from "./errorDetails"
 
 export interface Error {
   /** Error message describing what went wrong */
-  error: string;
+  error: string
   /** Error code for programmatic handling */
-  code?: string;
+  code?: string
   /** Additional error details if available */
-  details?: ErrorDetails;
+  details?: ErrorDetails
 }

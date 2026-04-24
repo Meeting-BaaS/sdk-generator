@@ -9,11 +9,11 @@
 /**
  * Type of speaker identification. See [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification) for details on each type.
  */
-export type SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType = typeof SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType[keyof typeof SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType];
-
+export type SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType =
+  (typeof SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType)[keyof typeof SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType = {
-  role: 'role',
-  name: 'name',
-} as const;
+  role: "role",
+  name: "name"
+} as const

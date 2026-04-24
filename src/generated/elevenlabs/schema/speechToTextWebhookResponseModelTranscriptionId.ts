@@ -9,4 +9,4 @@
 /**
  * The transcription ID of the webhook response.
  */
-export type SpeechToTextWebhookResponseModelTranscriptionId = string | null;
+export type SpeechToTextWebhookResponseModelTranscriptionId = string | null

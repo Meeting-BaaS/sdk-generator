@@ -9,4 +9,4 @@
 /**
  * The header value to send back with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests for added security
  */
-export type TranscriptParamsWebhookAuthHeaderValue = string | null;
+export type TranscriptParamsWebhookAuthHeaderValue = string | null

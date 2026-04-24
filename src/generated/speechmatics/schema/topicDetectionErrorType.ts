@@ -6,12 +6,12 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type TopicDetectionErrorType = typeof TopicDetectionErrorType[keyof typeof TopicDetectionErrorType];
-
+export type TopicDetectionErrorType =
+  (typeof TopicDetectionErrorType)[keyof typeof TopicDetectionErrorType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TopicDetectionErrorType = {
-  topic_detection_failed: 'topic_detection_failed',
-  unsupported_list_of_topics: 'unsupported_list_of_topics',
-  unsupported_language: 'unsupported_language',
-} as const;
+  topic_detection_failed: "topic_detection_failed",
+  unsupported_list_of_topics: "unsupported_list_of_topics",
+  unsupported_language: "unsupported_language"
+} as const

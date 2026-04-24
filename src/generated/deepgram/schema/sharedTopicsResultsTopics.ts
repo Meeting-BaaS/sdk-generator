@@ -5,8 +5,8 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedTopicsResultsTopicsSegmentsItems } from './sharedTopicsResultsTopicsSegmentsItems';
+import type { SharedTopicsResultsTopicsSegmentsItems } from "./sharedTopicsResultsTopicsSegmentsItems"
 
 export interface SharedTopicsResultsTopics {
-  segments?: SharedTopicsResultsTopicsSegmentsItems[];
+  segments?: SharedTopicsResultsTopicsSegmentsItems[]
 }

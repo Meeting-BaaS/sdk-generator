@@ -5,7 +5,8 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { SpeechToTextChunkResponseModel } from './speechToTextChunkResponseModel';
-import type { MultichannelSpeechToTextResponseModel } from './multichannelSpeechToTextResponseModel';
 
-export type SpeechToText200 = SpeechToTextChunkResponseModel | MultichannelSpeechToTextResponseModel;
+import type { MultichannelSpeechToTextResponseModel } from "./multichannelSpeechToTextResponseModel"
+import type { SpeechToTextChunkResponseModel } from "./speechToTextChunkResponseModel"
+
+export type SpeechToText200 = SpeechToTextChunkResponseModel | MultichannelSpeechToTextResponseModel

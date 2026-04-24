@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { RedactPiiAudioQuality } from './redactPiiAudioQuality';
+import type { RedactPiiAudioQuality } from "./redactPiiAudioQuality"
 
 /**
  * The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.
 See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more information.
 
  */
-export type TranscriptRedactPiiAudioQuality = RedactPiiAudioQuality | null;
+export type TranscriptRedactPiiAudioQuality = RedactPiiAudioQuality | null

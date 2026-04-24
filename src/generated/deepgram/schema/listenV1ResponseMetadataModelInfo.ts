@@ -6,4 +6,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface ListenV1ResponseMetadataModelInfo { [key: string]: unknown }
+export interface ListenV1ResponseMetadataModelInfo {
+  [key: string]: unknown
+}

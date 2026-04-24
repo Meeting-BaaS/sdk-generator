@@ -5,7 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequestGATracingOneOf } from './realtimeSessionCreateRequestGATracingOneOf';
+import type { RealtimeSessionCreateRequestGATracingOneOf } from "./realtimeSessionCreateRequestGATracingOneOf"
 
 /**
  * Realtime API can write session traces to the [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to disable tracing. Once
@@ -16,4 +16,7 @@ workflow name, group id, and metadata.
 
  * @nullable
  */
-export type RealtimeSessionCreateRequestGATracing = 'auto' | RealtimeSessionCreateRequestGATracingOneOf | null;
+export type RealtimeSessionCreateRequestGATracing =
+  | "auto"
+  | RealtimeSessionCreateRequestGATracingOneOf
+  | null

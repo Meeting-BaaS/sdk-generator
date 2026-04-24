@@ -5,8 +5,8 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { ValidationError } from './validationError';
+import type { ValidationError } from "./validationError"
 
 export interface HTTPValidationError {
-  detail?: ValidationError[];
+  detail?: ValidationError[]
 }

@@ -5,9 +5,9 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { ExportOptions } from './exportOptions';
+import type { ExportOptions } from "./exportOptions"
 
 /**
  * @maxItems 10
  */
-export type AdditionalFormats = ExportOptions[];
+export type AdditionalFormats = ExportOptions[]

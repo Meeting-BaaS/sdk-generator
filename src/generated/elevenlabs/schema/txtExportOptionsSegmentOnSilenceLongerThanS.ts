@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TxtExportOptionsSegmentOnSilenceLongerThanS = number | null;
+export type TxtExportOptionsSegmentOnSilenceLongerThanS = number | null

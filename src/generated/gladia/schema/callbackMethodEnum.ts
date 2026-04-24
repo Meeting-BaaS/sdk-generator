@@ -8,11 +8,10 @@
 /**
  * The HTTP method to be used. Allowed values are `POST` or `PUT` (default: `POST`)
  */
-export type CallbackMethodEnum = typeof CallbackMethodEnum[keyof typeof CallbackMethodEnum];
-
+export type CallbackMethodEnum = (typeof CallbackMethodEnum)[keyof typeof CallbackMethodEnum]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackMethodEnum = {
-  POST: 'POST',
-  PUT: 'PUT',
-} as const;
+  POST: "POST",
+  PUT: "PUT"
+} as const

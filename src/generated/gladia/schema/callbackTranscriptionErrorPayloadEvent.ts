@@ -8,10 +8,10 @@
 /**
  * Type of event
  */
-export type CallbackTranscriptionErrorPayloadEvent = typeof CallbackTranscriptionErrorPayloadEvent[keyof typeof CallbackTranscriptionErrorPayloadEvent];
-
+export type CallbackTranscriptionErrorPayloadEvent =
+  (typeof CallbackTranscriptionErrorPayloadEvent)[keyof typeof CallbackTranscriptionErrorPayloadEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CallbackTranscriptionErrorPayloadEvent = {
-  transcriptionerror: 'transcription.error',
-} as const;
+  transcriptionerror: "transcription.error"
+} as const

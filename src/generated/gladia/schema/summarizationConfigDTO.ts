@@ -4,9 +4,9 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { SummaryTypesEnum } from './summaryTypesEnum';
+import type { SummaryTypesEnum } from "./summaryTypesEnum"
 
 export interface SummarizationConfigDTO {
   /** The type of summarization to apply */
-  type?: SummaryTypesEnum;
+  type?: SummaryTypesEnum
 }

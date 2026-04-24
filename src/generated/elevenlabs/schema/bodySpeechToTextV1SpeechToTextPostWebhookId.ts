@@ -9,4 +9,4 @@
 /**
  * Optional specific webhook ID to send the transcription result to. Only valid when webhook is set to true. If not provided, transcription will be sent to all configured speech-to-text webhooks.
  */
-export type BodySpeechToTextV1SpeechToTextPostWebhookId = string | null;
+export type BodySpeechToTextV1SpeechToTextPostWebhookId = string | null

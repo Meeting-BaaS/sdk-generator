@@ -9,10 +9,10 @@
 /**
  * Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.
  */
-export type TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod = typeof TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod[keyof typeof TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod];
-
+export type TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod =
+  (typeof TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod)[keyof typeof TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod = {
-  silence: 'silence',
-} as const;
+  silence: "silence"
+} as const

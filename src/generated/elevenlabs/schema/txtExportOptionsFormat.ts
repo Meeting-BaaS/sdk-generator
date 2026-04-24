@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TxtExportOptionsFormat = typeof TxtExportOptionsFormat[keyof typeof TxtExportOptionsFormat];
-
+export type TxtExportOptionsFormat =
+  (typeof TxtExportOptionsFormat)[keyof typeof TxtExportOptionsFormat]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TxtExportOptionsFormat = {
-  txt: 'txt',
-} as const;
+  txt: "txt"
+} as const

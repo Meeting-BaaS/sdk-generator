@@ -4,10 +4,11 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { WebhookLiveEndSessionPayloadEvent } from './webhookLiveEndSessionPayloadEvent';
-import type { LiveEventPayload } from './liveEventPayload';
+
+import type { LiveEventPayload } from "./liveEventPayload"
+import type { WebhookLiveEndSessionPayloadEvent } from "./webhookLiveEndSessionPayloadEvent"
 
 export interface WebhookLiveEndSessionPayload {
-  event: WebhookLiveEndSessionPayloadEvent;
-  payload: LiveEventPayload;
+  event: WebhookLiveEndSessionPayloadEvent
+  payload: LiveEventPayload
 }

@@ -9,10 +9,10 @@
 /**
  * Encoding - mp3. Popular compressed audio format for music and streaming.
  */
-export type V1SpeakPostParametersEncoding4 = typeof V1SpeakPostParametersEncoding4[keyof typeof V1SpeakPostParametersEncoding4];
-
+export type V1SpeakPostParametersEncoding4 =
+  (typeof V1SpeakPostParametersEncoding4)[keyof typeof V1SpeakPostParametersEncoding4]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersEncoding4 = {
-  mp3: 'mp3',
-} as const;
+  mp3: "mp3"
+} as const

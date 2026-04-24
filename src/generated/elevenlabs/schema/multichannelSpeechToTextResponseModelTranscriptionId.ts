@@ -9,4 +9,4 @@
 /**
  * The transcription ID of the response.
  */
-export type MultichannelSpeechToTextResponseModelTranscriptionId = string | null;
+export type MultichannelSpeechToTextResponseModelTranscriptionId = string | null

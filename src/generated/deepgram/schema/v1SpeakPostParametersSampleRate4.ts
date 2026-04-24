@@ -9,10 +9,10 @@
 /**
  * Encoding - opus. Sample rate is fixed at 48000 Hz.
  */
-export type V1SpeakPostParametersSampleRate4 = typeof V1SpeakPostParametersSampleRate4[keyof typeof V1SpeakPostParametersSampleRate4];
-
+export type V1SpeakPostParametersSampleRate4 =
+  (typeof V1SpeakPostParametersSampleRate4)[keyof typeof V1SpeakPostParametersSampleRate4]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersSampleRate4 = {
-  NUMBER_48000: '48000',
-} as const;
+  NUMBER_48000: "48000"
+} as const

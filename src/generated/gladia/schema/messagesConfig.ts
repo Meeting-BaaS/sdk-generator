@@ -7,21 +7,21 @@
 
 export interface MessagesConfig {
   /** If true, partial transcript will be sent to websocket. */
-  receive_partial_transcripts?: boolean;
+  receive_partial_transcripts?: boolean
   /** If true, final transcript will be sent to websocket. */
-  receive_final_transcripts?: boolean;
+  receive_final_transcripts?: boolean
   /** If true, begin and end speech events will be sent to websocket. */
-  receive_speech_events?: boolean;
+  receive_speech_events?: boolean
   /** If true, pre-processing events will be sent to websocket. */
-  receive_pre_processing_events?: boolean;
+  receive_pre_processing_events?: boolean
   /** If true, realtime processing events will be sent to websocket. */
-  receive_realtime_processing_events?: boolean;
+  receive_realtime_processing_events?: boolean
   /** If true, post-processing events will be sent to websocket. */
-  receive_post_processing_events?: boolean;
+  receive_post_processing_events?: boolean
   /** If true, acknowledgments will be sent to websocket. */
-  receive_acknowledgments?: boolean;
+  receive_acknowledgments?: boolean
   /** If true, errors will be sent to websocket. */
-  receive_errors?: boolean;
+  receive_errors?: boolean
   /** If true, lifecycle events will be sent to websocket. */
-  receive_lifecycle_events?: boolean;
+  receive_lifecycle_events?: boolean
 }

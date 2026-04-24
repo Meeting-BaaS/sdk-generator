@@ -9,4 +9,4 @@
 /**
  * A summary of the Content Moderation confidence results for the entire audio file
  */
-export type ContentSafetyLabelsResultSummary = {[key: string]: number};
+export type ContentSafetyLabelsResultSummary = { [key: string]: number }

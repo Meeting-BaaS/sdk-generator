@@ -12,10 +12,10 @@
 Note: This parameter is only supported for the Universal-3 Pro model.
 
  */
-export type TranscriptRemoveAudioTags = typeof TranscriptRemoveAudioTags[keyof typeof TranscriptRemoveAudioTags];
-
+export type TranscriptRemoveAudioTags =
+  (typeof TranscriptRemoveAudioTags)[keyof typeof TranscriptRemoveAudioTags]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptRemoveAudioTags = {
-  all: 'all',
-} as const;
+  all: "all"
+} as const

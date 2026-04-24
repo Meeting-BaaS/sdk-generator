@@ -9,4 +9,4 @@
 /**
  * The start time of the word or sound in seconds.
  */
-export type SpeechToTextWordResponseModelStart = number | null;
+export type SpeechToTextWordResponseModelStart = number | null

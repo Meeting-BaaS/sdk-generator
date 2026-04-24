@@ -5,9 +5,9 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SeverityScoreSummary } from './severityScoreSummary';
+import type { SeverityScoreSummary } from "./severityScoreSummary"
 
 /**
  * A summary of the Content Moderation severity results for the entire audio file
  */
-export type ContentSafetyLabelsResultSeverityScoreSummary = {[key: string]: SeverityScoreSummary};
+export type ContentSafetyLabelsResultSeverityScoreSummary = { [key: string]: SeverityScoreSummary }

@@ -9,4 +9,4 @@
 /**
  * A mapping of the original generic speaker labels (e.g., "A", "B") to the identified speaker names or roles.
  */
-export type SpeakerIdentificationResponseSpeakerIdentificationMapping = {[key: string]: string};
+export type SpeakerIdentificationResponseSpeakerIdentificationMapping = { [key: string]: string }

@@ -5,49 +5,50 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { V1SpeakPostParametersCallbackMethod } from './v1SpeakPostParametersCallbackMethod';
-import type { V1SpeakPostParametersTag } from './v1SpeakPostParametersTag';
-import type { V1SpeakPostParametersBitRate } from './v1SpeakPostParametersBitRate';
-import type { V1SpeakPostParametersContainer } from './v1SpeakPostParametersContainer';
-import type { V1SpeakPostParametersEncoding } from './v1SpeakPostParametersEncoding';
-import type { V1SpeakPostParametersModel } from './v1SpeakPostParametersModel';
-import type { V1SpeakPostParametersSampleRate } from './v1SpeakPostParametersSampleRate';
+
+import type { V1SpeakPostParametersBitRate } from "./v1SpeakPostParametersBitRate"
+import type { V1SpeakPostParametersCallbackMethod } from "./v1SpeakPostParametersCallbackMethod"
+import type { V1SpeakPostParametersContainer } from "./v1SpeakPostParametersContainer"
+import type { V1SpeakPostParametersEncoding } from "./v1SpeakPostParametersEncoding"
+import type { V1SpeakPostParametersModel } from "./v1SpeakPostParametersModel"
+import type { V1SpeakPostParametersSampleRate } from "./v1SpeakPostParametersSampleRate"
+import type { V1SpeakPostParametersTag } from "./v1SpeakPostParametersTag"
 
 export type SpeakGenerateParams = {
-/**
- * URL to which we'll make the callback request
- */
-callback?: string;
-/**
- * HTTP method by which the callback request will be made
- */
-callback_method?: V1SpeakPostParametersCallbackMethod;
-/**
- * Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
- */
-mip_opt_out?: boolean;
-/**
- * Label your requests for the purpose of identification during usage reporting
- */
-tag?: V1SpeakPostParametersTag;
-/**
- * The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
- */
-bit_rate?: V1SpeakPostParametersBitRate;
-/**
- * Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
- */
-container?: V1SpeakPostParametersContainer;
-/**
- * Encoding allows you to specify the expected encoding of your audio output
- */
-encoding?: V1SpeakPostParametersEncoding;
-/**
- * AI model used to process submitted text
- */
-model?: V1SpeakPostParametersModel;
-/**
- * Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
- */
-sample_rate?: V1SpeakPostParametersSampleRate;
-};
+  /**
+   * URL to which we'll make the callback request
+   */
+  callback?: string
+  /**
+   * HTTP method by which the callback request will be made
+   */
+  callback_method?: V1SpeakPostParametersCallbackMethod
+  /**
+   * Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
+   */
+  mip_opt_out?: boolean
+  /**
+   * Label your requests for the purpose of identification during usage reporting
+   */
+  tag?: V1SpeakPostParametersTag
+  /**
+   * The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
+   */
+  bit_rate?: V1SpeakPostParametersBitRate
+  /**
+   * Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
+   */
+  container?: V1SpeakPostParametersContainer
+  /**
+   * Encoding allows you to specify the expected encoding of your audio output
+   */
+  encoding?: V1SpeakPostParametersEncoding
+  /**
+   * AI model used to process submitted text
+   */
+  model?: V1SpeakPostParametersModel
+  /**
+   * Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
+   */
+  sample_rate?: V1SpeakPostParametersSampleRate
+}

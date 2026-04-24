@@ -9,12 +9,12 @@
 /**
  * Deployment type for the requests
  */
-export type V1ProjectsProjectIdRequestsGetParametersDeployment = typeof V1ProjectsProjectIdRequestsGetParametersDeployment[keyof typeof V1ProjectsProjectIdRequestsGetParametersDeployment];
-
+export type V1ProjectsProjectIdRequestsGetParametersDeployment =
+  (typeof V1ProjectsProjectIdRequestsGetParametersDeployment)[keyof typeof V1ProjectsProjectIdRequestsGetParametersDeployment]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ProjectsProjectIdRequestsGetParametersDeployment = {
-  hosted: 'hosted',
-  beta: 'beta',
-  'self-hosted': 'self-hosted',
-} as const;
+  hosted: "hosted",
+  beta: "beta",
+  "self-hosted": "self-hosted"
+} as const

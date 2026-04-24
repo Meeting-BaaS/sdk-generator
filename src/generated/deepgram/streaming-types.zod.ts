@@ -2,7 +2,7 @@
  * Deepgram Streaming Zod Schemas
  * AUTO-GENERATED from Deepgram JS SDK - DO NOT EDIT MANUALLY
  *
- * @source /run/media/lazrossi/KINGSTON/code/baas-sdk/specs/deepgram-streaming-sdk.ts
+ * @source /run/media/lazrossi/KINGSTON/code/sdk-generator/specs/deepgram-streaming-sdk.ts
  * @see https://developers.deepgram.com/docs/sdk-feature-matrix
  *
  * Batch params come from Orval (OpenAPI) - see deepgramAPISpecification.zod.ts

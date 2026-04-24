@@ -9,4 +9,4 @@
 /**
  * Redact entities from the transcript text. Accepts the same format as entity_detection: 'all', a category ('pii', 'phi'), or specific entity types. Must be a subset of entity_detection. When redaction is enabled, the entities field will not be returned. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost.
  */
-export type BodySpeechToTextV1SpeechToTextPostEntityRedaction = string | string[] | null;
+export type BodySpeechToTextV1SpeechToTextPostEntityRedaction = string | string[] | null

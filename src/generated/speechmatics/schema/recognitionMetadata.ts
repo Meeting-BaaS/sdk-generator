@@ -5,40 +5,41 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { JobType } from './jobType';
-import type { TranscriptionConfig } from './transcriptionConfig';
-import type { TranslationError } from './translationError';
-import type { SummarizationError } from './summarizationError';
-import type { SentimentAnalysisError } from './sentimentAnalysisError';
-import type { TopicDetectionError } from './topicDetectionError';
-import type { AutoChaptersResultError } from './autoChaptersResultError';
-import type { AlignmentConfig } from './alignmentConfig';
-import type { OutputConfig } from './outputConfig';
-import type { LanguagePackInfo } from './languagePackInfo';
-import type { LanguageIdentificationResult } from './languageIdentificationResult';
+
+import type { AlignmentConfig } from "./alignmentConfig"
+import type { AutoChaptersResultError } from "./autoChaptersResultError"
+import type { JobType } from "./jobType"
+import type { LanguageIdentificationResult } from "./languageIdentificationResult"
+import type { LanguagePackInfo } from "./languagePackInfo"
+import type { OutputConfig } from "./outputConfig"
+import type { SentimentAnalysisError } from "./sentimentAnalysisError"
+import type { SummarizationError } from "./summarizationError"
+import type { TopicDetectionError } from "./topicDetectionError"
+import type { TranscriptionConfig } from "./transcriptionConfig"
+import type { TranslationError } from "./translationError"
 
 /**
  * Summary information about the output from an ASR job, comprising the job type and configuration parameters used when generating the output.
  */
 export interface RecognitionMetadata {
   /** The UTC date time the transcription output was created. */
-  created_at: string;
-  type: JobType;
-  transcription_config?: TranscriptionConfig;
+  created_at: string
+  type: JobType
+  transcription_config?: TranscriptionConfig
   /** List of errors that occurred in the translation stage. */
-  translation_errors?: TranslationError[];
+  translation_errors?: TranslationError[]
   /** List of errors that occurred in the summarization stage. */
-  summarization_errors?: SummarizationError[];
+  summarization_errors?: SummarizationError[]
   /** List of errors that occurred in the sentiment analysis stage. */
-  sentiment_analysis_errors?: SentimentAnalysisError[];
+  sentiment_analysis_errors?: SentimentAnalysisError[]
   /** List of errors that occurred in the topic detection stage. */
-  topic_detection_errors?: TopicDetectionError[];
+  topic_detection_errors?: TopicDetectionError[]
   /** List of errors that occurred in the auto chapters stage. */
-  auto_chapters_errors?: AutoChaptersResultError[];
-  alignment_config?: AlignmentConfig;
-  output_config?: OutputConfig;
-  language_pack_info?: LanguagePackInfo;
-  language_identification?: LanguageIdentificationResult;
+  auto_chapters_errors?: AutoChaptersResultError[]
+  alignment_config?: AlignmentConfig
+  output_config?: OutputConfig
+  language_pack_info?: LanguagePackInfo
+  language_identification?: LanguageIdentificationResult
   /** Orchestrator version in PEP 440 Format or set to 'version_not_found' as default. */
-  orchestrator_version?: string;
+  orchestrator_version?: string
 }

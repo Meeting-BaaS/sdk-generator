@@ -5,9 +5,11 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { SpeechToTextChunkResponseModelAdditionalFormatsAnyOfItem } from './speechToTextChunkResponseModelAdditionalFormatsAnyOfItem';
+import type { SpeechToTextChunkResponseModelAdditionalFormatsAnyOfItem } from "./speechToTextChunkResponseModelAdditionalFormatsAnyOfItem"
 
 /**
  * Requested additional formats of the transcript.
  */
-export type SpeechToTextChunkResponseModelAdditionalFormats = SpeechToTextChunkResponseModelAdditionalFormatsAnyOfItem[] | null;
+export type SpeechToTextChunkResponseModelAdditionalFormats =
+  | SpeechToTextChunkResponseModelAdditionalFormatsAnyOfItem[]
+  | null

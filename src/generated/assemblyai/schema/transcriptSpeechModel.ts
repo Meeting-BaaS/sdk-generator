@@ -5,10 +5,10 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SpeechModel } from './speechModel';
+import type { SpeechModel } from "./speechModel"
 
 /**
  * This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
 
  */
-export type TranscriptSpeechModel = SpeechModel | null;
+export type TranscriptSpeechModel = SpeechModel | null

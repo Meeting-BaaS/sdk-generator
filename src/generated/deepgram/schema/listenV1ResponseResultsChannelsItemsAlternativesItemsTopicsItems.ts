@@ -7,8 +7,8 @@
  */
 
 export interface ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems {
-  text?: string;
-  start_word?: number;
-  end_word?: number;
-  topics?: string[];
+  text?: string
+  start_word?: number
+  end_word?: number
+  topics?: string[]
 }

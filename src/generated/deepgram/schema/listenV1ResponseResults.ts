@@ -5,18 +5,18 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannels } from './listenV1ResponseResultsChannels';
-import type { ListenV1ResponseResultsUtterances } from './listenV1ResponseResultsUtterances';
-import type { ListenV1ResponseResultsSummary } from './listenV1ResponseResultsSummary';
-import type { SharedTopics } from './sharedTopics';
-import type { SharedIntents } from './sharedIntents';
-import type { SharedSentiments } from './sharedSentiments';
+import type { ListenV1ResponseResultsChannels } from "./listenV1ResponseResultsChannels"
+import type { ListenV1ResponseResultsSummary } from "./listenV1ResponseResultsSummary"
+import type { ListenV1ResponseResultsUtterances } from "./listenV1ResponseResultsUtterances"
+import type { SharedIntents } from "./sharedIntents"
+import type { SharedSentiments } from "./sharedSentiments"
+import type { SharedTopics } from "./sharedTopics"
 
 export interface ListenV1ResponseResults {
-  channels: ListenV1ResponseResultsChannels;
-  utterances?: ListenV1ResponseResultsUtterances;
-  summary?: ListenV1ResponseResultsSummary;
-  topics?: SharedTopics;
-  intents?: SharedIntents;
-  sentiments?: SharedSentiments;
+  channels: ListenV1ResponseResultsChannels
+  utterances?: ListenV1ResponseResultsUtterances
+  summary?: ListenV1ResponseResultsSummary
+  topics?: SharedTopics
+  intents?: SharedIntents
+  sentiments?: SharedSentiments
 }

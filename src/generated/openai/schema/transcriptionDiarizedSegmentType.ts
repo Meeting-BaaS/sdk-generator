@@ -10,10 +10,10 @@
  * The type of the segment. Always `transcript.text.segment`.
 
  */
-export type TranscriptionDiarizedSegmentType = typeof TranscriptionDiarizedSegmentType[keyof typeof TranscriptionDiarizedSegmentType];
-
+export type TranscriptionDiarizedSegmentType =
+  (typeof TranscriptionDiarizedSegmentType)[keyof typeof TranscriptionDiarizedSegmentType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptionDiarizedSegmentType = {
-  transcripttextsegment: 'transcript.text.segment',
-} as const;
+  transcripttextsegment: "transcript.text.segment"
+} as const

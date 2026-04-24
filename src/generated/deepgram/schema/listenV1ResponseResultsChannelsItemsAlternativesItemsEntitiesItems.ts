@@ -7,10 +7,10 @@
  */
 
 export interface ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems {
-  label?: string;
-  value?: string;
-  raw_value?: string;
-  confidence?: number;
-  start_word?: number;
-  end_word?: number;
+  label?: string
+  value?: string
+  raw_value?: string
+  confidence?: number
+  start_word?: number
+  end_word?: number
 }

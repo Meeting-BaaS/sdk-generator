@@ -5,7 +5,8 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeFunctionTool } from './realtimeFunctionTool';
-import type { MCPTool } from './mCPTool';
 
-export type RealtimeSessionCreateRequestGAToolsItem = RealtimeFunctionTool | MCPTool;
+import type { MCPTool } from "./mCPTool"
+import type { RealtimeFunctionTool } from "./realtimeFunctionTool"
+
+export type RealtimeSessionCreateRequestGAToolsItem = RealtimeFunctionTool | MCPTool

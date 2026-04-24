@@ -8,9 +8,9 @@
 
 export interface TranslationRequestBodyTranslation {
   /** List of target language codes (e.g., `["es", "de"]`). See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for supported languages. */
-  target_languages: string[];
+  target_languages: string[]
   /** Use formal language style. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details. */
-  formal?: boolean;
+  formal?: boolean
   /** When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language. */
-  match_original_utterance?: boolean;
+  match_original_utterance?: boolean
 }

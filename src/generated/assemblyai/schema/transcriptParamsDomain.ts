@@ -12,4 +12,4 @@
 Supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned.
 
  */
-export type TranscriptParamsDomain = string | null;
+export type TranscriptParamsDomain = string | null

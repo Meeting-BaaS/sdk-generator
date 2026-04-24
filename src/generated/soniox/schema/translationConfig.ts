@@ -4,14 +4,15 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { TranslationConfigType } from './translationConfigType';
-import type { TranslationConfigTargetLanguage } from './translationConfigTargetLanguage';
-import type { TranslationConfigLanguageA } from './translationConfigLanguageA';
-import type { TranslationConfigLanguageB } from './translationConfigLanguageB';
+
+import type { TranslationConfigLanguageA } from "./translationConfigLanguageA"
+import type { TranslationConfigLanguageB } from "./translationConfigLanguageB"
+import type { TranslationConfigTargetLanguage } from "./translationConfigTargetLanguage"
+import type { TranslationConfigType } from "./translationConfigType"
 
 export interface TranslationConfig {
-  type: TranslationConfigType;
-  target_language?: TranslationConfigTargetLanguage;
-  language_a?: TranslationConfigLanguageA;
-  language_b?: TranslationConfigLanguageB;
+  type: TranslationConfigType
+  target_language?: TranslationConfigTargetLanguage
+  language_a?: TranslationConfigLanguageA
+  language_b?: TranslationConfigLanguageB
 }

@@ -5,11 +5,12 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItemsSearchItems } from './listenV1ResponseResultsChannelsItemsSearchItems';
-import type { ListenV1ResponseResultsChannelsItemsAlternativesItems } from './listenV1ResponseResultsChannelsItemsAlternativesItems';
+
+import type { ListenV1ResponseResultsChannelsItemsAlternativesItems } from "./listenV1ResponseResultsChannelsItemsAlternativesItems"
+import type { ListenV1ResponseResultsChannelsItemsSearchItems } from "./listenV1ResponseResultsChannelsItemsSearchItems"
 
 export interface ListenV1ResponseResultsChannelsItems {
-  search?: ListenV1ResponseResultsChannelsItemsSearchItems[];
-  alternatives?: ListenV1ResponseResultsChannelsItemsAlternativesItems[];
-  detected_language?: string;
+  search?: ListenV1ResponseResultsChannelsItemsSearchItems[]
+  alternatives?: ListenV1ResponseResultsChannelsItemsAlternativesItems[]
+  detected_language?: string
 }

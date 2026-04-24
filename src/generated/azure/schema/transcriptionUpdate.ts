@@ -5,16 +5,17 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { TranscriptionUpdateCustomProperties } from './transcriptionUpdateCustomProperties';
-import type { EntityReference } from './entityReference';
+
+import type { EntityReference } from "./entityReference"
+import type { TranscriptionUpdateCustomProperties } from "./transcriptionUpdateCustomProperties"
 
 export interface TranscriptionUpdate {
   /** The name of the object. */
-  displayName?: string;
+  displayName?: string
   /** The description of the object. */
-  description?: string;
+  description?: string
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: TranscriptionUpdateCustomProperties;
-  project?: EntityReference;
+  customProperties?: TranscriptionUpdateCustomProperties
+  project?: EntityReference
 }

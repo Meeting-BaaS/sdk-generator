@@ -7,7 +7,7 @@
  */
 
 export interface ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems {
-  text?: string;
-  start?: number;
-  end?: number;
+  text?: string
+  start?: number
+  end?: number
 }

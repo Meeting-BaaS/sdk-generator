@@ -5,14 +5,15 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType } from './speakerIdentificationRequestBodySpeakerIdentificationSpeakerType';
-import type { SpeakerIdentificationRequestBodySpeakerIdentificationSpeakersItems } from './speakerIdentificationRequestBodySpeakerIdentificationSpeakersItems';
+
+import type { SpeakerIdentificationRequestBodySpeakerIdentificationSpeakersItems } from "./speakerIdentificationRequestBodySpeakerIdentificationSpeakersItems"
+import type { SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType } from "./speakerIdentificationRequestBodySpeakerIdentificationSpeakerType"
 
 export interface SpeakerIdentificationRequestBodySpeakerIdentification {
   /** Type of speaker identification. See [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification) for details on each type. */
-  speaker_type: SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType;
+  speaker_type: SpeakerIdentificationRequestBodySpeakerIdentificationSpeakerType
   /** Required if speaker_type is "role". Each value must be 35 characters or less. */
-  known_values?: string[];
+  known_values?: string[]
   /** An array of speaker objects with metadata to improve identification accuracy. Each object should include a `role` or `name` (depending on `speaker_type`) and an optional `description` to help the model identify the speaker. You can also include any additional custom properties (e.g., `company`, `title`) to provide more context. Use this as an alternative to `known_values` when you want to provide additional context about each speaker. */
-  speakers?: SpeakerIdentificationRequestBodySpeakerIdentificationSpeakersItems[];
+  speakers?: SpeakerIdentificationRequestBodySpeakerIdentificationSpeakersItems[]
 }

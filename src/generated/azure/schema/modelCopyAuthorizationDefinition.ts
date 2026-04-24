@@ -11,5 +11,5 @@ export interface ModelCopyAuthorizationDefinition {
    * The Azure Resource ID of the source speech resource.
    * @minLength 1
    */
-  sourceResourceId: string;
+  sourceResourceId: string
 }

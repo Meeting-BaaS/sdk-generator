@@ -9,4 +9,4 @@
 /**
  * The start time of the character in seconds.
  */
-export type SpeechToTextCharacterResponseModelStart = number | null;
+export type SpeechToTextCharacterResponseModelStart = number | null

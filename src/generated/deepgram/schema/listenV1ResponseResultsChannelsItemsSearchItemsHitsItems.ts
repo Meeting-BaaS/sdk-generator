@@ -7,8 +7,8 @@
  */
 
 export interface ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems {
-  confidence?: number;
-  start?: number;
-  end?: number;
-  snippet?: string;
+  confidence?: number
+  start?: number
+  end?: number
+  snippet?: string
 }

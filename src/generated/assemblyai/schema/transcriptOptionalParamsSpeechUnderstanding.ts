@@ -5,12 +5,12 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptOptionalParamsSpeechUnderstandingRequest } from './transcriptOptionalParamsSpeechUnderstandingRequest';
+import type { TranscriptOptionalParamsSpeechUnderstandingRequest } from "./transcriptOptionalParamsSpeechUnderstandingRequest"
 
 /**
  * Enable speech understanding tasks like [Translation](https://www.assemblyai.com/docs/speech-understanding/translation), [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification), and [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting). See the task-specific docs for available options and configuration.
 
  */
 export interface TranscriptOptionalParamsSpeechUnderstanding {
-  request: TranscriptOptionalParamsSpeechUnderstandingRequest;
+  request: TranscriptOptionalParamsSpeechUnderstandingRequest
 }

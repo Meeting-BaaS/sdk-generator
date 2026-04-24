@@ -7,6 +7,6 @@
  */
 
 /**
- * The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) is enabled, else null
+ * The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null
  */
-export type TranscriptSentenceSpeaker = string | null;
+export type TranscriptSentenceSpeaker = string | null

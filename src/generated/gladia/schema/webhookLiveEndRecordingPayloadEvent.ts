@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type WebhookLiveEndRecordingPayloadEvent = typeof WebhookLiveEndRecordingPayloadEvent[keyof typeof WebhookLiveEndRecordingPayloadEvent];
-
+export type WebhookLiveEndRecordingPayloadEvent =
+  (typeof WebhookLiveEndRecordingPayloadEvent)[keyof typeof WebhookLiveEndRecordingPayloadEvent]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WebhookLiveEndRecordingPayloadEvent = {
-  liveend_recording: 'live.end_recording',
-} as const;
+  liveend_recording: "live.end_recording"
+} as const

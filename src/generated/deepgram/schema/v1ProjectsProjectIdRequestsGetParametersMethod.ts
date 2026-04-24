@@ -9,12 +9,12 @@
 /**
  * Method type for the request
  */
-export type V1ProjectsProjectIdRequestsGetParametersMethod = typeof V1ProjectsProjectIdRequestsGetParametersMethod[keyof typeof V1ProjectsProjectIdRequestsGetParametersMethod];
-
+export type V1ProjectsProjectIdRequestsGetParametersMethod =
+  (typeof V1ProjectsProjectIdRequestsGetParametersMethod)[keyof typeof V1ProjectsProjectIdRequestsGetParametersMethod]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ProjectsProjectIdRequestsGetParametersMethod = {
-  sync: 'sync',
-  async: 'async',
-  streaming: 'streaming',
-} as const;
+  sync: "sync",
+  async: "async",
+  streaming: "streaming"
+} as const

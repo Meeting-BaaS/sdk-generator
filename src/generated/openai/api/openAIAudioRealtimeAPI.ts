@@ -5,11 +5,9 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import axios from 'axios';
-import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
+
+import type { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
 
 import type {
   CreateSpeechRequest,
@@ -27,7 +25,7 @@ import type {
   RealtimeTranscriptionSessionCreateRequest,
   RealtimeTranscriptionSessionCreateResponse,
   VoiceResource
-} from '../schema';
+} from "../schema"
 
 /**
  * @summary Generates audio from the input text.
@@ -36,13 +34,11 @@ Returns the audio file content, or a stream of audio events.
 
  */
 export const createSpeech = <TData = AxiosResponse<Blob | CreateSpeechResponseStreamEvent>>(
-    createSpeechRequest: CreateSpeechRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/audio/speech`,
-      createSpeechRequest,options
-    );
-  }
+  createSpeechRequest: CreateSpeechRequest,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post("/audio/speech", createSpeechRequest, options)
+}
 
 /**
  * @summary Transcribes audio into the input language.
@@ -51,71 +47,83 @@ Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
 format, or a stream of transcript events.
 
  */
-export const createTranscription = <TData = AxiosResponse<CreateTranscription200One | CreateTranscriptionResponseStreamEvent>>(
-    createTranscriptionRequest: CreateTranscriptionRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {const formData = new FormData();
-formData.append(`file`, createTranscriptionRequest.file)
-formData.append(`model`, createTranscriptionRequest.model)
-if(createTranscriptionRequest.language !== undefined) {
- formData.append(`language`, createTranscriptionRequest.language)
- }
-if(createTranscriptionRequest.prompt !== undefined) {
- formData.append(`prompt`, createTranscriptionRequest.prompt)
- }
-if(createTranscriptionRequest.response_format !== undefined) {
- formData.append(`response_format`, createTranscriptionRequest.response_format)
- }
-if(createTranscriptionRequest.temperature !== undefined) {
- formData.append(`temperature`, createTranscriptionRequest.temperature.toString())
- }
-if(createTranscriptionRequest.include !== undefined) {
- createTranscriptionRequest.include.forEach(value => formData.append(`include`, value));
- }
-if(createTranscriptionRequest.timestamp_granularities !== undefined) {
- createTranscriptionRequest.timestamp_granularities.forEach(value => formData.append(`timestamp_granularities`, value));
- }
-if(createTranscriptionRequest.stream !== undefined && createTranscriptionRequest.stream !== null) {
- formData.append(`stream`, createTranscriptionRequest.stream.toString())
- }
-if(createTranscriptionRequest.chunking_strategy !== undefined && createTranscriptionRequest.chunking_strategy !== null) {
- formData.append("chunking_strategy", typeof createTranscriptionRequest.chunking_strategy === "object" ? JSON.stringify(createTranscriptionRequest.chunking_strategy) : String(createTranscriptionRequest.chunking_strategy))
- }
-if(createTranscriptionRequest.known_speaker_names !== undefined) {
- createTranscriptionRequest.known_speaker_names.forEach(value => formData.append(`known_speaker_names`, value));
- }
-if(createTranscriptionRequest.known_speaker_references !== undefined) {
- createTranscriptionRequest.known_speaker_references.forEach(value => formData.append(`known_speaker_references`, value));
- }
-
-    return axios.post(
-      `/audio/transcriptions`,
-      formData,options
-    );
+export const createTranscription = <
+  TData = AxiosResponse<CreateTranscription200One | CreateTranscriptionResponseStreamEvent>
+>(
+  createTranscriptionRequest: CreateTranscriptionRequest,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  const formData = new FormData()
+  formData.append("file", createTranscriptionRequest.file)
+  formData.append("model", createTranscriptionRequest.model)
+  if (createTranscriptionRequest.language !== undefined) {
+    formData.append("language", createTranscriptionRequest.language)
   }
+  if (createTranscriptionRequest.prompt !== undefined) {
+    formData.append("prompt", createTranscriptionRequest.prompt)
+  }
+  if (createTranscriptionRequest.response_format !== undefined) {
+    formData.append("response_format", createTranscriptionRequest.response_format)
+  }
+  if (createTranscriptionRequest.temperature !== undefined) {
+    formData.append("temperature", createTranscriptionRequest.temperature.toString())
+  }
+  if (createTranscriptionRequest.include !== undefined) {
+    createTranscriptionRequest.include.forEach((value) => formData.append("include", value))
+  }
+  if (createTranscriptionRequest.timestamp_granularities !== undefined) {
+    createTranscriptionRequest.timestamp_granularities.forEach((value) =>
+      formData.append("timestamp_granularities", value)
+    )
+  }
+  if (
+    createTranscriptionRequest.stream !== undefined &&
+    createTranscriptionRequest.stream !== null
+  ) {
+    formData.append("stream", createTranscriptionRequest.stream.toString())
+  }
+  if (
+    createTranscriptionRequest.chunking_strategy !== undefined &&
+    createTranscriptionRequest.chunking_strategy !== null
+  ) {
+    formData.append("chunking_strategy", typeof createTranscriptionRequest.chunking_strategy === "object" ? JSON.stringify(createTranscriptionRequest.chunking_strategy) : String(createTranscriptionRequest.chunking_strategy))
+  }
+  if (createTranscriptionRequest.known_speaker_names !== undefined) {
+    createTranscriptionRequest.known_speaker_names.forEach((value) =>
+      formData.append("known_speaker_names", value)
+    )
+  }
+  if (createTranscriptionRequest.known_speaker_references !== undefined) {
+    createTranscriptionRequest.known_speaker_references.forEach((value) =>
+      formData.append("known_speaker_references", value)
+    )
+  }
+
+  return axios.post("/audio/transcriptions", formData, options)
+}
 
 /**
  * @summary Translates audio into English.
  */
 export const createTranslation = <TData = AxiosResponse<CreateTranslation200>>(
-    createTranslationRequest: CreateTranslationRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {const formData = new FormData();
-formData.append(`file`, createTranslationRequest.file)
-formData.append(`model`, createTranslationRequest.model)
-if(createTranslationRequest.prompt !== undefined) {
- formData.append(`prompt`, createTranslationRequest.prompt)
- }
-if(createTranslationRequest.response_format !== undefined) {
- formData.append(`response_format`, createTranslationRequest.response_format)
- }
-if(createTranslationRequest.temperature !== undefined) {
- formData.append(`temperature`, createTranslationRequest.temperature.toString())
- }
-
-    return axios.post(
-      `/audio/translations`,
-      formData,options
-    );
+  createTranslationRequest: CreateTranslationRequest,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  const formData = new FormData()
+  formData.append("file", createTranslationRequest.file)
+  formData.append("model", createTranslationRequest.model)
+  if (createTranslationRequest.prompt !== undefined) {
+    formData.append("prompt", createTranslationRequest.prompt)
   }
+  if (createTranslationRequest.response_format !== undefined) {
+    formData.append("response_format", createTranslationRequest.response_format)
+  }
+  if (createTranslationRequest.temperature !== undefined) {
+    formData.append("temperature", createTranslationRequest.temperature.toString())
+  }
+
+  return axios.post("/audio/translations", formData, options)
+}
 
 /**
  * Create a custom voice you can use for audio output (for example, in Text-to-Speech and the Realtime API). This requires an audio sample and a previously uploaded consent recording.
@@ -125,17 +133,16 @@ See the [custom voices guide](/docs/guides/text-to-speech#custom-voices) for req
  * @summary Creates a custom voice.
  */
 export const createVoice = <TData = AxiosResponse<VoiceResource>>(
-    createVoiceRequest: CreateVoiceRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {const formData = new FormData();
-formData.append(`name`, createVoiceRequest.name)
-formData.append(`audio_sample`, createVoiceRequest.audio_sample)
-formData.append(`consent`, createVoiceRequest.consent)
+  createVoiceRequest: CreateVoiceRequest,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  const formData = new FormData()
+  formData.append("name", createVoiceRequest.name)
+  formData.append("audio_sample", createVoiceRequest.audio_sample)
+  formData.append("consent", createVoiceRequest.consent)
 
-    return axios.post(
-      `/audio/voices`,
-      formData,options
-    );
-  }
+  return axios.post("/audio/voices", formData, options)
+}
 
 /**
  * @summary Create a Realtime client secret with an associated session configuration.
@@ -153,14 +160,14 @@ by the client connection.
 Returns the created client secret and the effective session object. The client secret is a string that looks like `ek_1234`.
 
  */
-export const createRealtimeClientSecret = <TData = AxiosResponse<RealtimeCreateClientSecretResponse>>(
-    realtimeCreateClientSecretRequest: RealtimeCreateClientSecretRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/realtime/client_secrets`,
-      realtimeCreateClientSecretRequest,options
-    );
-  }
+export const createRealtimeClientSecret = <
+  TData = AxiosResponse<RealtimeCreateClientSecretResponse>
+>(
+  realtimeCreateClientSecretRequest: RealtimeCreateClientSecretRequest,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post("/realtime/client_secrets", realtimeCreateClientSecretRequest, options)
+}
 
 /**
  * @summary Create an ephemeral API token for use in client-side applications with the
@@ -175,13 +182,11 @@ Returns the created Realtime session object, plus an ephemeral key.
 
  */
 export const createRealtimeSession = <TData = AxiosResponse<RealtimeSessionCreateResponse>>(
-    realtimeSessionCreateRequest: RealtimeSessionCreateRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/realtime/sessions`,
-      realtimeSessionCreateRequest,options
-    );
-  }
+  realtimeSessionCreateRequest: RealtimeSessionCreateRequest,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post("/realtime/sessions", realtimeSessionCreateRequest, options)
+}
 
 /**
  * @summary Create an ephemeral API token for use in client-side applications with the
@@ -195,19 +200,26 @@ for the Realtime API.
 Returns the created Realtime transcription session object, plus an ephemeral key.
 
  */
-export const createRealtimeTranscriptionSession = <TData = AxiosResponse<RealtimeTranscriptionSessionCreateResponse>>(
-    realtimeTranscriptionSessionCreateRequest: RealtimeTranscriptionSessionCreateRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/realtime/transcription_sessions`,
-      realtimeTranscriptionSessionCreateRequest,options
-    );
-  }
+export const createRealtimeTranscriptionSession = <
+  TData = AxiosResponse<RealtimeTranscriptionSessionCreateResponse>
+>(
+  realtimeTranscriptionSessionCreateRequest: RealtimeTranscriptionSessionCreateRequest,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post(
+    "/realtime/transcription_sessions",
+    realtimeTranscriptionSessionCreateRequest,
+    options
+  )
+}
 
 export type CreateSpeechResult = AxiosResponse<Blob | CreateSpeechResponseStreamEvent>
-export type CreateTranscriptionResult = AxiosResponse<CreateTranscription200One | CreateTranscriptionResponseStreamEvent>
+export type CreateTranscriptionResult = AxiosResponse<
+  CreateTranscription200One | CreateTranscriptionResponseStreamEvent
+>
 export type CreateTranslationResult = AxiosResponse<CreateTranslation200>
 export type CreateVoiceResult = AxiosResponse<VoiceResource>
 export type CreateRealtimeClientSecretResult = AxiosResponse<RealtimeCreateClientSecretResponse>
 export type CreateRealtimeSessionResult = AxiosResponse<RealtimeSessionCreateResponse>
-export type CreateRealtimeTranscriptionSessionResult = AxiosResponse<RealtimeTranscriptionSessionCreateResponse>
+export type CreateRealtimeTranscriptionSessionResult =
+  AxiosResponse<RealtimeTranscriptionSessionCreateResponse>

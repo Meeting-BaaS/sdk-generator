@@ -4,12 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { PiiRedactionEntityTypeEnum } from './piiRedactionEntityTypeEnum';
-import type { PiiRedactionConfigDTOProcessedTextType } from './piiRedactionConfigDTOProcessedTextType';
+
+import type { PiiRedactionConfigDTOProcessedTextType } from "./piiRedactionConfigDTOProcessedTextType"
+import type { PiiRedactionEntityTypeEnum } from "./piiRedactionEntityTypeEnum"
 
 export interface PiiRedactionConfigDTO {
   /** The entity types to redact */
-  entity_types?: PiiRedactionEntityTypeEnum;
+  entity_types?: PiiRedactionEntityTypeEnum
   /** The type of processed text to return (marker or mask) */
-  processed_text_type?: PiiRedactionConfigDTOProcessedTextType;
+  processed_text_type?: PiiRedactionConfigDTOProcessedTextType
 }

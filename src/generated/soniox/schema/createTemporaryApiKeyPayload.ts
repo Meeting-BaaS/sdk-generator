@@ -4,18 +4,25 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
-import type { TemporaryApiKeyUsageType } from './temporaryApiKeyUsageType';
-import type { CreateTemporaryApiKeyPayloadClientReferenceId } from './createTemporaryApiKeyPayloadClientReferenceId';
+
+import type { CreateTemporaryApiKeyPayloadClientReferenceId } from "./createTemporaryApiKeyPayloadClientReferenceId"
+import type { CreateTemporaryApiKeyPayloadMaxSessionDurationSeconds } from "./createTemporaryApiKeyPayloadMaxSessionDurationSeconds"
+import type { CreateTemporaryApiKeyPayloadSingleUse } from "./createTemporaryApiKeyPayloadSingleUse"
+import type { TemporaryApiKeyUsageType } from "./temporaryApiKeyUsageType"
 
 export interface CreateTemporaryApiKeyPayload {
   /** Intended usage of the temporary API key. */
-  usage_type: TemporaryApiKeyUsageType;
+  usage_type: TemporaryApiKeyUsageType
   /**
    * Duration in seconds until the temporary API key expires.
    * @minimum 1
    * @maximum 3600
    */
-  expires_in_seconds: number;
+  expires_in_seconds: number
   /** Optional tracking identifier string. Does not need to be unique. */
-  client_reference_id?: CreateTemporaryApiKeyPayloadClientReferenceId;
+  client_reference_id?: CreateTemporaryApiKeyPayloadClientReferenceId
+  /** If true, the temporary API key can be used only once. */
+  single_use?: CreateTemporaryApiKeyPayloadSingleUse
+  /** Maximum WebSocket connection duration in seconds. If exceeded, the connection will be dropped. If not set, no limit is applied. */
+  max_session_duration_seconds?: CreateTemporaryApiKeyPayloadMaxSessionDurationSeconds
 }

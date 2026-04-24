@@ -5,13 +5,14 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedSentimentsSegmentsItems } from './sharedSentimentsSegmentsItems';
-import type { SharedSentimentsAverage } from './sharedSentimentsAverage';
+
+import type { SharedSentimentsAverage } from "./sharedSentimentsAverage"
+import type { SharedSentimentsSegmentsItems } from "./sharedSentimentsSegmentsItems"
 
 /**
  * Output whenever `sentiment=true` is used
  */
 export interface SharedSentiments {
-  segments?: SharedSentimentsSegmentsItems[];
-  average?: SharedSentimentsAverage;
+  segments?: SharedSentimentsSegmentsItems[]
+  average?: SharedSentimentsAverage
 }

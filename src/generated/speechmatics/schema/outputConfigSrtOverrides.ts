@@ -10,6 +10,6 @@
  * Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section.
  */
 export type OutputConfigSrtOverrides = {
-  max_line_length?: number;
-  max_lines?: number;
-};
+  max_line_length?: number
+  max_lines?: number
+}

@@ -9,4 +9,4 @@
 /**
  * The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
  */
-export type TranscriptConfidence = number | null;
+export type TranscriptConfidence = number | null

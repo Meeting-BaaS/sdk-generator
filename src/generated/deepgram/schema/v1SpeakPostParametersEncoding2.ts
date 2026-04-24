@@ -9,10 +9,10 @@
 /**
  * Encoding - mulaw. Compressed audio format commonly used in telephony.
  */
-export type V1SpeakPostParametersEncoding2 = typeof V1SpeakPostParametersEncoding2[keyof typeof V1SpeakPostParametersEncoding2];
-
+export type V1SpeakPostParametersEncoding2 =
+  (typeof V1SpeakPostParametersEncoding2)[keyof typeof V1SpeakPostParametersEncoding2]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersEncoding2 = {
-  mulaw: 'mulaw',
-} as const;
+  mulaw: "mulaw"
+} as const

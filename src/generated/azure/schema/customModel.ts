@@ -5,22 +5,23 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { SharedModel } from './sharedModel';
-import type { CustomModelLinks } from './customModelLinks';
-import type { CustomModelProperties } from './customModelProperties';
-import type { EntityReference } from './entityReference';
-import type { CustomModelCustomProperties } from './customModelCustomProperties';
+
+import type { CustomModelCustomProperties } from "./customModelCustomProperties"
+import type { CustomModelLinks } from "./customModelLinks"
+import type { CustomModelProperties } from "./customModelProperties"
+import type { EntityReference } from "./entityReference"
+import type { SharedModel } from "./sharedModel"
 
 export type CustomModel = SharedModel & {
-  links?: CustomModelLinks;
-  properties?: CustomModelProperties;
-  project?: EntityReference;
+  links?: CustomModelLinks
+  properties?: CustomModelProperties
+  project?: EntityReference
   /** The text used to adapt this language model. */
-  text?: string;
-  baseModel?: EntityReference;
+  text?: string
+  baseModel?: EntityReference
   /** Datasets used for adaptation. */
-  datasets?: EntityReference[];
+  datasets?: EntityReference[]
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: CustomModelCustomProperties;
-};
+  customProperties?: CustomModelCustomProperties
+}

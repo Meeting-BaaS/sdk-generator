@@ -10,4 +10,4 @@
  * The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.
 
  */
-export type TranscriptWebhookUrl = string | null;
+export type TranscriptWebhookUrl = string | null

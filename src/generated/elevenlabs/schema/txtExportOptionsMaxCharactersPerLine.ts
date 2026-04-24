@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type TxtExportOptionsMaxCharactersPerLine = number | null;
+export type TxtExportOptionsMaxCharactersPerLine = number | null

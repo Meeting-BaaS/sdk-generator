@@ -7,7 +7,7 @@
  */
 
 export interface ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems {
-  summary?: string;
-  start_word?: number;
-  end_word?: number;
+  summary?: string
+  start_word?: number
+  end_word?: number
 }

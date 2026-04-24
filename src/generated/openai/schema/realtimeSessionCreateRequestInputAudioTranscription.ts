@@ -16,6 +16,6 @@ rather than the representation understood by the model.
  */
 export type RealtimeSessionCreateRequestInputAudioTranscription = {
   /** The model to use for transcription.
- */
-  model?: string;
-};
+   */
+  model?: string
+}

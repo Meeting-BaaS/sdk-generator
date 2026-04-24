@@ -9,4 +9,4 @@
 /**
  * Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false
  */
-export type TranscriptLanguageDetection = boolean | null;
+export type TranscriptLanguageDetection = boolean | null

@@ -8,11 +8,11 @@
 /**
  * The type of processed text to return (marker or mask)
  */
-export type PiiRedactionConfigDTOProcessedTextType = typeof PiiRedactionConfigDTOProcessedTextType[keyof typeof PiiRedactionConfigDTOProcessedTextType];
-
+export type PiiRedactionConfigDTOProcessedTextType =
+  (typeof PiiRedactionConfigDTOProcessedTextType)[keyof typeof PiiRedactionConfigDTOProcessedTextType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PiiRedactionConfigDTOProcessedTextType = {
-  MARKER: 'MARKER',
-  MASK: 'MASK',
-} as const;
+  MARKER: "MARKER",
+  MASK: "MASK"
+} as const

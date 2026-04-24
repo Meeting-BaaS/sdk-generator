@@ -8,4 +8,4 @@
 /**
  * For debugging purposes, send data that could help to identify issues
  */
-export type StreamingResponsePostSessionMetadata = { [key: string]: unknown };
+export type StreamingResponsePostSessionMetadata = { [key: string]: unknown }

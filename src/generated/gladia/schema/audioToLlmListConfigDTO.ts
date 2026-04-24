@@ -10,7 +10,7 @@ export interface AudioToLlmListConfigDTO {
    * The list of prompts applied on the audio transcription
    * @minItems 1
    */
-  prompts: unknown[][];
+  prompts: unknown[][]
   /** The model to use for the prompt execution. You can find the list of supported models [here](https://openrouter.ai/models). */
-  model?: string;
+  model?: string
 }

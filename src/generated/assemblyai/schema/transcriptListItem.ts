@@ -5,22 +5,23 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptStatus } from './transcriptStatus';
-import type { TranscriptListItemError } from './transcriptListItemError';
+
+import type { TranscriptListItemError } from "./transcriptListItemError"
+import type { TranscriptStatus } from "./transcriptStatus"
 
 export interface TranscriptListItem {
   /** The unique identifier for the transcript */
-  id: string;
+  id: string
   /** The URL to retrieve the transcript */
-  resource_url: string;
+  resource_url: string
   /** The status of the transcript */
-  status: TranscriptStatus;
+  status: TranscriptStatus
   /** The date and time the transcript was created */
-  created: string;
+  created: string
   /** The date and time the transcript was completed */
-  completed?: string;
+  completed?: string
   /** The URL to the audio file */
-  audio_url: string;
+  audio_url: string
   /** Error message of why the transcript failed */
-  error: TranscriptListItemError;
+  error: TranscriptListItemError
 }

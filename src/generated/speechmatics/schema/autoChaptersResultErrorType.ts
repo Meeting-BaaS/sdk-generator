@@ -6,11 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type AutoChaptersResultErrorType = typeof AutoChaptersResultErrorType[keyof typeof AutoChaptersResultErrorType];
-
+export type AutoChaptersResultErrorType =
+  (typeof AutoChaptersResultErrorType)[keyof typeof AutoChaptersResultErrorType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AutoChaptersResultErrorType = {
-  auto_chapters_failed: 'auto_chapters_failed',
-  unsupported_language: 'unsupported_language',
-} as const;
+  auto_chapters_failed: "auto_chapters_failed",
+  unsupported_language: "unsupported_language"
+} as const

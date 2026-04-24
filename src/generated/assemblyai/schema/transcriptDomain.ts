@@ -10,4 +10,4 @@
  * The domain-specific model applied to the transcript. When set to `"medical-v1"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medical terminology.
 
  */
-export type TranscriptDomain = string | null;
+export type TranscriptDomain = string | null

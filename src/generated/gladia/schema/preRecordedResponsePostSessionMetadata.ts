@@ -8,4 +8,4 @@
 /**
  * For debugging purposes, send data that could help to identify issues
  */
-export type PreRecordedResponsePostSessionMetadata = { [key: string]: unknown };
+export type PreRecordedResponsePostSessionMetadata = { [key: string]: unknown }

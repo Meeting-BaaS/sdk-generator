@@ -9,10 +9,10 @@
 /**
  * Encoding - linear16. Uncompressed, high-quality audio format often used for telephony or audio processing.
  */
-export type V1SpeakPostParametersEncoding0 = typeof V1SpeakPostParametersEncoding0[keyof typeof V1SpeakPostParametersEncoding0];
-
+export type V1SpeakPostParametersEncoding0 =
+  (typeof V1SpeakPostParametersEncoding0)[keyof typeof V1SpeakPostParametersEncoding0]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersEncoding0 = {
-  linear16: 'linear16',
-} as const;
+  linear16: "linear16"
+} as const

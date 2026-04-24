@@ -5,18 +5,19 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { TxtExportOptionsMaxCharactersPerLine } from './txtExportOptionsMaxCharactersPerLine';
-import type { TxtExportOptionsFormat } from './txtExportOptionsFormat';
-import type { TxtExportOptionsSegmentOnSilenceLongerThanS } from './txtExportOptionsSegmentOnSilenceLongerThanS';
-import type { TxtExportOptionsMaxSegmentDurationS } from './txtExportOptionsMaxSegmentDurationS';
-import type { TxtExportOptionsMaxSegmentChars } from './txtExportOptionsMaxSegmentChars';
+
+import type { TxtExportOptionsFormat } from "./txtExportOptionsFormat"
+import type { TxtExportOptionsMaxCharactersPerLine } from "./txtExportOptionsMaxCharactersPerLine"
+import type { TxtExportOptionsMaxSegmentChars } from "./txtExportOptionsMaxSegmentChars"
+import type { TxtExportOptionsMaxSegmentDurationS } from "./txtExportOptionsMaxSegmentDurationS"
+import type { TxtExportOptionsSegmentOnSilenceLongerThanS } from "./txtExportOptionsSegmentOnSilenceLongerThanS"
 
 export interface TxtExportOptions {
-  max_characters_per_line?: TxtExportOptionsMaxCharactersPerLine;
-  include_speakers?: boolean;
-  include_timestamps?: boolean;
-  format: TxtExportOptionsFormat;
-  segment_on_silence_longer_than_s?: TxtExportOptionsSegmentOnSilenceLongerThanS;
-  max_segment_duration_s?: TxtExportOptionsMaxSegmentDurationS;
-  max_segment_chars?: TxtExportOptionsMaxSegmentChars;
+  max_characters_per_line?: TxtExportOptionsMaxCharactersPerLine
+  include_speakers?: boolean
+  include_timestamps?: boolean
+  format: TxtExportOptionsFormat
+  segment_on_silence_longer_than_s?: TxtExportOptionsSegmentOnSilenceLongerThanS
+  max_segment_duration_s?: TxtExportOptionsMaxSegmentDurationS
+  max_segment_chars?: TxtExportOptionsMaxSegmentChars
 }

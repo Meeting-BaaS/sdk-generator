@@ -9,12 +9,12 @@
 /**
  * The granularity of the timestamps in the transcription. 'word' provides word-level timestamps and 'character' provides character-level timestamps per word.
  */
-export type BodySpeechToTextV1SpeechToTextPostTimestampsGranularity = typeof BodySpeechToTextV1SpeechToTextPostTimestampsGranularity[keyof typeof BodySpeechToTextV1SpeechToTextPostTimestampsGranularity];
-
+export type BodySpeechToTextV1SpeechToTextPostTimestampsGranularity =
+  (typeof BodySpeechToTextV1SpeechToTextPostTimestampsGranularity)[keyof typeof BodySpeechToTextV1SpeechToTextPostTimestampsGranularity]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BodySpeechToTextV1SpeechToTextPostTimestampsGranularity = {
-  none: 'none',
-  word: 'word',
-  character: 'character',
-} as const;
+  none: "none",
+  word: "word",
+  character: "character"
+} as const

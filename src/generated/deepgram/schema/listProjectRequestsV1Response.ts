@@ -5,12 +5,12 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ProjectRequestResponse } from './projectRequestResponse';
+import type { ProjectRequestResponse } from "./projectRequestResponse"
 
 export interface ListProjectRequestsV1Response {
   /** The page number of the paginated response */
-  page?: number;
+  page?: number
   /** The number of results per page */
-  limit?: number;
-  requests?: ProjectRequestResponse[];
+  limit?: number
+  requests?: ProjectRequestResponse[]
 }

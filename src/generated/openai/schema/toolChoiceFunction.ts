@@ -5,7 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceFunctionType } from './toolChoiceFunctionType';
+import type { ToolChoiceFunctionType } from "./toolChoiceFunctionType"
 
 /**
  * Use this option to force the model to call a specific function.
@@ -13,7 +13,7 @@ import type { ToolChoiceFunctionType } from './toolChoiceFunctionType';
  */
 export interface ToolChoiceFunction {
   /** For function calling, the type is always `function`. */
-  type: ToolChoiceFunctionType;
+  type: ToolChoiceFunctionType
   /** The name of the function to call. */
-  name: string;
+  name: string
 }

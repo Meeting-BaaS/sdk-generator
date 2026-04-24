@@ -13,12 +13,12 @@
 
 Note: No need to add WAV headers to raw audio as the API supports both formats.
  */
-export type StreamingSupportedEncodingEnum = typeof StreamingSupportedEncodingEnum[keyof typeof StreamingSupportedEncodingEnum];
-
+export type StreamingSupportedEncodingEnum =
+  (typeof StreamingSupportedEncodingEnum)[keyof typeof StreamingSupportedEncodingEnum]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingSupportedEncodingEnum = {
-  'wav/pcm': 'wav/pcm',
-  'wav/alaw': 'wav/alaw',
-  'wav/ulaw': 'wav/ulaw',
-} as const;
+  "wav/pcm": "wav/pcm",
+  "wav/alaw": "wav/alaw",
+  "wav/ulaw": "wav/ulaw"
+} as const

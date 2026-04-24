@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptLanguageCode } from './transcriptLanguageCode';
+import type { TranscriptLanguageCode } from "./transcriptLanguageCode"
 
 /**
  * The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)
 One of the values specified must be `en`.
 
  */
-export type TranscriptLanguageCodes = TranscriptLanguageCode[] | null;
+export type TranscriptLanguageCodes = TranscriptLanguageCode[] | null

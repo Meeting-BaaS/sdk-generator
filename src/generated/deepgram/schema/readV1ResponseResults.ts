@@ -5,14 +5,14 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ReadV1ResponseResultsSummary } from './readV1ResponseResultsSummary';
-import type { SharedTopics } from './sharedTopics';
-import type { SharedIntents } from './sharedIntents';
-import type { SharedSentiments } from './sharedSentiments';
+import type { ReadV1ResponseResultsSummary } from "./readV1ResponseResultsSummary"
+import type { SharedIntents } from "./sharedIntents"
+import type { SharedSentiments } from "./sharedSentiments"
+import type { SharedTopics } from "./sharedTopics"
 
 export interface ReadV1ResponseResults {
-  summary?: ReadV1ResponseResultsSummary;
-  topics?: SharedTopics;
-  intents?: SharedIntents;
-  sentiments?: SharedSentiments;
+  summary?: ReadV1ResponseResultsSummary
+  topics?: SharedTopics
+  intents?: SharedIntents
+  sentiments?: SharedSentiments
 }

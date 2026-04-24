@@ -9,10 +9,10 @@
 /**
  * The type of the tool, i.e. `function`.
  */
-export type RealtimeFunctionToolType = typeof RealtimeFunctionToolType[keyof typeof RealtimeFunctionToolType];
-
+export type RealtimeFunctionToolType =
+  (typeof RealtimeFunctionToolType)[keyof typeof RealtimeFunctionToolType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeFunctionToolType = {
-  function: 'function',
-} as const;
+  function: "function"
+} as const

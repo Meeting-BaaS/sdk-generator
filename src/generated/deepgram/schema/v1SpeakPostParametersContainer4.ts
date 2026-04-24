@@ -9,10 +9,10 @@
 /**
  * Encoding - opus. Supported container - ogg (default).
  */
-export type V1SpeakPostParametersContainer4 = typeof V1SpeakPostParametersContainer4[keyof typeof V1SpeakPostParametersContainer4];
-
+export type V1SpeakPostParametersContainer4 =
+  (typeof V1SpeakPostParametersContainer4)[keyof typeof V1SpeakPostParametersContainer4]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersContainer4 = {
-  ogg: 'ogg',
-} as const;
+  ogg: "ogg"
+} as const

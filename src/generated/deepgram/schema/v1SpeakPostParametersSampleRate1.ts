@@ -9,11 +9,11 @@
 /**
  * Encoding - mulaw. Supported sample rates - 8000, 16000 Hz.
  */
-export type V1SpeakPostParametersSampleRate1 = typeof V1SpeakPostParametersSampleRate1[keyof typeof V1SpeakPostParametersSampleRate1];
-
+export type V1SpeakPostParametersSampleRate1 =
+  (typeof V1SpeakPostParametersSampleRate1)[keyof typeof V1SpeakPostParametersSampleRate1]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersSampleRate1 = {
-  NUMBER_8000: '8000',
-  NUMBER_16000: '16000',
-} as const;
+  NUMBER_8000: "8000",
+  NUMBER_16000: "16000"
+} as const

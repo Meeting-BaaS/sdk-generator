@@ -9,4 +9,4 @@
 /**
  * This parameter does not currently have any functionality attached to it.
  */
-export type TranscriptCustomTopics = boolean | null;
+export type TranscriptCustomTopics = boolean | null

@@ -5,16 +5,17 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TopicDetectionResultLabelsItems } from './topicDetectionResultLabelsItems';
-import type { Timestamp } from './timestamp';
+
+import type { Timestamp } from "./timestamp"
+import type { TopicDetectionResultLabelsItems } from "./topicDetectionResultLabelsItems"
 
 /**
  * The result of the topic detection model
  */
 export interface TopicDetectionResult {
   /** The text in the transcript in which a detected topic occurs */
-  text: string;
+  text: string
   /** An array of detected topics in the text */
-  labels?: TopicDetectionResultLabelsItems[];
-  timestamp?: Timestamp;
+  labels?: TopicDetectionResultLabelsItems[]
+  timestamp?: Timestamp
 }

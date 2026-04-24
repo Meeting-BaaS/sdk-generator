@@ -6,13 +6,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ProjectsProjectIdRequestsGetParametersEndpoint = typeof V1ProjectsProjectIdRequestsGetParametersEndpoint[keyof typeof V1ProjectsProjectIdRequestsGetParametersEndpoint];
-
+export type V1ProjectsProjectIdRequestsGetParametersEndpoint =
+  (typeof V1ProjectsProjectIdRequestsGetParametersEndpoint)[keyof typeof V1ProjectsProjectIdRequestsGetParametersEndpoint]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ProjectsProjectIdRequestsGetParametersEndpoint = {
-  listen: 'listen',
-  read: 'read',
-  speak: 'speak',
-  agent: 'agent',
-} as const;
+  listen: "listen",
+  read: "read",
+  speak: "speak",
+  agent: "agent"
+} as const

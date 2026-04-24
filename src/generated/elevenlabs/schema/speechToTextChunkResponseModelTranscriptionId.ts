@@ -9,4 +9,4 @@
 /**
  * The transcription ID of the response.
  */
-export type SpeechToTextChunkResponseModelTranscriptionId = string | null;
+export type SpeechToTextChunkResponseModelTranscriptionId = string | null

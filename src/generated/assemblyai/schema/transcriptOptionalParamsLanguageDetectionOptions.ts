@@ -11,14 +11,14 @@
  */
 export interface TranscriptOptionalParamsLanguageDetectionOptions {
   /** List of languages expected in the audio file. Defaults to `["all"]` when unspecified. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details. */
-  expected_languages?: string[];
+  expected_languages?: string[]
   /** If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `["auto"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
- */
-  fallback_language?: string;
+   */
+  fallback_language?: string
   /** Whether [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) should be detected.
- */
-  code_switching?: boolean;
+   */
+  code_switching?: boolean
   /** The confidence threshold for [code switching](/docs/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.
- */
-  code_switching_confidence_threshold?: number;
+   */
+  code_switching_confidence_threshold?: number
 }

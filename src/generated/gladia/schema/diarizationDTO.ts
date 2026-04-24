@@ -4,21 +4,21 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { DiarizationDTOError } from './diarizationDTOError';
-import type { UtteranceDTO } from './utteranceDTO';
+import type { DiarizationDTOError } from "./diarizationDTOError"
+import type { UtteranceDTO } from "./utteranceDTO"
 
 export interface DiarizationDTO {
   /** The audio intelligence model succeeded to get a valid output */
-  success: boolean;
+  success: boolean
   /** The audio intelligence model returned an empty value */
-  is_empty: boolean;
+  is_empty: boolean
   /** Time audio intelligence model took to complete the task */
-  exec_time: number;
+  exec_time: number
   /**
    * `null` if `success` is `true`. Contains the error details of the failed model
    * @nullable
    */
-  error: DiarizationDTOError;
+  error: DiarizationDTOError
   /** [Deprecated] If `diarization` has been enabled, the diarization result will appear here */
-  results: UtteranceDTO[];
+  results: UtteranceDTO[]
 }

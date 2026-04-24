@@ -7,9 +7,9 @@
 
 export interface InitStreamingResponse {
   /** Id of the job */
-  id: string;
+  id: string
   /** Creation date */
-  created_at: string;
+  created_at: string
   /** The websocket url to connect to for sending audio data. The url will contain the temporary token to authenticate the session. */
-  url: string;
+  url: string
 }

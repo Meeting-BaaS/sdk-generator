@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ReadPostParametersCustomTopicMode = typeof V1ReadPostParametersCustomTopicMode[keyof typeof V1ReadPostParametersCustomTopicMode];
-
+export type V1ReadPostParametersCustomTopicMode =
+  (typeof V1ReadPostParametersCustomTopicMode)[keyof typeof V1ReadPostParametersCustomTopicMode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ReadPostParametersCustomTopicMode = {
-  extended: 'extended',
-  strict: 'strict',
-} as const;
+  extended: "extended",
+  strict: "strict"
+} as const

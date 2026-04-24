@@ -9,4 +9,6 @@
 /**
  * Empty response body
  */
-export interface SpeakV1AudioGenerateResponse200 { [key: string]: unknown }
+export interface SpeakV1AudioGenerateResponse200 {
+  [key: string]: unknown
+}

@@ -9,4 +9,4 @@
 /**
  * The textual transcript of your media file
  */
-export type TranscriptText = string | null;
+export type TranscriptText = string | null

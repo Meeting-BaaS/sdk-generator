@@ -8,7 +8,7 @@
 
 export interface TopicDetectionResultLabelsItems {
   /** How relevant the detected topic is of a detected topic */
-  relevance: number;
+  relevance: number
   /** The IAB taxonomical label for the label of the detected topic, where > denotes supertopic/subtopic relationship */
-  label: string;
+  label: string
 }

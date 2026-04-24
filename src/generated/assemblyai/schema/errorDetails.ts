@@ -9,4 +9,6 @@
 /**
  * Additional error details if available
  */
-export interface ErrorDetails { [key: string]: unknown }
+export interface ErrorDetails {
+  [key: string]: unknown
+}

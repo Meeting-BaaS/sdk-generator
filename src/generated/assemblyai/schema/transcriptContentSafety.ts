@@ -9,4 +9,4 @@
 /**
  * Whether [Content Moderation](https://www.assemblyai.com/docs/content-moderation) is enabled, can be true or false
  */
-export type TranscriptContentSafety = boolean | null;
+export type TranscriptContentSafety = boolean | null

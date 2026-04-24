@@ -4,18 +4,18 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { ListTranscriptionResponseItemsItem } from './listTranscriptionResponseItemsItem';
+import type { ListTranscriptionResponseItemsItem } from "./listTranscriptionResponseItemsItem"
 
 export interface ListTranscriptionResponse {
   /** URL to fetch the first page */
-  first: string;
+  first: string
   /** URL to fetch the current page */
-  current: string;
+  current: string
   /**
    * URL to fetch the next page
    * @nullable
    */
-  next: string | null;
+  next: string | null
   /** List of transcriptions */
-  items: ListTranscriptionResponseItemsItem[];
+  items: ListTranscriptionResponseItemsItem[]
 }

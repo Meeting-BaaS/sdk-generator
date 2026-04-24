@@ -9,4 +9,4 @@
 /**
  * Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.
  */
-export type TranscriptUtteranceTranslatedTexts = {[key: string]: string};
+export type TranscriptUtteranceTranslatedTexts = { [key: string]: string }

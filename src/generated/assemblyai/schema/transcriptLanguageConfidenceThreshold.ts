@@ -12,4 +12,4 @@ An error will be returned if the language confidence is below this threshold.
 See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
 
  */
-export type TranscriptLanguageConfidenceThreshold = number | null;
+export type TranscriptLanguageConfidenceThreshold = number | null

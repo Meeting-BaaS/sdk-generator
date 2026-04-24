@@ -7,5 +7,5 @@
  */
 
 export interface TranslationResponseTranslation {
-  status?: string;
+  status?: string
 }

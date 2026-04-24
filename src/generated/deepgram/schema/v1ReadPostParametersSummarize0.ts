@@ -6,10 +6,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ReadPostParametersSummarize0 = typeof V1ReadPostParametersSummarize0[keyof typeof V1ReadPostParametersSummarize0];
-
+export type V1ReadPostParametersSummarize0 =
+  (typeof V1ReadPostParametersSummarize0)[keyof typeof V1ReadPostParametersSummarize0]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ReadPostParametersSummarize0 = {
-  v2: 'v2',
-} as const;
+  v2: "v2"
+} as const

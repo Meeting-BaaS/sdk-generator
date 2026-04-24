@@ -13,14 +13,14 @@
  */
 export const SonioxModels = [
   { id: "stt-rt-v4", name: "Speech-to-Text Real-time v4", mode: "real_time" },
-  { id: "stt-rt-v3", name: "Speech-to-Text Real-time v3", mode: "real_time" },
   { id: "stt-async-v4", name: "Speech-to-Text Async v4", mode: "async" },
-  { id: "stt-async-v3", name: "Speech-to-Text Async v3", mode: "async" },
-  { id: "stt-rt-preview", name: "Speech-to-Text Real-time Preview", mode: "real_time", aliasOf: "stt-rt-v3" },
-  { id: "stt-async-preview", name: "Speech-to-Text Async Preview", mode: "async", aliasOf: "stt-async-v3" },
-  { id: "stt-rt-v3-preview", name: "Speech-to-Text Real-time v3 Preview", mode: "real_time", aliasOf: "stt-rt-v3" },
-  { id: "stt-rt-preview-v2", name: "Speech-to-Text Real-time Preview v2", mode: "real_time", aliasOf: "stt-rt-v3" },
-  { id: "stt-async-preview-v1", name: "Speech-to-Text Async Preview v1", mode: "async", aliasOf: "stt-async-v3" }
+  { id: "stt-rt-preview", name: "Speech-to-Text Real-time Preview", mode: "real_time", aliasOf: "stt-rt-v4" },
+  { id: "stt-async-preview", name: "Speech-to-Text Async Preview", mode: "async", aliasOf: "stt-async-v4" },
+  { id: "stt-rt-v3-preview", name: "Speech-to-Text Real-time v3 Preview", mode: "real_time", aliasOf: "stt-rt-v4" },
+  { id: "stt-rt-preview-v2", name: "Speech-to-Text Real-time Preview v2", mode: "real_time", aliasOf: "stt-rt-v4" },
+  { id: "stt-async-preview-v1", name: "Speech-to-Text Async Preview v1", mode: "async", aliasOf: "stt-async-v4" },
+  { id: "stt-rt-v3", name: "Speech-to-Text Real-time v3", mode: "real_time", aliasOf: "stt-rt-v4" },
+  { id: "stt-async-v3", name: "Speech-to-Text Async v3", mode: "async", aliasOf: "stt-async-v4" }
 ] as const
 
 /**
@@ -28,14 +28,14 @@ export const SonioxModels = [
  */
 export const SonioxModelCodes = [
   "stt-rt-v4",
-  "stt-rt-v3",
   "stt-async-v4",
-  "stt-async-v3",
   "stt-rt-preview",
   "stt-async-preview",
   "stt-rt-v3-preview",
   "stt-rt-preview-v2",
-  "stt-async-preview-v1"
+  "stt-async-preview-v1",
+  "stt-rt-v3",
+  "stt-async-v3"
 ] as const
 
 /**
@@ -48,10 +48,10 @@ export type SonioxModelCode = (typeof SonioxModelCodes)[number]
  */
 export const SonioxRealtimeModelCodes = [
   "stt-rt-v4",
-  "stt-rt-v3",
   "stt-rt-preview",
   "stt-rt-v3-preview",
-  "stt-rt-preview-v2"
+  "stt-rt-preview-v2",
+  "stt-rt-v3"
 ] as const
 
 /**
@@ -64,9 +64,9 @@ export type SonioxRealtimeModelCode = (typeof SonioxRealtimeModelCodes)[number]
  */
 export const SonioxAsyncModelCodes = [
   "stt-async-v4",
-  "stt-async-v3",
   "stt-async-preview",
-  "stt-async-preview-v1"
+  "stt-async-preview-v1",
+  "stt-async-v3"
 ] as const
 
 /**
@@ -79,14 +79,14 @@ export type SonioxAsyncModelCode = (typeof SonioxAsyncModelCodes)[number]
  */
 export const SonioxModelLabels: Record<SonioxModelCode, string> = {
   "stt-rt-v4": "Speech-to-Text Real-time v4",
-  "stt-rt-v3": "Speech-to-Text Real-time v3",
   "stt-async-v4": "Speech-to-Text Async v4",
-  "stt-async-v3": "Speech-to-Text Async v3",
   "stt-rt-preview": "Speech-to-Text Real-time Preview",
   "stt-async-preview": "Speech-to-Text Async Preview",
   "stt-rt-v3-preview": "Speech-to-Text Real-time v3 Preview",
   "stt-rt-preview-v2": "Speech-to-Text Real-time Preview v2",
-  "stt-async-preview-v1": "Speech-to-Text Async Preview v1"
+  "stt-async-preview-v1": "Speech-to-Text Async Preview v1",
+  "stt-rt-v3": "Speech-to-Text Real-time v3",
+  "stt-async-v3": "Speech-to-Text Async v3"
 } as const
 
 /**
@@ -105,14 +105,14 @@ export const SonioxModelLabels: Record<SonioxModelCode, string> = {
  */
 export const SonioxModel = {
   stt_rt_v4: "stt-rt-v4",
-  stt_rt_v3: "stt-rt-v3",
   stt_async_v4: "stt-async-v4",
-  stt_async_v3: "stt-async-v3",
   stt_rt_preview: "stt-rt-preview",
   stt_async_preview: "stt-async-preview",
   stt_rt_v3_preview: "stt-rt-v3-preview",
   stt_rt_preview_v2: "stt-rt-preview-v2",
-  stt_async_preview_v1: "stt-async-preview-v1"
+  stt_async_preview_v1: "stt-async-preview-v1",
+  stt_rt_v3: "stt-rt-v3",
+  stt_async_v3: "stt-async-v3"
 } as const satisfies Record<string, SonioxModelCode>
 
 /**
@@ -120,10 +120,10 @@ export const SonioxModel = {
  */
 export const SonioxRealtimeModel = {
   stt_rt_v4: "stt-rt-v4",
-  stt_rt_v3: "stt-rt-v3",
   stt_rt_preview: "stt-rt-preview",
   stt_rt_v3_preview: "stt-rt-v3-preview",
-  stt_rt_preview_v2: "stt-rt-preview-v2"
+  stt_rt_preview_v2: "stt-rt-preview-v2",
+  stt_rt_v3: "stt-rt-v3"
 } as const satisfies Record<string, SonioxRealtimeModelCode>
 
 /**
@@ -131,7 +131,7 @@ export const SonioxRealtimeModel = {
  */
 export const SonioxAsyncModel = {
   stt_async_v4: "stt-async-v4",
-  stt_async_v3: "stt-async-v3",
   stt_async_preview: "stt-async-preview",
-  stt_async_preview_v1: "stt-async-preview-v1"
+  stt_async_preview_v1: "stt-async-preview-v1",
+  stt_async_v3: "stt-async-v3"
 } as const satisfies Record<string, SonioxAsyncModelCode>

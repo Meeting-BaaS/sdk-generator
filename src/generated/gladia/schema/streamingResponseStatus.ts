@@ -8,13 +8,13 @@
 /**
  * "queued": the job has been queued. "processing": the job is being processed. "done": the job has been processed and the result is available. "error": an error occurred during the job's processing.
  */
-export type StreamingResponseStatus = typeof StreamingResponseStatus[keyof typeof StreamingResponseStatus];
-
+export type StreamingResponseStatus =
+  (typeof StreamingResponseStatus)[keyof typeof StreamingResponseStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const StreamingResponseStatus = {
-  queued: 'queued',
-  processing: 'processing',
-  done: 'done',
-  error: 'error',
-} as const;
+  queued: "queued",
+  processing: "processing",
+  done: "done",
+  error: "error"
+} as const

@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ListenPostParametersDetectLanguage = boolean | string[];
+export type V1ListenPostParametersDetectLanguage = boolean | string[]

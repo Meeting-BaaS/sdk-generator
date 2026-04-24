@@ -5,9 +5,9 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptCustomSpelling } from './transcriptCustomSpelling';
+import type { TranscriptCustomSpelling } from "./transcriptCustomSpelling"
 
 /**
- * Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/custom-spelling) for more details.
+ * Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/correct-spelling-of-terms) for more details.
  */
-export type TranscriptCustomSpellingProperty = TranscriptCustomSpelling[] | null;
+export type TranscriptCustomSpellingProperty = TranscriptCustomSpelling[] | null

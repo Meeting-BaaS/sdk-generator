@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { Entity } from './entity';
+import type { Entity } from "./entity"
 
 /**
  * An array of results for the Entity Detection model, if it is enabled.
-See [Entity detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection) for more information.
+See [Entity detection](https://www.assemblyai.com/docs/speech-understanding/detect-entities-in-transcript) for more information.
 
  */
-export type TranscriptEntities = Entity[] | null;
+export type TranscriptEntities = Entity[] | null

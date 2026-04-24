@@ -5,16 +5,16 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { HtmlExportOptionsFormat } from './htmlExportOptionsFormat';
-import type { HtmlExportOptionsSegmentOnSilenceLongerThanS } from './htmlExportOptionsSegmentOnSilenceLongerThanS';
-import type { HtmlExportOptionsMaxSegmentDurationS } from './htmlExportOptionsMaxSegmentDurationS';
-import type { HtmlExportOptionsMaxSegmentChars } from './htmlExportOptionsMaxSegmentChars';
+import type { HtmlExportOptionsFormat } from "./htmlExportOptionsFormat"
+import type { HtmlExportOptionsMaxSegmentChars } from "./htmlExportOptionsMaxSegmentChars"
+import type { HtmlExportOptionsMaxSegmentDurationS } from "./htmlExportOptionsMaxSegmentDurationS"
+import type { HtmlExportOptionsSegmentOnSilenceLongerThanS } from "./htmlExportOptionsSegmentOnSilenceLongerThanS"
 
 export interface HtmlExportOptions {
-  include_speakers?: boolean;
-  include_timestamps?: boolean;
-  format: HtmlExportOptionsFormat;
-  segment_on_silence_longer_than_s?: HtmlExportOptionsSegmentOnSilenceLongerThanS;
-  max_segment_duration_s?: HtmlExportOptionsMaxSegmentDurationS;
-  max_segment_chars?: HtmlExportOptionsMaxSegmentChars;
+  include_speakers?: boolean
+  include_timestamps?: boolean
+  format: HtmlExportOptionsFormat
+  segment_on_silence_longer_than_s?: HtmlExportOptionsSegmentOnSilenceLongerThanS
+  max_segment_duration_s?: HtmlExportOptionsMaxSegmentDurationS
+  max_segment_chars?: HtmlExportOptionsMaxSegmentChars
 }

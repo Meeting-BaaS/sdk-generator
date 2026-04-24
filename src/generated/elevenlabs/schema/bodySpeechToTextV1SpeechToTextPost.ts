@@ -5,73 +5,74 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { BodySpeechToTextV1SpeechToTextPostModelId } from './bodySpeechToTextV1SpeechToTextPostModelId';
-import type { BodySpeechToTextV1SpeechToTextPostFile } from './bodySpeechToTextV1SpeechToTextPostFile';
-import type { BodySpeechToTextV1SpeechToTextPostLanguageCode } from './bodySpeechToTextV1SpeechToTextPostLanguageCode';
-import type { BodySpeechToTextV1SpeechToTextPostNumSpeakers } from './bodySpeechToTextV1SpeechToTextPostNumSpeakers';
-import type { BodySpeechToTextV1SpeechToTextPostTimestampsGranularity } from './bodySpeechToTextV1SpeechToTextPostTimestampsGranularity';
-import type { BodySpeechToTextV1SpeechToTextPostDiarizationThreshold } from './bodySpeechToTextV1SpeechToTextPostDiarizationThreshold';
-import type { AdditionalFormats } from './additionalFormats';
-import type { BodySpeechToTextV1SpeechToTextPostFileFormat } from './bodySpeechToTextV1SpeechToTextPostFileFormat';
-import type { BodySpeechToTextV1SpeechToTextPostCloudStorageUrl } from './bodySpeechToTextV1SpeechToTextPostCloudStorageUrl';
-import type { BodySpeechToTextV1SpeechToTextPostSourceUrl } from './bodySpeechToTextV1SpeechToTextPostSourceUrl';
-import type { BodySpeechToTextV1SpeechToTextPostWebhookId } from './bodySpeechToTextV1SpeechToTextPostWebhookId';
-import type { BodySpeechToTextV1SpeechToTextPostTemperature } from './bodySpeechToTextV1SpeechToTextPostTemperature';
-import type { BodySpeechToTextV1SpeechToTextPostSeed } from './bodySpeechToTextV1SpeechToTextPostSeed';
-import type { BodySpeechToTextV1SpeechToTextPostWebhookMetadata } from './bodySpeechToTextV1SpeechToTextPostWebhookMetadata';
-import type { BodySpeechToTextV1SpeechToTextPostEntityDetection } from './bodySpeechToTextV1SpeechToTextPostEntityDetection';
-import type { BodySpeechToTextV1SpeechToTextPostEntityRedaction } from './bodySpeechToTextV1SpeechToTextPostEntityRedaction';
+
+import type { AdditionalFormats } from "./additionalFormats"
+import type { BodySpeechToTextV1SpeechToTextPostCloudStorageUrl } from "./bodySpeechToTextV1SpeechToTextPostCloudStorageUrl"
+import type { BodySpeechToTextV1SpeechToTextPostDiarizationThreshold } from "./bodySpeechToTextV1SpeechToTextPostDiarizationThreshold"
+import type { BodySpeechToTextV1SpeechToTextPostEntityDetection } from "./bodySpeechToTextV1SpeechToTextPostEntityDetection"
+import type { BodySpeechToTextV1SpeechToTextPostEntityRedaction } from "./bodySpeechToTextV1SpeechToTextPostEntityRedaction"
+import type { BodySpeechToTextV1SpeechToTextPostFile } from "./bodySpeechToTextV1SpeechToTextPostFile"
+import type { BodySpeechToTextV1SpeechToTextPostFileFormat } from "./bodySpeechToTextV1SpeechToTextPostFileFormat"
+import type { BodySpeechToTextV1SpeechToTextPostLanguageCode } from "./bodySpeechToTextV1SpeechToTextPostLanguageCode"
+import type { BodySpeechToTextV1SpeechToTextPostModelId } from "./bodySpeechToTextV1SpeechToTextPostModelId"
+import type { BodySpeechToTextV1SpeechToTextPostNumSpeakers } from "./bodySpeechToTextV1SpeechToTextPostNumSpeakers"
+import type { BodySpeechToTextV1SpeechToTextPostSeed } from "./bodySpeechToTextV1SpeechToTextPostSeed"
+import type { BodySpeechToTextV1SpeechToTextPostSourceUrl } from "./bodySpeechToTextV1SpeechToTextPostSourceUrl"
+import type { BodySpeechToTextV1SpeechToTextPostTemperature } from "./bodySpeechToTextV1SpeechToTextPostTemperature"
+import type { BodySpeechToTextV1SpeechToTextPostTimestampsGranularity } from "./bodySpeechToTextV1SpeechToTextPostTimestampsGranularity"
+import type { BodySpeechToTextV1SpeechToTextPostWebhookId } from "./bodySpeechToTextV1SpeechToTextPostWebhookId"
+import type { BodySpeechToTextV1SpeechToTextPostWebhookMetadata } from "./bodySpeechToTextV1SpeechToTextPostWebhookMetadata"
 
 export interface BodySpeechToTextV1SpeechToTextPost {
   /** The ID of the model to use for transcription. */
-  model_id: BodySpeechToTextV1SpeechToTextPostModelId;
+  model_id: BodySpeechToTextV1SpeechToTextPostModelId
   /** The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB. */
-  file?: BodySpeechToTextV1SpeechToTextPostFile;
+  file?: BodySpeechToTextV1SpeechToTextPostFile
   /** An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically. */
-  language_code?: BodySpeechToTextV1SpeechToTextPostLanguageCode;
+  language_code?: BodySpeechToTextV1SpeechToTextPostLanguageCode
   /** Whether to tag audio events like (laughter), (footsteps), etc. in the transcription. */
-  tag_audio_events?: boolean;
+  tag_audio_events?: boolean
   /** The maximum amount of speakers talking in the uploaded file. Can help with predicting who speaks when. The maximum amount of speakers that can be predicted is 32. Defaults to null, in this case the amount of speakers is set to the maximum value the model supports. */
-  num_speakers?: BodySpeechToTextV1SpeechToTextPostNumSpeakers;
+  num_speakers?: BodySpeechToTextV1SpeechToTextPostNumSpeakers
   /** The granularity of the timestamps in the transcription. 'word' provides word-level timestamps and 'character' provides character-level timestamps per word. */
-  timestamps_granularity?: BodySpeechToTextV1SpeechToTextPostTimestampsGranularity;
+  timestamps_granularity?: BodySpeechToTextV1SpeechToTextPostTimestampsGranularity
   /** Whether to annotate which speaker is currently talking in the uploaded file. */
-  diarize?: boolean;
+  diarize?: boolean
   /** Diarization threshold to apply during speaker diarization. A higher value means there will be a lower chance of one speaker being diarized as two different speakers but also a higher chance of two different speakers being diarized as one speaker (less total speakers predicted). A low value means there will be a higher chance of one speaker being diarized as two different speakers but also a lower chance of two different speakers being diarized as one speaker (more total speakers predicted). Can only be set when diarize=True and num_speakers=None. Defaults to None, in which case we will choose a threshold based on the model_id (0.22 usually). */
-  diarization_threshold?: BodySpeechToTextV1SpeechToTextPostDiarizationThreshold;
+  diarization_threshold?: BodySpeechToTextV1SpeechToTextPostDiarizationThreshold
   /** A list of additional formats to export the transcript to. */
-  additional_formats?: AdditionalFormats;
+  additional_formats?: AdditionalFormats
   /** The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform. */
-  file_format?: BodySpeechToTextV1SpeechToTextPostFileFormat;
+  file_format?: BodySpeechToTextV1SpeechToTextPostFileFormat
   /**
    * The HTTPS URL of the file to transcribe. Exactly one of the file or cloud_storage_url parameters must be provided. The file must be accessible via HTTPS and the file size must be less than 2GB. Any valid HTTPS URL is accepted, including URLs from cloud storage providers (AWS S3, Google Cloud Storage, Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs can be pre-signed or include authentication tokens in query parameters.
    * @deprecated
    */
-  cloud_storage_url?: BodySpeechToTextV1SpeechToTextPostCloudStorageUrl;
+  cloud_storage_url?: BodySpeechToTextV1SpeechToTextPostCloudStorageUrl
   /** The URL of an audio or video file to transcribe. Supports hosted video or audio files, YouTube video URLs, TikTok video URLs, and other video hosting services. */
-  source_url?: BodySpeechToTextV1SpeechToTextPostSourceUrl;
+  source_url?: BodySpeechToTextV1SpeechToTextPostSourceUrl
   /** Whether to send the transcription result to configured speech-to-text webhooks.  If set the request will return early without the transcription, which will be delivered later via webhook. */
-  webhook?: boolean;
+  webhook?: boolean
   /** Optional specific webhook ID to send the transcription result to. Only valid when webhook is set to true. If not provided, transcription will be sent to all configured speech-to-text webhooks. */
-  webhook_id?: BodySpeechToTextV1SpeechToTextPostWebhookId;
+  webhook_id?: BodySpeechToTextV1SpeechToTextPostWebhookId
   /** Controls the randomness of the transcription output. Accepts values between 0.0 and 2.0, where higher values result in more diverse and less deterministic results. If omitted, we will use a temperature based on the model you selected which is usually 0. */
-  temperature?: BodySpeechToTextV1SpeechToTextPostTemperature;
+  temperature?: BodySpeechToTextV1SpeechToTextPostTemperature
   /** If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be an integer between 0 and 2147483647. */
-  seed?: BodySpeechToTextV1SpeechToTextPostSeed;
+  seed?: BodySpeechToTextV1SpeechToTextPostSeed
   /** Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel will be transcribed independently and the results will be combined. Each word in the response will include a 'channel_index' field indicating which channel it was spoken on. A maximum of 5 channels is supported. Each channel is billed independently at the full audio duration, so cost scales linearly with the number of channels. */
-  use_multi_channel?: boolean;
+  use_multi_channel?: boolean
   /** Optional metadata to be included in the webhook response. This should be a JSON string representing an object with a maximum depth of 2 levels and maximum size of 16KB. Useful for tracking internal IDs, job references, or other contextual information. */
-  webhook_metadata?: BodySpeechToTextV1SpeechToTextPostWebhookMetadata;
+  webhook_metadata?: BodySpeechToTextV1SpeechToTextPostWebhookMetadata
   /** Detect entities in the transcript. Can be 'all' to detect all entities, a single entity type or category string, or a list of entity types/categories. Categories include 'pii', 'phi', 'pci', 'other', 'offensive_language'. When enabled, detected entities will be returned in the 'entities' field with their text, type, and character positions. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost. */
-  entity_detection?: BodySpeechToTextV1SpeechToTextPostEntityDetection;
+  entity_detection?: BodySpeechToTextV1SpeechToTextPostEntityDetection
   /** If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model. */
-  no_verbatim?: boolean;
+  no_verbatim?: boolean
   /** Whether to detect speaker roles (agent vs customer). Requires diarize=true. Cannot be used with use_multi_channel=true. When enabled, speaker_id values will be 'agent' and 'customer' instead of 'speaker_0', 'speaker_1', etc. Usage incurs an additional 10% surcharge on base transcription cost. */
-  detect_speaker_roles?: boolean;
+  detect_speaker_roles?: boolean
   /** Redact entities from the transcript text. Accepts the same format as entity_detection: 'all', a category ('pii', 'phi'), or specific entity types. Must be a subset of entity_detection. When redaction is enabled, the entities field will not be returned. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost. */
-  entity_redaction?: BodySpeechToTextV1SpeechToTextPostEntityRedaction;
+  entity_redaction?: BodySpeechToTextV1SpeechToTextPostEntityRedaction
   /** How to format redacted entities. 'redacted' replaces with {REDACTED}, 'entity_type' replaces with {ENTITY_TYPE}, 'enumerated_entity_type' replaces with {ENTITY_TYPE_N} where N enumerates each occurrence. Only used when entity_redaction is set. */
-  entity_redaction_mode?: string;
+  entity_redaction_mode?: string
   /** A list of keyterms to bias the transcription towards.           The keyterms are words or phrases you want the model to recognise more accurately.           The number of keyterms cannot exceed 1000.           The length of each keyterm must be less than 50 characters.           Keyterms can contain at most 5 words (after normalisation).           For example ["hello", "world", "technical term"].           Usage of this parameter will incur an additional 20% surcharge on the base transcription cost.           When more than 100 keyterms are provided, a minimum billable duration of 20 seconds applies per request. */
-  keyterms?: string[];
+  keyterms?: string[]
 }

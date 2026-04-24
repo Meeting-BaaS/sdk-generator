@@ -5,7 +5,7 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptRemoveAudioTags } from './transcriptRemoveAudioTags';
+import type { TranscriptRemoveAudioTags } from "./transcriptRemoveAudioTags"
 
 /**
  * Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.
@@ -13,4 +13,4 @@ import type { TranscriptRemoveAudioTags } from './transcriptRemoveAudioTags';
 Note: This parameter is only supported for the Universal-3 Pro model.
 
  */
-export type TranscriptRemoveAudioTagsProperty = TranscriptRemoveAudioTags | null;
+export type TranscriptRemoveAudioTagsProperty = TranscriptRemoveAudioTags | null

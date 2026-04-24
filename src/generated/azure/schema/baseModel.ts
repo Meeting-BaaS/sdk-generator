@@ -5,11 +5,12 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { SharedModel } from './sharedModel';
-import type { BaseModelLinks } from './baseModelLinks';
-import type { BaseModelProperties } from './baseModelProperties';
+
+import type { BaseModelLinks } from "./baseModelLinks"
+import type { BaseModelProperties } from "./baseModelProperties"
+import type { SharedModel } from "./sharedModel"
 
 export type BaseModel = SharedModel & {
-  links?: BaseModelLinks;
-  properties?: BaseModelProperties;
-};
+  links?: BaseModelLinks
+  properties?: BaseModelProperties
+}

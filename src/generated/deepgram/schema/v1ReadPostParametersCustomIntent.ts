@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ReadPostParametersCustomIntent = string | string[];
+export type V1ReadPostParametersCustomIntent = string | string[]

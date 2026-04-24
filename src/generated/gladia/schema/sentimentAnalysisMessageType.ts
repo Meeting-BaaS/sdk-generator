@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SentimentAnalysisMessageType = typeof SentimentAnalysisMessageType[keyof typeof SentimentAnalysisMessageType];
-
+export type SentimentAnalysisMessageType =
+  (typeof SentimentAnalysisMessageType)[keyof typeof SentimentAnalysisMessageType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SentimentAnalysisMessageType = {
-  sentiment_analysis: 'sentiment_analysis',
-} as const;
+  sentiment_analysis: "sentiment_analysis"
+} as const

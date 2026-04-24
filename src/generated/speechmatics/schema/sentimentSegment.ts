@@ -10,11 +10,11 @@
  * Represents a segment of text and its associated sentiment.
  */
 export interface SentimentSegment {
-  text?: string;
-  start_time?: number;
-  end_time?: number;
-  sentiment?: string;
-  speaker?: string;
-  channel?: string;
-  confidence?: number;
+  text?: string
+  start_time?: number
+  end_time?: number
+  sentiment?: string
+  speaker?: string
+  channel?: string
+  confidence?: number
 }

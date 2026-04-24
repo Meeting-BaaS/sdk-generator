@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranslationRequestBodyTranslation } from './translationRequestBodyTranslation';
+import type { TranslationRequestBodyTranslation } from "./translationRequestBodyTranslation"
 
 /**
  * Request body for [Translation](https://www.assemblyai.com/docs/speech-understanding/translation).
  */
 export interface TranslationRequestBody {
-  translation: TranslationRequestBodyTranslation;
+  translation: TranslationRequestBodyTranslation
 }

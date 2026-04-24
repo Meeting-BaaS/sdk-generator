@@ -7,7 +7,7 @@
 
 export interface SpeechMessageData {
   /** Timestamp in seconds of the speech event */
-  time: number;
+  time: number
   /** Channel of the speech event */
-  channel: number;
+  channel: number
 }

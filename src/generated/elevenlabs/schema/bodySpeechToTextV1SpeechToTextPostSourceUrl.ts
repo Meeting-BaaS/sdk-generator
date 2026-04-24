@@ -9,4 +9,4 @@
 /**
  * The URL of an audio or video file to transcribe. Supports hosted video or audio files, YouTube video URLs, TikTok video URLs, and other video hosting services.
  */
-export type BodySpeechToTextV1SpeechToTextPostSourceUrl = string | null;
+export type BodySpeechToTextV1SpeechToTextPostSourceUrl = string | null

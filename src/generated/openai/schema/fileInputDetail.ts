@@ -6,11 +6,10 @@
  * OpenAPI spec version: 2.3.0
  */
 
-export type FileInputDetail = typeof FileInputDetail[keyof typeof FileInputDetail];
-
+export type FileInputDetail = (typeof FileInputDetail)[keyof typeof FileInputDetail]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileInputDetail = {
-  low: 'low',
-  high: 'high',
-} as const;
+  low: "low",
+  high: "high"
+} as const

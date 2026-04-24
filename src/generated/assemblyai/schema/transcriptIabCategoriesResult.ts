@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TopicDetectionModelResult } from './topicDetectionModelResult';
+import type { TopicDetectionModelResult } from "./topicDetectionModelResult"
 
 /**
  * The result of the Topic Detection model, if it is enabled.
-See [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection) for more information.
+See [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/detect-discussion-topics) for more information.
 
  */
-export type TranscriptIabCategoriesResult = TopicDetectionModelResult | null;
+export type TranscriptIabCategoriesResult = TopicDetectionModelResult | null

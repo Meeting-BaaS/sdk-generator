@@ -4,14 +4,15 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { UtteranceDTO } from './utteranceDTO';
-import type { NamedEntityRecognitionResult } from './namedEntityRecognitionResult';
+
+import type { NamedEntityRecognitionResult } from "./namedEntityRecognitionResult"
+import type { UtteranceDTO } from "./utteranceDTO"
 
 export interface NamedEntityRecognitionData {
   /** Id of the utterance used for this result */
-  utterance_id: string;
+  utterance_id: string
   /** The transcribed utterance */
-  utterance: UtteranceDTO;
+  utterance: UtteranceDTO
   /** The NER results */
-  results: NamedEntityRecognitionResult[];
+  results: NamedEntityRecognitionResult[]
 }

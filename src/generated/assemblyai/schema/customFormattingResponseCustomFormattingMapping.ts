@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type CustomFormattingResponseCustomFormattingMapping = {[key: string]: string};
+export type CustomFormattingResponseCustomFormattingMapping = { [key: string]: string }

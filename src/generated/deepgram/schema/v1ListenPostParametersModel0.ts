@@ -9,38 +9,38 @@
 /**
  * Our public models available to all accounts
  */
-export type V1ListenPostParametersModel0 = typeof V1ListenPostParametersModel0[keyof typeof V1ListenPostParametersModel0];
-
+export type V1ListenPostParametersModel0 =
+  (typeof V1ListenPostParametersModel0)[keyof typeof V1ListenPostParametersModel0]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ListenPostParametersModel0 = {
-  'nova-3': 'nova-3',
-  'nova-3-general': 'nova-3-general',
-  'nova-3-medical': 'nova-3-medical',
-  'nova-2': 'nova-2',
-  'nova-2-general': 'nova-2-general',
-  'nova-2-meeting': 'nova-2-meeting',
-  'nova-2-finance': 'nova-2-finance',
-  'nova-2-conversationalai': 'nova-2-conversationalai',
-  'nova-2-voicemail': 'nova-2-voicemail',
-  'nova-2-video': 'nova-2-video',
-  'nova-2-medical': 'nova-2-medical',
-  'nova-2-drivethru': 'nova-2-drivethru',
-  'nova-2-automotive': 'nova-2-automotive',
-  nova: 'nova',
-  'nova-general': 'nova-general',
-  'nova-phonecall': 'nova-phonecall',
-  'nova-medical': 'nova-medical',
-  enhanced: 'enhanced',
-  'enhanced-general': 'enhanced-general',
-  'enhanced-meeting': 'enhanced-meeting',
-  'enhanced-phonecall': 'enhanced-phonecall',
-  'enhanced-finance': 'enhanced-finance',
-  base: 'base',
-  meeting: 'meeting',
-  phonecall: 'phonecall',
-  finance: 'finance',
-  conversationalai: 'conversationalai',
-  voicemail: 'voicemail',
-  video: 'video',
-} as const;
+  "nova-3": "nova-3",
+  "nova-3-general": "nova-3-general",
+  "nova-3-medical": "nova-3-medical",
+  "nova-2": "nova-2",
+  "nova-2-general": "nova-2-general",
+  "nova-2-meeting": "nova-2-meeting",
+  "nova-2-finance": "nova-2-finance",
+  "nova-2-conversationalai": "nova-2-conversationalai",
+  "nova-2-voicemail": "nova-2-voicemail",
+  "nova-2-video": "nova-2-video",
+  "nova-2-medical": "nova-2-medical",
+  "nova-2-drivethru": "nova-2-drivethru",
+  "nova-2-automotive": "nova-2-automotive",
+  nova: "nova",
+  "nova-general": "nova-general",
+  "nova-phonecall": "nova-phonecall",
+  "nova-medical": "nova-medical",
+  enhanced: "enhanced",
+  "enhanced-general": "enhanced-general",
+  "enhanced-meeting": "enhanced-meeting",
+  "enhanced-phonecall": "enhanced-phonecall",
+  "enhanced-finance": "enhanced-finance",
+  base: "base",
+  meeting: "meeting",
+  phonecall: "phonecall",
+  finance: "finance",
+  conversationalai: "conversationalai",
+  voicemail: "voicemail",
+  video: "video"
+} as const

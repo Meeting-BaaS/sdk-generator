@@ -5,17 +5,18 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ReadV1ResponseMetadataMetadataSummaryInfo } from './readV1ResponseMetadataMetadataSummaryInfo';
-import type { ReadV1ResponseMetadataMetadataSentimentInfo } from './readV1ResponseMetadataMetadataSentimentInfo';
-import type { ReadV1ResponseMetadataMetadataTopicsInfo } from './readV1ResponseMetadataMetadataTopicsInfo';
-import type { ReadV1ResponseMetadataMetadataIntentsInfo } from './readV1ResponseMetadataMetadataIntentsInfo';
+
+import type { ReadV1ResponseMetadataMetadataIntentsInfo } from "./readV1ResponseMetadataMetadataIntentsInfo"
+import type { ReadV1ResponseMetadataMetadataSentimentInfo } from "./readV1ResponseMetadataMetadataSentimentInfo"
+import type { ReadV1ResponseMetadataMetadataSummaryInfo } from "./readV1ResponseMetadataMetadataSummaryInfo"
+import type { ReadV1ResponseMetadataMetadataTopicsInfo } from "./readV1ResponseMetadataMetadataTopicsInfo"
 
 export interface ReadV1ResponseMetadataMetadata {
-  request_id?: string;
-  created?: string;
-  language?: string;
-  summary_info?: ReadV1ResponseMetadataMetadataSummaryInfo;
-  sentiment_info?: ReadV1ResponseMetadataMetadataSentimentInfo;
-  topics_info?: ReadV1ResponseMetadataMetadataTopicsInfo;
-  intents_info?: ReadV1ResponseMetadataMetadataIntentsInfo;
+  request_id?: string
+  created?: string
+  language?: string
+  summary_info?: ReadV1ResponseMetadataMetadataSummaryInfo
+  sentiment_info?: ReadV1ResponseMetadataMetadataSentimentInfo
+  topics_info?: ReadV1ResponseMetadataMetadataTopicsInfo
+  intents_info?: ReadV1ResponseMetadataMetadataIntentsInfo
 }

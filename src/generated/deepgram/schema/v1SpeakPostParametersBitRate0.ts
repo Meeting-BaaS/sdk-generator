@@ -9,11 +9,11 @@
 /**
  * Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.
  */
-export type V1SpeakPostParametersBitRate0 = typeof V1SpeakPostParametersBitRate0[keyof typeof V1SpeakPostParametersBitRate0];
-
+export type V1SpeakPostParametersBitRate0 =
+  (typeof V1SpeakPostParametersBitRate0)[keyof typeof V1SpeakPostParametersBitRate0]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersBitRate0 = {
-  NUMBER_32000: '32000',
-  NUMBER_48000: '48000',
-} as const;
+  NUMBER_32000: "32000",
+  NUMBER_48000: "48000"
+} as const

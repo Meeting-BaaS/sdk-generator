@@ -8,9 +8,9 @@
 
 export interface CustomFormattingRequestBodyCustomFormatting {
   /** Date format pattern (e.g., `"mm/dd/yyyy"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details. */
-  date?: string;
+  date?: string
   /** Phone number format pattern (e.g., `"(xxx)xxx-xxxx"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details. */
-  phone_number?: string;
+  phone_number?: string
   /** Email format pattern (e.g., `"username@domain.com"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details. */
-  email?: string;
+  email?: string
 }

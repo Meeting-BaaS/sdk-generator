@@ -6,17 +6,17 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ListenPostParametersEncoding = typeof V1ListenPostParametersEncoding[keyof typeof V1ListenPostParametersEncoding];
-
+export type V1ListenPostParametersEncoding =
+  (typeof V1ListenPostParametersEncoding)[keyof typeof V1ListenPostParametersEncoding]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ListenPostParametersEncoding = {
-  linear16: 'linear16',
-  flac: 'flac',
-  mulaw: 'mulaw',
-  'amr-nb': 'amr-nb',
-  'amr-wb': 'amr-wb',
-  opus: 'opus',
-  speex: 'speex',
-  g729: 'g729',
-} as const;
+  linear16: "linear16",
+  flac: "flac",
+  mulaw: "mulaw",
+  "amr-nb": "amr-nb",
+  "amr-wb": "amr-wb",
+  opus: "opus",
+  speex: "speex",
+  g729: "g729"
+} as const

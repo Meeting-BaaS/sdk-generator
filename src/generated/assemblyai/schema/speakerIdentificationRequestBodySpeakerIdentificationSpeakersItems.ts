@@ -8,9 +8,9 @@
 
 export interface SpeakerIdentificationRequestBodySpeakerIdentificationSpeakersItems {
   /** The role of the speaker. Required when `speaker_type` is "role". */
-  role?: string;
+  role?: string
   /** The name of the speaker. Required when `speaker_type` is "name". */
-  name?: string;
+  name?: string
   /** A description of the speaker to help the model identify them based on conversational context. */
-  description?: string;
+  description?: string
 }

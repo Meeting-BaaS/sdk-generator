@@ -9,4 +9,4 @@
 /**
  * The duration of the audio that was transcribed across all channels in seconds.
  */
-export type MultichannelSpeechToTextResponseModelAudioDurationSecs = number | null;
+export type MultichannelSpeechToTextResponseModelAudioDurationSecs = number | null

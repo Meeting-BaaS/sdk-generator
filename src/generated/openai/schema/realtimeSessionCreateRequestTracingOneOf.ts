@@ -5,7 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeSessionCreateRequestTracingOneOfMetadata } from './realtimeSessionCreateRequestTracingOneOfMetadata';
+import type { RealtimeSessionCreateRequestTracingOneOfMetadata } from "./realtimeSessionCreateRequestTracingOneOfMetadata"
 
 /**
  * Granular configuration for tracing.
@@ -15,13 +15,13 @@ export type RealtimeSessionCreateRequestTracingOneOf = {
   /** The name of the workflow to attach to this trace. This is used to
 name the trace in the traces dashboard.
  */
-  workflow_name?: string;
+  workflow_name?: string
   /** The group id to attach to this trace to enable filtering and
 grouping in the traces dashboard.
  */
-  group_id?: string;
+  group_id?: string
   /** The arbitrary metadata to attach to this trace to enable
 filtering in the traces dashboard.
  */
-  metadata?: RealtimeSessionCreateRequestTracingOneOfMetadata;
-};
+  metadata?: RealtimeSessionCreateRequestTracingOneOfMetadata
+}

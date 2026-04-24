@@ -9,10 +9,10 @@
 /**
  * The sample rate of the audio. Always `24000`.
  */
-export type RealtimeAudioFormatsAnyOfRate = typeof RealtimeAudioFormatsAnyOfRate[keyof typeof RealtimeAudioFormatsAnyOfRate];
-
+export type RealtimeAudioFormatsAnyOfRate =
+  (typeof RealtimeAudioFormatsAnyOfRate)[keyof typeof RealtimeAudioFormatsAnyOfRate]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeAudioFormatsAnyOfRate = {
-  NUMBER_24000: 24000,
-} as const;
+  NUMBER_24000: 24000
+} as const

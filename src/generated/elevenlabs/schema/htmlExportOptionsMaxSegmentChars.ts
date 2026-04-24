@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type HtmlExportOptionsMaxSegmentChars = number | null;
+export type HtmlExportOptionsMaxSegmentChars = number | null

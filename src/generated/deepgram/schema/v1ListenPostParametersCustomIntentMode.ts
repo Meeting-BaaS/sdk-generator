@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ListenPostParametersCustomIntentMode = typeof V1ListenPostParametersCustomIntentMode[keyof typeof V1ListenPostParametersCustomIntentMode];
-
+export type V1ListenPostParametersCustomIntentMode =
+  (typeof V1ListenPostParametersCustomIntentMode)[keyof typeof V1ListenPostParametersCustomIntentMode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ListenPostParametersCustomIntentMode = {
-  extended: 'extended',
-  strict: 'strict',
-} as const;
+  extended: "extended",
+  strict: "strict"
+} as const

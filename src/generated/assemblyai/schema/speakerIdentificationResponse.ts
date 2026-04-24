@@ -5,8 +5,8 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SpeakerIdentificationResponseSpeakerIdentification } from './speakerIdentificationResponseSpeakerIdentification';
+import type { SpeakerIdentificationResponseSpeakerIdentification } from "./speakerIdentificationResponseSpeakerIdentification"
 
 export interface SpeakerIdentificationResponse {
-  speaker_identification?: SpeakerIdentificationResponseSpeakerIdentification;
+  speaker_identification?: SpeakerIdentificationResponseSpeakerIdentification
 }

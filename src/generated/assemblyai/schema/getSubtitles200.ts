@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetSubtitles200 = { [key: string]: unknown };
+export type GetSubtitles200 = { [key: string]: unknown }

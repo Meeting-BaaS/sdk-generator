@@ -5,16 +5,17 @@
  * Speech Services API version 3.2.
  * OpenAPI spec version: 3.2
  */
-import type { ModelUpdateCustomProperties } from './modelUpdateCustomProperties';
-import type { EntityReference } from './entityReference';
+
+import type { EntityReference } from "./entityReference"
+import type { ModelUpdateCustomProperties } from "./modelUpdateCustomProperties"
 
 export interface ModelUpdate {
   /** The name of the object. */
-  displayName?: string;
+  displayName?: string
   /** The description of the object. */
-  description?: string;
+  description?: string
   /** The custom properties of this entity. The maximum allowed key length is 64 characters, the maximum
 allowed value length is 256 characters and the count of allowed entries is 10. */
-  customProperties?: ModelUpdateCustomProperties;
-  project?: EntityReference;
+  customProperties?: ModelUpdateCustomProperties
+  project?: EntityReference
 }

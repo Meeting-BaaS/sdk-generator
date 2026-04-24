@@ -5,10 +5,10 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { MCPToolFilter } from './mCPToolFilter';
+import type { MCPToolFilter } from "./mCPToolFilter"
 
 /**
  * List of allowed tool names or a filter object.
 
  */
-export type MCPToolAllowedToolsAnyOf = string[] | MCPToolFilter;
+export type MCPToolAllowedToolsAnyOf = string[] | MCPToolFilter

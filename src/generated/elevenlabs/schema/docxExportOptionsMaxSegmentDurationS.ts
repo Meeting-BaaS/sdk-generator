@@ -6,4 +6,4 @@
  * OpenAPI spec version: 1.0
  */
 
-export type DocxExportOptionsMaxSegmentDurationS = number | null;
+export type DocxExportOptionsMaxSegmentDurationS = number | null

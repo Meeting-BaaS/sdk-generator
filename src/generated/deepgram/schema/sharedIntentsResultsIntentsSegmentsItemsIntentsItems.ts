@@ -7,6 +7,6 @@
  */
 
 export interface SharedIntentsResultsIntentsSegmentsItemsIntentsItems {
-  intent?: string;
-  confidence_score?: number;
+  intent?: string
+  confidence_score?: number
 }

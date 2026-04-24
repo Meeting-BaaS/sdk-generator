@@ -5,18 +5,18 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ContentSafetyLabel } from './contentSafetyLabel';
-import type { Timestamp } from './timestamp';
+import type { ContentSafetyLabel } from "./contentSafetyLabel"
+import type { Timestamp } from "./timestamp"
 
 export interface ContentSafetyLabelResult {
   /** The transcript of the section flagged by the Content Moderation model */
-  text: string;
+  text: string
   /** An array of safety labels, one per sensitive topic that was detected in the section */
-  labels: ContentSafetyLabel[];
+  labels: ContentSafetyLabel[]
   /** The sentence index at which the section begins */
-  sentences_idx_start: number;
+  sentences_idx_start: number
   /** The sentence index at which the section ends */
-  sentences_idx_end: number;
+  sentences_idx_end: number
   /** Timestamp information for the section */
-  timestamp: Timestamp;
+  timestamp: Timestamp
 }

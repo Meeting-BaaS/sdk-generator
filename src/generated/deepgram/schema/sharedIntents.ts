@@ -5,11 +5,11 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SharedIntentsResults } from './sharedIntentsResults';
+import type { SharedIntentsResults } from "./sharedIntentsResults"
 
 /**
  * Output whenever `intents=true` is used
  */
 export interface SharedIntents {
-  results?: SharedIntentsResults;
+  results?: SharedIntentsResults
 }

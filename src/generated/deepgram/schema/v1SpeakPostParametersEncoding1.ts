@@ -9,10 +9,10 @@
 /**
  * Encoding - flac. Lossless audio format for high-quality compression.
  */
-export type V1SpeakPostParametersEncoding1 = typeof V1SpeakPostParametersEncoding1[keyof typeof V1SpeakPostParametersEncoding1];
-
+export type V1SpeakPostParametersEncoding1 =
+  (typeof V1SpeakPostParametersEncoding1)[keyof typeof V1SpeakPostParametersEncoding1]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersEncoding1 = {
-  flac: 'flac',
-} as const;
+  flac: "flac"
+} as const

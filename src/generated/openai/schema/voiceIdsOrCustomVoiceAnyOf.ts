@@ -11,5 +11,5 @@
  */
 export type VoiceIdsOrCustomVoiceAnyOf = {
   /** The custom voice ID, e.g. `voice_1234`. */
-  id: string;
-};
+  id: string
+}

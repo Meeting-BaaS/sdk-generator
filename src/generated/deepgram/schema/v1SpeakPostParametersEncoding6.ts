@@ -9,10 +9,10 @@
 /**
  * Encoding - aac. Advanced audio format offering better quality at smaller file sizes than mp3.
  */
-export type V1SpeakPostParametersEncoding6 = typeof V1SpeakPostParametersEncoding6[keyof typeof V1SpeakPostParametersEncoding6];
-
+export type V1SpeakPostParametersEncoding6 =
+  (typeof V1SpeakPostParametersEncoding6)[keyof typeof V1SpeakPostParametersEncoding6]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersEncoding6 = {
-  aac: 'aac',
-} as const;
+  aac: "aac"
+} as const

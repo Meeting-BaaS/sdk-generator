@@ -5,9 +5,9 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SubstitutionPolicy } from './substitutionPolicy';
+import type { SubstitutionPolicy } from "./substitutionPolicy"
 
 /**
  * The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.
  */
-export type TranscriptParamsRedactPiiSub = SubstitutionPolicy | null;
+export type TranscriptParamsRedactPiiSub = SubstitutionPolicy | null

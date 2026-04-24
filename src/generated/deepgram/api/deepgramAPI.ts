@@ -5,148 +5,129 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import axios from 'axios';
-import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
 
-import type {
-  ListModelsParams,
-  ListProjectRequestsParams,
-  ListenTranscribeParams,
-  ListenV1RequestUrl,
-  ReadAnalyzeParams,
-  ReadV1Request,
-  SpeakGenerateParams,
-  SpeakV1Request
-} from '../schema';
-
-import {
-  faker
-} from '@faker-js/faker';
-
-import {
-  HttpResponse,
-  delay,
-  http
-} from 'msw';
-
+import { faker } from "@faker-js/faker"
+import type { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios from "axios"
+import { delay, HttpResponse, http } from "msw"
 import type {
   GetModelV1Response,
   GetModelV1Response0,
   GetModelV1Response1,
   GetProjectRequestV1Response,
-  ListModelsV1Response,
-  ListProjectRequestsV1Response,
+  ListenTranscribeParams,
   ListenV1AcceptedResponse,
   ListenV1MediaTranscribeResponse200,
+  ListenV1RequestUrl,
   ListenV1Response,
+  ListModelsParams,
+  ListModelsV1Response,
+  ListProjectRequestsParams,
+  ListProjectRequestsV1Response,
+  ReadAnalyzeParams,
+  ReadV1Request,
   ReadV1Response,
-  SpeakV1AudioGenerateResponse200
-} from '../schema';
+  SpeakGenerateParams,
+  SpeakV1AudioGenerateResponse200,
+  SpeakV1Request
+} from "../schema"
 
 /**
  * Transcribe audio and video using Deepgram's speech-to-text REST API
  * @summary Transcribe and analyze pre-recorded audio and video
  */
 export const listenTranscribe = <TData = AxiosResponse<ListenV1MediaTranscribeResponse200>>(
-    listenV1RequestUrl: ListenV1RequestUrl,
-    params?: ListenTranscribeParams, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/v1/listen`,
-      listenV1RequestUrl,{
+  listenV1RequestUrl: ListenV1RequestUrl,
+  params?: ListenTranscribeParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post("/v1/listen", listenV1RequestUrl, {
     ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
+    params: { ...params, ...options?.params }
+  })
+}
 
 /**
  * Convert text into natural-sounding speech using Deepgram's TTS REST API
  * @summary Text to Speech transformation
  */
 export const speakGenerate = <TData = AxiosResponse<SpeakV1AudioGenerateResponse200>>(
-    speakV1Request: SpeakV1Request,
-    params?: SpeakGenerateParams, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/v1/speak`,
-      speakV1Request,{
+  speakV1Request: SpeakV1Request,
+  params?: SpeakGenerateParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post("/v1/speak", speakV1Request, {
     ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
+    params: { ...params, ...options?.params }
+  })
+}
 
 /**
  * Analyze text content using Deepgrams text analysis API
  * @summary Analyze text content
  */
 export const readAnalyze = <TData = AxiosResponse<ReadV1Response>>(
-    readV1Request: ReadV1Request,
-    params?: ReadAnalyzeParams, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/v1/read`,
-      readV1Request,{
+  readV1Request: ReadV1Request,
+  params?: ReadAnalyzeParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post("/v1/read", readV1Request, {
     ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
+    params: { ...params, ...options?.params }
+  })
+}
 
 /**
  * Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
  * @summary List Models
  */
 export const listModels = <TData = AxiosResponse<ListModelsV1Response>>(
-    params?: ListModelsParams, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.get(
-      `/v1/models`,{
+  params?: ListModelsParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get("/v1/models", {
     ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
+    params: { ...params, ...options?.params }
+  })
+}
 
 /**
  * Returns metadata for a specific public model
  * @summary Get a specific Model
  */
 export const getModel = <TData = AxiosResponse<GetModelV1Response>>(
-    modelId: string, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.get(
-      `/v1/models/${modelId}`,options
-    );
-  }
+  modelId: string,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get(`/v1/models/${modelId}`, options)
+}
 
 /**
  * Generates a list of requests for a specific project
  * @summary List Project Requests
  */
 export const listProjectRequests = <TData = AxiosResponse<ListProjectRequestsV1Response>>(
-    projectId: string,
-    params?: ListProjectRequestsParams, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.get(
-      `/v1/projects/${projectId}/requests`,{
+  projectId: string,
+  params?: ListProjectRequestsParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get(`/v1/projects/${projectId}/requests`, {
     ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
+    params: { ...params, ...options?.params }
+  })
+}
 
 /**
  * Retrieves a specific request for a specific project
  * @summary Get a Project Request
  */
 export const getProjectRequest = <TData = AxiosResponse<GetProjectRequestV1Response>>(
-    projectId: string,
-    requestId: string, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.get(
-      `/v1/projects/${projectId}/requests/${requestId}`,options
-    );
-  }
+  projectId: string,
+  requestId: string,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get(`/v1/projects/${projectId}/requests/${requestId}`, options)
+}
 
 export type ListenTranscribeResult = AxiosResponse<ListenV1MediaTranscribeResponse200>
 export type SpeakGenerateResult = AxiosResponse<SpeakV1AudioGenerateResponse200>
@@ -156,112 +137,907 @@ export type GetModelResult = AxiosResponse<GetModelV1Response>
 export type ListProjectRequestsResult = AxiosResponse<ListProjectRequestsV1Response>
 export type GetProjectRequestResult = AxiosResponse<GetProjectRequestV1Response>
 
+export const getListenTranscribeResponseListenV1ResponseMock = (
+  overrideResponse: Partial<ListenV1Response> = {}
+): ListenV1Response => ({
+  ...{
+    metadata: {
+      transaction_key: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      request_id: faker.string.uuid(),
+      sha256: faker.string.alpha(20),
+      created: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      duration: faker.number.float(),
+      channels: faker.number.int({ min: undefined, max: undefined }),
+      models: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+        () => faker.string.alpha(20)
+      ),
+      model_info: {},
+      summary_info: faker.helpers.arrayElement([
+        {
+          model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          input_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ]),
+          output_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ])
+        },
+        undefined
+      ]),
+      sentiment_info: faker.helpers.arrayElement([
+        {
+          model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          input_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ]),
+          output_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ])
+        },
+        undefined
+      ]),
+      topics_info: faker.helpers.arrayElement([
+        {
+          model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          input_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ]),
+          output_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ])
+        },
+        undefined
+      ]),
+      intents_info: faker.helpers.arrayElement([
+        {
+          model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          input_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ]),
+          output_tokens: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ])
+        },
+        undefined
+      ]),
+      tags: faker.helpers.arrayElement([
+        Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+          faker.string.alpha(20)
+        ),
+        undefined
+      ])
+    },
+    results: {
+      channels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+        () => ({
+          search: faker.helpers.arrayElement([
+            Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+              () => ({
+                query: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                hits: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    start: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    end: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    snippet: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
+                  })),
+                  undefined
+                ])
+              })
+            ),
+            undefined
+          ]),
+          alternatives: faker.helpers.arrayElement([
+            Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+              () => ({
+                transcript: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                words: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    word: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    start: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    end: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    confidence: faker.helpers.arrayElement([faker.number.float(), undefined])
+                  })),
+                  undefined
+                ]),
+                paragraphs: faker.helpers.arrayElement([
+                  {
+                    transcript: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    paragraphs: faker.helpers.arrayElement([
+                      Array.from(
+                        { length: faker.number.int({ min: 1, max: 10 }) },
+                        (_, i) => i + 1
+                      ).map(() => ({
+                        sentences: faker.helpers.arrayElement([
+                          Array.from(
+                            { length: faker.number.int({ min: 1, max: 10 }) },
+                            (_, i) => i + 1
+                          ).map(() => ({
+                            text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                            start: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                            end: faker.helpers.arrayElement([faker.number.float(), undefined])
+                          })),
+                          undefined
+                        ]),
+                        speaker: faker.helpers.arrayElement([
+                          faker.number.int({ min: undefined, max: undefined }),
+                          undefined
+                        ]),
+                        num_words: faker.helpers.arrayElement([
+                          faker.number.int({ min: undefined, max: undefined }),
+                          undefined
+                        ]),
+                        start: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                        end: faker.helpers.arrayElement([faker.number.float(), undefined])
+                      })),
+                      undefined
+                    ])
+                  },
+                  undefined
+                ]),
+                entities: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    label: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    value: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    raw_value: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    end_word: faker.helpers.arrayElement([faker.number.float(), undefined])
+                  })),
+                  undefined
+                ]),
+                summaries: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    summary: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    end_word: faker.helpers.arrayElement([faker.number.float(), undefined])
+                  })),
+                  undefined
+                ]),
+                topics: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    end_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    topics: faker.helpers.arrayElement([
+                      Array.from(
+                        { length: faker.number.int({ min: 1, max: 10 }) },
+                        (_, i) => i + 1
+                      ).map(() => faker.string.alpha(20)),
+                      undefined
+                    ])
+                  })),
+                  undefined
+                ])
+              })
+            ),
+            undefined
+          ]),
+          detected_language: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
+        })
+      ),
+      utterances: faker.helpers.arrayElement([
+        Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+          start: faker.helpers.arrayElement([faker.number.float(), undefined]),
+          end: faker.helpers.arrayElement([faker.number.float(), undefined]),
+          confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
+          channel: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ]),
+          transcript: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          words: faker.helpers.arrayElement([
+            Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+              () => ({
+                word: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                start: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                end: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                speaker: faker.helpers.arrayElement([
+                  faker.number.int({ min: undefined, max: undefined }),
+                  undefined
+                ]),
+                speaker_confidence: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                punctuated_word: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
+              })
+            ),
+            undefined
+          ]),
+          speaker: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined
+          ]),
+          id: faker.helpers.arrayElement([faker.string.uuid(), undefined])
+        })),
+        undefined
+      ]),
+      summary: faker.helpers.arrayElement([
+        {
+          result: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          short: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
+        },
+        undefined
+      ]),
+      topics: faker.helpers.arrayElement([
+        {
+          results: faker.helpers.arrayElement([
+            {
+              topics: faker.helpers.arrayElement([
+                {
+                  segments: faker.helpers.arrayElement([
+                    Array.from(
+                      { length: faker.number.int({ min: 1, max: 10 }) },
+                      (_, i) => i + 1
+                    ).map(() => ({
+                      text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                      start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                      end_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                      topics: faker.helpers.arrayElement([
+                        Array.from(
+                          { length: faker.number.int({ min: 1, max: 10 }) },
+                          (_, i) => i + 1
+                        ).map(() => ({
+                          topic: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                          confidence_score: faker.helpers.arrayElement([
+                            faker.number.float(),
+                            undefined
+                          ])
+                        })),
+                        undefined
+                      ])
+                    })),
+                    undefined
+                  ])
+                },
+                undefined
+              ])
+            },
+            undefined
+          ])
+        },
+        undefined
+      ]),
+      intents: faker.helpers.arrayElement([
+        {
+          results: faker.helpers.arrayElement([
+            {
+              intents: faker.helpers.arrayElement([
+                {
+                  segments: faker.helpers.arrayElement([
+                    Array.from(
+                      { length: faker.number.int({ min: 1, max: 10 }) },
+                      (_, i) => i + 1
+                    ).map(() => ({
+                      text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                      start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                      end_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                      intents: faker.helpers.arrayElement([
+                        Array.from(
+                          { length: faker.number.int({ min: 1, max: 10 }) },
+                          (_, i) => i + 1
+                        ).map(() => ({
+                          intent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                          confidence_score: faker.helpers.arrayElement([
+                            faker.number.float(),
+                            undefined
+                          ])
+                        })),
+                        undefined
+                      ])
+                    })),
+                    undefined
+                  ])
+                },
+                undefined
+              ])
+            },
+            undefined
+          ])
+        },
+        undefined
+      ]),
+      sentiments: faker.helpers.arrayElement([
+        {
+          segments: faker.helpers.arrayElement([
+            Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+              () => ({
+                text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                end_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])
+              })
+            ),
+            undefined
+          ]),
+          average: faker.helpers.arrayElement([
+            {
+              sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+              sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])
+            },
+            undefined
+          ])
+        },
+        undefined
+      ])
+    }
+  },
+  ...overrideResponse
+})
 
-export const getListenTranscribeResponseListenV1ResponseMock = (overrideResponse: Partial<ListenV1Response> = {}): ListenV1Response => ({...{metadata: {transaction_key: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), request_id: faker.string.uuid(), sha256: faker.string.alpha(20), created: `${faker.date.past().toISOString().split('.')[0]}Z`, duration: faker.number.float(), channels: faker.number.float(), models: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), model_info: {}, summary_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined]), sentiment_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined]), topics_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined]), intents_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined]), tags: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined])}, results: {channels: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({search: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({query: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), hits: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), start: faker.helpers.arrayElement([faker.number.float(), undefined]), end: faker.helpers.arrayElement([faker.number.float(), undefined]), snippet: faker.helpers.arrayElement([faker.string.alpha(20), undefined])})), undefined])})), undefined]), alternatives: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({transcript: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), words: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({word: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start: faker.helpers.arrayElement([faker.number.float(), undefined]), end: faker.helpers.arrayElement([faker.number.float(), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined]), paragraphs: faker.helpers.arrayElement([{transcript: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), paragraphs: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({sentences: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start: faker.helpers.arrayElement([faker.number.float(), undefined]), end: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined]), speaker: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), num_words: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), start: faker.helpers.arrayElement([faker.number.float(), undefined]), end: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined])}, undefined]), entities: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({label: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), value: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), raw_value: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined]), summaries: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({summary: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined]), topics: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined]), topics: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined])})), undefined])})), undefined]), detected_language: faker.helpers.arrayElement([faker.string.alpha(20), undefined])})), utterances: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({start: faker.helpers.arrayElement([faker.number.float(), undefined]), end: faker.helpers.arrayElement([faker.number.float(), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), channel: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), transcript: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), words: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({word: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start: faker.helpers.arrayElement([faker.number.float(), undefined]), end: faker.helpers.arrayElement([faker.number.float(), undefined]), confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), speaker: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), speaker_confidence: faker.helpers.arrayElement([faker.number.float(), undefined]), punctuated_word: faker.helpers.arrayElement([faker.string.alpha(20), undefined])})), undefined]), speaker: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), id: faker.helpers.arrayElement([faker.string.uuid(), undefined])})), undefined]), summary: faker.helpers.arrayElement([{result: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), short: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, undefined]), topics: faker.helpers.arrayElement([{results: faker.helpers.arrayElement([{topics: faker.helpers.arrayElement([{segments: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined]), topics: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({topic: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), confidence_score: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined])})), undefined])}, undefined])}, undefined])}, undefined]), intents: faker.helpers.arrayElement([{results: faker.helpers.arrayElement([{intents: faker.helpers.arrayElement([{segments: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined]), intents: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({intent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), confidence_score: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined])})), undefined])}, undefined])}, undefined])}, undefined]), sentiments: faker.helpers.arrayElement([{segments: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined]), sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined]), average: faker.helpers.arrayElement([{sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined])}, undefined])}}, ...overrideResponse});
+export const getListenTranscribeResponseListenV1AcceptedResponseMock = (
+  overrideResponse: Partial<ListenV1AcceptedResponse> = {}
+): ListenV1AcceptedResponse => ({ ...{ request_id: faker.string.uuid() }, ...overrideResponse })
 
-export const getListenTranscribeResponseListenV1AcceptedResponseMock = (overrideResponse: Partial<ListenV1AcceptedResponse> = {}): ListenV1AcceptedResponse => ({...{request_id: faker.string.uuid()}, ...overrideResponse});
+export const getListenTranscribeResponseMock = (): ListenV1MediaTranscribeResponse200 =>
+  faker.helpers.arrayElement([
+    { ...getListenTranscribeResponseListenV1ResponseMock() },
+    { ...getListenTranscribeResponseListenV1AcceptedResponseMock() }
+  ])
 
-export const getListenTranscribeResponseMock = (): ListenV1MediaTranscribeResponse200 => (faker.helpers.arrayElement([{...getListenTranscribeResponseListenV1ResponseMock()},{...getListenTranscribeResponseListenV1AcceptedResponseMock()},]))
+export const getSpeakGenerateResponseMock = (
+  overrideResponse: Partial<SpeakV1AudioGenerateResponse200> = {}
+): SpeakV1AudioGenerateResponse200 => ({ ...overrideResponse })
 
-export const getSpeakGenerateResponseMock = (overrideResponse: Partial< SpeakV1AudioGenerateResponse200 > = {}): SpeakV1AudioGenerateResponse200 => ({...overrideResponse})
+export const getReadAnalyzeResponseMock = (
+  overrideResponse: Partial<ReadV1Response> = {}
+): ReadV1Response => ({
+  metadata: {
+    metadata: faker.helpers.arrayElement([
+      {
+        request_id: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+        created: faker.helpers.arrayElement([
+          `${faker.date.past().toISOString().split(".")[0]}Z`,
+          undefined
+        ]),
+        language: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+        summary_info: faker.helpers.arrayElement([
+          {
+            model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+            input_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ]),
+            output_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ])
+          },
+          undefined
+        ]),
+        sentiment_info: faker.helpers.arrayElement([
+          {
+            model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+            input_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ]),
+            output_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ])
+          },
+          undefined
+        ]),
+        topics_info: faker.helpers.arrayElement([
+          {
+            model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+            input_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ]),
+            output_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ])
+          },
+          undefined
+        ]),
+        intents_info: faker.helpers.arrayElement([
+          {
+            model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+            input_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ]),
+            output_tokens: faker.helpers.arrayElement([
+              faker.number.int({ min: undefined, max: undefined }),
+              undefined
+            ])
+          },
+          undefined
+        ])
+      },
+      undefined
+    ])
+  },
+  results: {
+    summary: faker.helpers.arrayElement([
+      {
+        results: faker.helpers.arrayElement([
+          {
+            summary: faker.helpers.arrayElement([
+              { text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]) },
+              undefined
+            ])
+          },
+          undefined
+        ])
+      },
+      undefined
+    ]),
+    topics: faker.helpers.arrayElement([
+      {
+        results: faker.helpers.arrayElement([
+          {
+            topics: faker.helpers.arrayElement([
+              {
+                segments: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    end_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    topics: faker.helpers.arrayElement([
+                      Array.from(
+                        { length: faker.number.int({ min: 1, max: 10 }) },
+                        (_, i) => i + 1
+                      ).map(() => ({
+                        topic: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                        confidence_score: faker.helpers.arrayElement([
+                          faker.number.float(),
+                          undefined
+                        ])
+                      })),
+                      undefined
+                    ])
+                  })),
+                  undefined
+                ])
+              },
+              undefined
+            ])
+          },
+          undefined
+        ])
+      },
+      undefined
+    ]),
+    intents: faker.helpers.arrayElement([
+      {
+        results: faker.helpers.arrayElement([
+          {
+            intents: faker.helpers.arrayElement([
+              {
+                segments: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                    start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    end_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                    intents: faker.helpers.arrayElement([
+                      Array.from(
+                        { length: faker.number.int({ min: 1, max: 10 }) },
+                        (_, i) => i + 1
+                      ).map(() => ({
+                        intent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                        confidence_score: faker.helpers.arrayElement([
+                          faker.number.float(),
+                          undefined
+                        ])
+                      })),
+                      undefined
+                    ])
+                  })),
+                  undefined
+                ])
+              },
+              undefined
+            ])
+          },
+          undefined
+        ])
+      },
+      undefined
+    ]),
+    sentiments: faker.helpers.arrayElement([
+      {
+        segments: faker.helpers.arrayElement([
+          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+            () => ({
+              text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+              start_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+              end_word: faker.helpers.arrayElement([faker.number.float(), undefined]),
+              sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+              sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])
+            })
+          ),
+          undefined
+        ]),
+        average: faker.helpers.arrayElement([
+          {
+            sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+            sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])
+          },
+          undefined
+        ])
+      },
+      undefined
+    ])
+  },
+  ...overrideResponse
+})
 
-export const getReadAnalyzeResponseMock = (overrideResponse: Partial< ReadV1Response > = {}): ReadV1Response => ({metadata: {metadata: faker.helpers.arrayElement([{request_id: faker.helpers.arrayElement([faker.string.uuid(), undefined]), created: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), language: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), summary_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined]), sentiment_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined]), topics_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined]), intents_info: faker.helpers.arrayElement([{model_uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]), input_tokens: faker.helpers.arrayElement([faker.number.float(), undefined]), output_tokens: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined])}, undefined])}, results: {summary: faker.helpers.arrayElement([{results: faker.helpers.arrayElement([{summary: faker.helpers.arrayElement([{text: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, undefined])}, undefined])}, undefined]), topics: faker.helpers.arrayElement([{results: faker.helpers.arrayElement([{topics: faker.helpers.arrayElement([{segments: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined]), topics: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({topic: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), confidence_score: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined])})), undefined])}, undefined])}, undefined])}, undefined]), intents: faker.helpers.arrayElement([{results: faker.helpers.arrayElement([{intents: faker.helpers.arrayElement([{segments: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined]), intents: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({intent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), confidence_score: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined])})), undefined])}, undefined])}, undefined])}, undefined]), sentiments: faker.helpers.arrayElement([{segments: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), start_word: faker.helpers.arrayElement([faker.number.float(), undefined]), end_word: faker.helpers.arrayElement([faker.number.float(), undefined]), sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])})), undefined]), average: faker.helpers.arrayElement([{sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), sentiment_score: faker.helpers.arrayElement([faker.number.float(), undefined])}, undefined])}, undefined])}, ...overrideResponse})
+export const getListModelsResponseMock = (
+  overrideResponse: Partial<ListModelsV1Response> = {}
+): ListModelsV1Response => ({
+  stt: faker.helpers.arrayElement([
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      languages: faker.helpers.arrayElement([
+        Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+          faker.string.alpha(20)
+        ),
+        undefined
+      ]),
+      version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      batch: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+      streaming: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+      formatted_output: faker.helpers.arrayElement([faker.datatype.boolean(), undefined])
+    })),
+    undefined
+  ]),
+  tts: faker.helpers.arrayElement([
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      languages: faker.helpers.arrayElement([
+        Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+          faker.string.alpha(20)
+        ),
+        undefined
+      ]),
+      version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+      metadata: faker.helpers.arrayElement([
+        {
+          accent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          age: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          color: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+          image: faker.helpers.arrayElement([faker.internet.url(), undefined]),
+          sample: faker.helpers.arrayElement([faker.internet.url(), undefined]),
+          tags: faker.helpers.arrayElement([
+            Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+              faker.string.alpha(20)
+            ),
+            undefined
+          ]),
+          use_cases: faker.helpers.arrayElement([
+            Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+              faker.string.alpha(20)
+            ),
+            undefined
+          ])
+        },
+        undefined
+      ])
+    })),
+    undefined
+  ]),
+  ...overrideResponse
+})
 
-export const getListModelsResponseMock = (overrideResponse: Partial< ListModelsV1Response > = {}): ListModelsV1Response => ({stt: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), languages: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), batch: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), streaming: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), formatted_output: faker.helpers.arrayElement([faker.datatype.boolean(), undefined])})), undefined]), tts: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), languages: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]), metadata: faker.helpers.arrayElement([{accent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), age: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), color: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), image: faker.helpers.arrayElement([faker.internet.url(), undefined]), sample: faker.helpers.arrayElement([faker.internet.url(), undefined]), tags: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), use_cases: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined])}, undefined])})), undefined]), ...overrideResponse})
+export const getGetModelResponseGetModelV1Response0Mock = (
+  overrideResponse: Partial<GetModelV1Response0> = {}
+): GetModelV1Response0 => ({
+  ...{
+    name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    languages: faker.helpers.arrayElement([
+      Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+        faker.string.alpha(20)
+      ),
+      undefined
+    ]),
+    version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+    batch: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+    streaming: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+    formatted_output: faker.helpers.arrayElement([faker.datatype.boolean(), undefined])
+  },
+  ...overrideResponse
+})
 
-export const getGetModelResponseGetModelV1Response0Mock = (overrideResponse: Partial<GetModelV1Response0> = {}): GetModelV1Response0 => ({...{name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), languages: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]), batch: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), streaming: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), formatted_output: faker.helpers.arrayElement([faker.datatype.boolean(), undefined])}, ...overrideResponse});
+export const getGetModelResponseGetModelV1Response1Mock = (
+  overrideResponse: Partial<GetModelV1Response1> = {}
+): GetModelV1Response1 => ({
+  ...{
+    name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    languages: faker.helpers.arrayElement([
+      Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+        faker.string.alpha(20)
+      ),
+      undefined
+    ]),
+    version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+    uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]),
+    metadata: faker.helpers.arrayElement([
+      {
+        accent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+        age: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+        color: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+        image: faker.helpers.arrayElement([faker.internet.url(), undefined]),
+        sample: faker.helpers.arrayElement([faker.internet.url(), undefined]),
+        tags: faker.helpers.arrayElement([
+          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+            faker.string.alpha(20)
+          ),
+          undefined
+        ]),
+        use_cases: faker.helpers.arrayElement([
+          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
+            faker.string.alpha(20)
+          ),
+          undefined
+        ])
+      },
+      undefined
+    ])
+  },
+  ...overrideResponse
+})
 
-export const getGetModelResponseGetModelV1Response1Mock = (overrideResponse: Partial<GetModelV1Response1> = {}): GetModelV1Response1 => ({...{name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), canonical_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), architecture: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), languages: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), uuid: faker.helpers.arrayElement([faker.string.uuid(), undefined]), metadata: faker.helpers.arrayElement([{accent: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), age: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), color: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), image: faker.helpers.arrayElement([faker.internet.url(), undefined]), sample: faker.helpers.arrayElement([faker.internet.url(), undefined]), tags: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined]), use_cases: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), undefined])}, undefined])}, ...overrideResponse});
+export const getGetModelResponseMock = (): GetModelV1Response =>
+  faker.helpers.arrayElement([
+    { ...getGetModelResponseGetModelV1Response0Mock() },
+    { ...getGetModelResponseGetModelV1Response1Mock() }
+  ])
 
-export const getGetModelResponseMock = (): GetModelV1Response => (faker.helpers.arrayElement([{...getGetModelResponseGetModelV1Response0Mock()},{...getGetModelResponseGetModelV1Response1Mock()},]))
+export const getListProjectRequestsResponseMock = (
+  overrideResponse: Partial<ListProjectRequestsV1Response> = {}
+): ListProjectRequestsV1Response => ({
+  page: faker.helpers.arrayElement([faker.number.float(), undefined]),
+  limit: faker.helpers.arrayElement([faker.number.float(), undefined]),
+  requests: faker.helpers.arrayElement([
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      request_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      project_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      created: faker.helpers.arrayElement([
+        `${faker.date.past().toISOString().split(".")[0]}Z`,
+        undefined
+      ]),
+      path: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      api_key_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      response: faker.helpers.arrayElement([{}, undefined]),
+      code: faker.helpers.arrayElement([faker.number.float(), undefined]),
+      deployment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      callback: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
+    })),
+    undefined
+  ]),
+  ...overrideResponse
+})
 
-export const getListProjectRequestsResponseMock = (overrideResponse: Partial< ListProjectRequestsV1Response > = {}): ListProjectRequestsV1Response => ({page: faker.helpers.arrayElement([faker.number.float(), undefined]), limit: faker.helpers.arrayElement([faker.number.float(), undefined]), requests: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({request_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), project_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), created: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), path: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), api_key_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), response: faker.helpers.arrayElement([{}, undefined]), code: faker.helpers.arrayElement([faker.number.float(), undefined]), deployment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), callback: faker.helpers.arrayElement([faker.string.alpha(20), undefined])})), undefined]), ...overrideResponse})
+export const getGetProjectRequestResponseMock = (
+  overrideResponse: Partial<GetProjectRequestV1Response> = {}
+): GetProjectRequestV1Response => ({
+  request: faker.helpers.arrayElement([
+    {
+      request_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      project_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      created: faker.helpers.arrayElement([
+        `${faker.date.past().toISOString().split(".")[0]}Z`,
+        undefined
+      ]),
+      path: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      api_key_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      response: faker.helpers.arrayElement([{}, undefined]),
+      code: faker.helpers.arrayElement([faker.number.float(), undefined]),
+      deployment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+      callback: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
+    },
+    undefined
+  ]),
+  ...overrideResponse
+})
 
-export const getGetProjectRequestResponseMock = (overrideResponse: Partial< GetProjectRequestV1Response > = {}): GetProjectRequestV1Response => ({request: faker.helpers.arrayElement([{request_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), project_uuid: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), created: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`, undefined]), path: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), api_key_id: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), response: faker.helpers.arrayElement([{}, undefined]), code: faker.helpers.arrayElement([faker.number.float(), undefined]), deployment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), callback: faker.helpers.arrayElement([faker.string.alpha(20), undefined])}, undefined]), ...overrideResponse})
+export const getListenTranscribeMockHandler = (
+  overrideResponse?:
+    | ListenV1MediaTranscribeResponse200
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0]
+      ) => Promise<ListenV1MediaTranscribeResponse200> | ListenV1MediaTranscribeResponse200)
+) => {
+  return http.post("https://api.deepgram.com/v1/listen", async (info) => {
+    await delay(1000)
 
-
-export const getListenTranscribeMockHandler = (overrideResponse?: ListenV1MediaTranscribeResponse200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ListenV1MediaTranscribeResponse200> | ListenV1MediaTranscribeResponse200)) => {
-  return http.post('https://api.deepgram.com/v1/listen', async (info) => {await delay(1000);
-  
-    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
-            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getListenTranscribeResponseMock()),
-      { status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      })
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getListenTranscribeResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
   })
 }
 
-export const getSpeakGenerateMockHandler = (overrideResponse?: SpeakV1AudioGenerateResponse200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<SpeakV1AudioGenerateResponse200> | SpeakV1AudioGenerateResponse200)) => {
-  return http.post('https://api.deepgram.com/v1/speak', async (info) => {await delay(1000);
-  
-    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
-            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getSpeakGenerateResponseMock()),
-      { status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      })
+export const getSpeakGenerateMockHandler = (
+  overrideResponse?:
+    | SpeakV1AudioGenerateResponse200
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0]
+      ) => Promise<SpeakV1AudioGenerateResponse200> | SpeakV1AudioGenerateResponse200)
+) => {
+  return http.post("https://api.deepgram.com/v1/speak", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getSpeakGenerateResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
   })
 }
 
-export const getReadAnalyzeMockHandler = (overrideResponse?: ReadV1Response | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ReadV1Response> | ReadV1Response)) => {
-  return http.post('https://api.deepgram.com/v1/read', async (info) => {await delay(1000);
-  
-    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
-            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getReadAnalyzeResponseMock()),
-      { status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      })
+export const getReadAnalyzeMockHandler = (
+  overrideResponse?:
+    | ReadV1Response
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0]
+      ) => Promise<ReadV1Response> | ReadV1Response)
+) => {
+  return http.post("https://api.deepgram.com/v1/read", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getReadAnalyzeResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
   })
 }
 
-export const getListModelsMockHandler = (overrideResponse?: ListModelsV1Response | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ListModelsV1Response> | ListModelsV1Response)) => {
-  return http.get('https://api.deepgram.com/v1/models', async (info) => {await delay(1000);
-  
-    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
-            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getListModelsResponseMock()),
-      { status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      })
+export const getListModelsMockHandler = (
+  overrideResponse?:
+    | ListModelsV1Response
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<ListModelsV1Response> | ListModelsV1Response)
+) => {
+  return http.get("https://api.deepgram.com/v1/models", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getListModelsResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
   })
 }
 
-export const getGetModelMockHandler = (overrideResponse?: GetModelV1Response | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetModelV1Response> | GetModelV1Response)) => {
-  return http.get('https://api.deepgram.com/v1/models/:modelId', async (info) => {await delay(1000);
-  
-    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
-            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getGetModelResponseMock()),
-      { status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      })
+export const getGetModelMockHandler = (
+  overrideResponse?:
+    | GetModelV1Response
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<GetModelV1Response> | GetModelV1Response)
+) => {
+  return http.get("https://api.deepgram.com/v1/models/:modelId", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetModelResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
   })
 }
 
-export const getListProjectRequestsMockHandler = (overrideResponse?: ListProjectRequestsV1Response | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ListProjectRequestsV1Response> | ListProjectRequestsV1Response)) => {
-  return http.get('https://api.deepgram.com/v1/projects/:projectId/requests', async (info) => {await delay(1000);
-  
-    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
-            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getListProjectRequestsResponseMock()),
-      { status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      })
+export const getListProjectRequestsMockHandler = (
+  overrideResponse?:
+    | ListProjectRequestsV1Response
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<ListProjectRequestsV1Response> | ListProjectRequestsV1Response)
+) => {
+  return http.get("https://api.deepgram.com/v1/projects/:projectId/requests", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getListProjectRequestsResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
   })
 }
 
-export const getGetProjectRequestMockHandler = (overrideResponse?: GetProjectRequestV1Response | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetProjectRequestV1Response> | GetProjectRequestV1Response)) => {
-  return http.get('https://api.deepgram.com/v1/projects/:projectId/requests/:requestId', async (info) => {await delay(1000);
-  
-    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
-            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getGetProjectRequestResponseMock()),
-      { status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      })
-  })
+export const getGetProjectRequestMockHandler = (
+  overrideResponse?:
+    | GetProjectRequestV1Response
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<GetProjectRequestV1Response> | GetProjectRequestV1Response)
+) => {
+  return http.get(
+    "https://api.deepgram.com/v1/projects/:projectId/requests/:requestId",
+    async (info) => {
+      await delay(1000)
+
+      return new HttpResponse(
+        JSON.stringify(
+          overrideResponse !== undefined
+            ? typeof overrideResponse === "function"
+              ? await overrideResponse(info)
+              : overrideResponse
+            : getGetProjectRequestResponseMock()
+        ),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      )
+    }
+  )
 }
 export const getDeepgramAPIMock = () => [
   getListenTranscribeMockHandler(),
@@ -270,4 +1046,5 @@ export const getDeepgramAPIMock = () => [
   getListModelsMockHandler(),
   getGetModelMockHandler(),
   getListProjectRequestsMockHandler(),
-  getGetProjectRequestMockHandler()]
+  getGetProjectRequestMockHandler()
+]

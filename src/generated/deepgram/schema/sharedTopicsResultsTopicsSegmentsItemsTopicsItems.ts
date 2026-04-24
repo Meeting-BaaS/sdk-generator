@@ -7,6 +7,6 @@
  */
 
 export interface SharedTopicsResultsTopicsSegmentsItemsTopicsItems {
-  topic?: string;
-  confidence_score?: number;
+  topic?: string
+  confidence_score?: number
 }

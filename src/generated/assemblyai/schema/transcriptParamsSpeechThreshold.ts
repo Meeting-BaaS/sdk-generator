@@ -11,4 +11,4 @@
 Valid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.
 
  */
-export type TranscriptParamsSpeechThreshold = number | null;
+export type TranscriptParamsSpeechThreshold = number | null

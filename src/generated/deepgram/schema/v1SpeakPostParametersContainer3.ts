@@ -9,10 +9,10 @@
 /**
  * Encoding - alaw. Supported container - wav (default), or no container.
  */
-export type V1SpeakPostParametersContainer3 = typeof V1SpeakPostParametersContainer3[keyof typeof V1SpeakPostParametersContainer3];
-
+export type V1SpeakPostParametersContainer3 =
+  (typeof V1SpeakPostParametersContainer3)[keyof typeof V1SpeakPostParametersContainer3]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersContainer3 = {
-  wav: 'wav',
-} as const;
+  wav: "wav"
+} as const

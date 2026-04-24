@@ -9,10 +9,10 @@
 /**
  * Use retention ratio truncation.
  */
-export type RealtimeTruncationOneOfType = typeof RealtimeTruncationOneOfType[keyof typeof RealtimeTruncationOneOfType];
-
+export type RealtimeTruncationOneOfType =
+  (typeof RealtimeTruncationOneOfType)[keyof typeof RealtimeTruncationOneOfType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RealtimeTruncationOneOfType = {
-  retention_ratio: 'retention_ratio',
-} as const;
+  retention_ratio: "retention_ratio"
+} as const

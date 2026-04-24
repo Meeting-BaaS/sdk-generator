@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ProjectsProjectIdRequestsGetParametersStatus = typeof V1ProjectsProjectIdRequestsGetParametersStatus[keyof typeof V1ProjectsProjectIdRequestsGetParametersStatus];
-
+export type V1ProjectsProjectIdRequestsGetParametersStatus =
+  (typeof V1ProjectsProjectIdRequestsGetParametersStatus)[keyof typeof V1ProjectsProjectIdRequestsGetParametersStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ProjectsProjectIdRequestsGetParametersStatus = {
-  succeeded: 'succeeded',
-  failed: 'failed',
-} as const;
+  succeeded: "succeeded",
+  failed: "failed"
+} as const

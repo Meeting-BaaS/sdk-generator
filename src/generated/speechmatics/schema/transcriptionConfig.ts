@@ -5,26 +5,26 @@
  * The Speechmatics Automatic Speech Recognition REST API is used to submit ASR jobs and receive the results. The supported job type is transcription of audio files.
  * OpenAPI spec version: 2.0.0
  */
-import type { OperatingPoint } from './operatingPoint';
-import type { TranscriptionConfigAdditionalVocabItem } from './transcriptionConfigAdditionalVocabItem';
-import type { TranscriptionConfigPunctuationOverrides } from './transcriptionConfigPunctuationOverrides';
-import type { TranscriptionConfigDiarization } from './transcriptionConfigDiarization';
-import type { TranscriptionConfigMaxDelayMode } from './transcriptionConfigMaxDelayMode';
-import type { TranscriptionConfigTranscriptFilteringConfig } from './transcriptionConfigTranscriptFilteringConfig';
-import type { TranscriptionConfigSpeakerDiarizationConfig } from './transcriptionConfigSpeakerDiarizationConfig';
+import type { OperatingPoint } from "./operatingPoint"
+import type { TranscriptionConfigAdditionalVocabItem } from "./transcriptionConfigAdditionalVocabItem"
+import type { TranscriptionConfigDiarization } from "./transcriptionConfigDiarization"
+import type { TranscriptionConfigMaxDelayMode } from "./transcriptionConfigMaxDelayMode"
+import type { TranscriptionConfigPunctuationOverrides } from "./transcriptionConfigPunctuationOverrides"
+import type { TranscriptionConfigSpeakerDiarizationConfig } from "./transcriptionConfigSpeakerDiarizationConfig"
+import type { TranscriptionConfigTranscriptFilteringConfig } from "./transcriptionConfigTranscriptFilteringConfig"
 
 export interface TranscriptionConfig {
   /** Language model to process the audio input, normally specified as an ISO language code */
-  language: string;
+  language: string
   /** Request a specialized model based on 'language' but optimized for a particular field, e.g. "finance" or "medical". */
-  domain?: string;
+  domain?: string
   /** Language locale to be used when generating the transcription output, normally specified as an ISO language code */
-  output_locale?: string;
-  operating_point?: OperatingPoint;
+  output_locale?: string
+  operating_point?: OperatingPoint
   /** List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition. */
-  additional_vocab?: TranscriptionConfigAdditionalVocabItem[];
+  additional_vocab?: TranscriptionConfigAdditionalVocabItem[]
   /** Control punctuation settings. */
-  punctuation_overrides?: TranscriptionConfigPunctuationOverrides;
+  punctuation_overrides?: TranscriptionConfigPunctuationOverrides
   /** Specify whether speaker or channel labels are added to the transcript.
 The default is `none`.
   - **none**: no speaker or channel labels are added.
@@ -32,15 +32,15 @@ The default is `none`.
              all input channels are mixed into a single stream for processing.
   - **channel**: multiple input channels are processed individually and collated
             into a single transcript. */
-  diarization?: TranscriptionConfigDiarization;
+  diarization?: TranscriptionConfigDiarization
   /** Transcript labels to use when using collating separate input channels. */
-  channel_diarization_labels?: string[];
+  channel_diarization_labels?: string[]
   /** Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million'). */
-  enable_entities?: boolean;
+  enable_entities?: boolean
   /** Whether or not to enable flexible endpointing and allow the entity to continue to be spoken. */
-  max_delay_mode?: TranscriptionConfigMaxDelayMode;
+  max_delay_mode?: TranscriptionConfigMaxDelayMode
   /** Configuration for applying filtering to the transcription */
-  transcript_filtering_config?: TranscriptionConfigTranscriptFilteringConfig;
+  transcript_filtering_config?: TranscriptionConfigTranscriptFilteringConfig
   /** Configuration for speaker diarization */
-  speaker_diarization_config?: TranscriptionConfigSpeakerDiarizationConfig;
+  speaker_diarization_config?: TranscriptionConfigSpeakerDiarizationConfig
 }

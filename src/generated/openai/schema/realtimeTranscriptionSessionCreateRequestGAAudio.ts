@@ -5,12 +5,12 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTranscriptionSessionCreateRequestGAAudioInput } from './realtimeTranscriptionSessionCreateRequestGAAudioInput';
+import type { RealtimeTranscriptionSessionCreateRequestGAAudioInput } from "./realtimeTranscriptionSessionCreateRequestGAAudioInput"
 
 /**
  * Configuration for input and output audio.
 
  */
 export type RealtimeTranscriptionSessionCreateRequestGAAudio = {
-  input?: RealtimeTranscriptionSessionCreateRequestGAAudioInput;
-};
+  input?: RealtimeTranscriptionSessionCreateRequestGAAudioInput
+}

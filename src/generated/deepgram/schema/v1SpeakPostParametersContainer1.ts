@@ -9,10 +9,10 @@
 /**
  * Encoding - linear16. Supported container - wav (default), or no container.
  */
-export type V1SpeakPostParametersContainer1 = typeof V1SpeakPostParametersContainer1[keyof typeof V1SpeakPostParametersContainer1];
-
+export type V1SpeakPostParametersContainer1 =
+  (typeof V1SpeakPostParametersContainer1)[keyof typeof V1SpeakPostParametersContainer1]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersContainer1 = {
-  wav: 'wav',
-} as const;
+  wav: "wav"
+} as const

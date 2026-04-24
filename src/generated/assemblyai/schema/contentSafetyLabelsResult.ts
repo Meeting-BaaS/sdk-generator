@@ -5,10 +5,10 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { AudioIntelligenceModelStatus } from './audioIntelligenceModelStatus';
-import type { ContentSafetyLabelResult } from './contentSafetyLabelResult';
-import type { ContentSafetyLabelsResultSummary } from './contentSafetyLabelsResultSummary';
-import type { ContentSafetyLabelsResultSeverityScoreSummary } from './contentSafetyLabelsResultSeverityScoreSummary';
+import type { AudioIntelligenceModelStatus } from "./audioIntelligenceModelStatus"
+import type { ContentSafetyLabelResult } from "./contentSafetyLabelResult"
+import type { ContentSafetyLabelsResultSeverityScoreSummary } from "./contentSafetyLabelsResultSeverityScoreSummary"
+import type { ContentSafetyLabelsResultSummary } from "./contentSafetyLabelsResultSummary"
 
 /**
  * An array of results for the Content Moderation model, if it is enabled.
@@ -17,11 +17,11 @@ See [Content moderation](https://www.assemblyai.com/docs/content-moderation) for
  */
 export interface ContentSafetyLabelsResult {
   /** The status of the Content Moderation model. Either success, or unavailable in the rare case that the model failed. */
-  status: AudioIntelligenceModelStatus;
+  status: AudioIntelligenceModelStatus
   /** An array of results for the Content Moderation model */
-  results: ContentSafetyLabelResult[];
+  results: ContentSafetyLabelResult[]
   /** A summary of the Content Moderation confidence results for the entire audio file */
-  summary: ContentSafetyLabelsResultSummary;
+  summary: ContentSafetyLabelsResultSummary
   /** A summary of the Content Moderation severity results for the entire audio file */
-  severity_score_summary: ContentSafetyLabelsResultSeverityScoreSummary;
+  severity_score_summary: ContentSafetyLabelsResultSeverityScoreSummary
 }

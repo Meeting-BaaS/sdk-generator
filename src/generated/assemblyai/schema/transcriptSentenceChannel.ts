@@ -9,4 +9,4 @@
 /**
  * The channel of the sentence. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.
  */
-export type TranscriptSentenceChannel = string | null;
+export type TranscriptSentenceChannel = string | null

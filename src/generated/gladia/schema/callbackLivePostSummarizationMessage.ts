@@ -4,13 +4,13 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { CallbackLivePostSummarizationMessageEvent } from './callbackLivePostSummarizationMessageEvent';
-import type { PostSummarizationMessage } from './postSummarizationMessage';
+import type { CallbackLivePostSummarizationMessageEvent } from "./callbackLivePostSummarizationMessageEvent"
+import type { PostSummarizationMessage } from "./postSummarizationMessage"
 
 export interface CallbackLivePostSummarizationMessage {
   /** Id of the job */
-  id: string;
-  event: CallbackLivePostSummarizationMessageEvent;
+  id: string
+  event: CallbackLivePostSummarizationMessageEvent
   /** The live message payload as sent to the WebSocket */
-  payload: PostSummarizationMessage;
+  payload: PostSummarizationMessage
 }

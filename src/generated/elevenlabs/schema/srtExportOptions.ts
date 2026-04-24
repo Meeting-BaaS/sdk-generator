@@ -5,18 +5,19 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { SrtExportOptionsMaxCharactersPerLine } from './srtExportOptionsMaxCharactersPerLine';
-import type { SrtExportOptionsFormat } from './srtExportOptionsFormat';
-import type { SrtExportOptionsSegmentOnSilenceLongerThanS } from './srtExportOptionsSegmentOnSilenceLongerThanS';
-import type { SrtExportOptionsMaxSegmentDurationS } from './srtExportOptionsMaxSegmentDurationS';
-import type { SrtExportOptionsMaxSegmentChars } from './srtExportOptionsMaxSegmentChars';
+
+import type { SrtExportOptionsFormat } from "./srtExportOptionsFormat"
+import type { SrtExportOptionsMaxCharactersPerLine } from "./srtExportOptionsMaxCharactersPerLine"
+import type { SrtExportOptionsMaxSegmentChars } from "./srtExportOptionsMaxSegmentChars"
+import type { SrtExportOptionsMaxSegmentDurationS } from "./srtExportOptionsMaxSegmentDurationS"
+import type { SrtExportOptionsSegmentOnSilenceLongerThanS } from "./srtExportOptionsSegmentOnSilenceLongerThanS"
 
 export interface SrtExportOptions {
-  max_characters_per_line?: SrtExportOptionsMaxCharactersPerLine;
-  include_speakers?: boolean;
-  include_timestamps?: boolean;
-  format: SrtExportOptionsFormat;
-  segment_on_silence_longer_than_s?: SrtExportOptionsSegmentOnSilenceLongerThanS;
-  max_segment_duration_s?: SrtExportOptionsMaxSegmentDurationS;
-  max_segment_chars?: SrtExportOptionsMaxSegmentChars;
+  max_characters_per_line?: SrtExportOptionsMaxCharactersPerLine
+  include_speakers?: boolean
+  include_timestamps?: boolean
+  format: SrtExportOptionsFormat
+  segment_on_silence_longer_than_s?: SrtExportOptionsSegmentOnSilenceLongerThanS
+  max_segment_duration_s?: SrtExportOptionsMaxSegmentDurationS
+  max_segment_chars?: SrtExportOptionsMaxSegmentChars
 }

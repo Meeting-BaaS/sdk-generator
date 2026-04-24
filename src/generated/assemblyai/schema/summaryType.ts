@@ -9,14 +9,13 @@
 /**
  * The type of summary
  */
-export type SummaryType = typeof SummaryType[keyof typeof SummaryType];
-
+export type SummaryType = (typeof SummaryType)[keyof typeof SummaryType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SummaryType = {
-  bullets: 'bullets',
-  bullets_verbose: 'bullets_verbose',
-  gist: 'gist',
-  headline: 'headline',
-  paragraph: 'paragraph',
-} as const;
+  bullets: "bullets",
+  bullets_verbose: "bullets_verbose",
+  gist: "gist",
+  headline: "headline",
+  paragraph: "paragraph"
+} as const

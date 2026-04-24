@@ -11,5 +11,5 @@
  */
 export interface SpeakV1Request {
   /** The text content to be converted to speech */
-  text: string;
+  text: string
 }

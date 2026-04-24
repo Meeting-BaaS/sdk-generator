@@ -6,12 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ListenPostParametersRedactSchemaOneOf1Items = typeof V1ListenPostParametersRedactSchemaOneOf1Items[keyof typeof V1ListenPostParametersRedactSchemaOneOf1Items];
-
+export type V1ListenPostParametersRedactSchemaOneOf1Items =
+  (typeof V1ListenPostParametersRedactSchemaOneOf1Items)[keyof typeof V1ListenPostParametersRedactSchemaOneOf1Items]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ListenPostParametersRedactSchemaOneOf1Items = {
-  pci: 'pci',
-  pii: 'pii',
-  numbers: 'numbers',
-} as const;
+  pci: "pci",
+  pii: "pii",
+  numbers: "numbers"
+} as const

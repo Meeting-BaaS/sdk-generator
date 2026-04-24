@@ -9,14 +9,14 @@
 /**
  * Encoding - linear16. Supported sample rates - 8000, 16000, 24000, 32000, 48000 Hz.
  */
-export type V1SpeakPostParametersSampleRate0 = typeof V1SpeakPostParametersSampleRate0[keyof typeof V1SpeakPostParametersSampleRate0];
-
+export type V1SpeakPostParametersSampleRate0 =
+  (typeof V1SpeakPostParametersSampleRate0)[keyof typeof V1SpeakPostParametersSampleRate0]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersSampleRate0 = {
-  NUMBER_8000: '8000',
-  NUMBER_16000: '16000',
-  NUMBER_24000: '24000',
-  NUMBER_32000: '32000',
-  NUMBER_48000: '48000',
-} as const;
+  NUMBER_8000: "8000",
+  NUMBER_16000: "16000",
+  NUMBER_24000: "24000",
+  NUMBER_32000: "32000",
+  NUMBER_48000: "48000"
+} as const

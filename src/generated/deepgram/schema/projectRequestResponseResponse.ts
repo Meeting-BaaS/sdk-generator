@@ -9,4 +9,6 @@
 /**
  * The response of the request
  */
-export interface ProjectRequestResponseResponse { [key: string]: unknown }
+export interface ProjectRequestResponseResponse {
+  [key: string]: unknown
+}

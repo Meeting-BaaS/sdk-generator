@@ -7,11 +7,11 @@
  */
 
 export interface GetModelV1ResponseOneOf1Metadata {
-  accent?: string;
-  age?: string;
-  color?: string;
-  image?: string;
-  sample?: string;
-  tags?: string[];
-  use_cases?: string[];
+  accent?: string
+  age?: string
+  color?: string
+  image?: string
+  sample?: string
+  tags?: string[]
+  use_cases?: string[]
 }

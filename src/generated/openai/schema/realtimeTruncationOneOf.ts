@@ -5,22 +5,23 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeTruncationOneOfType } from './realtimeTruncationOneOfType';
-import type { RealtimeTruncationOneOfTokenLimits } from './realtimeTruncationOneOfTokenLimits';
+
+import type { RealtimeTruncationOneOfTokenLimits } from "./realtimeTruncationOneOfTokenLimits"
+import type { RealtimeTruncationOneOfType } from "./realtimeTruncationOneOfType"
 
 /**
  * Retain a fraction of the conversation tokens when the conversation exceeds the input token limit. This allows you to amortize truncations across multiple turns, which can help improve cached token usage.
  */
 export type RealtimeTruncationOneOf = {
   /** Use retention ratio truncation. */
-  type: RealtimeTruncationOneOfType;
+  type: RealtimeTruncationOneOfType
   /**
    * Fraction of post-instruction conversation tokens to retain (`0.0` - `1.0`) when the conversation exceeds the input token limit. Setting this to `0.8` means that messages will be dropped until 80% of the maximum allowed tokens are used. This helps reduce the frequency of truncations and improve cache rates.
 
    * @minimum 0
    * @maximum 1
    */
-  retention_ratio: number;
+  retention_ratio: number
   /** Optional custom token limits for this truncation strategy. If not provided, the model's default token limits will be used. */
-  token_limits?: RealtimeTruncationOneOfTokenLimits;
-};
+  token_limits?: RealtimeTruncationOneOfTokenLimits
+}

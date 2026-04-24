@@ -11,4 +11,4 @@
 filtering in the Traces Dashboard.
 
  */
-export type RealtimeSessionCreateRequestGATracingOneOfMetadata = { [key: string]: unknown };
+export type RealtimeSessionCreateRequestGATracingOneOfMetadata = { [key: string]: unknown }

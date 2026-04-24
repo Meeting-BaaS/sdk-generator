@@ -5,25 +5,26 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptWord } from './transcriptWord';
-import type { TranscriptUtteranceChannel } from './transcriptUtteranceChannel';
-import type { TranscriptUtteranceTranslatedTexts } from './transcriptUtteranceTranslatedTexts';
+
+import type { TranscriptUtteranceChannel } from "./transcriptUtteranceChannel"
+import type { TranscriptUtteranceTranslatedTexts } from "./transcriptUtteranceTranslatedTexts"
+import type { TranscriptWord } from "./transcriptWord"
 
 export interface TranscriptUtterance {
   /** The confidence score for the transcript of this utterance */
-  confidence: number;
+  confidence: number
   /** The starting time, in milliseconds, of the utterance in the audio file */
-  start: number;
+  start: number
   /** The ending time, in milliseconds, of the utterance in the audio file */
-  end: number;
+  end: number
   /** The text for this utterance */
-  text: string;
+  text: string
   /** The words in the utterance. */
-  words: TranscriptWord[];
+  words: TranscriptWord[]
   /** The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially. */
-  channel?: TranscriptUtteranceChannel;
+  channel?: TranscriptUtteranceChannel
   /** The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc. */
-  speaker: string;
+  speaker: string
   /** Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation. */
-  translated_texts?: TranscriptUtteranceTranslatedTexts;
+  translated_texts?: TranscriptUtteranceTranslatedTexts
 }

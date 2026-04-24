@@ -5,19 +5,20 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { InputImageContentType } from './inputImageContentType';
-import type { InputImageContentImageUrl } from './inputImageContentImageUrl';
-import type { InputImageContentFileId } from './inputImageContentFileId';
-import type { ImageDetail } from './imageDetail';
+
+import type { ImageDetail } from "./imageDetail"
+import type { InputImageContentFileId } from "./inputImageContentFileId"
+import type { InputImageContentImageUrl } from "./inputImageContentImageUrl"
+import type { InputImageContentType } from "./inputImageContentType"
 
 /**
  * An image input to the model. Learn about [image inputs](/docs/guides/vision).
  */
 export interface InputImageContent {
   /** The type of the input item. Always `input_image`. */
-  type: InputImageContentType;
-  image_url?: InputImageContentImageUrl;
-  file_id?: InputImageContentFileId;
+  type: InputImageContentType
+  image_url?: InputImageContentImageUrl
+  file_id?: InputImageContentFileId
   /** The detail level of the image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to `auto`. */
-  detail: ImageDetail;
+  detail: ImageDetail
 }

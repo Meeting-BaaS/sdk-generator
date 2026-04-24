@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type V1ReadPostParametersCallbackMethod = typeof V1ReadPostParametersCallbackMethod[keyof typeof V1ReadPostParametersCallbackMethod];
-
+export type V1ReadPostParametersCallbackMethod =
+  (typeof V1ReadPostParametersCallbackMethod)[keyof typeof V1ReadPostParametersCallbackMethod]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ReadPostParametersCallbackMethod = {
-  POST: 'POST',
-  PUT: 'PUT',
-} as const;
+  POST: "POST",
+  PUT: "PUT"
+} as const

@@ -9,10 +9,10 @@
 /**
  * Use the latest version of a model
  */
-export type V1ListenPostParametersVersion0 = typeof V1ListenPostParametersVersion0[keyof typeof V1ListenPostParametersVersion0];
-
+export type V1ListenPostParametersVersion0 =
+  (typeof V1ListenPostParametersVersion0)[keyof typeof V1ListenPostParametersVersion0]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1ListenPostParametersVersion0 = {
-  latest: 'latest',
-} as const;
+  latest: "latest"
+} as const

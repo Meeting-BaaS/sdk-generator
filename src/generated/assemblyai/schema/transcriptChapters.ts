@@ -5,9 +5,9 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { Chapter } from './chapter';
+import type { Chapter } from "./chapter"
 
 /**
- * An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for more information.
+ * An array of temporally sequential chapters for the audio file. See [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/create-summarized-chapters) for more information.
  */
-export type TranscriptChapters = Chapter[] | null;
+export type TranscriptChapters = Chapter[] | null

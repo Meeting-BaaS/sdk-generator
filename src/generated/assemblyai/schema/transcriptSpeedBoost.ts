@@ -9,4 +9,4 @@
 /**
  * This parameter does not currently have any functionality attached to it.
  */
-export type TranscriptSpeedBoost = boolean | null;
+export type TranscriptSpeedBoost = boolean | null

@@ -9,10 +9,10 @@
 /**
  * No container.
  */
-export type V1SpeakPostParametersContainer0 = typeof V1SpeakPostParametersContainer0[keyof typeof V1SpeakPostParametersContainer0];
-
+export type V1SpeakPostParametersContainer0 =
+  (typeof V1SpeakPostParametersContainer0)[keyof typeof V1SpeakPostParametersContainer0]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersContainer0 = {
-  none: 'none',
-} as const;
+  none: "none"
+} as const

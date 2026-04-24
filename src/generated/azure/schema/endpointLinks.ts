@@ -8,18 +8,18 @@
 
 export interface EndpointLinks {
   /** The REST endpoint for short requests up to 15 seconds. */
-  readonly restInteractive?: string;
+  readonly restInteractive?: string
   /** The REST endpoint for requests up to 60 seconds. */
-  readonly restConversation?: string;
+  readonly restConversation?: string
   /** The REST endpoint for requests up to 60 seconds, supporting dictation of punctuation marks. */
-  readonly restDictation?: string;
+  readonly restDictation?: string
   /** The Speech SDK endpoint for short requests up to 15 seconds with a single final result. */
-  readonly webSocketInteractive?: string;
+  readonly webSocketInteractive?: string
   /** The Speech SDK endpoint for long requests with multiple final results. */
-  readonly webSocketConversation?: string;
+  readonly webSocketConversation?: string
   /** The Speech SDK endpoint for long requests with multiple final results, supporting dictation of
 punctuation marks. */
-  readonly webSocketDictation?: string;
+  readonly webSocketDictation?: string
   /** The audio and transcription logs for this endpoint.  See operation "Endpoints_ListLogs" for more details. */
-  readonly logs?: string;
+  readonly logs?: string
 }

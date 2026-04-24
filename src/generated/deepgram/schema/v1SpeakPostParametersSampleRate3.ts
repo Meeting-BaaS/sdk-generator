@@ -9,10 +9,10 @@
 /**
  * Encoding - mp3. Sample rate is fixed and not configurable (22050 Hz).
  */
-export type V1SpeakPostParametersSampleRate3 = typeof V1SpeakPostParametersSampleRate3[keyof typeof V1SpeakPostParametersSampleRate3];
-
+export type V1SpeakPostParametersSampleRate3 =
+  (typeof V1SpeakPostParametersSampleRate3)[keyof typeof V1SpeakPostParametersSampleRate3]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersSampleRate3 = {
-  NUMBER_22050: '22050',
-} as const;
+  NUMBER_22050: "22050"
+} as const

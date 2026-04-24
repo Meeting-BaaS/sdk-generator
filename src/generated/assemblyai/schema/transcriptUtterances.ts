@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptUtterance } from './transcriptUtterance';
+import type { TranscriptUtterance } from "./transcriptUtterance"
 
 /**
  * When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
-See [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/multichannel) for more information.
+See [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) for more information.
 
  */
-export type TranscriptUtterances = TranscriptUtterance[] | null;
+export type TranscriptUtterances = TranscriptUtterance[] | null

@@ -7,9 +7,9 @@
 
 export interface AddonErrorDTO {
   /** Status code of the addon error */
-  status_code: number;
+  status_code: number
   /** Reason of the addon error */
-  exception: string;
+  exception: string
   /** Detailed message of the addon error */
-  message: string;
+  message: string
 }

@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { RedactedAudioStatus } from './redactedAudioStatus';
+import type { RedactedAudioStatus } from "./redactedAudioStatus"
 
 export interface RedactedAudioResponse {
   /** The status of the redacted audio */
-  status: RedactedAudioStatus;
+  status: RedactedAudioStatus
   /** The URL of the redacted audio file */
-  redacted_audio_url: string;
+  redacted_audio_url: string
 }

@@ -5,24 +5,25 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { InputFileContentType } from './inputFileContentType';
-import type { InputFileContentFileId } from './inputFileContentFileId';
-import type { FileInputDetail } from './fileInputDetail';
+
+import type { FileInputDetail } from "./fileInputDetail"
+import type { InputFileContentFileId } from "./inputFileContentFileId"
+import type { InputFileContentType } from "./inputFileContentType"
 
 /**
  * A file input to the model.
  */
 export interface InputFileContent {
   /** The type of the input item. Always `input_file`. */
-  type: InputFileContentType;
-  file_id?: InputFileContentFileId;
+  type: InputFileContentType
+  file_id?: InputFileContentFileId
   /** The name of the file to be sent to the model. */
-  filename?: string;
+  filename?: string
   /** The content of the file to be sent to the model.
- */
-  file_data?: string;
+   */
+  file_data?: string
   /** The URL of the file to be sent to the model. */
-  file_url?: string;
+  file_url?: string
   /** The detail level of the file to be sent to the model. Use `low` for the default rendering behavior, or `high` to render the file at higher quality. Defaults to `low`. */
-  detail?: FileInputDetail;
+  detail?: FileInputDetail
 }

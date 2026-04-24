@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { CustomFormattingRequestBodyCustomFormatting } from './customFormattingRequestBodyCustomFormatting';
+import type { CustomFormattingRequestBodyCustomFormatting } from "./customFormattingRequestBodyCustomFormatting"
 
 /**
  * Request body for [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting).
  */
 export interface CustomFormattingRequestBody {
-  custom_formatting: CustomFormattingRequestBodyCustomFormatting;
+  custom_formatting: CustomFormattingRequestBodyCustomFormatting
 }

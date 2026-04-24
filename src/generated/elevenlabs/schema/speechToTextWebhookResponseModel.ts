@@ -5,13 +5,13 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { SpeechToTextWebhookResponseModelTranscriptionId } from './speechToTextWebhookResponseModelTranscriptionId';
+import type { SpeechToTextWebhookResponseModelTranscriptionId } from "./speechToTextWebhookResponseModelTranscriptionId"
 
 export interface SpeechToTextWebhookResponseModel {
   /** The message of the webhook response. */
-  message: string;
+  message: string
   /** The request ID of the webhook response. */
-  request_id: string;
+  request_id: string
   /** The transcription ID of the webhook response. */
-  transcription_id?: SpeechToTextWebhookResponseModelTranscriptionId;
+  transcription_id?: SpeechToTextWebhookResponseModelTranscriptionId
 }

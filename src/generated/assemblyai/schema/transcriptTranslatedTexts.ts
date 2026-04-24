@@ -11,5 +11,5 @@
  */
 export interface TranscriptTranslatedTexts {
   /** Translated text for this language code */
-  language_code?: string;
+  language_code?: string
 }

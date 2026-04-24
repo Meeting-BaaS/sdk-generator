@@ -5,17 +5,17 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { TranscriptWord } from './transcriptWord';
+import type { TranscriptWord } from "./transcriptWord"
 
 export interface TranscriptParagraph {
   /** The transcript of the paragraph */
-  text: string;
+  text: string
   /** The starting time, in milliseconds, of the paragraph */
-  start: number;
+  start: number
   /** The ending time, in milliseconds, of the paragraph */
-  end: number;
+  end: number
   /** The confidence score for the transcript of this paragraph */
-  confidence: number;
+  confidence: number
   /** An array of words in the paragraph */
-  words: TranscriptWord[];
+  words: TranscriptWord[]
 }

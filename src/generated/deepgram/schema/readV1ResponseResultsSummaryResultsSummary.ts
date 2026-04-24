@@ -7,5 +7,5 @@
  */
 
 export interface ReadV1ResponseResultsSummaryResultsSummary {
-  text?: string;
+  text?: string
 }

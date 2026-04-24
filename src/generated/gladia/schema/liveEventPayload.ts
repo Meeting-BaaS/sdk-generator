@@ -7,5 +7,5 @@
 
 export interface LiveEventPayload {
   /** Id of the job */
-  id: string;
+  id: string
 }

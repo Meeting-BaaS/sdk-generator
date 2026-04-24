@@ -5,273 +5,880 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import {
-  z as zod
-} from 'zod';
+import { z as zod } from "zod"
 
 /**
  * Transcribe an audio or video file. If webhook is set to true, the request will be processed asynchronously and results sent to configured webhooks. When use_multi_channel is true and the provided audio has multiple channels, a 'transcripts' object with separate transcripts for each channel is returned. Otherwise, returns a single transcript. The optional webhook_metadata parameter allows you to attach custom data that will be included in webhook responses for request correlation and tracking.
  * @summary Speech To Text
  */
-export const speechToTextQueryEnableLoggingDefault = true;
+export const speechToTextQueryEnableLoggingDefault = true
 
 export const speechToTextQueryParams = zod.object({
-  "enable_logging": zod.boolean().default(speechToTextQueryEnableLoggingDefault).describe('When enable_logging is set to false zero retention mode will be used for the request. This will mean log and transcript storage features are unavailable for this request. Zero retention mode may only be used by enterprise customers.')
+  enable_logging: zod
+    .boolean()
+    .default(speechToTextQueryEnableLoggingDefault)
+    .describe(
+      "When enable_logging is set to false zero retention mode will be used for the request. This will mean log and transcript storage features are unavailable for this request. Zero retention mode may only be used by enterprise customers."
+    )
 })
 
 export const speechToTextHeader = zod.object({
-  "xi-api-key": zod.string().or(zod.null()).optional().describe('Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the \'Profile\' tab on the website.')
+  "xi-api-key": zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website."
+    )
 })
 
-export const speechToTextBodyTagAudioEventsDefault = true;export const speechToTextBodyNumSpeakersMaxOne = 32;
-export const speechToTextBodyTimestampsGranularityDefault = "word";export const speechToTextBodyDiarizeDefault = false;export const speechToTextBodyDiarizationThresholdMinOne = 0.1;
-export const speechToTextBodyDiarizationThresholdMaxOne = 0.4;
-export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefault = true;export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefault = true;export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultOne = true;export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultOne = true;export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultTwo = true;export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultTwo = true;export const speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefault = 100;export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultThree = true;export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultThree = true;export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultFour = true;export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFour = true;export const speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefaultThree = 42;export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultFive = false;export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFive = true;export const speechToTextBodyAdditionalFormatsItemSegmentOnSilenceLongerThanSDefaultOnefive = 0.8;export const speechToTextBodyAdditionalFormatsItemMaxSegmentDurationSDefaultOnefive = 4;export const speechToTextBodyAdditionalFormatsItemMaxSegmentCharsDefaultOnefive = 84;export const speechToTextBodyAdditionalFormatsMax = 10;
-export const speechToTextBodyFileFormatDefault = "other";export const speechToTextBodyWebhookDefault = false;export const speechToTextBodyTemperatureMinOne = 0;
-export const speechToTextBodyTemperatureMaxOne = 2;
-export const speechToTextBodySeedMinOne = 0;
-export const speechToTextBodySeedMaxOne = 2147483647;
-export const speechToTextBodyUseMultiChannelDefault = false;export const speechToTextBodyNoVerbatimDefault = false;export const speechToTextBodyDetectSpeakerRolesDefault = false;export const speechToTextBodyEntityRedactionModeDefault = "enumerated_entity_type";export const speechToTextBodyKeytermsDefault = [];
+export const speechToTextBodyTagAudioEventsDefault = true
+export const speechToTextBodyNumSpeakersMaxOne = 32
+export const speechToTextBodyTimestampsGranularityDefault = "word"
+export const speechToTextBodyDiarizeDefault = false
+export const speechToTextBodyDiarizationThresholdMinOne = 0.1
+export const speechToTextBodyDiarizationThresholdMaxOne = 0.4
+export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefault = true
+export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefault = true
+export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultOne = true
+export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultOne = true
+export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultTwo = true
+export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultTwo = true
+export const speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefault = 100
+export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultThree = true
+export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultThree = true
+export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultFour = true
+export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFour = true
+export const speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefaultThree = 42
+export const speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultFive = false
+export const speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFive = true
+export const speechToTextBodyAdditionalFormatsItemSegmentOnSilenceLongerThanSDefaultOnefive = 0.8
+export const speechToTextBodyAdditionalFormatsItemMaxSegmentDurationSDefaultOnefive = 4
+export const speechToTextBodyAdditionalFormatsItemMaxSegmentCharsDefaultOnefive = 84
+export const speechToTextBodyAdditionalFormatsMax = 10
+export const speechToTextBodyFileFormatDefault = "other"
+export const speechToTextBodyWebhookDefault = false
+export const speechToTextBodyTemperatureMinOne = 0
+export const speechToTextBodyTemperatureMaxOne = 2
+export const speechToTextBodySeedMinOne = 0
+export const speechToTextBodySeedMaxOne = 2147483647
+export const speechToTextBodyUseMultiChannelDefault = false
+export const speechToTextBodyNoVerbatimDefault = false
+export const speechToTextBodyDetectSpeakerRolesDefault = false
+export const speechToTextBodyEntityRedactionModeDefault = "enumerated_entity_type"
+export const speechToTextBodyKeytermsDefault = []
 
 export const speechToTextBody = zod.object({
-  "model_id": zod.enum(['scribe_v1', 'scribe_v2']).describe('The ID of the model to use for transcription.'),
-  "file": zod.instanceof(File).or(zod.null()).optional().describe('The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB.'),
-  "language_code": zod.string().or(zod.null()).optional().describe('An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically.'),
-  "tag_audio_events": zod.boolean().default(speechToTextBodyTagAudioEventsDefault).describe('Whether to tag audio events like (laughter), (footsteps), etc. in the transcription.'),
-  "num_speakers": zod.number().min(1).max(speechToTextBodyNumSpeakersMaxOne).or(zod.null()).optional().describe('The maximum amount of speakers talking in the uploaded file. Can help with predicting who speaks when. The maximum amount of speakers that can be predicted is 32. Defaults to null, in this case the amount of speakers is set to the maximum value the model supports.'),
-  "timestamps_granularity": zod.enum(['none', 'word', 'character']).default(speechToTextBodyTimestampsGranularityDefault).describe('The granularity of the timestamps in the transcription. \'word\' provides word-level timestamps and \'character\' provides character-level timestamps per word.'),
-  "diarize": zod.boolean().optional().describe('Whether to annotate which speaker is currently talking in the uploaded file.'),
-  "diarization_threshold": zod.number().min(speechToTextBodyDiarizationThresholdMinOne).max(speechToTextBodyDiarizationThresholdMaxOne).or(zod.null()).optional().describe('Diarization threshold to apply during speaker diarization. A higher value means there will be a lower chance of one speaker being diarized as two different speakers but also a higher chance of two different speakers being diarized as one speaker (less total speakers predicted). A low value means there will be a higher chance of one speaker being diarized as two different speakers but also a lower chance of two different speakers being diarized as one speaker (more total speakers predicted). Can only be set when diarize=True and num_speakers=None. Defaults to None, in which case we will choose a threshold based on the model_id (0.22 usually).'),
-  "additional_formats": zod.array(zod.discriminatedUnion('format', [zod.object({
-  "include_speakers": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefault),
-  "include_timestamps": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefault),
-  "format": zod.enum(['segmented_json']),
-  "segment_on_silence_longer_than_s": zod.number().or(zod.null()).optional(),
-  "max_segment_duration_s": zod.number().or(zod.null()).optional(),
-  "max_segment_chars": zod.number().or(zod.null()).optional()
-}),zod.object({
-  "include_speakers": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultOne),
-  "include_timestamps": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultOne),
-  "format": zod.enum(['docx']),
-  "segment_on_silence_longer_than_s": zod.number().or(zod.null()).optional(),
-  "max_segment_duration_s": zod.number().or(zod.null()).optional(),
-  "max_segment_chars": zod.number().or(zod.null()).optional()
-}),zod.object({
-  "include_speakers": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultTwo),
-  "include_timestamps": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultTwo),
-  "format": zod.enum(['pdf']),
-  "segment_on_silence_longer_than_s": zod.number().or(zod.null()).optional(),
-  "max_segment_duration_s": zod.number().or(zod.null()).optional(),
-  "max_segment_chars": zod.number().or(zod.null()).optional()
-}),zod.object({
-  "max_characters_per_line": zod.number().or(zod.null()).default(speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefault),
-  "include_speakers": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultThree),
-  "include_timestamps": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultThree),
-  "format": zod.enum(['txt']),
-  "segment_on_silence_longer_than_s": zod.number().or(zod.null()).optional(),
-  "max_segment_duration_s": zod.number().or(zod.null()).optional(),
-  "max_segment_chars": zod.number().or(zod.null()).optional()
-}),zod.object({
-  "include_speakers": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultFour),
-  "include_timestamps": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFour),
-  "format": zod.enum(['html']),
-  "segment_on_silence_longer_than_s": zod.number().or(zod.null()).optional(),
-  "max_segment_duration_s": zod.number().or(zod.null()).optional(),
-  "max_segment_chars": zod.number().or(zod.null()).optional()
-}),zod.object({
-  "max_characters_per_line": zod.number().or(zod.null()).default(speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefaultThree),
-  "include_speakers": zod.boolean().optional(),
-  "include_timestamps": zod.boolean().default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFive),
-  "format": zod.enum(['srt']),
-  "segment_on_silence_longer_than_s": zod.number().or(zod.null()).default(speechToTextBodyAdditionalFormatsItemSegmentOnSilenceLongerThanSDefaultOnefive),
-  "max_segment_duration_s": zod.number().or(zod.null()).default(speechToTextBodyAdditionalFormatsItemMaxSegmentDurationSDefaultOnefive),
-  "max_segment_chars": zod.number().or(zod.null()).default(speechToTextBodyAdditionalFormatsItemMaxSegmentCharsDefaultOnefive)
-})])).max(speechToTextBodyAdditionalFormatsMax).optional(),
-  "file_format": zod.enum(['pcm_s16le_16', 'other']).default(speechToTextBodyFileFormatDefault).describe('The format of input audio. Options are \'pcm_s16le_16\' or \'other\' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform.'),
-  "cloud_storage_url": zod.string().or(zod.null()).optional().describe('The HTTPS URL of the file to transcribe. Exactly one of the file or cloud_storage_url parameters must be provided. The file must be accessible via HTTPS and the file size must be less than 2GB. Any valid HTTPS URL is accepted, including URLs from cloud storage providers (AWS S3, Google Cloud Storage, Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs can be pre-signed or include authentication tokens in query parameters.'),
-  "source_url": zod.string().or(zod.null()).optional().describe('The URL of an audio or video file to transcribe. Supports hosted video or audio files, YouTube video URLs, TikTok video URLs, and other video hosting services.'),
-  "webhook": zod.boolean().optional().describe('Whether to send the transcription result to configured speech-to-text webhooks.  If set the request will return early without the transcription, which will be delivered later via webhook.'),
-  "webhook_id": zod.string().or(zod.null()).optional().describe('Optional specific webhook ID to send the transcription result to. Only valid when webhook is set to true. If not provided, transcription will be sent to all configured speech-to-text webhooks.'),
-  "temperature": zod.number().min(speechToTextBodyTemperatureMinOne).max(speechToTextBodyTemperatureMaxOne).or(zod.null()).optional().describe('Controls the randomness of the transcription output. Accepts values between 0.0 and 2.0, where higher values result in more diverse and less deterministic results. If omitted, we will use a temperature based on the model you selected which is usually 0.'),
-  "seed": zod.number().min(speechToTextBodySeedMinOne).max(speechToTextBodySeedMaxOne).or(zod.null()).optional().describe('If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be an integer between 0 and 2147483647.'),
-  "use_multi_channel": zod.boolean().optional().describe('Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel will be transcribed independently and the results will be combined. Each word in the response will include a \'channel_index\' field indicating which channel it was spoken on. A maximum of 5 channels is supported. Each channel is billed independently at the full audio duration, so cost scales linearly with the number of channels.'),
-  "webhook_metadata": zod.string().or(zod.record(zod.string(), zod.any())).or(zod.null()).optional().describe('Optional metadata to be included in the webhook response. This should be a JSON string representing an object with a maximum depth of 2 levels and maximum size of 16KB. Useful for tracking internal IDs, job references, or other contextual information.'),
-  "entity_detection": zod.string().or(zod.array(zod.string())).or(zod.null()).optional().describe('Detect entities in the transcript. Can be \'all\' to detect all entities, a single entity type or category string, or a list of entity types/categories. Categories include \'pii\', \'phi\', \'pci\', \'other\', \'offensive_language\'. When enabled, detected entities will be returned in the \'entities\' field with their text, type, and character positions. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost.'),
-  "no_verbatim": zod.boolean().optional().describe('If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model.'),
-  "detect_speaker_roles": zod.boolean().optional().describe('Whether to detect speaker roles (agent vs customer). Requires diarize=true. Cannot be used with use_multi_channel=true. When enabled, speaker_id values will be \'agent\' and \'customer\' instead of \'speaker_0\', \'speaker_1\', etc. Usage incurs an additional 10% surcharge on base transcription cost.'),
-  "entity_redaction": zod.string().or(zod.array(zod.string())).or(zod.null()).optional().describe('Redact entities from the transcript text. Accepts the same format as entity_detection: \'all\', a category (\'pii\', \'phi\'), or specific entity types. Must be a subset of entity_detection. When redaction is enabled, the entities field will not be returned. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost.'),
-  "entity_redaction_mode": zod.string().default(speechToTextBodyEntityRedactionModeDefault).describe('How to format redacted entities. \'redacted\' replaces with {REDACTED}, \'entity_type\' replaces with {ENTITY_TYPE}, \'enumerated_entity_type\' replaces with {ENTITY_TYPE_N} where N enumerates each occurrence. Only used when entity_redaction is set.'),
-  "keyterms": zod.array(zod.string()).default(speechToTextBodyKeytermsDefault).describe('A list of keyterms to bias the transcription towards.           The keyterms are words or phrases you want the model to recognise more accurately.           The number of keyterms cannot exceed 1000.           The length of each keyterm must be less than 50 characters.           Keyterms can contain at most 5 words (after normalisation).           For example [\"hello\", \"world\", \"technical term\"].           Usage of this parameter will incur an additional 20% surcharge on the base transcription cost.           When more than 100 keyterms are provided, a minimum billable duration of 20 seconds applies per request.')
+  model_id: zod
+    .enum(["scribe_v1", "scribe_v2"])
+    .describe("The ID of the model to use for transcription."),
+  file: zod
+    .instanceof(File)
+    .or(zod.null())
+    .optional()
+    .describe(
+      "The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 3.0GB."
+    ),
+  language_code: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically."
+    ),
+  tag_audio_events: zod
+    .boolean()
+    .default(speechToTextBodyTagAudioEventsDefault)
+    .describe(
+      "Whether to tag audio events like (laughter), (footsteps), etc. in the transcription."
+    ),
+  num_speakers: zod
+    .number()
+    .min(1)
+    .max(speechToTextBodyNumSpeakersMaxOne)
+    .or(zod.null())
+    .optional()
+    .describe(
+      "The maximum amount of speakers talking in the uploaded file. Can help with predicting who speaks when. The maximum amount of speakers that can be predicted is 32. Defaults to null, in this case the amount of speakers is set to the maximum value the model supports."
+    ),
+  timestamps_granularity: zod
+    .enum(["none", "word", "character"])
+    .default(speechToTextBodyTimestampsGranularityDefault)
+    .describe(
+      "The granularity of the timestamps in the transcription. 'word' provides word-level timestamps and 'character' provides character-level timestamps per word."
+    ),
+  diarize: zod
+    .boolean()
+    .optional()
+    .describe("Whether to annotate which speaker is currently talking in the uploaded file."),
+  diarization_threshold: zod
+    .number()
+    .min(speechToTextBodyDiarizationThresholdMinOne)
+    .max(speechToTextBodyDiarizationThresholdMaxOne)
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Diarization threshold to apply during speaker diarization. A higher value means there will be a lower chance of one speaker being diarized as two different speakers but also a higher chance of two different speakers being diarized as one speaker (less total speakers predicted). A low value means there will be a higher chance of one speaker being diarized as two different speakers but also a lower chance of two different speakers being diarized as one speaker (more total speakers predicted). Can only be set when diarize=True and num_speakers=None. Defaults to None, in which case we will choose a threshold based on the model_id (0.22 usually)."
+    ),
+  additional_formats: zod
+    .array(
+      zod.discriminatedUnion("format", [
+        zod.object({
+          include_speakers: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefault),
+          include_timestamps: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefault),
+          format: zod.enum(["segmented_json"]),
+          segment_on_silence_longer_than_s: zod.number().or(zod.null()).optional(),
+          max_segment_duration_s: zod.number().or(zod.null()).optional(),
+          max_segment_chars: zod.number().or(zod.null()).optional()
+        }),
+        zod.object({
+          include_speakers: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultOne),
+          include_timestamps: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultOne),
+          format: zod.enum(["docx"]),
+          segment_on_silence_longer_than_s: zod.number().or(zod.null()).optional(),
+          max_segment_duration_s: zod.number().or(zod.null()).optional(),
+          max_segment_chars: zod.number().or(zod.null()).optional()
+        }),
+        zod.object({
+          include_speakers: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultTwo),
+          include_timestamps: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultTwo),
+          format: zod.enum(["pdf"]),
+          segment_on_silence_longer_than_s: zod.number().or(zod.null()).optional(),
+          max_segment_duration_s: zod.number().or(zod.null()).optional(),
+          max_segment_chars: zod.number().or(zod.null()).optional()
+        }),
+        zod.object({
+          max_characters_per_line: zod
+            .number()
+            .or(zod.null())
+            .default(speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefault),
+          include_speakers: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultThree),
+          include_timestamps: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultThree),
+          format: zod.enum(["txt"]),
+          segment_on_silence_longer_than_s: zod.number().or(zod.null()).optional(),
+          max_segment_duration_s: zod.number().or(zod.null()).optional(),
+          max_segment_chars: zod.number().or(zod.null()).optional()
+        }),
+        zod.object({
+          include_speakers: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeSpeakersDefaultFour),
+          include_timestamps: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFour),
+          format: zod.enum(["html"]),
+          segment_on_silence_longer_than_s: zod.number().or(zod.null()).optional(),
+          max_segment_duration_s: zod.number().or(zod.null()).optional(),
+          max_segment_chars: zod.number().or(zod.null()).optional()
+        }),
+        zod.object({
+          max_characters_per_line: zod
+            .number()
+            .or(zod.null())
+            .default(speechToTextBodyAdditionalFormatsItemMaxCharactersPerLineDefaultThree),
+          include_speakers: zod.boolean().optional(),
+          include_timestamps: zod
+            .boolean()
+            .default(speechToTextBodyAdditionalFormatsItemIncludeTimestampsDefaultFive),
+          format: zod.enum(["srt"]),
+          segment_on_silence_longer_than_s: zod
+            .number()
+            .or(zod.null())
+            .default(
+              speechToTextBodyAdditionalFormatsItemSegmentOnSilenceLongerThanSDefaultOnefive
+            ),
+          max_segment_duration_s: zod
+            .number()
+            .or(zod.null())
+            .default(speechToTextBodyAdditionalFormatsItemMaxSegmentDurationSDefaultOnefive),
+          max_segment_chars: zod
+            .number()
+            .or(zod.null())
+            .default(speechToTextBodyAdditionalFormatsItemMaxSegmentCharsDefaultOnefive)
+        })
+      ])
+    )
+    .max(speechToTextBodyAdditionalFormatsMax)
+    .optional(),
+  file_format: zod
+    .enum(["pcm_s16le_16", "other"])
+    .default(speechToTextBodyFileFormatDefault)
+    .describe(
+      "The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform."
+    ),
+  cloud_storage_url: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "The HTTPS URL of the file to transcribe. Exactly one of the file or cloud_storage_url parameters must be provided. The file must be accessible via HTTPS and the file size must be less than 2GB. Any valid HTTPS URL is accepted, including URLs from cloud storage providers (AWS S3, Google Cloud Storage, Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs can be pre-signed or include authentication tokens in query parameters."
+    ),
+  source_url: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "The URL of an audio or video file to transcribe. Supports hosted video or audio files, YouTube video URLs, TikTok video URLs, and other video hosting services."
+    ),
+  webhook: zod
+    .boolean()
+    .optional()
+    .describe(
+      "Whether to send the transcription result to configured speech-to-text webhooks.  If set the request will return early without the transcription, which will be delivered later via webhook."
+    ),
+  webhook_id: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Optional specific webhook ID to send the transcription result to. Only valid when webhook is set to true. If not provided, transcription will be sent to all configured speech-to-text webhooks."
+    ),
+  temperature: zod
+    .number()
+    .min(speechToTextBodyTemperatureMinOne)
+    .max(speechToTextBodyTemperatureMaxOne)
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Controls the randomness of the transcription output. Accepts values between 0.0 and 2.0, where higher values result in more diverse and less deterministic results. If omitted, we will use a temperature based on the model you selected which is usually 0."
+    ),
+  seed: zod
+    .number()
+    .min(speechToTextBodySeedMinOne)
+    .max(speechToTextBodySeedMaxOne)
+    .or(zod.null())
+    .optional()
+    .describe(
+      "If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be an integer between 0 and 2147483647."
+    ),
+  use_multi_channel: zod
+    .boolean()
+    .optional()
+    .describe(
+      "Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel will be transcribed independently and the results will be combined. Each word in the response will include a 'channel_index' field indicating which channel it was spoken on. A maximum of 5 channels is supported. Each channel is billed independently at the full audio duration, so cost scales linearly with the number of channels."
+    ),
+  webhook_metadata: zod
+    .string()
+    .or(zod.record(zod.string(), zod.any()))
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Optional metadata to be included in the webhook response. This should be a JSON string representing an object with a maximum depth of 2 levels and maximum size of 16KB. Useful for tracking internal IDs, job references, or other contextual information."
+    ),
+  entity_detection: zod
+    .string()
+    .or(zod.array(zod.string()))
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Detect entities in the transcript. Can be 'all' to detect all entities, a single entity type or category string, or a list of entity types/categories. Categories include 'pii', 'phi', 'pci', 'other', 'offensive_language'. When enabled, detected entities will be returned in the 'entities' field with their text, type, and character positions. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost."
+    ),
+  no_verbatim: zod
+    .boolean()
+    .optional()
+    .describe(
+      "If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model."
+    ),
+  detect_speaker_roles: zod
+    .boolean()
+    .optional()
+    .describe(
+      "Whether to detect speaker roles (agent vs customer). Requires diarize=true. Cannot be used with use_multi_channel=true. When enabled, speaker_id values will be 'agent' and 'customer' instead of 'speaker_0', 'speaker_1', etc. Usage incurs an additional 10% surcharge on base transcription cost."
+    ),
+  entity_redaction: zod
+    .string()
+    .or(zod.array(zod.string()))
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Redact entities from the transcript text. Accepts the same format as entity_detection: 'all', a category ('pii', 'phi'), or specific entity types. Must be a subset of entity_detection. When redaction is enabled, the entities field will not be returned. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost."
+    ),
+  entity_redaction_mode: zod
+    .string()
+    .default(speechToTextBodyEntityRedactionModeDefault)
+    .describe(
+      "How to format redacted entities. 'redacted' replaces with {REDACTED}, 'entity_type' replaces with {ENTITY_TYPE}, 'enumerated_entity_type' replaces with {ENTITY_TYPE_N} where N enumerates each occurrence. Only used when entity_redaction is set."
+    ),
+  keyterms: zod
+    .array(zod.string())
+    .default(speechToTextBodyKeytermsDefault)
+    .describe(
+      'A list of keyterms to bias the transcription towards.           The keyterms are words or phrases you want the model to recognise more accurately.           The number of keyterms cannot exceed 1000.           The length of each keyterm must be less than 50 characters.           Keyterms can contain at most 5 words (after normalisation).           For example ["hello", "world", "technical term"].           Usage of this parameter will incur an additional 20% surcharge on the base transcription cost.           When more than 100 keyterms are provided, a minimum billable duration of 20 seconds applies per request.'
+    )
 })
 
-export const speechToTextResponse = zod.object({
-  "language_code": zod.string().describe('The detected language code (e.g. \'eng\' for English).'),
-  "language_probability": zod.number().describe('The confidence score of the language detection (0 to 1).'),
-  "text": zod.string().describe('The raw text of the transcription.'),
-  "words": zod.array(zod.object({
-  "text": zod.string().describe('The word or sound that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the word or sound in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the word or sound in seconds.'),
-  "type": zod.enum(['word', 'spacing', 'audio_event']).describe('The type of the word or sound. \'audio_event\' is used for non-word sounds like laughter or footsteps.'),
-  "speaker_id": zod.string().or(zod.null()).optional().describe('Unique identifier for the speaker of this word.'),
-  "logprob": zod.number().describe('The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.'),
-  "characters": zod.array(zod.object({
-  "text": zod.string().describe('The character that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the character in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the character in seconds.')
-})).or(zod.null()).optional().describe('The characters that make up the word and their timing information.')
-}).describe('Word-level detail of the transcription with timing information.')).describe('List of words with their timing information.'),
-  "channel_index": zod.number().or(zod.null()).optional().describe('The channel index this transcript belongs to (for multichannel audio).'),
-  "additional_formats": zod.array(zod.object({
-  "requested_format": zod.string().describe('The requested format.'),
-  "file_extension": zod.string().describe('The file extension of the additional format.'),
-  "content_type": zod.string().describe('The content type of the additional format.'),
-  "is_base64_encoded": zod.boolean().describe('Whether the content is base64 encoded.'),
-  "content": zod.string().describe('The content of the additional format.')
-}).or(zod.null())).or(zod.null()).optional().describe('Requested additional formats of the transcript.'),
-  "transcription_id": zod.string().or(zod.null()).optional().describe('The transcription ID of the response.'),
-  "entities": zod.array(zod.object({
-  "text": zod.string().describe('The text that was identified as an entity.'),
-  "entity_type": zod.string().describe('The type of entity detected (e.g., \'credit_card\', \'email_address\', \'person_name\').'),
-  "start_char": zod.number().describe('Start character position in the transcript text.'),
-  "end_char": zod.number().describe('End character position in the transcript text.')
-})).or(zod.null()).optional().describe('List of detected entities with their text, type, and character positions in the transcript.'),
-  "audio_duration_secs": zod.number().or(zod.null()).optional().describe('The duration of the audio that was transcribed in seconds.')
-}).describe('Chunk-level detail of the transcription with timing information.').or(zod.object({
-  "transcripts": zod.array(zod.object({
-  "language_code": zod.string().describe('The detected language code (e.g. \'eng\' for English).'),
-  "language_probability": zod.number().describe('The confidence score of the language detection (0 to 1).'),
-  "text": zod.string().describe('The raw text of the transcription.'),
-  "words": zod.array(zod.object({
-  "text": zod.string().describe('The word or sound that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the word or sound in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the word or sound in seconds.'),
-  "type": zod.enum(['word', 'spacing', 'audio_event']).describe('The type of the word or sound. \'audio_event\' is used for non-word sounds like laughter or footsteps.'),
-  "speaker_id": zod.string().or(zod.null()).optional().describe('Unique identifier for the speaker of this word.'),
-  "logprob": zod.number().describe('The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.'),
-  "characters": zod.array(zod.object({
-  "text": zod.string().describe('The character that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the character in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the character in seconds.')
-})).or(zod.null()).optional().describe('The characters that make up the word and their timing information.')
-}).describe('Word-level detail of the transcription with timing information.')).describe('List of words with their timing information.'),
-  "channel_index": zod.number().or(zod.null()).optional().describe('The channel index this transcript belongs to (for multichannel audio).'),
-  "additional_formats": zod.array(zod.object({
-  "requested_format": zod.string().describe('The requested format.'),
-  "file_extension": zod.string().describe('The file extension of the additional format.'),
-  "content_type": zod.string().describe('The content type of the additional format.'),
-  "is_base64_encoded": zod.boolean().describe('Whether the content is base64 encoded.'),
-  "content": zod.string().describe('The content of the additional format.')
-}).or(zod.null())).or(zod.null()).optional().describe('Requested additional formats of the transcript.'),
-  "transcription_id": zod.string().or(zod.null()).optional().describe('The transcription ID of the response.'),
-  "entities": zod.array(zod.object({
-  "text": zod.string().describe('The text that was identified as an entity.'),
-  "entity_type": zod.string().describe('The type of entity detected (e.g., \'credit_card\', \'email_address\', \'person_name\').'),
-  "start_char": zod.number().describe('Start character position in the transcript text.'),
-  "end_char": zod.number().describe('End character position in the transcript text.')
-})).or(zod.null()).optional().describe('List of detected entities with their text, type, and character positions in the transcript.'),
-  "audio_duration_secs": zod.number().or(zod.null()).optional().describe('The duration of the audio that was transcribed in seconds.')
-}).describe('Chunk-level detail of the transcription with timing information.')).describe('List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel.'),
-  "transcription_id": zod.string().or(zod.null()).optional().describe('The transcription ID of the response.'),
-  "audio_duration_secs": zod.number().or(zod.null()).optional().describe('The duration of the audio that was transcribed across all channels in seconds.')
-}).describe('Response model for multichannel speech-to-text transcription.'))
-
+export const speechToTextResponse = zod
+  .object({
+    language_code: zod.string().describe("The detected language code (e.g. 'eng' for English)."),
+    language_probability: zod
+      .number()
+      .describe("The confidence score of the language detection (0 to 1)."),
+    text: zod.string().describe("The raw text of the transcription."),
+    words: zod
+      .array(
+        zod
+          .object({
+            text: zod.string().describe("The word or sound that was transcribed."),
+            start: zod
+              .number()
+              .or(zod.null())
+              .optional()
+              .describe("The start time of the word or sound in seconds."),
+            end: zod
+              .number()
+              .or(zod.null())
+              .optional()
+              .describe("The end time of the word or sound in seconds."),
+            type: zod
+              .enum(["word", "spacing", "audio_event"])
+              .describe(
+                "The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps."
+              ),
+            speaker_id: zod
+              .string()
+              .or(zod.null())
+              .optional()
+              .describe("Unique identifier for the speaker of this word."),
+            logprob: zod
+              .number()
+              .describe(
+                "The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions."
+              ),
+            characters: zod
+              .array(
+                zod.object({
+                  text: zod.string().describe("The character that was transcribed."),
+                  start: zod
+                    .number()
+                    .or(zod.null())
+                    .optional()
+                    .describe("The start time of the character in seconds."),
+                  end: zod
+                    .number()
+                    .or(zod.null())
+                    .optional()
+                    .describe("The end time of the character in seconds.")
+                })
+              )
+              .or(zod.null())
+              .optional()
+              .describe("The characters that make up the word and their timing information.")
+          })
+          .describe("Word-level detail of the transcription with timing information.")
+      )
+      .describe("List of words with their timing information."),
+    channel_index: zod
+      .number()
+      .or(zod.null())
+      .optional()
+      .describe("The channel index this transcript belongs to (for multichannel audio)."),
+    additional_formats: zod
+      .array(
+        zod
+          .object({
+            requested_format: zod.string().describe("The requested format."),
+            file_extension: zod.string().describe("The file extension of the additional format."),
+            content_type: zod.string().describe("The content type of the additional format."),
+            is_base64_encoded: zod.boolean().describe("Whether the content is base64 encoded."),
+            content: zod.string().describe("The content of the additional format.")
+          })
+          .or(zod.null())
+      )
+      .or(zod.null())
+      .optional()
+      .describe("Requested additional formats of the transcript."),
+    transcription_id: zod
+      .string()
+      .or(zod.null())
+      .optional()
+      .describe("The transcription ID of the response."),
+    entities: zod
+      .array(
+        zod.object({
+          text: zod.string().describe("The text that was identified as an entity."),
+          entity_type: zod
+            .string()
+            .describe(
+              "The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name')."
+            ),
+          start_char: zod.number().describe("Start character position in the transcript text."),
+          end_char: zod.number().describe("End character position in the transcript text.")
+        })
+      )
+      .or(zod.null())
+      .optional()
+      .describe(
+        "List of detected entities with their text, type, and character positions in the transcript."
+      ),
+    audio_duration_secs: zod
+      .number()
+      .or(zod.null())
+      .optional()
+      .describe("The duration of the audio that was transcribed in seconds.")
+  })
+  .describe("Chunk-level detail of the transcription with timing information.")
+  .or(
+    zod
+      .object({
+        transcripts: zod
+          .array(
+            zod
+              .object({
+                language_code: zod
+                  .string()
+                  .describe("The detected language code (e.g. 'eng' for English)."),
+                language_probability: zod
+                  .number()
+                  .describe("The confidence score of the language detection (0 to 1)."),
+                text: zod.string().describe("The raw text of the transcription."),
+                words: zod
+                  .array(
+                    zod
+                      .object({
+                        text: zod.string().describe("The word or sound that was transcribed."),
+                        start: zod
+                          .number()
+                          .or(zod.null())
+                          .optional()
+                          .describe("The start time of the word or sound in seconds."),
+                        end: zod
+                          .number()
+                          .or(zod.null())
+                          .optional()
+                          .describe("The end time of the word or sound in seconds."),
+                        type: zod
+                          .enum(["word", "spacing", "audio_event"])
+                          .describe(
+                            "The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps."
+                          ),
+                        speaker_id: zod
+                          .string()
+                          .or(zod.null())
+                          .optional()
+                          .describe("Unique identifier for the speaker of this word."),
+                        logprob: zod
+                          .number()
+                          .describe(
+                            "The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions."
+                          ),
+                        characters: zod
+                          .array(
+                            zod.object({
+                              text: zod.string().describe("The character that was transcribed."),
+                              start: zod
+                                .number()
+                                .or(zod.null())
+                                .optional()
+                                .describe("The start time of the character in seconds."),
+                              end: zod
+                                .number()
+                                .or(zod.null())
+                                .optional()
+                                .describe("The end time of the character in seconds.")
+                            })
+                          )
+                          .or(zod.null())
+                          .optional()
+                          .describe(
+                            "The characters that make up the word and their timing information."
+                          )
+                      })
+                      .describe("Word-level detail of the transcription with timing information.")
+                  )
+                  .describe("List of words with their timing information."),
+                channel_index: zod
+                  .number()
+                  .or(zod.null())
+                  .optional()
+                  .describe(
+                    "The channel index this transcript belongs to (for multichannel audio)."
+                  ),
+                additional_formats: zod
+                  .array(
+                    zod
+                      .object({
+                        requested_format: zod.string().describe("The requested format."),
+                        file_extension: zod
+                          .string()
+                          .describe("The file extension of the additional format."),
+                        content_type: zod
+                          .string()
+                          .describe("The content type of the additional format."),
+                        is_base64_encoded: zod
+                          .boolean()
+                          .describe("Whether the content is base64 encoded."),
+                        content: zod.string().describe("The content of the additional format.")
+                      })
+                      .or(zod.null())
+                  )
+                  .or(zod.null())
+                  .optional()
+                  .describe("Requested additional formats of the transcript."),
+                transcription_id: zod
+                  .string()
+                  .or(zod.null())
+                  .optional()
+                  .describe("The transcription ID of the response."),
+                entities: zod
+                  .array(
+                    zod.object({
+                      text: zod.string().describe("The text that was identified as an entity."),
+                      entity_type: zod
+                        .string()
+                        .describe(
+                          "The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name')."
+                        ),
+                      start_char: zod
+                        .number()
+                        .describe("Start character position in the transcript text."),
+                      end_char: zod
+                        .number()
+                        .describe("End character position in the transcript text.")
+                    })
+                  )
+                  .or(zod.null())
+                  .optional()
+                  .describe(
+                    "List of detected entities with their text, type, and character positions in the transcript."
+                  ),
+                audio_duration_secs: zod
+                  .number()
+                  .or(zod.null())
+                  .optional()
+                  .describe("The duration of the audio that was transcribed in seconds.")
+              })
+              .describe("Chunk-level detail of the transcription with timing information.")
+          )
+          .describe(
+            "List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel."
+          ),
+        transcription_id: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("The transcription ID of the response."),
+        audio_duration_secs: zod
+          .number()
+          .or(zod.null())
+          .optional()
+          .describe(
+            "The duration of the audio that was transcribed across all channels in seconds."
+          )
+      })
+      .describe("Response model for multichannel speech-to-text transcription.")
+  )
 
 /**
  * Retrieve a previously generated transcript by its ID.
  * @summary Get Transcript By Id
  */
 export const getTranscriptByIdParams = zod.object({
-  "transcription_id": zod.string().describe('The unique ID of the transcript to retrieve')
+  transcription_id: zod.string().describe("The unique ID of the transcript to retrieve")
 })
 
 export const getTranscriptByIdHeader = zod.object({
-  "xi-api-key": zod.string().or(zod.null()).optional().describe('Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the \'Profile\' tab on the website.')
+  "xi-api-key": zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website."
+    )
 })
 
-export const getTranscriptByIdResponse = zod.object({
-  "language_code": zod.string().describe('The detected language code (e.g. \'eng\' for English).'),
-  "language_probability": zod.number().describe('The confidence score of the language detection (0 to 1).'),
-  "text": zod.string().describe('The raw text of the transcription.'),
-  "words": zod.array(zod.object({
-  "text": zod.string().describe('The word or sound that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the word or sound in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the word or sound in seconds.'),
-  "type": zod.enum(['word', 'spacing', 'audio_event']).describe('The type of the word or sound. \'audio_event\' is used for non-word sounds like laughter or footsteps.'),
-  "speaker_id": zod.string().or(zod.null()).optional().describe('Unique identifier for the speaker of this word.'),
-  "logprob": zod.number().describe('The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.'),
-  "characters": zod.array(zod.object({
-  "text": zod.string().describe('The character that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the character in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the character in seconds.')
-})).or(zod.null()).optional().describe('The characters that make up the word and their timing information.')
-}).describe('Word-level detail of the transcription with timing information.')).describe('List of words with their timing information.'),
-  "channel_index": zod.number().or(zod.null()).optional().describe('The channel index this transcript belongs to (for multichannel audio).'),
-  "additional_formats": zod.array(zod.object({
-  "requested_format": zod.string().describe('The requested format.'),
-  "file_extension": zod.string().describe('The file extension of the additional format.'),
-  "content_type": zod.string().describe('The content type of the additional format.'),
-  "is_base64_encoded": zod.boolean().describe('Whether the content is base64 encoded.'),
-  "content": zod.string().describe('The content of the additional format.')
-}).or(zod.null())).or(zod.null()).optional().describe('Requested additional formats of the transcript.'),
-  "transcription_id": zod.string().or(zod.null()).optional().describe('The transcription ID of the response.'),
-  "entities": zod.array(zod.object({
-  "text": zod.string().describe('The text that was identified as an entity.'),
-  "entity_type": zod.string().describe('The type of entity detected (e.g., \'credit_card\', \'email_address\', \'person_name\').'),
-  "start_char": zod.number().describe('Start character position in the transcript text.'),
-  "end_char": zod.number().describe('End character position in the transcript text.')
-})).or(zod.null()).optional().describe('List of detected entities with their text, type, and character positions in the transcript.'),
-  "audio_duration_secs": zod.number().or(zod.null()).optional().describe('The duration of the audio that was transcribed in seconds.')
-}).describe('Chunk-level detail of the transcription with timing information.').or(zod.object({
-  "transcripts": zod.array(zod.object({
-  "language_code": zod.string().describe('The detected language code (e.g. \'eng\' for English).'),
-  "language_probability": zod.number().describe('The confidence score of the language detection (0 to 1).'),
-  "text": zod.string().describe('The raw text of the transcription.'),
-  "words": zod.array(zod.object({
-  "text": zod.string().describe('The word or sound that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the word or sound in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the word or sound in seconds.'),
-  "type": zod.enum(['word', 'spacing', 'audio_event']).describe('The type of the word or sound. \'audio_event\' is used for non-word sounds like laughter or footsteps.'),
-  "speaker_id": zod.string().or(zod.null()).optional().describe('Unique identifier for the speaker of this word.'),
-  "logprob": zod.number().describe('The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions.'),
-  "characters": zod.array(zod.object({
-  "text": zod.string().describe('The character that was transcribed.'),
-  "start": zod.number().or(zod.null()).optional().describe('The start time of the character in seconds.'),
-  "end": zod.number().or(zod.null()).optional().describe('The end time of the character in seconds.')
-})).or(zod.null()).optional().describe('The characters that make up the word and their timing information.')
-}).describe('Word-level detail of the transcription with timing information.')).describe('List of words with their timing information.'),
-  "channel_index": zod.number().or(zod.null()).optional().describe('The channel index this transcript belongs to (for multichannel audio).'),
-  "additional_formats": zod.array(zod.object({
-  "requested_format": zod.string().describe('The requested format.'),
-  "file_extension": zod.string().describe('The file extension of the additional format.'),
-  "content_type": zod.string().describe('The content type of the additional format.'),
-  "is_base64_encoded": zod.boolean().describe('Whether the content is base64 encoded.'),
-  "content": zod.string().describe('The content of the additional format.')
-}).or(zod.null())).or(zod.null()).optional().describe('Requested additional formats of the transcript.'),
-  "transcription_id": zod.string().or(zod.null()).optional().describe('The transcription ID of the response.'),
-  "entities": zod.array(zod.object({
-  "text": zod.string().describe('The text that was identified as an entity.'),
-  "entity_type": zod.string().describe('The type of entity detected (e.g., \'credit_card\', \'email_address\', \'person_name\').'),
-  "start_char": zod.number().describe('Start character position in the transcript text.'),
-  "end_char": zod.number().describe('End character position in the transcript text.')
-})).or(zod.null()).optional().describe('List of detected entities with their text, type, and character positions in the transcript.'),
-  "audio_duration_secs": zod.number().or(zod.null()).optional().describe('The duration of the audio that was transcribed in seconds.')
-}).describe('Chunk-level detail of the transcription with timing information.')).describe('List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel.'),
-  "transcription_id": zod.string().or(zod.null()).optional().describe('The transcription ID of the response.'),
-  "audio_duration_secs": zod.number().or(zod.null()).optional().describe('The duration of the audio that was transcribed across all channels in seconds.')
-}).describe('Response model for multichannel speech-to-text transcription.'))
-
+export const getTranscriptByIdResponse = zod
+  .object({
+    language_code: zod.string().describe("The detected language code (e.g. 'eng' for English)."),
+    language_probability: zod
+      .number()
+      .describe("The confidence score of the language detection (0 to 1)."),
+    text: zod.string().describe("The raw text of the transcription."),
+    words: zod
+      .array(
+        zod
+          .object({
+            text: zod.string().describe("The word or sound that was transcribed."),
+            start: zod
+              .number()
+              .or(zod.null())
+              .optional()
+              .describe("The start time of the word or sound in seconds."),
+            end: zod
+              .number()
+              .or(zod.null())
+              .optional()
+              .describe("The end time of the word or sound in seconds."),
+            type: zod
+              .enum(["word", "spacing", "audio_event"])
+              .describe(
+                "The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps."
+              ),
+            speaker_id: zod
+              .string()
+              .or(zod.null())
+              .optional()
+              .describe("Unique identifier for the speaker of this word."),
+            logprob: zod
+              .number()
+              .describe(
+                "The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions."
+              ),
+            characters: zod
+              .array(
+                zod.object({
+                  text: zod.string().describe("The character that was transcribed."),
+                  start: zod
+                    .number()
+                    .or(zod.null())
+                    .optional()
+                    .describe("The start time of the character in seconds."),
+                  end: zod
+                    .number()
+                    .or(zod.null())
+                    .optional()
+                    .describe("The end time of the character in seconds.")
+                })
+              )
+              .or(zod.null())
+              .optional()
+              .describe("The characters that make up the word and their timing information.")
+          })
+          .describe("Word-level detail of the transcription with timing information.")
+      )
+      .describe("List of words with their timing information."),
+    channel_index: zod
+      .number()
+      .or(zod.null())
+      .optional()
+      .describe("The channel index this transcript belongs to (for multichannel audio)."),
+    additional_formats: zod
+      .array(
+        zod
+          .object({
+            requested_format: zod.string().describe("The requested format."),
+            file_extension: zod.string().describe("The file extension of the additional format."),
+            content_type: zod.string().describe("The content type of the additional format."),
+            is_base64_encoded: zod.boolean().describe("Whether the content is base64 encoded."),
+            content: zod.string().describe("The content of the additional format.")
+          })
+          .or(zod.null())
+      )
+      .or(zod.null())
+      .optional()
+      .describe("Requested additional formats of the transcript."),
+    transcription_id: zod
+      .string()
+      .or(zod.null())
+      .optional()
+      .describe("The transcription ID of the response."),
+    entities: zod
+      .array(
+        zod.object({
+          text: zod.string().describe("The text that was identified as an entity."),
+          entity_type: zod
+            .string()
+            .describe(
+              "The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name')."
+            ),
+          start_char: zod.number().describe("Start character position in the transcript text."),
+          end_char: zod.number().describe("End character position in the transcript text.")
+        })
+      )
+      .or(zod.null())
+      .optional()
+      .describe(
+        "List of detected entities with their text, type, and character positions in the transcript."
+      ),
+    audio_duration_secs: zod
+      .number()
+      .or(zod.null())
+      .optional()
+      .describe("The duration of the audio that was transcribed in seconds.")
+  })
+  .describe("Chunk-level detail of the transcription with timing information.")
+  .or(
+    zod
+      .object({
+        transcripts: zod
+          .array(
+            zod
+              .object({
+                language_code: zod
+                  .string()
+                  .describe("The detected language code (e.g. 'eng' for English)."),
+                language_probability: zod
+                  .number()
+                  .describe("The confidence score of the language detection (0 to 1)."),
+                text: zod.string().describe("The raw text of the transcription."),
+                words: zod
+                  .array(
+                    zod
+                      .object({
+                        text: zod.string().describe("The word or sound that was transcribed."),
+                        start: zod
+                          .number()
+                          .or(zod.null())
+                          .optional()
+                          .describe("The start time of the word or sound in seconds."),
+                        end: zod
+                          .number()
+                          .or(zod.null())
+                          .optional()
+                          .describe("The end time of the word or sound in seconds."),
+                        type: zod
+                          .enum(["word", "spacing", "audio_event"])
+                          .describe(
+                            "The type of the word or sound. 'audio_event' is used for non-word sounds like laughter or footsteps."
+                          ),
+                        speaker_id: zod
+                          .string()
+                          .or(zod.null())
+                          .optional()
+                          .describe("Unique identifier for the speaker of this word."),
+                        logprob: zod
+                          .number()
+                          .describe(
+                            "The log of the probability with which this word was predicted. Logprobs are in range [-infinity, 0], higher logprobs indicate a higher confidence the model has in its predictions."
+                          ),
+                        characters: zod
+                          .array(
+                            zod.object({
+                              text: zod.string().describe("The character that was transcribed."),
+                              start: zod
+                                .number()
+                                .or(zod.null())
+                                .optional()
+                                .describe("The start time of the character in seconds."),
+                              end: zod
+                                .number()
+                                .or(zod.null())
+                                .optional()
+                                .describe("The end time of the character in seconds.")
+                            })
+                          )
+                          .or(zod.null())
+                          .optional()
+                          .describe(
+                            "The characters that make up the word and their timing information."
+                          )
+                      })
+                      .describe("Word-level detail of the transcription with timing information.")
+                  )
+                  .describe("List of words with their timing information."),
+                channel_index: zod
+                  .number()
+                  .or(zod.null())
+                  .optional()
+                  .describe(
+                    "The channel index this transcript belongs to (for multichannel audio)."
+                  ),
+                additional_formats: zod
+                  .array(
+                    zod
+                      .object({
+                        requested_format: zod.string().describe("The requested format."),
+                        file_extension: zod
+                          .string()
+                          .describe("The file extension of the additional format."),
+                        content_type: zod
+                          .string()
+                          .describe("The content type of the additional format."),
+                        is_base64_encoded: zod
+                          .boolean()
+                          .describe("Whether the content is base64 encoded."),
+                        content: zod.string().describe("The content of the additional format.")
+                      })
+                      .or(zod.null())
+                  )
+                  .or(zod.null())
+                  .optional()
+                  .describe("Requested additional formats of the transcript."),
+                transcription_id: zod
+                  .string()
+                  .or(zod.null())
+                  .optional()
+                  .describe("The transcription ID of the response."),
+                entities: zod
+                  .array(
+                    zod.object({
+                      text: zod.string().describe("The text that was identified as an entity."),
+                      entity_type: zod
+                        .string()
+                        .describe(
+                          "The type of entity detected (e.g., 'credit_card', 'email_address', 'person_name')."
+                        ),
+                      start_char: zod
+                        .number()
+                        .describe("Start character position in the transcript text."),
+                      end_char: zod
+                        .number()
+                        .describe("End character position in the transcript text.")
+                    })
+                  )
+                  .or(zod.null())
+                  .optional()
+                  .describe(
+                    "List of detected entities with their text, type, and character positions in the transcript."
+                  ),
+                audio_duration_secs: zod
+                  .number()
+                  .or(zod.null())
+                  .optional()
+                  .describe("The duration of the audio that was transcribed in seconds.")
+              })
+              .describe("Chunk-level detail of the transcription with timing information.")
+          )
+          .describe(
+            "List of transcripts, one for each audio channel. Each transcript contains the text and word-level details for its respective channel."
+          ),
+        transcription_id: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe("The transcription ID of the response."),
+        audio_duration_secs: zod
+          .number()
+          .or(zod.null())
+          .optional()
+          .describe(
+            "The duration of the audio that was transcribed across all channels in seconds."
+          )
+      })
+      .describe("Response model for multichannel speech-to-text transcription.")
+  )
 
 /**
  * Delete a previously generated transcript by its ID.
  * @summary Delete Transcript By Id
  */
 export const deleteTranscriptByIdParams = zod.object({
-  "transcription_id": zod.string().describe('The unique ID of the transcript to delete')
+  transcription_id: zod.string().describe("The unique ID of the transcript to delete")
 })
 
 export const deleteTranscriptByIdHeader = zod.object({
-  "xi-api-key": zod.string().or(zod.null()).optional().describe('Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the \'Profile\' tab on the website.')
+  "xi-api-key": zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Your API key. This is required by most endpoints to access our API programmatically. You can view your xi-api-key using the 'Profile' tab on the website."
+    )
 })
 
 export const deleteTranscriptByIdResponse = zod.any()

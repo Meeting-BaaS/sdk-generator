@@ -5,8 +5,12 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ErrorResponseTextError } from './errorResponseTextError';
-import type { ErrorResponseLegacyError } from './errorResponseLegacyError';
-import type { ErrorResponseModernError } from './errorResponseModernError';
 
-export type ErrorResponse = ErrorResponseTextError | ErrorResponseLegacyError | ErrorResponseModernError;
+import type { ErrorResponseLegacyError } from "./errorResponseLegacyError"
+import type { ErrorResponseModernError } from "./errorResponseModernError"
+import type { ErrorResponseTextError } from "./errorResponseTextError"
+
+export type ErrorResponse =
+  | ErrorResponseTextError
+  | ErrorResponseLegacyError
+  | ErrorResponseModernError

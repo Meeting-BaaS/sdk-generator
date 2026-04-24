@@ -5,6 +5,6 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { ListenV1ResponseResultsChannelsItems } from './listenV1ResponseResultsChannelsItems';
+import type { ListenV1ResponseResultsChannelsItems } from "./listenV1ResponseResultsChannelsItems"
 
-export type ListenV1ResponseResultsChannels = ListenV1ResponseResultsChannelsItems[];
+export type ListenV1ResponseResultsChannels = ListenV1ResponseResultsChannelsItems[]

@@ -9,10 +9,10 @@
 /**
  * Encoding - opus. High-compression audio format optimized for real-time communications.
  */
-export type V1SpeakPostParametersEncoding5 = typeof V1SpeakPostParametersEncoding5[keyof typeof V1SpeakPostParametersEncoding5];
-
+export type V1SpeakPostParametersEncoding5 =
+  (typeof V1SpeakPostParametersEncoding5)[keyof typeof V1SpeakPostParametersEncoding5]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersEncoding5 = {
-  opus: 'opus',
-} as const;
+  opus: "opus"
+} as const

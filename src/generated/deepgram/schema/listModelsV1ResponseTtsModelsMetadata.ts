@@ -7,11 +7,11 @@
  */
 
 export interface ListModelsV1ResponseTtsModelsMetadata {
-  accent?: string;
-  age?: string;
-  color?: string;
-  image?: string;
-  sample?: string;
-  tags?: string[];
-  use_cases?: string[];
+  accent?: string
+  age?: string
+  color?: string
+  image?: string
+  sample?: string
+  tags?: string[]
+  use_cases?: string[]
 }

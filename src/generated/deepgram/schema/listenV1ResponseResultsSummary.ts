@@ -7,6 +7,6 @@
  */
 
 export interface ListenV1ResponseResultsSummary {
-  result?: string;
-  short?: string;
+  result?: string
+  short?: string
 }

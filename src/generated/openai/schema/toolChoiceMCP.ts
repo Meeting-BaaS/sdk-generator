@@ -5,8 +5,9 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { ToolChoiceMCPType } from './toolChoiceMCPType';
-import type { ToolChoiceMCPName } from './toolChoiceMCPName';
+
+import type { ToolChoiceMCPName } from "./toolChoiceMCPName"
+import type { ToolChoiceMCPType } from "./toolChoiceMCPType"
 
 /**
  * Use this option to force the model to call a specific tool on a remote MCP server.
@@ -14,9 +15,9 @@ import type { ToolChoiceMCPName } from './toolChoiceMCPName';
  */
 export interface ToolChoiceMCP {
   /** For MCP tools, the type is always `mcp`. */
-  type: ToolChoiceMCPType;
+  type: ToolChoiceMCPType
   /** The label of the MCP server to use.
- */
-  server_label: string;
-  name?: ToolChoiceMCPName;
+   */
+  server_label: string
+  name?: ToolChoiceMCPName
 }

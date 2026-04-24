@@ -5,9 +5,9 @@
  * ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec.
  * OpenAPI spec version: 1.0
  */
-import type { SpeechToTextCharacterResponseModel } from './speechToTextCharacterResponseModel';
+import type { SpeechToTextCharacterResponseModel } from "./speechToTextCharacterResponseModel"
 
 /**
  * The characters that make up the word and their timing information.
  */
-export type SpeechToTextWordResponseModelCharacters = SpeechToTextCharacterResponseModel[] | null;
+export type SpeechToTextWordResponseModelCharacters = SpeechToTextCharacterResponseModel[] | null

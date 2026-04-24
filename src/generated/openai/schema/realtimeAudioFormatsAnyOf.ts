@@ -5,15 +5,16 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
-import type { RealtimeAudioFormatsAnyOfType } from './realtimeAudioFormatsAnyOfType';
-import type { RealtimeAudioFormatsAnyOfRate } from './realtimeAudioFormatsAnyOfRate';
+
+import type { RealtimeAudioFormatsAnyOfRate } from "./realtimeAudioFormatsAnyOfRate"
+import type { RealtimeAudioFormatsAnyOfType } from "./realtimeAudioFormatsAnyOfType"
 
 /**
  * The PCM audio format. Only a 24kHz sample rate is supported.
  */
 export type RealtimeAudioFormatsAnyOf = {
   /** The audio format. Always `audio/pcm`. */
-  type?: RealtimeAudioFormatsAnyOfType;
+  type?: RealtimeAudioFormatsAnyOfType
   /** The sample rate of the audio. Always `24000`. */
-  rate?: RealtimeAudioFormatsAnyOfRate;
-};
+  rate?: RealtimeAudioFormatsAnyOfRate
+}

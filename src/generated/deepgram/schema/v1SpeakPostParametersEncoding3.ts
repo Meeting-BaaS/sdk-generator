@@ -9,10 +9,10 @@
 /**
  * Encoding - alaw. Similar to mulaw but used in international telephony.
  */
-export type V1SpeakPostParametersEncoding3 = typeof V1SpeakPostParametersEncoding3[keyof typeof V1SpeakPostParametersEncoding3];
-
+export type V1SpeakPostParametersEncoding3 =
+  (typeof V1SpeakPostParametersEncoding3)[keyof typeof V1SpeakPostParametersEncoding3]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const V1SpeakPostParametersEncoding3 = {
-  alaw: 'alaw',
-} as const;
+  alaw: "alaw"
+} as const

@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SentimentAnalysisResult } from './sentimentAnalysisResult';
+import type { SentimentAnalysisResult } from "./sentimentAnalysisResult"
 
 /**
  * An array of results for the Sentiment Analysis model, if it is enabled.
-See [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis) for more information.
+See [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/analyze-sentiment-of-speech) for more information.
 
  */
-export type TranscriptSentimentAnalysisResults = SentimentAnalysisResult[] | null;
+export type TranscriptSentimentAnalysisResults = SentimentAnalysisResult[] | null

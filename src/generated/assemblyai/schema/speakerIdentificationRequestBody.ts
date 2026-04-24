@@ -5,11 +5,11 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.0.0
  */
-import type { SpeakerIdentificationRequestBodySpeakerIdentification } from './speakerIdentificationRequestBodySpeakerIdentification';
+import type { SpeakerIdentificationRequestBodySpeakerIdentification } from "./speakerIdentificationRequestBodySpeakerIdentification"
 
 /**
  * Request body for [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification).
  */
 export interface SpeakerIdentificationRequestBody {
-  speaker_identification: SpeakerIdentificationRequestBodySpeakerIdentification;
+  speaker_identification: SpeakerIdentificationRequestBodySpeakerIdentification
 }

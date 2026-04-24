@@ -8,5 +8,5 @@
 
 export interface ReadV1RequestUrl {
   /** A URL pointing to the text source */
-  url: string;
+  url: string
 }
