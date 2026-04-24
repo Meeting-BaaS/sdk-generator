@@ -1421,4 +1421,7 @@ export type {
 }
 
 // Enum constants for filtering
-export { V1ProjectsProjectIdRequestsGetParametersStatus, V1ProjectsProjectIdRequestsGetParametersEndpoint }
+export {
+  V1ProjectsProjectIdRequestsGetParametersStatus,
+  V1ProjectsProjectIdRequestsGetParametersEndpoint
+}

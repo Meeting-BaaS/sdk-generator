@@ -130,7 +130,7 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
             error: "No channels in response"
           },
           timestamp: new Date().toISOString(),
-          raw: payload
+          raw: payload as UnifiedWebhookEvent["raw"]
         }
       }
 
@@ -148,7 +148,7 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
             error: "No alternatives in response"
           },
           timestamp: new Date().toISOString(),
-          raw: payload
+          raw: payload as UnifiedWebhookEvent["raw"]
         }
       }
 
@@ -167,7 +167,7 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
             error: "Empty transcript"
           },
           timestamp: new Date().toISOString(),
-          raw: payload
+          raw: payload as UnifiedWebhookEvent["raw"]
         }
       }
 
@@ -246,7 +246,7 @@ export class DeepgramWebhookHandler extends BaseWebhookHandler {
           }
         },
         timestamp: new Date().toISOString(),
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     } catch (error) {
       return this.createErrorEvent(

@@ -62,7 +62,11 @@ export type {
   GladiaWebhookErrorPayload,
   AssemblyAIWebhookPayload,
   DeepgramWebhookPayload,
-  ProviderWebhookPayloadMap
+  ElevenLabsWebhookPayload,
+  AzureWebhookPayload,
+  SpeechmaticsWebhookPayload,
+  ProviderWebhookPayloadMap,
+  SonioxWebhookPayload
 } from "./types"
 
 // Export base handler
@@ -90,6 +94,10 @@ export {
   ElevenLabsWebhookHandler,
   createElevenLabsWebhookHandler
 } from "./elevenlabs-webhook"
+export {
+  SonioxWebhookHandler,
+  createSonioxWebhookHandler
+} from "./soniox-webhook"
 
 // Export router
 export {

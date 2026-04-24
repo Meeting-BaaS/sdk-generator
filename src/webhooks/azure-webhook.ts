@@ -155,7 +155,7 @@ export class AzureWebhookHandler extends BaseWebhookHandler {
           createdAt: timestamp
         },
         timestamp,
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 
@@ -169,7 +169,7 @@ export class AzureWebhookHandler extends BaseWebhookHandler {
           status: "processing"
         },
         timestamp,
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 
@@ -186,7 +186,7 @@ export class AzureWebhookHandler extends BaseWebhookHandler {
           // using AzureAdapter.getTranscript(transcriptionId)
         },
         timestamp,
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 
@@ -204,7 +204,7 @@ export class AzureWebhookHandler extends BaseWebhookHandler {
           }
         },
         timestamp,
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 

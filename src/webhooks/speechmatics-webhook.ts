@@ -209,7 +209,7 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
             utterances: utterances.length > 0 ? utterances : undefined,
             createdAt: transcript.job.created_at
           },
-          raw: payload
+          raw: payload as UnifiedWebhookEvent["raw"]
         }
       }
     }
@@ -225,7 +225,7 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
         text: "",
         status: status === "success" ? "completed" : "error"
       },
-      raw: payload
+      raw: payload as UnifiedWebhookEvent["raw"]
     }
   }
 }

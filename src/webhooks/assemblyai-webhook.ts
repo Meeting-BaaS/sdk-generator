@@ -155,7 +155,7 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
           error: error || "Transcription failed"
         },
         timestamp: new Date().toISOString(),
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 
@@ -175,7 +175,7 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
           status: "completed"
         },
         timestamp: new Date().toISOString(),
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 
@@ -251,7 +251,7 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
           }
         },
         timestamp: new Date().toISOString(),
-        raw
+        raw: raw as UnifiedWebhookEvent["raw"]
       }
     } catch (error) {
       return this.createErrorEvent(

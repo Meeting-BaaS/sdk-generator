@@ -24,6 +24,11 @@ import {
 } from "../utils/transcription-helpers"
 import type { SpeechmaticsRegionType } from "../constants"
 import type { RecognitionResult } from "../generated/speechmatics/schema/recognitionResult"
+import type {
+  SpeechmaticsRealtimeMessage,
+  SpeechmaticsTranscriptMessage,
+  SpeechmaticsErrorMessage
+} from "../generated/speechmatics/streaming-message-types"
 
 /**
  * Speechmatics-specific configuration options
@@ -1031,73 +1036,6 @@ export class SpeechmaticsAdapter extends BaseAdapter {
     }
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Speechmatics Real-time WebSocket Message Types
-// ─────────────────────────────────────────────────────────────────────────────
-
-/** Base message with message field */
-interface SpeechmaticsBaseMessage {
-  message: string
-}
-
-/** RecognitionStarted response */
-interface SpeechmaticsRecognitionStartedMessage extends SpeechmaticsBaseMessage {
-  message: "RecognitionStarted"
-  id?: string
-}
-
-/** AddPartialTranscript / AddTranscript messages */
-interface SpeechmaticsTranscriptMessage extends SpeechmaticsBaseMessage {
-  message: "AddPartialTranscript" | "AddTranscript"
-  results: RecognitionResult[]
-  metadata?: {
-    start_time?: number
-    end_time?: number
-    transcript?: string
-  }
-}
-
-/** EndOfUtterance boundary marker */
-interface SpeechmaticsEndOfUtteranceMessage extends SpeechmaticsBaseMessage {
-  message: "EndOfUtterance"
-}
-
-/** AudioAdded acknowledgment */
-interface SpeechmaticsAudioAddedMessage extends SpeechmaticsBaseMessage {
-  message: "AudioAdded"
-  seq_no?: number
-}
-
-/** EndOfTranscript (session complete) */
-interface SpeechmaticsEndOfTranscriptMessage extends SpeechmaticsBaseMessage {
-  message: "EndOfTranscript"
-}
-
-/** Info/Warning messages */
-interface SpeechmaticsInfoMessage extends SpeechmaticsBaseMessage {
-  message: "Info" | "Warning"
-  type?: string
-  reason?: string
-  quality?: string
-}
-
-/** Error message */
-interface SpeechmaticsErrorMessage extends SpeechmaticsBaseMessage {
-  message: "Error"
-  type?: string
-  reason?: string
-}
-
-/** Union of all Speechmatics real-time messages */
-type SpeechmaticsRealtimeMessage =
-  | SpeechmaticsRecognitionStartedMessage
-  | SpeechmaticsTranscriptMessage
-  | SpeechmaticsEndOfUtteranceMessage
-  | SpeechmaticsAudioAddedMessage
-  | SpeechmaticsEndOfTranscriptMessage
-  | SpeechmaticsInfoMessage
-  | SpeechmaticsErrorMessage
 
 /**
  * Factory function to create a Speechmatics adapter

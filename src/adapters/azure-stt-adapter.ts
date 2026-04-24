@@ -32,12 +32,38 @@ import { Status as AzureStatus } from "../generated/azure/schema/status"
 import type { TranscriptionsListParams } from "../generated/azure/schema/transcriptionsListParams"
 
 // Import Azure generated types
+import type { File as AzureFile } from "../generated/azure/schema/file"
+import { FileKind } from "../generated/azure/schema/fileKind"
 import { ProfanityFilterMode } from "../generated/azure/schema/profanityFilterMode"
 import { PunctuationMode } from "../generated/azure/schema/punctuationMode"
 import type { Transcription } from "../generated/azure/schema/transcription"
 import type { TranscriptionProperties } from "../generated/azure/schema/transcriptionProperties"
 import type { WebHook } from "../generated/azure/schema/webHook"
 import type { WebHookEvents } from "../generated/azure/schema/webHookEvents"
+
+/**
+ * Azure transcription result structure from content URL
+ * This comes from the blob storage file, not an API endpoint
+ */
+interface AzureTranscriptionResult {
+  combinedRecognizedPhrases?: Array<{
+    display?: string
+    lexical?: string
+  }>
+  recognizedPhrases?: Array<{
+    speaker?: number
+    nBest?: Array<{
+      confidence?: number
+      words?: Array<{
+        word: string
+        offsetInTicks: number
+        durationInTicks: number
+        confidence?: number
+      }>
+    }>
+  }>
+  duration?: number
+}
 
 /**
  * Azure Speech-to-Text transcription provider adapter
@@ -252,8 +278,8 @@ export class AzureSTTAdapter extends BaseAdapter {
       )
       const files = filesResponse.data?.values || []
 
-      // Find the transcription result file
-      const resultFile = files.find((file: any) => file.kind === "Transcription")
+      // Find the transcription result file using generated FileKind constant
+      const resultFile = files.find((file: AzureFile) => file.kind === FileKind.Transcription)
 
       if (!resultFile?.links?.contentUrl) {
         return {
@@ -523,17 +549,22 @@ export class AzureSTTAdapter extends BaseAdapter {
   }
 
   /**
-   * Normalize Azure status to unified status
+   * Normalize Azure status to unified status using generated AzureStatus constants
    */
-  private normalizeStatus(status: any): "queued" | "processing" | "completed" | "error" {
-    const statusStr = status?.toString().toLowerCase() || ""
-
-    if (statusStr.includes("succeeded")) return "completed"
-    if (statusStr.includes("running")) return "processing"
-    if (statusStr.includes("notstarted")) return "queued"
-    if (statusStr.includes("failed")) return "error"
-
-    return "queued"
+  private normalizeStatus(
+    status: AzureStatus | undefined
+  ): "queued" | "processing" | "completed" | "error" {
+    switch (status) {
+      case AzureStatus.Succeeded:
+        return "completed"
+      case AzureStatus.Running:
+        return "processing"
+      case AzureStatus.Failed:
+        return "error"
+      case AzureStatus.NotStarted:
+      default:
+        return "queued"
+    }
   }
 
   /**
@@ -541,18 +572,18 @@ export class AzureSTTAdapter extends BaseAdapter {
    */
   private normalizeResponse(
     transcription: Transcription,
-    transcriptionData: any
+    transcriptionData: AzureTranscriptionResult
   ): UnifiedTranscriptResponse {
     const combinedPhrases = transcriptionData.combinedRecognizedPhrases || []
     const recognizedPhrases = transcriptionData.recognizedPhrases || []
 
     // Get full text from combined phrases
     const fullText =
-      combinedPhrases.map((phrase: any) => phrase.display || phrase.lexical).join(" ") || ""
+      combinedPhrases.map((phrase) => phrase.display || phrase.lexical).join(" ") || ""
 
     // Extract words with timestamps
-    const words = recognizedPhrases.flatMap((phrase: any) =>
-      (phrase.nBest?.[0]?.words || []).map((w: any) => ({
+    const words = recognizedPhrases.flatMap((phrase) =>
+      (phrase.nBest?.[0]?.words || []).map((w) => ({
         word: w.word,
         start: w.offsetInTicks / 10000000, // Convert ticks to seconds
         end: (w.offsetInTicks + w.durationInTicks) / 10000000,
@@ -566,9 +597,9 @@ export class AzureSTTAdapter extends BaseAdapter {
       recognizedPhrases.length > 0 && recognizedPhrases[0].speaker !== undefined
         ? Array.from(
             new Set(
-              recognizedPhrases.map((p: any) => p.speaker).filter((s: any) => s !== undefined)
+              recognizedPhrases.map((p) => p.speaker).filter((s): s is number => s !== undefined)
             )
-          ).map((speakerId: unknown) => ({
+          ).map((speakerId) => ({
             id: String(speakerId),
             label: `Speaker ${speakerId}`
           }))

@@ -62,7 +62,7 @@ import {
 // Import AssemblyAI generated types
 import type { Transcript } from "../generated/assemblyai/schema/transcript"
 import type { TranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
-import type { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
+import { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
 import type { TranscriptListItem } from "../generated/assemblyai/schema/transcriptListItem"
 import type { ListTranscriptsParams } from "../generated/assemblyai/schema/listTranscriptsParams"
 import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
@@ -539,7 +539,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
       ...(aaiOpts as Partial<TranscriptParams>),
       audio_url: audioUrl,
       // speech_models is required — default to universal-3-pro
-      speech_models: (aaiOpts.speech_models as TranscriptParams["speech_models"]) ?? ["universal-3-pro"],
+      speech_models: (aaiOpts.speech_models as TranscriptParams["speech_models"]) ?? [
+        "universal-3-pro"
+      ],
       // Enable punctuation and formatting by default
       punctuate: (aaiOpts.punctuate as boolean) ?? true,
       format_text: (aaiOpts.format_text as boolean) ?? true
@@ -614,19 +616,19 @@ export class AssemblyAIAdapter extends BaseAdapter {
    * Normalize AssemblyAI response to unified format
    */
   private normalizeResponse(response: Transcript): UnifiedTranscriptResponse<"assemblyai"> {
-    // Map AssemblyAI status to unified status
+    // Map AssemblyAI status to unified status using generated constants
     let status: "queued" | "processing" | "completed" | "error"
     switch (response.status) {
-      case "queued":
+      case TranscriptStatus.queued:
         status = "queued"
         break
-      case "processing":
+      case TranscriptStatus.processing:
         status = "processing"
         break
-      case "completed":
+      case TranscriptStatus.completed:
         status = "completed"
         break
-      case "error":
+      case TranscriptStatus.error:
         status = "error"
         break
       default:
@@ -634,7 +636,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
     }
 
     // Handle error state
-    if (response.status === "error") {
+    if (response.status === TranscriptStatus.error) {
       return {
         success: false,
         provider: this.name,

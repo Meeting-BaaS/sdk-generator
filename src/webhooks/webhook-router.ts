@@ -10,6 +10,7 @@ import { DeepgramWebhookHandler } from "./deepgram-webhook"
 import { AzureWebhookHandler } from "./azure-webhook"
 import { SpeechmaticsWebhookHandler } from "./speechmatics-webhook"
 import { ElevenLabsWebhookHandler } from "./elevenlabs-webhook"
+import { SonioxWebhookHandler } from "./soniox-webhook"
 import type { UnifiedWebhookEvent, WebhookValidation, WebhookVerificationOptions } from "./types"
 import type { TranscriptionProvider } from "../router/types"
 
@@ -170,7 +171,8 @@ export class WebhookRouter {
       ["deepgram", new DeepgramWebhookHandler()],
       ["azure-stt", new AzureWebhookHandler()],
       ["speechmatics", new SpeechmaticsWebhookHandler()],
-      ["elevenlabs", new ElevenLabsWebhookHandler()]
+      ["elevenlabs", new ElevenLabsWebhookHandler()],
+      ["soniox", new SonioxWebhookHandler()]
     ])
   }
 

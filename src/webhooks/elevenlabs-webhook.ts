@@ -110,7 +110,7 @@ export class ElevenLabsWebhookHandler extends BaseWebhookHandler {
             error: "Empty transcript"
           },
           timestamp: new Date().toISOString(),
-          raw: payload
+          raw: payload as UnifiedWebhookEvent["raw"]
         }
       }
 
@@ -178,7 +178,7 @@ export class ElevenLabsWebhookHandler extends BaseWebhookHandler {
           }
         },
         timestamp: new Date().toISOString(),
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     } catch (error) {
       return this.createErrorEvent(

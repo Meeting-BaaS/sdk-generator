@@ -222,7 +222,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       // Start with provider-specific options (fully typed from OpenAPI)
       const request: CreateTranscriptionRequest = {
         ...options?.openai,
-        file: audioData as any, // Generated type expects Blob
+        file: audioData as Blob, // Buffer/Blob both accepted at runtime; generated type expects Blob
         model: model as CreateTranscriptionRequestModel
       }
 
@@ -253,7 +253,11 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       // Use generated API client function - FULLY TYPED!
       const response = await createTranscription(request, this.getAxiosConfig())
 
-      return this.normalizeResponse(response.data as any, model, isDiarization)
+      return this.normalizeResponse(
+        response.data as CreateTranscriptionResponseVerboseJson | CreateTranscriptionResponseDiarizedJson | { text: string },
+        model,
+        isDiarization
+      )
     } catch (error) {
       return this.createErrorResponse(error)
     }

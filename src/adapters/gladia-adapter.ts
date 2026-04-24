@@ -436,7 +436,6 @@ export class GladiaAdapter extends BaseAdapter {
         sentiment: result?.sentiment_analysis || undefined,
         audioToLlm: result?.audio_to_llm || undefined,
         chapters: result?.chapterization || undefined,
-        speakerReidentification: result?.speaker_reidentification || undefined,
         structuredData: result?.structured_data_extraction || undefined,
         customMetadata: response.custom_metadata || undefined
       },

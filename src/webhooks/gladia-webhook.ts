@@ -193,7 +193,7 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
           completedAt: new Date().toISOString()
         },
         timestamp: new Date().toISOString(),
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 
@@ -216,7 +216,7 @@ export class GladiaWebhookHandler extends BaseWebhookHandler {
           }
         },
         timestamp: new Date().toISOString(),
-        raw: payload
+        raw: payload as UnifiedWebhookEvent["raw"]
       }
     }
 

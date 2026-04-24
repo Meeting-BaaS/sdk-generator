@@ -157,7 +157,7 @@ export abstract class BaseWebhookHandler {
         error: errorMessage
       },
       timestamp: new Date().toISOString(),
-      raw: payload
+      raw: payload as UnifiedWebhookEvent["raw"]
     }
   }
 }

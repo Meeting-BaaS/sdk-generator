@@ -454,13 +454,16 @@ function fixFormDataObjectAppend(content, filePath) {
   const stringOrArrayFields = ["entity_redaction"]
   for (const field of stringOrArrayFields) {
     // Skip if already fixed (contains Array.isArray for this field)
-    if (content.includes(`Array.isArray`) && content.match(new RegExp(`Array\\.isArray\\([\\w.]+\\.${field}\\)`))) {
+    if (
+      content.includes(`Array.isArray`) &&
+      content.match(new RegExp(`Array\\.isArray\\([\\w.]+\\.${field}\\)`))
+    ) {
       continue
     }
     content = content.replace(
-      new RegExp(`( )formData\\.append\\(\`${field}\`, ([\\w.]+\\.${field})\\)`),
+      new RegExp(`( )formData\\.append\\(["'\`]${field}["'\`],\\s*([\\w.]+\\.${field})\\)`),
       (match, indent, varRef) =>
-        `${indent}Array.isArray(${varRef}) ? ${varRef}.forEach(value => formData.append(\`${field}\`, value)) : formData.append(\`${field}\`, ${varRef})`
+        `${indent}Array.isArray(${varRef}) ? ${varRef}.forEach(value => formData.append("${field}", value)) : formData.append("${field}", ${varRef})`
     )
   }
 

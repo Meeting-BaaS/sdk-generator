@@ -26,6 +26,8 @@ import { TranscriptionStatus as SonioxTranscriptionStatus } from "../generated/s
 import type { Model as SonioxModelInfo } from "../generated/soniox/schema/model"
 import type { Language as SonioxLanguageInfo } from "../generated/soniox/schema/language"
 import type { SonioxModelCode } from "../generated/soniox/models"
+import type { TranscriptionTranscript } from "../generated/soniox/schema/transcriptionTranscript"
+import type { TranscriptionTranscriptToken } from "../generated/soniox/schema/transcriptionTranscriptToken"
 
 /**
  * Soniox-specific configuration options
@@ -344,12 +346,31 @@ export class SonioxAdapter extends BaseAdapter {
         }
       }
 
+      // Wire webhook URL for async notification
+      if (options?.webhookUrl) {
+        requestBody.webhook_url = options.webhookUrl
+      }
+
       // Submit async transcription job
       const response = await this.client!.post("/transcriptions", requestBody)
 
       const transcriptionId = response.data.id
 
-      // Poll for completion
+      // If webhook is provided, return immediately with job ID
+      if (options?.webhookUrl) {
+        return {
+          success: true,
+          provider: this.name,
+          data: {
+            id: transcriptionId,
+            text: "",
+            status: "queued"
+          },
+          raw: response.data
+        }
+      }
+
+      // Otherwise, poll for completion
       return await this.pollForCompletion(transcriptionId)
     } catch (error) {
       return this.createErrorResponse(error)
@@ -781,13 +802,13 @@ export class SonioxAdapter extends BaseAdapter {
   /**
    * Build utterances from tokens based on speaker changes
    */
-  private buildUtterancesFromTokens(tokens: any[]): Utterance[] {
-    const words: Word[] = tokens.map((token: any) => ({
+  private buildUtterancesFromTokens(tokens: TranscriptionTranscriptToken[]): Utterance[] {
+    const words: Word[] = tokens.map((token) => ({
       word: token.text,
       start: token.start_ms ? token.start_ms / 1000 : 0,
       end: token.end_ms ? token.end_ms / 1000 : 0,
       confidence: token.confidence,
-      speaker: token.speaker
+      speaker: token.speaker ?? undefined
     }))
 
     return buildUtterancesFromWords(words)
@@ -796,40 +817,24 @@ export class SonioxAdapter extends BaseAdapter {
   /**
    * Normalize Soniox response to unified format
    */
-  private normalizeResponse(response: any): UnifiedTranscriptResponse {
-    // Extract full text — batch transcript has .text directly,
-    // streaming tokens need filtering by is_final
-    const text =
-      response.text ||
-      (response.tokens
-        ? response.tokens
-            .filter((t: any) => t.is_final !== false)
-            .map((t: any) => t.text)
-            .join("")
-        : "")
+  private normalizeResponse(
+    response: TranscriptionTranscript & { audio_duration_ms?: number; total_audio_proc_ms?: number }
+  ): UnifiedTranscriptResponse {
+    const { text, tokens } = response
 
     // Extract words with timestamps
-    // Batch transcript tokens don't have is_final (all are final)
-    const words: Word[] = response.tokens
-      ? response.tokens
-          .filter(
-            (t: any) => t.is_final !== false && t.start_ms !== undefined && t.end_ms !== undefined
-          )
-          .map((token: any) => ({
-            word: token.text,
-            start: token.start_ms / 1000,
-            end: token.end_ms / 1000,
-            confidence: token.confidence,
-            speaker: token.speaker
-          }))
-      : []
+    const words: Word[] = tokens.map((token) => ({
+      word: token.text,
+      start: token.start_ms / 1000,
+      end: token.end_ms / 1000,
+      confidence: token.confidence,
+      speaker: token.speaker ?? undefined
+    }))
 
     // Extract speakers if diarization was enabled
     const speakerSet = new Set<string>()
-    if (response.tokens) {
-      response.tokens.forEach((t: any) => {
-        if (t.speaker) speakerSet.add(t.speaker)
-      })
+    for (const token of tokens) {
+      if (token.speaker) speakerSet.add(token.speaker)
     }
 
     const speakers =
@@ -841,11 +846,10 @@ export class SonioxAdapter extends BaseAdapter {
         : undefined
 
     // Build utterances from speaker changes
-    const tokens = response.tokens ? response.tokens.filter((t: any) => t.is_final !== false) : []
     const utterances = tokens.length > 0 ? this.buildUtterancesFromTokens(tokens) : []
 
     // Detect language from tokens
-    const language = response.tokens?.find((t: any) => t.language)?.language
+    const language = tokens.find((t) => t.language)?.language ?? undefined
 
     return {
       success: true,

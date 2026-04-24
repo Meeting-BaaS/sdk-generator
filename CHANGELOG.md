@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-04-24
+
+### Changed
+
+#### Eliminate `any` Types Across Adapters
+
+Replaced all `any` type annotations with generated types from OpenAPI specs:
+
+| Adapter | Before | After |
+|---------|--------|-------|
+| **AssemblyAI** | String literals in status switch | `TranscriptStatus.queued`, `.processing`, `.completed`, `.error` |
+| **Azure STT** | `any` in `normalizeResponse`, `normalizeStatus`, `resultFile` | `AzureTranscriptionResult`, `AzureStatus.*` enums, `AzureFile` + `FileKind.Transcription` |
+| **ElevenLabs** | `any` in `normalizeResponse`, inline entity type | `SpeechToText200`, `MultichannelSpeechToTextResponseModel`, `DetectedEntity` |
+| **OpenAI** | `as any` for file and response | `as Blob`, explicit `CreateTranscriptionResponseVerboseJson \| CreateTranscriptionResponseDiarizedJson` union |
+| **Soniox** | `any[]` in `buildUtterancesFromTokens`, `normalizeResponse` | `TranscriptionTranscriptToken[]`, `TranscriptionTranscript` |
+| **Speechmatics** | 67 lines of hand-written WebSocket message types | Imports from generated `streaming-message-types` |
+
+### Added
+
+#### Soniox: Webhook Support
+
+Soniox `transcribe()` now wires `webhookUrl` → `webhook_url` in the API request. When a webhook URL is provided, the adapter returns immediately with job ID instead of polling.
+
+```typescript
+const result = await adapter.transcribe(audio, {
+  webhookUrl: 'https://myapp.com/webhook/soniox'
+})
+console.log(result.data.id) // Job ID returned immediately
+```
+
+New `SonioxWebhookHandler` added to `WebhookRouter` with typed `SonioxWebhookPayload` (`Transcription` from generated types).
+
+#### ElevenLabs: Webhook Support
+
+ElevenLabs `transcribe()` now supports async webhook mode. When `webhookUrl` is provided, the adapter appends `webhook=true` to the request and returns immediately with transcription ID.
+
+**Note:** ElevenLabs requires webhook URLs to be pre-configured in account settings via `webhook_id`. The `webhookUrl` option triggers async mode; pass `webhook_id` via ElevenLabs passthrough options.
+
+**Webhook + polling support summary (updated):**
+
+| Provider | webhookUrl wired | Auto-poll | API webhook model |
+|----------|-----------------|-----------|-------------------|
+| Gladia | `callback_config.url` | `pollForCompletion` | Per-job |
+| AssemblyAI | `webhook_url` | `pollForCompletion` | Per-job |
+| Deepgram | `params.callback` | N/A (sync) | Per-request |
+| Speechmatics | `notification_config` | `pollForCompletion` | Per-job |
+| Azure STT | `registerWebhook()` | `pollForCompletion` | Subscription-wide |
+| **Soniox** | `webhook_url` | `pollForCompletion` | Per-job |
+| **ElevenLabs** | `webhook=true` | N/A (sync) | Account-wide |
+| OpenAI | N/A (sync) | N/A (sync) | N/A |
+
+### Fixed
+
+#### Gladia: Remove `SpeakerReidentificationDTO` (Upstream Removal)
+
+Gladia removed `speaker_reidentification` from their OpenAPI spec. Removed the import, re-export, and `GladiaExtendedData.speakerReidentification` field from `types.ts`, and the mapping from `gladia-adapter.ts`.
+
+#### ElevenLabs: Fix `entity_redaction` FormData Regex
+
+`fix-generated.js` regex for `entity_redaction` `Array.isArray` guard only matched backtick-quoted field names, but Orval generates double quotes. Fixed to match any quote style.
+
+#### Webhook Handlers: Fix `raw` Payload Type Narrowing
+
+All webhook handlers now use `raw: payload as UnifiedWebhookEvent["raw"]` for correct type narrowing (previously caused TS errors with strict typing).
+
+---
+
 ## [0.8.7] - 2026-04-18
 
 ### Added

@@ -22,6 +22,7 @@ import type { ListenV1Response as DeepgramWebhookPayload } from "../generated/de
 import type { SpeechToTextChunkResponseModel as ElevenLabsWebhookPayload } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
 import type { AzureWebhookPayload } from "./azure-webhook"
 import type { RetrieveTranscriptResponse as SpeechmaticsWebhookPayload } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+import type { Transcription as SonioxWebhookPayload } from "../generated/soniox/schema/transcription"
 
 // Re-export webhook payload types for direct access
 export type {
@@ -31,7 +32,8 @@ export type {
   DeepgramWebhookPayload,
   ElevenLabsWebhookPayload,
   AzureWebhookPayload,
-  SpeechmaticsWebhookPayload
+  SpeechmaticsWebhookPayload,
+  SonioxWebhookPayload
 }
 
 /**
@@ -50,6 +52,7 @@ export type ProviderWebhookPayloadMap = {
   "openai-whisper": never // No webhooks
   speechmatics: SpeechmaticsWebhookPayload
   elevenlabs: ElevenLabsWebhookPayload
+  soniox: SonioxWebhookPayload
 }
 
 /**
