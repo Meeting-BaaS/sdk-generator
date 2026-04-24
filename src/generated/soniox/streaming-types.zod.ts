@@ -122,23 +122,22 @@ export const sonioxTranslationTermSchema = zod.object({
  * Structured context for improving transcription accuracy
  */
 export const sonioxStructuredContextSchema = zod.object({
-  general: zod.array(sonioxContextGeneralItemSchema).optional()
+  general: zod
+    .array(sonioxContextGeneralItemSchema)
+    .optional()
     .describe("General context items (key-value pairs)"),
-  text: zod.string().optional()
-    .describe("Text context"),
-  terms: zod.array(zod.string()).optional()
-    .describe("Terms that might occur in speech"),
-  translation_terms: zod.array(sonioxTranslationTermSchema).optional()
+  text: zod.string().optional().describe("Text context"),
+  terms: zod.array(zod.string()).optional().describe("Terms that might occur in speech"),
+  translation_terms: zod
+    .array(sonioxTranslationTermSchema)
+    .optional()
     .describe("Hints how to translate specific terms (ignored if translation is not enabled)")
 })
 
 /**
  * Context can be either a structured object or a plain string
  */
-export const sonioxContextSchema = zod.union([
-  sonioxStructuredContextSchema,
-  zod.string()
-])
+export const sonioxContextSchema = zod.union([sonioxStructuredContextSchema, zod.string()])
 
 // =============================================================================
 // Real-time Model Schema
@@ -164,27 +163,40 @@ export const sonioxRealtimeModelSchema = zod.enum([
  * @source StreamingTranscriberParams from manual spec
  */
 export const streamingTranscriberParams = zod.object({
-  model: sonioxRealtimeModelSchema
-    .describe("Real-time model to use"),
-  audioFormat: sonioxAudioFormatSchema.optional()
+  model: sonioxRealtimeModelSchema.describe("Real-time model to use"),
+  audioFormat: sonioxAudioFormatSchema
+    .optional()
     .describe("Audio format specification. Use 'auto' for automatic detection"),
-  sampleRate: zod.number().optional()
-    .describe("Sample rate in Hz (required for raw PCM formats)"),
-  numChannels: zod.number().min(1).max(2).optional()
+  sampleRate: zod.number().optional().describe("Sample rate in Hz (required for raw PCM formats)"),
+  numChannels: zod
+    .number()
+    .min(1)
+    .max(2)
+    .optional()
     .describe("Number of audio channels (1 for mono, 2 for stereo) - required for raw PCM formats"),
-  languageHints: zod.array(zod.string()).optional()
+  languageHints: zod
+    .array(zod.string())
+    .optional()
     .describe("Expected languages in the audio (ISO language codes)"),
-  context: sonioxContextSchema.optional()
+  context: sonioxContextSchema
+    .optional()
     .describe("Additional context to improve transcription accuracy"),
-  enableSpeakerDiarization: zod.boolean().optional()
+  enableSpeakerDiarization: zod
+    .boolean()
+    .optional()
     .describe("Enable speaker diarization - each token will include a speaker field"),
-  enableLanguageIdentification: zod.boolean().optional()
+  enableLanguageIdentification: zod
+    .boolean()
+    .optional()
     .describe("Enable language identification - each token will include a language field"),
-  enableEndpointDetection: zod.boolean().optional()
+  enableEndpointDetection: zod
+    .boolean()
+    .optional()
     .describe("Enable endpoint detection to detect when a speaker has finished talking"),
-  translation: sonioxTranslationConfigSchema.optional()
-    .describe("Translation configuration"),
-  clientReferenceId: zod.string().optional()
+  translation: sonioxTranslationConfigSchema.optional().describe("Translation configuration"),
+  clientReferenceId: zod
+    .string()
+    .optional()
     .describe("Optional tracking identifier (client-defined)")
 })
 
@@ -201,23 +213,27 @@ export const sonioxTranslationStatusSchema = zod.enum(["none", "original", "tran
  * Individual token in a transcription result
  */
 export const sonioxTokenSchema = zod.object({
-  text: zod.string()
-    .describe("Token text content (subword, word, or space)"),
-  start_ms: zod.number().optional()
-    .describe("Start time of the token in milliseconds"),
-  end_ms: zod.number().optional()
-    .describe("End time of the token in milliseconds"),
-  confidence: zod.number().min(0).max(1).optional()
+  text: zod.string().describe("Token text content (subword, word, or space)"),
+  start_ms: zod.number().optional().describe("Start time of the token in milliseconds"),
+  end_ms: zod.number().optional().describe("End time of the token in milliseconds"),
+  confidence: zod
+    .number()
+    .min(0)
+    .max(1)
+    .optional()
     .describe("Confidence score between 0.0 and 1.0"),
-  is_final: zod.boolean()
-    .describe("Whether this token is final (confirmed) or provisional"),
-  speaker: zod.string().optional()
+  is_final: zod.boolean().describe("Whether this token is final (confirmed) or provisional"),
+  speaker: zod
+    .string()
+    .optional()
     .describe("Speaker identifier (only present when speaker diarization is enabled)"),
-  language: zod.string().optional()
+  language: zod
+    .string()
+    .optional()
     .describe("Detected language code (only present when language identification is enabled)"),
-  source_language: zod.string().optional()
-    .describe("Original language code for translated tokens"),
-  translation_status: sonioxTranslationStatusSchema.optional()
+  source_language: zod.string().optional().describe("Original language code for translated tokens"),
+  translation_status: sonioxTranslationStatusSchema
+    .optional()
     .describe("Translation status: 'none', 'original', or 'translation'")
 })
 
@@ -225,20 +241,19 @@ export const sonioxTokenSchema = zod.object({
  * Real-time transcription response
  */
 export const sonioxStreamingResponseSchema = zod.object({
-  text: zod.string().optional()
-    .describe("Complete transcribed text"),
-  tokens: zod.array(sonioxTokenSchema)
-    .describe("List of recognized tokens"),
-  final_audio_proc_ms: zod.number().optional()
+  text: zod.string().optional().describe("Complete transcribed text"),
+  tokens: zod.array(sonioxTokenSchema).describe("List of recognized tokens"),
+  final_audio_proc_ms: zod
+    .number()
+    .optional()
     .describe("Milliseconds of audio processed into final tokens"),
-  total_audio_proc_ms: zod.number().optional()
+  total_audio_proc_ms: zod
+    .number()
+    .optional()
     .describe("Milliseconds of audio processed (final + non-final)"),
-  finished: zod.boolean().optional()
-    .describe("Whether the transcription is complete"),
-  error: zod.string().optional()
-    .describe("Error message if an error occurred"),
-  error_code: zod.number().optional()
-    .describe("Error code if an error occurred")
+  finished: zod.boolean().optional().describe("Whether the transcription is complete"),
+  error: zod.string().optional().describe("Error message if an error occurred"),
+  error_code: zod.number().optional().describe("Error code if an error occurred")
 })
 
 // =============================================================================

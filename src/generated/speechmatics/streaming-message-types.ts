@@ -14,9 +14,7 @@ import type { RecognitionResult } from "./schema/recognitionResult"
 // ── Enum Types ──────────────────────────────────────────────────────────────
 
 /** The following are the possible info types: */
-export type InfoType =
-  | "recognition_quality"
-  | "concurrent_session_usage"
+export type InfoType = "recognition_quality" | "concurrent_session_usage"
 
 /** The following are the possible warning types: */
 export type WarningType =
@@ -47,9 +45,7 @@ export type ErrorType =
   | "unknown_error"
 
 /** The direction that words in the language should be written and read in. */
-export type WritingDirection =
-  | "left-to-right"
-  | "right-to-left"
+export type WritingDirection = "left-to-right" | "right-to-left"
 
 // ── Helper Interfaces ───────────────────────────────────────────────────────
 

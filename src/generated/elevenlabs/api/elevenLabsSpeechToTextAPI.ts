@@ -123,13 +123,23 @@ export const speechToText = <TData = AxiosResponse<SpeechToText200>>(
     bodySpeechToTextV1SpeechToTextPost.webhook_metadata !== undefined &&
     bodySpeechToTextV1SpeechToTextPost.webhook_metadata !== null
   ) {
-    formData.append("webhook_metadata", typeof bodySpeechToTextV1SpeechToTextPost.webhook_metadata === "object" ? JSON.stringify(bodySpeechToTextV1SpeechToTextPost.webhook_metadata) : String(bodySpeechToTextV1SpeechToTextPost.webhook_metadata))
+    formData.append(
+      "webhook_metadata",
+      typeof bodySpeechToTextV1SpeechToTextPost.webhook_metadata === "object"
+        ? JSON.stringify(bodySpeechToTextV1SpeechToTextPost.webhook_metadata)
+        : String(bodySpeechToTextV1SpeechToTextPost.webhook_metadata)
+    )
   }
   if (
     bodySpeechToTextV1SpeechToTextPost.entity_detection !== undefined &&
     bodySpeechToTextV1SpeechToTextPost.entity_detection !== null
   ) {
-    formData.append("entity_detection", typeof bodySpeechToTextV1SpeechToTextPost.entity_detection === "object" ? JSON.stringify(bodySpeechToTextV1SpeechToTextPost.entity_detection) : String(bodySpeechToTextV1SpeechToTextPost.entity_detection))
+    formData.append(
+      "entity_detection",
+      typeof bodySpeechToTextV1SpeechToTextPost.entity_detection === "object"
+        ? JSON.stringify(bodySpeechToTextV1SpeechToTextPost.entity_detection)
+        : String(bodySpeechToTextV1SpeechToTextPost.entity_detection)
+    )
   }
   if (bodySpeechToTextV1SpeechToTextPost.no_verbatim !== undefined) {
     formData.append("no_verbatim", bodySpeechToTextV1SpeechToTextPost.no_verbatim.toString())
@@ -144,7 +154,11 @@ export const speechToText = <TData = AxiosResponse<SpeechToText200>>(
     bodySpeechToTextV1SpeechToTextPost.entity_redaction !== undefined &&
     bodySpeechToTextV1SpeechToTextPost.entity_redaction !== null
   ) {
-    Array.isArray(bodySpeechToTextV1SpeechToTextPost.entity_redaction) ? bodySpeechToTextV1SpeechToTextPost.entity_redaction.forEach(value => formData.append("entity_redaction", value)) : formData.append("entity_redaction", bodySpeechToTextV1SpeechToTextPost.entity_redaction)
+    Array.isArray(bodySpeechToTextV1SpeechToTextPost.entity_redaction)
+      ? bodySpeechToTextV1SpeechToTextPost.entity_redaction.forEach((value) =>
+          formData.append("entity_redaction", value)
+        )
+      : formData.append("entity_redaction", bodySpeechToTextV1SpeechToTextPost.entity_redaction)
   }
   if (bodySpeechToTextV1SpeechToTextPost.entity_redaction_mode !== undefined) {
     formData.append(

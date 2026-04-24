@@ -96,7 +96,9 @@ format, or a stream of transcript events.
 export const createTranscriptionBodyResponseFormatDefault = "json"
 export const createTranscriptionBodyTemperatureDefault = 0
 export const createTranscriptionBodyIncludeItemDefault = []
-export const createTranscriptionBodyTimestampGranularitiesDefault: ("word" | "segment")[] = ["segment"]
+export const createTranscriptionBodyTimestampGranularitiesDefault: ("word" | "segment")[] = [
+  "segment"
+]
 export const createTranscriptionBodyStreamDefaultOne = false
 export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto"
 export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault = 300
@@ -534,7 +536,9 @@ export const createRealtimeClientSecretBodyExpiresAfterSecondsDefault = 600
 export const createRealtimeClientSecretBodyExpiresAfterSecondsMin = 10
 
 export const createRealtimeClientSecretBodyExpiresAfterSecondsMax = 7200
-export const createRealtimeClientSecretBodySessionOutputModalitiesDefault: ("text" | "audio")[] = ["audio"]
+export const createRealtimeClientSecretBodySessionOutputModalitiesDefault: ("text" | "audio")[] = [
+  "audio"
+]
 export const createRealtimeClientSecretBodySessionAudioInputNoiseReductionDefault = null
 export const createRealtimeClientSecretBodySessionAudioInputTurnDetectionTypeDefault = "server_vad"
 export const createRealtimeClientSecretBodySessionAudioInputTurnDetectionCreateResponseDefault = true
@@ -1465,7 +1469,10 @@ export const createRealtimeClientSecretBody = zod
     "Create a session and client secret for the Realtime API. The request can specify\neither a realtime or a transcription session configuration.\n[Learn more about the Realtime API](/docs/guides/realtime).\n"
   )
 
-export const createRealtimeClientSecretResponseSessionOutputModalitiesDefault: ("text" | "audio")[] = ["audio"]
+export const createRealtimeClientSecretResponseSessionOutputModalitiesDefault: (
+  | "text"
+  | "audio"
+)[] = ["audio"]
 export const createRealtimeClientSecretResponseSessionAudioInputNoiseReductionDefault = null
 export const createRealtimeClientSecretResponseSessionAudioInputTurnDetectionTypeDefault =
   "server_vad"
@@ -1840,9 +1847,7 @@ export const createRealtimeClientSecretResponse = zod
               .array(
                 zod
                   .object({
-                    type: zod
-                      .enum(["function"])
-                      .describe("The type of the tool, i.e. `function`."),
+                    type: zod.enum(["function"]).describe("The type of the tool, i.e. `function`."),
                     name: zod.string().optional().describe("The name of the function."),
                     description: zod
                       .string()
