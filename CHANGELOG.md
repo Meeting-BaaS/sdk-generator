@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.1] - 2026-04-26
+
+### Changed
+
+#### Strengthen Generated Typing Across Providers
+
+Replaced remaining weak request construction paths with generated request types across multiple adapters, including Soniox, Speechmatics, Azure STT, OpenAI Whisper, AssemblyAI, ElevenLabs, Deepgram, and Gladia.
+
+#### Soniox: Use Current Generated Batch API Endpoints
+
+Soniox batch transcription now uses the generated `/v1` transcription endpoints instead of legacy `/speech/*` calls. File uploads use the generated file API, transcription creation uses generated request/response types, and polling reads job metadata and transcript payloads from the current async API.
+
+#### Soniox Streaming: Generate Realtime Types from Official SDK
+
+Soniox realtime streaming types are now generated from the official `@soniox/speech-to-text-web` SDK instead of a handwritten local spec. The generation pipeline still enriches `model` and `audioFormat` with curated enums so field metadata, select options, and autocomplete remain available.
+
 ## [0.9.0] - 2026-04-24
 
 ### Changed
