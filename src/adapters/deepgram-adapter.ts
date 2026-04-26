@@ -50,6 +50,7 @@ export interface DeepgramConfig extends ProviderConfig {
 
 // Import Deepgram generated types
 import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
+import type { ListenV1AcceptedResponse } from "../generated/deepgram/schema/listenV1AcceptedResponse"
 import type { ListenTranscribeParams } from "../generated/deepgram/schema/listenTranscribeParams"
 import type { ListenV1ResponseResultsChannelsItemsAlternativesItems } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemsAlternativesItems"
 import type { ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems"
@@ -323,8 +324,10 @@ export class DeepgramAdapter extends BaseAdapter {
   /**
    * Submit audio for transcription
    *
-   * Sends audio to Deepgram API for transcription. Deepgram processes
-   * synchronously and returns results immediately (no polling required).
+   * Sends audio to Deepgram API for transcription. Deepgram normally processes
+   * synchronously and returns results immediately. When `webhookUrl` is set,
+   * Deepgram can instead return an async callback acknowledgment containing a
+   * request ID.
    *
    * @param audio - Audio input (URL or file buffer)
    * @param options - Transcription options
@@ -373,27 +376,73 @@ export class DeepgramAdapter extends BaseAdapter {
       // Build query parameters from options
       const params = this.buildTranscriptionParams(options)
 
-      let response: ListenV1Response
+      let response: ListenV1Response | ListenV1AcceptedResponse
 
       if (audio.type === "url") {
         // URL-based transcription
-        response = await this.client!.post<ListenV1Response>(
+        response = await this.client!.post<ListenV1Response | ListenV1AcceptedResponse>(
           "/listen",
           { url: audio.url },
           { params }
         ).then((res) => res.data)
       } else if (audio.type === "file") {
         // File-based transcription
-        response = await this.client!.post<ListenV1Response>("/listen", audio.file, {
-          params,
-          headers: {
-            "Content-Type": "audio/*"
-          }
-        }).then((res) => res.data)
+        response = await this.client!
+          .post<ListenV1Response | ListenV1AcceptedResponse>("/listen", audio.file, {
+            params,
+            headers: {
+              "Content-Type": "audio/*"
+            }
+          })
+          .then((res) => res.data)
       } else {
         throw new Error(
           "Deepgram adapter does not support stream type for pre-recorded transcription. Use transcribeStream() for real-time streaming."
         )
+      }
+
+      if (options?.webhookUrl) {
+        const requestId =
+          ("request_id" in response ? response.request_id : undefined) ||
+          ("metadata" in response ? response.metadata?.request_id : undefined)
+
+        if (!requestId) {
+          return {
+            success: false,
+            provider: this.name,
+            error: {
+              code: "MISSING_REQUEST_ID",
+              message: "Deepgram callback mode did not return a request ID"
+            },
+            raw: response
+          }
+        }
+
+        return {
+          success: true,
+          provider: this.name,
+          data: {
+            id: requestId,
+            text: "",
+            status: "queued"
+          },
+          tracking: {
+            requestId
+          },
+          raw: response
+        }
+      }
+
+      if (!("results" in response) || !("metadata" in response)) {
+        return {
+          success: false,
+          provider: this.name,
+          error: {
+            code: "INVALID_RESPONSE",
+            message: "Deepgram did not return a synchronous transcription payload"
+          },
+          raw: response
+        }
       }
 
       // Deepgram returns results immediately (synchronous)
