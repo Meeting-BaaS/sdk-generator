@@ -41,6 +41,7 @@ import type { LanguageConfig as GladiaLanguageConfig } from "../generated/gladia
 import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
+import type { CreateTranscriptionPayload as SonioxCreateTranscriptionPayload } from "../generated/soniox/schema/createTranscriptionPayload"
 
 // Streaming request types for type-safe streaming options
 import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
@@ -474,6 +475,12 @@ export interface TranscribeOptions {
       "file" | "model_id" | "language_code" | "diarize" | "keyterms"
     >
   >
+
+  /**
+   * Soniox-specific options (passed directly to API)
+   * @see https://soniox.com/docs/stt/
+   */
+  soniox?: Partial<Omit<SonioxCreateTranscriptionPayload, "model" | "audio_url" | "file_id">>
 }
 
 /**

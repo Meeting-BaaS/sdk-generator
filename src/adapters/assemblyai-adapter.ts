@@ -62,7 +62,7 @@ import {
 // Import AssemblyAI generated types
 import type { Transcript } from "../generated/assemblyai/schema/transcript"
 import type { TranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
-import { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
+import type { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
 import type { TranscriptListItem } from "../generated/assemblyai/schema/transcriptListItem"
 import type { ListTranscriptsParams } from "../generated/assemblyai/schema/listTranscriptsParams"
 import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
@@ -526,25 +526,27 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     // Migrate deprecated speech_model → speech_models before building request.
     // AssemblyAI rejects requests containing both fields (HTTP 400).
-    const aaiOpts = { ...options?.assemblyai } as Record<string, unknown>
-    if ("speech_model" in aaiOpts && aaiOpts.speech_model != null) {
-      if (!aaiOpts.speech_models) {
-        aaiOpts.speech_models = [aaiOpts.speech_model as string]
-      }
-      delete aaiOpts.speech_model
+    // speech_model may arrive via older consumer code through passthrough options.
+    const passthrough = options?.assemblyai as
+      | (Partial<TranscriptParams> & { speech_model?: string })
+      | undefined
+    let speechModels: TranscriptParams["speech_models"] | undefined
+    if (passthrough?.speech_model != null && !passthrough.speech_models) {
+      speechModels = [passthrough.speech_model] as TranscriptParams["speech_models"]
+    } else if (passthrough?.speech_models) {
+      speechModels = passthrough.speech_models
     }
 
-    // Start with provider-specific options (fully typed from OpenAPI)
+    // Build fully typed request from provider-specific options (typed from OpenAPI)
+    const { speech_model: _deprecated, ...typedOpts } = passthrough ?? {}
     const request: TranscriptParams = {
-      ...(aaiOpts as Partial<TranscriptParams>),
+      ...typedOpts,
       audio_url: audioUrl,
       // speech_models is required — default to universal-3-pro
-      speech_models: (aaiOpts.speech_models as TranscriptParams["speech_models"]) ?? [
-        "universal-3-pro"
-      ],
+      speech_models: speechModels ?? ["universal-3-pro"],
       // Enable punctuation and formatting by default
-      punctuate: (aaiOpts.punctuate as boolean) ?? true,
-      format_text: (aaiOpts.format_text as boolean) ?? true
+      punctuate: typedOpts.punctuate ?? true,
+      format_text: typedOpts.format_text ?? true
     }
 
     // Map normalized options (take precedence over assemblyai-specific)
@@ -616,19 +618,19 @@ export class AssemblyAIAdapter extends BaseAdapter {
    * Normalize AssemblyAI response to unified format
    */
   private normalizeResponse(response: Transcript): UnifiedTranscriptResponse<"assemblyai"> {
-    // Map AssemblyAI status to unified status using generated constants
+    // Map AssemblyAI status to unified status
     let status: "queued" | "processing" | "completed" | "error"
     switch (response.status) {
-      case TranscriptStatus.queued:
+      case "queued":
         status = "queued"
         break
-      case TranscriptStatus.processing:
+      case "processing":
         status = "processing"
         break
-      case TranscriptStatus.completed:
+      case "completed":
         status = "completed"
         break
-      case TranscriptStatus.error:
+      case "error":
         status = "error"
         break
       default:
@@ -636,7 +638,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
     }
 
     // Handle error state
-    if (response.status === TranscriptStatus.error) {
+    if (response.status === "error") {
       return {
         success: false,
         provider: this.name,

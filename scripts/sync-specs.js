@@ -120,7 +120,7 @@ const SPEC_SOURCES = {
   sonioxStreaming: {
     manual: true,
     output: "specs/soniox-streaming-types.ts",
-    note: "No official AsyncAPI spec - types extracted from @soniox/speech-to-text-web SDK",
+    note: "No official AsyncAPI spec - local streaming types are generated from @soniox/speech-to-text-web SDK",
     reference: {
       url: "https://registry.npmjs.org/@soniox/speech-to-text-web/latest",
       note: "@soniox/speech-to-text-web npm package",

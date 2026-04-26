@@ -114,6 +114,7 @@
     "openapi:sync-deepgram-streaming": "node scripts/sync-deepgram-streaming-types.js",
     "openapi:sync-speechmatics-streaming": "node scripts/sync-speechmatics-streaming-types.js",
     "openapi:sync-soniox-streaming": "node scripts/sync-soniox-streaming-types.js",
+    "openapi:sync:soniox-streaming": "pnpm openapi:sync-soniox-streaming",
     "openapi:sync-soniox-languages": "node scripts/generate-soniox-languages.js",
     "openapi:sync-soniox-models": "node scripts/generate-soniox-models.js",
     "openapi:sync-deepgram-languages": "node scripts/generate-deepgram-languages.js",

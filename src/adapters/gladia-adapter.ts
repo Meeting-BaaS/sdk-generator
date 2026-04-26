@@ -94,6 +94,29 @@ import type { PostTranscriptMessage } from "../generated/gladia/schema/postTrans
 import type { PostFinalTranscriptMessage } from "../generated/gladia/schema/postFinalTranscriptMessage"
 
 /**
+ * Union of all Gladia WebSocket message types for type-safe dispatch.
+ * Each branch in handleWebSocketMessage narrows to the specific type.
+ */
+type GladiaWebSocketMessage =
+  | TranscriptMessage
+  | PostTranscriptMessage
+  | PostFinalTranscriptMessage
+  | SpeechStartMessage
+  | SpeechEndMessage
+  | TranslationMessage
+  | SentimentAnalysisMessage
+  | NamedEntityRecognitionMessage
+  | PostSummarizationMessage
+  | PostChapterizationMessage
+  | AudioChunkAckMessage
+  | StartSessionMessage
+  | StartRecordingMessage
+  | StopRecordingAckMessage
+  | EndRecordingMessage
+  | EndSessionMessage
+  | { type: string; [key: string]: unknown }
+
+/**
  * Gladia transcription provider adapter
  *
  * Implements transcription for the Gladia API with support for:
@@ -978,7 +1001,7 @@ export class GladiaAdapter extends BaseAdapter {
           })
         }
 
-        this.handleWebSocketMessage(message, callbacks)
+        this.handleWebSocketMessage(message as GladiaWebSocketMessage, callbacks)
       } catch (error) {
         // Still capture raw message even if parse fails
         if (callbacks?.onRawMessage) {
@@ -1227,7 +1250,8 @@ export class GladiaAdapter extends BaseAdapter {
    * results (translation, sentiment, NER), post-processing results
    * (summarization, chapterization), acknowledgments, and lifecycle events.
    */
-  private handleWebSocketMessage(message: unknown, callbacks?: StreamingCallbacks): void {
+  private handleWebSocketMessage(message: GladiaWebSocketMessage, callbacks?: StreamingCallbacks): void {
+    // Keep a Record view for metadata/error callbacks that expect Record<string, unknown>
     const msg = message as Record<string, unknown>
     const messageType = msg.type as string
 

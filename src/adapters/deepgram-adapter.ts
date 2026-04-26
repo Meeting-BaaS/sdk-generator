@@ -1195,7 +1195,9 @@ export class DeepgramAdapter extends BaseAdapter {
       }
 
       case "Metadata": {
-        callbacks?.onMetadata?.(message as unknown as Record<string, unknown>)
+        // Narrowed to DeepgramMetadataMessage; spread into plain object for callback
+        const { type: _, ...metadata } = message
+        callbacks?.onMetadata?.(metadata as Record<string, unknown>)
         break
       }
 

@@ -3,7 +3,6 @@
  * Documentation: https://soniox.com/docs/stt/
  */
 
-import axios, { type AxiosInstance } from "axios"
 import type {
   AudioInput,
   ProviderCapabilities,
@@ -26,8 +25,27 @@ import { TranscriptionStatus as SonioxTranscriptionStatus } from "../generated/s
 import type { Model as SonioxModelInfo } from "../generated/soniox/schema/model"
 import type { Language as SonioxLanguageInfo } from "../generated/soniox/schema/language"
 import type { SonioxModelCode } from "../generated/soniox/models"
+import type { CreateTranscriptionPayload } from "../generated/soniox/schema/createTranscriptionPayload"
 import type { TranscriptionTranscript } from "../generated/soniox/schema/transcriptionTranscript"
 import type { TranscriptionTranscriptToken } from "../generated/soniox/schema/transcriptionTranscriptToken"
+
+// Import generated API functions
+import {
+  createTranscription,
+  getTranscription,
+  getTranscriptionTranscript,
+  uploadFile,
+  getModels as getGeneratedModels
+} from "../generated/soniox/api/sonioxPublicAPI"
+import type { Transcription as SonioxTranscription } from "../generated/soniox/schema/transcription"
+import type { UploadFileBody } from "../generated/soniox/schema/uploadFileBody"
+
+/**
+ * Soniox token with is_final flag (present in streaming responses)
+ */
+interface SonioxToken extends TranscriptionTranscriptToken {
+  is_final: boolean
+}
 
 /**
  * Soniox-specific configuration options
@@ -41,6 +59,7 @@ export interface SonioxConfig extends ProviderConfig {
    * ```typescript
    * import { SonioxModel } from 'voice-router-dev/constants'
    * { model: SonioxModel.stt_async_v3 }       // Async/batch
+   * { model: SonioxModel.stt_rt_preview }    // Real-time streaming
    * { model: SonioxModel.stt_rt_v3 }         // Real-time v3
    * ```
    *
@@ -75,7 +94,7 @@ export interface SonioxConfig extends ProviderConfig {
  * Soniox transcription provider adapter
  *
  * Implements transcription for Soniox API with support for:
- * - Batch transcription (async processing)
+ * - Batch transcription (async processing via v1 API)
  * - Real-time streaming (WebSocket)
  * - Speaker diarization
  * - Language identification
@@ -161,7 +180,6 @@ export class SonioxAdapter extends BaseAdapter {
     deleteTranscript: false
   }
 
-  private client?: AxiosInstance
   private region: SonioxRegionType = SonioxRegion.us
 
   /**
@@ -200,11 +218,18 @@ export class SonioxAdapter extends BaseAdapter {
   }
 
   /**
-   * Get the base URL for API requests
+   * Get the base URL for API requests (no /v1 suffix — generated functions include /v1 in paths)
    */
   protected get baseUrl(): string {
     if (this.config?.baseUrl) return this.config.baseUrl
-    return `https://${this.getRegionalHost()}/v1`
+    return `https://${this.getRegionalHost()}`
+  }
+
+  /**
+   * Build axios config with Soniox Bearer auth
+   */
+  protected getAxiosConfig() {
+    return super.getAxiosConfig("Authorization", (key) => `Bearer ${key}`)
   }
 
   initialize(config: SonioxConfig): void {
@@ -217,16 +242,6 @@ export class SonioxAdapter extends BaseAdapter {
     if (config.model) {
       this.defaultModel = config.model
     }
-
-    this.client = axios.create({
-      baseURL: this.baseUrl,
-      timeout: config.timeout || 120000,
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-        "Content-Type": "application/json",
-        ...config.headers
-      }
-    })
   }
 
   /**
@@ -258,25 +273,13 @@ export class SonioxAdapter extends BaseAdapter {
    */
   setRegion(region: SonioxRegionType): void {
     this.region = region
-    // Recreate client with new base URL
-    if (this.config?.apiKey) {
-      this.client = axios.create({
-        baseURL: this.baseUrl,
-        timeout: this.config.timeout || 120000,
-        headers: {
-          Authorization: `Bearer ${this.config.apiKey}`,
-          "Content-Type": "application/json",
-          ...this.config.headers
-        }
-      })
-    }
   }
 
   /**
    * Submit audio for transcription
    *
-   * Soniox uses async batch processing. The transcribe method submits audio
-   * and waits for completion (or use getTranscript for polling).
+   * Uses the async v1 API: createTranscription returns status `queued`,
+   * then polls until completed (or returns immediately if webhook is set).
    *
    * @param audio - Audio input (URL or file)
    * @param options - Transcription options
@@ -289,30 +292,63 @@ export class SonioxAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      // Build request body for POST /v1/transcriptions
-      const requestBody: Record<string, unknown> = {
-        model: options?.model || this.defaultModel
-      }
+      const sonioxOpts = options?.soniox
 
-      // Handle audio input
-      if (audio.type === "url") {
-        requestBody.audio_url = audio.url
-      } else if (audio.type === "file") {
-        // Upload file first via POST /v1/files, then use file_id
-        const formData = new FormData()
+      if (audio.type === "file") {
+        // File flow: upload first, then create transcription with file_id
         const audioBlob =
           audio.file instanceof Blob
             ? audio.file
             : new Blob([audio.file], { type: audio.mimeType || "audio/wav" })
-        formData.append("file", audioBlob, audio.filename || "audio.wav")
+        const uploadBody: UploadFileBody = { file: audioBlob }
+        const fileResp = await uploadFile(uploadBody, this.getAxiosConfig())
 
-        const uploadResponse = await this.client!.post("/files", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
+        const payload: CreateTranscriptionPayload = {
+          ...sonioxOpts,
+          model: options?.model || this.defaultModel,
+          file_id: fileResp.data.id,
+          language_hints: options?.language ? [options.language] : sonioxOpts?.language_hints,
+          enable_speaker_diarization: options?.diarization || sonioxOpts?.enable_speaker_diarization,
+          enable_language_identification:
+            options?.languageDetection || sonioxOpts?.enable_language_identification,
+          context: options?.customVocabulary?.length
+            ? { terms: options.customVocabulary }
+            : sonioxOpts?.context,
+          webhook_url: options?.webhookUrl || sonioxOpts?.webhook_url
+        }
 
-        requestBody.file_id = uploadResponse.data.id
+        const createResp = await createTranscription(payload, this.getAxiosConfig())
+        const meta = createResp.data
+
+        if (options?.webhookUrl || sonioxOpts?.webhook_url) {
+          return this.normalizeTranscription(meta)
+        }
+
+        return this.pollForCompletion(meta.id)
+      } else if (audio.type === "url") {
+        // URL flow: create transcription directly with audio_url
+        const payload: CreateTranscriptionPayload = {
+          ...sonioxOpts,
+          model: options?.model || this.defaultModel,
+          audio_url: audio.url,
+          language_hints: options?.language ? [options.language] : sonioxOpts?.language_hints,
+          enable_speaker_diarization: options?.diarization || sonioxOpts?.enable_speaker_diarization,
+          enable_language_identification:
+            options?.languageDetection || sonioxOpts?.enable_language_identification,
+          context: options?.customVocabulary?.length
+            ? { terms: options.customVocabulary }
+            : sonioxOpts?.context,
+          webhook_url: options?.webhookUrl || sonioxOpts?.webhook_url
+        }
+
+        const createResp = await createTranscription(payload, this.getAxiosConfig())
+        const meta = createResp.data
+
+        if (options?.webhookUrl || sonioxOpts?.webhook_url) {
+          return this.normalizeTranscription(meta)
+        }
+
+        return this.pollForCompletion(meta.id)
       } else {
         return {
           success: false,
@@ -323,55 +359,6 @@ export class SonioxAdapter extends BaseAdapter {
           }
         }
       }
-
-      // Add language hints
-      if (options?.language) {
-        requestBody.language_hints = [options.language]
-      }
-
-      // Add diarization
-      if (options?.diarization) {
-        requestBody.enable_speaker_diarization = true
-      }
-
-      // Add language detection
-      if (options?.languageDetection) {
-        requestBody.enable_language_identification = true
-      }
-
-      // Add custom vocabulary via context
-      if (options?.customVocabulary && options.customVocabulary.length > 0) {
-        requestBody.context = {
-          terms: options.customVocabulary
-        }
-      }
-
-      // Wire webhook URL for async notification
-      if (options?.webhookUrl) {
-        requestBody.webhook_url = options.webhookUrl
-      }
-
-      // Submit async transcription job
-      const response = await this.client!.post("/transcriptions", requestBody)
-
-      const transcriptionId = response.data.id
-
-      // If webhook is provided, return immediately with job ID
-      if (options?.webhookUrl) {
-        return {
-          success: true,
-          provider: this.name,
-          data: {
-            id: transcriptionId,
-            text: "",
-            status: "queued"
-          },
-          raw: response.data
-        }
-      }
-
-      // Otherwise, poll for completion
-      return await this.pollForCompletion(transcriptionId)
     } catch (error) {
       return this.createErrorResponse(error)
     }
@@ -380,9 +367,8 @@ export class SonioxAdapter extends BaseAdapter {
   /**
    * Get transcription result by ID
    *
-   * Checks job status via GET /v1/transcriptions/{id}, then fetches
-   * the full transcript via GET /v1/transcriptions/{id}/transcript
-   * when completed.
+   * Fetches transcription metadata and, if completed, the transcript text/tokens.
+   * Used by pollForCompletion() for async polling.
    *
    * @param transcriptId - Transcript ID
    * @returns Transcription response
@@ -391,45 +377,23 @@ export class SonioxAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      // Check job status
-      const statusResponse = await this.client!.get(`/transcriptions/${transcriptId}`)
-      const job = statusResponse.data
+      const metaResp = await getTranscription(transcriptId, this.getAxiosConfig())
+      const meta = metaResp.data
 
-      if (job.status === "error") {
-        return {
-          success: false,
-          provider: this.name,
-          error: {
-            code: "TRANSCRIPTION_ERROR",
-            message: job.error_message || "Transcription failed"
-          }
+      if (meta.status === SonioxTranscriptionStatus.completed) {
+        try {
+          const transcriptResp = await getTranscriptionTranscript(
+            transcriptId,
+            this.getAxiosConfig()
+          )
+          return this.normalizeTranscription(meta, transcriptResp.data)
+        } catch (transcriptError) {
+          return this.createErrorResponse(transcriptError)
         }
       }
 
-      if (job.status !== "completed") {
-        // Return queued/processing status for polling
-        return {
-          success: true,
-          provider: this.name,
-          data: {
-            id: job.id,
-            text: "",
-            status: job.status
-          },
-          raw: job
-        }
-      }
-
-      // Fetch full transcript
-      const transcriptResponse = await this.client!.get(
-        `/transcriptions/${transcriptId}/transcript`
-      )
-      return this.normalizeResponse({
-        ...transcriptResponse.data,
-        // Carry over job metadata
-        id: job.id,
-        audio_duration_ms: job.audio_duration_ms
-      })
+      // Still processing, queued, or error — normalizeTranscription handles all states
+      return this.normalizeTranscription(meta)
     } catch (error) {
       return this.createErrorResponse(error)
     }
@@ -454,29 +418,20 @@ export class SonioxAdapter extends BaseAdapter {
     const sessionId = `soniox_${Date.now()}_${Math.random().toString(36).substring(7)}`
     const createdAt = new Date()
 
-    // Build WebSocket URL (no query params — config goes in JSON init message)
+    // Build WebSocket URL with query parameters (using regional WebSocket host)
     // Respect wsBaseUrl > baseUrl > regional default
     const wsBase =
       this.config?.wsBaseUrl ||
       (this.config?.baseUrl
         ? this.deriveWsUrl(this.config.baseUrl)
         : `wss://${this.getRegionalWsHost()}`)
-    const wsUrl = `${wsBase}/transcribe-websocket`
-
+    const wsUrl = new URL(`${wsBase}/transcribe-websocket`)
+    wsUrl.searchParams.set("api_key", this.config!.apiKey)
     // Prefer sonioxStreaming.model over generic model option
-    const modelId = options?.sonioxStreaming?.model || options?.model || "stt-rt-v4"
-    const sonioxOpts = options?.sonioxStreaming
+    const modelId = options?.sonioxStreaming?.model || options?.model || "stt-rt-preview"
+    wsUrl.searchParams.set("model", modelId)
 
-    // Build the JSON init message (sent as first text frame after open)
-    const initMessage: Record<string, unknown> = {
-      api_key: this.config!.apiKey,
-      model: modelId
-    }
-
-    // Audio format
-    if (sonioxOpts?.audioFormat) {
-      initMessage.audio_format = sonioxOpts.audioFormat
-    } else if (options?.encoding) {
+    if (options?.encoding) {
       // Map common encoding names to Soniox format
       const encodingMap: Record<string, string> = {
         linear16: "pcm_s16le",
@@ -484,60 +439,71 @@ export class SonioxAdapter extends BaseAdapter {
         mulaw: "mulaw",
         alaw: "alaw"
       }
-      initMessage.audio_format = encodingMap[options.encoding] || options.encoding
+      wsUrl.searchParams.set("audio_format", encodingMap[options.encoding] || options.encoding)
     }
 
-    if (sonioxOpts?.sampleRate || options?.sampleRate) {
-      initMessage.sample_rate = sonioxOpts?.sampleRate || options?.sampleRate
+    if (options?.sampleRate) {
+      wsUrl.searchParams.set("sample_rate", options.sampleRate.toString())
     }
 
-    if (sonioxOpts?.numChannels || options?.channels) {
-      initMessage.num_channels = sonioxOpts?.numChannels || options?.channels
+    if (options?.channels) {
+      wsUrl.searchParams.set("num_channels", options.channels.toString())
     }
 
-    // Handle Soniox-specific streaming options
+    // Handle Soniox-specific streaming options first (has strict types)
+    const sonioxOpts = options?.sonioxStreaming
     if (sonioxOpts) {
+      // Prefer strictly typed languageHints from sonioxStreaming
       if (sonioxOpts.languageHints && sonioxOpts.languageHints.length > 0) {
-        initMessage.language_hints = sonioxOpts.languageHints
+        wsUrl.searchParams.set("language_hints", JSON.stringify(sonioxOpts.languageHints))
       }
       if (sonioxOpts.enableLanguageIdentification) {
-        initMessage.enable_language_identification = true
+        wsUrl.searchParams.set("enable_language_identification", "true")
       }
       if (sonioxOpts.enableEndpointDetection) {
-        initMessage.enable_endpoint_detection = true
+        wsUrl.searchParams.set("enable_endpoint_detection", "true")
       }
       if (sonioxOpts.enableSpeakerDiarization) {
-        initMessage.enable_speaker_diarization = true
+        wsUrl.searchParams.set("enable_speaker_diarization", "true")
       }
       if (sonioxOpts.context) {
-        initMessage.context =
-          typeof sonioxOpts.context === "string" ? sonioxOpts.context : sonioxOpts.context
+        wsUrl.searchParams.set(
+          "context",
+          typeof sonioxOpts.context === "string"
+            ? sonioxOpts.context
+            : JSON.stringify(sonioxOpts.context)
+        )
       }
       if (sonioxOpts.translation) {
-        initMessage.translation = sonioxOpts.translation
+        wsUrl.searchParams.set("translation", JSON.stringify(sonioxOpts.translation))
       }
       if (sonioxOpts.clientReferenceId) {
-        initMessage.client_reference_id = sonioxOpts.clientReferenceId
+        wsUrl.searchParams.set("client_reference_id", sonioxOpts.clientReferenceId)
       }
     }
 
     // Fallback to generic options if sonioxStreaming not provided
     if (!sonioxOpts?.languageHints && options?.language) {
+      // Warn about Deepgram-specific language values
       if (options.language === "multi") {
         console.warn(
           '[Soniox] Warning: language="multi" is Deepgram-specific and not supported by Soniox. ' +
             "For automatic language detection, use languageDetection: true instead, or specify a language code like 'en'."
         )
       }
-      initMessage.language_hints = [options.language]
+      wsUrl.searchParams.set("language_hints", JSON.stringify([options.language]))
     }
 
     if (!sonioxOpts?.enableSpeakerDiarization && options?.diarization) {
-      initMessage.enable_speaker_diarization = true
+      wsUrl.searchParams.set("enable_speaker_diarization", "true")
     }
 
     if (!sonioxOpts?.enableLanguageIdentification && options?.languageDetection) {
-      initMessage.enable_language_identification = true
+      wsUrl.searchParams.set("enable_language_identification", "true")
+    }
+
+    if (options?.interimResults !== false) {
+      // Soniox returns partial results by default
     }
 
     let status: "connecting" | "open" | "closing" | "closed" = "connecting"
@@ -546,27 +512,11 @@ export class SonioxAdapter extends BaseAdapter {
 
     // Create WebSocket connection
     const WebSocketImpl = typeof WebSocket !== "undefined" ? WebSocket : require("ws")
-    const ws: WebSocket = new WebSocketImpl(wsUrl)
+    const ws: WebSocket = new WebSocketImpl(wsUrl.toString())
 
     ws.onopen = () => {
-      openedAt = Date.now()
-
-      // Send JSON init message as the first text frame (required by Soniox API)
-      const initPayload = JSON.stringify(initMessage)
-
-      // Capture outgoing init message
-      if (callbacks?.onRawMessage) {
-        callbacks.onRawMessage({
-          provider: this.name,
-          direction: "outgoing",
-          timestamp: Date.now(),
-          payload: initPayload,
-          messageType: "init"
-        })
-      }
-
-      ws.send(initPayload)
       status = "open"
+      openedAt = Date.now()
       callbacks?.onOpen?.()
     }
 
@@ -578,15 +528,24 @@ export class SonioxAdapter extends BaseAdapter {
       let messageType: string | undefined
 
       try {
-        const data = JSON.parse(rawPayload)
+        const data = JSON.parse(rawPayload) as {
+          error?: string
+          error_message?: string
+          error_code?: number
+          finished?: boolean
+          text?: string
+          tokens?: SonioxToken[]
+        }
+
+        const errorMessage = data.error_message || data.error
 
         // Derive message type for raw message callback
-        if (data.error) {
+        if (errorMessage) {
           messageType = "error"
         } else if (data.finished) {
           messageType = "finished"
         } else if (data.tokens) {
-          messageType = data.tokens.every((t: any) => t.is_final)
+          messageType = data.tokens.every((t) => t.is_final)
             ? "final_tokens"
             : "partial_tokens"
         }
@@ -603,10 +562,10 @@ export class SonioxAdapter extends BaseAdapter {
         }
 
         // Handle different message types
-        if (data.error) {
+        if (errorMessage) {
           callbacks?.onError?.({
             code: data.error_code?.toString() || "STREAM_ERROR",
-            message: data.error
+            message: errorMessage
           })
           return
         }
@@ -618,24 +577,24 @@ export class SonioxAdapter extends BaseAdapter {
 
         // Build transcript event from tokens
         if (data.tokens && data.tokens.length > 0) {
-          const words: Word[] = data.tokens.map((token: any) => ({
+          const words: Word[] = data.tokens.map((token) => ({
             word: token.text,
             start: token.start_ms ? token.start_ms / 1000 : 0,
             end: token.end_ms ? token.end_ms / 1000 : 0,
             confidence: token.confidence,
-            speaker: token.speaker
+            speaker: token.speaker ?? undefined
           }))
 
-          const text = data.text || data.tokens.map((t: any) => t.text).join("")
-          const isFinal = data.tokens.every((t: any) => t.is_final)
+          const text = data.text || data.tokens.map((t) => t.text).join("")
+          const isFinal = data.tokens.every((t) => t.is_final)
 
           const event: StreamEvent = {
             type: "transcript",
             text,
             isFinal,
             words,
-            speaker: data.tokens[0]?.speaker,
-            language: data.tokens[0]?.language,
+            speaker: data.tokens[0]?.speaker ?? undefined,
+            language: data.tokens[0]?.language ?? undefined,
             confidence: data.tokens[0]?.confidence
           }
 
@@ -667,15 +626,14 @@ export class SonioxAdapter extends BaseAdapter {
     ws.onclose = (event: CloseEvent) => {
       status = "closed"
 
-      // Detect early close after open (likely auth/config rejection)
-      // Soniox can take up to ~3s to reject, so use a 5s threshold
+      // Detect immediate close after open (likely auth/config rejection)
       const timeSinceOpen = openedAt ? Date.now() - openedAt : null
-      const isEarlyClose = timeSinceOpen !== null && timeSinceOpen < 5000 && !receivedData
+      const isImmediateClose = timeSinceOpen !== null && timeSinceOpen < 1000 && !receivedData
 
-      if (isEarlyClose && event.code === 1000) {
+      if (isImmediateClose && event.code === 1000) {
         // Soniox accepted WebSocket but rejected config - surface as error
         const errorMessage = [
-          "Soniox closed connection shortly after opening.",
+          "Soniox closed connection immediately after opening.",
           `Current config: region=${this.region}, model=${modelId}`,
           "Likely causes:",
           "  - Invalid API key or region mismatch (keys are region-specific, current: " +
@@ -779,7 +737,7 @@ export class SonioxAdapter extends BaseAdapter {
     this.validateConfig()
 
     try {
-      const response = await this.client!.get("/models")
+      const response = await getGeneratedModels(this.getAxiosConfig())
       return response.data.models || []
     } catch (error) {
       console.error("Failed to fetch Soniox models:", error)
@@ -815,27 +773,68 @@ export class SonioxAdapter extends BaseAdapter {
   }
 
   /**
-   * Normalize Soniox response to unified format
+   * Normalize v1 API response to unified format
+   *
+   * @param meta - Transcription metadata from getTranscription/createTranscription
+   * @param transcript - Transcript data (text/tokens), only present when status is completed
    */
-  private normalizeResponse(
-    response: TranscriptionTranscript & { audio_duration_ms?: number; total_audio_proc_ms?: number }
+  private normalizeTranscription(
+    meta: SonioxTranscription,
+    transcript?: TranscriptionTranscript
   ): UnifiedTranscriptResponse {
-    const { text, tokens } = response
+    // Handle error status
+    if (meta.status === SonioxTranscriptionStatus.error) {
+      return {
+        success: false,
+        provider: this.name,
+        data: {
+          id: meta.id,
+          text: "",
+          status: "error"
+        },
+        error: {
+          code: meta.error_type || "TRANSCRIPTION_ERROR",
+          message: meta.error_message || "Transcription failed"
+        },
+        raw: { meta, transcript }
+      }
+    }
+
+    // When transcript is not yet available (queued/processing)
+    if (!transcript) {
+      return {
+        success: true,
+        provider: this.name,
+        data: {
+          id: meta.id,
+          text: "",
+          status: meta.status as "queued" | "processing" | "completed" | "error",
+          duration: meta.audio_duration_ms ? meta.audio_duration_ms / 1000 : undefined
+        },
+        raw: { meta }
+      }
+    }
+
+    // Completed with transcript data
+    const tokens = transcript.tokens || []
+    const text = transcript.text || tokens.map((t) => t.text).join("")
 
     // Extract words with timestamps
-    const words: Word[] = tokens.map((token) => ({
-      word: token.text,
-      start: token.start_ms / 1000,
-      end: token.end_ms / 1000,
-      confidence: token.confidence,
-      speaker: token.speaker ?? undefined
-    }))
+    const words: Word[] = tokens
+      .filter((t) => t.start_ms !== undefined && t.end_ms !== undefined)
+      .map((token) => ({
+        word: token.text,
+        start: token.start_ms / 1000,
+        end: token.end_ms / 1000,
+        confidence: token.confidence,
+        speaker: token.speaker ?? undefined
+      }))
 
     // Extract speakers if diarization was enabled
     const speakerSet = new Set<string>()
-    for (const token of tokens) {
-      if (token.speaker) speakerSet.add(token.speaker)
-    }
+    tokens.forEach((t) => {
+      if (t.speaker) speakerSet.add(String(t.speaker))
+    })
 
     const speakers =
       speakerSet.size > 0
@@ -846,33 +845,28 @@ export class SonioxAdapter extends BaseAdapter {
         : undefined
 
     // Build utterances from speaker changes
-    const utterances = tokens.length > 0 ? this.buildUtterancesFromTokens(tokens) : []
+    const utterances = this.buildUtterancesFromTokens(tokens)
 
     // Detect language from tokens
-    const language = tokens.find((t) => t.language)?.language ?? undefined
+    const language = (tokens.find((t) => t.language)?.language ?? undefined) as string | undefined
 
     return {
       success: true,
       provider: this.name,
       data: {
-        id: response.id || `soniox_${Date.now()}`,
+        id: meta.id,
         text,
         status: SonioxTranscriptionStatus.completed,
         language,
-        duration: response.audio_duration_ms
-          ? response.audio_duration_ms / 1000
-          : response.total_audio_proc_ms
-            ? response.total_audio_proc_ms / 1000
-            : undefined,
+        duration: meta.audio_duration_ms ? meta.audio_duration_ms / 1000 : undefined,
         speakers,
         words: words.length > 0 ? words : undefined,
         utterances: utterances.length > 0 ? utterances : undefined
       },
       tracking: {
-        requestId: response.id,
-        processingTimeMs: response.total_audio_proc_ms
+        requestId: meta.id
       },
-      raw: response
+      raw: { meta, transcript }
     }
   }
 }
@@ -893,7 +887,7 @@ export class SonioxAdapter extends BaseAdapter {
  * ```typescript
  * const adapter = createSonioxAdapter({
  *   apiKey: process.env.SONIOX_API_KEY,
- *   model: 'stt-rt-v4' // Real-time model
+ *   model: 'stt-rt-preview' // Real-time model
  * })
  * ```
  */

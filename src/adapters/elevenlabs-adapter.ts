@@ -23,11 +23,10 @@ import { ElevenLabsRegion, type ElevenLabsRegionType } from "../constants"
 
 // Import generated ElevenLabs types
 import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
-import type { SpeechToText200 } from "../generated/elevenlabs/schema/speechToText200"
 import type { SpeechToTextChunkResponseModel } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
-import type { MultichannelSpeechToTextResponseModel } from "../generated/elevenlabs/schema/multichannelSpeechToTextResponseModel"
 import type { SpeechToTextWordResponseModel } from "../generated/elevenlabs/schema/speechToTextWordResponseModel"
-import type { DetectedEntity } from "../generated/elevenlabs/schema/detectedEntity"
+import type { MultichannelSpeechToTextResponseModel } from "../generated/elevenlabs/schema/multichannelSpeechToTextResponseModel"
+import type { SpeechToText200 } from "../generated/elevenlabs/schema/speechToText200"
 import type { ElevenLabsModelCode } from "../generated/elevenlabs/models"
 
 /**
@@ -275,39 +274,11 @@ export class ElevenLabsAdapter extends BaseAdapter {
         }
       }
 
-      // Enable async webhook mode when webhookUrl is provided.
-      // Note: ElevenLabs requires webhook URLs to be pre-configured in account
-      // settings via a webhook_id. Setting webhook=true triggers async mode
-      // where the result is delivered to the configured webhook endpoint.
-      // The webhookUrl itself is NOT sent to the API — it must match the
-      // pre-configured webhook_id (pass webhook_id via elevenlabs passthrough).
-      if (options?.webhookUrl) {
-        if (!formData.has("webhook")) {
-          formData.append("webhook", "true")
-        }
-      }
-
       const response = await this.client!.post("/v1/speech-to-text", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       })
-
-      // If webhook mode, return immediately with job ID
-      if (options?.webhookUrl) {
-        const transcriptionId =
-          response.data.transcription_id || response.data.id || `elevenlabs_${Date.now()}`
-        return {
-          success: true,
-          provider: this.name,
-          data: {
-            id: transcriptionId,
-            text: "",
-            status: "queued"
-          },
-          raw: response.data
-        }
-      }
 
       return this.normalizeResponse(response.data)
     } catch (error) {
@@ -704,11 +675,16 @@ export class ElevenLabsAdapter extends BaseAdapter {
     const language = chunks[0]?.language_code
     const languageProbability = chunks[0]?.language_probability
 
-    // Extract entities from chunks (uses generated DetectedEntity type)
+    // Extract entities from chunks (uses DetectedEntity shape: entity_type, start_char, end_char)
     const entities: ElevenLabsExtendedData["entities"] = []
     for (const chunk of chunks) {
       if (chunk.entities && Array.isArray(chunk.entities)) {
-        for (const entity of chunk.entities as DetectedEntity[]) {
+        for (const entity of chunk.entities as Array<{
+          text: string
+          entity_type: string
+          start_char: number
+          end_char: number
+        }>) {
           entities.push({
             text: entity.text,
             entity_type: entity.entity_type,
@@ -720,11 +696,8 @@ export class ElevenLabsAdapter extends BaseAdapter {
     }
 
     // Get transcript ID if available
-    const transcriptionId = (
-      "transcription_id" in response
-        ? (response as MultichannelSpeechToTextResponseModel).transcription_id
-        : (response as SpeechToTextChunkResponseModel).transcription_id
-    ) || chunks[0]?.transcription_id || `elevenlabs_${Date.now()}`
+    const transcriptionId =
+      response.transcription_id || chunks[0]?.transcription_id || `elevenlabs_${Date.now()}`
 
     return {
       success: true,

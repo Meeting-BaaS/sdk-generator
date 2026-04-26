@@ -201,7 +201,7 @@ export class AzureSTTAdapter extends BaseAdapter {
     }
 
     try {
-      const transcriptionRequest: Partial<Transcription> = {
+      const transcriptionRequest: Transcription = {
         displayName: "SDK Transcription",
         description: "",
         locale: options?.language || "en-US",
@@ -209,9 +209,8 @@ export class AzureSTTAdapter extends BaseAdapter {
         properties: this.buildTranscriptionProperties(options)
       }
 
-      // Use generated API client function - FULLY TYPED!
       const response = await transcriptionsCreate(
-        transcriptionRequest as Transcription,
+        transcriptionRequest,
         this.getAxiosConfig()
       )
 
