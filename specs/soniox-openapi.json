@@ -968,6 +968,56 @@
         "security": [{ "PublicApiAuth": [] }]
       }
     },
+    "/v1/tts-models": {
+      "get": {
+        "operationId": "get_tts_models",
+        "summary": "Get TTS models",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of available TTS models and their attributes.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetTTSModelsResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 401,
+                  "error_type": "unauthenticated",
+                  "message": "Incorrect API key provided. You can get an API key at https://console.soniox.com",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiError" },
+                "example": {
+                  "status_code": 500,
+                  "error_type": "internal_error",
+                  "message": "The server encountered an error. Please try again. If the issue persists contact support@soniox.com.",
+                  "validation_errors": [],
+                  "request_id": "3d37a3bd-5078-47ee-a369-b204e3bbedda"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieves list of available TTS models and their attributes.",
+        "tags": ["TTS Models"],
+        "security": [{ "PublicApiAuth": [] }]
+      }
+    },
     "/v1/auth/temporary-api-key": {
       "post": {
         "operationId": "create_temporary_api_key",
@@ -1717,81 +1767,6 @@
             {
               "aliased_model_id": null,
               "context_version": 2,
-              "id": "stt-rt-v3",
-              "languages": [
-                { "code": "af", "name": "Afrikaans" },
-                { "code": "sq", "name": "Albanian" },
-                { "code": "ar", "name": "Arabic" },
-                { "code": "az", "name": "Azerbaijani" },
-                { "code": "eu", "name": "Basque" },
-                { "code": "be", "name": "Belarusian" },
-                { "code": "bn", "name": "Bengali" },
-                { "code": "bs", "name": "Bosnian" },
-                { "code": "bg", "name": "Bulgarian" },
-                { "code": "ca", "name": "Catalan" },
-                { "code": "zh", "name": "Chinese" },
-                { "code": "hr", "name": "Croatian" },
-                { "code": "cs", "name": "Czech" },
-                { "code": "da", "name": "Danish" },
-                { "code": "nl", "name": "Dutch" },
-                { "code": "en", "name": "English" },
-                { "code": "et", "name": "Estonian" },
-                { "code": "fi", "name": "Finnish" },
-                { "code": "fr", "name": "French" },
-                { "code": "gl", "name": "Galician" },
-                { "code": "de", "name": "German" },
-                { "code": "el", "name": "Greek" },
-                { "code": "gu", "name": "Gujarati" },
-                { "code": "he", "name": "Hebrew" },
-                { "code": "hi", "name": "Hindi" },
-                { "code": "hu", "name": "Hungarian" },
-                { "code": "id", "name": "Indonesian" },
-                { "code": "it", "name": "Italian" },
-                { "code": "ja", "name": "Japanese" },
-                { "code": "kn", "name": "Kannada" },
-                { "code": "kk", "name": "Kazakh" },
-                { "code": "ko", "name": "Korean" },
-                { "code": "lv", "name": "Latvian" },
-                { "code": "lt", "name": "Lithuanian" },
-                { "code": "mk", "name": "Macedonian" },
-                { "code": "ms", "name": "Malay" },
-                { "code": "ml", "name": "Malayalam" },
-                { "code": "mr", "name": "Marathi" },
-                { "code": "no", "name": "Norwegian" },
-                { "code": "fa", "name": "Persian" },
-                { "code": "pl", "name": "Polish" },
-                { "code": "pt", "name": "Portuguese" },
-                { "code": "pa", "name": "Punjabi" },
-                { "code": "ro", "name": "Romanian" },
-                { "code": "ru", "name": "Russian" },
-                { "code": "sr", "name": "Serbian" },
-                { "code": "sk", "name": "Slovak" },
-                { "code": "sl", "name": "Slovenian" },
-                { "code": "es", "name": "Spanish" },
-                { "code": "sw", "name": "Swahili" },
-                { "code": "sv", "name": "Swedish" },
-                { "code": "tl", "name": "Tagalog" },
-                { "code": "ta", "name": "Tamil" },
-                { "code": "te", "name": "Telugu" },
-                { "code": "th", "name": "Thai" },
-                { "code": "tr", "name": "Turkish" },
-                { "code": "uk", "name": "Ukrainian" },
-                { "code": "ur", "name": "Urdu" },
-                { "code": "vi", "name": "Vietnamese" },
-                { "code": "cy", "name": "Welsh" }
-              ],
-              "name": "Speech-to-Text Real-time v3",
-              "one_way_translation": "all_languages",
-              "supports_language_hints_strict": true,
-              "supports_max_endpoint_delay": false,
-              "transcription_mode": "real_time",
-              "translation_targets": [],
-              "two_way_translation": "all_languages",
-              "two_way_translation_pairs": []
-            },
-            {
-              "aliased_model_id": null,
-              "context_version": 2,
               "id": "stt-async-v4",
               "languages": [
                 { "code": "af", "name": "Afrikaans" },
@@ -1865,82 +1840,7 @@
               "two_way_translation_pairs": []
             },
             {
-              "aliased_model_id": null,
-              "context_version": 2,
-              "id": "stt-async-v3",
-              "languages": [
-                { "code": "af", "name": "Afrikaans" },
-                { "code": "sq", "name": "Albanian" },
-                { "code": "ar", "name": "Arabic" },
-                { "code": "az", "name": "Azerbaijani" },
-                { "code": "eu", "name": "Basque" },
-                { "code": "be", "name": "Belarusian" },
-                { "code": "bn", "name": "Bengali" },
-                { "code": "bs", "name": "Bosnian" },
-                { "code": "bg", "name": "Bulgarian" },
-                { "code": "ca", "name": "Catalan" },
-                { "code": "zh", "name": "Chinese" },
-                { "code": "hr", "name": "Croatian" },
-                { "code": "cs", "name": "Czech" },
-                { "code": "da", "name": "Danish" },
-                { "code": "nl", "name": "Dutch" },
-                { "code": "en", "name": "English" },
-                { "code": "et", "name": "Estonian" },
-                { "code": "fi", "name": "Finnish" },
-                { "code": "fr", "name": "French" },
-                { "code": "gl", "name": "Galician" },
-                { "code": "de", "name": "German" },
-                { "code": "el", "name": "Greek" },
-                { "code": "gu", "name": "Gujarati" },
-                { "code": "he", "name": "Hebrew" },
-                { "code": "hi", "name": "Hindi" },
-                { "code": "hu", "name": "Hungarian" },
-                { "code": "id", "name": "Indonesian" },
-                { "code": "it", "name": "Italian" },
-                { "code": "ja", "name": "Japanese" },
-                { "code": "kn", "name": "Kannada" },
-                { "code": "kk", "name": "Kazakh" },
-                { "code": "ko", "name": "Korean" },
-                { "code": "lv", "name": "Latvian" },
-                { "code": "lt", "name": "Lithuanian" },
-                { "code": "mk", "name": "Macedonian" },
-                { "code": "ms", "name": "Malay" },
-                { "code": "ml", "name": "Malayalam" },
-                { "code": "mr", "name": "Marathi" },
-                { "code": "no", "name": "Norwegian" },
-                { "code": "fa", "name": "Persian" },
-                { "code": "pl", "name": "Polish" },
-                { "code": "pt", "name": "Portuguese" },
-                { "code": "pa", "name": "Punjabi" },
-                { "code": "ro", "name": "Romanian" },
-                { "code": "ru", "name": "Russian" },
-                { "code": "sr", "name": "Serbian" },
-                { "code": "sk", "name": "Slovak" },
-                { "code": "sl", "name": "Slovenian" },
-                { "code": "es", "name": "Spanish" },
-                { "code": "sw", "name": "Swahili" },
-                { "code": "sv", "name": "Swedish" },
-                { "code": "tl", "name": "Tagalog" },
-                { "code": "ta", "name": "Tamil" },
-                { "code": "te", "name": "Telugu" },
-                { "code": "th", "name": "Thai" },
-                { "code": "tr", "name": "Turkish" },
-                { "code": "uk", "name": "Ukrainian" },
-                { "code": "ur", "name": "Urdu" },
-                { "code": "vi", "name": "Vietnamese" },
-                { "code": "cy", "name": "Welsh" }
-              ],
-              "name": "Speech-to-Text Async v3",
-              "one_way_translation": "all_languages",
-              "supports_language_hints_strict": false,
-              "supports_max_endpoint_delay": false,
-              "transcription_mode": "async",
-              "translation_targets": [],
-              "two_way_translation": "all_languages",
-              "two_way_translation_pairs": []
-            },
-            {
-              "aliased_model_id": "stt-rt-v3",
+              "aliased_model_id": "stt-rt-v4",
               "context_version": 2,
               "id": "stt-rt-preview",
               "languages": [
@@ -2008,14 +1908,14 @@
               "name": "Speech-to-Text Real-time Preview",
               "one_way_translation": "all_languages",
               "supports_language_hints_strict": true,
-              "supports_max_endpoint_delay": false,
+              "supports_max_endpoint_delay": true,
               "transcription_mode": "real_time",
               "translation_targets": [],
               "two_way_translation": "all_languages",
               "two_way_translation_pairs": []
             },
             {
-              "aliased_model_id": "stt-async-v3",
+              "aliased_model_id": "stt-async-v4",
               "context_version": 2,
               "id": "stt-async-preview",
               "languages": [
@@ -2082,7 +1982,7 @@
               ],
               "name": "Speech-to-Text Async Preview",
               "one_way_translation": "all_languages",
-              "supports_language_hints_strict": false,
+              "supports_language_hints_strict": true,
               "supports_max_endpoint_delay": false,
               "transcription_mode": "async",
               "translation_targets": [],
@@ -2090,7 +1990,7 @@
               "two_way_translation_pairs": []
             },
             {
-              "aliased_model_id": "stt-rt-v3",
+              "aliased_model_id": "stt-rt-v4",
               "context_version": 2,
               "id": "stt-rt-v3-preview",
               "languages": [
@@ -2158,14 +2058,14 @@
               "name": "Speech-to-Text Real-time v3 Preview",
               "one_way_translation": "all_languages",
               "supports_language_hints_strict": true,
-              "supports_max_endpoint_delay": false,
+              "supports_max_endpoint_delay": true,
               "transcription_mode": "real_time",
               "translation_targets": [],
               "two_way_translation": "all_languages",
               "two_way_translation_pairs": []
             },
             {
-              "aliased_model_id": "stt-rt-v3",
+              "aliased_model_id": "stt-rt-v4",
               "context_version": 2,
               "id": "stt-rt-preview-v2",
               "languages": [
@@ -2233,14 +2133,14 @@
               "name": "Speech-to-Text Real-time Preview v2",
               "one_way_translation": "all_languages",
               "supports_language_hints_strict": true,
-              "supports_max_endpoint_delay": false,
+              "supports_max_endpoint_delay": true,
               "transcription_mode": "real_time",
               "translation_targets": [],
               "two_way_translation": "all_languages",
               "two_way_translation_pairs": []
             },
             {
-              "aliased_model_id": "stt-async-v3",
+              "aliased_model_id": "stt-async-v4",
               "context_version": 2,
               "id": "stt-async-preview-v1",
               "languages": [
@@ -2307,7 +2207,157 @@
               ],
               "name": "Speech-to-Text Async Preview v1",
               "one_way_translation": "all_languages",
-              "supports_language_hints_strict": false,
+              "supports_language_hints_strict": true,
+              "supports_max_endpoint_delay": false,
+              "transcription_mode": "async",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": "stt-rt-v4",
+              "context_version": 2,
+              "id": "stt-rt-v3",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Real-time v3",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": true,
+              "supports_max_endpoint_delay": true,
+              "transcription_mode": "real_time",
+              "translation_targets": [],
+              "two_way_translation": "all_languages",
+              "two_way_translation_pairs": []
+            },
+            {
+              "aliased_model_id": "stt-async-v4",
+              "context_version": 2,
+              "id": "stt-async-v3",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "zh", "name": "Chinese" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "da", "name": "Danish" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "en", "name": "English" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "cy", "name": "Welsh" }
+              ],
+              "name": "Speech-to-Text Async v3",
+              "one_way_translation": "all_languages",
+              "supports_language_hints_strict": true,
               "supports_max_endpoint_delay": false,
               "transcription_mode": "async",
               "translation_targets": [],
@@ -2436,6 +2486,149 @@
         "title": "TranslationTarget",
         "type": "object"
       },
+      "GetTTSModelsResponse": {
+        "example": {
+          "models": [
+            {
+              "aliased_model_id": null,
+              "id": "tts-rt-v1-preview",
+              "languages": [
+                { "code": "af", "name": "Afrikaans" },
+                { "code": "ar", "name": "Arabic" },
+                { "code": "az", "name": "Azerbaijani" },
+                { "code": "be", "name": "Belarusian" },
+                { "code": "bg", "name": "Bulgarian" },
+                { "code": "bn", "name": "Bengali" },
+                { "code": "bs", "name": "Bosnian" },
+                { "code": "ca", "name": "Catalan" },
+                { "code": "cs", "name": "Czech" },
+                { "code": "cy", "name": "Welsh" },
+                { "code": "da", "name": "Danish" },
+                { "code": "de", "name": "German" },
+                { "code": "el", "name": "Greek" },
+                { "code": "en", "name": "English" },
+                { "code": "es", "name": "Spanish" },
+                { "code": "et", "name": "Estonian" },
+                { "code": "eu", "name": "Basque" },
+                { "code": "fa", "name": "Persian" },
+                { "code": "fi", "name": "Finnish" },
+                { "code": "fr", "name": "French" },
+                { "code": "gl", "name": "Galician" },
+                { "code": "gu", "name": "Gujarati" },
+                { "code": "he", "name": "Hebrew" },
+                { "code": "hi", "name": "Hindi" },
+                { "code": "hr", "name": "Croatian" },
+                { "code": "hu", "name": "Hungarian" },
+                { "code": "id", "name": "Indonesian" },
+                { "code": "is", "name": "Icelandic" },
+                { "code": "it", "name": "Italian" },
+                { "code": "ja", "name": "Japanese" },
+                { "code": "kk", "name": "Kazakh" },
+                { "code": "kn", "name": "Kannada" },
+                { "code": "ko", "name": "Korean" },
+                { "code": "lt", "name": "Lithuanian" },
+                { "code": "lv", "name": "Latvian" },
+                { "code": "mk", "name": "Macedonian" },
+                { "code": "ml", "name": "Malayalam" },
+                { "code": "mr", "name": "Marathi" },
+                { "code": "ms", "name": "Malay" },
+                { "code": "nl", "name": "Dutch" },
+                { "code": "no", "name": "Norwegian" },
+                { "code": "pa", "name": "Punjabi" },
+                { "code": "pl", "name": "Polish" },
+                { "code": "pt", "name": "Portuguese" },
+                { "code": "ro", "name": "Romanian" },
+                { "code": "ru", "name": "Russian" },
+                { "code": "sk", "name": "Slovak" },
+                { "code": "sl", "name": "Slovenian" },
+                { "code": "sq", "name": "Albanian" },
+                { "code": "sr", "name": "Serbian" },
+                { "code": "su", "name": "Sundanese" },
+                { "code": "sv", "name": "Swedish" },
+                { "code": "sw", "name": "Swahili" },
+                { "code": "ta", "name": "Tamil" },
+                { "code": "te", "name": "Telugu" },
+                { "code": "th", "name": "Thai" },
+                { "code": "tl", "name": "Tagalog" },
+                { "code": "tr", "name": "Turkish" },
+                { "code": "uk", "name": "Ukrainian" },
+                { "code": "ur", "name": "Urdu" },
+                { "code": "uz", "name": "Uzbek" },
+                { "code": "vi", "name": "Vietnamese" },
+                { "code": "zh", "name": "Chinese" }
+              ],
+              "name": "TTS RT v1 Preview",
+              "voices": [
+                { "id": "Maya" },
+                { "id": "Daniel" },
+                { "id": "Noah" },
+                { "id": "Nina" },
+                { "id": "Emma" },
+                { "id": "Jack" },
+                { "id": "Adrian" },
+                { "id": "Claire" },
+                { "id": "Grace" },
+                { "id": "Owen" },
+                { "id": "Mina" },
+                { "id": "Kenji" }
+              ]
+            }
+          ]
+        },
+        "properties": {
+          "models": {
+            "description": "List of available TTS models and their attributes.",
+            "items": { "$ref": "#/components/schemas/TTSModel" },
+            "title": "Models",
+            "type": "array"
+          }
+        },
+        "required": ["models"],
+        "title": "GetTTSModelsResponse",
+        "type": "object"
+      },
+      "TTSModel": {
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the model.",
+            "title": "Id",
+            "type": "string"
+          },
+          "aliased_model_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "description": "If this is an alias, the id of the aliased model.",
+            "title": "Aliased Model Id"
+          },
+          "name": { "description": "Name of the model.", "title": "Name", "type": "string" },
+          "voices": {
+            "description": "List of available voices for this model.",
+            "items": { "$ref": "#/components/schemas/TTSVoice" },
+            "title": "Voices",
+            "type": "array"
+          },
+          "languages": {
+            "description": "List of languages supported by the model.",
+            "items": { "$ref": "#/components/schemas/Language" },
+            "title": "Languages",
+            "type": "array"
+          }
+        },
+        "required": ["id", "aliased_model_id", "name", "voices", "languages"],
+        "title": "TTSModel",
+        "type": "object"
+      },
+      "TTSVoice": {
+        "properties": {
+          "id": {
+            "description": "Unique identifier of the voice.",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": ["id"],
+        "title": "TTSVoice",
+        "type": "object"
+      },
       "CreateTemporaryApiKeyResponse": {
         "example": {
           "api_key": "temp:WYJ67RBEFUWQXXPKYPD2UGXKWB",
@@ -2462,6 +2655,8 @@
         "example": {
           "client_reference_id": "reference_id",
           "expires_in_seconds": 1800,
+          "max_session_duration_seconds": 120,
+          "single_use": true,
           "usage_type": "transcribe_websocket"
         },
         "properties": {
@@ -2480,6 +2675,16 @@
             "anyOf": [{ "maxLength": 256, "type": "string" }, { "type": "null" }],
             "description": "Optional tracking identifier string. Does not need to be unique.",
             "title": "Client Reference Id"
+          },
+          "single_use": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "description": "If true, the temporary API key can be used only once.",
+            "title": "Single Use"
+          },
+          "max_session_duration_seconds": {
+            "anyOf": [{ "maximum": 18000, "minimum": 1, "type": "integer" }, { "type": "null" }],
+            "description": "Maximum WebSocket connection duration in seconds. If exceeded, the connection will be dropped. If not set, no limit is applied.",
+            "title": "Max Session Duration Seconds"
           }
         },
         "required": ["usage_type", "expires_in_seconds"],
@@ -2487,7 +2692,7 @@
         "type": "object"
       },
       "TemporaryApiKeyUsageType": {
-        "enum": ["transcribe_websocket"],
+        "enum": ["transcribe_websocket", "tts_rt"],
         "title": "TemporaryApiKeyUsageType",
         "type": "string"
       }

@@ -209,10 +209,7 @@ export class AzureSTTAdapter extends BaseAdapter {
         properties: this.buildTranscriptionProperties(options)
       }
 
-      const response = await transcriptionsCreate(
-        transcriptionRequest,
-        this.getAxiosConfig()
-      )
+      const response = await transcriptionsCreate(transcriptionRequest, this.getAxiosConfig())
 
       const transcription = response.data
       const transcriptId = transcription.self?.split("/").pop() || ""

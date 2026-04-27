@@ -172,7 +172,19 @@ function parseRealtimeModelCodes() {
     .filter(Boolean)
 }
 
-function buildSpecFile({ version, requestTypes, contextType, translationConfigType, translationStatusType, tokenBody, responseBody, recorderStates, errorStatusType, realtimeModels, audioFormats }) {
+function buildSpecFile({
+  version,
+  requestTypes,
+  contextType,
+  translationConfigType,
+  translationStatusType,
+  tokenBody,
+  responseBody,
+  recorderStates,
+  errorStatusType,
+  realtimeModels,
+  audioFormats
+}) {
   const recorderStateUnion = recorderStates.join("\n  | ")
   const realtimeModelUnion = realtimeModels.join("\n  | ")
   const audioFormatUnion = audioFormats.join("\n  | ")
@@ -307,7 +319,9 @@ function buildZodFile({ version, recorderStates, errorStatusType }) {
     .filter(Boolean)
     .join(", ")
   const realtimeModelValues = parseRealtimeModelCodes().join(",\n  ")
-  const audioFormatValues = CURATED_AUDIO_FORMATS.map((value) => JSON.stringify(value)).join(",\n  ")
+  const audioFormatValues = CURATED_AUDIO_FORMATS.map((value) => JSON.stringify(value)).join(
+    ",\n  "
+  )
 
   return `/**
  * Soniox Streaming Zod Schemas
@@ -414,7 +428,7 @@ export const streamingTranscriberParams = zod.object({
 // Token and Response Schemas
 // =============================================================================
 
-export const sonioxTranslationStatusSchema = zod.enum([${errorStatusValues.includes('"none"') ? '' : ''}"original", "translation", "none"])
+export const sonioxTranslationStatusSchema = zod.enum([${errorStatusValues.includes('"none"') ? "" : ""}"original", "translation", "none"])
 
 export const sonioxTokenSchema = zod.object({
   text: zod.string(),
@@ -505,11 +519,7 @@ async function main() {
       /export type TranslationStatus = ([^;]+);/,
       "TranslationStatus"
     )
-    const tokenBody = extractSingle(
-      sdk.types,
-      /export interface Token \{([\s\S]*?)\n\}/,
-      "Token"
-    )
+    const tokenBody = extractSingle(sdk.types, /export interface Token \{([\s\S]*?)\n\}/, "Token")
     const responseBody = extractSingle(
       sdk.types,
       /export interface SpeechToTextAPIResponse \{([\s\S]*?)\n\}/,

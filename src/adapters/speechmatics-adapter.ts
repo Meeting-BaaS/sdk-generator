@@ -8,7 +8,13 @@ import type {
   AudioInput,
   ProviderCapabilities,
   TranscribeOptions,
-  UnifiedTranscriptResponse
+  UnifiedTranscriptResponse,
+  StreamingOptions,
+  StreamingCallbacks,
+  StreamingSession,
+  StreamEvent,
+  Word,
+  Utterance
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 import {
@@ -16,6 +22,17 @@ import {
   buildTextFromSpeechmaticsResults
 } from "../utils/transcription-helpers"
 import type { SpeechmaticsRegionType } from "../constants"
+import type {
+  SpeechmaticsRealtimeMessage,
+  AddPartialTranscript,
+  AddTranscript,
+  RecognitionStarted,
+  Warning as SpeechmaticsWarning,
+  Error as SpeechmaticsError
+} from "../generated/speechmatics/streaming-message-types"
+import type { RecognitionResult } from "../generated/speechmatics/schema/recognitionResult"
+import type { TranscriptionConfig } from "../generated/speechmatics/schema/transcriptionConfig"
+import type { TranscriptionConfigMaxDelayMode } from "../generated/speechmatics/schema/transcriptionConfigMaxDelayMode"
 
 /**
  * Speechmatics-specific configuration options
@@ -145,7 +162,7 @@ import type { PostJobsBody } from "../generated/speechmatics/schema/postJobsBody
 export class SpeechmaticsAdapter extends BaseAdapter {
   readonly name = "speechmatics" as const
   readonly capabilities: ProviderCapabilities = {
-    streaming: false, // Batch only (streaming available via separate WebSocket API)
+    streaming: true,
     diarization: true,
     wordTimestamps: true,
     languageDetection: false,
@@ -450,6 +467,342 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       }
       throw error
     }
+  }
+
+  /**
+   * Get the regional WebSocket host for real-time streaming
+   *
+   * Speechmatics RT uses a different host pattern: {region}.rt.speechmatics.com
+   */
+  private getRegionalWsHost(region?: SpeechmaticsRegionType): string {
+    const regionPrefix = region || "eu1"
+    return `${regionPrefix}.rt.speechmatics.com`
+  }
+
+  /**
+   * Stream audio for real-time transcription
+   *
+   * Creates a WebSocket connection to the Speechmatics Real-Time API.
+   * Protocol: send StartRecognition config, then AddAudio binary frames,
+   * receive AddPartialTranscript/AddTranscript/EndOfUtterance messages.
+   *
+   * @param options - Streaming configuration
+   * @param callbacks - Event callbacks
+   * @returns StreamingSession for sending audio and closing
+   *
+   * @see https://docs.speechmatics.com/rt-api-ref
+   */
+  async transcribeStream(
+    options?: StreamingOptions,
+    callbacks?: StreamingCallbacks
+  ): Promise<StreamingSession> {
+    this.validateConfig()
+
+    const sessionId = `speechmatics_${Date.now()}_${Math.random().toString(36).substring(7)}`
+    const createdAt = new Date()
+
+    const smOpts = options?.speechmaticsStreaming
+    const region = smOpts?.region || (this.config as SpeechmaticsConfig)?.region
+
+    // Build WebSocket URL
+    const wsBase =
+      this.config?.wsBaseUrl ||
+      (this.config?.baseUrl
+        ? this.deriveWsUrl(this.config.baseUrl)
+        : `wss://${this.getRegionalWsHost(region)}`)
+    const wsUrl = `${wsBase}/v2`
+
+    let status: "connecting" | "open" | "closing" | "closed" = "connecting"
+    let recognitionStarted = false
+
+    // Create WebSocket connection
+    const WebSocketImpl = typeof WebSocket !== "undefined" ? WebSocket : require("ws")
+    const ws: WebSocket = new WebSocketImpl(wsUrl)
+
+    // Build typed StartRecognition message using generated TranscriptionConfig.
+    // RT transcription_config extends batch TranscriptionConfig with enable_partials
+    // and a wider speaker_diarization_config (includes max_speakers, RT-only field).
+    const language = smOpts?.language || (options?.language as string) || "en"
+
+    const transcriptionConfig: TranscriptionConfig & {
+      enable_partials?: boolean
+      speaker_diarization_config?: TranscriptionConfig["speaker_diarization_config"] & {
+        max_speakers?: number
+      }
+    } = {
+      language,
+      enable_entities: smOpts?.enableEntities ?? options?.entityDetection ?? false,
+      enable_partials: smOpts?.enablePartials ?? options?.interimResults !== false,
+      operating_point:
+        (smOpts?.operatingPoint as OperatingPoint) || OperatingPoint.enhanced,
+      ...(smOpts?.maxDelay !== undefined && { max_delay: smOpts.maxDelay }),
+      ...(smOpts?.maxDelayMode && {
+        max_delay_mode: smOpts.maxDelayMode as TranscriptionConfigMaxDelayMode
+      }),
+      ...(smOpts?.domain && { domain: smOpts.domain }),
+      ...((options?.diarization || smOpts?.diarization === TranscriptionConfigDiarization.speaker) && {
+        diarization: TranscriptionConfigDiarization.speaker,
+        ...(smOpts?.maxSpeakers !== undefined && {
+          speaker_diarization_config: { max_speakers: smOpts.maxSpeakers }
+        })
+      }),
+      ...((options?.customVocabulary?.length || smOpts?.additionalVocab?.length) && {
+        additional_vocab: (smOpts?.additionalVocab || options?.customVocabulary || []).map(
+          (term) => ({ content: term })
+        )
+      })
+    }
+
+    const startRecognition = {
+      message: "StartRecognition" as const,
+      audio_format: {
+        type: "raw" as const,
+        encoding: smOpts?.encoding || ("pcm_s16le" as const),
+        sample_rate: smOpts?.sampleRate || options?.sampleRate || 16000
+      },
+      transcription_config: transcriptionConfig,
+      ...(smOpts?.conversationConfig && {
+        conversation_config: {
+          end_of_utterance_silence_trigger: smOpts.conversationConfig.endOfUtteranceSilenceTrigger
+        }
+      })
+    }
+
+    ws.onopen = () => {
+      status = "open"
+      // Send StartRecognition immediately on connect
+      const msg = JSON.stringify(startRecognition)
+
+      if (callbacks?.onRawMessage) {
+        callbacks.onRawMessage({
+          provider: this.name,
+          direction: "outgoing",
+          timestamp: Date.now(),
+          payload: msg,
+          messageType: "StartRecognition"
+        })
+      }
+
+      ws.send(msg)
+    }
+
+    ws.onmessage = (event: MessageEvent) => {
+      const rawPayload = typeof event.data === "string" ? event.data : event.data.toString()
+
+      try {
+        const data = JSON.parse(rawPayload) as SpeechmaticsRealtimeMessage
+        const messageType = data.message
+
+        // Raw message callback
+        if (callbacks?.onRawMessage) {
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "incoming",
+            timestamp: Date.now(),
+            payload: rawPayload,
+            messageType
+          })
+        }
+
+        switch (messageType) {
+          case "RecognitionStarted": {
+            recognitionStarted = true
+            callbacks?.onOpen?.()
+            callbacks?.onMetadata?.({
+              id: (data as RecognitionStarted).id,
+              languagePackInfo: (data as RecognitionStarted).language_pack_info
+            })
+            break
+          }
+
+          case "AddPartialTranscript": {
+            const partial = data as AddPartialTranscript
+            const words = this.resultsToWords(partial.results)
+            callbacks?.onTranscript?.({
+              type: "transcript",
+              text: partial.metadata.transcript,
+              isFinal: false,
+              words,
+              speaker: words[0]?.speaker,
+              confidence: partial.results[0]?.alternatives?.[0]?.confidence,
+              channel: partial.channel ? parseInt(partial.channel) : undefined
+            })
+            break
+          }
+
+          case "AddTranscript": {
+            const final = data as AddTranscript
+            const words = this.resultsToWords(final.results)
+
+            callbacks?.onTranscript?.({
+              type: "transcript",
+              text: final.metadata.transcript,
+              isFinal: true,
+              words,
+              speaker: words[0]?.speaker,
+              confidence: final.results[0]?.alternatives?.[0]?.confidence,
+              channel: final.channel ? parseInt(final.channel) : undefined
+            })
+
+            // Build utterances from final transcript words
+            if (options?.diarization || smOpts?.diarization === "speaker") {
+              const utterances = buildUtterancesFromWords(words)
+              for (const utterance of utterances) {
+                callbacks?.onUtterance?.(utterance)
+              }
+            }
+            break
+          }
+
+          case "EndOfUtterance": {
+            // Speechmatics signals end-of-utterance separately
+            // Already handled via AddTranscript isFinal=true above
+            break
+          }
+
+          case "EndOfTranscript": {
+            callbacks?.onClose?.(1000, "Transcription complete")
+            break
+          }
+
+          case "Error": {
+            const err = data as SpeechmaticsError
+            callbacks?.onError?.({
+              code: err.type || "SPEECHMATICS_ERROR",
+              message: err.reason || "Unknown error"
+            })
+            break
+          }
+
+          case "Warning": {
+            const warn = data as SpeechmaticsWarning
+            callbacks?.onMetadata?.({
+              warning: warn.type,
+              reason: warn.reason
+            })
+            break
+          }
+
+          case "Info": {
+            callbacks?.onMetadata?.(data as unknown as Record<string, unknown>)
+            break
+          }
+
+          case "AudioAdded":
+          case "ChannelAudioAdded":
+            // Acknowledgments — no action needed
+            break
+
+          default:
+            // Unknown message type — pass to metadata
+            callbacks?.onMetadata?.(data as unknown as Record<string, unknown>)
+            break
+        }
+      } catch (error) {
+        callbacks?.onError?.({
+          code: "PARSE_ERROR",
+          message: `Failed to parse message: ${error}`
+        })
+      }
+    }
+
+    ws.onerror = () => {
+      callbacks?.onError?.({
+        code: "WEBSOCKET_ERROR",
+        message: "WebSocket error occurred"
+      })
+    }
+
+    ws.onclose = (event: CloseEvent) => {
+      status = "closed"
+      callbacks?.onClose?.(event.code, event.reason)
+    }
+
+    // Wait for WebSocket open + RecognitionStarted
+    await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error("WebSocket connection timeout"))
+      }, 10000)
+
+      const checkReady = () => {
+        if (recognitionStarted) {
+          clearTimeout(timeout)
+          resolve()
+        } else if (status === "closed") {
+          clearTimeout(timeout)
+          reject(new Error("WebSocket connection failed"))
+        } else {
+          setTimeout(checkReady, 100)
+        }
+      }
+      checkReady()
+    })
+
+    return {
+      id: sessionId,
+      provider: this.name,
+      createdAt,
+      getStatus: () => status,
+      sendAudio: async (chunk) => {
+        if (status !== "open") {
+          throw new Error("Session is not open")
+        }
+
+        if (callbacks?.onRawMessage) {
+          const audioPayload =
+            chunk.data instanceof ArrayBuffer
+              ? chunk.data
+              : (chunk.data.buffer.slice(
+                  chunk.data.byteOffset,
+                  chunk.data.byteOffset + chunk.data.byteLength
+                ) as ArrayBuffer)
+          callbacks.onRawMessage({
+            provider: this.name,
+            direction: "outgoing",
+            timestamp: Date.now(),
+            payload: audioPayload,
+            messageType: "audio"
+          })
+        }
+
+        ws.send(chunk.data)
+      },
+      close: async () => {
+        if (status === "open") {
+          status = "closing"
+          const endMsg = JSON.stringify({ message: "EndOfStream", last_seq_no: 0 })
+
+          if (callbacks?.onRawMessage) {
+            callbacks.onRawMessage({
+              provider: this.name,
+              direction: "outgoing",
+              timestamp: Date.now(),
+              payload: endMsg,
+              messageType: "EndOfStream"
+            })
+          }
+
+          ws.send(endMsg)
+          // Don't close WebSocket immediately — wait for EndOfTranscript
+          // The server will close the connection after sending EndOfTranscript
+        }
+      }
+    }
+  }
+
+  /**
+   * Convert Speechmatics RecognitionResult[] to unified Word[]
+   */
+  private resultsToWords(results: RecognitionResult[]): Word[] {
+    return results
+      .filter((r) => r.type === "word")
+      .map((r) => ({
+        word: r.alternatives?.[0]?.content || "",
+        start: r.start_time,
+        end: r.end_time,
+        confidence: r.alternatives?.[0]?.confidence,
+        speaker: r.alternatives?.[0]?.speaker
+      }))
   }
 
   /**

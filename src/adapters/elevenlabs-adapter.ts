@@ -27,7 +27,15 @@ import type { SpeechToTextChunkResponseModel } from "../generated/elevenlabs/sch
 import type { SpeechToTextWordResponseModel } from "../generated/elevenlabs/schema/speechToTextWordResponseModel"
 import type { MultichannelSpeechToTextResponseModel } from "../generated/elevenlabs/schema/multichannelSpeechToTextResponseModel"
 import type { SpeechToText200 } from "../generated/elevenlabs/schema/speechToText200"
+import type { SpeechToTextWebhookResponseModel } from "../generated/elevenlabs/schema/speechToTextWebhookResponseModel"
 import type { ElevenLabsModelCode } from "../generated/elevenlabs/models"
+
+// WebSocket streaming types extracted from official elevenlabs SDK
+import type {
+  ElevenLabsRealtimeMessage,
+  CommittedTranscriptWithTimestampsPayload,
+  TranscriptionWord as ElevenLabsTranscriptionWord
+} from "../generated/elevenlabs/streaming-response-types"
 
 /**
  * ElevenLabs-specific configuration options
@@ -188,7 +196,15 @@ export class ElevenLabsAdapter extends BaseAdapter {
   /**
    * Submit audio for transcription
    *
-   * ElevenLabs batch is synchronous - the API returns the result directly.
+   * ElevenLabs batch is normally synchronous — the API returns results directly.
+   *
+   * **Webhook mode:** When `webhookUrl` is set (or `elevenlabs.webhook` is true),
+   * the request is processed asynchronously. ElevenLabs returns a 202 with a
+   * `request_id` and delivers results to a webhook configured in the ElevenLabs
+   * dashboard. The unified `webhookUrl` acts as an intent flag to enable async
+   * mode — the actual delivery destination must be pre-configured in your
+   * ElevenLabs dashboard. Use `elevenlabs.webhook_id` to target a specific
+   * webhook endpoint.
    */
   async transcribe(
     audio: AudioInput,
@@ -223,6 +239,15 @@ export class ElevenLabsAdapter extends BaseAdapter {
         }
       }
 
+      // Webhook async mode: webhookUrl acts as intent flag, actual destination
+      // is configured in ElevenLabs dashboard. Use elevenlabs.webhook_id to
+      // target a specific webhook endpoint.
+      const elevenlabsOpts = options?.elevenlabs
+      const useWebhook = options?.webhookUrl || elevenlabsOpts?.webhook
+      if (useWebhook) {
+        formData.append("webhook", "true")
+      }
+
       // Map unified options
       if (options?.language) {
         formData.append("language_code", options.language)
@@ -254,7 +279,6 @@ export class ElevenLabsAdapter extends BaseAdapter {
 
       // Provider-specific ElevenLabs options passthrough
       // Apply all remaining provider-specific options from the typed passthrough
-      const elevenlabsOpts = options?.elevenlabs
       if (elevenlabsOpts) {
         for (const [key, value] of Object.entries(elevenlabsOpts)) {
           if (value === undefined || value === null) continue
@@ -279,6 +303,24 @@ export class ElevenLabsAdapter extends BaseAdapter {
           "Content-Type": "multipart/form-data"
         }
       })
+
+      // Webhook mode: ElevenLabs returns 202 with request_id (async ack)
+      if (useWebhook) {
+        const ack = response.data as SpeechToTextWebhookResponseModel
+        return {
+          success: true,
+          provider: this.name,
+          data: {
+            id: ack.request_id || ack.transcription_id || `elevenlabs_${Date.now()}`,
+            text: "",
+            status: "queued"
+          },
+          tracking: {
+            requestId: ack.request_id
+          },
+          raw: response.data
+        }
+      }
 
       return this.normalizeResponse(response.data)
     } catch (error) {
@@ -404,23 +446,10 @@ export class ElevenLabsAdapter extends BaseAdapter {
       receivedData = true
 
       const rawPayload = typeof event.data === "string" ? event.data : event.data.toString()
-      let messageType: string | undefined
 
       try {
-        const data = JSON.parse(rawPayload)
-
-        // Derive message type
-        if (data.error) {
-          messageType = "error"
-        } else if (data.message_type === "session_started") {
-          messageType = "session_started"
-        } else if (data.message_type === "partial_transcript") {
-          messageType = "partial_transcript"
-        } else if (data.message_type === "committed_transcript") {
-          messageType = "committed_transcript"
-        } else if (data.message_type === "committed_transcript_with_timestamps") {
-          messageType = "committed_transcript_with_timestamps"
-        }
+        const data = JSON.parse(rawPayload) as ElevenLabsRealtimeMessage
+        const messageType = "error" in data ? "error" : data.message_type
 
         // Raw message callback
         if (callbacks?.onRawMessage) {
@@ -433,67 +462,74 @@ export class ElevenLabsAdapter extends BaseAdapter {
           })
         }
 
-        // Handle errors
-        if (data.error) {
+        // Handle errors (all error payloads have an `error` field)
+        if ("error" in data) {
           callbacks?.onError?.({
-            code: data.error_code?.toString() || "STREAM_ERROR",
+            code: data.message_type || "STREAM_ERROR",
             message: data.error
           })
           return
         }
 
-        // Session started
-        if (data.message_type === "session_started") {
-          // Session established, nothing to emit
-          return
-        }
+        switch (data.message_type) {
+          case "session_started":
+            // Session established, nothing to emit
+            break
 
-        // Partial transcript (interim results)
-        if (data.message_type === "partial_transcript") {
-          const streamEvent: StreamEvent = {
-            type: "transcript",
-            text: data.text || "",
-            isFinal: false,
-            confidence: undefined,
-            language: data.language_code
-          }
-          callbacks?.onTranscript?.(streamEvent)
-          return
-        }
-
-        // Committed transcript (final results)
-        if (
-          data.message_type === "committed_transcript" ||
-          data.message_type === "committed_transcript_with_timestamps"
-        ) {
-          const words: Word[] = data.words
-            ? data.words.map((w: any) => ({
-                word: w.text || "",
-                start: w.start || 0,
-                end: w.end || 0,
-                confidence: w.logprob !== undefined ? Math.exp(w.logprob) : undefined,
-                speaker: w.speaker_id
-              }))
-            : []
-
-          const streamEvent: StreamEvent = {
-            type: "transcript",
-            text: data.text || "",
-            isFinal: true,
-            words: words.length > 0 ? words : undefined,
-            speaker: words[0]?.speaker,
-            language: data.language_code,
-            confidence: undefined
-          }
-
-          callbacks?.onTranscript?.(streamEvent)
-
-          // Build utterances from speaker changes for diarization
-          if (options?.diarization && words.length > 0) {
-            const utterances = buildUtterancesFromWords(words)
-            for (const utterance of utterances) {
-              callbacks?.onUtterance?.(utterance)
+          case "partial_transcript": {
+            const streamEvent: StreamEvent = {
+              type: "transcript",
+              text: data.text || "",
+              isFinal: false,
+              confidence: undefined
             }
+            callbacks?.onTranscript?.(streamEvent)
+            break
+          }
+
+          case "committed_transcript": {
+            const streamEvent: StreamEvent = {
+              type: "transcript",
+              text: data.text || "",
+              isFinal: true,
+              confidence: undefined
+            }
+            callbacks?.onTranscript?.(streamEvent)
+            break
+          }
+
+          case "committed_transcript_with_timestamps": {
+            const tsData = data as CommittedTranscriptWithTimestampsPayload
+            const words: Word[] = tsData.words
+              ? tsData.words.map((w: ElevenLabsTranscriptionWord) => ({
+                  word: w.text || "",
+                  start: w.start || 0,
+                  end: w.end || 0,
+                  confidence: w.logprob !== undefined ? Math.exp(w.logprob) : undefined,
+                  speaker: w.speaker_id
+                }))
+              : []
+
+            const streamEvent: StreamEvent = {
+              type: "transcript",
+              text: tsData.text || "",
+              isFinal: true,
+              words: words.length > 0 ? words : undefined,
+              speaker: words[0]?.speaker,
+              language: tsData.language_code,
+              confidence: undefined
+            }
+
+            callbacks?.onTranscript?.(streamEvent)
+
+            // Build utterances from speaker changes for diarization
+            if (options?.diarization && words.length > 0) {
+              const utterances = buildUtterancesFromWords(words)
+              for (const utterance of utterances) {
+                callbacks?.onUtterance?.(utterance)
+              }
+            }
+            break
           }
         }
       } catch (error) {
@@ -618,9 +654,10 @@ export class ElevenLabsAdapter extends BaseAdapter {
    */
   private normalizeResponse(response: SpeechToText200): UnifiedTranscriptResponse {
     // Determine chunks: multichannel has `transcripts`, single channel is the response itself
-    const chunks: SpeechToTextChunkResponseModel[] = "transcripts" in response
-      ? (response as MultichannelSpeechToTextResponseModel).transcripts
-      : [response as SpeechToTextChunkResponseModel]
+    const chunks: SpeechToTextChunkResponseModel[] =
+      "transcripts" in response
+        ? (response as MultichannelSpeechToTextResponseModel).transcripts
+        : [response as SpeechToTextChunkResponseModel]
 
     // Build full text from chunks
     const text = chunks.map((c) => c.text).join(" ")

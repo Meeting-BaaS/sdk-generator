@@ -89,15 +89,10 @@ export const sonioxStructuredContextSchema = zod.object({
   general: zod.array(sonioxContextGeneralItemSchema).optional(),
   text: zod.string().optional(),
   terms: zod.array(zod.string()).optional(),
-  translation_terms: zod
-    .array(sonioxTranslationTermSchema)
-    .optional()
+  translation_terms: zod.array(sonioxTranslationTermSchema).optional()
 })
 
-export const sonioxContextSchema = zod.union([
-  sonioxStructuredContextSchema,
-  zod.string()
-])
+export const sonioxContextSchema = zod.union([sonioxStructuredContextSchema, zod.string()])
 
 // =============================================================================
 // Real-time Model Schema
@@ -175,7 +170,14 @@ export const sonioxRecorderStateSchema = zod.enum([
   "Canceled"
 ])
 
-export const sonioxErrorStatusSchema = zod.enum(['get_user_media_failed', 'api_key_fetch_failed', 'queue_limit_exceeded', 'media_recorder_error', 'api_error', 'websocket_error'])
+export const sonioxErrorStatusSchema = zod.enum([
+  "get_user_media_failed",
+  "api_key_fetch_failed",
+  "queue_limit_exceeded",
+  "media_recorder_error",
+  "api_error",
+  "websocket_error"
+])
 
 // =============================================================================
 // Mid-session Update Params (placeholder - Soniox doesn't support mid-session updates)

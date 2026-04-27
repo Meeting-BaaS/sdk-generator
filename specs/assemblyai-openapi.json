@@ -1131,6 +1131,9 @@
     },
     {
       "url": "https://streaming.assemblyai.com"
+    },
+    {
+      "url": "https://agents.assemblyai.com"
     }
   ],
   "components": {
@@ -1806,6 +1809,11 @@
               }
             ],
             "description": "The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details."
+          },
+          "redact_pii_return_unredacted": {
+            "type": "boolean",
+            "default": false,
+            "description": "When set to `true`, returns the original unredacted transcript alongside the redacted one in the same response. Requires `redact_pii` to be `true`, otherwise a 400 error is returned.\n\nWhen enabled, the response includes the additional fields `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. The existing `text`, `words`, and `utterances` fields remain fully redacted. When disabled (default), the response is unchanged and contains only the redacted transcript. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.\n"
           },
           "sentiment_analysis": {
             "type": "boolean",
@@ -2944,6 +2952,13 @@
             "$ref": "#/components/schemas/SubstitutionPolicy",
             "description": "The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details."
           },
+          "redact_pii_return_unredacted": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "Whether the original unredacted transcript was also returned alongside the redacted one. When `true`, the response includes `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+          },
           "sentiment_analysis": {
             "type": [
               "boolean",
@@ -3056,6 +3071,13 @@
             ],
             "description": "The textual transcript of your media file"
           },
+          "unredacted_text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The original textual transcript of your media file before PII redaction was applied. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `text` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+          },
           "throttled": {
             "type": [
               "boolean",
@@ -3072,6 +3094,16 @@
               "$ref": "#/components/schemas/TranscriptUtterance"
             },
             "description": "When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) for more information.\n"
+          },
+          "unredacted_utterances": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/TranscriptUtterance"
+            },
+            "description": "The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
           },
           "webhook_auth": {
             "type": "boolean",
@@ -3108,6 +3140,16 @@
               "$ref": "#/components/schemas/TranscriptWord"
             },
             "description": "An array of temporally-sequential word objects, one for each word in the transcript.\n"
+          },
+          "unredacted_words": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/TranscriptWord"
+            },
+            "description": "The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
           },
           "acoustic_model": {
             "type": "string",

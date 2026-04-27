@@ -120,7 +120,7 @@
             "required": false,
             "in": "query",
             "description": "Filter items relevant to a specific date in ISO format (YYYY-MM-DD).",
-            "schema": { "format": "date-time", "example": "2026-04-14", "type": "string" }
+            "schema": { "format": "date-time", "example": "2026-04-26", "type": "string" }
           },
           {
             "name": "before_date",
@@ -129,7 +129,7 @@
             "description": "Include items that occurred before the specified date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -140,7 +140,7 @@
             "description": "Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -389,7 +389,7 @@
             "required": false,
             "in": "query",
             "description": "Filter items relevant to a specific date in ISO format (YYYY-MM-DD).",
-            "schema": { "format": "date-time", "example": "2026-04-14", "type": "string" }
+            "schema": { "format": "date-time", "example": "2026-04-26", "type": "string" }
           },
           {
             "name": "before_date",
@@ -398,7 +398,7 @@
             "description": "Include items that occurred before the specified date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -409,7 +409,7 @@
             "description": "Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -511,7 +511,6 @@
                       "moderation": false,
                       "named_entity_recognition": false,
                       "name_consistency": false,
-                      "speaker_reidentification": false,
                       "custom_spelling": false,
                       "structured_data_extraction": false,
                       "chapterization": false,
@@ -1181,7 +1180,7 @@
             "required": false,
             "in": "query",
             "description": "Filter items relevant to a specific date in ISO format (YYYY-MM-DD).",
-            "schema": { "format": "date-time", "example": "2026-04-14", "type": "string" }
+            "schema": { "format": "date-time", "example": "2026-04-26", "type": "string" }
           },
           {
             "name": "before_date",
@@ -1190,7 +1189,7 @@
             "description": "Include items that occurred before the specified date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -1201,7 +1200,7 @@
             "description": "Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -1331,7 +1330,7 @@
             "required": false,
             "in": "query",
             "description": "Filter items relevant to a specific date in ISO format (YYYY-MM-DD).",
-            "schema": { "format": "date-time", "example": "2026-04-14", "type": "string" }
+            "schema": { "format": "date-time", "example": "2026-04-26", "type": "string" }
           },
           {
             "name": "before_date",
@@ -1340,7 +1339,7 @@
             "description": "Include items that occurred before the specified date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -1351,7 +1350,7 @@
             "description": "Filter for items after the specified date. Use with `before_date` for a range. Date in ISO format.",
             "schema": {
               "format": "date-time",
-              "example": "2026-04-14T21:00:25.127Z",
+              "example": "2026-04-26T21:00:24.330Z",
               "type": "string"
             }
           },
@@ -1598,6 +1597,30 @@
       }
     },
     "schemas": {
+      "PreRecordedEventPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the job",
+            "format": "uuid",
+            "example": "45463597-20b7-4af7-b3b3-f5fb778203ab"
+          }
+        },
+        "required": ["id"]
+      },
+      "LiveEventPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the job",
+            "format": "uuid",
+            "example": "45463597-20b7-4af7-b3b3-f5fb778203ab"
+          }
+        },
+        "required": ["id"]
+      },
       "UploadBody": { "type": "object", "properties": {} },
       "AudioUploadMetadataDTO": {
         "type": "object",
@@ -1654,30 +1677,6 @@
           }
         },
         "required": ["audio_url", "audio_metadata"]
-      },
-      "PreRecordedEventPayload": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Id of the job",
-            "format": "uuid",
-            "example": "45463597-20b7-4af7-b3b3-f5fb778203ab"
-          }
-        },
-        "required": ["id"]
-      },
-      "LiveEventPayload": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Id of the job",
-            "format": "uuid",
-            "example": "45463597-20b7-4af7-b3b3-f5fb778203ab"
-          }
-        },
-        "required": ["id"]
       },
       "TranscriptionLanguageCodeEnum": {
         "type": "string",
@@ -3016,33 +3015,6 @@
         },
         "required": ["success", "is_empty", "exec_time", "error", "results"]
       },
-      "SpeakerReidentificationDTO": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "The audio intelligence model succeeded to get a valid output"
-          },
-          "is_empty": {
-            "type": "boolean",
-            "description": "The audio intelligence model returned an empty value"
-          },
-          "exec_time": {
-            "type": "number",
-            "description": "Time audio intelligence model took to complete the task"
-          },
-          "error": {
-            "description": "`null` if `success` is `true`. Contains the error details of the failed model",
-            "nullable": true,
-            "allOf": [{ "$ref": "#/components/schemas/AddonErrorDTO" }]
-          },
-          "results": {
-            "type": "string",
-            "description": "If `speaker_reidentification` has been enabled, results of the AI speaker reidentification."
-          }
-        },
-        "required": ["success", "is_empty", "exec_time", "error", "results"]
-      },
       "StructuredDataExtractionDTO": {
         "type": "object",
         "properties": {
@@ -3281,10 +3253,6 @@
           "name_consistency": {
             "description": "If `name_consistency` has been enabled, Gladia will improve consistency of the names accross the transcription",
             "allOf": [{ "$ref": "#/components/schemas/NamesConsistencyDTO" }]
-          },
-          "speaker_reidentification": {
-            "description": "If `speaker_reidentification` has been enabled, results of the AI speaker reidentification.",
-            "allOf": [{ "$ref": "#/components/schemas/SpeakerReidentificationDTO" }]
           },
           "structured_data_extraction": {
             "description": "If `structured_data_extraction` has been enabled, structured data extraction results",

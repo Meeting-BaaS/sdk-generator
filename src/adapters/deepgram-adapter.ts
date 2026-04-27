@@ -67,82 +67,16 @@ import { V1ProjectsProjectIdRequestsGetParametersEndpoint } from "../generated/d
 // Import ListTranscriptsOptions for Deepgram-specific params
 import type { ListTranscriptsOptions } from "../router/types"
 
-// WebSocket message types (not in OpenAPI spec, manually defined from Deepgram docs)
-interface DeepgramResultsMessage {
-  type: "Results"
-  channel_index: [number, number]
-  duration: number
-  start: number
-  is_final: boolean
-  speech_final: boolean
-  from_finalize?: boolean
-  channel: {
-    alternatives: Array<{
-      transcript: string
-      confidence: number
-      words?: Array<{
-        word: string
-        start: number
-        end: number
-        confidence: number
-        punctuated_word?: string
-        speaker?: number
-      }>
-    }>
-    detected_language?: string
-  }
-  metadata?: {
-    request_id?: string
-    model_info?: {
-      name?: string
-      version?: string
-      arch?: string
-    }
-  }
-}
-
-interface DeepgramUtteranceEndMessage {
-  type: "UtteranceEnd"
-  channel: [number, number]
-  last_word_end: number
-}
-
-interface DeepgramSpeechStartedMessage {
-  type: "SpeechStarted"
-  channel: [number, number]
-  timestamp: number
-}
-
-interface DeepgramMetadataMessage {
-  type: "Metadata"
-  transaction_key?: string
-  request_id?: string
-  sha256?: string
-  created?: string
-  duration?: number
-  channels?: number
-  models?: string[]
-  model_info?: Record<string, { name: string; version: string; arch: string }>
-}
-
-interface DeepgramCloseStreamMessage {
-  type: "CloseStream"
-}
-
-interface DeepgramErrorMessage {
-  type: "Error"
-  description?: string
-  message?: string
-  variant?: string
-}
-
-type DeepgramRealtimeMessage =
-  | DeepgramResultsMessage
-  | DeepgramUtteranceEndMessage
-  | DeepgramSpeechStartedMessage
-  | DeepgramMetadataMessage
-  | DeepgramCloseStreamMessage
-  | DeepgramErrorMessage
+// WebSocket streaming response types extracted from official @deepgram/sdk
+import type {
+  DeepgramRealtimeMessage,
+  DeepgramResults,
+  DeepgramMetadata,
+  DeepgramUtteranceEnd,
+  DeepgramSpeechStarted,
+  DeepgramCloseStream,
+  DeepgramError
+} from "../generated/deepgram/streaming-response-types"
 
 /**
  * Deepgram transcription provider adapter
@@ -325,9 +259,13 @@ export class DeepgramAdapter extends BaseAdapter {
    * Submit audio for transcription
    *
    * Sends audio to Deepgram API for transcription. Deepgram normally processes
-   * synchronously and returns results immediately. When `webhookUrl` is set,
-   * Deepgram can instead return an async callback acknowledgment containing a
-   * request ID.
+   * synchronously and returns results immediately.
+   *
+   * **Callback mode:** When `webhookUrl` is set, Deepgram returns immediately
+   * with a `request_id` (status `"queued"`). The full transcript is POSTed to
+   * the webhook URL — this is the primary delivery mechanism. `getTranscript()`
+   * can attempt to retrieve the result later via request history, but that
+   * endpoint is best-effort and not a guaranteed durable store.
    *
    * @param audio - Audio input (URL or file buffer)
    * @param options - Transcription options
@@ -387,14 +325,16 @@ export class DeepgramAdapter extends BaseAdapter {
         ).then((res) => res.data)
       } else if (audio.type === "file") {
         // File-based transcription
-        response = await this.client!
-          .post<ListenV1Response | ListenV1AcceptedResponse>("/listen", audio.file, {
+        response = await this.client!.post<ListenV1Response | ListenV1AcceptedResponse>(
+          "/listen",
+          audio.file,
+          {
             params,
             headers: {
               "Content-Type": "audio/*"
             }
-          })
-          .then((res) => res.data)
+          }
+        ).then((res) => res.data)
       } else {
         throw new Error(
           "Deepgram adapter does not support stream type for pre-recorded transcription. Use transcribeStream() for real-time streaming."
@@ -453,30 +393,22 @@ export class DeepgramAdapter extends BaseAdapter {
   }
 
   /**
-   * Get transcription result by ID
+   * Get transcription result by ID (best-effort)
    *
-   * Retrieves a previous transcription from Deepgram's request history.
+   * Retrieves a previous transcription from Deepgram's request history API.
+   * Requires `projectId` to be set during initialization.
    *
-   * Unlike the list endpoint, getting a single request DOES include the full
-   * transcript response. Requires `projectId` to be set during initialization.
+   * **Important:** Deepgram's request history is best-effort. Requests may
+   * expire or be unavailable depending on your plan and retention settings.
+   * This is NOT a durable transcript store — for reliable retrieval, use
+   * callback mode (`webhookUrl`) and persist the webhook payload yourself.
+   *
+   * The response field on the request history entry is cast to
+   * `ListenV1Response` — this appears to work in practice but is not
+   * explicitly documented by Deepgram as a guaranteed contract.
    *
    * @param transcriptId - Request ID from a previous transcription
-   * @returns Full transcript response including text, words, and metadata
-   *
-   * @example Get a transcript by request ID
-   * ```typescript
-   * const adapter = new DeepgramAdapter()
-   * adapter.initialize({
-   *   apiKey: process.env.DEEPGRAM_API_KEY,
-   *   projectId: process.env.DEEPGRAM_PROJECT_ID
-   * })
-   *
-   * const result = await adapter.getTranscript('abc123-request-id')
-   * if (result.success) {
-   *   console.log(result.data?.text)
-   *   console.log(result.data?.words)
-   * }
-   * ```
+   * @returns Transcript response if still available in request history
    *
    * @see https://developers.deepgram.com/reference/get-request
    */
@@ -513,7 +445,8 @@ export class DeepgramAdapter extends BaseAdapter {
         }
       }
 
-      // The response field contains the full transcription response
+      // The response field appears to contain the full transcription response
+      // in practice, but this shape is not explicitly guaranteed by Deepgram's docs.
       const transcriptResponse = request.response as ListenV1Response | undefined
 
       if (!transcriptResponse) {
@@ -1244,7 +1177,7 @@ export class DeepgramAdapter extends BaseAdapter {
       }
 
       case "Metadata": {
-        // Narrowed to DeepgramMetadataMessage; spread into plain object for callback
+        // Narrowed to DeepgramMetadata; spread into plain object for callback
         const { type: _, ...metadata } = message
         callbacks?.onMetadata?.(metadata as Record<string, unknown>)
         break

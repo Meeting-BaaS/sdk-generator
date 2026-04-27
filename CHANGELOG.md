@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.2] - 2026-04-27
+
+### Changed
+
+#### Restore And Strengthen Streaming Type Generation
+
+Added generated streaming response types for Deepgram and ElevenLabs from their official SDKs, and wired the existing Soniox SDK-derived streaming response types into the adapter implementation.
+
+#### Reduce Handwritten Streaming Protocol Code
+
+Replaced hand-maintained Deepgram realtime message interfaces with generated types, migrated ElevenLabs realtime message parsing to a generated discriminated union, and updated Soniox realtime parsing and utterance assembly to use generated token/response types directly.
+
+#### Speechmatics Realtime Typing Cleanup
+
+Restored Speechmatics realtime support and tightened the outbound realtime configuration typing while preserving the RT-only `speaker_diarization_config.max_speakers` extension over the batch schema.
+
+#### ElevenLabs Webhook Callback Support
+
+Re-enabled ElevenLabs async webhook mode through the unified API by treating `webhookUrl` as an async intent flag, while documenting that the actual destination must already be configured in the ElevenLabs dashboard and can be targeted with `elevenlabs.webhook_id`.
+
+#### Deepgram Callback Documentation
+
+Clarified Deepgram callback behavior and request-history retrieval semantics: callback mode returns a `request_id` immediately and webhook delivery is the primary retrieval mechanism, while `getTranscript()` remains best-effort via request history.
+
 ## [0.9.1] - 2026-04-26
 
 ### Changed

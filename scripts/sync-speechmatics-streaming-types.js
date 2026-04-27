@@ -392,7 +392,7 @@ function generateMessageTypesFromAsyncAPI(specPath) {
     TranslatedSentence: "TranslatedSentence",
     AudioEventStartData: "AudioEventStartData",
     AudioEventEndData: "AudioEventEndData",
-    AudioEventType: "string",
+    AudioEventType: "string"
   }
 
   const sections = []
@@ -418,7 +418,7 @@ import type { RecognitionResult } from "./schema/recognitionResult"`)
     ["InfoTypeEnum", "InfoType"],
     ["WarningTypeEnum", "WarningType"],
     ["ErrorTypeEnum", "ErrorType"],
-    ["WritingDirectionEnum", "WritingDirection"],
+    ["WritingDirectionEnum", "WritingDirection"]
   ]
 
   for (const [schemaName, typeName] of enumTypes) {
@@ -426,7 +426,9 @@ import type { RecognitionResult } from "./schema/recognitionResult"`)
     if (schema?.enum) {
       const desc = schema.description ? schema.description.split("\n")[0].trim() : ""
       if (desc) sections.push(`\n/** ${desc} */`)
-      sections.push(`export type ${typeName} =\n  | ${schema.enum.map((v) => JSON.stringify(v)).join("\n  | ")}`)
+      sections.push(
+        `export type ${typeName} =\n  | ${schema.enum.map((v) => JSON.stringify(v)).join("\n  | ")}`
+      )
     }
   }
 
@@ -439,7 +441,7 @@ import type { RecognitionResult } from "./schema/recognitionResult"`)
     ["EndOfUtteranceMetadata", "EndOfUtteranceMetadata"],
     ["TranslatedSentence", "TranslatedSentence"],
     ["AudioEventStartData", "AudioEventStartData"],
-    ["AudioEventEndData", "AudioEventEndData"],
+    ["AudioEventEndData", "AudioEventEndData"]
   ]
 
   for (const [schemaName, typeName] of helperSchemas) {
@@ -466,7 +468,7 @@ import type { RecognitionResult } from "./schema/recognitionResult"`)
     "Warning",
     "Error",
     "AddPartialTranslation",
-    "AddTranslation",
+    "AddTranslation"
   ]
 
   for (const msgName of serverMessages) {

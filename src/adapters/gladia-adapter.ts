@@ -1250,7 +1250,10 @@ export class GladiaAdapter extends BaseAdapter {
    * results (translation, sentiment, NER), post-processing results
    * (summarization, chapterization), acknowledgments, and lifecycle events.
    */
-  private handleWebSocketMessage(message: GladiaWebSocketMessage, callbacks?: StreamingCallbacks): void {
+  private handleWebSocketMessage(
+    message: GladiaWebSocketMessage,
+    callbacks?: StreamingCallbacks
+  ): void {
     // Keep a Record view for metadata/error callbacks that expect Record<string, unknown>
     const msg = message as Record<string, unknown>
     const messageType = msg.type as string

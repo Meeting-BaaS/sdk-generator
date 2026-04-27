@@ -135,11 +135,12 @@ export class SonioxWebhookHandler extends BaseWebhookHandler {
       eventType,
       data: {
         id: data.id,
-        status: data.status === SonioxTranscriptionStatus.completed
-          ? "completed"
-          : data.status === SonioxTranscriptionStatus.error
-            ? "error"
-            : "processing",
+        status:
+          data.status === SonioxTranscriptionStatus.completed
+            ? "completed"
+            : data.status === SonioxTranscriptionStatus.error
+              ? "error"
+              : "processing",
         error: data.error_message ?? undefined
       },
       timestamp: new Date().toISOString(),

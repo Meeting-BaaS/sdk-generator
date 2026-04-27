@@ -40,12 +40,11 @@ import {
 import type { Transcription as SonioxTranscription } from "../generated/soniox/schema/transcription"
 import type { UploadFileBody } from "../generated/soniox/schema/uploadFileBody"
 
-/**
- * Soniox token with is_final flag (present in streaming responses)
- */
-interface SonioxToken extends TranscriptionTranscriptToken {
-  is_final: boolean
-}
+// WebSocket streaming types extracted from official @soniox/speech-to-text-web SDK
+import type {
+  Token as SonioxStreamingToken,
+  StreamingResponse as SonioxStreamingResponse
+} from "../generated/soniox/streaming-response-types"
 
 /**
  * Soniox-specific configuration options
@@ -308,7 +307,8 @@ export class SonioxAdapter extends BaseAdapter {
           model: options?.model || this.defaultModel,
           file_id: fileResp.data.id,
           language_hints: options?.language ? [options.language] : sonioxOpts?.language_hints,
-          enable_speaker_diarization: options?.diarization || sonioxOpts?.enable_speaker_diarization,
+          enable_speaker_diarization:
+            options?.diarization || sonioxOpts?.enable_speaker_diarization,
           enable_language_identification:
             options?.languageDetection || sonioxOpts?.enable_language_identification,
           context: options?.customVocabulary?.length
@@ -332,7 +332,8 @@ export class SonioxAdapter extends BaseAdapter {
           model: options?.model || this.defaultModel,
           audio_url: audio.url,
           language_hints: options?.language ? [options.language] : sonioxOpts?.language_hints,
-          enable_speaker_diarization: options?.diarization || sonioxOpts?.enable_speaker_diarization,
+          enable_speaker_diarization:
+            options?.diarization || sonioxOpts?.enable_speaker_diarization,
           enable_language_identification:
             options?.languageDetection || sonioxOpts?.enable_language_identification,
           context: options?.customVocabulary?.length
@@ -528,16 +529,9 @@ export class SonioxAdapter extends BaseAdapter {
       let messageType: string | undefined
 
       try {
-        const data = JSON.parse(rawPayload) as {
-          error?: string
-          error_message?: string
-          error_code?: number
-          finished?: boolean
-          text?: string
-          tokens?: SonioxToken[]
-        }
+        const data = JSON.parse(rawPayload) as SonioxStreamingResponse
 
-        const errorMessage = data.error_message || data.error
+        const errorMessage = data.error_message
 
         // Derive message type for raw message callback
         if (errorMessage) {
@@ -545,9 +539,7 @@ export class SonioxAdapter extends BaseAdapter {
         } else if (data.finished) {
           messageType = "finished"
         } else if (data.tokens) {
-          messageType = data.tokens.every((t) => t.is_final)
-            ? "final_tokens"
-            : "partial_tokens"
+          messageType = data.tokens.every((t) => t.is_final) ? "final_tokens" : "partial_tokens"
         }
 
         // Invoke raw message callback with original payload
@@ -760,7 +752,9 @@ export class SonioxAdapter extends BaseAdapter {
   /**
    * Build utterances from tokens based on speaker changes
    */
-  private buildUtterancesFromTokens(tokens: TranscriptionTranscriptToken[]): Utterance[] {
+  private buildUtterancesFromTokens(
+    tokens: (SonioxStreamingToken | TranscriptionTranscriptToken)[]
+  ): Utterance[] {
     const words: Word[] = tokens.map((token) => ({
       word: token.text,
       start: token.start_ms ? token.start_ms / 1000 : 0,
