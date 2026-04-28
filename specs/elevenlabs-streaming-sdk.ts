@@ -237,6 +237,4 @@ export type ElevenLabsRealtimeMessage =
   | ElevenLabsScribeError
 
 /** All possible client→server WebSocket messages */
-export type ElevenLabsSendMessage =
-  | InputAudioChunkPayload
-  | EndOfStreamPayload
+export type ElevenLabsSendMessage = InputAudioChunkPayload | EndOfStreamPayload

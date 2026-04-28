@@ -533,14 +533,14 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       language,
       enable_entities: smOpts?.enableEntities ?? options?.entityDetection ?? false,
       enable_partials: smOpts?.enablePartials ?? options?.interimResults !== false,
-      operating_point:
-        (smOpts?.operatingPoint as OperatingPoint) || OperatingPoint.enhanced,
+      operating_point: (smOpts?.operatingPoint as OperatingPoint) || OperatingPoint.enhanced,
       ...(smOpts?.maxDelay !== undefined && { max_delay: smOpts.maxDelay }),
       ...(smOpts?.maxDelayMode && {
         max_delay_mode: smOpts.maxDelayMode as TranscriptionConfigMaxDelayMode
       }),
       ...(smOpts?.domain && { domain: smOpts.domain }),
-      ...((options?.diarization || smOpts?.diarization === TranscriptionConfigDiarization.speaker) && {
+      ...((options?.diarization ||
+        smOpts?.diarization === TranscriptionConfigDiarization.speaker) && {
         diarization: TranscriptionConfigDiarization.speaker,
         ...(smOpts?.maxSpeakers !== undefined && {
           speaker_diarization_config: { max_speakers: smOpts.maxSpeakers }

@@ -79,11 +79,14 @@ export {
   GladiaStatus,
   // AssemblyAI
   AssemblyAIEncoding,
+  AssemblyAIRegion,
   AssemblyAISpeechModel,
   AssemblyAISampleRate,
   AssemblyAITranscriptionModel,
   AssemblyAILanguage,
   AssemblyAIStatus,
+  // ElevenLabs
+  ElevenLabsRegion,
   // OpenAI Whisper batch
   OpenAIModel,
   OpenAIResponseFormat,
@@ -135,6 +138,8 @@ export type {
   SonioxAsyncModelCode,
   SpeechmaticsLanguageCode,
   SpeechmaticsLanguageType,
+  AssemblyAIRegionType,
+  ElevenLabsRegionType,
   AzureLocaleCode,
   AzureLocaleType
 } from "./streaming-enums"

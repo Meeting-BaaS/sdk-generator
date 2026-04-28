@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.3] - 2026-04-28
+
+### Changed
+
+#### Export Region Constants From Main Entry
+
+Re-exported `AssemblyAIRegion`, `ElevenLabsRegion`, `AssemblyAIRegionType`, and `ElevenLabsRegionType` from the main package entry so provider region runtime objects and types are available without importing from the `constants` subpath.
+
+#### Refresh Generated Streaming References
+
+Synced AssemblyAI and ElevenLabs streaming reference files and refreshed related generated/spec metadata to keep the extracted streaming types aligned with upstream SDK sources.
+
 ## [0.9.2] - 2026-04-27
 
 ### Changed

@@ -47,11 +47,14 @@ export {
   GladiaStatus,
   // AssemblyAI
   AssemblyAIEncoding,
+  AssemblyAIRegion,
   AssemblyAISpeechModel,
   AssemblyAISampleRate,
   AssemblyAITranscriptionModel,
   AssemblyAILanguage,
   AssemblyAIStatus,
+  // ElevenLabs
+  ElevenLabsRegion,
   // OpenAI Whisper batch
   OpenAIModel,
   OpenAIResponseFormat,
@@ -100,6 +103,8 @@ export {
   type SonioxAsyncModelCode,
   type SpeechmaticsLanguageCode,
   type SpeechmaticsLanguageType,
+  type AssemblyAIRegionType,
+  type ElevenLabsRegionType,
   type AzureLocaleCode,
   type AzureLocaleType
 } from "../constants"
