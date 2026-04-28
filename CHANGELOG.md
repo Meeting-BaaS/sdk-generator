@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.4] - 2026-04-28
+
+### Changed
+
+#### Gladia Streaming Region Config Fallback
+
+Added `region` to `GladiaConfig` as a streaming-only adapter default. `GladiaAdapter.transcribeStream()` now uses per-call `StreamingOptions.region` first, then falls back to the adapter-level `region`, while continuing to send the value through Gladia's generated streaming query-parameter path instead of the `gladiaStreaming` request body.
+
+#### Gladia Streaming Spec Sync
+
+Refreshed the Gladia OpenAPI source and checksum metadata alongside the adapter change.
+
 ## [0.9.3] - 2026-04-28
 
 ### Changed

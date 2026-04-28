@@ -75,6 +75,7 @@ import { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/strea
 import type { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
 import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { TranscriptionLanguageCodeEnum } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
+import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
 
 // Import all streaming WebSocket message types for comprehensive handling
 import type { SpeechStartMessage } from "../generated/gladia/schema/speechStartMessage"
@@ -92,6 +93,35 @@ import type { EndRecordingMessage } from "../generated/gladia/schema/endRecordin
 import type { EndSessionMessage } from "../generated/gladia/schema/endSessionMessage"
 import type { PostTranscriptMessage } from "../generated/gladia/schema/postTranscriptMessage"
 import type { PostFinalTranscriptMessage } from "../generated/gladia/schema/postFinalTranscriptMessage"
+
+/**
+ * Gladia-specific configuration extending the base ProviderConfig
+ *
+ * @example
+ * ```typescript
+ * import { GladiaAdapter, GladiaRegion } from '@meeting-baas/sdk'
+ *
+ * const adapter = new GladiaAdapter()
+ * adapter.initialize({
+ *   apiKey: process.env.GLADIA_API_KEY!,
+ *   region: GladiaRegion["eu-west"]  // All streaming sessions use EU endpoint
+ * })
+ * ```
+ */
+export interface GladiaConfig extends ProviderConfig {
+  /**
+   * Default region for streaming sessions (streaming-only)
+   *
+   * Controls which Gladia regional endpoint handles streaming WebSocket sessions.
+   * Has no effect on batch (pre-recorded) transcription — batch always uses the
+   * global `api.gladia.io` endpoint.
+   *
+   * Can be overridden per-call via `StreamingOptions.region`.
+   *
+   * @see https://docs.gladia.io/api-reference/v2/streaming
+   */
+  region?: StreamingSupportedRegions
+}
 
 /**
  * Union of all Gladia WebSocket message types for type-safe dispatch.
@@ -179,6 +209,16 @@ export class GladiaAdapter extends BaseAdapter {
   }
 
   protected baseUrl = "https://api.gladia.io"
+
+  /** Default region for streaming sessions, set via GladiaConfig */
+  private streamingRegion?: StreamingSupportedRegions
+
+  initialize(config: GladiaConfig): void {
+    super.initialize(config)
+    if (config.region) {
+      this.streamingRegion = config.region
+    }
+  }
 
   /**
    * Get axios config for generated API client functions
@@ -961,10 +1001,11 @@ export class GladiaAdapter extends BaseAdapter {
     const streamingRequest = this.buildStreamingRequest(options)
 
     // Use generated API client function - FULLY TYPED!
-    // Pass region as query parameter if provided
+    // Region precedence: per-call options > adapter config > omitted (server default)
+    const region = options?.region ?? this.streamingRegion
     const initResponse = await streamingControllerInitStreamingSessionV2(
       streamingRequest,
-      options?.region ? { region: options.region } : undefined,
+      region ? { region } : undefined,
       this.getAxiosConfig()
     )
 
@@ -1582,7 +1623,7 @@ export class GladiaAdapter extends BaseAdapter {
 /**
  * Factory function to create a Gladia adapter
  */
-export function createGladiaAdapter(config: ProviderConfig): GladiaAdapter {
+export function createGladiaAdapter(config: GladiaConfig): GladiaAdapter {
   const adapter = new GladiaAdapter()
   adapter.initialize(config)
   return adapter
@@ -1643,5 +1684,6 @@ export { StreamingSupportedSampleRateEnum, StreamingSupportedBitDepthEnum }
 export type {
   StreamingSupportedEncodingEnum,
   StreamingSupportedModels,
+  StreamingSupportedRegions,
   TranscriptionLanguageCodeEnum
 }
