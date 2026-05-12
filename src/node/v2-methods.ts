@@ -50,9 +50,9 @@ import type {
   PauseBotRecording200Data,
   PauseBotRecordingBody,
   ResendFinalWebhookResponseData,
+  ResubscribeCalendarResponseData,
   ResumeBotRecording200Data,
   ResumeBotRecordingBody,
-  ResubscribeCalendarResponseData,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponseData,
   SendChatMessage200Data,
@@ -338,7 +338,10 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         "../generated/v2/api/bots/bots.zod.js"
       )
 
-      return apiWrapperV2<PauseBotRecording200Data, { bot_id: string; body?: PauseBotRecordingBody }>(
+      return apiWrapperV2<
+        PauseBotRecording200Data,
+        { bot_id: string; body?: PauseBotRecordingBody }
+      >(
         (params: { bot_id: string; body?: PauseBotRecordingBody }, options) =>
           pauseBotRecordingApi(params.bot_id, params.body ?? {}, options),
         z.object({
@@ -361,7 +364,10 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         "../generated/v2/api/bots/bots.zod.js"
       )
 
-      return apiWrapperV2<ResumeBotRecording200Data, { bot_id: string; body?: ResumeBotRecordingBody }>(
+      return apiWrapperV2<
+        ResumeBotRecording200Data,
+        { bot_id: string; body?: ResumeBotRecordingBody }
+      >(
         (params: { bot_id: string; body?: ResumeBotRecordingBody }, options) =>
           resumeBotRecordingApi(params.bot_id, params.body ?? {}, options),
         z.object({
