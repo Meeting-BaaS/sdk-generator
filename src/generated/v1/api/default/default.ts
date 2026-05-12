@@ -40,7 +40,7 @@ export const leave = <TData = AxiosResponse<LeaveResponse>>(
   uuid: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.delete(`/bots/${uuid}`, options)
+  return axios.delete(`/bots/${uuid}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
 }
 /**
  * Get meeting recording and metadata

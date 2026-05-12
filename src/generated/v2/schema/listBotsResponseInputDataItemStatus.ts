@@ -15,6 +15,7 @@ export type ListBotsResponseInputDataItemStatus =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ListBotsResponseInputDataItemStatus = {
   queued: "queued",
+  pickup_delayed: "pickup_delayed",
   transcribing: "transcribing",
   completed: "completed",
   failed: "failed",

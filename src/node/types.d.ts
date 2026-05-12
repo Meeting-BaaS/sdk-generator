@@ -67,6 +67,7 @@ import type {
   ListRawCalendarsResponseDataItem,
   ListScheduledBotsParams,
   ListZoomCredentials200DataItem,
+  ListZoomCredentialsParams,
   ResendFinalWebhookResponseData,
   ResubscribeCalendarResponseData,
   RetryCallbackRequestBodyInput,
@@ -82,6 +83,10 @@ import type {
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponseData,
   UpdateZoomCredential200Data,
+  PauseBotRecording200Data,
+  PauseBotRecordingBody,
+  ResumeBotRecording200Data,
+  ResumeBotRecordingBody,
   SendChatMessage200Data,
   SendChatMessageBody,
   UpdateZoomCredentialBody
@@ -223,6 +228,14 @@ export interface BaasClientV2Methods {
     bot_id: string
     body: SendChatMessageBody
   }): Promise<ApiResponseV2<SendChatMessage200Data>>
+  pauseBotRecording(params: {
+    bot_id: string
+    body?: PauseBotRecordingBody
+  }): Promise<ApiResponseV2<PauseBotRecording200Data>>
+  resumeBotRecording(params: {
+    bot_id: string
+    body?: ResumeBotRecordingBody
+  }): Promise<ApiResponseV2<ResumeBotRecording200Data>>
   createScheduledBot(
     params: CreateScheduledBotRequestBodyInput
   ): Promise<ApiResponseV2<CreateScheduledBotResponseData>>
@@ -302,7 +315,9 @@ export interface BaasClientV2Methods {
   createZoomCredential(
     params: CreateZoomCredentialBody
   ): Promise<ApiResponseV2<CreateZoomCredential201Data>>
-  listZoomCredentials(): Promise<ApiResponseV2<ListZoomCredentials200DataItem[]>>
+  listZoomCredentials(
+    params?: ListZoomCredentialsParams
+  ): Promise<ApiResponseV2<ListZoomCredentials200DataItem[]>>
   getZoomCredential(params: { id: string }): Promise<ApiResponseV2<GetZoomCredential200Data>>
   updateZoomCredential(params: {
     id: string

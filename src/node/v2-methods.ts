@@ -46,7 +46,12 @@ import type {
   ListScheduledBotsParams,
   ListScheduledBotsResponseDataItem,
   ListZoomCredentials200DataItem,
+  ListZoomCredentialsParams,
+  PauseBotRecording200Data,
+  PauseBotRecordingBody,
   ResendFinalWebhookResponseData,
+  ResumeBotRecording200Data,
+  ResumeBotRecordingBody,
   ResubscribeCalendarResponseData,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponseData,
@@ -316,6 +321,52 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         z.object({
           bot_id: sendChatMessageParams.shape.bot_id,
           body: sendChatMessageBody
+        }),
+        params,
+        state.getOptions()
+      )
+    },
+
+    async pauseBotRecording(params: {
+      bot_id: string
+      body?: PauseBotRecordingBody
+    }): Promise<ApiResponseV2<PauseBotRecording200Data>> {
+      const { pauseBotRecording: pauseBotRecordingApi } = await import(
+        "../generated/v2/api/bots/bots.js"
+      )
+      const { pauseBotRecordingParams, pauseBotRecordingBody } = await import(
+        "../generated/v2/api/bots/bots.zod.js"
+      )
+
+      return apiWrapperV2<PauseBotRecording200Data, { bot_id: string; body?: PauseBotRecordingBody }>(
+        (params: { bot_id: string; body?: PauseBotRecordingBody }, options) =>
+          pauseBotRecordingApi(params.bot_id, params.body ?? {}, options),
+        z.object({
+          bot_id: pauseBotRecordingParams.shape.bot_id,
+          body: pauseBotRecordingBody.optional()
+        }),
+        params,
+        state.getOptions()
+      )
+    },
+
+    async resumeBotRecording(params: {
+      bot_id: string
+      body?: ResumeBotRecordingBody
+    }): Promise<ApiResponseV2<ResumeBotRecording200Data>> {
+      const { resumeBotRecording: resumeBotRecordingApi } = await import(
+        "../generated/v2/api/bots/bots.js"
+      )
+      const { resumeBotRecordingParams, resumeBotRecordingBody } = await import(
+        "../generated/v2/api/bots/bots.zod.js"
+      )
+
+      return apiWrapperV2<ResumeBotRecording200Data, { bot_id: string; body?: ResumeBotRecordingBody }>(
+        (params: { bot_id: string; body?: ResumeBotRecordingBody }, options) =>
+          resumeBotRecordingApi(params.bot_id, params.body ?? {}, options),
+        z.object({
+          bot_id: resumeBotRecordingParams.shape.bot_id,
+          body: resumeBotRecordingBody.optional()
         }),
         params,
         state.getOptions()
@@ -809,12 +860,17 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
       )
     },
 
-    async listZoomCredentials(): Promise<ApiResponseV2<ListZoomCredentials200DataItem[]>> {
+    async listZoomCredentials(
+      params?: ListZoomCredentialsParams
+    ): Promise<ApiResponseV2<ListZoomCredentials200DataItem[]>> {
       const { listZoomCredentials: listZoomCredentialsApi } = await import(
         "../generated/v2/api/zoom-credentials/zoom-credentials.js"
       )
 
-      return apiWrapperV2NoParams(listZoomCredentialsApi, state.getOptions())
+      return apiWrapperV2NoParams(
+        (options: AxiosRequestConfig) => listZoomCredentialsApi(params, options),
+        state.getOptions()
+      )
     },
 
     async getZoomCredential(params: {

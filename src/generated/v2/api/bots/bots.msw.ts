@@ -5,9 +5,15 @@
  * API for managing meeting bots, calendar integrations, and webhooks
  * OpenAPI spec version: 2.0.0
  */
-import { faker } from "@faker-js/faker"
+import {
+  faker
+} from '@faker-js/faker';
 
-import { delay, HttpResponse, http } from "msw"
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw';
 
 import type {
   BatchCreateBotResponse,
@@ -23,954 +29,312 @@ import type {
   LeaveBotResponse,
   ListBotsResponse,
   ListScheduledBotsResponse,
+  PauseBotRecording200,
   ResendFinalWebhookResponse,
+  ResumeBotRecording200,
   RetryCallbackResponse,
   SendChatMessage200,
   UpdateBotConfig200,
   UpdateScheduledBotResponse
-} from "../../schema"
+} from '../../schema';
 
-export const getCreateBotResponseMock = (
-  overrideResponse: Partial<CreateBotResponse> = {}
-): CreateBotResponse => ({
-  success: true,
-  data: { bot_id: faker.string.uuid() },
-  ...overrideResponse
-})
 
-export const getListBotsResponseMock = (
-  overrideResponse: Partial<ListBotsResponse> = {}
-): ListBotsResponse => ({
-  success: true,
-  data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-    bot_id: faker.string.uuid(),
-    bot_name: faker.string.alpha(20),
-    meeting_url: faker.internet.url(),
-    meeting_platform: faker.helpers.arrayElement(["zoom", "meet", "teams"] as const),
-    extra: faker.helpers.arrayElement([
-      {
+export const getCreateBotResponseMock = (overrideResponse: Partial< CreateBotResponse > = {}): CreateBotResponse => ({success: true, data: {bot_id: faker.string.uuid()}, ...overrideResponse})
+
+export const getListBotsResponseMock = (overrideResponse: Partial< ListBotsResponse > = {}): ListBotsResponse => ({success: true, data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({bot_id: faker.string.uuid(), bot_name: faker.string.alpha(20), meeting_url: faker.internet.url(), meeting_platform: faker.helpers.arrayElement(['zoom','meet','teams'] as const), extra: faker.helpers.arrayElement([{
         [faker.string.alphanumeric(5)]: {}
-      },
-      null
-    ]),
-    duration: faker.helpers.arrayElement([
-      faker.number.int({ min: undefined, max: undefined }),
-      null
-    ]),
-    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    ended_at: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      null
-    ]),
-    joined_at: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      null
-    ]),
-    exited_at: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      null
-    ]),
-    status: faker.helpers.arrayElement([
-      "queued",
-      "transcribing",
-      "completed",
-      "failed",
-      "joining_call",
-      "in_waiting_room",
-      "in_waiting_for_host",
-      "in_call_not_recording",
-      "in_call_recording",
-      "recording_paused",
-      "recording_resumed",
-      "call_ended",
-      "recording_succeeded",
-      "recording_failed",
-      "api_request_stop",
-      "bot_rejected",
-      "bot_removed",
-      "bot_removed_too_early",
-      "waiting_room_timeout",
-      "invalid_meeting_url",
-      "meeting_error"
-    ] as const),
-    error_code: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    error_message: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    tokens: faker.helpers.arrayElement([
-      {
-        recording: faker.number.int({ min: undefined, max: undefined }),
-        transcription: faker.number.int({ min: undefined, max: undefined }),
-        byok_transcription: faker.number.int({ min: undefined, max: undefined }),
-        streaming_input: faker.number.int({ min: undefined, max: undefined }),
-        streaming_output: faker.number.int({ min: undefined, max: undefined }),
-        total: faker.number.int({ min: undefined, max: undefined })
-      },
-      null
-    ])
-  })),
-  cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-  prev_cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-  ...overrideResponse
-})
+      },null,]), duration: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ended_at: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), joined_at: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), exited_at: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), status: faker.helpers.arrayElement(['queued','pickup_delayed','transcribing','completed','failed','joining_call','in_waiting_room','in_waiting_for_host','in_call_not_recording','in_call_recording','recording_paused','recording_resumed','call_ended','recording_succeeded','recording_failed','api_request_stop','bot_rejected','bot_removed','bot_removed_too_early','waiting_room_timeout','invalid_meeting_url','meeting_error'] as const), error_code: faker.helpers.arrayElement([faker.string.alpha(20),null,]), error_message: faker.helpers.arrayElement([faker.string.alpha(20),null,]), tokens: faker.helpers.arrayElement([{recording: faker.number.int({min: undefined, max: undefined}), transcription: faker.number.int({min: undefined, max: undefined}), byok_transcription: faker.number.int({min: undefined, max: undefined}), streaming_input: faker.number.int({min: undefined, max: undefined}), streaming_output: faker.number.int({min: undefined, max: undefined}), total: faker.number.int({min: undefined, max: undefined})},null,])})), cursor: faker.helpers.arrayElement([faker.string.alpha(20),null,]), prev_cursor: faker.helpers.arrayElement([faker.string.alpha(20),null,]), ...overrideResponse})
 
-export const getBatchCreateBotsResponseMock = (
-  overrideResponse: Partial<BatchCreateBotResponse> = {}
-): BatchCreateBotResponse => ({
-  success: true,
-  data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-    index: faker.number.int({ min: 0, max: 9007199254740991 }),
-    bot_id: faker.string.uuid(),
-    extra: faker.helpers.arrayElement([
-      {
+export const getBatchCreateBotsResponseMock = (overrideResponse: Partial< BatchCreateBotResponse > = {}): BatchCreateBotResponse => ({success: true, data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({index: faker.number.int({min: 0, max: 9007199254740991}), bot_id: faker.string.uuid(), extra: faker.helpers.arrayElement([{
         [faker.string.alphanumeric(5)]: {}
-      },
-      null
-    ])
-  })),
-  errors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-    () => ({
-      index: faker.number.int({ min: 0, max: 9007199254740991 }),
-      code: faker.string.alpha(20),
-      message: faker.string.alpha(20),
-      details: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-      extra: faker.helpers.arrayElement([
-        {
-          [faker.string.alphanumeric(5)]: {}
-        },
-        null
-      ])
-    })
-  ),
-  ...overrideResponse
-})
+      },null,])})), errors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({index: faker.number.int({min: 0, max: 9007199254740991}), code: faker.string.alpha(20), message: faker.string.alpha(20), details: faker.helpers.arrayElement([faker.string.alpha(20),null,]), extra: faker.helpers.arrayElement([{
+        [faker.string.alphanumeric(5)]: {}
+      },null,])})), ...overrideResponse})
 
-export const getGetBotDetailsResponseMock = (
-  overrideResponse: Partial<GetBotDetailsResponse> = {}
-): GetBotDetailsResponse => ({
-  success: true,
-  data: {
-    bot_id: faker.string.uuid(),
-    bot_name: faker.string.alpha(20),
-    meeting_url: faker.internet.url(),
-    meeting_platform: faker.helpers.arrayElement(["zoom", "meet", "teams"] as const),
-    recording_mode: faker.helpers.arrayElement([
-      "audio_only",
-      "speaker_view",
-      "gallery_view"
-    ] as const),
-    status: faker.helpers.arrayElement([
-      "queued",
-      "transcribing",
-      "completed",
-      "failed",
-      "joining_call",
-      "in_waiting_room",
-      "in_waiting_for_host",
-      "in_call_not_recording",
-      "in_call_recording",
-      "recording_paused",
-      "recording_resumed",
-      "call_ended",
-      "recording_succeeded",
-      "recording_failed",
-      "api_request_stop",
-      "bot_rejected",
-      "bot_removed",
-      "bot_removed_too_early",
-      "waiting_room_timeout",
-      "invalid_meeting_url",
-      "meeting_error"
-    ] as const),
-    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    joined_at: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      null
-    ]),
-    exited_at: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      null
-    ]),
-    duration_seconds: faker.helpers.arrayElement([
-      faker.number.int({ min: undefined, max: undefined }),
-      null
-    ]),
-    participants: Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
-      (_, i) => i + 1
-    ).map(() => ({
-      name: faker.string.alpha(20),
-      id: faker.helpers.arrayElement([
-        faker.number.int({ min: -9007199254740991, max: 9007199254740991 }),
-        null
-      ]),
-      display_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-      profile_picture: faker.helpers.arrayElement([faker.internet.url(), undefined])
-    })),
-    speakers: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-      () => ({
-        name: faker.string.alpha(20),
-        id: faker.helpers.arrayElement([
-          faker.number.int({ min: -9007199254740991, max: 9007199254740991 }),
-          null
-        ]),
-        display_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
-        profile_picture: faker.helpers.arrayElement([faker.internet.url(), undefined])
+export const getGetBotDetailsResponseMock = (overrideResponse: Partial< GetBotDetailsResponse > = {}): GetBotDetailsResponse => ({success: true, data: {bot_id: faker.string.uuid(), bot_name: faker.string.alpha(20), meeting_url: faker.internet.url(), meeting_platform: faker.helpers.arrayElement(['zoom','meet','teams'] as const), recording_mode: faker.helpers.arrayElement(['audio_only','speaker_view','gallery_view'] as const), status: faker.helpers.arrayElement(['queued','pickup_delayed','transcribing','completed','failed','joining_call','in_waiting_room','in_waiting_for_host','in_call_not_recording','in_call_recording','recording_paused','recording_resumed','call_ended','recording_succeeded','recording_failed','api_request_stop','bot_rejected','bot_removed','bot_removed_too_early','waiting_room_timeout','invalid_meeting_url','meeting_error'] as const), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, joined_at: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), exited_at: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), duration_seconds: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),null,]), participants: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), id: faker.helpers.arrayElement([faker.number.int({min: -9007199254740991, max: 9007199254740991}),null,]), display_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), profile_picture: faker.helpers.arrayElement([faker.internet.url(), undefined])})), speakers: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({name: faker.string.alpha(20), id: faker.helpers.arrayElement([faker.number.int({min: -9007199254740991, max: 9007199254740991}),null,]), display_name: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), profile_picture: faker.helpers.arrayElement([faker.internet.url(), undefined])})), artifacts_deleted: faker.datatype.boolean(), video: faker.helpers.arrayElement([faker.internet.url(),null,]), audio: faker.helpers.arrayElement([faker.internet.url(),null,]), diarization: faker.helpers.arrayElement([faker.internet.url(),null,]), raw_transcription: faker.helpers.arrayElement([faker.internet.url(),null,]), transcription: faker.helpers.arrayElement([faker.internet.url(),null,]), chat_messages: faker.helpers.arrayElement([faker.internet.url(),null,]), transcription_ids: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))),null,]), transcription_provider: faker.helpers.arrayElement([faker.helpers.arrayElement(['gladia'] as const),null,]), error_code: faker.helpers.arrayElement([faker.string.alpha(20),null,]), error_message: faker.helpers.arrayElement([faker.string.alpha(20),null,]), tokens: faker.helpers.arrayElement([{recording: faker.number.int({min: undefined, max: undefined}), transcription: faker.number.int({min: undefined, max: undefined}), byok_transcription: faker.number.int({min: undefined, max: undefined}), streaming_input: faker.number.int({min: undefined, max: undefined}), streaming_output: faker.number.int({min: undefined, max: undefined}), total: faker.number.int({min: undefined, max: undefined})},null,]), extra: faker.helpers.arrayElement([{
+        [faker.string.alphanumeric(5)]: {}
+      },null,]), zoom_config: faker.helpers.arrayElement([{credential_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.uuid(),null,]), undefined]), credential_user_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), obf_token_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), zak_token_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined])},null,])}, ...overrideResponse})
+
+export const getGetBotStatusResponseMock = (overrideResponse: Partial< GetBotStatusResponse > = {}): GetBotStatusResponse => ({success: true, data: {bot_id: faker.string.uuid(), status: faker.helpers.arrayElement(['queued','pickup_delayed','transcribing','completed','failed','joining_call','in_waiting_room','in_waiting_for_host','in_call_not_recording','in_call_recording','recording_paused','recording_resumed','call_ended','recording_succeeded','recording_failed','api_request_stop','bot_rejected','bot_removed','bot_removed_too_early','waiting_room_timeout','invalid_meeting_url','meeting_error'] as const), transcription_status: faker.helpers.arrayElement(['queued','processing','done','error','not-applicable','not-started'] as const), updated_at: `${faker.date.past().toISOString().split('.')[0]}Z`}, ...overrideResponse})
+
+export const getGetBotScreenshotsResponseMock = (overrideResponse: Partial< GetBotScreenshotsResponse > = {}): GetBotScreenshotsResponse => ({success: true, data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({screenshot_id: faker.number.int({min: undefined, max: 9007199254740991}), url: faker.internet.url()})), cursor: faker.helpers.arrayElement([faker.string.alpha(20),null,]), prev_cursor: faker.helpers.arrayElement([faker.string.alpha(20),null,]), ...overrideResponse})
+
+export const getLeaveBotResponseMock = (overrideResponse: Partial< LeaveBotResponse > = {}): LeaveBotResponse => ({success: true, data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getSendChatMessageResponseMock = (overrideResponse: Partial< SendChatMessage200 > = {}): SendChatMessage200 => ({success: faker.datatype.boolean(), data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getPauseBotRecordingResponseMock = (overrideResponse: Partial< PauseBotRecording200 > = {}): PauseBotRecording200 => ({success: faker.datatype.boolean(), data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getResumeBotRecordingResponseMock = (overrideResponse: Partial< ResumeBotRecording200 > = {}): ResumeBotRecording200 => ({success: faker.datatype.boolean(), data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getDeleteBotDataResponseMock = (overrideResponse: Partial< DeleteBotDataResponse > = {}): DeleteBotDataResponse => ({success: true, data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getResendFinalWebhookResponseMock = (overrideResponse: Partial< ResendFinalWebhookResponse > = {}): ResendFinalWebhookResponse => ({success: true, data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getRetryCallbackResponseMock = (overrideResponse: Partial< RetryCallbackResponse > = {}): RetryCallbackResponse => ({success: true, data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getUpdateBotConfigResponseMock = (overrideResponse: Partial< UpdateBotConfig200 > = {}): UpdateBotConfig200 => ({success: faker.datatype.boolean(), data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getCreateScheduledBotResponseMock = (overrideResponse: Partial< CreateScheduledBotResponse > = {}): CreateScheduledBotResponse => ({success: true, data: {bot_id: faker.string.uuid()}, ...overrideResponse})
+
+export const getListScheduledBotsResponseMock = (overrideResponse: Partial< ListScheduledBotsResponse > = {}): ListScheduledBotsResponse => ({success: true, data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({bot_id: faker.string.uuid(), bot_name: faker.string.alpha(20), meeting_url: faker.string.alpha(20), meeting_platform: faker.helpers.arrayElement(['zoom','meet','teams'] as const), join_at: `${faker.date.past().toISOString().split('.')[0]}Z`, status: faker.helpers.arrayElement(['scheduled','cancelled','completed','failed'] as const), extra: faker.helpers.arrayElement([{
+        [faker.string.alphanumeric(5)]: {}
+      },null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, updated_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), cursor: faker.helpers.arrayElement([faker.string.alpha(20),null,]), prev_cursor: faker.helpers.arrayElement([faker.string.alpha(20),null,]), ...overrideResponse})
+
+export const getBatchCreateScheduledBotsResponseMock = (overrideResponse: Partial< BatchCreateScheduledBotResponse > = {}): BatchCreateScheduledBotResponse => ({success: true, data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({index: faker.number.int({min: 0, max: 9007199254740991}), bot_id: faker.string.uuid(), extra: faker.helpers.arrayElement([{
+        [faker.string.alphanumeric(5)]: {}
+      },null,])})), errors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({index: faker.number.int({min: 0, max: 9007199254740991}), code: faker.string.alpha(20), message: faker.string.alpha(20), details: faker.helpers.arrayElement([faker.string.alpha(20),null,]), extra: faker.helpers.arrayElement([{
+        [faker.string.alphanumeric(5)]: {}
+      },null,])})), ...overrideResponse})
+
+export const getGetScheduledBotDetailsResponseMock = (overrideResponse: Partial< GetScheduledBotResponse > = {}): GetScheduledBotResponse => ({success: true, data: {bot_id: faker.string.uuid(), bot_name: faker.string.alpha(20), bot_image: faker.helpers.arrayElement([faker.string.alpha(20),null,]), meeting_url: faker.string.alpha(20), meeting_platform: faker.helpers.arrayElement(['zoom','meet','teams'] as const), recording_mode: faker.helpers.arrayElement(['audio_only','speaker_view','gallery_view'] as const), join_at: `${faker.date.past().toISOString().split('.')[0]}Z`, status: faker.helpers.arrayElement(['scheduled','cancelled','completed','failed'] as const), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, updated_at: `${faker.date.past().toISOString().split('.')[0]}Z`, cancelled_at: faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), allow_multiple_bots: faker.datatype.boolean(), entry_message: faker.helpers.arrayElement([faker.string.alpha(20),null,]), timeout_config: {waiting_room_timeout: faker.helpers.arrayElement([faker.number.int({min: -9007199254740991, max: 9007199254740991}),null,]), no_one_joined_timeout: faker.helpers.arrayElement([faker.number.int({min: -9007199254740991, max: 9007199254740991}),null,])}, transcription_config: faker.helpers.arrayElement([{enabled: true, provider: faker.helpers.arrayElement(['gladia'] as const), custom_params: faker.helpers.arrayElement([{
+        [faker.string.alphanumeric(5)]: {}
+      },null,])},null,]), streaming_config: faker.helpers.arrayElement([{enabled: true, input_url: faker.helpers.arrayElement([faker.string.alpha(20),null,]), output_url: faker.helpers.arrayElement([faker.string.alpha(20),null,]), audio_frequency: faker.helpers.arrayElement([faker.number.int({min: -9007199254740991, max: 9007199254740991}),null,])},null,]), callback_config: faker.helpers.arrayElement([{enabled: true, url: faker.string.alpha(20), secret: faker.helpers.arrayElement([faker.string.alpha(20),null,]), method: faker.helpers.arrayElement(['POST','PUT'] as const)},null,]), extra: faker.helpers.arrayElement([{
+        [faker.string.alphanumeric(5)]: {}
+      },null,]), zoom_config: faker.helpers.arrayElement([{credential_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.uuid(),null,]), undefined]), credential_user_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), obf_token_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined]), zak_token_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20),null,]), undefined])},null,])}, ...overrideResponse})
+
+export const getUpdateScheduledBotResponseMock = (overrideResponse: Partial< UpdateScheduledBotResponse > = {}): UpdateScheduledBotResponse => ({success: true, data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+export const getDeleteScheduledBotResponseMock = (overrideResponse: Partial< DeleteScheduledBotResponse > = {}): DeleteScheduledBotResponse => ({success: true, data: {message: faker.string.alpha(20)}, ...overrideResponse})
+
+
+export const getCreateBotMockHandler = (overrideResponse?: CreateBotResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<CreateBotResponse> | CreateBotResponse)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateBotResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
       })
-    ),
-    artifacts_deleted: faker.datatype.boolean(),
-    video: faker.helpers.arrayElement([faker.internet.url(), null]),
-    audio: faker.helpers.arrayElement([faker.internet.url(), null]),
-    diarization: faker.helpers.arrayElement([faker.internet.url(), null]),
-    raw_transcription: faker.helpers.arrayElement([faker.internet.url(), null]),
-    transcription: faker.helpers.arrayElement([faker.internet.url(), null]),
-    chat_messages: faker.helpers.arrayElement([faker.internet.url(), null]),
-    transcription_ids: faker.helpers.arrayElement([
-      Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() =>
-        faker.string.alpha(20)
-      ),
-      null
-    ]),
-    transcription_provider: faker.helpers.arrayElement([
-      faker.helpers.arrayElement(["gladia"] as const),
-      null
-    ]),
-    error_code: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    error_message: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    tokens: faker.helpers.arrayElement([
-      {
-        recording: faker.number.int({ min: undefined, max: undefined }),
-        transcription: faker.number.int({ min: undefined, max: undefined }),
-        byok_transcription: faker.number.int({ min: undefined, max: undefined }),
-        streaming_input: faker.number.int({ min: undefined, max: undefined }),
-        streaming_output: faker.number.int({ min: undefined, max: undefined }),
-        total: faker.number.int({ min: undefined, max: undefined })
-      },
-      null
-    ]),
-    extra: faker.helpers.arrayElement([
-      {
-        [faker.string.alphanumeric(5)]: {}
-      },
-      null
-    ]),
-    zoom_config: faker.helpers.arrayElement([
-      {
-        credential_id: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.uuid(), null]),
-          undefined
-        ]),
-        credential_user_id: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.alpha(20), null]),
-          undefined
-        ]),
-        obf_token_url: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.alpha(20), null]),
-          undefined
-        ]),
-        zak_token_url: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.alpha(20), null]),
-          undefined
-        ])
-      },
-      null
-    ])
-  },
-  ...overrideResponse
-})
-
-export const getGetBotStatusResponseMock = (
-  overrideResponse: Partial<GetBotStatusResponse> = {}
-): GetBotStatusResponse => ({
-  success: true,
-  data: {
-    bot_id: faker.string.uuid(),
-    status: faker.helpers.arrayElement([
-      "queued",
-      "transcribing",
-      "completed",
-      "failed",
-      "joining_call",
-      "in_waiting_room",
-      "in_waiting_for_host",
-      "in_call_not_recording",
-      "in_call_recording",
-      "recording_paused",
-      "recording_resumed",
-      "call_ended",
-      "recording_succeeded",
-      "recording_failed",
-      "api_request_stop",
-      "bot_rejected",
-      "bot_removed",
-      "bot_removed_too_early",
-      "waiting_room_timeout",
-      "invalid_meeting_url",
-      "meeting_error"
-    ] as const),
-    transcription_status: faker.helpers.arrayElement([
-      "queued",
-      "processing",
-      "done",
-      "error",
-      "not-applicable",
-      "not-started"
-    ] as const),
-    updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`
-  },
-  ...overrideResponse
-})
-
-export const getGetBotScreenshotsResponseMock = (
-  overrideResponse: Partial<GetBotScreenshotsResponse> = {}
-): GetBotScreenshotsResponse => ({
-  success: true,
-  data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-    screenshot_id: faker.number.int({ min: undefined, max: 9007199254740991 }),
-    url: faker.internet.url()
-  })),
-  cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-  prev_cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-  ...overrideResponse
-})
-
-export const getLeaveBotResponseMock = (
-  overrideResponse: Partial<LeaveBotResponse> = {}
-): LeaveBotResponse => ({
-  success: true,
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getSendChatMessageResponseMock = (
-  overrideResponse: Partial<SendChatMessage200> = {}
-): SendChatMessage200 => ({
-  success: faker.datatype.boolean(),
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getDeleteBotDataResponseMock = (
-  overrideResponse: Partial<DeleteBotDataResponse> = {}
-): DeleteBotDataResponse => ({
-  success: true,
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getResendFinalWebhookResponseMock = (
-  overrideResponse: Partial<ResendFinalWebhookResponse> = {}
-): ResendFinalWebhookResponse => ({
-  success: true,
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getRetryCallbackResponseMock = (
-  overrideResponse: Partial<RetryCallbackResponse> = {}
-): RetryCallbackResponse => ({
-  success: true,
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getUpdateBotConfigResponseMock = (
-  overrideResponse: Partial<UpdateBotConfig200> = {}
-): UpdateBotConfig200 => ({
-  success: faker.datatype.boolean(),
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getCreateScheduledBotResponseMock = (
-  overrideResponse: Partial<CreateScheduledBotResponse> = {}
-): CreateScheduledBotResponse => ({
-  success: true,
-  data: { bot_id: faker.string.uuid() },
-  ...overrideResponse
-})
-
-export const getListScheduledBotsResponseMock = (
-  overrideResponse: Partial<ListScheduledBotsResponse> = {}
-): ListScheduledBotsResponse => ({
-  success: true,
-  data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-    bot_id: faker.string.uuid(),
-    bot_name: faker.string.alpha(20),
-    meeting_url: faker.string.alpha(20),
-    meeting_platform: faker.helpers.arrayElement(["zoom", "meet", "teams"] as const),
-    join_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    status: faker.helpers.arrayElement(["scheduled", "cancelled", "completed", "failed"] as const),
-    extra: faker.helpers.arrayElement([
-      {
-        [faker.string.alphanumeric(5)]: {}
-      },
-      null
-    ]),
-    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`
-  })),
-  cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-  prev_cursor: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-  ...overrideResponse
-})
-
-export const getBatchCreateScheduledBotsResponseMock = (
-  overrideResponse: Partial<BatchCreateScheduledBotResponse> = {}
-): BatchCreateScheduledBotResponse => ({
-  success: true,
-  data: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-    index: faker.number.int({ min: 0, max: 9007199254740991 }),
-    bot_id: faker.string.uuid(),
-    extra: faker.helpers.arrayElement([
-      {
-        [faker.string.alphanumeric(5)]: {}
-      },
-      null
-    ])
-  })),
-  errors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
-    () => ({
-      index: faker.number.int({ min: 0, max: 9007199254740991 }),
-      code: faker.string.alpha(20),
-      message: faker.string.alpha(20),
-      details: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-      extra: faker.helpers.arrayElement([
-        {
-          [faker.string.alphanumeric(5)]: {}
-        },
-        null
-      ])
-    })
-  ),
-  ...overrideResponse
-})
-
-export const getGetScheduledBotDetailsResponseMock = (
-  overrideResponse: Partial<GetScheduledBotResponse> = {}
-): GetScheduledBotResponse => ({
-  success: true,
-  data: {
-    bot_id: faker.string.uuid(),
-    bot_name: faker.string.alpha(20),
-    bot_image: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    meeting_url: faker.string.alpha(20),
-    meeting_platform: faker.helpers.arrayElement(["zoom", "meet", "teams"] as const),
-    recording_mode: faker.helpers.arrayElement([
-      "audio_only",
-      "speaker_view",
-      "gallery_view"
-    ] as const),
-    join_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    status: faker.helpers.arrayElement(["scheduled", "cancelled", "completed", "failed"] as const),
-    created_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    updated_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
-    cancelled_at: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      null
-    ]),
-    allow_multiple_bots: faker.datatype.boolean(),
-    entry_message: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-    timeout_config: {
-      waiting_room_timeout: faker.helpers.arrayElement([
-        faker.number.int({ min: -9007199254740991, max: 9007199254740991 }),
-        null
-      ]),
-      no_one_joined_timeout: faker.helpers.arrayElement([
-        faker.number.int({ min: -9007199254740991, max: 9007199254740991 }),
-        null
-      ])
-    },
-    transcription_config: faker.helpers.arrayElement([
-      {
-        enabled: true,
-        provider: faker.helpers.arrayElement(["gladia"] as const),
-        custom_params: faker.helpers.arrayElement([
-          {
-            [faker.string.alphanumeric(5)]: {}
-          },
-          null
-        ])
-      },
-      null
-    ]),
-    streaming_config: faker.helpers.arrayElement([
-      {
-        enabled: true,
-        input_url: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-        output_url: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-        audio_frequency: faker.helpers.arrayElement([
-          faker.number.int({ min: -9007199254740991, max: 9007199254740991 }),
-          null
-        ])
-      },
-      null
-    ]),
-    callback_config: faker.helpers.arrayElement([
-      {
-        enabled: true,
-        url: faker.string.alpha(20),
-        secret: faker.helpers.arrayElement([faker.string.alpha(20), null]),
-        method: faker.helpers.arrayElement(["POST", "PUT"] as const)
-      },
-      null
-    ]),
-    extra: faker.helpers.arrayElement([
-      {
-        [faker.string.alphanumeric(5)]: {}
-      },
-      null
-    ]),
-    zoom_config: faker.helpers.arrayElement([
-      {
-        credential_id: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.uuid(), null]),
-          undefined
-        ]),
-        credential_user_id: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.alpha(20), null]),
-          undefined
-        ]),
-        obf_token_url: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.alpha(20), null]),
-          undefined
-        ]),
-        zak_token_url: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([faker.string.alpha(20), null]),
-          undefined
-        ])
-      },
-      null
-    ])
-  },
-  ...overrideResponse
-})
-
-export const getUpdateScheduledBotResponseMock = (
-  overrideResponse: Partial<UpdateScheduledBotResponse> = {}
-): UpdateScheduledBotResponse => ({
-  success: true,
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getDeleteScheduledBotResponseMock = (
-  overrideResponse: Partial<DeleteScheduledBotResponse> = {}
-): DeleteScheduledBotResponse => ({
-  success: true,
-  data: { message: faker.string.alpha(20) },
-  ...overrideResponse
-})
-
-export const getCreateBotMockHandler = (
-  overrideResponse?:
-    | CreateBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<CreateBotResponse> | CreateBotResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getCreateBotResponseMock()
-      ),
-      { status: 201, headers: { "Content-Type": "application/json" } }
-    )
   })
 }
 
-export const getListBotsMockHandler = (
-  overrideResponse?:
-    | ListBotsResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<ListBotsResponse> | ListBotsResponse)
-) => {
-  return http.get("https://api.meetingbaas.com/v2/bots", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getListBotsResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getListBotsMockHandler = (overrideResponse?: ListBotsResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ListBotsResponse> | ListBotsResponse)) => {
+  return http.get('https://api.meetingbaas.com/v2/bots', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getListBotsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getBatchCreateBotsMockHandler = (
-  overrideResponse?:
-    | BatchCreateBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<BatchCreateBotResponse> | BatchCreateBotResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots/batch", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getBatchCreateBotsResponseMock()
-      ),
-      { status: 201, headers: { "Content-Type": "application/json" } }
-    )
+export const getBatchCreateBotsMockHandler = (overrideResponse?: BatchCreateBotResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<BatchCreateBotResponse> | BatchCreateBotResponse)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/batch', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getBatchCreateBotsResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getGetBotDetailsMockHandler = (
-  overrideResponse?:
-    | GetBotDetailsResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<GetBotDetailsResponse> | GetBotDetailsResponse)
-) => {
-  return http.get("https://api.meetingbaas.com/v2/bots/:botId", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetBotDetailsResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getGetBotDetailsMockHandler = (overrideResponse?: GetBotDetailsResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetBotDetailsResponse> | GetBotDetailsResponse)) => {
+  return http.get('https://api.meetingbaas.com/v2/bots/:botId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetBotDetailsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getGetBotStatusMockHandler = (
-  overrideResponse?:
-    | GetBotStatusResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<GetBotStatusResponse> | GetBotStatusResponse)
-) => {
-  return http.get("https://api.meetingbaas.com/v2/bots/:botId/status", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetBotStatusResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getGetBotStatusMockHandler = (overrideResponse?: GetBotStatusResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetBotStatusResponse> | GetBotStatusResponse)) => {
+  return http.get('https://api.meetingbaas.com/v2/bots/:botId/status', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetBotStatusResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getGetBotScreenshotsMockHandler = (
-  overrideResponse?:
-    | GetBotScreenshotsResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<GetBotScreenshotsResponse> | GetBotScreenshotsResponse)
-) => {
-  return http.get("https://api.meetingbaas.com/v2/bots/:botId/screenshots", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetBotScreenshotsResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getGetBotScreenshotsMockHandler = (overrideResponse?: GetBotScreenshotsResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetBotScreenshotsResponse> | GetBotScreenshotsResponse)) => {
+  return http.get('https://api.meetingbaas.com/v2/bots/:botId/screenshots', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetBotScreenshotsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getLeaveBotMockHandler = (
-  overrideResponse?:
-    | LeaveBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<LeaveBotResponse> | LeaveBotResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots/:botId/leave", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getLeaveBotResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getLeaveBotMockHandler = (overrideResponse?: LeaveBotResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<LeaveBotResponse> | LeaveBotResponse)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/:botId/leave', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getLeaveBotResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getSendChatMessageMockHandler = (
-  overrideResponse?:
-    | SendChatMessage200
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<SendChatMessage200> | SendChatMessage200)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots/:botId/send-chat-message", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getSendChatMessageResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getSendChatMessageMockHandler = (overrideResponse?: SendChatMessage200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<SendChatMessage200> | SendChatMessage200)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/:botId/send-chat-message', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getSendChatMessageResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getDeleteBotDataMockHandler = (
-  overrideResponse?:
-    | DeleteBotDataResponse
-    | ((
-        info: Parameters<Parameters<typeof http.delete>[1]>[0]
-      ) => Promise<DeleteBotDataResponse> | DeleteBotDataResponse)
-) => {
-  return http.delete("https://api.meetingbaas.com/v2/bots/:botId/delete-data", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getDeleteBotDataResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getPauseBotRecordingMockHandler = (overrideResponse?: PauseBotRecording200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PauseBotRecording200> | PauseBotRecording200)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/:botId/pause-recording', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getPauseBotRecordingResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getResendFinalWebhookMockHandler = (
-  overrideResponse?:
-    | ResendFinalWebhookResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<ResendFinalWebhookResponse> | ResendFinalWebhookResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots/:botId/resend-webhook", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getResendFinalWebhookResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getResumeBotRecordingMockHandler = (overrideResponse?: ResumeBotRecording200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ResumeBotRecording200> | ResumeBotRecording200)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/:botId/resume-recording', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getResumeBotRecordingResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getRetryCallbackMockHandler = (
-  overrideResponse?:
-    | RetryCallbackResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<RetryCallbackResponse> | RetryCallbackResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots/:botId/retry-callback", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getRetryCallbackResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getDeleteBotDataMockHandler = (overrideResponse?: DeleteBotDataResponse | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<DeleteBotDataResponse> | DeleteBotDataResponse)) => {
+  return http.delete('https://api.meetingbaas.com/v2/bots/:botId/delete-data', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDeleteBotDataResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getUpdateBotConfigMockHandler = (
-  overrideResponse?:
-    | UpdateBotConfig200
-    | ((
-        info: Parameters<Parameters<typeof http.patch>[1]>[0]
-      ) => Promise<UpdateBotConfig200> | UpdateBotConfig200)
-) => {
-  return http.patch("https://api.meetingbaas.com/v2/bots/:botId/update-config", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getUpdateBotConfigResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getResendFinalWebhookMockHandler = (overrideResponse?: ResendFinalWebhookResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ResendFinalWebhookResponse> | ResendFinalWebhookResponse)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/:botId/resend-webhook', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getResendFinalWebhookResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getCreateScheduledBotMockHandler = (
-  overrideResponse?:
-    | CreateScheduledBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<CreateScheduledBotResponse> | CreateScheduledBotResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots/scheduled", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getCreateScheduledBotResponseMock()
-      ),
-      { status: 201, headers: { "Content-Type": "application/json" } }
-    )
+export const getRetryCallbackMockHandler = (overrideResponse?: RetryCallbackResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<RetryCallbackResponse> | RetryCallbackResponse)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/:botId/retry-callback', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getRetryCallbackResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getListScheduledBotsMockHandler = (
-  overrideResponse?:
-    | ListScheduledBotsResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<ListScheduledBotsResponse> | ListScheduledBotsResponse)
-) => {
-  return http.get("https://api.meetingbaas.com/v2/bots/scheduled", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getListScheduledBotsResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getUpdateBotConfigMockHandler = (overrideResponse?: UpdateBotConfig200 | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<UpdateBotConfig200> | UpdateBotConfig200)) => {
+  return http.patch('https://api.meetingbaas.com/v2/bots/:botId/update-config', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateBotConfigResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getBatchCreateScheduledBotsMockHandler = (
-  overrideResponse?:
-    | BatchCreateScheduledBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.post>[1]>[0]
-      ) => Promise<BatchCreateScheduledBotResponse> | BatchCreateScheduledBotResponse)
-) => {
-  return http.post("https://api.meetingbaas.com/v2/bots/scheduled/batch", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getBatchCreateScheduledBotsResponseMock()
-      ),
-      { status: 201, headers: { "Content-Type": "application/json" } }
-    )
+export const getCreateScheduledBotMockHandler = (overrideResponse?: CreateScheduledBotResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<CreateScheduledBotResponse> | CreateScheduledBotResponse)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/scheduled', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getCreateScheduledBotResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getGetScheduledBotDetailsMockHandler = (
-  overrideResponse?:
-    | GetScheduledBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0]
-      ) => Promise<GetScheduledBotResponse> | GetScheduledBotResponse)
-) => {
-  return http.get("https://api.meetingbaas.com/v2/bots/scheduled/:botId", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getGetScheduledBotDetailsResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getListScheduledBotsMockHandler = (overrideResponse?: ListScheduledBotsResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ListScheduledBotsResponse> | ListScheduledBotsResponse)) => {
+  return http.get('https://api.meetingbaas.com/v2/bots/scheduled', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getListScheduledBotsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getUpdateScheduledBotMockHandler = (
-  overrideResponse?:
-    | UpdateScheduledBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.patch>[1]>[0]
-      ) => Promise<UpdateScheduledBotResponse> | UpdateScheduledBotResponse)
-) => {
-  return http.patch("https://api.meetingbaas.com/v2/bots/scheduled/:botId", async (info) => {
-    await delay(1000)
-
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getUpdateScheduledBotResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getBatchCreateScheduledBotsMockHandler = (overrideResponse?: BatchCreateScheduledBotResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<BatchCreateScheduledBotResponse> | BatchCreateScheduledBotResponse)) => {
+  return http.post('https://api.meetingbaas.com/v2/bots/scheduled/batch', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getBatchCreateScheduledBotsResponseMock()),
+      { status: 201,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 
-export const getDeleteScheduledBotMockHandler = (
-  overrideResponse?:
-    | DeleteScheduledBotResponse
-    | ((
-        info: Parameters<Parameters<typeof http.delete>[1]>[0]
-      ) => Promise<DeleteScheduledBotResponse> | DeleteScheduledBotResponse)
-) => {
-  return http.delete("https://api.meetingbaas.com/v2/bots/scheduled/:botId", async (info) => {
-    await delay(1000)
+export const getGetScheduledBotDetailsMockHandler = (overrideResponse?: GetScheduledBotResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetScheduledBotResponse> | GetScheduledBotResponse)) => {
+  return http.get('https://api.meetingbaas.com/v2/bots/scheduled/:botId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetScheduledBotDetailsResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
 
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? await overrideResponse(info)
-            : overrideResponse
-          : getDeleteScheduledBotResponseMock()
-      ),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    )
+export const getUpdateScheduledBotMockHandler = (overrideResponse?: UpdateScheduledBotResponse | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<UpdateScheduledBotResponse> | UpdateScheduledBotResponse)) => {
+  return http.patch('https://api.meetingbaas.com/v2/bots/scheduled/:botId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getUpdateScheduledBotResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDeleteScheduledBotMockHandler = (overrideResponse?: DeleteScheduledBotResponse | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<DeleteScheduledBotResponse> | DeleteScheduledBotResponse)) => {
+  return http.delete('https://api.meetingbaas.com/v2/bots/scheduled/:botId', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getDeleteScheduledBotResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
   })
 }
 export const getBotsMock = () => [
@@ -982,6 +346,8 @@ export const getBotsMock = () => [
   getGetBotScreenshotsMockHandler(),
   getLeaveBotMockHandler(),
   getSendChatMessageMockHandler(),
+  getPauseBotRecordingMockHandler(),
+  getResumeBotRecordingMockHandler(),
   getDeleteBotDataMockHandler(),
   getResendFinalWebhookMockHandler(),
   getRetryCallbackMockHandler(),
@@ -991,5 +357,4 @@ export const getBotsMock = () => [
   getBatchCreateScheduledBotsMockHandler(),
   getGetScheduledBotDetailsMockHandler(),
   getUpdateScheduledBotMockHandler(),
-  getDeleteScheduledBotMockHandler()
-]
+  getDeleteScheduledBotMockHandler()]

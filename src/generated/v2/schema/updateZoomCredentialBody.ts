@@ -5,6 +5,7 @@
  * API for managing meeting bots, calendar integrations, and webhooks
  * OpenAPI spec version: 2.0.0
  */
+import type { UpdateZoomCredentialBodyExtra } from "./updateZoomCredentialBodyExtra"
 
 export type UpdateZoomCredentialBody = {
   /**
@@ -44,4 +45,5 @@ When provided, the API will exchange this code for access and refresh tokens, ma
 
 Must exactly match the redirect URI registered in your Zoom OAuth App and used when obtaining the authorization code. */
   redirect_uri?: string
+  extra?: UpdateZoomCredentialBodyExtra
 }

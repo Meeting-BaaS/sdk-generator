@@ -50,7 +50,7 @@ export const deleteZoomOauthConnection = <TData = AxiosResponse<void>>(
   uuid: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.delete(`/zoom_oauth_connections/${uuid}`, options)
+  return axios.delete(`/zoom_oauth_connections/${uuid}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
 }
 export type ListZoomOauthConnectionsResult = AxiosResponse<ZoomOAuthConnectionResponse[]>
 export type CreateZoomOauthConnectionResult = AxiosResponse<void | ZoomOAuthConnectionResponse>

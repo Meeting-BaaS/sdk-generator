@@ -31,7 +31,11 @@ import type {
   ListBotsResponse,
   ListScheduledBotsParams,
   ListScheduledBotsResponse,
+  PauseBotRecording200,
+  PauseBotRecordingBody,
   ResendFinalWebhookResponse,
+  ResumeBotRecording200,
+  ResumeBotRecordingBody,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponse,
   SendChatMessage200,
@@ -199,15 +203,14 @@ export const getBotScreenshots = <TData = AxiosResponse<GetBotScreenshotsRespons
 }
 /**
  * Instruct a bot to leave the meeting immediately.
-    
-    The bot will stop recording and processing, then exit the meeting. Only works if the bot is currently in the meeting (status is `joining_call`, `in_waiting_room`, `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`). The bot will send a final webhook event when it leaves.
-    
-    **Status Requirements:** The bot must be in a state that allows leaving. Bots that have already completed, failed, or are not yet in the meeting cannot be left via this endpoint. If the bot is in an invalid state, the request will fail with a 409 Conflict status.
-    
-    **Token Consumption:** When a bot is manually left, tokens are consumed based on the duration from when recording started to when the bot left. The bot will transition to `completed` status and send a completion webhook.
-    
-    **Immediate Effect:** The leave command is sent to the bot process immediately. The bot will stop recording and exit the meeting as soon as it receives the command (usually within a few seconds).
-    
+
+    The bot will stop recording and processing, then exit the meeting. Works for bots in any active state: `queued`, `joining_call`, `in_waiting_room`, `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`. Also works for scheduled bots that haven't spawned yet — the scheduled bot will be cancelled atomically. The bot will send a final webhook event when it leaves.
+
+    **Status Requirements:** The bot must be in an active (non-terminal) state. Bots that have already `completed` or `failed` cannot be left via this endpoint. If the bot is in an invalid state, the request will fail with a 409 Conflict status.
+
+    **Pre-Recording Stops:** If the bot hasn't started recording yet (e.g., still `queued` or in the waiting room), it will exit with an `EXITING_MEETING_BEFORE_RECORD` error code. No tokens are consumed for pre-recording stops.
+
+    **Token Consumption:** When a bot that was recording is manually left, tokens are consumed based on the duration from when recording started to when the bot left. The bot will transition to `completed` status and send a completion webhook.
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
  * @summary Leave meeting
  */
@@ -239,6 +242,48 @@ export const sendChatMessage = <TData = AxiosResponse<SendChatMessage200>>(
   options?: AxiosRequestConfig
 ): Promise<TData> => {
   return axios.post(`/v2/bots/${botId}/send-chat-message`, sendChatMessageBody, options)
+}
+/**
+ * Pause the bot's recording during a meeting.
+
+    The bot stays in the meeting, but the paused portion is excluded from the final recording, transcript, and diarization. If you have streaming output enabled, the stream is paused too and no audio is forwarded until you resume.
+
+    **Status Requirements:** The bot must be actively recording (`in_call_recording`, or `recording_resumed` if it was previously paused). Bots that are already paused, still joining, or have finished will fail with a 409 Conflict.
+
+    **Chat Message:** Optionally include `chat_message` in the body to post a message in the meeting chat when pausing — e.g., "Recording has been paused".
+
+    **Pairing:** Use `POST /bots/{bot_id}/resume-recording` to continue. You can pause and resume as many times as needed within a single meeting.
+
+    Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
+ * @summary Pause recording
+ */
+export const pauseBotRecording = <TData = AxiosResponse<PauseBotRecording200>>(
+  botId: string,
+  pauseBotRecordingBody: PauseBotRecordingBody,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post(`/v2/bots/${botId}/pause-recording`, pauseBotRecordingBody, options)
+}
+/**
+ * Resume a bot's recording after it was paused.
+
+    Meeting content from this point onward is captured again and included in the final recording, transcript, and diarization. If you have streaming output enabled, audio resumes flowing. Timestamps in the final artifacts are continuous across the pause — the paused gap is collapsed, not represented as silence.
+
+    **Status Requirements:** The bot must be in `recording_paused` status. Bots that are already recording, still joining, or have finished will fail with a 409 Conflict.
+
+    **Chat Message:** Optionally include `chat_message` in the body to post a message in the meeting chat when resuming — e.g., "Recording has resumed".
+
+    **Pairing:** Follows a prior `POST /bots/{bot_id}/pause-recording`. You can pause and resume multiple times within a single meeting.
+
+    Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
+ * @summary Resume recording
+ */
+export const resumeBotRecording = <TData = AxiosResponse<ResumeBotRecording200>>(
+  botId: string,
+  resumeBotRecordingBody: ResumeBotRecordingBody,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.post(`/v2/bots/${botId}/resume-recording`, resumeBotRecordingBody, options)
 }
 /**
  * Permanently delete all bot data including recordings, transcripts, summaries, and screenshots.
@@ -396,7 +441,10 @@ export const createScheduledBot = <TData = AxiosResponse<CreateScheduledBotRespo
     - `status`: Filter by scheduled bot status (comma-separated for multiple statuses)
     - `scheduled_after`: ISO 8601 timestamp - only return bots scheduled to join after this time
     - `scheduled_before`: ISO 8601 timestamp - only return bots scheduled to join before this time
-    
+    - `bot_id`, `bot_name`, `meeting_url`: case-insensitive partial match
+    - `meeting_platform`: comma-separated list of `zoom`, `meet`, `teams`
+    - `extra`: filter by values in the `extra` JSON payload using `key:value` syntax (comma-separated for multiple conditions, e.g. `extra=customer_id:12345,project:sales`). Values match exactly (case-sensitive); scheduled bots without the key are excluded.
+
     **Status Values:**
     - `scheduled`: Bot is scheduled but has not yet joined
     - `completed`: Bot instance was created and queued to join (bot may still be joining)
@@ -492,26 +540,26 @@ export const updateScheduledBot = <TData = AxiosResponse<UpdateScheduledBotRespo
   return axios.patch(`/v2/bots/scheduled/${botId}`, updateScheduledBotRequestBodyInput, options)
 }
 /**
- * Cancel and delete a scheduled bot.
-    
-    The bot must be in `scheduled` status and the join time must be at least 4 minutes in the future. This ensures the bot can be updated before it starts processing. Once deleted, the scheduled bot cannot be recovered.
-    
-    **Status Requirements:** The bot must be in `scheduled` status. Bots that have already joined (`completed`) or failed (`failed`) cannot be deleted via this endpoint. If the bot is in an invalid state, the request will fail with a 409 Conflict status.
-    
-    **Join Time Requirements:** The join time must be at least 4 minutes in the future. If the join time is too close, the request will fail with 409 Conflict. This ensures the bot can be cancelled before it starts processing.
-    
-    **Irreversible Operation:** Once a scheduled bot is deleted, it cannot be recovered. If you need to cancel a bot that is about to join, you should use the leave endpoint on the actual bot instance instead.
-    
-    **No Token Impact:** Since tokens are not reserved for scheduled bots, deleting a scheduled bot does not affect your token balance.
-    
-    Returns 404 if the scheduled bot is not found, or 409 if the bot's status does not allow deletion or the join time is too close.
+ * Cancel and delete a scheduled bot. The behavior depends on where the bot is in its lifecycle when you call this:
+
+    - **Not yet launched** — the schedule is cancelled and the bot never starts.
+    - **Launched but not yet in the meeting** — the bot exits before joining, with an `EXITING_MEETING_BEFORE_RECORD` error code. No meeting content is captured.
+    - **Already in the meeting** — the bot leaves. Whatever it captured up to that point (audio, video, transcript, diarization) is still processed and delivered as usual.
+
+    **Status Requirements:** The scheduled bot must not already be `cancelled`, `completed`, or `failed`. If the bot is in a terminal state, the request will fail with a 409 Conflict status.
+
+    **Irreversible Operation:** Once a scheduled bot is cancelled, it cannot be recovered.
+
+    **Token Impact:** Tokens are not reserved for scheduled bots, so cancelling before the bot joins a meeting has no impact on your token balance. If the bot had already started recording, tokens are consumed only for the recorded portion — you won't be charged for time after the cancellation.
+
+    Returns 404 if the scheduled bot is not found, or 409 if the bot's status does not allow deletion.
  * @summary Delete scheduled bot
  */
 export const deleteScheduledBot = <TData = AxiosResponse<DeleteScheduledBotResponse>>(
   botId: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.delete(`/v2/bots/scheduled/${botId}`, options)
+  return axios.delete(`/v2/bots/scheduled/${botId}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
 }
 export type CreateBotResult = AxiosResponse<CreateBotResponse>
 export type ListBotsResult = AxiosResponse<ListBotsResponse>
@@ -521,6 +569,8 @@ export type GetBotStatusResult = AxiosResponse<GetBotStatusResponse>
 export type GetBotScreenshotsResult = AxiosResponse<GetBotScreenshotsResponse>
 export type LeaveBotResult = AxiosResponse<LeaveBotResponse>
 export type SendChatMessageResult = AxiosResponse<SendChatMessage200>
+export type PauseBotRecordingResult = AxiosResponse<PauseBotRecording200>
+export type ResumeBotRecordingResult = AxiosResponse<ResumeBotRecording200>
 export type DeleteBotDataResult = AxiosResponse<DeleteBotDataResponse>
 export type ResendFinalWebhookResult = AxiosResponse<ResendFinalWebhookResponse>
 export type RetryCallbackResult = AxiosResponse<RetryCallbackResponse>

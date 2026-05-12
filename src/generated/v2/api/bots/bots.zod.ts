@@ -51,10 +51,15 @@ export const createBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const createBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const createBotBodyTimeoutConfigGracePeriodDefault = 0
+export const createBotBodyTimeoutConfigGracePeriodMin = 0
+
+export const createBotBodyTimeoutConfigGracePeriodMax = 600
 export const createBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
-  silence_timeout: 600
+  silence_timeout: 600,
+  grace_period: 0
 }
 export const createBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -98,7 +103,7 @@ export const createBotBody = zod.object({
         .enum(["auto", "bot_status"])
         .default(createBotBodyBotImageConfigLoopModeDefault)
         .describe(
-          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored."
         ),
       image_duration: zod
         .number()
@@ -165,6 +170,14 @@ export const createBotBody = zod.object({
         .default(createBotBodyTimeoutConfigSilenceTimeoutDefault)
         .describe(
           "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+        ),
+      grace_period: zod
+        .number()
+        .min(createBotBodyTimeoutConfigGracePeriodMin)
+        .max(createBotBodyTimeoutConfigGracePeriodMax)
+        .optional()
+        .describe(
+          "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
         )
     })
     .default(createBotBodyTimeoutConfigDefault)
@@ -418,7 +431,7 @@ export const listBotsQueryParams = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      'Filter bots by matching values in the extra JSON payload.\n\nThis parameter performs in-memory filtering on the `extra` JSON field, similar to a SQL WHERE clause. It reduces the result set to only include bots that match all specified conditions.\n\nFormat specifications: - Single condition: \"field:value\" - Multiple conditions: \"field1:value1,field2:value2\"\n\nExamples: - \"customer_id:12345\" - Only bots with this customer ID - \"status:active,project:sales\" - Only active bots from sales projects\n\nNotes: - All conditions must match for a bot to be included - Values are matched exactly (case-sensitive) - Bots without the specified field are excluded'
+      'Filter bots by matching values in the extra JSON payload.\n\nThis parameter applies SQL-level filtering on the `extra` JSON field and returns only bots that match all specified conditions.\n\nFormat specifications: - Single condition: \"field:value\" - Multiple conditions: \"field1:value1,field2:value2\"\n\nExamples: - \"customer_id:12345\" - Only bots with this customer ID - \"status:active,project:sales\" - Only active bots from sales projects\n\nNotes: - All conditions must match for a bot to be included - Values are matched exactly (case-sensitive) - Bots without the specified field are excluded'
     ),
   meeting_url: zod
     .string()
@@ -441,7 +454,7 @@ export const listBotsQueryParams = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      'Filter bots by bot statuses.\n\nThis parameter filters bots by their status. It can be used to find bots that have any of the specified statuses. Valid values are one or more of: queued, transcribing, completed, failed, joining_call, in_waiting_room, in_waiting_for_host, in_call_not_recording, in_call_recording, recording_paused, recording_resumed, call_ended, recording_succeeded, recording_failed, api_request_stop, bot_rejected, bot_removed, bot_removed_too_early, waiting_room_timeout, invalid_meeting_url, meeting_error.\n\nExample: \"queued,joining_call\" would match all bots that are queued or joining the call'
+      'Filter bots by bot statuses.\n\nThis parameter filters bots by their status. It can be used to find bots that have any of the specified statuses. Valid values are one or more of: queued, pickup_delayed, transcribing, completed, failed, joining_call, in_waiting_room, in_waiting_for_host, in_call_not_recording, in_call_recording, recording_paused, recording_resumed, call_ended, recording_succeeded, recording_failed, api_request_stop, bot_rejected, bot_removed, bot_removed_too_early, waiting_room_timeout, invalid_meeting_url, meeting_error.\n\nExample: \"queued,joining_call\" would match all bots that are queued or joining the call'
     )
 })
 
@@ -504,6 +517,7 @@ export const listBotsResponse = zod.object({
       status: zod
         .enum([
           "queued",
+          "pickup_delayed",
           "transcribing",
           "completed",
           "failed",
@@ -599,10 +613,15 @@ export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const batchCreateBotsBodyTimeoutConfigGracePeriodDefault = 0
+export const batchCreateBotsBodyTimeoutConfigGracePeriodMin = 0
+
+export const batchCreateBotsBodyTimeoutConfigGracePeriodMax = 600
 export const batchCreateBotsBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
-  silence_timeout: 600
+  silence_timeout: 600,
+  grace_period: 0
 }
 export const batchCreateBotsBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -646,7 +665,7 @@ export const batchCreateBotsBodyItem = zod.object({
         .enum(["auto", "bot_status"])
         .default(batchCreateBotsBodyBotImageConfigLoopModeDefault)
         .describe(
-          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored."
         ),
       image_duration: zod
         .number()
@@ -713,6 +732,14 @@ export const batchCreateBotsBodyItem = zod.object({
         .default(batchCreateBotsBodyTimeoutConfigSilenceTimeoutDefault)
         .describe(
           "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+        ),
+      grace_period: zod
+        .number()
+        .min(batchCreateBotsBodyTimeoutConfigGracePeriodMin)
+        .max(batchCreateBotsBodyTimeoutConfigGracePeriodMax)
+        .optional()
+        .describe(
+          "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
         )
     })
     .default(batchCreateBotsBodyTimeoutConfigDefault)
@@ -925,6 +952,7 @@ export const getBotDetailsResponse = zod.object({
     status: zod
       .enum([
         "queued",
+        "pickup_delayed",
         "transcribing",
         "completed",
         "failed",
@@ -1160,6 +1188,7 @@ export const getBotStatusResponse = zod.object({
     status: zod
       .enum([
         "queued",
+        "pickup_delayed",
         "transcribing",
         "completed",
         "failed",
@@ -1262,15 +1291,14 @@ export const getBotScreenshotsResponse = zod.object({
 
 /**
  * Instruct a bot to leave the meeting immediately.
-    
-    The bot will stop recording and processing, then exit the meeting. Only works if the bot is currently in the meeting (status is `joining_call`, `in_waiting_room`, `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`). The bot will send a final webhook event when it leaves.
-    
-    **Status Requirements:** The bot must be in a state that allows leaving. Bots that have already completed, failed, or are not yet in the meeting cannot be left via this endpoint. If the bot is in an invalid state, the request will fail with a 409 Conflict status.
-    
-    **Token Consumption:** When a bot is manually left, tokens are consumed based on the duration from when recording started to when the bot left. The bot will transition to `completed` status and send a completion webhook.
-    
-    **Immediate Effect:** The leave command is sent to the bot process immediately. The bot will stop recording and exit the meeting as soon as it receives the command (usually within a few seconds).
-    
+
+    The bot will stop recording and processing, then exit the meeting. Works for bots in any active state: `queued`, `joining_call`, `in_waiting_room`, `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`. Also works for scheduled bots that haven't spawned yet — the scheduled bot will be cancelled atomically. The bot will send a final webhook event when it leaves.
+
+    **Status Requirements:** The bot must be in an active (non-terminal) state. Bots that have already `completed` or `failed` cannot be left via this endpoint. If the bot is in an invalid state, the request will fail with a 409 Conflict status.
+
+    **Pre-Recording Stops:** If the bot hasn't started recording yet (e.g., still `queued` or in the waiting room), it will exit with an `EXITING_MEETING_BEFORE_RECORD` error code. No tokens are consumed for pre-recording stops.
+
+    **Token Consumption:** When a bot that was recording is manually left, tokens are consumed based on the duration from when recording started to when the bot left. The bot will transition to `completed` status and send a completion webhook.
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
  * @summary Leave meeting
  */
@@ -1330,6 +1358,94 @@ export const sendChatMessageBody = zod.object({
 })
 
 export const sendChatMessageResponse = zod.object({
+  success: zod.literal(true),
+  data: zod.object({
+    message: zod.string().describe("Success message")
+  })
+})
+
+/**
+ * Pause the bot's recording during a meeting.
+
+    The bot stays in the meeting, but the paused portion is excluded from the final recording, transcript, and diarization. If you have streaming output enabled, the stream is paused too and no audio is forwarded until you resume.
+
+    **Status Requirements:** The bot must be actively recording (`in_call_recording`, or `recording_resumed` if it was previously paused). Bots that are already paused, still joining, or have finished will fail with a 409 Conflict.
+
+    **Chat Message:** Optionally include `chat_message` in the body to post a message in the meeting chat when pausing — e.g., "Recording has been paused".
+
+    **Pairing:** Use `POST /bots/{bot_id}/resume-recording` to continue. You can pause and resume as many times as needed within a single meeting.
+
+    Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
+ * @summary Pause recording
+ */
+export const pauseBotRecordingPathBotIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+
+export const pauseBotRecordingParams = zod.object({
+  bot_id: zod
+    .string()
+    .uuid()
+    .regex(pauseBotRecordingPathBotIdRegExp)
+    .describe("The UUID of the bot to pause recording.")
+})
+
+export const pauseBotRecordingBodyChatMessageMaxOne = 500
+export const pauseBotRecordingBodyChatMessageDefault = null
+
+export const pauseBotRecordingBody = zod.object({
+  chat_message: zod
+    .string()
+    .max(pauseBotRecordingBodyChatMessageMaxOne)
+    .or(zod.null())
+    .optional()
+    .describe("Optional chat message to send to meeting participants when pausing.")
+})
+
+export const pauseBotRecordingResponse = zod.object({
+  success: zod.literal(true),
+  data: zod.object({
+    message: zod.string().describe("Success message")
+  })
+})
+
+/**
+ * Resume a bot's recording after it was paused.
+
+    Meeting content from this point onward is captured again and included in the final recording, transcript, and diarization. If you have streaming output enabled, audio resumes flowing. Timestamps in the final artifacts are continuous across the pause — the paused gap is collapsed, not represented as silence.
+
+    **Status Requirements:** The bot must be in `recording_paused` status. Bots that are already recording, still joining, or have finished will fail with a 409 Conflict.
+
+    **Chat Message:** Optionally include `chat_message` in the body to post a message in the meeting chat when resuming — e.g., "Recording has resumed".
+
+    **Pairing:** Follows a prior `POST /bots/{bot_id}/pause-recording`. You can pause and resume multiple times within a single meeting.
+
+    Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
+ * @summary Resume recording
+ */
+export const resumeBotRecordingPathBotIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+
+export const resumeBotRecordingParams = zod.object({
+  bot_id: zod
+    .string()
+    .uuid()
+    .regex(resumeBotRecordingPathBotIdRegExp)
+    .describe("The UUID of the bot to resume recording.")
+})
+
+export const resumeBotRecordingBodyChatMessageMaxOne = 500
+export const resumeBotRecordingBodyChatMessageDefault = null
+
+export const resumeBotRecordingBody = zod.object({
+  chat_message: zod
+    .string()
+    .max(resumeBotRecordingBodyChatMessageMaxOne)
+    .or(zod.null())
+    .optional()
+    .describe("Optional chat message to send to meeting participants when resuming.")
+})
+
+export const resumeBotRecordingResponse = zod.object({
   success: zod.literal(true),
   data: zod.object({
     message: zod.string().describe("Success message")
@@ -1590,10 +1706,15 @@ export const createScheduledBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createScheduledBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const createScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const createScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
+export const createScheduledBotBodyTimeoutConfigGracePeriodMin = 0
+
+export const createScheduledBotBodyTimeoutConfigGracePeriodMax = 600
 export const createScheduledBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
-  silence_timeout: 600
+  silence_timeout: 600,
+  grace_period: 0
 }
 export const createScheduledBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -1640,7 +1761,7 @@ export const createScheduledBotBody = zod
           .enum(["auto", "bot_status"])
           .default(createScheduledBotBodyBotImageConfigLoopModeDefault)
           .describe(
-            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored."
           ),
         image_duration: zod
           .number()
@@ -1707,6 +1828,14 @@ export const createScheduledBotBody = zod
           .default(createScheduledBotBodyTimeoutConfigSilenceTimeoutDefault)
           .describe(
             "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+          ),
+        grace_period: zod
+          .number()
+          .min(createScheduledBotBodyTimeoutConfigGracePeriodMin)
+          .max(createScheduledBotBodyTimeoutConfigGracePeriodMax)
+          .optional()
+          .describe(
+            "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
           )
       })
       .default(createScheduledBotBodyTimeoutConfigDefault)
@@ -1883,7 +2012,10 @@ export const createScheduledBotBody = zod
     - `status`: Filter by scheduled bot status (comma-separated for multiple statuses)
     - `scheduled_after`: ISO 8601 timestamp - only return bots scheduled to join after this time
     - `scheduled_before`: ISO 8601 timestamp - only return bots scheduled to join before this time
-    
+    - `bot_id`, `bot_name`, `meeting_url`: case-insensitive partial match
+    - `meeting_platform`: comma-separated list of `zoom`, `meet`, `teams`
+    - `extra`: filter by values in the `extra` JSON payload using `key:value` syntax (comma-separated for multiple conditions, e.g. `extra=customer_id:12345,project:sales`). Values match exactly (case-sensitive); scheduled bots without the key are excluded.
+
     **Status Values:**
     - `scheduled`: Bot is scheduled but has not yet joined
     - `completed`: Bot instance was created and queued to join (bot may still be joining)
@@ -1904,6 +2036,7 @@ export const listScheduledBotsQueryScheduledAfterRegExpOne =
 export const listScheduledBotsQueryScheduledAfterDefault = null
 export const listScheduledBotsQueryBotNameDefault = null
 export const listScheduledBotsQueryMeetingUrlDefault = null
+export const listScheduledBotsQueryExtraDefault = null
 
 export const listScheduledBotsQueryParams = zod.object({
   limit: zod
@@ -1973,6 +2106,13 @@ export const listScheduledBotsQueryParams = zod.object({
     .optional()
     .describe(
       'Filter by meeting platform.\n\nThis parameter filters scheduled bots by the platform they are associated with. It can be used to find bots that are associated with a specific meeting platform. Valid values are: \"zoom\", \"meet\", \"teams\".\n\nExample: \"zoom\" would match all bots associated with Zoom meetings.\n\nTo filter multiple platforms, use a comma-separated list of values. For example, \"zoom,meet\" would match all bots associated with Zoom or Meet meetings.'
+    ),
+  extra: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      'Filter scheduled bots by matching values in the extra JSON payload.\n\nThis parameter applies SQL-level filtering on the `extra` JSON field and returns only scheduled bots that match all specified conditions.\n\nFormat specifications: - Single condition: \"field:value\" - Multiple conditions: \"field1:value1,field2:value2\"\n\nExamples: - \"customer_id:12345\" - Only scheduled bots with this customer ID - \"status:active,project:sales\" - Only active scheduled bots from sales projects\n\nNotes: - All conditions must match for a scheduled bot to be included - Values are matched exactly (case-sensitive) - Scheduled bots without the specified field are excluded'
     )
 })
 
@@ -2075,10 +2215,15 @@ export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutDefault = 60
 export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodDefault = 0
+export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMin = 0
+
+export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMax = 600
 export const batchCreateScheduledBotsBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
-  silence_timeout: 600
+  silence_timeout: 600,
+  grace_period: 0
 }
 export const batchCreateScheduledBotsBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -2125,7 +2270,7 @@ export const batchCreateScheduledBotsBodyItem = zod
           .enum(["auto", "bot_status"])
           .default(batchCreateScheduledBotsBodyBotImageConfigLoopModeDefault)
           .describe(
-            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored."
           ),
         image_duration: zod
           .number()
@@ -2192,6 +2337,14 @@ export const batchCreateScheduledBotsBodyItem = zod
           .default(batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutDefault)
           .describe(
             "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+          ),
+        grace_period: zod
+          .number()
+          .min(batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMin)
+          .max(batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMax)
+          .optional()
+          .describe(
+            "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
           )
       })
       .default(batchCreateScheduledBotsBodyTimeoutConfigDefault)
@@ -2607,10 +2760,15 @@ export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const updateScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
+export const updateScheduledBotBodyTimeoutConfigGracePeriodMin = 0
+
+export const updateScheduledBotBodyTimeoutConfigGracePeriodMax = 600
 export const updateScheduledBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
-  silence_timeout: 600
+  silence_timeout: 600,
+  grace_period: 0
 }
 export const updateScheduledBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -2657,7 +2815,7 @@ export const updateScheduledBotBody = zod.object({
         .enum(["auto", "bot_status"])
         .default(updateScheduledBotBodyBotImageConfigLoopModeDefault)
         .describe(
-          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+          "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored."
         ),
       image_duration: zod
         .number()
@@ -2725,6 +2883,14 @@ export const updateScheduledBotBody = zod.object({
         .default(updateScheduledBotBodyTimeoutConfigSilenceTimeoutDefault)
         .describe(
           "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+        ),
+      grace_period: zod
+        .number()
+        .min(updateScheduledBotBodyTimeoutConfigGracePeriodMin)
+        .max(updateScheduledBotBodyTimeoutConfigGracePeriodMax)
+        .optional()
+        .describe(
+          "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
         )
     })
     .default(updateScheduledBotBodyTimeoutConfigDefault)
@@ -2893,19 +3059,19 @@ export const updateScheduledBotResponse = zod.object({
 })
 
 /**
- * Cancel and delete a scheduled bot.
-    
-    The bot must be in `scheduled` status and the join time must be at least 4 minutes in the future. This ensures the bot can be updated before it starts processing. Once deleted, the scheduled bot cannot be recovered.
-    
-    **Status Requirements:** The bot must be in `scheduled` status. Bots that have already joined (`completed`) or failed (`failed`) cannot be deleted via this endpoint. If the bot is in an invalid state, the request will fail with a 409 Conflict status.
-    
-    **Join Time Requirements:** The join time must be at least 4 minutes in the future. If the join time is too close, the request will fail with 409 Conflict. This ensures the bot can be cancelled before it starts processing.
-    
-    **Irreversible Operation:** Once a scheduled bot is deleted, it cannot be recovered. If you need to cancel a bot that is about to join, you should use the leave endpoint on the actual bot instance instead.
-    
-    **No Token Impact:** Since tokens are not reserved for scheduled bots, deleting a scheduled bot does not affect your token balance.
-    
-    Returns 404 if the scheduled bot is not found, or 409 if the bot's status does not allow deletion or the join time is too close.
+ * Cancel and delete a scheduled bot. The behavior depends on where the bot is in its lifecycle when you call this:
+
+    - **Not yet launched** — the schedule is cancelled and the bot never starts.
+    - **Launched but not yet in the meeting** — the bot exits before joining, with an `EXITING_MEETING_BEFORE_RECORD` error code. No meeting content is captured.
+    - **Already in the meeting** — the bot leaves. Whatever it captured up to that point (audio, video, transcript, diarization) is still processed and delivered as usual.
+
+    **Status Requirements:** The scheduled bot must not already be `cancelled`, `completed`, or `failed`. If the bot is in a terminal state, the request will fail with a 409 Conflict status.
+
+    **Irreversible Operation:** Once a scheduled bot is cancelled, it cannot be recovered.
+
+    **Token Impact:** Tokens are not reserved for scheduled bots, so cancelling before the bot joins a meeting has no impact on your token balance. If the bot had already started recording, tokens are consumed only for the recorded portion — you won't be charged for time after the cancellation.
+
+    Returns 404 if the scheduled bot is not found, or 409 if the bot's status does not allow deletion.
  * @summary Delete scheduled bot
  */
 export const deleteScheduledBotPathBotIdRegExp =

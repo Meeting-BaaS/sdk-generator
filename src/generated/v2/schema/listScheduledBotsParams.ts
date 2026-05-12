@@ -96,4 +96,16 @@ Example: "zoom" would match all bots associated with Zoom meetings.
 To filter multiple platforms, use a comma-separated list of values. For example, "zoom,meet" would match all bots associated with Zoom or Meet meetings.
  */
   meeting_platform?: ListScheduledBotsMeetingPlatformAnyOf | null
+  /**
+ * Filter scheduled bots by matching values in the extra JSON payload.
+
+This parameter applies SQL-level filtering on the `extra` JSON field and returns only scheduled bots that match all specified conditions.
+
+Format specifications: - Single condition: "field:value" - Multiple conditions: "field1:value1,field2:value2"
+
+Examples: - "customer_id:12345" - Only scheduled bots with this customer ID - "status:active,project:sales" - Only active scheduled bots from sales projects
+
+Notes: - All conditions must match for a scheduled bot to be included - Values are matched exactly (case-sensitive) - Scheduled bots without the specified field are excluded
+ */
+  extra?: string | null
 }

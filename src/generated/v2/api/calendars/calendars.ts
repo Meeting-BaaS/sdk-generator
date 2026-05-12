@@ -151,7 +151,7 @@ export const deleteCalendarConnection = <TData = AxiosResponse<DeleteCalendarCon
   calendarId: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.delete(`/v2/calendars/${calendarId}`, options)
+  return axios.delete(`/v2/calendars/${calendarId}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
 }
 /**
  * Update a calendar connection with new OAuth credentials.
@@ -388,26 +388,26 @@ export const updateCalendarBot = <TData = AxiosResponse<UpdateCalendarBotRespons
   return axios.patch(`/v2/calendars/${calendarId}/bots`, updateCalendarBotRequestBodyInput, options)
 }
 /**
- * Cancel one or more scheduled calendar bots.
-    
-    You can target a single event or all occurrences in a series using `series_id`, `all_occurrences`, and `event_id` in the request body. Bots must be in `scheduled` status and the join time must be at least 4 minutes in the future.
-    
+ * Cancel one or more scheduled calendar bots. You can target a single event or all occurrences in a series using `series_id`, `all_occurrences`, and `event_id` in the request body. The behavior for each targeted bot depends on where it is in its lifecycle:
+
+    - **Not yet launched** — the schedule is cancelled and the bot never starts.
+    - **Launched but not yet in the meeting** — the bot exits before joining, with an `EXITING_MEETING_BEFORE_RECORD` error code.
+    - **Already in the meeting** — the bot leaves. Whatever it captured up to that point is still processed and delivered as usual. This case applies to single-event deletes and to series deletes for recent occurrences; see "Series deletes" below.
+
     **Cancellation Targets:**
     - `event_id`: Cancel bot for a specific event instance
     - `series_id`: Cancel bots for all occurrences of a series
     - `all_occurrences`: Cancel all future occurrences (for recurring events)
-    
-    **Status Requirements:** Bots must be in `scheduled` status. Bots that have already joined (`completed`) or failed (`failed`) cannot be cancelled via this endpoint. If a bot is in an invalid state, that bot will fail to cancel, but other bots may still be cancelled.
-    
-    **Join Time Requirements:** The join time must be at least 4 minutes in the future. If the join time is too close, the request will fail with 409 Conflict. This ensures the bot can be updated before it starts processing.
-    
-    **Partial Cancellation:** If cancelling multiple bots (e.g., all occurrences of a series), some bots may fail to cancel (e.g., if they're not in `scheduled` status). The response includes information about which bots were cancelled and which failed.
-    
-    **Irreversible Operation:** Once a calendar bot is cancelled, it cannot be recovered. If you need to cancel a bot that is about to join, you should use the leave endpoint on the actual bot instance instead.
-    
-    **No Token Impact:** Since tokens are not reserved for calendar bots, cancelling a bot does not affect your token balance.
-    
-    Returns 200 with cancellation results. Returns 404 if the event or calendar bot schedule is not found, or 409 if the bot's status does not allow deletion.
+
+    **Series deletes:** When `all_occurrences` is true, occurrences whose scheduled time is already well in the past are silently skipped — their bots would have long since finished. Recent and future occurrences are cancelled normally. For single-event deletes (`event_id`, no `all_occurrences`), no time filter is applied — whatever state the bot is in, the stop request is delivered.
+
+    **Partial Cancellation:** If cancelling multiple bots (e.g., all occurrences of a series), some bots may fail to cancel. The response includes which bots were cancelled and which failed.
+
+    **Irreversible Operation:** Once a calendar bot is cancelled, it cannot be recovered.
+
+    **Token Impact:** Tokens are not reserved for calendar bots, so cancelling before a bot joins a meeting has no impact on your token balance. If a bot had already started recording, tokens are consumed only for the recorded portion — you won't be charged for time after the cancellation.
+
+    Returns 200 with cancellation results. Returns 404 if the event or calendar bot schedule is not found.
  * @summary Cancel calendar bot
  */
 export const deleteCalendarBot = <TData = AxiosResponse<DeleteCalendarBotResponse>>(

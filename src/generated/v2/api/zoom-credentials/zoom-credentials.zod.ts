@@ -14,7 +14,9 @@ import { z as zod } from "zod"
 
     **App-only credentials:** Provide only `name`, `client_id`, and `client_secret`. These credentials can be used for SDK authentication when bots join meetings.
 
-    **User-authorized credentials:** Additionally provide `authorization_code` and `redirect_uri`. The API will exchange the authorization code for OAuth tokens, enabling OBF (On-Behalf-Of) token support. OBF tokens allow bots to join meetings on behalf of a specific Zoom user.
+    **User-authorized credentials:** Additionally provide `authorization_code` and `redirect_uri`. The API will exchange the authorization code for OAuth tokens, enabling OBF (On-Behalf-Of) token support. OBF tokens allow bots to join meetings on behalf of a specific Zoom user. The authorising user's `zoom_email` and `zoom_display_name` are captured from Zoom's `/users/me` API at exchange time (requires the `user:read:user` scope) and returned in the response so you can show end users which Zoom account is connected.
+
+    **Custom Metadata:** Pass an optional `extra` JSON object to tag the credential with your own key-value pairs (for example an internal user ID, environment, or tenant). The data is stored as-is, returned by all credential endpoints, and is filterable on the list endpoint via the `extra` query parameter.
 
     **Security:** All credentials are encrypted at rest using AES-256-GCM. Client secrets and OAuth tokens are never returned in API responses.
 
@@ -65,7 +67,14 @@ export const createZoomCredentialBody = zod.object({
     .optional()
     .describe(
       "The redirect URI used in the OAuth flow.\n\nMust exactly match the redirect URI registered in your Zoom OAuth App and used when obtaining the authorization code."
+    ),
+  extra: zod
+    .record(zod.string(), zod.any())
+    .describe(
+      "An optional free-form JSON object you can attach to the credential.\n\nThis is stored as-is and never interpreted by the API. Useful for tagging credentials with your own identifiers (e.g. internal user ID, environment, tenant) so you can correlate them in your application or filter them via the list endpoint.\n\nFilterable on the list endpoint via the `extra` query parameter using the `key:value` syntax."
     )
+    .or(zod.null())
+    .optional()
 })
 
 /**
@@ -78,12 +87,76 @@ export const createZoomCredentialBody = zod.object({
     - `name`: User-friendly name for identification
     - `credential_type`: "app" (SDK only) or "user" (with OAuth tokens)
     - `zoom_user_id`: The Zoom user ID (only for "user" type)
+    - `zoom_email` / `zoom_display_name`: The authorising Zoom user's email and display name, captured from Zoom's `/users/me` API at OAuth time (only for "user" type, requires the `user:read:user` scope)
     - `state`: "active" or "invalid"
     - `last_error_message`: Last OBF token fetch error (if any)
+    - `extra`: The optional user-supplied JSON metadata attached to the credential
+
+    **Filtering:** Narrow the result set with optional query parameters (combined with AND):
+    - `name`, `zoom_email`, `zoom_display_name`: case-insensitive partial match
+    - `zoom_user_id`: exact match
+    - `credential_type`, `state`: comma-separated enum lists (e.g. `credential_type=user`, `state=active,invalid`)
+    - `extra`: `key:value` pairs against the `extra` JSON payload, comma-separated for multiple conditions (e.g. `extra=internal_user_id:u_42,environment:production`). Values are matched exactly (case-sensitive); credentials missing the key are excluded.
 
     **Error Tracking:** If bots fail to fetch OBF tokens using a credential, the error is recorded in `last_error_message` and `last_error_at`. These fields are cleared on successful OBF token fetch.
  * @summary List Zoom credentials
  */
+export const listZoomCredentialsQueryNameDefault = null
+export const listZoomCredentialsQueryZoomEmailDefault = null
+export const listZoomCredentialsQueryZoomDisplayNameDefault = null
+export const listZoomCredentialsQueryZoomUserIdDefault = null
+export const listZoomCredentialsQueryExtraDefault = null
+
+export const listZoomCredentialsQueryParams = zod.object({
+  name: zod
+    .string()
+    .describe(
+      "Filter credentials whose `name` contains this string (case-insensitive partial match)."
+    )
+    .or(zod.null())
+    .optional(),
+  zoom_email: zod
+    .string()
+    .describe(
+      "Filter credentials whose `zoom_email` contains this string (case-insensitive partial match).\n\nUseful when a user has connected multiple Zoom accounts and you want to find a specific one."
+    )
+    .or(zod.null())
+    .optional(),
+  zoom_display_name: zod
+    .string()
+    .describe(
+      "Filter credentials whose `zoom_display_name` contains this string (case-insensitive partial match)."
+    )
+    .or(zod.null())
+    .optional(),
+  zoom_user_id: zod
+    .string()
+    .describe("Filter credentials by exact `zoom_user_id`.")
+    .or(zod.null())
+    .optional(),
+  credential_type: zod
+    .string()
+    .or(zod.null())
+    .describe("Filter by credential type. Comma-separated list. Valid values: `app`, `user`.")
+    .or(zod.null())
+    .optional(),
+  state: zod
+    .string()
+    .or(zod.null())
+    .describe(
+      "Filter by credential state. Comma-separated list. Valid values: `active`, `invalid`."
+    )
+    .or(zod.null())
+    .optional(),
+  extra: zod
+    .string()
+    .describe(
+      'Filter credentials by matching values in the `extra` JSON payload.\n\nApplies SQL-level filtering on the `extra` field and reduces the result set to credentials that match all specified conditions.\n\nFormat:\n- Single condition: `\"field:value\"`\n- Multiple conditions: `\"field1:value1,field2:value2\"`\n\nExamples:\n- `internal_user_id:u_123` — only credentials with this internal user ID\n- `environment:production,tenant:acme` — only production credentials for the acme tenant\n\nNotes: all conditions must match; values are matched exactly (case-sensitive); credentials without the field are excluded.'
+    )
+    .or(zod.null())
+    .optional()
+})
+
 export const listZoomCredentialsResponseDataItemCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 export const listZoomCredentialsResponseDataItemNameMax = 100
@@ -127,6 +200,18 @@ export const listZoomCredentialsResponse = zod.object({
           "The Zoom account ID associated with this credential.\n\nOnly present for 'user' type credentials."
         )
         .or(zod.null()),
+      zoom_email: zod
+        .string()
+        .describe(
+          "The email address of the Zoom user who authorised this credential.\n\nCaptured from Zoom's `/users/me` API at the time of OAuth exchange (or refresh) using the `user:read:user` scope. Use this to display which Zoom account is connected when a user has multiple accounts.\n\nOnly present for 'user' type credentials."
+        )
+        .or(zod.null()),
+      zoom_display_name: zod
+        .string()
+        .describe(
+          "The display name of the Zoom user who authorised this credential.\n\nCaptured from Zoom's `/users/me` API at the time of OAuth exchange (or refresh).\n\nOnly present for 'user' type credentials."
+        )
+        .or(zod.null()),
       scopes: zod
         .string()
         .describe(
@@ -161,7 +246,13 @@ export const listZoomCredentialsResponse = zod.object({
         .string()
         .datetime({})
         .regex(listZoomCredentialsResponseDataItemUpdatedAtRegExp)
-        .describe("When this credential was last updated (ISO 8601)")
+        .describe("When this credential was last updated (ISO 8601)"),
+      extra: zod
+        .record(zod.string(), zod.any())
+        .describe(
+          "An optional free-form JSON object you can attach to the credential.\n\nThis is stored as-is and never interpreted by the API. Useful for tagging credentials with your own identifiers (e.g. internal user ID, environment, tenant) so you can correlate them in your application or filter them via the list endpoint.\n\nFilterable on the list endpoint via the `extra` query parameter using the `key:value` syntax."
+        )
+        .or(zod.null())
     })
   )
 })
@@ -170,6 +261,8 @@ export const listZoomCredentialsResponse = zod.object({
  * Get detailed information about a specific Zoom credential.
 
     Returns the credential's metadata including its current state and any recent errors. Sensitive fields (client_secret, OAuth tokens) are never included.
+
+    For "user" type credentials, the response also includes `zoom_email` and `zoom_display_name` (captured from Zoom's `/users/me` API at OAuth time) and any `extra` JSON metadata you attached at creation or via `PATCH`.
 
     **Error Tracking:** The `last_error_message` and `last_error_at` fields show the most recent OBF token fetch failure. Check these fields if bots using this credential are failing to join meetings.
 
@@ -229,6 +322,18 @@ export const getZoomCredentialResponse = zod.object({
         "The Zoom account ID associated with this credential.\n\nOnly present for 'user' type credentials."
       )
       .or(zod.null()),
+    zoom_email: zod
+      .string()
+      .describe(
+        "The email address of the Zoom user who authorised this credential.\n\nCaptured from Zoom's `/users/me` API at the time of OAuth exchange (or refresh) using the `user:read:user` scope. Use this to display which Zoom account is connected when a user has multiple accounts.\n\nOnly present for 'user' type credentials."
+      )
+      .or(zod.null()),
+    zoom_display_name: zod
+      .string()
+      .describe(
+        "The display name of the Zoom user who authorised this credential.\n\nCaptured from Zoom's `/users/me` API at the time of OAuth exchange (or refresh).\n\nOnly present for 'user' type credentials."
+      )
+      .or(zod.null()),
     scopes: zod
       .string()
       .describe(
@@ -263,20 +368,28 @@ export const getZoomCredentialResponse = zod.object({
       .string()
       .datetime({})
       .regex(getZoomCredentialResponseDataUpdatedAtRegExp)
-      .describe("When this credential was last updated (ISO 8601)")
+      .describe("When this credential was last updated (ISO 8601)"),
+    extra: zod
+      .record(zod.string(), zod.any())
+      .describe(
+        "An optional free-form JSON object you can attach to the credential.\n\nThis is stored as-is and never interpreted by the API. Useful for tagging credentials with your own identifiers (e.g. internal user ID, environment, tenant) so you can correlate them in your application or filter them via the list endpoint.\n\nFilterable on the list endpoint via the `extra` query parameter using the `key:value` syntax."
+      )
+      .or(zod.null())
   })
 })
 
 /**
  * Update an existing Zoom credential.
 
-    You can update the credential name, SDK credentials (client_id/client_secret), or re-authorize with new OAuth tokens.
+    You can update the credential name, SDK credentials (client_id/client_secret), the user-supplied `extra` metadata, or re-authorize with new OAuth tokens.
 
     **Updating Name:** Provide only `name` to rename the credential.
 
     **Updating SDK Credentials:** Provide both `client_id` and `client_secret` together to update the SDK credentials.
 
-    **Re-authorizing:** Provide `authorization_code`, `redirect_uri`, `client_id`, and `client_secret` to exchange a new authorization code for fresh OAuth tokens. This also resets the credential state to "active" and clears any error messages.
+    **Updating Custom Metadata:** Provide `extra` to replace the credential's metadata payload, or send `"extra": null` to clear it.
+
+    **Re-authorizing:** Provide `authorization_code`, `redirect_uri`, `client_id`, and `client_secret` to exchange a new authorization code for fresh OAuth tokens. This also refreshes `zoom_email` and `zoom_display_name` from Zoom's `/users/me` API, resets the credential state to "active", and clears any error messages.
 
     **Error Scenarios:**
     - `400 Bad Request`: Missing redirect_uri when authorization_code is provided
@@ -338,7 +451,14 @@ export const updateZoomCredentialBody = zod.object({
     .optional()
     .describe(
       "The redirect URI used in the OAuth flow.\n\nMust exactly match the redirect URI registered in your Zoom OAuth App and used when obtaining the authorization code."
+    ),
+  extra: zod
+    .record(zod.string(), zod.any())
+    .describe(
+      "An optional free-form JSON object you can attach to the credential.\n\nThis is stored as-is and never interpreted by the API. Useful for tagging credentials with your own identifiers (e.g. internal user ID, environment, tenant) so you can correlate them in your application or filter them via the list endpoint.\n\nFilterable on the list endpoint via the `extra` query parameter using the `key:value` syntax."
     )
+    .or(zod.null())
+    .optional()
 })
 
 export const updateZoomCredentialResponseDataCredentialIdRegExp =
@@ -383,6 +503,18 @@ export const updateZoomCredentialResponse = zod.object({
         "The Zoom account ID associated with this credential.\n\nOnly present for 'user' type credentials."
       )
       .or(zod.null()),
+    zoom_email: zod
+      .string()
+      .describe(
+        "The email address of the Zoom user who authorised this credential.\n\nCaptured from Zoom's `/users/me` API at the time of OAuth exchange (or refresh) using the `user:read:user` scope. Use this to display which Zoom account is connected when a user has multiple accounts.\n\nOnly present for 'user' type credentials."
+      )
+      .or(zod.null()),
+    zoom_display_name: zod
+      .string()
+      .describe(
+        "The display name of the Zoom user who authorised this credential.\n\nCaptured from Zoom's `/users/me` API at the time of OAuth exchange (or refresh).\n\nOnly present for 'user' type credentials."
+      )
+      .or(zod.null()),
     scopes: zod
       .string()
       .describe(
@@ -417,7 +549,13 @@ export const updateZoomCredentialResponse = zod.object({
       .string()
       .datetime({})
       .regex(updateZoomCredentialResponseDataUpdatedAtRegExp)
-      .describe("When this credential was last updated (ISO 8601)")
+      .describe("When this credential was last updated (ISO 8601)"),
+    extra: zod
+      .record(zod.string(), zod.any())
+      .describe(
+        "An optional free-form JSON object you can attach to the credential.\n\nThis is stored as-is and never interpreted by the API. Useful for tagging credentials with your own identifiers (e.g. internal user ID, environment, tenant) so you can correlate them in your application or filter them via the list endpoint.\n\nFilterable on the list endpoint via the `extra` query parameter using the `key:value` syntax."
+      )
+      .or(zod.null())
   })
 })
 

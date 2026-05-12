@@ -48,4 +48,13 @@ Maximum: 30 minutes
    * @maximum 1800
    */
   silence_timeout?: number
+  /**
+   * The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.
+
+Default: 0 (disabled)
+Maximum: 600 seconds (10 minutes)
+   * @minimum 0
+   * @maximum 600
+   */
+  grace_period?: number
 }

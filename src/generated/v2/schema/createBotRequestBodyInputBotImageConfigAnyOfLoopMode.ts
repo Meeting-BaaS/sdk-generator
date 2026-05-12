@@ -10,7 +10,7 @@
  * Controls how multiple bot images are cycled.
 
 - `auto`: Cycles through images at the interval specified by image_duration.
-- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored.
+- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored.
  */
 export type CreateBotRequestBodyInputBotImageConfigAnyOfLoopMode =
   (typeof CreateBotRequestBodyInputBotImageConfigAnyOfLoopMode)[keyof typeof CreateBotRequestBodyInputBotImageConfigAnyOfLoopMode]
