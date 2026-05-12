@@ -6,11 +6,14 @@
  * OpenAPI spec version: 2.0.0
  */
 import type { ListZoomCredentials200DataItemCredentialType } from "./listZoomCredentials200DataItemCredentialType"
+import type { ListZoomCredentials200DataItemExtra } from "./listZoomCredentials200DataItemExtra"
 import type { ListZoomCredentials200DataItemLastErrorAt } from "./listZoomCredentials200DataItemLastErrorAt"
 import type { ListZoomCredentials200DataItemLastErrorMessage } from "./listZoomCredentials200DataItemLastErrorMessage"
 import type { ListZoomCredentials200DataItemScopes } from "./listZoomCredentials200DataItemScopes"
 import type { ListZoomCredentials200DataItemState } from "./listZoomCredentials200DataItemState"
 import type { ListZoomCredentials200DataItemZoomAccountId } from "./listZoomCredentials200DataItemZoomAccountId"
+import type { ListZoomCredentials200DataItemZoomDisplayName } from "./listZoomCredentials200DataItemZoomDisplayName"
+import type { ListZoomCredentials200DataItemZoomEmail } from "./listZoomCredentials200DataItemZoomEmail"
 import type { ListZoomCredentials200DataItemZoomUserId } from "./listZoomCredentials200DataItemZoomUserId"
 
 export type ListZoomCredentials200DataItem = {
@@ -34,6 +37,8 @@ This name is for your reference and can be anything that helps you identify this
   credential_type: ListZoomCredentials200DataItemCredentialType
   zoom_user_id: ListZoomCredentials200DataItemZoomUserId
   zoom_account_id: ListZoomCredentials200DataItemZoomAccountId
+  zoom_email: ListZoomCredentials200DataItemZoomEmail
+  zoom_display_name: ListZoomCredentials200DataItemZoomDisplayName
   scopes: ListZoomCredentials200DataItemScopes
   /** The current state of the Zoom credential.
 
@@ -52,4 +57,5 @@ This name is for your reference and can be anything that helps you identify this
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
    */
   updated_at: string
+  extra: ListZoomCredentials200DataItemExtra
 }

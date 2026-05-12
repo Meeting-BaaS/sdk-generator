@@ -84,7 +84,7 @@ Example: "MjAyNS0wMS0xNVQxMDozMDowMFo6OjEyMzQ1" or "LU1qQXlOM1UxTmpVME5qVXhNakUw
   /**
  * Filter bots by matching values in the extra JSON payload.
 
-This parameter performs in-memory filtering on the `extra` JSON field, similar to a SQL WHERE clause. It reduces the result set to only include bots that match all specified conditions.
+This parameter applies SQL-level filtering on the `extra` JSON field and returns only bots that match all specified conditions.
 
 Format specifications: - Single condition: "field:value" - Multiple conditions: "field1:value1,field2:value2"
 
@@ -114,7 +114,7 @@ To filter multiple platforms, use a comma-separated list of values. For example,
   /**
  * Filter bots by bot statuses.
 
-This parameter filters bots by their status. It can be used to find bots that have any of the specified statuses. Valid values are one or more of: queued, transcribing, completed, failed, joining_call, in_waiting_room, in_waiting_for_host, in_call_not_recording, in_call_recording, recording_paused, recording_resumed, call_ended, recording_succeeded, recording_failed, api_request_stop, bot_rejected, bot_removed, bot_removed_too_early, waiting_room_timeout, invalid_meeting_url, meeting_error.
+This parameter filters bots by their status. It can be used to find bots that have any of the specified statuses. Valid values are one or more of: queued, pickup_delayed, transcribing, completed, failed, joining_call, in_waiting_room, in_waiting_for_host, in_call_not_recording, in_call_recording, recording_paused, recording_resumed, call_ended, recording_succeeded, recording_failed, api_request_stop, bot_rejected, bot_removed, bot_removed_too_early, waiting_room_timeout, invalid_meeting_url, meeting_error.
 
 Example: "queued,joining_call" would match all bots that are queued or joining the call
  */

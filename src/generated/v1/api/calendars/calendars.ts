@@ -98,7 +98,7 @@ export const deleteCalendar = <TData = AxiosResponse<void>>(
   uuid: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.delete(`/calendars/${uuid}`, options)
+  return axios.delete(`/calendars/${uuid}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
 }
 /**
  * Updates a calendar integration with new credentials or platform while maintaining the same UUID. This operation is performed as an atomic transaction to ensure data integrity. The system automatically unschedules existing bots to prevent duplicates, updates the calendar credentials, and triggers a full resync of all events. Useful when OAuth tokens need to be refreshed or when migrating a calendar between providers. Returns the updated calendar object with its new configuration.

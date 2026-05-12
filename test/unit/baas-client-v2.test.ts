@@ -299,6 +299,114 @@ describe("BaasClient v2", () => {
     })
   })
 
+  describe("pauseBotRecording", () => {
+    it("should pause recording successfully without chat message", async () => {
+      const botId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Recording paused"
+      })
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/pause-recording`, async ({ request }) => {
+          const body = (await request.json()) as { chat_message?: string }
+          expect(body.chat_message).toBeUndefined()
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.pauseBotRecording({ bot_id: botId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("message")
+      }
+    })
+
+    it("should pause recording with chat message", async () => {
+      const botId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Recording paused"
+      })
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/pause-recording`, async ({ request }) => {
+          const body = (await request.json()) as { chat_message?: string }
+          if (body.chat_message !== "Recording has been paused") {
+            return HttpResponse.json(
+              createMockV2ErrorResponse("chat_message mismatch", "VALIDATION_ERROR", 400),
+              { status: 400 }
+            )
+          }
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.pauseBotRecording({
+        bot_id: botId,
+        body: { chat_message: "Recording has been paused" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("message")
+      }
+    })
+  })
+
+  describe("resumeBotRecording", () => {
+    it("should resume recording successfully without chat message", async () => {
+      const botId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Recording resumed"
+      })
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/resume-recording`, async ({ request }) => {
+          const body = (await request.json()) as { chat_message?: string }
+          expect(body.chat_message).toBeUndefined()
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.resumeBotRecording({ bot_id: botId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("message")
+      }
+    })
+
+    it("should resume recording with chat message", async () => {
+      const botId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Recording resumed"
+      })
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/resume-recording`, async ({ request }) => {
+          const body = (await request.json()) as { chat_message?: string }
+          if (body.chat_message !== "Recording has resumed") {
+            return HttpResponse.json(
+              createMockV2ErrorResponse("chat_message mismatch", "VALIDATION_ERROR", 400),
+              { status: 400 }
+            )
+          }
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.resumeBotRecording({
+        bot_id: botId,
+        body: { chat_message: "Recording has resumed" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data).toHaveProperty("message")
+      }
+    })
+  })
+
   describe("deleteBotData", () => {
     it("should delete bot data successfully", async () => {
       const botId = createMockBotId()
@@ -544,12 +652,15 @@ describe("BaasClient v2", () => {
           credential_type: "user" as const,
           zoom_user_id: "zoom-user-123",
           zoom_account_id: null,
+          zoom_email: "user@example.com",
+          zoom_display_name: "Test User",
           scopes: null,
           state: "active" as const,
           last_error_message: null,
           last_error_at: null,
           created_at: "2025-01-01T00:00:00Z",
-          updated_at: "2025-01-01T00:00:00Z"
+          updated_at: "2025-01-01T00:00:00Z",
+          extra: null
         }
       ])
 

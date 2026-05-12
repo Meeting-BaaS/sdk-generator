@@ -15,6 +15,7 @@ export type GetBotDetailsResponseInputDataStatus =
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetBotDetailsResponseInputDataStatus = {
   queued: "queued",
+  pickup_delayed: "pickup_delayed",
   transcribing: "transcribing",
   completed: "completed",
   failed: "failed",

@@ -6,11 +6,14 @@
  * OpenAPI spec version: 2.0.0
  */
 import type { UpdateZoomCredential200DataCredentialType } from "./updateZoomCredential200DataCredentialType"
+import type { UpdateZoomCredential200DataExtra } from "./updateZoomCredential200DataExtra"
 import type { UpdateZoomCredential200DataLastErrorAt } from "./updateZoomCredential200DataLastErrorAt"
 import type { UpdateZoomCredential200DataLastErrorMessage } from "./updateZoomCredential200DataLastErrorMessage"
 import type { UpdateZoomCredential200DataScopes } from "./updateZoomCredential200DataScopes"
 import type { UpdateZoomCredential200DataState } from "./updateZoomCredential200DataState"
 import type { UpdateZoomCredential200DataZoomAccountId } from "./updateZoomCredential200DataZoomAccountId"
+import type { UpdateZoomCredential200DataZoomDisplayName } from "./updateZoomCredential200DataZoomDisplayName"
+import type { UpdateZoomCredential200DataZoomEmail } from "./updateZoomCredential200DataZoomEmail"
 import type { UpdateZoomCredential200DataZoomUserId } from "./updateZoomCredential200DataZoomUserId"
 
 export type UpdateZoomCredential200Data = {
@@ -34,6 +37,8 @@ This name is for your reference and can be anything that helps you identify this
   credential_type: UpdateZoomCredential200DataCredentialType
   zoom_user_id: UpdateZoomCredential200DataZoomUserId
   zoom_account_id: UpdateZoomCredential200DataZoomAccountId
+  zoom_email: UpdateZoomCredential200DataZoomEmail
+  zoom_display_name: UpdateZoomCredential200DataZoomDisplayName
   scopes: UpdateZoomCredential200DataScopes
   /** The current state of the Zoom credential.
 
@@ -52,4 +57,5 @@ This name is for your reference and can be anything that helps you identify this
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
    */
   updated_at: string
+  extra: UpdateZoomCredential200DataExtra
 }

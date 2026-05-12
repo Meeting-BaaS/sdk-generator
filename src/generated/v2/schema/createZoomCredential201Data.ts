@@ -6,11 +6,14 @@
  * OpenAPI spec version: 2.0.0
  */
 import type { CreateZoomCredential201DataCredentialType } from "./createZoomCredential201DataCredentialType"
+import type { CreateZoomCredential201DataExtra } from "./createZoomCredential201DataExtra"
 import type { CreateZoomCredential201DataLastErrorAt } from "./createZoomCredential201DataLastErrorAt"
 import type { CreateZoomCredential201DataLastErrorMessage } from "./createZoomCredential201DataLastErrorMessage"
 import type { CreateZoomCredential201DataScopes } from "./createZoomCredential201DataScopes"
 import type { CreateZoomCredential201DataState } from "./createZoomCredential201DataState"
 import type { CreateZoomCredential201DataZoomAccountId } from "./createZoomCredential201DataZoomAccountId"
+import type { CreateZoomCredential201DataZoomDisplayName } from "./createZoomCredential201DataZoomDisplayName"
+import type { CreateZoomCredential201DataZoomEmail } from "./createZoomCredential201DataZoomEmail"
 import type { CreateZoomCredential201DataZoomUserId } from "./createZoomCredential201DataZoomUserId"
 
 export type CreateZoomCredential201Data = {
@@ -34,6 +37,8 @@ This name is for your reference and can be anything that helps you identify this
   credential_type: CreateZoomCredential201DataCredentialType
   zoom_user_id: CreateZoomCredential201DataZoomUserId
   zoom_account_id: CreateZoomCredential201DataZoomAccountId
+  zoom_email: CreateZoomCredential201DataZoomEmail
+  zoom_display_name: CreateZoomCredential201DataZoomDisplayName
   scopes: CreateZoomCredential201DataScopes
   /** The current state of the Zoom credential.
 
@@ -52,4 +57,5 @@ This name is for your reference and can be anything that helps you identify this
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
    */
   updated_at: string
+  extra: CreateZoomCredential201DataExtra
 }

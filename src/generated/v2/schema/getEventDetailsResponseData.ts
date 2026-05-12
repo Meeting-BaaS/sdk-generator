@@ -15,6 +15,7 @@ import type { GetEventDetailsResponseDataMeetingPlatform } from "./getEventDetai
 import type { GetEventDetailsResponseDataMeetingUrl } from "./getEventDetailsResponseDataMeetingUrl"
 import type { GetEventDetailsResponseDataOrganizerEmail } from "./getEventDetailsResponseDataOrganizerEmail"
 import type { GetEventDetailsResponseDataOrganizerName } from "./getEventDetailsResponseDataOrganizerName"
+import type { GetEventDetailsResponseDataRawPayload } from "./getEventDetailsResponseDataRawPayload"
 import type { GetEventDetailsResponseDataStatus } from "./getEventDetailsResponseDataStatus"
 import type { GetEventDetailsResponseDataTimezone } from "./getEventDetailsResponseDataTimezone"
 
@@ -72,6 +73,8 @@ export type GetEventDetailsResponseData = {
   calendar_platform: GetEventDetailsResponseDataCalendarPlatform
   /** Whether a bot has been scheduled for this event instance. True if a calendar bot schedule exists for this event */
   bot_scheduled: boolean
+  /** The most recent raw event object as returned by the calendar provider. Use this to access any provider-specific fields not surfaced by other properties on this response. The shape is provider-dependent: Google Calendar events follow the Google Calendar API event resource, and Microsoft events follow the Microsoft Graph event resource. Null if no provider payload has been captured yet (e.g. a row created from an internal source) */
+  raw_payload: GetEventDetailsResponseDataRawPayload
   /**
    * ISO 8601 timestamp when this event instance was first synced into the system
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$

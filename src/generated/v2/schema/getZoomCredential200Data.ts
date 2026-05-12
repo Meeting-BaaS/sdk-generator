@@ -6,11 +6,14 @@
  * OpenAPI spec version: 2.0.0
  */
 import type { GetZoomCredential200DataCredentialType } from "./getZoomCredential200DataCredentialType"
+import type { GetZoomCredential200DataExtra } from "./getZoomCredential200DataExtra"
 import type { GetZoomCredential200DataLastErrorAt } from "./getZoomCredential200DataLastErrorAt"
 import type { GetZoomCredential200DataLastErrorMessage } from "./getZoomCredential200DataLastErrorMessage"
 import type { GetZoomCredential200DataScopes } from "./getZoomCredential200DataScopes"
 import type { GetZoomCredential200DataState } from "./getZoomCredential200DataState"
 import type { GetZoomCredential200DataZoomAccountId } from "./getZoomCredential200DataZoomAccountId"
+import type { GetZoomCredential200DataZoomDisplayName } from "./getZoomCredential200DataZoomDisplayName"
+import type { GetZoomCredential200DataZoomEmail } from "./getZoomCredential200DataZoomEmail"
 import type { GetZoomCredential200DataZoomUserId } from "./getZoomCredential200DataZoomUserId"
 
 export type GetZoomCredential200Data = {
@@ -34,6 +37,8 @@ This name is for your reference and can be anything that helps you identify this
   credential_type: GetZoomCredential200DataCredentialType
   zoom_user_id: GetZoomCredential200DataZoomUserId
   zoom_account_id: GetZoomCredential200DataZoomAccountId
+  zoom_email: GetZoomCredential200DataZoomEmail
+  zoom_display_name: GetZoomCredential200DataZoomDisplayName
   scopes: GetZoomCredential200DataScopes
   /** The current state of the Zoom credential.
 
@@ -52,4 +57,5 @@ This name is for your reference and can be anything that helps you identify this
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
    */
   updated_at: string
+  extra: GetZoomCredential200DataExtra
 }

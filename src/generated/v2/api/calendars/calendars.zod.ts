@@ -1162,6 +1162,12 @@ export const getEventDetailsResponse = zod.object({
       .describe(
         "Whether a bot has been scheduled for this event instance. True if a calendar bot schedule exists for this event"
       ),
+    raw_payload: zod
+      .record(zod.string(), zod.any())
+      .or(zod.null())
+      .describe(
+        "The most recent raw event object as returned by the calendar provider. Use this to access any provider-specific fields not surfaced by other properties on this response. The shape is provider-dependent: Google Calendar events follow the Google Calendar API event resource, and Microsoft events follow the Microsoft Graph event resource. Null if no provider payload has been captured yet (e.g. a row created from an internal source)"
+      ),
     created_at: zod
       .string()
       .datetime({})
@@ -1235,10 +1241,15 @@ export const createCalendarBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createCalendarBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const createCalendarBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const createCalendarBotBodyTimeoutConfigGracePeriodDefault = 0
+export const createCalendarBotBodyTimeoutConfigGracePeriodMin = 0
+
+export const createCalendarBotBodyTimeoutConfigGracePeriodMax = 600
 export const createCalendarBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
-  silence_timeout: 600
+  silence_timeout: 600,
+  grace_period: 0
 }
 export const createCalendarBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -1288,7 +1299,7 @@ export const createCalendarBotBody = zod
           .enum(["auto", "bot_status"])
           .default(createCalendarBotBodyBotImageConfigLoopModeDefault)
           .describe(
-            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+            "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored."
           ),
         image_duration: zod
           .number()
@@ -1343,6 +1354,14 @@ export const createCalendarBotBody = zod
           .default(createCalendarBotBodyTimeoutConfigSilenceTimeoutDefault)
           .describe(
             "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+          ),
+        grace_period: zod
+          .number()
+          .min(createCalendarBotBodyTimeoutConfigGracePeriodMin)
+          .max(createCalendarBotBodyTimeoutConfigGracePeriodMax)
+          .optional()
+          .describe(
+            "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
           )
       })
       .default(createCalendarBotBodyTimeoutConfigDefault)
@@ -1582,10 +1601,15 @@ export const updateCalendarBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const updateCalendarBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const updateCalendarBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const updateCalendarBotBodyTimeoutConfigGracePeriodDefault = 0
+export const updateCalendarBotBodyTimeoutConfigGracePeriodMin = 0
+
+export const updateCalendarBotBodyTimeoutConfigGracePeriodMax = 600
 export const updateCalendarBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
-  silence_timeout: 600
+  silence_timeout: 600,
+  grace_period: 0
 }
 export const updateCalendarBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -1649,7 +1673,7 @@ export const updateCalendarBotBody = zod
               .enum(["auto", "bot_status"])
               .default(updateCalendarBotBodyBotImageConfigLoopModeDefault)
               .describe(
-                "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, and the second image when recording starts. Only the first two images are used in this mode; additional images are ignored."
+                "Controls how multiple bot images are cycled.\n\n- `auto`: Cycles through images at the interval specified by image_duration.\n- `bot_status`: Uses the first image when the bot joins, the second image when recording starts, and the third image when recording is paused. If no third image is provided, the bot stays on the recording image during pause. Only the first three images are used in this mode; additional images are ignored."
               ),
             image_duration: zod
               .number()
@@ -1704,6 +1728,14 @@ export const updateCalendarBotBody = zod
               .default(updateCalendarBotBodyTimeoutConfigSilenceTimeoutDefault)
               .describe(
                 "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+              ),
+            grace_period: zod
+              .number()
+              .min(updateCalendarBotBodyTimeoutConfigGracePeriodMin)
+              .max(updateCalendarBotBodyTimeoutConfigGracePeriodMax)
+              .optional()
+              .describe(
+                "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
               )
           })
           .default(updateCalendarBotBodyTimeoutConfigDefault)
@@ -1924,26 +1956,26 @@ export const updateCalendarBotResponse = zod.object({
 })
 
 /**
- * Cancel one or more scheduled calendar bots.
-    
-    You can target a single event or all occurrences in a series using `series_id`, `all_occurrences`, and `event_id` in the request body. Bots must be in `scheduled` status and the join time must be at least 4 minutes in the future.
-    
+ * Cancel one or more scheduled calendar bots. You can target a single event or all occurrences in a series using `series_id`, `all_occurrences`, and `event_id` in the request body. The behavior for each targeted bot depends on where it is in its lifecycle:
+
+    - **Not yet launched** — the schedule is cancelled and the bot never starts.
+    - **Launched but not yet in the meeting** — the bot exits before joining, with an `EXITING_MEETING_BEFORE_RECORD` error code.
+    - **Already in the meeting** — the bot leaves. Whatever it captured up to that point is still processed and delivered as usual. This case applies to single-event deletes and to series deletes for recent occurrences; see "Series deletes" below.
+
     **Cancellation Targets:**
     - `event_id`: Cancel bot for a specific event instance
     - `series_id`: Cancel bots for all occurrences of a series
     - `all_occurrences`: Cancel all future occurrences (for recurring events)
-    
-    **Status Requirements:** Bots must be in `scheduled` status. Bots that have already joined (`completed`) or failed (`failed`) cannot be cancelled via this endpoint. If a bot is in an invalid state, that bot will fail to cancel, but other bots may still be cancelled.
-    
-    **Join Time Requirements:** The join time must be at least 4 minutes in the future. If the join time is too close, the request will fail with 409 Conflict. This ensures the bot can be updated before it starts processing.
-    
-    **Partial Cancellation:** If cancelling multiple bots (e.g., all occurrences of a series), some bots may fail to cancel (e.g., if they're not in `scheduled` status). The response includes information about which bots were cancelled and which failed.
-    
-    **Irreversible Operation:** Once a calendar bot is cancelled, it cannot be recovered. If you need to cancel a bot that is about to join, you should use the leave endpoint on the actual bot instance instead.
-    
-    **No Token Impact:** Since tokens are not reserved for calendar bots, cancelling a bot does not affect your token balance.
-    
-    Returns 200 with cancellation results. Returns 404 if the event or calendar bot schedule is not found, or 409 if the bot's status does not allow deletion.
+
+    **Series deletes:** When `all_occurrences` is true, occurrences whose scheduled time is already well in the past are silently skipped — their bots would have long since finished. Recent and future occurrences are cancelled normally. For single-event deletes (`event_id`, no `all_occurrences`), no time filter is applied — whatever state the bot is in, the stop request is delivered.
+
+    **Partial Cancellation:** If cancelling multiple bots (e.g., all occurrences of a series), some bots may fail to cancel. The response includes which bots were cancelled and which failed.
+
+    **Irreversible Operation:** Once a calendar bot is cancelled, it cannot be recovered.
+
+    **Token Impact:** Tokens are not reserved for calendar bots, so cancelling before a bot joins a meeting has no impact on your token balance. If a bot had already started recording, tokens are consumed only for the recorded portion — you won't be charged for time after the cancellation.
+
+    Returns 200 with cancellation results. Returns 404 if the event or calendar bot schedule is not found.
  * @summary Cancel calendar bot
  */
 export const deleteCalendarBotPathCalendarIdRegExp =

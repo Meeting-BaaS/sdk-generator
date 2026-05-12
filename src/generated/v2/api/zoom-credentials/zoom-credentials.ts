@@ -15,6 +15,7 @@ import type {
   DeleteZoomCredential200,
   GetZoomCredential200,
   ListZoomCredentials200,
+  ListZoomCredentialsParams,
   UpdateZoomCredential200,
   UpdateZoomCredentialBody
 } from "../../schema"
@@ -26,7 +27,9 @@ import type {
 
     **App-only credentials:** Provide only `name`, `client_id`, and `client_secret`. These credentials can be used for SDK authentication when bots join meetings.
 
-    **User-authorized credentials:** Additionally provide `authorization_code` and `redirect_uri`. The API will exchange the authorization code for OAuth tokens, enabling OBF (On-Behalf-Of) token support. OBF tokens allow bots to join meetings on behalf of a specific Zoom user.
+    **User-authorized credentials:** Additionally provide `authorization_code` and `redirect_uri`. The API will exchange the authorization code for OAuth tokens, enabling OBF (On-Behalf-Of) token support. OBF tokens allow bots to join meetings on behalf of a specific Zoom user. The authorising user's `zoom_email` and `zoom_display_name` are captured from Zoom's `/users/me` API at exchange time (requires the `user:read:user` scope) and returned in the response so you can show end users which Zoom account is connected.
+
+    **Custom Metadata:** Pass an optional `extra` JSON object to tag the credential with your own key-value pairs (for example an internal user ID, environment, or tenant). The data is stored as-is, returned by all credential endpoints, and is filterable on the list endpoint via the `extra` query parameter.
 
     **Security:** All credentials are encrypted at rest using AES-256-GCM. Client secrets and OAuth tokens are never returned in API responses.
 
@@ -53,21 +56,35 @@ export const createZoomCredential = <TData = AxiosResponse<CreateZoomCredential2
     - `name`: User-friendly name for identification
     - `credential_type`: "app" (SDK only) or "user" (with OAuth tokens)
     - `zoom_user_id`: The Zoom user ID (only for "user" type)
+    - `zoom_email` / `zoom_display_name`: The authorising Zoom user's email and display name, captured from Zoom's `/users/me` API at OAuth time (only for "user" type, requires the `user:read:user` scope)
     - `state`: "active" or "invalid"
     - `last_error_message`: Last OBF token fetch error (if any)
+    - `extra`: The optional user-supplied JSON metadata attached to the credential
+
+    **Filtering:** Narrow the result set with optional query parameters (combined with AND):
+    - `name`, `zoom_email`, `zoom_display_name`: case-insensitive partial match
+    - `zoom_user_id`: exact match
+    - `credential_type`, `state`: comma-separated enum lists (e.g. `credential_type=user`, `state=active,invalid`)
+    - `extra`: `key:value` pairs against the `extra` JSON payload, comma-separated for multiple conditions (e.g. `extra=internal_user_id:u_42,environment:production`). Values are matched exactly (case-sensitive); credentials missing the key are excluded.
 
     **Error Tracking:** If bots fail to fetch OBF tokens using a credential, the error is recorded in `last_error_message` and `last_error_at`. These fields are cleared on successful OBF token fetch.
  * @summary List Zoom credentials
  */
 export const listZoomCredentials = <TData = AxiosResponse<ListZoomCredentials200>>(
+  params?: ListZoomCredentialsParams,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.get("/v2/zoom-credentials", options)
+  return axios.get("/v2/zoom-credentials", {
+    ...options,
+    params: { ...params, ...options?.params }
+  })
 }
 /**
  * Get detailed information about a specific Zoom credential.
 
     Returns the credential's metadata including its current state and any recent errors. Sensitive fields (client_secret, OAuth tokens) are never included.
+
+    For "user" type credentials, the response also includes `zoom_email` and `zoom_display_name` (captured from Zoom's `/users/me` API at OAuth time) and any `extra` JSON metadata you attached at creation or via `PATCH`.
 
     **Error Tracking:** The `last_error_message` and `last_error_at` fields show the most recent OBF token fetch failure. Check these fields if bots using this credential are failing to join meetings.
 
@@ -83,13 +100,15 @@ export const getZoomCredential = <TData = AxiosResponse<GetZoomCredential200>>(
 /**
  * Update an existing Zoom credential.
 
-    You can update the credential name, SDK credentials (client_id/client_secret), or re-authorize with new OAuth tokens.
+    You can update the credential name, SDK credentials (client_id/client_secret), the user-supplied `extra` metadata, or re-authorize with new OAuth tokens.
 
     **Updating Name:** Provide only `name` to rename the credential.
 
     **Updating SDK Credentials:** Provide both `client_id` and `client_secret` together to update the SDK credentials.
 
-    **Re-authorizing:** Provide `authorization_code`, `redirect_uri`, `client_id`, and `client_secret` to exchange a new authorization code for fresh OAuth tokens. This also resets the credential state to "active" and clears any error messages.
+    **Updating Custom Metadata:** Provide `extra` to replace the credential's metadata payload, or send `"extra": null` to clear it.
+
+    **Re-authorizing:** Provide `authorization_code`, `redirect_uri`, `client_id`, and `client_secret` to exchange a new authorization code for fresh OAuth tokens. This also refreshes `zoom_email` and `zoom_display_name` from Zoom's `/users/me` API, resets the credential state to "active", and clears any error messages.
 
     **Error Scenarios:**
     - `400 Bad Request`: Missing redirect_uri when authorization_code is provided
@@ -120,7 +139,7 @@ export const deleteZoomCredential = <TData = AxiosResponse<DeleteZoomCredential2
   id: string,
   options?: AxiosRequestConfig
 ): Promise<TData> => {
-  return axios.delete(`/v2/zoom-credentials/${id}`, options)
+  return axios.delete(`/v2/zoom-credentials/${id}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
 }
 export type CreateZoomCredentialResult = AxiosResponse<CreateZoomCredential201>
 export type ListZoomCredentialsResult = AxiosResponse<ListZoomCredentials200>
