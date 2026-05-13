@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.0.0
  */
 
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+import type { BodyType } from "../../../../custom-axios"
 
+import { customInstance } from "../../../../custom-axios"
 import type {
   CreateCalendarBotRequestBodyInput,
   CreateCalendarBotResponse,
@@ -35,6 +35,8 @@ import type {
   UpdateCalendarConnectionResponse
 } from "../../schema"
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
+
 /**
  * Preview available calendars from a Google or Microsoft account before creating a connection.
     
@@ -49,11 +51,19 @@ import type {
     Returns 401 if OAuth token refresh failed, or 403 if a Microsoft account license is required.
  * @summary List raw calendars (preview before creating connection)
  */
-export const listRawCalendars = <TData = AxiosResponse<ListRawCalendarsResponse>>(
-  listRawCalendarsRequestBodyInput: ListRawCalendarsRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/calendars/list-raw", listRawCalendarsRequestBodyInput, options)
+export const listRawCalendars = (
+  listRawCalendarsRequestBodyInput: BodyType<ListRawCalendarsRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListRawCalendarsResponse>(
+    {
+      url: "/v2/calendars/list-raw",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: listRawCalendarsRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Connect a Google or Microsoft calendar to your account.
@@ -73,11 +83,19 @@ export const listRawCalendars = <TData = AxiosResponse<ListRawCalendarsResponse>
     Returns 201 with the newly created calendar connection. Returns 401 if OAuth token refresh failed, 429 if the calendar connection limit is exceeded, or 409 if the connection already exists.
  * @summary Create calendar connection
  */
-export const createCalendarConnection = <TData = AxiosResponse<CreateCalendarConnectionResponse>>(
-  createCalendarConnectionRequestBodyInput: CreateCalendarConnectionRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/calendars", createCalendarConnectionRequestBodyInput, options)
+export const createCalendarConnection = (
+  createCalendarConnectionRequestBodyInput: BodyType<CreateCalendarConnectionRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<CreateCalendarConnectionResponse>(
+    {
+      url: "/v2/calendars",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createCalendarConnectionRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Retrieve a paginated list of calendar connections.
@@ -99,14 +117,14 @@ export const createCalendarConnection = <TData = AxiosResponse<CreateCalendarCon
     Returns a paginated list of calendar connections with metadata including calendar ID, platform, account email, status, and last sync time.
  * @summary List calendar connections
  */
-export const listCalendars = <TData = AxiosResponse<ListCalendarsResponse>>(
+export const listCalendars = (
   params: ListCalendarsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/v2/calendars", {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListCalendarsResponse>(
+    { url: "/v2/calendars", method: "GET", params },
+    options
+  )
 }
 /**
  * Retrieve detailed information about a specific calendar connection.
@@ -122,11 +140,14 @@ export const listCalendars = <TData = AxiosResponse<ListCalendarsResponse>>(
     Returns 404 if the calendar connection is not found or does not belong to your team.
  * @summary Get calendar connection details
  */
-export const getCalendarDetails = <TData = AxiosResponse<GetCalendarDetailsResponse>>(
+export const getCalendarDetails = (
   calendarId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/calendars/${calendarId}`, options)
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<GetCalendarDetailsResponse>(
+    { url: `/v2/calendars/${calendarId}`, method: "GET" },
+    options
+  )
 }
 /**
  * Disconnect and delete a calendar connection.
@@ -147,11 +168,14 @@ export const getCalendarDetails = <TData = AxiosResponse<GetCalendarDetailsRespo
     Returns 200 with confirmation of deletion. Returns 404 if the calendar connection is not found or does not belong to your team.
  * @summary Delete calendar connection
  */
-export const deleteCalendarConnection = <TData = AxiosResponse<DeleteCalendarConnectionResponse>>(
+export const deleteCalendarConnection = (
   calendarId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/v2/calendars/${calendarId}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<DeleteCalendarConnectionResponse>(
+    { url: `/v2/calendars/${calendarId}`, method: "DELETE" },
+    options
+  )
 }
 /**
  * Update a calendar connection with new OAuth credentials.
@@ -172,14 +196,18 @@ export const deleteCalendarConnection = <TData = AxiosResponse<DeleteCalendarCon
     Returns 200 with the updated calendar connection. Returns 401 if OAuth token refresh failed, 403 if permission is denied, or 404 if the calendar connection is not found.
  * @summary Update calendar connection
  */
-export const updateCalendarConnection = <TData = AxiosResponse<UpdateCalendarConnectionResponse>>(
+export const updateCalendarConnection = (
   calendarId: string,
-  updateCalendarConnectionRequestBodyInput: UpdateCalendarConnectionRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.patch(
-    `/v2/calendars/${calendarId}`,
-    updateCalendarConnectionRequestBodyInput,
+  updateCalendarConnectionRequestBodyInput: BodyType<UpdateCalendarConnectionRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<UpdateCalendarConnectionResponse>(
+    {
+      url: `/v2/calendars/${calendarId}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateCalendarConnectionRequestBodyInput
+    },
     options
   )
 }
@@ -203,11 +231,14 @@ export const updateCalendarConnection = <TData = AxiosResponse<UpdateCalendarCon
     Returns 200 with sync results. Returns 401 if OAuth token refresh failed, or 404 if the calendar connection is not found.
  * @summary Sync calendar events
  */
-export const syncCalendar = <TData = AxiosResponse<SyncCalendarResponse>>(
+export const syncCalendar = (
   calendarId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/calendars/${calendarId}/sync`, {}, options)
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<SyncCalendarResponse>(
+    { url: `/v2/calendars/${calendarId}/sync`, method: "POST" },
+    options
+  )
 }
 /**
  * Renew or recreate the push subscription for a calendar connection.
@@ -232,11 +263,14 @@ export const syncCalendar = <TData = AxiosResponse<SyncCalendarResponse>>(
     Returns 200 with subscription information. Returns 401 if OAuth token refresh failed, 403 if permission is denied, or 404 if the calendar connection is not found.
  * @summary Resubscribe to calendar webhooks
  */
-export const resubscribeCalendar = <TData = AxiosResponse<ResubscribeCalendarResponse>>(
+export const resubscribeCalendar = (
   calendarId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/calendars/${calendarId}/resubscribe`, {}, options)
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ResubscribeCalendarResponse>(
+    { url: `/v2/calendars/${calendarId}/resubscribe`, method: "POST" },
+    options
+  )
 }
 /**
  * Retrieve a paginated list of calendar events.
@@ -258,15 +292,15 @@ export const resubscribeCalendar = <TData = AxiosResponse<ResubscribeCalendarRes
     Returns a paginated list of calendar events with metadata.
  * @summary List calendar events
  */
-export const listEvents = <TData = AxiosResponse<ListEventsResponse>>(
+export const listEvents = (
   calendarId: string,
   params: ListEventsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/calendars/${calendarId}/events`, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListEventsResponse>(
+    { url: `/v2/calendars/${calendarId}/events`, method: "GET", params },
+    options
+  )
 }
 /**
  * Retrieve a paginated list of event series (both one-off and recurring events).
@@ -290,15 +324,15 @@ export const listEvents = <TData = AxiosResponse<ListEventsResponse>>(
     Returns a paginated list of event series with their instances.
  * @summary List event series
  */
-export const listEventSeries = <TData = AxiosResponse<ListEventSeriesResponse>>(
+export const listEventSeries = (
   calendarId: string,
   params: ListEventSeriesParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/calendars/${calendarId}/series`, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListEventSeriesResponse>(
+    { url: `/v2/calendars/${calendarId}/series`, method: "GET", params },
+    options
+  )
 }
 /**
  * Retrieve detailed information about a specific calendar event.
@@ -322,12 +356,15 @@ export const listEventSeries = <TData = AxiosResponse<ListEventSeriesResponse>>(
     Returns 404 if the event is not found or does not belong to the specified calendar.
  * @summary Get event details
  */
-export const getEventDetails = <TData = AxiosResponse<GetEventDetailsResponse>>(
+export const getEventDetails = (
   calendarId: string,
   eventId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/calendars/${calendarId}/events/${eventId}`, options)
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<GetEventDetailsResponse>(
+    { url: `/v2/calendars/${calendarId}/events/${eventId}`, method: "GET" },
+    options
+  )
 }
 /**
  * Schedule a bot to automatically join a calendar event.
@@ -352,12 +389,20 @@ export const getEventDetails = <TData = AxiosResponse<GetEventDetailsResponse>>(
     Returns 201 with scheduling results. Returns 404 if the event series or event is not found.
  * @summary Schedule bot for calendar event
  */
-export const createCalendarBot = <TData = AxiosResponse<CreateCalendarBotResponse>>(
+export const createCalendarBot = (
   calendarId: string,
-  createCalendarBotRequestBodyInput: CreateCalendarBotRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/calendars/${calendarId}/bots`, createCalendarBotRequestBodyInput, options)
+  createCalendarBotRequestBodyInput: BodyType<CreateCalendarBotRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<CreateCalendarBotResponse>(
+    {
+      url: `/v2/calendars/${calendarId}/bots`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createCalendarBotRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Update one or more calendar bots for a calendar.
@@ -380,12 +425,20 @@ export const createCalendarBot = <TData = AxiosResponse<CreateCalendarBotRespons
     Returns 200 with update results. Returns 404 if the event or calendar bot schedule is not found, or 409 if the bot's status does not allow update.
  * @summary Update calendar bot
  */
-export const updateCalendarBot = <TData = AxiosResponse<UpdateCalendarBotResponse>>(
+export const updateCalendarBot = (
   calendarId: string,
-  updateCalendarBotRequestBodyInput: UpdateCalendarBotRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.patch(`/v2/calendars/${calendarId}/bots`, updateCalendarBotRequestBodyInput, options)
+  updateCalendarBotRequestBodyInput: BodyType<UpdateCalendarBotRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<UpdateCalendarBotResponse>(
+    {
+      url: `/v2/calendars/${calendarId}/bots`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateCalendarBotRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Cancel one or more scheduled calendar bots. You can target a single event or all occurrences in a series using `series_id`, `all_occurrences`, and `event_id` in the request body. The behavior for each targeted bot depends on where it is in its lifecycle:
@@ -410,27 +463,38 @@ export const updateCalendarBot = <TData = AxiosResponse<UpdateCalendarBotRespons
     Returns 200 with cancellation results. Returns 404 if the event or calendar bot schedule is not found.
  * @summary Cancel calendar bot
  */
-export const deleteCalendarBot = <TData = AxiosResponse<DeleteCalendarBotResponse>>(
+export const deleteCalendarBot = (
   calendarId: string,
-  deleteCalendarBotBody: DeleteCalendarBotBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/v2/calendars/${calendarId}/bots`, {
-    data: deleteCalendarBotBody,
-    ...options
-  })
+  deleteCalendarBotBody: BodyType<DeleteCalendarBotBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<DeleteCalendarBotResponse>(
+    {
+      url: `/v2/calendars/${calendarId}/bots`,
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      data: deleteCalendarBotBody
+    },
+    options
+  )
 }
-export type ListRawCalendarsResult = AxiosResponse<ListRawCalendarsResponse>
-export type CreateCalendarConnectionResult = AxiosResponse<CreateCalendarConnectionResponse>
-export type ListCalendarsResult = AxiosResponse<ListCalendarsResponse>
-export type GetCalendarDetailsResult = AxiosResponse<GetCalendarDetailsResponse>
-export type DeleteCalendarConnectionResult = AxiosResponse<DeleteCalendarConnectionResponse>
-export type UpdateCalendarConnectionResult = AxiosResponse<UpdateCalendarConnectionResponse>
-export type SyncCalendarResult = AxiosResponse<SyncCalendarResponse>
-export type ResubscribeCalendarResult = AxiosResponse<ResubscribeCalendarResponse>
-export type ListEventsResult = AxiosResponse<ListEventsResponse>
-export type ListEventSeriesResult = AxiosResponse<ListEventSeriesResponse>
-export type GetEventDetailsResult = AxiosResponse<GetEventDetailsResponse>
-export type CreateCalendarBotResult = AxiosResponse<CreateCalendarBotResponse>
-export type UpdateCalendarBotResult = AxiosResponse<UpdateCalendarBotResponse>
-export type DeleteCalendarBotResult = AxiosResponse<DeleteCalendarBotResponse>
+export type ListRawCalendarsResult = NonNullable<Awaited<ReturnType<typeof listRawCalendars>>>
+export type CreateCalendarConnectionResult = NonNullable<
+  Awaited<ReturnType<typeof createCalendarConnection>>
+>
+export type ListCalendarsResult = NonNullable<Awaited<ReturnType<typeof listCalendars>>>
+export type GetCalendarDetailsResult = NonNullable<Awaited<ReturnType<typeof getCalendarDetails>>>
+export type DeleteCalendarConnectionResult = NonNullable<
+  Awaited<ReturnType<typeof deleteCalendarConnection>>
+>
+export type UpdateCalendarConnectionResult = NonNullable<
+  Awaited<ReturnType<typeof updateCalendarConnection>>
+>
+export type SyncCalendarResult = NonNullable<Awaited<ReturnType<typeof syncCalendar>>>
+export type ResubscribeCalendarResult = NonNullable<Awaited<ReturnType<typeof resubscribeCalendar>>>
+export type ListEventsResult = NonNullable<Awaited<ReturnType<typeof listEvents>>>
+export type ListEventSeriesResult = NonNullable<Awaited<ReturnType<typeof listEventSeries>>>
+export type GetEventDetailsResult = NonNullable<Awaited<ReturnType<typeof getEventDetails>>>
+export type CreateCalendarBotResult = NonNullable<Awaited<ReturnType<typeof createCalendarBot>>>
+export type UpdateCalendarBotResult = NonNullable<Awaited<ReturnType<typeof updateCalendarBot>>>
+export type DeleteCalendarBotResult = NonNullable<Awaited<ReturnType<typeof deleteCalendarBot>>>

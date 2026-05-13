@@ -307,11 +307,14 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/pause-recording`, async ({ request }) => {
-          const body = (await request.json()) as { chat_message?: string }
-          expect(body.chat_message).toBeUndefined()
-          return HttpResponse.json(mockResponse, { status: 200 })
-        })
+        http.post(
+          `https://api.meetingbaas.com/v2/bots/${botId}/pause-recording`,
+          async ({ request }) => {
+            const body = (await request.json()) as { chat_message?: string }
+            expect(body.chat_message).toBeUndefined()
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
       )
 
       const result = await client.pauseBotRecording({ bot_id: botId })
@@ -329,16 +332,19 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/pause-recording`, async ({ request }) => {
-          const body = (await request.json()) as { chat_message?: string }
-          if (body.chat_message !== "Recording has been paused") {
-            return HttpResponse.json(
-              createMockV2ErrorResponse("chat_message mismatch", "VALIDATION_ERROR", 400),
-              { status: 400 }
-            )
+        http.post(
+          `https://api.meetingbaas.com/v2/bots/${botId}/pause-recording`,
+          async ({ request }) => {
+            const body = (await request.json()) as { chat_message?: string }
+            if (body.chat_message !== "Recording has been paused") {
+              return HttpResponse.json(
+                createMockV2ErrorResponse("chat_message mismatch", "VALIDATION_ERROR", 400),
+                { status: 400 }
+              )
+            }
+            return HttpResponse.json(mockResponse, { status: 200 })
           }
-          return HttpResponse.json(mockResponse, { status: 200 })
-        })
+        )
       )
 
       const result = await client.pauseBotRecording({
@@ -361,11 +367,14 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/resume-recording`, async ({ request }) => {
-          const body = (await request.json()) as { chat_message?: string }
-          expect(body.chat_message).toBeUndefined()
-          return HttpResponse.json(mockResponse, { status: 200 })
-        })
+        http.post(
+          `https://api.meetingbaas.com/v2/bots/${botId}/resume-recording`,
+          async ({ request }) => {
+            const body = (await request.json()) as { chat_message?: string }
+            expect(body.chat_message).toBeUndefined()
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
       )
 
       const result = await client.resumeBotRecording({ bot_id: botId })
@@ -383,16 +392,19 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/resume-recording`, async ({ request }) => {
-          const body = (await request.json()) as { chat_message?: string }
-          if (body.chat_message !== "Recording has resumed") {
-            return HttpResponse.json(
-              createMockV2ErrorResponse("chat_message mismatch", "VALIDATION_ERROR", 400),
-              { status: 400 }
-            )
+        http.post(
+          `https://api.meetingbaas.com/v2/bots/${botId}/resume-recording`,
+          async ({ request }) => {
+            const body = (await request.json()) as { chat_message?: string }
+            if (body.chat_message !== "Recording has resumed") {
+              return HttpResponse.json(
+                createMockV2ErrorResponse("chat_message mismatch", "VALIDATION_ERROR", 400),
+                { status: 400 }
+              )
+            }
+            return HttpResponse.json(mockResponse, { status: 200 })
           }
-          return HttpResponse.json(mockResponse, { status: 200 })
-        })
+        )
       )
 
       const result = await client.resumeBotRecording({

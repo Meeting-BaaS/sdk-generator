@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.0.0
  */
 
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+import type { BodyType } from "../../../../custom-axios"
 
+import { customInstance } from "../../../../custom-axios"
 import type {
   BatchCreateBotResponse,
   BatchCreateBotsRequestBodyInput,
@@ -46,6 +46,8 @@ import type {
   UpdateScheduledBotResponse
 } from "../../schema"
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
+
 /**
  * Create a bot to join a meeting immediately.
     
@@ -65,11 +67,19 @@ import type {
     - `429 Too Many Requests`: Daily bot cap reached or rate limit exceeded
  * @summary Create a bot
  */
-export const createBot = <TData = AxiosResponse<CreateBotResponse>>(
-  createBotRequestBodyInput: CreateBotRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/bots", createBotRequestBodyInput, options)
+export const createBot = (
+  createBotRequestBodyInput: BodyType<CreateBotRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<CreateBotResponse>(
+    {
+      url: "/v2/bots",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createBotRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * List all bots for your team with pagination support.
@@ -89,14 +99,11 @@ export const createBot = <TData = AxiosResponse<CreateBotResponse>>(
     Returns a paginated list of bots with metadata including bot ID, status, meeting platform, creation time, and basic configuration.
  * @summary List bots
  */
-export const listBots = <TData = AxiosResponse<ListBotsResponse>>(
+export const listBots = (
   params: ListBotsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/v2/bots", {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListBotsResponse>({ url: "/v2/bots", method: "GET", params }, options)
 }
 /**
  * Create multiple bots in a single request with partial success support.
@@ -118,11 +125,19 @@ export const listBots = <TData = AxiosResponse<ListBotsResponse>>(
     Returns 201 with partial success response. All items may succeed, all may fail, or any combination. Always check both `data` and `errors` arrays.
  * @summary Create multiple bots
  */
-export const batchCreateBots = <TData = AxiosResponse<BatchCreateBotResponse>>(
-  batchCreateBotsRequestBodyInput: BatchCreateBotsRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/bots/batch", batchCreateBotsRequestBodyInput, options)
+export const batchCreateBots = (
+  batchCreateBotsRequestBodyInput: BodyType<BatchCreateBotsRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<BatchCreateBotResponse>(
+    {
+      url: "/v2/bots/batch",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: batchCreateBotsRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Get comprehensive information about a specific bot.
@@ -140,11 +155,8 @@ export const batchCreateBots = <TData = AxiosResponse<BatchCreateBotResponse>>(
     Returns 404 if the bot is not found or does not belong to your team.
  * @summary Get bot details
  */
-export const getBotDetails = <TData = AxiosResponse<GetBotDetailsResponse>>(
-  botId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/bots/${botId}`, options)
+export const getBotDetails = (botId: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<GetBotDetailsResponse>({ url: `/v2/bots/${botId}`, method: "GET" }, options)
 }
 /**
  * Get the current status of a bot, including the latest status code, transcription status, and timestamp.
@@ -167,11 +179,11 @@ export const getBotDetails = <TData = AxiosResponse<GetBotDetailsResponse>>(
     Returns 404 if the bot is not found or does not belong to your team.
  * @summary Get bot status
  */
-export const getBotStatus = <TData = AxiosResponse<GetBotStatusResponse>>(
-  botId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/bots/${botId}/status`, options)
+export const getBotStatus = (botId: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<GetBotStatusResponse>(
+    { url: `/v2/bots/${botId}/status`, method: "GET" },
+    options
+  )
 }
 /**
  * Retrieve a paginated list of screenshot URLs captured during the meeting.
@@ -191,15 +203,15 @@ export const getBotStatus = <TData = AxiosResponse<GetBotStatusResponse>>(
     Returns 404 if the bot is not found or does not belong to your team.
  * @summary Get bot screenshots
  */
-export const getBotScreenshots = <TData = AxiosResponse<GetBotScreenshotsResponse>>(
+export const getBotScreenshots = (
   botId: string,
   params: GetBotScreenshotsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/bots/${botId}/screenshots`, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<GetBotScreenshotsResponse>(
+    { url: `/v2/bots/${botId}/screenshots`, method: "GET", params },
+    options
+  )
 }
 /**
  * Instruct a bot to leave the meeting immediately.
@@ -214,11 +226,11 @@ export const getBotScreenshots = <TData = AxiosResponse<GetBotScreenshotsRespons
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
  * @summary Leave meeting
  */
-export const leaveBot = <TData = AxiosResponse<LeaveBotResponse>>(
-  botId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/leave`, {}, options)
+export const leaveBot = (botId: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<LeaveBotResponse>(
+    { url: `/v2/bots/${botId}/leave`, method: "POST" },
+    options
+  )
 }
 /**
  * Send a chat message to the meeting through the bot.
@@ -236,12 +248,20 @@ export const leaveBot = <TData = AxiosResponse<LeaveBotResponse>>(
     Returns 404 if the bot is not found, 409 if the bot's status does not allow this operation, or 422 if chat is disabled in the meeting.
  * @summary Send chat message
  */
-export const sendChatMessage = <TData = AxiosResponse<SendChatMessage200>>(
+export const sendChatMessage = (
   botId: string,
-  sendChatMessageBody: SendChatMessageBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/send-chat-message`, sendChatMessageBody, options)
+  sendChatMessageBody: BodyType<SendChatMessageBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<SendChatMessage200>(
+    {
+      url: `/v2/bots/${botId}/send-chat-message`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: sendChatMessageBody
+    },
+    options
+  )
 }
 /**
  * Pause the bot's recording during a meeting.
@@ -257,12 +277,20 @@ export const sendChatMessage = <TData = AxiosResponse<SendChatMessage200>>(
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
  * @summary Pause recording
  */
-export const pauseBotRecording = <TData = AxiosResponse<PauseBotRecording200>>(
+export const pauseBotRecording = (
   botId: string,
-  pauseBotRecordingBody: PauseBotRecordingBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/pause-recording`, pauseBotRecordingBody, options)
+  pauseBotRecordingBody: BodyType<PauseBotRecordingBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<PauseBotRecording200>(
+    {
+      url: `/v2/bots/${botId}/pause-recording`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: pauseBotRecordingBody
+    },
+    options
+  )
 }
 /**
  * Resume a bot's recording after it was paused.
@@ -278,12 +306,20 @@ export const pauseBotRecording = <TData = AxiosResponse<PauseBotRecording200>>(
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
  * @summary Resume recording
  */
-export const resumeBotRecording = <TData = AxiosResponse<ResumeBotRecording200>>(
+export const resumeBotRecording = (
   botId: string,
-  resumeBotRecordingBody: ResumeBotRecordingBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/resume-recording`, resumeBotRecordingBody, options)
+  resumeBotRecordingBody: BodyType<ResumeBotRecordingBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ResumeBotRecording200>(
+    {
+      url: `/v2/bots/${botId}/resume-recording`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: resumeBotRecordingBody
+    },
+    options
+  )
 }
 /**
  * Permanently delete all bot data including recordings, transcripts, summaries, and screenshots.
@@ -305,15 +341,15 @@ export const resumeBotRecording = <TData = AxiosResponse<ResumeBotRecording200>>
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
  * @summary Delete bot data
  */
-export const deleteBotData = <TData = AxiosResponse<DeleteBotDataResponse>>(
+export const deleteBotData = (
   botId: string,
   params: DeleteBotDataParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/v2/bots/${botId}/delete-data`, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<DeleteBotDataResponse>(
+    { url: `/v2/bots/${botId}/delete-data`, method: "DELETE", params },
+    options
+  )
 }
 /**
  * Resend the final webhook (completed or failed) for a bot.
@@ -335,11 +371,14 @@ export const deleteBotData = <TData = AxiosResponse<DeleteBotDataResponse>>(
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation.
  * @summary Resend final webhook
  */
-export const resendFinalWebhook = <TData = AxiosResponse<ResendFinalWebhookResponse>>(
+export const resendFinalWebhook = (
   botId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/resend-webhook`, {}, options)
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ResendFinalWebhookResponse>(
+    { url: `/v2/bots/${botId}/resend-webhook`, method: "POST" },
+    options
+  )
 }
 /**
  * Retry sending the transcription callback for a bot.
@@ -363,12 +402,20 @@ export const resendFinalWebhook = <TData = AxiosResponse<ResendFinalWebhookRespo
     Returns 404 if the bot is not found, or 409 if the bot's status does not allow this operation or if no callback was configured.
  * @summary Retry callback
  */
-export const retryCallback = <TData = AxiosResponse<RetryCallbackResponse>>(
+export const retryCallback = (
   botId: string,
-  retryCallbackRequestBodyInput: RetryCallbackRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/v2/bots/${botId}/retry-callback`, retryCallbackRequestBodyInput, options)
+  retryCallbackRequestBodyInput: BodyType<RetryCallbackRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<RetryCallbackResponse>(
+    {
+      url: `/v2/bots/${botId}/retry-callback`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: retryCallbackRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Update bot configuration (currently only supports updating the extra parameter).
@@ -399,12 +446,20 @@ export const retryCallback = <TData = AxiosResponse<RetryCallbackResponse>>(
     Returns 404 if the bot is not found or does not belong to your team.
  * @summary Update bot configuration
  */
-export const updateBotConfig = <TData = AxiosResponse<UpdateBotConfig200>>(
+export const updateBotConfig = (
   botId: string,
-  updateBotConfigBody: UpdateBotConfigBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.patch(`/v2/bots/${botId}/update-config`, updateBotConfigBody, options)
+  updateBotConfigBody: BodyType<UpdateBotConfigBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<UpdateBotConfig200>(
+    {
+      url: `/v2/bots/${botId}/update-config`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateBotConfigBody
+    },
+    options
+  )
 }
 /**
  * Schedule a bot to join a meeting at a specific time in the future.
@@ -424,11 +479,19 @@ export const updateBotConfig = <TData = AxiosResponse<UpdateBotConfig200>>(
     Returns a `bot_id` (UUID) that you can use to track and manage the scheduled bot. This UUID will be reused as the bot's UUID when it actually joins.
  * @summary Create scheduled bot
  */
-export const createScheduledBot = <TData = AxiosResponse<CreateScheduledBotResponse>>(
-  createScheduledBotRequestBodyInput: CreateScheduledBotRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/bots/scheduled", createScheduledBotRequestBodyInput, options)
+export const createScheduledBot = (
+  createScheduledBotRequestBodyInput: BodyType<CreateScheduledBotRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<CreateScheduledBotResponse>(
+    {
+      url: "/v2/bots/scheduled",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createScheduledBotRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Retrieve a paginated list of scheduled bots.
@@ -453,14 +516,14 @@ export const createScheduledBot = <TData = AxiosResponse<CreateScheduledBotRespo
     Returns a paginated list of scheduled bots with metadata including bot ID, scheduled join time, status, and basic configuration.
  * @summary List scheduled bots
  */
-export const listScheduledBots = <TData = AxiosResponse<ListScheduledBotsResponse>>(
+export const listScheduledBots = (
   params: ListScheduledBotsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/v2/bots/scheduled", {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListScheduledBotsResponse>(
+    { url: "/v2/bots/scheduled", method: "GET", params },
+    options
+  )
 }
 /**
  * Create multiple scheduled bots in a single request with partial success support.
@@ -484,11 +547,19 @@ export const listScheduledBots = <TData = AxiosResponse<ListScheduledBotsRespons
     Returns 201 with partial success response. All items may succeed, all may fail, or any combination.
  * @summary Create multiple scheduled bots
  */
-export const batchCreateScheduledBots = <TData = AxiosResponse<BatchCreateScheduledBotResponse>>(
-  batchCreateScheduledBotsRequestBodyInput: BatchCreateScheduledBotsRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/bots/scheduled/batch", batchCreateScheduledBotsRequestBodyInput, options)
+export const batchCreateScheduledBots = (
+  batchCreateScheduledBotsRequestBodyInput: BodyType<BatchCreateScheduledBotsRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<BatchCreateScheduledBotResponse>(
+    {
+      url: "/v2/bots/scheduled/batch",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: batchCreateScheduledBotsRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Retrieve detailed information about a specific scheduled bot.
@@ -506,11 +577,14 @@ export const batchCreateScheduledBots = <TData = AxiosResponse<BatchCreateSchedu
     Returns 404 if the scheduled bot is not found or does not belong to your team.
  * @summary Get scheduled bot details
  */
-export const getScheduledBotDetails = <TData = AxiosResponse<GetScheduledBotResponse>>(
+export const getScheduledBotDetails = (
   botId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/bots/scheduled/${botId}`, options)
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<GetScheduledBotResponse>(
+    { url: `/v2/bots/scheduled/${botId}`, method: "GET" },
+    options
+  )
 }
 /**
  * Update a scheduled bot's configuration or scheduled join time.
@@ -532,12 +606,20 @@ export const getScheduledBotDetails = <TData = AxiosResponse<GetScheduledBotResp
     Returns 404 if the scheduled bot is not found, or 409 if the bot's status does not allow update or the join time is too close.
  * @summary Update scheduled bot
  */
-export const updateScheduledBot = <TData = AxiosResponse<UpdateScheduledBotResponse>>(
+export const updateScheduledBot = (
   botId: string,
-  updateScheduledBotRequestBodyInput: UpdateScheduledBotRequestBodyInput,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.patch(`/v2/bots/scheduled/${botId}`, updateScheduledBotRequestBodyInput, options)
+  updateScheduledBotRequestBodyInput: BodyType<UpdateScheduledBotRequestBodyInput>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<UpdateScheduledBotResponse>(
+    {
+      url: `/v2/bots/scheduled/${botId}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateScheduledBotRequestBodyInput
+    },
+    options
+  )
 }
 /**
  * Cancel and delete a scheduled bot. The behavior depends on where the bot is in its lifecycle when you call this:
@@ -555,29 +637,36 @@ export const updateScheduledBot = <TData = AxiosResponse<UpdateScheduledBotRespo
     Returns 404 if the scheduled bot is not found, or 409 if the bot's status does not allow deletion.
  * @summary Delete scheduled bot
  */
-export const deleteScheduledBot = <TData = AxiosResponse<DeleteScheduledBotResponse>>(
+export const deleteScheduledBot = (
   botId: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/v2/bots/scheduled/${botId}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<DeleteScheduledBotResponse>(
+    { url: `/v2/bots/scheduled/${botId}`, method: "DELETE" },
+    options
+  )
 }
-export type CreateBotResult = AxiosResponse<CreateBotResponse>
-export type ListBotsResult = AxiosResponse<ListBotsResponse>
-export type BatchCreateBotsResult = AxiosResponse<BatchCreateBotResponse>
-export type GetBotDetailsResult = AxiosResponse<GetBotDetailsResponse>
-export type GetBotStatusResult = AxiosResponse<GetBotStatusResponse>
-export type GetBotScreenshotsResult = AxiosResponse<GetBotScreenshotsResponse>
-export type LeaveBotResult = AxiosResponse<LeaveBotResponse>
-export type SendChatMessageResult = AxiosResponse<SendChatMessage200>
-export type PauseBotRecordingResult = AxiosResponse<PauseBotRecording200>
-export type ResumeBotRecordingResult = AxiosResponse<ResumeBotRecording200>
-export type DeleteBotDataResult = AxiosResponse<DeleteBotDataResponse>
-export type ResendFinalWebhookResult = AxiosResponse<ResendFinalWebhookResponse>
-export type RetryCallbackResult = AxiosResponse<RetryCallbackResponse>
-export type UpdateBotConfigResult = AxiosResponse<UpdateBotConfig200>
-export type CreateScheduledBotResult = AxiosResponse<CreateScheduledBotResponse>
-export type ListScheduledBotsResult = AxiosResponse<ListScheduledBotsResponse>
-export type BatchCreateScheduledBotsResult = AxiosResponse<BatchCreateScheduledBotResponse>
-export type GetScheduledBotDetailsResult = AxiosResponse<GetScheduledBotResponse>
-export type UpdateScheduledBotResult = AxiosResponse<UpdateScheduledBotResponse>
-export type DeleteScheduledBotResult = AxiosResponse<DeleteScheduledBotResponse>
+export type CreateBotResult = NonNullable<Awaited<ReturnType<typeof createBot>>>
+export type ListBotsResult = NonNullable<Awaited<ReturnType<typeof listBots>>>
+export type BatchCreateBotsResult = NonNullable<Awaited<ReturnType<typeof batchCreateBots>>>
+export type GetBotDetailsResult = NonNullable<Awaited<ReturnType<typeof getBotDetails>>>
+export type GetBotStatusResult = NonNullable<Awaited<ReturnType<typeof getBotStatus>>>
+export type GetBotScreenshotsResult = NonNullable<Awaited<ReturnType<typeof getBotScreenshots>>>
+export type LeaveBotResult = NonNullable<Awaited<ReturnType<typeof leaveBot>>>
+export type SendChatMessageResult = NonNullable<Awaited<ReturnType<typeof sendChatMessage>>>
+export type PauseBotRecordingResult = NonNullable<Awaited<ReturnType<typeof pauseBotRecording>>>
+export type ResumeBotRecordingResult = NonNullable<Awaited<ReturnType<typeof resumeBotRecording>>>
+export type DeleteBotDataResult = NonNullable<Awaited<ReturnType<typeof deleteBotData>>>
+export type ResendFinalWebhookResult = NonNullable<Awaited<ReturnType<typeof resendFinalWebhook>>>
+export type RetryCallbackResult = NonNullable<Awaited<ReturnType<typeof retryCallback>>>
+export type UpdateBotConfigResult = NonNullable<Awaited<ReturnType<typeof updateBotConfig>>>
+export type CreateScheduledBotResult = NonNullable<Awaited<ReturnType<typeof createScheduledBot>>>
+export type ListScheduledBotsResult = NonNullable<Awaited<ReturnType<typeof listScheduledBots>>>
+export type BatchCreateScheduledBotsResult = NonNullable<
+  Awaited<ReturnType<typeof batchCreateScheduledBots>>
+>
+export type GetScheduledBotDetailsResult = NonNullable<
+  Awaited<ReturnType<typeof getScheduledBotDetails>>
+>
+export type UpdateScheduledBotResult = NonNullable<Awaited<ReturnType<typeof updateScheduledBot>>>
+export type DeleteScheduledBotResult = NonNullable<Awaited<ReturnType<typeof deleteScheduledBot>>>

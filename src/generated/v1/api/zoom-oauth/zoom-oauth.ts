@@ -6,53 +6,73 @@
  * OpenAPI spec version: 1.1
  */
 
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+import type { BodyType } from "../../../../custom-axios"
 
+import { customInstance } from "../../../../custom-axios"
 import type { CreateConnectionRequest, ZoomOAuthConnectionResponse } from "../../schema"
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
 /**
  * Retrieves all Zoom OAuth connections associated with the authenticated account. Each connection represents a Zoom user who has authorized your app via OAuth. Use this to display connected users or to find the `zoom_user_id` needed for the `zoom_obf_token_user_id` bot parameter. Sensitive token data is never included in the response.
  * @summary List Zoom OAuth Connections
  */
-export const listZoomOauthConnections = <TData = AxiosResponse<ZoomOAuthConnectionResponse[]>>(
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/zoom_oauth_connections/", options)
+export const listZoomOauthConnections = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<ZoomOAuthConnectionResponse[]>(
+    { url: "/zoom_oauth_connections/", method: "GET" },
+    options
+  )
 }
 /**
  * Exchanges a Zoom OAuth authorization code for access and refresh tokens, retrieves the Zoom user's profile, and stores the connection for managed OBF token generation. The authorization code is obtained by directing a Zoom user through the OAuth consent flow for your Zoom OAuth app. Once stored, you can reference this connection's `zoom_user_id` as the `zoom_obf_token_user_id` parameter when creating a bot, and the system will automatically fetch a fresh OBF token at join time. Note: the authorization code is single-use and expires in approximately 10 minutes.
  * @summary Create Zoom OAuth Connection
  */
-export const createZoomOauthConnection = <
-  TData = AxiosResponse<void | ZoomOAuthConnectionResponse>
->(
-  createConnectionRequest: CreateConnectionRequest,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/zoom_oauth_connections/", createConnectionRequest, options)
+export const createZoomOauthConnection = (
+  createConnectionRequest: BodyType<CreateConnectionRequest>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<void | ZoomOAuthConnectionResponse>(
+    {
+      url: "/zoom_oauth_connections/",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createConnectionRequest
+    },
+    options
+  )
 }
 /**
  * Retrieves a specific Zoom OAuth connection by its UUID. Returns the connection details including the Zoom user ID, account ID, connection state, and granted scopes. Sensitive token data is never included in the response.
  * @summary Get Zoom OAuth Connection
  */
-export const getZoomOauthConnection = <TData = AxiosResponse<ZoomOAuthConnectionResponse>>(
+export const getZoomOauthConnection = (
   uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/zoom_oauth_connections/${uuid}`, options)
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ZoomOAuthConnectionResponse>(
+    { url: `/zoom_oauth_connections/${uuid}`, method: "GET" },
+    options
+  )
 }
 /**
  * Permanently deletes a Zoom OAuth connection by its UUID, removing all stored tokens. After deletion, bots using this connection's `zoom_user_id` as `zoom_obf_token_user_id` will no longer be able to automatically fetch OBF tokens. The Zoom user would need to re-authorize to create a new connection.
  * @summary Delete Zoom OAuth Connection
  */
-export const deleteZoomOauthConnection = <TData = AxiosResponse<void>>(
+export const deleteZoomOauthConnection = (
   uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/zoom_oauth_connections/${uuid}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<void>({ url: `/zoom_oauth_connections/${uuid}`, method: "DELETE" }, options)
 }
-export type ListZoomOauthConnectionsResult = AxiosResponse<ZoomOAuthConnectionResponse[]>
-export type CreateZoomOauthConnectionResult = AxiosResponse<void | ZoomOAuthConnectionResponse>
-export type GetZoomOauthConnectionResult = AxiosResponse<ZoomOAuthConnectionResponse>
-export type DeleteZoomOauthConnectionResult = AxiosResponse<void>
+export type ListZoomOauthConnectionsResult = NonNullable<
+  Awaited<ReturnType<typeof listZoomOauthConnections>>
+>
+export type CreateZoomOauthConnectionResult = NonNullable<
+  Awaited<ReturnType<typeof createZoomOauthConnection>>
+>
+export type GetZoomOauthConnectionResult = NonNullable<
+  Awaited<ReturnType<typeof getZoomOauthConnection>>
+>
+export type DeleteZoomOauthConnectionResult = NonNullable<
+  Awaited<ReturnType<typeof deleteZoomOauthConnection>>
+>

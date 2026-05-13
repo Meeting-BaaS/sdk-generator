@@ -5,9 +5,9 @@
  * Meeting BaaS API
  * OpenAPI spec version: 1.1
  */
+import { customInstance } from "../../../../custom-axios"
 
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
 /**
  * Meeting BaaS sends webhook events to your configured webhook URL when specific events occur.
@@ -166,10 +166,8 @@ If your endpoint fails to respond or returns an error, the system will attempt t
 For security, always validate the API key in the `x-meeting-baas-api-key` header matches your API key.
  * @summary Webhook Events Documentation
  */
-export const webhookDocumentation = <TData = AxiosResponse<unknown>>(
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/bots/webhooks", options)
+export const webhookDocumentation = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<unknown>({ url: "/bots/webhooks", method: "GET" }, options)
 }
 /**
  * Meeting BaaS sends the following webhook events related to bot recordings.
@@ -299,10 +297,8 @@ Sent when transcription is completed separately from recording.
 For security, always validate the API key in the `x-meeting-baas-api-key` header matches your API key.
  * @summary Bot Webhook Events Documentation
  */
-export const botWebhookDocumentation = <TData = AxiosResponse<unknown>>(
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/bots/webhooks/bot", options)
+export const botWebhookDocumentation = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<unknown>({ url: "/bots/webhooks/bot", method: "GET" }, options)
 }
 /**
  * Meeting BaaS sends the following webhook events related to calendar integrations.
@@ -363,11 +359,15 @@ After receiving a calendar webhook event, you can:
 For security, always validate the API key in the `x-meeting-baas-api-key` header matches your API key.
  * @summary Calendar Webhook Events Documentation
  */
-export const calendarWebhookDocumentation = <TData = AxiosResponse<unknown>>(
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/bots/webhooks/calendar", options)
+export const calendarWebhookDocumentation = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<unknown>({ url: "/bots/webhooks/calendar", method: "GET" }, options)
 }
-export type WebhookDocumentationResult = AxiosResponse<unknown>
-export type BotWebhookDocumentationResult = AxiosResponse<unknown>
-export type CalendarWebhookDocumentationResult = AxiosResponse<unknown>
+export type WebhookDocumentationResult = NonNullable<
+  Awaited<ReturnType<typeof webhookDocumentation>>
+>
+export type BotWebhookDocumentationResult = NonNullable<
+  Awaited<ReturnType<typeof botWebhookDocumentation>>
+>
+export type CalendarWebhookDocumentationResult = NonNullable<
+  Awaited<ReturnType<typeof calendarWebhookDocumentation>>
+>

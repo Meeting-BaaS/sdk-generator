@@ -109,9 +109,7 @@ describe("API Wrapper Functions", () => {
 
     it("should handle successful operation", async () => {
       const schema = z.object({ value: z.string() })
-      const mockOperation = async (params: { value: string }) => ({
-        data: `Hello, ${params.value}`
-      })
+      const mockOperation = async (params: { value: string }) => `Hello, ${params.value}`
 
       const result = await apiWrapper(
         mockOperation,
@@ -191,7 +189,7 @@ describe("API Wrapper Functions", () => {
     })
 
     it("should handle successful operation", async () => {
-      const mockOperation = async () => ({ data: 42 })
+      const mockOperation = async () => 42
 
       const result = await apiWrapperNoParams(mockOperation, {
         headers: {
