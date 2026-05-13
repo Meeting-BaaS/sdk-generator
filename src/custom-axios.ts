@@ -2,13 +2,18 @@ import Axios, { type AxiosRequestConfig } from "axios"
 
 const AXIOS_INSTANCE = Axios.create()
 
-// Strip Content-Type when there's no request body.
-// Axios sets Content-Type: application/json by default on POST/PUT/PATCH even
-// when the body is undefined, causing Fastify to reject the request with
-// FST_ERR_CTP_EMPTY_JSON_BODY or FST_ERR_CTP_INVALID_MEDIA_TYPE.
+// For requests with no body (data is undefined/null), set data to "{}" and
+// Content-Type to application/json. This prevents Node's http module from
+// adding Content-Type: application/x-www-form-urlencoded on POST requests,
+// which Fastify rejects with FST_ERR_CTP_INVALID_MEDIA_TYPE. Fastify accepts
+// an empty JSON object {} with application/json.
+//
+// We use a request interceptor which runs after axios merges defaults but
+// before the request is dispatched.
 AXIOS_INSTANCE.interceptors.request.use((config) => {
   if (config.data === undefined || config.data === null) {
-    config.headers.delete("Content-Type")
+    config.data = "{}"
+    config.headers.setContentType("application/json")
   }
   return config
 })
@@ -19,7 +24,11 @@ export const customInstance = <T>(
 ): Promise<T> => {
   return AXIOS_INSTANCE({
     ...config,
-    ...options
+    ...options,
+    headers: {
+      ...config?.headers,
+      ...options?.headers
+    }
   }).then(({ data }) => data)
 }
 
