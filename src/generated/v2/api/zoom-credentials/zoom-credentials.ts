@@ -6,9 +6,9 @@
  * OpenAPI spec version: 2.0.0
  */
 
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+import type { BodyType } from "../../../../custom-axios"
 
+import { customInstance } from "../../../../custom-axios"
 import type {
   CreateZoomCredential201,
   CreateZoomCredentialBody,
@@ -19,6 +19,8 @@ import type {
   UpdateZoomCredential200,
   UpdateZoomCredentialBody
 } from "../../schema"
+
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
 /**
  * Create a new Zoom credential for your team.
@@ -40,11 +42,19 @@ import type {
     - `400 Bad Request`: Failed to exchange authorization code (invalid code or redirect_uri mismatch)
  * @summary Create a Zoom credential
  */
-export const createZoomCredential = <TData = AxiosResponse<CreateZoomCredential201>>(
-  createZoomCredentialBody: CreateZoomCredentialBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/v2/zoom-credentials", createZoomCredentialBody, options)
+export const createZoomCredential = (
+  createZoomCredentialBody: BodyType<CreateZoomCredentialBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<CreateZoomCredential201>(
+    {
+      url: "/v2/zoom-credentials",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createZoomCredentialBody
+    },
+    options
+  )
 }
 /**
  * List all Zoom credentials for your team.
@@ -70,14 +80,14 @@ export const createZoomCredential = <TData = AxiosResponse<CreateZoomCredential2
     **Error Tracking:** If bots fail to fetch OBF tokens using a credential, the error is recorded in `last_error_message` and `last_error_at`. These fields are cleared on successful OBF token fetch.
  * @summary List Zoom credentials
  */
-export const listZoomCredentials = <TData = AxiosResponse<ListZoomCredentials200>>(
+export const listZoomCredentials = (
   params?: ListZoomCredentialsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/v2/zoom-credentials", {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListZoomCredentials200>(
+    { url: "/v2/zoom-credentials", method: "GET", params },
+    options
+  )
 }
 /**
  * Get detailed information about a specific Zoom credential.
@@ -91,11 +101,11 @@ export const listZoomCredentials = <TData = AxiosResponse<ListZoomCredentials200
     Returns 404 if the credential is not found or does not belong to your team.
  * @summary Get a Zoom credential
  */
-export const getZoomCredential = <TData = AxiosResponse<GetZoomCredential200>>(
-  id: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/v2/zoom-credentials/${id}`, options)
+export const getZoomCredential = (id: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<GetZoomCredential200>(
+    { url: `/v2/zoom-credentials/${id}`, method: "GET" },
+    options
+  )
 }
 /**
  * Update an existing Zoom credential.
@@ -116,12 +126,20 @@ export const getZoomCredential = <TData = AxiosResponse<GetZoomCredential200>>(
     - `404 Not Found`: Credential not found or does not belong to your team
  * @summary Update a Zoom credential
  */
-export const updateZoomCredential = <TData = AxiosResponse<UpdateZoomCredential200>>(
+export const updateZoomCredential = (
   id: string,
-  updateZoomCredentialBody: UpdateZoomCredentialBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.patch(`/v2/zoom-credentials/${id}`, updateZoomCredentialBody, options)
+  updateZoomCredentialBody: BodyType<UpdateZoomCredentialBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<UpdateZoomCredential200>(
+    {
+      url: `/v2/zoom-credentials/${id}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateZoomCredentialBody
+    },
+    options
+  )
 }
 /**
  * Delete a Zoom credential (soft delete).
@@ -135,14 +153,23 @@ export const updateZoomCredential = <TData = AxiosResponse<UpdateZoomCredential2
     Returns 404 if the credential is not found or does not belong to your team.
  * @summary Delete a Zoom credential
  */
-export const deleteZoomCredential = <TData = AxiosResponse<DeleteZoomCredential200>>(
+export const deleteZoomCredential = (
   id: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/v2/zoom-credentials/${id}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<DeleteZoomCredential200>(
+    { url: `/v2/zoom-credentials/${id}`, method: "DELETE" },
+    options
+  )
 }
-export type CreateZoomCredentialResult = AxiosResponse<CreateZoomCredential201>
-export type ListZoomCredentialsResult = AxiosResponse<ListZoomCredentials200>
-export type GetZoomCredentialResult = AxiosResponse<GetZoomCredential200>
-export type UpdateZoomCredentialResult = AxiosResponse<UpdateZoomCredential200>
-export type DeleteZoomCredentialResult = AxiosResponse<DeleteZoomCredential200>
+export type CreateZoomCredentialResult = NonNullable<
+  Awaited<ReturnType<typeof createZoomCredential>>
+>
+export type ListZoomCredentialsResult = NonNullable<Awaited<ReturnType<typeof listZoomCredentials>>>
+export type GetZoomCredentialResult = NonNullable<Awaited<ReturnType<typeof getZoomCredential>>>
+export type UpdateZoomCredentialResult = NonNullable<
+  Awaited<ReturnType<typeof updateZoomCredential>>
+>
+export type DeleteZoomCredentialResult = NonNullable<
+  Awaited<ReturnType<typeof deleteZoomCredential>>
+>

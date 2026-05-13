@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios"
+import type { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios"
 import { AxiosError } from "axios"
 import { describe, expect, it } from "vitest"
 import { z } from "zod"
@@ -17,8 +17,9 @@ describe("API Wrapper V2 Functions", () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<{ data: ApiResponseV2<string> }> => ({
-        data: { success: true as const, data: "success" }
+      ): Promise<ApiResponseV2<string>> => ({
+        success: true as const,
+        data: "success"
       })
 
       const result = await apiWrapperV2(
@@ -43,8 +44,9 @@ describe("API Wrapper V2 Functions", () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<{ data: ApiResponseV2<string> }> => ({
-        data: { success: true as const, data: "success" }
+      ): Promise<ApiResponseV2<string>> => ({
+        success: true as const,
+        data: "success"
       })
 
       const result = await apiWrapperV2(
@@ -68,8 +70,9 @@ describe("API Wrapper V2 Functions", () => {
         required: z.string()
       })
 
-      const mockOperation = async (_params: object): Promise<{ data: ApiResponseV2<string> }> => ({
-        data: { success: true as const, data: "success" }
+      const mockOperation = async (_params: object): Promise<ApiResponseV2<string>> => ({
+        success: true as const,
+        data: "success"
       })
 
       const result = await apiWrapperV2(
@@ -98,8 +101,9 @@ describe("API Wrapper V2 Functions", () => {
       const mockOperation = async (
         params: { value: string },
         _options: AxiosRequestConfig
-      ): Promise<{ data: ApiResponseV2<string> }> => ({
-        data: { success: true as const, data: `Hello, ${params.value}` }
+      ): Promise<ApiResponseV2<string>> => ({
+        success: true as const,
+        data: `Hello, ${params.value}`
       })
 
       const result = await apiWrapperV2(
@@ -119,19 +123,14 @@ describe("API Wrapper V2 Functions", () => {
       }
     })
 
-    it("should handle successful operation with AxiosResponse format", async () => {
+    it("should handle successful operation returning data directly", async () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<AxiosResponse<ApiResponseV2<string>>> => {
-        return {
-          data: { success: true as const, data: "axios response" },
-          status: 200,
-          statusText: "OK",
-          headers: {},
-          config: {} as InternalAxiosRequestConfig
-        }
-      }
+      ): Promise<ApiResponseV2<string>> => ({
+        success: true as const,
+        data: "direct response"
+      })
 
       const result = await apiWrapperV2(
         mockOperation,
@@ -146,7 +145,7 @@ describe("API Wrapper V2 Functions", () => {
 
       expect(result.success).toBe(true)
       if (result.success) {
-        expect(result.data).toBe("axios response")
+        expect(result.data).toBe("direct response")
       }
     })
 
@@ -608,8 +607,9 @@ describe("API Wrapper V2 Functions", () => {
     it("should handle missing API key header", async () => {
       const mockOperation = async (
         _options: AxiosRequestConfig
-      ): Promise<{ data: ApiResponseV2<string> }> => ({
-        data: { success: true as const, data: "success" }
+      ): Promise<ApiResponseV2<string>> => ({
+        success: true as const,
+        data: "success"
       })
 
       const result = await apiWrapperV2NoParams(mockOperation, {
@@ -628,8 +628,9 @@ describe("API Wrapper V2 Functions", () => {
     it("should handle undefined headers", async () => {
       const mockOperation = async (
         _options: AxiosRequestConfig
-      ): Promise<{ data: ApiResponseV2<string> }> => ({
-        data: { success: true as const, data: "success" }
+      ): Promise<ApiResponseV2<string>> => ({
+        success: true as const,
+        data: "success"
       })
 
       const result = await apiWrapperV2NoParams(mockOperation, {} as AxiosRequestConfig)
@@ -646,8 +647,9 @@ describe("API Wrapper V2 Functions", () => {
     it("should handle successful operation", async () => {
       const mockOperation = async (
         _options: AxiosRequestConfig
-      ): Promise<{ data: ApiResponseV2<number> }> => ({
-        data: { success: true as const, data: 42 }
+      ): Promise<ApiResponseV2<number>> => ({
+        success: true as const,
+        data: 42
       })
 
       const result = await apiWrapperV2NoParams(mockOperation, {
@@ -835,8 +837,11 @@ describe("API Wrapper V2 Functions", () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<{ data: ListApiResponseV2<string> }> => ({
-        data: { success: true as const, data: ["success"], cursor: null, prev_cursor: null }
+      ): Promise<ListApiResponseV2<string>> => ({
+        success: true as const,
+        data: ["success"],
+        cursor: null,
+        prev_cursor: null
       })
 
       const result = await apiWrapperV2List(
@@ -861,8 +866,11 @@ describe("API Wrapper V2 Functions", () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<{ data: ListApiResponseV2<string> }> => ({
-        data: { success: true as const, data: ["success"], cursor: null, prev_cursor: null }
+      ): Promise<ListApiResponseV2<string>> => ({
+        success: true as const,
+        data: ["success"],
+        cursor: null,
+        prev_cursor: null
       })
 
       const result = await apiWrapperV2List(
@@ -885,8 +893,11 @@ describe("API Wrapper V2 Functions", () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<{ data: ListApiResponseV2<string> }> => ({
-        data: { success: true as const, data: ["success"], cursor: null, prev_cursor: null }
+      ): Promise<ListApiResponseV2<string>> => ({
+        success: true as const,
+        data: ["success"],
+        cursor: null,
+        prev_cursor: null
       })
 
       const schema = z.object({
@@ -909,24 +920,21 @@ describe("API Wrapper V2 Functions", () => {
       }
     })
 
-    it("should handle successful operation with AxiosResponse format", async () => {
+    it("should handle successful operation returning data directly", async () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<AxiosResponse<ListApiResponseV2<string>, InternalAxiosRequestConfig>> => {
-        return {
-          data: {
-            success: true as const,
-            data: ["item1", "item2"],
-            cursor: "next",
-            prev_cursor: "prev"
-          },
-          status: 200,
-          statusText: "OK",
-          headers: {},
-          config: {} as InternalAxiosRequestConfig
-        }
-      }
+      ): Promise<{
+        success: true
+        data: string[]
+        cursor: string | null
+        prev_cursor: string | null
+      }> => ({
+        success: true as const,
+        data: ["item1", "item2"],
+        cursor: "next",
+        prev_cursor: "prev"
+      })
 
       const result = await apiWrapperV2List(
         mockOperation,
@@ -949,15 +957,13 @@ describe("API Wrapper V2 Functions", () => {
       const mockOperation = async (
         _params: unknown,
         _options: AxiosRequestConfig
-      ): Promise<{ data: ListApiResponseV2<string> }> => ({
-        data: {
-          success: false as const,
-          message: "Not found",
-          error: "Not found",
-          code: "NOT_FOUND",
-          statusCode: 404,
-          details: null
-        }
+      ): Promise<ListApiResponseV2<string>> => ({
+        success: false as const,
+        message: "Not found",
+        error: "Not found",
+        code: "NOT_FOUND",
+        statusCode: 404,
+        details: null
       })
 
       const result = await apiWrapperV2List(

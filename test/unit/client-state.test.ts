@@ -85,7 +85,7 @@ describe("ClientState", () => {
 
       expect(options.headers).toBeDefined()
       expect(options.headers?.["x-meeting-baas-api-key"]).toBe("test-key-123")
-      expect(options.headers?.["Content-Type"]).toBe("application/json")
+      expect(options.headers?.["Content-Type"]).toBeUndefined()
     })
 
     it("should return options with default timeout", () => {

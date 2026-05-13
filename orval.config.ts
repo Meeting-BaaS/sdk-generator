@@ -25,6 +25,12 @@ export default defineConfig({
       mock: {
         type: "msw",
         baseUrl: "https://api.meetingbaas.com"
+      },
+      override: {
+        mutator: {
+          path: "./src/custom-axios.ts",
+          name: "customInstance"
+        }
       }
     }
   },
@@ -51,6 +57,12 @@ export default defineConfig({
       mock: {
         type: "msw",
         baseUrl: "https://api.meetingbaas.com"
+      },
+      override: {
+        mutator: {
+          path: "./src/custom-axios.ts",
+          name: "customInstance"
+        }
       }
     }
   },

@@ -6,9 +6,9 @@
  * OpenAPI spec version: 1.1
  */
 
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+import type { BodyType } from "../../../../custom-axios"
 
+import { customInstance } from "../../../../custom-axios"
 import type {
   BotsWithMetadataParams,
   DeleteResponse,
@@ -22,79 +22,91 @@ import type {
   ScreenshotsList
 } from "../../schema"
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
+
 /**
  * Have a bot join a meeting, now or in the future. You can provide a `webhook_url` parameter to receive webhook events specific to this bot, overriding your account's default webhook URL. Events include recording completion, failures, and transcription updates.
  * @summary Join
  */
-export const join = <TData = AxiosResponse<JoinResponse>>(
-  joinRequest: JoinRequest,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/bots/", joinRequest, options)
+export const join = (
+  joinRequest: BodyType<JoinRequest>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<JoinResponse>(
+    {
+      url: "/bots/",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: joinRequest
+    },
+    options
+  )
 }
 /**
  * Leave
  * @summary Leave
  */
-export const leave = <TData = AxiosResponse<LeaveResponse>>(
-  uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/bots/${uuid}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
+export const leave = (uuid: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<LeaveResponse>({ url: `/bots/${uuid}`, method: "DELETE" }, options)
 }
 /**
  * Get meeting recording and metadata
  * @summary Get Meeting Data
  */
-export const getMeetingData = <TData = AxiosResponse<Metadata>>(
+export const getMeetingData = (
   params: GetMeetingDataParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/bots/meeting_data", {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<Metadata>({ url: "/bots/meeting_data", method: "GET", params }, options)
 }
 /**
  * Deletes a bot's data including recording, transcription, and logs. Only metadata is retained. Rate limited to 5 requests per minute per API key.
  * @summary Delete Data
  */
-export const deleteData = <TData = AxiosResponse<DeleteResponse>>(
-  uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/bots/${uuid}/delete_data`, {}, options)
+export const deleteData = (uuid: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<DeleteResponse>(
+    { url: `/bots/${uuid}/delete_data`, method: "POST" },
+    options
+  )
 }
 /**
  * Retrieves a paginated list of the user's bots with essential metadata, including IDs, names, and meeting details. Supports filtering, sorting, and advanced querying options.
  * @summary List Bots with Metadata
  */
-export const botsWithMetadata = <TData = AxiosResponse<ListRecentBotsResponse>>(
+export const botsWithMetadata = (
   params?: BotsWithMetadataParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/bots/bots_with_metadata", {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListRecentBotsResponse>(
+    { url: "/bots/bots_with_metadata", method: "GET", params },
+    options
+  )
 }
 /**
  * Transcribe or retranscribe a bot's audio using the Default or your provided Speech to Text Provider
  * @summary Retranscribe Bot
  */
-export const retranscribeBot = <TData = AxiosResponse<void>>(
-  retranscribeBody: RetranscribeBody,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/bots/retranscribe", retranscribeBody, options)
+export const retranscribeBot = (
+  retranscribeBody: BodyType<RetranscribeBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<void>(
+    {
+      url: "/bots/retranscribe",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: retranscribeBody
+    },
+    options
+  )
 }
 /**
  * Retrieves screenshots captured during the bot's session
  * @summary Get Screenshots
  */
-export const getScreenshots = <TData = AxiosResponse<ScreenshotsList>>(
-  uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/bots/${uuid}/screenshots`, options)
+export const getScreenshots = (uuid: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<ScreenshotsList>(
+    { url: `/bots/${uuid}/screenshots`, method: "GET" },
+    options
+  )
 }

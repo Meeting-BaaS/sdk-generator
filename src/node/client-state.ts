@@ -34,8 +34,7 @@ export class ClientState {
     return {
       baseURL: this.baseUrl,
       headers: {
-        "x-meeting-baas-api-key": this.apiKey,
-        "Content-Type": "application/json"
+        "x-meeting-baas-api-key": this.apiKey
       },
       timeout: this.timeout
     }

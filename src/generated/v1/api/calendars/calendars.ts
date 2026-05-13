@@ -6,9 +6,9 @@
  * OpenAPI spec version: 1.1
  */
 
-import type { AxiosRequestConfig, AxiosResponse } from "axios"
-import axios from "axios"
+import type { BodyType } from "../../../../custom-axios"
 
+import { customInstance } from "../../../../custom-axios"
 import type {
   BotParam2,
   BotParam3,
@@ -28,34 +28,50 @@ import type {
   UpdateCalendarParams
 } from "../../schema"
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
+
 /**
  * Retrieves unprocessed calendar data directly from the provider (Google, Microsoft) using provided OAuth credentials. This endpoint is typically used during the initial setup process to allow users to select which calendars to integrate. Returns a list of available calendars with their unique IDs, email addresses, and primary status. This data is not persisted until a calendar is formally created using the create_calendar endpoint.
  * @summary List Raw Calendars
  */
-export const listRawCalendars = <TData = AxiosResponse<ListRawCalendarsResponse>>(
-  listRawCalendarsParams: ListRawCalendarsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/calendars/raw", listRawCalendarsParams, options)
+export const listRawCalendars = (
+  listRawCalendarsParams: BodyType<ListRawCalendarsParams>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListRawCalendarsResponse>(
+    {
+      url: "/calendars/raw",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: listRawCalendarsParams
+    },
+    options
+  )
 }
 /**
  * Retrieves all calendars that have been integrated with the system for the authenticated user. Returns a list of calendars with their names, email addresses, provider information, and sync status. This endpoint shows only calendars that have been formally connected through the create_calendar endpoint, not all available calendars from the provider.
  * @summary List Calendars
  */
-export const listCalendars = <TData = AxiosResponse<Calendar[]>>(
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/calendars/", options)
+export const listCalendars = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<Calendar[]>({ url: "/calendars/", method: "GET" }, options)
 }
 /**
  * Integrates a new calendar with the system using OAuth credentials. This endpoint establishes a connection with the calendar provider (Google, Microsoft), sets up webhook notifications for real-time updates, and performs an initial sync of all calendar events. It requires OAuth credentials (client ID, client secret, and refresh token) and the platform type. Once created, the calendar is assigned a unique UUID that should be used for all subsequent operations. Returns the newly created calendar object with all integration details.
  * @summary Create Calendar
  */
-export const createCalendar = <TData = AxiosResponse<CreateCalendarResponse>>(
-  createCalendarParams: CreateCalendarParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post("/calendars/", createCalendarParams, options)
+export const createCalendar = (
+  createCalendarParams: BodyType<CreateCalendarParams>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<CreateCalendarResponse>(
+    {
+      url: "/calendars/",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: createCalendarParams
+    },
+    options
+  )
 }
 /**
  * Forces a sync of all your connected calendars with their providers (Google, Microsoft).
@@ -67,126 +83,135 @@ Processes each calendar individually and returns:
 Sends webhook notifications for calendars with updates.
  * @summary Resync All Calendars
  */
-export const resyncAllCalendars = <TData = AxiosResponse<ResyncAllCalendarsResponse>>(
+export const resyncAllCalendars = (
   params?: ResyncAllCalendarsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(
-    "/calendars/resync_all",
-    {},
-    {
-      ...options,
-      params: { ...params, ...options?.params }
-    }
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ResyncAllCalendarsResponse>(
+    { url: "/calendars/resync_all", method: "POST", params },
+    options
   )
 }
 /**
  * Retrieves detailed information about a specific calendar integration by its UUID. Returns comprehensive calendar data including the calendar name, email address, provider details (Google, Microsoft), sync status, and other metadata. This endpoint is useful for displaying calendar information to users or verifying the status of a calendar integration before performing operations on its events.
  * @summary Get Calendar
  */
-export const getCalendar = <TData = AxiosResponse<Calendar>>(
-  uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/calendars/${uuid}`, options)
+export const getCalendar = (uuid: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<Calendar>({ url: `/calendars/${uuid}`, method: "GET" }, options)
 }
 /**
  * Permanently removes a calendar integration by its UUID, including all associated events and bot configurations. This operation cancels any active subscriptions with the calendar provider, stops all webhook notifications, and unschedules any pending recordings. All related resources are cleaned up in the database. This action cannot be undone, and subsequent requests to this calendar's UUID will return 404 Not Found errors.
  * @summary Delete Calendar
  */
-export const deleteCalendar = <TData = AxiosResponse<void>>(
-  uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/calendars/${uuid}`, { ...options, headers: { ...options?.headers, 'Content-Type': '' } })
+export const deleteCalendar = (uuid: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<void>({ url: `/calendars/${uuid}`, method: "DELETE" }, options)
 }
 /**
  * Updates a calendar integration with new credentials or platform while maintaining the same UUID. This operation is performed as an atomic transaction to ensure data integrity. The system automatically unschedules existing bots to prevent duplicates, updates the calendar credentials, and triggers a full resync of all events. Useful when OAuth tokens need to be refreshed or when migrating a calendar between providers. Returns the updated calendar object with its new configuration.
  * @summary Update Calendar
  */
-export const updateCalendar = <TData = AxiosResponse<CreateCalendarResponse>>(
+export const updateCalendar = (
   uuid: string,
-  updateCalendarParams: UpdateCalendarParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.patch(`/calendars/${uuid}`, updateCalendarParams, options)
+  updateCalendarParams: BodyType<UpdateCalendarParams>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<CreateCalendarResponse>(
+    {
+      url: `/calendars/${uuid}`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: updateCalendarParams
+    },
+    options
+  )
 }
 /**
  * Retrieves comprehensive details about a specific calendar event by its UUID. Returns complete event information including title, meeting link, start and end times, organizer status, recurrence information, and the full list of attendees with their names and email addresses. Also includes any associated bot parameters if recording is scheduled for this event. The raw calendar data from the provider is also included for advanced use cases.
  * @summary Get Event
  */
-export const getEvent = <TData = AxiosResponse<Event>>(
-  uuid: string,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get(`/calendar_events/${uuid}`, options)
+export const getEvent = (uuid: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<Event>({ url: `/calendar_events/${uuid}`, method: "GET" }, options)
 }
 /**
  * Configures a bot to automatically join and record a specific calendar event at its scheduled time. The UUID in the request path is the event UUID. The request body contains detailed bot configuration, including recording options, streaming settings, and webhook notification URLs. For recurring events, the 'all_occurrences' parameter can be set to true to schedule recording for all instances of the recurring series, or false (default) to schedule only the specific instance. Returns the updated event(s) with the bot parameters attached.
  * @summary Schedule Record Event
  */
-export const scheduleRecordEvent = <TData = AxiosResponse<Event[]>>(
+export const scheduleRecordEvent = (
   uuid: string,
-  botParam2: BotParam2,
+  botParam2: BodyType<BotParam2>,
   params?: ScheduleRecordEventParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.post(`/calendar_events/${uuid}/bot`, botParam2, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<Event[]>(
+    {
+      url: `/calendar_events/${uuid}/bot`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: botParam2,
+      params
+    },
+    options
+  )
 }
 /**
  * Cancels a previously scheduled recording for a calendar event and releases associated bot resources. For recurring events, the 'all_occurrences' parameter controls whether to unschedule from all instances of the recurring series or just the specific occurrence. This operation is idempotent and will not error if no bot was scheduled. Returns the updated event(s) with the bot parameters removed.
  * @summary Unschedule Record Event
  */
-export const unscheduleRecordEvent = <TData = AxiosResponse<Event[]>>(
+export const unscheduleRecordEvent = (
   uuid: string,
   params?: UnscheduleRecordEventParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.delete(`/calendar_events/${uuid}/bot`, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<Event[]>(
+    { url: `/calendar_events/${uuid}/bot`, method: "DELETE", params },
+    options
+  )
 }
 /**
  * Updates the configuration of a bot already scheduled to record an event. Allows modification of recording settings, webhook URLs, and other bot parameters without canceling and recreating the scheduled recording. For recurring events, the 'all_occurrences' parameter determines whether changes apply to all instances or just the specific occurrence. Returns the updated event(s) with the modified bot parameters.
  * @summary Patch Bot
  */
-export const patchBot = <TData = AxiosResponse<Event[]>>(
+export const patchBot = (
   uuid: string,
-  botParam3: BotParam3,
+  botParam3: BodyType<BotParam3>,
   params?: PatchBotParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.patch(`/calendar_events/${uuid}/bot`, botParam3, {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<Event[]>(
+    {
+      url: `/calendar_events/${uuid}/bot`,
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      data: botParam3,
+      params
+    },
+    options
+  )
 }
 /**
  * Retrieves a paginated list of calendar events with comprehensive filtering options. Supports filtering by organizer email, attendee email, date ranges (start_date_gte, start_date_lte), and event status. Results can be limited to upcoming events (default), past events, or all events. Each event includes full details such as meeting links, participants, and recording status. The response includes a 'next' pagination cursor for retrieving additional results.
  * @summary List Events
  */
-export const listEvents = <TData = AxiosResponse<ListEventResponse>>(
+export const listEvents = (
   params: ListEventsParams,
-  options?: AxiosRequestConfig
-): Promise<TData> => {
-  return axios.get("/calendar_events/", {
-    ...options,
-    params: { ...params, ...options?.params }
-  })
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<ListEventResponse>(
+    { url: "/calendar_events/", method: "GET", params },
+    options
+  )
 }
-export type ListRawCalendarsResult = AxiosResponse<ListRawCalendarsResponse>
-export type ListCalendarsResult = AxiosResponse<Calendar[]>
-export type CreateCalendarResult = AxiosResponse<CreateCalendarResponse>
-export type ResyncAllCalendarsResult = AxiosResponse<ResyncAllCalendarsResponse>
-export type GetCalendarResult = AxiosResponse<Calendar>
-export type DeleteCalendarResult = AxiosResponse<void>
-export type UpdateCalendarResult = AxiosResponse<CreateCalendarResponse>
-export type GetEventResult = AxiosResponse<Event>
-export type ScheduleRecordEventResult = AxiosResponse<Event[]>
-export type UnscheduleRecordEventResult = AxiosResponse<Event[]>
-export type PatchBotResult = AxiosResponse<Event[]>
-export type ListEventsResult = AxiosResponse<ListEventResponse>
+export type ListRawCalendarsResult = NonNullable<Awaited<ReturnType<typeof listRawCalendars>>>
+export type ListCalendarsResult = NonNullable<Awaited<ReturnType<typeof listCalendars>>>
+export type CreateCalendarResult = NonNullable<Awaited<ReturnType<typeof createCalendar>>>
+export type ResyncAllCalendarsResult = NonNullable<Awaited<ReturnType<typeof resyncAllCalendars>>>
+export type GetCalendarResult = NonNullable<Awaited<ReturnType<typeof getCalendar>>>
+export type DeleteCalendarResult = NonNullable<Awaited<ReturnType<typeof deleteCalendar>>>
+export type UpdateCalendarResult = NonNullable<Awaited<ReturnType<typeof updateCalendar>>>
+export type GetEventResult = NonNullable<Awaited<ReturnType<typeof getEvent>>>
+export type ScheduleRecordEventResult = NonNullable<Awaited<ReturnType<typeof scheduleRecordEvent>>>
+export type UnscheduleRecordEventResult = NonNullable<
+  Awaited<ReturnType<typeof unscheduleRecordEvent>>
+>
+export type PatchBotResult = NonNullable<Awaited<ReturnType<typeof patchBot>>>
+export type ListEventsResult = NonNullable<Awaited<ReturnType<typeof listEvents>>>

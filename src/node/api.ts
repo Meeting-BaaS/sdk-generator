@@ -14,7 +14,7 @@ export type ApiResponse<T> =
  * This is the main wrapper you can use for all your API functions
  */
 export async function apiWrapper<TData, TParams = void>(
-  operation: (params: TParams, options: AxiosRequestConfig) => Promise<{ data: TData }>,
+  operation: (params: TParams, options: AxiosRequestConfig) => Promise<TData>,
   schema: ZodSchema<TParams> | null,
   params: TParams,
   options: AxiosRequestConfig
@@ -41,11 +41,11 @@ export async function apiWrapper<TData, TParams = void>(
     }
 
     // Make the API call
-    const response = await operation(validatedParams, options)
+    const data = await operation(validatedParams, options)
 
     return {
       success: true,
-      data: response.data
+      data
     }
   } catch (error) {
     return {
@@ -59,7 +59,7 @@ export async function apiWrapper<TData, TParams = void>(
  * Generic wrapper for functions that take no parameters
  */
 export async function apiWrapperNoParams<TData>(
-  operation: (options: AxiosRequestConfig) => Promise<{ data: TData }>,
+  operation: (options: AxiosRequestConfig) => Promise<TData>,
   options: AxiosRequestConfig
 ): Promise<ApiResponse<TData>> {
   try {
@@ -70,11 +70,11 @@ export async function apiWrapperNoParams<TData>(
       }
     }
     // Make the API call
-    const response = await operation(options)
+    const data = await operation(options)
 
     return {
       success: true,
-      data: response.data
+      data
     }
   } catch (error) {
     return {
@@ -152,9 +152,7 @@ export async function apiWrapperV2<TData, TParams = void>(
   operation: (
     params: TParams,
     options: AxiosRequestConfig
-  ) => Promise<
-    { data: ApiResponseV2<TData> } | import("axios").AxiosResponse<ApiResponseV2<TData>>
-  >,
+  ) => Promise<{ success: boolean; data: TData } | ApiResponseV2<TData>>,
   schema: ZodSchema<TParams> | null,
   params: TParams,
   options: AxiosRequestConfig
@@ -188,13 +186,8 @@ export async function apiWrapperV2<TData, TParams = void>(
       validatedParams = validationResult.data
     }
 
-    // Make the API call - generated functions return AxiosResponse<T>
-    const response = await operation(validatedParams, options)
-
-    // Extract data from axios response (both { data: ... } and AxiosResponse have .data)
-    // The generated API functions return AxiosResponse<ApiResponseV2<TData>>
-    // So response.data is already ApiResponseV2<TData>
-    return (response as { data: ApiResponseV2<TData> }).data
+    // Make the API call - custom instance returns data directly (not AxiosResponse)
+    return (await operation(validatedParams, options)) as ApiResponseV2<TData>
   } catch (error) {
     // Handle network/axios errors
     if (error instanceof Error && "response" in error) {
@@ -240,7 +233,9 @@ export async function apiWrapperV2<TData, TParams = void>(
  * Generic wrapper for v2 functions that take no parameters
  */
 export async function apiWrapperV2NoParams<TData>(
-  operation: (options: AxiosRequestConfig) => Promise<{ data: ApiResponseV2<TData> }>,
+  operation: (
+    options: AxiosRequestConfig
+  ) => Promise<{ success: boolean; data: TData } | ApiResponseV2<TData>>,
   options: AxiosRequestConfig
 ): Promise<ApiResponseV2<TData>> {
   try {
@@ -255,9 +250,7 @@ export async function apiWrapperV2NoParams<TData>(
       }
     }
     // Make the API call
-    const response = await operation(options)
-
-    return response.data
+    return (await operation(options)) as ApiResponseV2<TData>
   } catch (error) {
     // Handle network/axios errors
     if (error instanceof Error && "response" in error) {
@@ -309,15 +302,8 @@ export async function apiWrapperV2List<TData, TParams = void>(
     params: TParams,
     options: AxiosRequestConfig
   ) => Promise<
-    | {
-        data:
-          | { success: true; data: TData[]; cursor: string | null; prev_cursor: string | null }
-          | { success: false; error: string; code: string; statusCode: number; details: unknown }
-      }
-    | import("axios").AxiosResponse<
-        | { success: true; data: TData[]; cursor: string | null; prev_cursor: string | null }
-        | { success: false; error: string; code: string; statusCode: number; details: unknown }
-      >
+    | { success: true; data: TData[]; cursor: string | null; prev_cursor: string | null }
+    | { success: false; error: string; code: string; statusCode: number; details: unknown }
   >,
   schema: ZodSchema<TParams> | null,
   params: TParams,
@@ -352,19 +338,8 @@ export async function apiWrapperV2List<TData, TParams = void>(
       validatedParams = validationResult.data
     }
 
-    // Make the API call
-    const response = await operation(validatedParams, options)
-
-    // Extract data from axios response
-    // The generated API functions return AxiosResponse<ListResponse>
-    // where ListResponse = { success: true, data: [...], cursor: ..., prev_cursor: ... }
-    const apiResponse = (
-      response as {
-        data:
-          | { success: true; data: TData[]; cursor: string | null; prev_cursor: string | null }
-          | { success: false; error: string; code: string; statusCode: number; details: unknown }
-      }
-    ).data
+    // Make the API call - custom instance returns data directly (not AxiosResponse)
+    const apiResponse = await operation(validatedParams, options)
 
     // If error response, return as-is
     if (!apiResponse.success) {
