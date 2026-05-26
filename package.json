@@ -209,6 +209,7 @@
     "vitest": "^2.1.8"
   },
   "dependencies": {
+    "@soniox/node": "2.0.2",
     "axios": "1.14.0",
     "ws": "^8.18.3",
     "zod": "3.24.2"

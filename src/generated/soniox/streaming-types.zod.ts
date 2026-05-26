@@ -119,12 +119,16 @@ export const streamingTranscriberParams = zod.object({
   sampleRate: zod.number().optional(),
   numChannels: zod.number().optional(),
   languageHints: zod.array(zod.string()).optional(),
+  languageHintsStrict: zod.boolean().optional(),
   context: sonioxContextSchema.optional(),
   enableSpeakerDiarization: zod.boolean().optional(),
   enableLanguageIdentification: zod.boolean().optional(),
   enableEndpointDetection: zod.boolean().optional(),
+  maxEndpointDelayMs: zod.number().optional(),
   translation: sonioxTranslationConfigSchema.optional(),
-  clientReferenceId: zod.string().optional()
+  clientReferenceId: zod.string().optional(),
+  keepaliveIntervalMs: zod.number().optional(),
+  connectTimeoutMs: zod.number().optional()
 })
 
 // =============================================================================

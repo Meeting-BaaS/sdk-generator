@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@soniox/node':
+        specifier: 2.0.2
+        version: 2.0.2
       axios:
         specifier: 1.14.0
         version: 1.14.0
@@ -690,6 +693,9 @@ packages:
 
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
+
+  '@soniox/node@2.0.2':
+    resolution: {integrity: sha512-SCGdWrD0ZFInRkfxWQ5ydz3LhosOhtqq2x06++80PnZwHdnUDwom3wvCrWy8AzaQvkT8Zr6QH4hFrjRtRhjpKQ==}
 
   '@stoplight/better-ajv-errors@1.0.3':
     resolution: {integrity: sha512-0p9uXkuB22qGdNfy3VeEhxkU5uwvp/KrBTAbrLBURv6ilxIVwanKwjMc41lQfIVgPGcOkmLbTolfFrSsueu7zA==}
@@ -3249,6 +3255,8 @@ snapshots:
       '@types/hast': 3.0.4
 
   '@shikijs/vscode-textmate@10.0.2': {}
+
+  '@soniox/node@2.0.2': {}
 
   '@stoplight/better-ajv-errors@1.0.3(ajv@8.17.1)':
     dependencies:

@@ -41,3 +41,6 @@ tmp/
 # Generated documentation
 docs/generated/
 .direnv
+
+# Codex CLI local artifacts
+.codex

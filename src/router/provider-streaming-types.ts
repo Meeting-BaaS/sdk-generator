@@ -529,7 +529,7 @@ export interface OpenAIStreamingOptions {
  * Soniox audio format specification
  * Use "auto" for automatic detection, or specify PCM encoding
  */
-type SonioxAudioFormat =
+export type SonioxAudioFormat =
   | "auto"
   | "aac"
   | "aiff"
@@ -562,23 +562,23 @@ type SonioxAudioFormat =
   | "alaw"
 
 /** One-way translation: translate all spoken languages into a single target language */
-interface SonioxOneWayTranslation {
+export interface SonioxOneWayTranslation {
   type: "one_way"
   target_language: SonioxLanguageCode
 }
 
 /** Two-way translation: translate back and forth between two specified languages */
-interface SonioxTwoWayTranslation {
+export interface SonioxTwoWayTranslation {
   type: "two_way"
   language_a: SonioxLanguageCode
   language_b: SonioxLanguageCode
 }
 
 /** Soniox translation configuration */
-type SonioxTranslationConfig = SonioxOneWayTranslation | SonioxTwoWayTranslation
+export type SonioxTranslationConfig = SonioxOneWayTranslation | SonioxTwoWayTranslation
 
 /** Structured context for improving transcription accuracy */
-interface SonioxStructuredContext {
+export interface SonioxStructuredContext {
   /** General context items (key-value pairs) */
   general?: Array<{ key: string; value: string }>
   /** Text context */
@@ -590,7 +590,7 @@ interface SonioxStructuredContext {
 }
 
 /** Soniox context can be either a structured object or a plain string */
-type SonioxContext = SonioxStructuredContext | string
+export type SonioxContext = SonioxStructuredContext | string
 
 /**
  * Soniox streaming options
@@ -659,6 +659,12 @@ export interface SonioxStreamingOptions {
   languageHints?: SonioxLanguageCode[]
 
   /**
+   * When true, recognition is strongly biased toward language hints.
+   * Best-effort only, not a hard guarantee.
+   */
+  languageHintsStrict?: boolean
+
+  /**
    * Enable language identification
    * Each token will include a language field
    */
@@ -679,6 +685,12 @@ export interface SonioxStreamingOptions {
    * Detects when a speaker has finished talking
    */
   enableEndpointDetection?: boolean
+
+  /**
+   * Maximum delay between the end of speech and returned endpoint.
+   * Supported range is 500-3000 ms.
+   */
+  maxEndpointDelayMs?: number
 
   // ─────────────────────────────────────────────────────────────────
   // Context & Vocabulary Options
@@ -729,6 +741,24 @@ export interface SonioxStreamingOptions {
    * Useful for correlating requests in logs
    */
   clientReferenceId?: string
+
+  /**
+   * Interval for keepalive messages while paused, in milliseconds.
+   * SDK session option, not sent to Soniox.
+   */
+  keepaliveIntervalMs?: number
+
+  /**
+   * Max time to wait for the WebSocket connection to open, in milliseconds.
+   * SDK session option, not sent to Soniox.
+   */
+  connectTimeoutMs?: number
+
+  /**
+   * AbortSignal for cancelling the real-time session.
+   * SDK session option, not sent to Soniox.
+   */
+  signal?: AbortSignal
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

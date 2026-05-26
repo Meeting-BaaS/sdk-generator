@@ -25,6 +25,7 @@ export * as OpenAIStreamingTypes from "./generated/openai/streaming-types"
 export * as AzureTypes from "./generated/azure/schema"
 export * as SpeechmaticsTypes from "./generated/speechmatics/schema"
 export * as SonioxTypes from "./generated/soniox/schema"
+export * as SonioxSDK from "./generated/soniox/sdk-types"
 export * as SonioxStreamingTypes from "./generated/soniox/streaming-types.zod"
 export * as ElevenLabsTypes from "./generated/elevenlabs/schema"
 

@@ -18,7 +18,8 @@ import type {
 import type {
   GladiaStreamingOptions,
   DeepgramStreamingOptions,
-  AssemblyAIStreamingOptions
+  AssemblyAIStreamingOptions,
+  SonioxStreamingOptions
 } from "./provider-streaming-types"
 
 /**
@@ -333,6 +334,18 @@ export class VoiceRouter {
   ): Promise<StreamingSession>
 
   /**
+   * Stream audio for real-time transcription with Soniox
+   *
+   * @param options - Soniox-specific streaming options
+   * @param callbacks - Event callbacks for transcription results
+   * @returns Promise that resolves with a StreamingSession
+   */
+  transcribeStream(
+    options: SonioxStreamingOptions & { provider: "soniox" },
+    callbacks?: StreamingCallbacks
+  ): Promise<StreamingSession>
+
+  /**
    * Stream audio for real-time transcription (uses default provider)
    *
    * @param options - Generic streaming options
@@ -350,6 +363,7 @@ export class VoiceRouter {
       | (GladiaStreamingOptions & { provider: "gladia" })
       | (DeepgramStreamingOptions & { provider: "deepgram" })
       | (AssemblyAIStreamingOptions & { provider: "assemblyai" })
+      | (SonioxStreamingOptions & { provider: "soniox" })
       | (StreamingOptions & { provider?: TranscriptionProvider }),
     callbacks?: StreamingCallbacks
   ): Promise<StreamingSession> {

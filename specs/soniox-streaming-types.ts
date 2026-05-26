@@ -123,12 +123,16 @@ export interface StreamingTranscriberParams {
   sampleRate?: number
   numChannels?: number
   languageHints?: string[]
+  languageHintsStrict?: boolean
   context?: Context
   enableSpeakerDiarization?: boolean
   enableLanguageIdentification?: boolean
   enableEndpointDetection?: boolean
+  maxEndpointDelayMs?: number
   translation?: TranslationConfig
   clientReferenceId?: string
+  keepaliveIntervalMs?: number
+  connectTimeoutMs?: number
 }
 
 // =============================================================================

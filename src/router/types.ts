@@ -42,6 +42,12 @@ import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioTo
 import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
 import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
 import type { CreateTranscriptionPayload as SonioxCreateTranscriptionPayload } from "../generated/soniox/schema/createTranscriptionPayload"
+import type {
+  SonioxCleanupTarget,
+  SonioxSdkTranslationConfig,
+  SonioxTranscriptionContext as SonioxSdkTranscriptionContext,
+  SonioxWaitOptions
+} from "../generated/soniox/sdk-types"
 
 // Streaming request types for type-safe streaming options
 import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
@@ -78,6 +84,26 @@ import type { StructuredDataExtractionDTO as GladiaStructuredData } from "../gen
 
 // Deepgram extended types
 import type { ListenV1ResponseMetadata as DeepgramMetadata } from "../generated/deepgram/schema/listenV1ResponseMetadata"
+
+export interface SonioxBatchOptions {
+  language_hints?: string[]
+  language_hints_strict?: boolean
+  enable_language_identification?: boolean
+  enable_speaker_diarization?: boolean
+  context?: SonioxSdkTranscriptionContext | SonioxCreateTranscriptionPayload["context"]
+  translation?: SonioxSdkTranslationConfig | SonioxCreateTranscriptionPayload["translation"]
+  webhook_url?: string
+  webhook_auth_header_name?: string
+  webhook_auth_header_value?: string
+  client_reference_id?: string
+  wait?: boolean
+  wait_options?: SonioxWaitOptions
+  fetch_transcript?: boolean
+  webhook_query?: string | URLSearchParams | Record<string, string>
+  signal?: AbortSignal
+  timeout_ms?: number
+  cleanup?: SonioxCleanupTarget[]
+}
 
 /**
  * Speechmatics operating point (model) type
@@ -480,7 +506,7 @@ export interface TranscribeOptions {
    * Soniox-specific options (passed directly to API)
    * @see https://soniox.com/docs/stt/
    */
-  soniox?: Partial<Omit<SonioxCreateTranscriptionPayload, "model" | "audio_url" | "file_id">>
+  soniox?: SonioxBatchOptions
 }
 
 /**
@@ -1393,4 +1419,34 @@ export interface StreamingSession {
   getStatus: () => "connecting" | "open" | "closing" | "closed"
   /** Session creation timestamp */
   createdAt: Date
+
+  /**
+   * Pause audio transmission when supported by the provider.
+   * Currently implemented by Soniox real-time sessions.
+   */
+  pause?: () => void
+
+  /**
+   * Resume audio transmission when supported by the provider.
+   * Currently implemented by Soniox real-time sessions.
+   */
+  resume?: () => void
+
+  /**
+   * Ask the provider to finalize the current utterance when supported.
+   * Currently implemented by Soniox real-time sessions.
+   */
+  finalize?: (options?: { trailingSilenceMs?: number }) => void
+
+  /**
+   * Send a keepalive ping when supported by the provider.
+   * Currently implemented by Soniox real-time sessions.
+   */
+  keepAlive?: () => void
+
+  /**
+   * Access the provider-native streaming session object when available.
+   * Currently implemented by Soniox as a `RealtimeSttSession`.
+   */
+  getRawSession?: () => unknown
 }
