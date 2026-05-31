@@ -108,6 +108,12 @@ export const listenTranscribeQueryParams = zod.object({
     .describe(
       "Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0"
     ),
+  diarize_model: zod
+    .enum(["latest", "v1", "v2"])
+    .optional()
+    .describe(
+      "Select and enable a specific batch diarization model version. If specifying this parameter, you should not set the deprecated `diarize=true` parameter. Not accepted on streaming requests."
+    ),
   dictation: zod
     .boolean()
     .optional()
@@ -522,6 +528,7 @@ export const listenTranscribeResponse = zod
 export const speakGenerateQueryCallbackMethodDefault = "POST"
 export const speakGenerateQueryMipOptOutDefault = false
 export const speakGenerateQueryModelDefault = "aura-asteria-en"
+export const speakGenerateQuerySpeedDefault = 1
 
 export const speakGenerateQueryParams = zod.object({
   callback: zod.string().optional().describe("URL to which we'll make the callback request"),
@@ -703,6 +710,12 @@ export const speakGenerateQueryParams = zod.object({
     .optional()
     .describe(
       "Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable"
+    ),
+  speed: zod
+    .number()
+    .default(speakGenerateQuerySpeedDefault)
+    .describe(
+      "Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Not yet supported in all languages."
     )
 })
 

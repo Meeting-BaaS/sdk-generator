@@ -7,7 +7,7 @@
  */
 
 /**
- * The type of PII to redact
+ * The type of PII to redact. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for the full list of policies and their descriptions.
  */
 export type PiiPolicy = (typeof PiiPolicy)[keyof typeof PiiPolicy]
 
@@ -28,12 +28,20 @@ export const PiiPolicy = {
   email_address: "email_address",
   event: "event",
   filename: "filename",
+  gender: "gender",
   gender_sexuality: "gender_sexuality",
   healthcare_number: "healthcare_number",
   injury: "injury",
   ip_address: "ip_address",
   language: "language",
   location: "location",
+  location_address: "location_address",
+  location_address_street: "location_address_street",
+  location_city: "location_city",
+  location_coordinate: "location_coordinate",
+  location_country: "location_country",
+  location_state: "location_state",
+  location_zip: "location_zip",
   marital_status: "marital_status",
   medical_condition: "medical_condition",
   medical_process: "medical_process",
@@ -42,6 +50,7 @@ export const PiiPolicy = {
   number_sequence: "number_sequence",
   occupation: "occupation",
   organization: "organization",
+  organization_medical_facility: "organization_medical_facility",
   passport_number: "passport_number",
   password: "password",
   person_age: "person_age",
@@ -50,6 +59,7 @@ export const PiiPolicy = {
   physical_attribute: "physical_attribute",
   political_affiliation: "political_affiliation",
   religion: "religion",
+  sexuality: "sexuality",
   statistics: "statistics",
   time: "time",
   url: "url",

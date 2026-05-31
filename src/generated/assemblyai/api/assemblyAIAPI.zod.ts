@@ -52,6 +52,7 @@ export const createTranscriptBodyPunctuateDefault = true
 export const createTranscriptBodyRedactPiiDefault = false
 export const createTranscriptBodyRedactPiiAudioDefault = false
 export const createTranscriptBodyRedactPiiAudioOptionsReturnRedactedNoSpeechAudioDefault = false
+export const createTranscriptBodyRedactPiiReturnUnredactedDefault = false
 export const createTranscriptBodySentimentAnalysisDefault = false
 export const createTranscriptBodySpeakerLabelsDefault = false
 export const createTranscriptBodySpeakerOptionsMinSpeakersExpectedDefault = 1
@@ -118,7 +119,7 @@ export const createTranscriptBody = zod
       .boolean()
       .optional()
       .describe(
-        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false'
+        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2.'
       ),
     domain: zod
       .string()
@@ -503,12 +504,20 @@ export const createTranscriptBody = zod
             "email_address",
             "event",
             "filename",
+            "gender",
             "gender_sexuality",
             "healthcare_number",
             "injury",
             "ip_address",
             "language",
             "location",
+            "location_address",
+            "location_address_street",
+            "location_city",
+            "location_coordinate",
+            "location_country",
+            "location_state",
+            "location_zip",
             "marital_status",
             "medical_condition",
             "medical_process",
@@ -517,6 +526,7 @@ export const createTranscriptBody = zod
             "number_sequence",
             "occupation",
             "organization",
+            "organization_medical_facility",
             "passport_number",
             "password",
             "person_age",
@@ -525,6 +535,7 @@ export const createTranscriptBody = zod
             "physical_attribute",
             "political_affiliation",
             "religion",
+            "sexuality",
             "statistics",
             "time",
             "url",
@@ -533,7 +544,9 @@ export const createTranscriptBody = zod
             "vehicle_id",
             "zodiac_sign"
           ])
-          .describe("The type of PII to redact")
+          .describe(
+            "The type of PII to redact. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for the full list of policies and their descriptions."
+          )
       )
       .optional()
       .describe(
@@ -542,12 +555,18 @@ export const createTranscriptBody = zod
     redact_pii_sub: zod
       .enum(["entity_name", "hash"])
       .describe(
-        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details."
+        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for more details."
       )
       .or(zod.null())
       .optional()
       .describe(
         "The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details."
+      ),
+    redact_pii_return_unredacted: zod
+      .boolean()
+      .optional()
+      .describe(
+        "When set to `true`, returns the original unredacted transcript alongside the redacted one in the same response. Requires `redact_pii` to be `true`, otherwise a 400 error is returned.\n\nWhen enabled, the response includes the additional fields `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. The existing `text`, `words`, and `utterances` fields remain fully redacted. When disabled (default), the response is unchanged and contains only the redacted transcript. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.\n"
       ),
     sentiment_analysis: zod
       .boolean()
@@ -726,14 +745,14 @@ export const createTranscriptBody = zod
       .optional()
       .describe("The type of summary"),
     remove_audio_tags: zod
-      .enum(["all"])
+      .enum(["all", "speaker"])
       .describe(
-        'Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `"all"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       )
       .or(zod.null())
       .optional()
       .describe(
-        'Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `"all"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       ),
     temperature: zod
       .number()
@@ -975,7 +994,7 @@ export const createTranscriptResponse = zod
       .boolean()
       .nullish()
       .describe(
-        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false'
+        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2.'
       ),
     domain: zod
       .string()
@@ -1004,12 +1023,20 @@ export const createTranscriptResponse = zod
                 "email_address",
                 "event",
                 "filename",
+                "gender",
                 "gender_sexuality",
                 "healthcare_number",
                 "injury",
                 "ip_address",
                 "language",
                 "location",
+                "location_address",
+                "location_address_street",
+                "location_city",
+                "location_coordinate",
+                "location_country",
+                "location_state",
+                "location_zip",
                 "marital_status",
                 "medical_condition",
                 "medical_process",
@@ -1018,6 +1045,7 @@ export const createTranscriptResponse = zod
                 "number_sequence",
                 "occupation",
                 "organization",
+                "organization_medical_facility",
                 "passport_number",
                 "password",
                 "person_age",
@@ -1026,6 +1054,7 @@ export const createTranscriptResponse = zod
                 "physical_attribute",
                 "political_affiliation",
                 "religion",
+                "sexuality",
                 "statistics",
                 "time",
                 "url",
@@ -1410,6 +1439,37 @@ export const createTranscriptResponse = zod
       .describe(
         "Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection)."
       ),
+    metadata: zod
+      .object({
+        domain_used: zod
+          .string()
+          .nullish()
+          .describe(
+            'The domain-specific model that was applied to the transcription (for example, `"medical-v1"` when [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was applied), or `null` if no domain-specific model was used. Always present when `metadata` is present.\n'
+          ),
+        warnings: zod
+          .array(
+            zod
+              .object({
+                message: zod.string().describe("A human-readable description of the warning.")
+              })
+              .describe(
+                "A warning message emitted while processing a transcription request. Warnings are surfaced on the transcript response under `metadata.warnings`.\n"
+              )
+          )
+          .optional()
+          .describe(
+            "Warning messages emitted while processing the request. Each warning is an object with a human-readable `message`. When there are no warnings to report, this field is omitted from the `metadata` object entirely.\n"
+          )
+      })
+      .describe(
+        "Additional metadata about the transcription returned on the `Transcript` object under `metadata`. Only present when there is information to report — when all of its fields would be empty, the `metadata` object is omitted from the response entirely.\n"
+      )
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Additional metadata about the transcription, including any warnings emitted while processing the request. Only present when there is information to report; if no fields would be populated, `metadata` is omitted from the response entirely.\n"
+      ),
     multichannel: zod
       .boolean()
       .nullish()
@@ -1487,12 +1547,20 @@ export const createTranscriptResponse = zod
             "email_address",
             "event",
             "filename",
+            "gender",
             "gender_sexuality",
             "healthcare_number",
             "injury",
             "ip_address",
             "language",
             "location",
+            "location_address",
+            "location_address_street",
+            "location_city",
+            "location_coordinate",
+            "location_country",
+            "location_state",
+            "location_zip",
             "marital_status",
             "medical_condition",
             "medical_process",
@@ -1501,6 +1569,7 @@ export const createTranscriptResponse = zod
             "number_sequence",
             "occupation",
             "organization",
+            "organization_medical_facility",
             "passport_number",
             "password",
             "person_age",
@@ -1509,6 +1578,7 @@ export const createTranscriptResponse = zod
             "physical_attribute",
             "political_affiliation",
             "religion",
+            "sexuality",
             "statistics",
             "time",
             "url",
@@ -1517,7 +1587,9 @@ export const createTranscriptResponse = zod
             "vehicle_id",
             "zodiac_sign"
           ])
-          .describe("The type of PII to redact")
+          .describe(
+            "The type of PII to redact. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for the full list of policies and their descriptions."
+          )
       )
       .nullish()
       .describe(
@@ -1527,7 +1599,13 @@ export const createTranscriptResponse = zod
       .enum(["entity_name", "hash"])
       .optional()
       .describe(
-        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details."
+        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for more details."
+      ),
+    redact_pii_return_unredacted: zod
+      .boolean()
+      .nullish()
+      .describe(
+        "Whether the original unredacted transcript was also returned alongside the redacted one. When `true`, the response includes `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
       ),
     sentiment_analysis: zod
       .boolean()
@@ -1766,23 +1844,23 @@ export const createTranscriptResponse = zod
       .string()
       .nullish()
       .describe(
-        "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
+        "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
       ),
     summary_type: zod
       .string()
       .nullish()
       .describe(
-        "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
+        "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
       ),
     remove_audio_tags: zod
-      .enum(["all"])
+      .enum(["all", "speaker"])
       .describe(
-        "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       )
       .or(zod.null())
       .optional()
       .describe(
-        "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       ),
     temperature: zod
       .number()
@@ -1791,6 +1869,12 @@ export const createTranscriptResponse = zod
         "The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n"
       ),
     text: zod.string().nullish().describe("The textual transcript of your media file"),
+    unredacted_text: zod
+      .string()
+      .nullish()
+      .describe(
+        "The original textual transcript of your media file before PII redaction was applied. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `text` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+      ),
     throttled: zod
       .boolean()
       .nullish()
@@ -1857,6 +1941,66 @@ export const createTranscriptResponse = zod
       .describe(
         "When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) for more information.\n"
       ),
+    unredacted_utterances: zod
+      .array(
+        zod.object({
+          confidence: zod
+            .number()
+            .describe("The confidence score for the transcript of this utterance"),
+          start: zod
+            .number()
+            .describe("The starting time, in milliseconds, of the utterance in the audio file"),
+          end: zod
+            .number()
+            .describe("The ending time, in milliseconds, of the utterance in the audio file"),
+          text: zod.string().describe("The text for this utterance"),
+          words: zod
+            .array(
+              zod.object({
+                confidence: zod
+                  .number()
+                  .describe("The confidence score for the transcript of this word"),
+                start: zod.number().describe("The starting time, in milliseconds, for the word"),
+                end: zod.number().describe("The ending time, in milliseconds, for the word"),
+                text: zod.string().describe("The text of the word"),
+                channel: zod
+                  .string()
+                  .nullish()
+                  .describe(
+                    "The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+                  ),
+                speaker: zod
+                  .string()
+                  .nullable()
+                  .describe(
+                    "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
+                  )
+              })
+            )
+            .describe("The words in the utterance."),
+          channel: zod
+            .string()
+            .nullish()
+            .describe(
+              "The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+            ),
+          speaker: zod
+            .string()
+            .describe(
+              'The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc.'
+            ),
+          translated_texts: zod
+            .record(zod.string(), zod.string())
+            .optional()
+            .describe(
+              'Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.'
+            )
+        })
+      )
+      .nullish()
+      .describe(
+        "The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+      ),
     webhook_auth: zod
       .boolean()
       .describe(
@@ -1904,6 +2048,31 @@ export const createTranscriptResponse = zod
       .nullish()
       .describe(
         "An array of temporally-sequential word objects, one for each word in the transcript.\n"
+      ),
+    unredacted_words: zod
+      .array(
+        zod.object({
+          confidence: zod.number().describe("The confidence score for the transcript of this word"),
+          start: zod.number().describe("The starting time, in milliseconds, for the word"),
+          end: zod.number().describe("The ending time, in milliseconds, for the word"),
+          text: zod.string().describe("The text of the word"),
+          channel: zod
+            .string()
+            .nullish()
+            .describe(
+              "The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+            ),
+          speaker: zod
+            .string()
+            .nullable()
+            .describe(
+              "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
+            )
+        })
+      )
+      .nullish()
+      .describe(
+        "The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
       ),
     acoustic_model: zod
       .string()
@@ -2264,7 +2433,7 @@ export const getTranscriptResponse = zod
       .boolean()
       .nullish()
       .describe(
-        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false'
+        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2.'
       ),
     domain: zod
       .string()
@@ -2293,12 +2462,20 @@ export const getTranscriptResponse = zod
                 "email_address",
                 "event",
                 "filename",
+                "gender",
                 "gender_sexuality",
                 "healthcare_number",
                 "injury",
                 "ip_address",
                 "language",
                 "location",
+                "location_address",
+                "location_address_street",
+                "location_city",
+                "location_coordinate",
+                "location_country",
+                "location_state",
+                "location_zip",
                 "marital_status",
                 "medical_condition",
                 "medical_process",
@@ -2307,6 +2484,7 @@ export const getTranscriptResponse = zod
                 "number_sequence",
                 "occupation",
                 "organization",
+                "organization_medical_facility",
                 "passport_number",
                 "password",
                 "person_age",
@@ -2315,6 +2493,7 @@ export const getTranscriptResponse = zod
                 "physical_attribute",
                 "political_affiliation",
                 "religion",
+                "sexuality",
                 "statistics",
                 "time",
                 "url",
@@ -2699,6 +2878,37 @@ export const getTranscriptResponse = zod
       .describe(
         "Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection)."
       ),
+    metadata: zod
+      .object({
+        domain_used: zod
+          .string()
+          .nullish()
+          .describe(
+            'The domain-specific model that was applied to the transcription (for example, `"medical-v1"` when [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was applied), or `null` if no domain-specific model was used. Always present when `metadata` is present.\n'
+          ),
+        warnings: zod
+          .array(
+            zod
+              .object({
+                message: zod.string().describe("A human-readable description of the warning.")
+              })
+              .describe(
+                "A warning message emitted while processing a transcription request. Warnings are surfaced on the transcript response under `metadata.warnings`.\n"
+              )
+          )
+          .optional()
+          .describe(
+            "Warning messages emitted while processing the request. Each warning is an object with a human-readable `message`. When there are no warnings to report, this field is omitted from the `metadata` object entirely.\n"
+          )
+      })
+      .describe(
+        "Additional metadata about the transcription returned on the `Transcript` object under `metadata`. Only present when there is information to report — when all of its fields would be empty, the `metadata` object is omitted from the response entirely.\n"
+      )
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Additional metadata about the transcription, including any warnings emitted while processing the request. Only present when there is information to report; if no fields would be populated, `metadata` is omitted from the response entirely.\n"
+      ),
     multichannel: zod
       .boolean()
       .nullish()
@@ -2776,12 +2986,20 @@ export const getTranscriptResponse = zod
             "email_address",
             "event",
             "filename",
+            "gender",
             "gender_sexuality",
             "healthcare_number",
             "injury",
             "ip_address",
             "language",
             "location",
+            "location_address",
+            "location_address_street",
+            "location_city",
+            "location_coordinate",
+            "location_country",
+            "location_state",
+            "location_zip",
             "marital_status",
             "medical_condition",
             "medical_process",
@@ -2790,6 +3008,7 @@ export const getTranscriptResponse = zod
             "number_sequence",
             "occupation",
             "organization",
+            "organization_medical_facility",
             "passport_number",
             "password",
             "person_age",
@@ -2798,6 +3017,7 @@ export const getTranscriptResponse = zod
             "physical_attribute",
             "political_affiliation",
             "religion",
+            "sexuality",
             "statistics",
             "time",
             "url",
@@ -2806,7 +3026,9 @@ export const getTranscriptResponse = zod
             "vehicle_id",
             "zodiac_sign"
           ])
-          .describe("The type of PII to redact")
+          .describe(
+            "The type of PII to redact. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for the full list of policies and their descriptions."
+          )
       )
       .nullish()
       .describe(
@@ -2816,7 +3038,13 @@ export const getTranscriptResponse = zod
       .enum(["entity_name", "hash"])
       .optional()
       .describe(
-        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details."
+        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for more details."
+      ),
+    redact_pii_return_unredacted: zod
+      .boolean()
+      .nullish()
+      .describe(
+        "Whether the original unredacted transcript was also returned alongside the redacted one. When `true`, the response includes `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
       ),
     sentiment_analysis: zod
       .boolean()
@@ -3055,23 +3283,23 @@ export const getTranscriptResponse = zod
       .string()
       .nullish()
       .describe(
-        "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
+        "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
       ),
     summary_type: zod
       .string()
       .nullish()
       .describe(
-        "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
+        "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
       ),
     remove_audio_tags: zod
-      .enum(["all"])
+      .enum(["all", "speaker"])
       .describe(
-        "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       )
       .or(zod.null())
       .optional()
       .describe(
-        "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       ),
     temperature: zod
       .number()
@@ -3080,6 +3308,12 @@ export const getTranscriptResponse = zod
         "The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n"
       ),
     text: zod.string().nullish().describe("The textual transcript of your media file"),
+    unredacted_text: zod
+      .string()
+      .nullish()
+      .describe(
+        "The original textual transcript of your media file before PII redaction was applied. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `text` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+      ),
     throttled: zod
       .boolean()
       .nullish()
@@ -3146,6 +3380,66 @@ export const getTranscriptResponse = zod
       .describe(
         "When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) for more information.\n"
       ),
+    unredacted_utterances: zod
+      .array(
+        zod.object({
+          confidence: zod
+            .number()
+            .describe("The confidence score for the transcript of this utterance"),
+          start: zod
+            .number()
+            .describe("The starting time, in milliseconds, of the utterance in the audio file"),
+          end: zod
+            .number()
+            .describe("The ending time, in milliseconds, of the utterance in the audio file"),
+          text: zod.string().describe("The text for this utterance"),
+          words: zod
+            .array(
+              zod.object({
+                confidence: zod
+                  .number()
+                  .describe("The confidence score for the transcript of this word"),
+                start: zod.number().describe("The starting time, in milliseconds, for the word"),
+                end: zod.number().describe("The ending time, in milliseconds, for the word"),
+                text: zod.string().describe("The text of the word"),
+                channel: zod
+                  .string()
+                  .nullish()
+                  .describe(
+                    "The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+                  ),
+                speaker: zod
+                  .string()
+                  .nullable()
+                  .describe(
+                    "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
+                  )
+              })
+            )
+            .describe("The words in the utterance."),
+          channel: zod
+            .string()
+            .nullish()
+            .describe(
+              "The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+            ),
+          speaker: zod
+            .string()
+            .describe(
+              'The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc.'
+            ),
+          translated_texts: zod
+            .record(zod.string(), zod.string())
+            .optional()
+            .describe(
+              'Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.'
+            )
+        })
+      )
+      .nullish()
+      .describe(
+        "The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+      ),
     webhook_auth: zod
       .boolean()
       .describe(
@@ -3193,6 +3487,31 @@ export const getTranscriptResponse = zod
       .nullish()
       .describe(
         "An array of temporally-sequential word objects, one for each word in the transcript.\n"
+      ),
+    unredacted_words: zod
+      .array(
+        zod.object({
+          confidence: zod.number().describe("The confidence score for the transcript of this word"),
+          start: zod.number().describe("The starting time, in milliseconds, for the word"),
+          end: zod.number().describe("The ending time, in milliseconds, for the word"),
+          text: zod.string().describe("The text of the word"),
+          channel: zod
+            .string()
+            .nullish()
+            .describe(
+              "The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+            ),
+          speaker: zod
+            .string()
+            .nullable()
+            .describe(
+              "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
+            )
+        })
+      )
+      .nullish()
+      .describe(
+        "The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
       ),
     acoustic_model: zod
       .string()
@@ -3450,7 +3769,7 @@ export const deleteTranscriptResponse = zod
       .boolean()
       .nullish()
       .describe(
-        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false'
+        'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2.'
       ),
     domain: zod
       .string()
@@ -3479,12 +3798,20 @@ export const deleteTranscriptResponse = zod
                 "email_address",
                 "event",
                 "filename",
+                "gender",
                 "gender_sexuality",
                 "healthcare_number",
                 "injury",
                 "ip_address",
                 "language",
                 "location",
+                "location_address",
+                "location_address_street",
+                "location_city",
+                "location_coordinate",
+                "location_country",
+                "location_state",
+                "location_zip",
                 "marital_status",
                 "medical_condition",
                 "medical_process",
@@ -3493,6 +3820,7 @@ export const deleteTranscriptResponse = zod
                 "number_sequence",
                 "occupation",
                 "organization",
+                "organization_medical_facility",
                 "passport_number",
                 "password",
                 "person_age",
@@ -3501,6 +3829,7 @@ export const deleteTranscriptResponse = zod
                 "physical_attribute",
                 "political_affiliation",
                 "religion",
+                "sexuality",
                 "statistics",
                 "time",
                 "url",
@@ -3885,6 +4214,37 @@ export const deleteTranscriptResponse = zod
       .describe(
         "Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection)."
       ),
+    metadata: zod
+      .object({
+        domain_used: zod
+          .string()
+          .nullish()
+          .describe(
+            'The domain-specific model that was applied to the transcription (for example, `"medical-v1"` when [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was applied), or `null` if no domain-specific model was used. Always present when `metadata` is present.\n'
+          ),
+        warnings: zod
+          .array(
+            zod
+              .object({
+                message: zod.string().describe("A human-readable description of the warning.")
+              })
+              .describe(
+                "A warning message emitted while processing a transcription request. Warnings are surfaced on the transcript response under `metadata.warnings`.\n"
+              )
+          )
+          .optional()
+          .describe(
+            "Warning messages emitted while processing the request. Each warning is an object with a human-readable `message`. When there are no warnings to report, this field is omitted from the `metadata` object entirely.\n"
+          )
+      })
+      .describe(
+        "Additional metadata about the transcription returned on the `Transcript` object under `metadata`. Only present when there is information to report — when all of its fields would be empty, the `metadata` object is omitted from the response entirely.\n"
+      )
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Additional metadata about the transcription, including any warnings emitted while processing the request. Only present when there is information to report; if no fields would be populated, `metadata` is omitted from the response entirely.\n"
+      ),
     multichannel: zod
       .boolean()
       .nullish()
@@ -3962,12 +4322,20 @@ export const deleteTranscriptResponse = zod
             "email_address",
             "event",
             "filename",
+            "gender",
             "gender_sexuality",
             "healthcare_number",
             "injury",
             "ip_address",
             "language",
             "location",
+            "location_address",
+            "location_address_street",
+            "location_city",
+            "location_coordinate",
+            "location_country",
+            "location_state",
+            "location_zip",
             "marital_status",
             "medical_condition",
             "medical_process",
@@ -3976,6 +4344,7 @@ export const deleteTranscriptResponse = zod
             "number_sequence",
             "occupation",
             "organization",
+            "organization_medical_facility",
             "passport_number",
             "password",
             "person_age",
@@ -3984,6 +4353,7 @@ export const deleteTranscriptResponse = zod
             "physical_attribute",
             "political_affiliation",
             "religion",
+            "sexuality",
             "statistics",
             "time",
             "url",
@@ -3992,7 +4362,9 @@ export const deleteTranscriptResponse = zod
             "vehicle_id",
             "zodiac_sign"
           ])
-          .describe("The type of PII to redact")
+          .describe(
+            "The type of PII to redact. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for the full list of policies and their descriptions."
+          )
       )
       .nullish()
       .describe(
@@ -4002,7 +4374,13 @@ export const deleteTranscriptResponse = zod
       .enum(["entity_name", "hash"])
       .optional()
       .describe(
-        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details."
+        "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for more details."
+      ),
+    redact_pii_return_unredacted: zod
+      .boolean()
+      .nullish()
+      .describe(
+        "Whether the original unredacted transcript was also returned alongside the redacted one. When `true`, the response includes `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
       ),
     sentiment_analysis: zod
       .boolean()
@@ -4241,23 +4619,23 @@ export const deleteTranscriptResponse = zod
       .string()
       .nullish()
       .describe(
-        "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
+        "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
       ),
     summary_type: zod
       .string()
       .nullish()
       .describe(
-        "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
+        "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
       ),
     remove_audio_tags: zod
-      .enum(["all"])
+      .enum(["all", "speaker"])
       .describe(
-        "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       )
       .or(zod.null())
       .optional()
       .describe(
-        "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+        'Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n'
       ),
     temperature: zod
       .number()
@@ -4266,6 +4644,12 @@ export const deleteTranscriptResponse = zod
         "The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter can only be used with the Universal-3 Pro model.\n"
       ),
     text: zod.string().nullish().describe("The textual transcript of your media file"),
+    unredacted_text: zod
+      .string()
+      .nullish()
+      .describe(
+        "The original textual transcript of your media file before PII redaction was applied. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `text` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+      ),
     throttled: zod
       .boolean()
       .nullish()
@@ -4332,6 +4716,66 @@ export const deleteTranscriptResponse = zod
       .describe(
         "When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) for more information.\n"
       ),
+    unredacted_utterances: zod
+      .array(
+        zod.object({
+          confidence: zod
+            .number()
+            .describe("The confidence score for the transcript of this utterance"),
+          start: zod
+            .number()
+            .describe("The starting time, in milliseconds, of the utterance in the audio file"),
+          end: zod
+            .number()
+            .describe("The ending time, in milliseconds, of the utterance in the audio file"),
+          text: zod.string().describe("The text for this utterance"),
+          words: zod
+            .array(
+              zod.object({
+                confidence: zod
+                  .number()
+                  .describe("The confidence score for the transcript of this word"),
+                start: zod.number().describe("The starting time, in milliseconds, for the word"),
+                end: zod.number().describe("The ending time, in milliseconds, for the word"),
+                text: zod.string().describe("The text of the word"),
+                channel: zod
+                  .string()
+                  .nullish()
+                  .describe(
+                    "The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+                  ),
+                speaker: zod
+                  .string()
+                  .nullable()
+                  .describe(
+                    "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
+                  )
+              })
+            )
+            .describe("The words in the utterance."),
+          channel: zod
+            .string()
+            .nullish()
+            .describe(
+              "The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+            ),
+          speaker: zod
+            .string()
+            .describe(
+              'The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc.'
+            ),
+          translated_texts: zod
+            .record(zod.string(), zod.string())
+            .optional()
+            .describe(
+              'Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.'
+            )
+        })
+      )
+      .nullish()
+      .describe(
+        "The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
+      ),
     webhook_auth: zod
       .boolean()
       .describe(
@@ -4379,6 +4823,31 @@ export const deleteTranscriptResponse = zod
       .nullish()
       .describe(
         "An array of temporally-sequential word objects, one for each word in the transcript.\n"
+      ),
+    unredacted_words: zod
+      .array(
+        zod.object({
+          confidence: zod.number().describe("The confidence score for the transcript of this word"),
+          start: zod.number().describe("The starting time, in milliseconds, for the word"),
+          end: zod.number().describe("The ending time, in milliseconds, for the word"),
+          text: zod.string().describe("The text of the word"),
+          channel: zod
+            .string()
+            .nullish()
+            .describe(
+              "The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially."
+            ),
+          speaker: zod
+            .string()
+            .nullable()
+            .describe(
+              "The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) is enabled, else null"
+            )
+        })
+      )
+      .nullish()
+      .describe(
+        "The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.\n"
       ),
     acoustic_model: zod
       .string()

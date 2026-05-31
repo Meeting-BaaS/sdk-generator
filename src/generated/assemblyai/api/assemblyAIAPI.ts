@@ -27,6 +27,7 @@ import type {
   TopicDetectionModelResult,
   Transcript,
   TranscriptList,
+  TranscriptMetadata,
   TranscriptParams,
   TranslationRequestBody,
   TranslationResponse,
@@ -340,6 +341,24 @@ export const getCreateTranscriptResponseTopicDetectionModelResultMock = (
   ...overrideResponse
 })
 
+export const getCreateTranscriptResponseTranscriptMetadataMock = (
+  overrideResponse: Partial<TranscriptMetadata> = {}
+): TranscriptMetadata => ({
+  ...{
+    domain_used: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.string.alpha(20), null]),
+      undefined
+    ]),
+    warnings: faker.helpers.arrayElement([
+      Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+        message: faker.string.alpha(20)
+      })),
+      undefined
+    ])
+  },
+  ...overrideResponse
+})
+
 export const getCreateTranscriptResponseTranslationRequestBodyMock = (
   overrideResponse: Partial<TranslationRequestBody> = {}
 ): TranslationRequestBody => ({
@@ -562,6 +581,10 @@ export const getCreateTranscriptResponseMock = (
     },
     undefined
   ]),
+  metadata: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([{ ...getCreateTranscriptResponseTranscriptMetadataMock() }, null]),
+    undefined
+  ]),
   multichannel: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
@@ -604,6 +627,10 @@ export const getCreateTranscriptResponseMock = (
   ]),
   redact_pii_sub: faker.helpers.arrayElement([
     faker.helpers.arrayElement(Object.values(SubstitutionPolicy)),
+    undefined
+  ]),
+  redact_pii_return_unredacted: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
   ]),
   sentiment_analysis: faker.helpers.arrayElement([
@@ -672,11 +699,19 @@ export const getCreateTranscriptResponseMock = (
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
     undefined
   ]),
+  unredacted_text: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([faker.string.alpha(20), null]),
+    undefined
+  ]),
   throttled: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
   ]),
   utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
+  unredacted_utterances: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([[], null]),
+    undefined
+  ]),
   webhook_auth: faker.datatype.boolean(),
   webhook_auth_header_name: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
@@ -688,6 +723,7 @@ export const getCreateTranscriptResponseMock = (
   ]),
   webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]),
   words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
+  unredacted_words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
   acoustic_model: faker.string.alpha(20),
   custom_topics: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
@@ -825,6 +861,24 @@ export const getGetTranscriptResponseTopicDetectionModelResultMock = (
     summary: {
       [faker.string.alphanumeric(5)]: faker.number.float()
     }
+  },
+  ...overrideResponse
+})
+
+export const getGetTranscriptResponseTranscriptMetadataMock = (
+  overrideResponse: Partial<TranscriptMetadata> = {}
+): TranscriptMetadata => ({
+  ...{
+    domain_used: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.string.alpha(20), null]),
+      undefined
+    ]),
+    warnings: faker.helpers.arrayElement([
+      Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+        message: faker.string.alpha(20)
+      })),
+      undefined
+    ])
   },
   ...overrideResponse
 })
@@ -1048,6 +1102,10 @@ export const getGetTranscriptResponseMock = (
     },
     undefined
   ]),
+  metadata: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([{ ...getGetTranscriptResponseTranscriptMetadataMock() }, null]),
+    undefined
+  ]),
   multichannel: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
@@ -1090,6 +1148,10 @@ export const getGetTranscriptResponseMock = (
   ]),
   redact_pii_sub: faker.helpers.arrayElement([
     faker.helpers.arrayElement(Object.values(SubstitutionPolicy)),
+    undefined
+  ]),
+  redact_pii_return_unredacted: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
   ]),
   sentiment_analysis: faker.helpers.arrayElement([
@@ -1158,11 +1220,19 @@ export const getGetTranscriptResponseMock = (
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
     undefined
   ]),
+  unredacted_text: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([faker.string.alpha(20), null]),
+    undefined
+  ]),
   throttled: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
   ]),
   utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
+  unredacted_utterances: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([[], null]),
+    undefined
+  ]),
   webhook_auth: faker.datatype.boolean(),
   webhook_auth_header_name: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
@@ -1174,6 +1244,7 @@ export const getGetTranscriptResponseMock = (
   ]),
   webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]),
   words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
+  unredacted_words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
   acoustic_model: faker.string.alpha(20),
   custom_topics: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
@@ -1284,6 +1355,24 @@ export const getDeleteTranscriptResponseTopicDetectionModelResultMock = (
     summary: {
       [faker.string.alphanumeric(5)]: faker.number.float()
     }
+  },
+  ...overrideResponse
+})
+
+export const getDeleteTranscriptResponseTranscriptMetadataMock = (
+  overrideResponse: Partial<TranscriptMetadata> = {}
+): TranscriptMetadata => ({
+  ...{
+    domain_used: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.string.alpha(20), null]),
+      undefined
+    ]),
+    warnings: faker.helpers.arrayElement([
+      Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+        message: faker.string.alpha(20)
+      })),
+      undefined
+    ])
   },
   ...overrideResponse
 })
@@ -1510,6 +1599,10 @@ export const getDeleteTranscriptResponseMock = (
     },
     undefined
   ]),
+  metadata: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([{ ...getDeleteTranscriptResponseTranscriptMetadataMock() }, null]),
+    undefined
+  ]),
   multichannel: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
@@ -1552,6 +1645,10 @@ export const getDeleteTranscriptResponseMock = (
   ]),
   redact_pii_sub: faker.helpers.arrayElement([
     faker.helpers.arrayElement(Object.values(SubstitutionPolicy)),
+    undefined
+  ]),
+  redact_pii_return_unredacted: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
   ]),
   sentiment_analysis: faker.helpers.arrayElement([
@@ -1620,11 +1717,19 @@ export const getDeleteTranscriptResponseMock = (
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
     undefined
   ]),
+  unredacted_text: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([faker.string.alpha(20), null]),
+    undefined
+  ]),
   throttled: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),
     undefined
   ]),
   utterances: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
+  unredacted_utterances: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([[], null]),
+    undefined
+  ]),
   webhook_auth: faker.datatype.boolean(),
   webhook_auth_header_name: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.string.alpha(20), null]),
@@ -1636,6 +1741,7 @@ export const getDeleteTranscriptResponseMock = (
   ]),
   webhook_url: faker.helpers.arrayElement([faker.internet.url(), undefined]),
   words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
+  unredacted_words: faker.helpers.arrayElement([faker.helpers.arrayElement([[], null]), undefined]),
   acoustic_model: faker.string.alpha(20),
   custom_topics: faker.helpers.arrayElement([
     faker.helpers.arrayElement([faker.datatype.boolean(), null]),

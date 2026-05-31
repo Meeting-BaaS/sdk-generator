@@ -7,6 +7,8 @@
  */
 
 export type TranscriptionConfigTranscriptFilteringConfigReplacementsItem = {
+  /** The text or pattern identified to be replaced. */
   from: string
+  /** The corrected or formatted string to appear in the transcript. */
   to: string
 }

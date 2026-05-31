@@ -10,11 +10,18 @@
  * Represents a segment of text and its associated sentiment.
  */
 export interface SentimentSegment {
+  /** Represents the transcript of the analysed segment */
   text?: string
-  start_time?: number
-  end_time?: number
+  /** The assigned sentiment to the segment, which can be positive, neutral or negative */
   sentiment?: string
+  /** The timestamp corresponding to the beginning of the transcription segment */
+  start_time?: number
+  /** The timestamp corresponding to the end of the transcription segment */
+  end_time?: number
+  /** The speaker label for the segment, if speaker diarization is enabled */
   speaker?: string
+  /** The channel label for the segment, if channel diarization is enabled */
   channel?: string
+  /** A confidence score in the range of 0-1 */
   confidence?: number
 }

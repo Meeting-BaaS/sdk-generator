@@ -9,8 +9,19 @@ import type { SummarizationConfigContentType } from "./summarizationConfigConten
 import type { SummarizationConfigSummaryLength } from "./summarizationConfigSummaryLength"
 import type { SummarizationConfigSummaryType } from "./summarizationConfigSummaryType"
 
+/**
+ * Configuration options for summarization.
+ */
 export interface SummarizationConfig {
+  /** Choose from three options:
+- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.
+- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.
+- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.
+ */
   content_type?: SummarizationConfigContentType
+  /** Determines the depth of the summary:
+- `brief` - Provides a succinct summary, condensing the content into just a few sentences.
+- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each. */
   summary_length?: SummarizationConfigSummaryLength
   summary_type?: SummarizationConfigSummaryType
 }

@@ -14,6 +14,7 @@ export type RealtimeSessionCreateResponseGAModel =
   | string
   | "gpt-realtime"
   | "gpt-realtime-1.5"
+  | "gpt-realtime-2"
   | "gpt-realtime-2025-08-28"
   | "gpt-4o-realtime-preview"
   | "gpt-4o-realtime-preview-2024-10-01"

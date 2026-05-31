@@ -4,12 +4,21 @@
  * Soniox Public API
  * OpenAPI spec version: 1.0.0
  */
+
+import type { ApiErrorMoreInfo } from "./apiErrorMoreInfo"
 import type { ApiErrorValidationError } from "./apiErrorValidationError"
 
 export interface ApiError {
+  /** HTTP status code of the response. */
   status_code: number
+  /** Machine-readable error category. Stable across releases — safe to use in control flow. Examples: 'invalid_request', 'unauthenticated', 'limit_exceeded', 'model_not_available', 'internal_error'. */
   error_type: string
+  /** Human-readable error message. */
   message: string
+  /** List of per-field validation errors. Populated only when error_type is 'invalid_request' and the failure came from request-body validation. */
   validation_errors: ApiErrorValidationError[]
+  /** Unique identifier for this request. Include it when contacting support at support@soniox.com so we can look up server-side logs. */
   request_id: string
+  /** Optional URL with additional information about this error. Points to the Soniox documentation for errors a developer can resolve via code or configuration. */
+  more_info?: ApiErrorMoreInfo
 }

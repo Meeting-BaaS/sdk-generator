@@ -6,6 +6,11 @@
  * OpenAPI spec version: 2.0.0
  */
 
+/**
+ * Determines the depth of the summary:
+- `brief` - Provides a succinct summary, condensing the content into just a few sentences.
+- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each.
+ */
 export type SummarizationConfigSummaryLength =
   (typeof SummarizationConfigSummaryLength)[keyof typeof SummarizationConfigSummaryLength]
 

@@ -604,6 +604,113 @@ export const getModelsResponse = zod.object({
 })
 
 /**
+ * Retrieves list of available TTS models and their attributes.
+ * @summary Get TTS models
+ */
+export const getTtsModelsResponse = zod.object({
+  models: zod
+    .array(
+      zod.object({
+        id: zod.string().describe("Unique identifier of the model."),
+        aliased_model_id: zod
+          .string()
+          .or(zod.null())
+          .describe("If this is an alias, the id of the aliased model."),
+        name: zod.string().describe("Name of the model."),
+        voices: zod
+          .array(
+            zod.object({
+              id: zod.string().describe("Unique identifier of the voice."),
+              description: zod.string().describe("Description of the TTS voice."),
+              gender: zod.enum(["male", "female", "neutral"])
+            })
+          )
+          .describe("List of available voices for this model."),
+        languages: zod
+          .array(
+            zod.object({
+              code: zod.string().describe("2-letter language code."),
+              name: zod.string().describe("Language name.")
+            })
+          )
+          .describe("List of languages supported by the model.")
+      })
+    )
+    .describe("List of available TTS models and their attributes.")
+})
+
+/**
+ * Returns per-request usage log entries for the project. The project is implied by the API key used for authentication. Filters by request end time. The window between start_time and end_time must not exceed 31 days. start_time must not be earlier than 91 days ago.
+ * @summary Get usage logs
+ */
+export const getUsageLogsQueryLimitDefault = 1000
+export const getUsageLogsQueryLimitMax = 1000
+export const getUsageLogsQuerySortDefault = "end_time_asc"
+
+export const getUsageLogsQueryParams = zod.object({
+  start_time: zod
+    .string()
+    .describe("Start of the time window (inclusive). Filters by request end time."),
+  end_time: zod
+    .string()
+    .describe("End of the time window (exclusive). Filters by request end time."),
+  limit: zod
+    .number()
+    .min(1)
+    .max(getUsageLogsQueryLimitMax)
+    .default(getUsageLogsQueryLimitDefault)
+    .describe("Maximum number of usage log entries to return."),
+  sort: zod
+    .enum(["end_time_asc", "end_time_desc"])
+    .default(getUsageLogsQuerySortDefault)
+    .describe(
+      "Sort order by end_time.Use `end_time_desc` to get the most recent entries first. When paginating, pass the same `sort` value alongside the cursor."
+    ),
+  cursor: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe("Pagination cursor for the next page of results.")
+})
+
+export const getUsageLogsResponse = zod.object({
+  usage_logs: zod
+    .array(
+      zod.object({
+        uuid: zod.string().uuid().describe("Unique identifier of the request."),
+        request_scope: zod.string().describe("Scope of the request (api / playground)."),
+        client_reference_id: zod
+          .string()
+          .describe("Client reference ID supplied on the original request. Empty string if none."),
+        model: zod.string().describe("Model identifier."),
+        start_time: zod.string().datetime({}).describe("When the request started."),
+        end_time: zod.string().datetime({}).describe("When the request ended."),
+        input_text_tokens: zod.number(),
+        input_audio_tokens: zod.number(),
+        input_audio_duration_ms: zod.number(),
+        output_text_tokens: zod.number(),
+        output_audio_tokens: zod.number(),
+        output_audio_duration_ms: zod.number(),
+        cost_usd: zod.string(),
+        input_cost_usd: zod.string(),
+        input_text_cost_usd: zod.string(),
+        input_audio_cost_usd: zod.string(),
+        output_cost_usd: zod.string(),
+        output_text_cost_usd: zod.string(),
+        output_audio_cost_usd: zod.string()
+      })
+    )
+    .describe("Per-request usage log entries ordered by end_time, uuid (per `sort`)."),
+  next_page_cursor: zod
+    .string()
+    .or(zod.null())
+    .optional()
+    .describe(
+      "A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available."
+    )
+})
+
+/**
  * Creates a short-lived API key for specific temporary use cases. The key will automatically expire after the specified duration.
  * @summary Create temporary API key
  */
@@ -612,7 +719,7 @@ export const createTemporaryApiKeyBodyClientReferenceIdMaxOne = 256
 export const createTemporaryApiKeyBodyMaxSessionDurationSecondsMaxOne = 18000
 
 export const createTemporaryApiKeyBody = zod.object({
-  usage_type: zod.enum(["transcribe_websocket"]),
+  usage_type: zod.enum(["transcribe_websocket", "tts_rt"]),
   expires_in_seconds: zod
     .number()
     .min(1)
@@ -638,4 +745,39 @@ export const createTemporaryApiKeyBody = zod.object({
     .describe(
       "Maximum WebSocket connection duration in seconds. If exceeded, the connection will be dropped. If not set, no limit is applied."
     )
+})
+
+/**
+ * Current concurrent counts plus configured concurrency limits for the project and its organization. Region-scoped.
+ * @summary Get current concurrent sessions and configured limits
+ */
+export const getConcurrencyLimitsResponse = zod.object({
+  project: zod.object({
+    current: zod
+      .object({
+        transcribe_concurrent: zod.number(),
+        tts_concurrent: zod.number()
+      })
+      .describe("Live counts read from Redis"),
+    limits: zod
+      .object({
+        transcribe_concurrent: zod.number().or(zod.null()),
+        tts_concurrent: zod.number().or(zod.null())
+      })
+      .describe("Configured limits")
+  }),
+  organization: zod.object({
+    current: zod
+      .object({
+        transcribe_concurrent: zod.number(),
+        tts_concurrent: zod.number()
+      })
+      .describe("Live counts read from Redis"),
+    limits: zod
+      .object({
+        transcribe_concurrent: zod.number().or(zod.null()),
+        tts_concurrent: zod.number().or(zod.null())
+      })
+      .describe("Configured limits")
+  })
 })

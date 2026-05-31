@@ -14,6 +14,7 @@ import type { RecognitionResult } from "./recognitionResult"
 import type { RetrieveTranscriptResponseAudioEventSummary } from "./retrieveTranscriptResponseAudioEventSummary"
 import type { RetrieveTranscriptResponseTranslations } from "./retrieveTranscriptResponseTranslations"
 import type { SentimentAnalysisResult } from "./sentimentAnalysisResult"
+import type { SpeakersResultItem } from "./speakersResultItem"
 import type { SummarizationResult } from "./summarizationResult"
 import type { TopicDetectionResult } from "./topicDetectionResult"
 
@@ -23,6 +24,8 @@ export interface RetrieveTranscriptResponse {
   job: JobInfo
   metadata: RecognitionMetadata
   results: RecognitionResult[]
+  /** List of unique speaker identifiers detected in the transcript. */
+  speakers?: SpeakersResultItem[]
   /** Translations of the transcript into other languages. It is a map of ISO language codes to arrays of translated sentences. Configured using `translation_config`. */
   translations?: RetrieveTranscriptResponseTranslations
   summary?: SummarizationResult

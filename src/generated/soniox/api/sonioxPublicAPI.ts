@@ -14,6 +14,7 @@ import type {
   CreateTemporaryApiKeyResponse,
   CreateTranscriptionPayload,
   File,
+  GetConcurrencyLimitsResponse,
   GetFilesCountResponse,
   GetFilesParams,
   GetFilesResponse,
@@ -21,11 +22,14 @@ import type {
   GetTranscriptionsCountResponse,
   GetTranscriptionsParams,
   GetTranscriptionsResponse,
+  GetTTSModelsResponse,
+  GetUsageLogsParams,
+  GetUsageLogsResponse,
   Transcription,
   TranscriptionTranscript,
   UploadFileBody
 } from "../schema"
-import { TranscriptionMode, TranscriptionStatus } from "../schema"
+import { TranscriptionMode, TranscriptionStatus, TTSVoiceGender } from "../schema"
 
 /**
  * Retrieves list of uploaded files.
@@ -172,6 +176,30 @@ export const getModels = <TData = AxiosResponse<GetModelsResponse>>(
 }
 
 /**
+ * Retrieves list of available TTS models and their attributes.
+ * @summary Get TTS models
+ */
+export const getTtsModels = <TData = AxiosResponse<GetTTSModelsResponse>>(
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get("/v1/tts-models", options)
+}
+
+/**
+ * Returns per-request usage log entries for the project. The project is implied by the API key used for authentication. Filters by request end time. The window between start_time and end_time must not exceed 31 days. start_time must not be earlier than 91 days ago.
+ * @summary Get usage logs
+ */
+export const getUsageLogs = <TData = AxiosResponse<GetUsageLogsResponse>>(
+  params: GetUsageLogsParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get("/v1/usage-logs", {
+    ...options,
+    params: { ...params, ...options?.params }
+  })
+}
+
+/**
  * Creates a short-lived API key for specific temporary use cases. The key will automatically expire after the specified duration.
  * @summary Create temporary API key
  */
@@ -180,6 +208,16 @@ export const createTemporaryApiKey = <TData = AxiosResponse<CreateTemporaryApiKe
   options?: AxiosRequestConfig
 ): Promise<TData> => {
   return axios.post("/v1/auth/temporary-api-key", createTemporaryApiKeyPayload, options)
+}
+
+/**
+ * Current concurrent counts plus configured concurrency limits for the project and its organization. Region-scoped.
+ * @summary Get current concurrent sessions and configured limits
+ */
+export const getConcurrencyLimits = <TData = AxiosResponse<GetConcurrencyLimitsResponse>>(
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get("/v1/concurrency-limits", options)
 }
 
 export type GetFilesResult = AxiosResponse<GetFilesResponse>
@@ -194,7 +232,10 @@ export type GetTranscriptionResult = AxiosResponse<Transcription>
 export type DeleteTranscriptionResult = AxiosResponse<void>
 export type GetTranscriptionTranscriptResult = AxiosResponse<TranscriptionTranscript>
 export type GetModelsResult = AxiosResponse<GetModelsResponse>
+export type GetTtsModelsResult = AxiosResponse<GetTTSModelsResponse>
+export type GetUsageLogsResult = AxiosResponse<GetUsageLogsResponse>
 export type CreateTemporaryApiKeyResult = AxiosResponse<CreateTemporaryApiKeyResponse>
+export type GetConcurrencyLimitsResult = AxiosResponse<GetConcurrencyLimitsResponse>
 
 export const getGetFilesResponseMock = (
   overrideResponse: Partial<GetFilesResponse> = {}
@@ -528,11 +569,105 @@ export const getGetModelsResponseMock = (
   ...overrideResponse
 })
 
+export const getGetTtsModelsResponseMock = (
+  overrideResponse: Partial<GetTTSModelsResponse> = {}
+): GetTTSModelsResponse => ({
+  models: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+    () => ({
+      id: faker.string.alpha(20),
+      aliased_model_id: faker.helpers.arrayElement([faker.string.alpha(20), null]),
+      name: faker.string.alpha(20),
+      voices: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+        () => ({
+          id: faker.string.alpha(20),
+          description: faker.string.alpha(20),
+          gender: faker.helpers.arrayElement(Object.values(TTSVoiceGender))
+        })
+      ),
+      languages: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+        () => ({ code: faker.string.alpha(20), name: faker.string.alpha(20) })
+      )
+    })
+  ),
+  ...overrideResponse
+})
+
+export const getGetUsageLogsResponseMock = (
+  overrideResponse: Partial<GetUsageLogsResponse> = {}
+): GetUsageLogsResponse => ({
+  usage_logs: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+    () => ({
+      uuid: faker.string.uuid(),
+      request_scope: faker.string.alpha(20),
+      client_reference_id: faker.string.alpha(20),
+      model: faker.string.alpha(20),
+      start_time: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      end_time: `${faker.date.past().toISOString().split(".")[0]}Z`,
+      input_text_tokens: faker.number.int({ min: undefined, max: undefined }),
+      input_audio_tokens: faker.number.int({ min: undefined, max: undefined }),
+      input_audio_duration_ms: faker.number.int({ min: undefined, max: undefined }),
+      output_text_tokens: faker.number.int({ min: undefined, max: undefined }),
+      output_audio_tokens: faker.number.int({ min: undefined, max: undefined }),
+      output_audio_duration_ms: faker.number.int({ min: undefined, max: undefined }),
+      cost_usd: faker.string.alpha(20),
+      input_cost_usd: faker.string.alpha(20),
+      input_text_cost_usd: faker.string.alpha(20),
+      input_audio_cost_usd: faker.string.alpha(20),
+      output_cost_usd: faker.string.alpha(20),
+      output_text_cost_usd: faker.string.alpha(20),
+      output_audio_cost_usd: faker.string.alpha(20)
+    })
+  ),
+  next_page_cursor: faker.helpers.arrayElement([
+    faker.helpers.arrayElement([faker.string.alpha(20), null]),
+    undefined
+  ]),
+  ...overrideResponse
+})
+
 export const getCreateTemporaryApiKeyResponseMock = (
   overrideResponse: Partial<CreateTemporaryApiKeyResponse> = {}
 ): CreateTemporaryApiKeyResponse => ({
   api_key: faker.string.alpha(20),
   expires_at: `${faker.date.past().toISOString().split(".")[0]}Z`,
+  ...overrideResponse
+})
+
+export const getGetConcurrencyLimitsResponseMock = (
+  overrideResponse: Partial<GetConcurrencyLimitsResponse> = {}
+): GetConcurrencyLimitsResponse => ({
+  project: {
+    current: {
+      transcribe_concurrent: faker.number.int({ min: undefined, max: undefined }),
+      tts_concurrent: faker.number.int({ min: undefined, max: undefined })
+    },
+    limits: {
+      transcribe_concurrent: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        null
+      ]),
+      tts_concurrent: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        null
+      ])
+    }
+  },
+  organization: {
+    current: {
+      transcribe_concurrent: faker.number.int({ min: undefined, max: undefined }),
+      tts_concurrent: faker.number.int({ min: undefined, max: undefined })
+    },
+    limits: {
+      transcribe_concurrent: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        null
+      ]),
+      tts_concurrent: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        null
+      ])
+    }
+  },
   ...overrideResponse
 })
 
@@ -793,6 +928,52 @@ export const getGetModelsMockHandler = (
   })
 }
 
+export const getGetTtsModelsMockHandler = (
+  overrideResponse?:
+    | GetTTSModelsResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<GetTTSModelsResponse> | GetTTSModelsResponse)
+) => {
+  return http.get("https://api.soniox.com/v1/tts-models", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetTtsModelsResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
+  })
+}
+
+export const getGetUsageLogsMockHandler = (
+  overrideResponse?:
+    | GetUsageLogsResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<GetUsageLogsResponse> | GetUsageLogsResponse)
+) => {
+  return http.get("https://api.soniox.com/v1/usage-logs", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetUsageLogsResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
+  })
+}
+
 export const getCreateTemporaryApiKeyMockHandler = (
   overrideResponse?:
     | CreateTemporaryApiKeyResponse
@@ -815,6 +996,29 @@ export const getCreateTemporaryApiKeyMockHandler = (
     )
   })
 }
+
+export const getGetConcurrencyLimitsMockHandler = (
+  overrideResponse?:
+    | GetConcurrencyLimitsResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<GetConcurrencyLimitsResponse> | GetConcurrencyLimitsResponse)
+) => {
+  return http.get("https://api.soniox.com/v1/concurrency-limits", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetConcurrencyLimitsResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
+  })
+}
 export const getSonioxPublicAPIMock = () => [
   getGetFilesMockHandler(),
   getUploadFileMockHandler(),
@@ -828,5 +1032,8 @@ export const getSonioxPublicAPIMock = () => [
   getDeleteTranscriptionMockHandler(),
   getGetTranscriptionTranscriptMockHandler(),
   getGetModelsMockHandler(),
-  getCreateTemporaryApiKeyMockHandler()
+  getGetTtsModelsMockHandler(),
+  getGetUsageLogsMockHandler(),
+  getCreateTemporaryApiKeyMockHandler(),
+  getGetConcurrencyLimitsMockHandler()
 ]

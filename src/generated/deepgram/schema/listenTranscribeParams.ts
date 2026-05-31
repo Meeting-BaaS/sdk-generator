@@ -11,6 +11,7 @@ import type { V1ListenPostParametersCustomIntentMode } from "./v1ListenPostParam
 import type { V1ListenPostParametersCustomTopic } from "./v1ListenPostParametersCustomTopic"
 import type { V1ListenPostParametersCustomTopicMode } from "./v1ListenPostParametersCustomTopicMode"
 import type { V1ListenPostParametersDetectLanguage } from "./v1ListenPostParametersDetectLanguage"
+import type { V1ListenPostParametersDiarizeModel } from "./v1ListenPostParametersDiarizeModel"
 import type { V1ListenPostParametersEncoding } from "./v1ListenPostParametersEncoding"
 import type { V1ListenPostParametersExtra } from "./v1ListenPostParametersExtra"
 import type { V1ListenPostParametersKeywords } from "./v1ListenPostParametersKeywords"
@@ -83,6 +84,10 @@ export type ListenTranscribeParams = {
    * Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0
    */
   diarize?: boolean
+  /**
+   * Select and enable a specific batch diarization model version. If specifying this parameter, you should not set the deprecated `diarize=true` parameter. Not accepted on streaming requests.
+   */
+  diarize_model?: V1ListenPostParametersDiarizeModel
   /**
    * Dictation mode for controlling formatting with dictated speech
    */

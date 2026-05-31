@@ -33,12 +33,14 @@ import type { TranscriptLanguageConfidence } from "./transcriptLanguageConfidenc
 import type { TranscriptLanguageConfidenceThreshold } from "./transcriptLanguageConfidenceThreshold"
 import type { TranscriptLanguageDetection } from "./transcriptLanguageDetection"
 import type { TranscriptLanguageDetectionOptions } from "./transcriptLanguageDetectionOptions"
+import type { TranscriptMetadataProperty } from "./transcriptMetadataProperty"
 import type { TranscriptMultichannel } from "./transcriptMultichannel"
 import type { TranscriptPunctuate } from "./transcriptPunctuate"
 import type { TranscriptRedactPiiAudio } from "./transcriptRedactPiiAudio"
 import type { TranscriptRedactPiiAudioOptions } from "./transcriptRedactPiiAudioOptions"
 import type { TranscriptRedactPiiAudioQuality } from "./transcriptRedactPiiAudioQuality"
 import type { TranscriptRedactPiiPolicies } from "./transcriptRedactPiiPolicies"
+import type { TranscriptRedactPiiReturnUnredacted } from "./transcriptRedactPiiReturnUnredacted"
 import type { TranscriptRemoveAudioTagsProperty } from "./transcriptRemoveAudioTagsProperty"
 import type { TranscriptSentimentAnalysis } from "./transcriptSentimentAnalysis"
 import type { TranscriptSentimentAnalysisResults } from "./transcriptSentimentAnalysisResults"
@@ -57,6 +59,9 @@ import type { TranscriptTemperature } from "./transcriptTemperature"
 import type { TranscriptText } from "./transcriptText"
 import type { TranscriptThrottled } from "./transcriptThrottled"
 import type { TranscriptTranslatedTexts } from "./transcriptTranslatedTexts"
+import type { TranscriptUnredactedText } from "./transcriptUnredactedText"
+import type { TranscriptUnredactedUtterances } from "./transcriptUnredactedUtterances"
+import type { TranscriptUnredactedWords } from "./transcriptUnredactedWords"
 import type { TranscriptUtterances } from "./transcriptUtterances"
 import type { TranscriptWebhookAuthHeaderName } from "./transcriptWebhookAuthHeaderName"
 import type { TranscriptWebhookStatusCode } from "./transcriptWebhookStatusCode"
@@ -100,7 +105,7 @@ See [Content moderation](https://www.assemblyai.com/docs/content-moderation) for
   content_safety_labels?: TranscriptContentSafetyLabels
   /** Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/correct-spelling-of-terms) for more details. */
   custom_spelling?: TranscriptCustomSpellingProperty
-  /** Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false */
+  /** Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2. */
   disfluencies?: TranscriptDisfluencies
   /** The domain-specific model applied to the transcript. When set to `"medical-v1"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medical terminology.
    */
@@ -148,6 +153,9 @@ See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-
   language_detection?: TranscriptLanguageDetection
   /** Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection). */
   language_detection_options?: TranscriptLanguageDetectionOptions
+  /** Additional metadata about the transcription, including any warnings emitted while processing the request. Only present when there is information to report; if no fields would be populated, `metadata` is omitted from the response entirely.
+   */
+  metadata?: TranscriptMetadataProperty
   /** Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) was enabled in the transcription request, either true or false */
   multichannel?: TranscriptMultichannel
   /** Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.
@@ -177,6 +185,9 @@ See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more info
   redact_pii_policies?: TranscriptRedactPiiPolicies
   /** The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details. */
   redact_pii_sub?: SubstitutionPolicy
+  /** Whether the original unredacted transcript was also returned alongside the redacted one. When `true`, the response includes `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.
+   */
+  redact_pii_return_unredacted?: TranscriptRedactPiiReturnUnredacted
   /** Whether [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/analyze-sentiment-of-speech) is enabled, can be true or false */
   sentiment_analysis?: TranscriptSentimentAnalysis
   /** An array of results for the Sentiment Analysis model, if it is enabled.
@@ -209,12 +220,12 @@ Note: This parameter is only supported for the Universal-2 model.
   /** The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details. */
   summary?: TranscriptSummary
   /** The Summarization model used to generate the summary,
-if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.
+if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.
  */
   summary_model?: TranscriptSummaryModel
-  /** The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details. */
+  /** The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details. */
   summary_type?: TranscriptSummaryType
-  /** Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.
+  /** Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.
 
 Note: This parameter is only supported for the Universal-3 Pro model.
  */
@@ -226,12 +237,18 @@ Note: This parameter can only be used with the Universal-3 Pro model.
   temperature?: TranscriptTemperature
   /** The textual transcript of your media file */
   text?: TranscriptText
+  /** The original textual transcript of your media file before PII redaction was applied. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `text` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.
+   */
+  unredacted_text?: TranscriptUnredactedText
   /** True while a request is throttled and false when a request is no longer throttled */
   throttled?: TranscriptThrottled
   /** When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
 See [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers) and [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) for more information.
  */
   utterances?: TranscriptUtterances
+  /** The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.
+   */
+  unredacted_utterances?: TranscriptUnredactedUtterances
   /** Whether [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) authentication details were provided */
   webhook_auth: boolean
   /** The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests */
@@ -244,6 +261,9 @@ See [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/lab
   /** An array of temporally-sequential word objects, one for each word in the transcript.
    */
   words?: TranscriptWords
+  /** The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more information.
+   */
+  unredacted_words?: TranscriptUnredactedWords
   /** This parameter does not currently have any functionality attached to it. */
   acoustic_model: string
   /** This parameter does not currently have any functionality attached to it. */

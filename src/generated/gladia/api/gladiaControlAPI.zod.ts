@@ -41,10 +41,7 @@ export const preRecordedControllerInitPreRecordedJobV2BodyCustomVocabularyConfig
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -65,7 +62,7 @@ export const preRecordedControllerInitPreRecordedJobV2BodyCustomSpellingDefault 
 export const preRecordedControllerInitPreRecordedJobV2BodySentimentAnalysisDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyAudioToLlmDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyAudioToLlmConfigModelDefault =
-  "openai/gpt-3.5-turbo"
+  "openai/gpt-5.4-nano"
 export const preRecordedControllerInitPreRecordedJobV2BodyPiiRedactionDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodySentencesDefault = false
 export const preRecordedControllerInitPreRecordedJobV2BodyPunctuationEnhancedDefault = false
@@ -475,10 +472,7 @@ export const preRecordedControllerInitPreRecordedJobV2Body = zod.object({
     })
     .optional()
     .describe("**[Beta]** Translation configuration, if `translation` is enabled"),
-  summarization: zod
-    .boolean()
-    .optional()
-    .describe("**[Beta]** Enable summarization for this audio"),
+  summarization: zod.boolean().optional().describe("Enable summarization for this audio"),
   summarization_config: zod
     .object({
       type: zod
@@ -488,7 +482,7 @@ export const preRecordedControllerInitPreRecordedJobV2Body = zod.object({
         .describe("The type of summarization to apply")
     })
     .optional()
-    .describe("**[Beta]** Summarization configuration, if `summarization` is enabled"),
+    .describe("Summarization configuration, if `summarization` is enabled"),
   named_entity_recognition: zod
     .boolean()
     .optional()
@@ -506,10 +500,7 @@ export const preRecordedControllerInitPreRecordedJobV2Body = zod.object({
     .optional()
     .describe("**[Alpha]** Custom spelling configuration, if `custom_spelling` is enabled"),
   sentiment_analysis: zod.boolean().optional().describe("Enable sentiment analysis for this audio"),
-  audio_to_llm: zod
-    .boolean()
-    .optional()
-    .describe("**[Alpha]** Enable audio to llm processing for this audio"),
+  audio_to_llm: zod.boolean().optional().describe("Enable audio to LLM processing for this audio"),
   audio_to_llm_config: zod
     .object({
       prompts: zod
@@ -524,7 +515,7 @@ export const preRecordedControllerInitPreRecordedJobV2Body = zod.object({
         )
     })
     .optional()
-    .describe("**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled"),
+    .describe("Audio to LLM configuration, if `audio_to_llm` is enabled"),
   pii_redaction: zod.boolean().optional().describe("Enable PII redaction for this audio"),
   pii_redaction_config: zod
     .object({
@@ -822,10 +813,8 @@ export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestPa
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -849,7 +838,7 @@ export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestPa
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSentimentAnalysisDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsAudioToLlmDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsAudioToLlmConfigModelDefault =
-  "openai/gpt-3.5-turbo"
+  "openai/gpt-5.4-nano"
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsPiiRedactionDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsSentencesDefault = false
 export const preRecordedControllerGetPreRecordedJobsV2ResponseItemsItemRequestParamsPunctuationEnhancedDefault = false
@@ -1355,10 +1344,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
               })
               .optional()
               .describe("**[Beta]** Translation configuration, if `translation` is enabled"),
-            summarization: zod
-              .boolean()
-              .optional()
-              .describe("**[Beta]** Enable summarization for this audio"),
+            summarization: zod.boolean().optional().describe("Enable summarization for this audio"),
             summarization_config: zod
               .object({
                 type: zod
@@ -1370,7 +1356,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
                   .describe("The type of summarization to apply")
               })
               .optional()
-              .describe("**[Beta]** Summarization configuration, if `summarization` is enabled"),
+              .describe("Summarization configuration, if `summarization` is enabled"),
             named_entity_recognition: zod
               .boolean()
               .optional()
@@ -1396,7 +1382,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
             audio_to_llm: zod
               .boolean()
               .optional()
-              .describe("**[Alpha]** Enable audio to llm processing for this audio"),
+              .describe("Enable audio to LLM processing for this audio"),
             audio_to_llm_config: zod
               .object({
                 prompts: zod
@@ -1413,7 +1399,7 @@ export const preRecordedControllerGetPreRecordedJobsV2Response = zod.object({
                   )
               })
               .optional()
-              .describe("**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled"),
+              .describe("Audio to LLM configuration, if `audio_to_llm` is enabled"),
             pii_redaction: zod.boolean().optional().describe("Enable PII redaction for this audio"),
             pii_redaction_config: zod
               .object({
@@ -2902,10 +2888,8 @@ export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallba
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesDefault = false
-export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -2929,7 +2913,7 @@ export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsCustom
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSentimentAnalysisDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsAudioToLlmDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsAudioToLlmConfigModelDefault =
-  "openai/gpt-3.5-turbo"
+  "openai/gpt-5.4-nano"
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsPiiRedactionDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsSentencesDefault = false
 export const preRecordedControllerGetPreRecordedJobV2ResponseRequestParamsPunctuationEnhancedDefault = false
@@ -3425,10 +3409,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
         })
         .optional()
         .describe("**[Beta]** Translation configuration, if `translation` is enabled"),
-      summarization: zod
-        .boolean()
-        .optional()
-        .describe("**[Beta]** Enable summarization for this audio"),
+      summarization: zod.boolean().optional().describe("Enable summarization for this audio"),
       summarization_config: zod
         .object({
           type: zod
@@ -3440,7 +3421,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
             .describe("The type of summarization to apply")
         })
         .optional()
-        .describe("**[Beta]** Summarization configuration, if `summarization` is enabled"),
+        .describe("Summarization configuration, if `summarization` is enabled"),
       named_entity_recognition: zod
         .boolean()
         .optional()
@@ -3464,7 +3445,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
       audio_to_llm: zod
         .boolean()
         .optional()
-        .describe("**[Alpha]** Enable audio to llm processing for this audio"),
+        .describe("Enable audio to LLM processing for this audio"),
       audio_to_llm_config: zod
         .object({
           prompts: zod
@@ -3481,7 +3462,7 @@ export const preRecordedControllerGetPreRecordedJobV2Response = zod.object({
             )
         })
         .optional()
-        .describe("**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled"),
+        .describe("Audio to LLM configuration, if `audio_to_llm` is enabled"),
       pii_redaction: zod.boolean().optional().describe("Enable PII redaction for this audio"),
       pii_redaction_config: zod
         .object({
@@ -4907,10 +4888,7 @@ export const transcriptionControllerInitPreRecordedJobV2BodyCustomVocabularyConf
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyCallbackConfigMethodDefault = "POST"
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesDefault = false
-export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigFormatsDefault: ("srt" | "vtt")[] = ["srt"]
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerInitPreRecordedJobV2BodySubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -4932,7 +4910,7 @@ export const transcriptionControllerInitPreRecordedJobV2BodyCustomSpellingDefaul
 export const transcriptionControllerInitPreRecordedJobV2BodySentimentAnalysisDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyAudioToLlmDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyAudioToLlmConfigModelDefault =
-  "openai/gpt-3.5-turbo"
+  "openai/gpt-5.4-nano"
 export const transcriptionControllerInitPreRecordedJobV2BodyPiiRedactionDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodySentencesDefault = false
 export const transcriptionControllerInitPreRecordedJobV2BodyPunctuationEnhancedDefault = false
@@ -5346,10 +5324,7 @@ export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
     })
     .optional()
     .describe("**[Beta]** Translation configuration, if `translation` is enabled"),
-  summarization: zod
-    .boolean()
-    .optional()
-    .describe("**[Beta]** Enable summarization for this audio"),
+  summarization: zod.boolean().optional().describe("Enable summarization for this audio"),
   summarization_config: zod
     .object({
       type: zod
@@ -5359,7 +5334,7 @@ export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
         .describe("The type of summarization to apply")
     })
     .optional()
-    .describe("**[Beta]** Summarization configuration, if `summarization` is enabled"),
+    .describe("Summarization configuration, if `summarization` is enabled"),
   named_entity_recognition: zod
     .boolean()
     .optional()
@@ -5377,10 +5352,7 @@ export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
     .optional()
     .describe("**[Alpha]** Custom spelling configuration, if `custom_spelling` is enabled"),
   sentiment_analysis: zod.boolean().optional().describe("Enable sentiment analysis for this audio"),
-  audio_to_llm: zod
-    .boolean()
-    .optional()
-    .describe("**[Alpha]** Enable audio to llm processing for this audio"),
+  audio_to_llm: zod.boolean().optional().describe("Enable audio to LLM processing for this audio"),
   audio_to_llm_config: zod
     .object({
       prompts: zod
@@ -5395,7 +5367,7 @@ export const transcriptionControllerInitPreRecordedJobV2Body = zod.object({
         )
     })
     .optional()
-    .describe("**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled"),
+    .describe("Audio to LLM configuration, if `audio_to_llm` is enabled"),
   pii_redaction: zod.boolean().optional().describe("Enable PII redaction for this audio"),
   pii_redaction_config: zod
     .object({
@@ -5699,10 +5671,8 @@ export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallback
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -5726,7 +5696,7 @@ export const transcriptionControllerListV2ResponseItemsItemRequestParamsCustomSp
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSentimentAnalysisDefault = false
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsAudioToLlmDefault = false
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsAudioToLlmConfigModelDefault =
-  "openai/gpt-3.5-turbo"
+  "openai/gpt-5.4-nano"
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsPiiRedactionDefault = false
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsSentencesDefault = false
 export const transcriptionControllerListV2ResponseItemsItemRequestParamsPunctuationEnhancedDefault = false
@@ -6308,7 +6278,7 @@ export const transcriptionControllerListV2Response = zod.object({
               summarization: zod
                 .boolean()
                 .optional()
-                .describe("**[Beta]** Enable summarization for this audio"),
+                .describe("Enable summarization for this audio"),
               summarization_config: zod
                 .object({
                   type: zod
@@ -6320,7 +6290,7 @@ export const transcriptionControllerListV2Response = zod.object({
                     .describe("The type of summarization to apply")
                 })
                 .optional()
-                .describe("**[Beta]** Summarization configuration, if `summarization` is enabled"),
+                .describe("Summarization configuration, if `summarization` is enabled"),
               named_entity_recognition: zod
                 .boolean()
                 .optional()
@@ -6346,7 +6316,7 @@ export const transcriptionControllerListV2Response = zod.object({
               audio_to_llm: zod
                 .boolean()
                 .optional()
-                .describe("**[Alpha]** Enable audio to llm processing for this audio"),
+                .describe("Enable audio to LLM processing for this audio"),
               audio_to_llm_config: zod
                 .object({
                   prompts: zod
@@ -6363,7 +6333,7 @@ export const transcriptionControllerListV2Response = zod.object({
                     )
                 })
                 .optional()
-                .describe("**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled"),
+                .describe("Audio to LLM configuration, if `audio_to_llm` is enabled"),
               pii_redaction: zod
                 .boolean()
                 .optional()
@@ -9497,10 +9467,8 @@ export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallback
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesDefault = false
-export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -9524,7 +9492,7 @@ export const transcriptionControllerGetTranscriptV2ResponseRequestParamsCustomSp
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSentimentAnalysisDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsAudioToLlmDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsAudioToLlmConfigModelDefault =
-  "openai/gpt-3.5-turbo"
+  "openai/gpt-5.4-nano"
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsPiiRedactionDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsSentencesDefault = false
 export const transcriptionControllerGetTranscriptV2ResponseRequestParamsPunctuationEnhancedDefault = false
@@ -10093,10 +10061,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
           })
           .optional()
           .describe("**[Beta]** Translation configuration, if `translation` is enabled"),
-        summarization: zod
-          .boolean()
-          .optional()
-          .describe("**[Beta]** Enable summarization for this audio"),
+        summarization: zod.boolean().optional().describe("Enable summarization for this audio"),
         summarization_config: zod
           .object({
             type: zod
@@ -10108,7 +10073,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
               .describe("The type of summarization to apply")
           })
           .optional()
-          .describe("**[Beta]** Summarization configuration, if `summarization` is enabled"),
+          .describe("Summarization configuration, if `summarization` is enabled"),
         named_entity_recognition: zod
           .boolean()
           .optional()
@@ -10132,7 +10097,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
         audio_to_llm: zod
           .boolean()
           .optional()
-          .describe("**[Alpha]** Enable audio to llm processing for this audio"),
+          .describe("Enable audio to LLM processing for this audio"),
         audio_to_llm_config: zod
           .object({
             prompts: zod
@@ -10149,7 +10114,7 @@ export const transcriptionControllerGetTranscriptV2Response = zod.discriminatedU
               )
           })
           .optional()
-          .describe("**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled"),
+          .describe("Audio to LLM configuration, if `audio_to_llm` is enabled"),
         pii_redaction: zod.boolean().optional().describe("Enable PII redaction for this audio"),
         pii_redaction_config: zod
           .object({
@@ -13695,10 +13660,8 @@ export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackDef
 export const historyControllerGetListV1ResponseItemsItemRequestParamsCallbackConfigMethodDefault =
   "POST"
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesDefault = false
-export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: (
-  | "srt"
-  | "vtt"
-)[] = ["srt"]
+export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigFormatsDefault: ("srt" | "vtt")[] =
+  ["srt"]
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMinimumDurationMin = 0
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMaximumDurationMax = 30
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSubtitlesConfigMaximumRowsPerCaptionMax = 5
@@ -13722,7 +13685,7 @@ export const historyControllerGetListV1ResponseItemsItemRequestParamsCustomSpell
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSentimentAnalysisDefault = false
 export const historyControllerGetListV1ResponseItemsItemRequestParamsAudioToLlmDefault = false
 export const historyControllerGetListV1ResponseItemsItemRequestParamsAudioToLlmConfigModelDefault =
-  "openai/gpt-3.5-turbo"
+  "openai/gpt-5.4-nano"
 export const historyControllerGetListV1ResponseItemsItemRequestParamsPiiRedactionDefault = false
 export const historyControllerGetListV1ResponseItemsItemRequestParamsSentencesDefault = false
 export const historyControllerGetListV1ResponseItemsItemRequestParamsPunctuationEnhancedDefault = false
@@ -14304,7 +14267,7 @@ export const historyControllerGetListV1Response = zod.object({
               summarization: zod
                 .boolean()
                 .optional()
-                .describe("**[Beta]** Enable summarization for this audio"),
+                .describe("Enable summarization for this audio"),
               summarization_config: zod
                 .object({
                   type: zod
@@ -14316,7 +14279,7 @@ export const historyControllerGetListV1Response = zod.object({
                     .describe("The type of summarization to apply")
                 })
                 .optional()
-                .describe("**[Beta]** Summarization configuration, if `summarization` is enabled"),
+                .describe("Summarization configuration, if `summarization` is enabled"),
               named_entity_recognition: zod
                 .boolean()
                 .optional()
@@ -14342,7 +14305,7 @@ export const historyControllerGetListV1Response = zod.object({
               audio_to_llm: zod
                 .boolean()
                 .optional()
-                .describe("**[Alpha]** Enable audio to llm processing for this audio"),
+                .describe("Enable audio to LLM processing for this audio"),
               audio_to_llm_config: zod
                 .object({
                   prompts: zod
@@ -14359,7 +14322,7 @@ export const historyControllerGetListV1Response = zod.object({
                     )
                 })
                 .optional()
-                .describe("**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled"),
+                .describe("Audio to LLM configuration, if `audio_to_llm` is enabled"),
               pii_redaction: zod
                 .boolean()
                 .optional()

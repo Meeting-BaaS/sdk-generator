@@ -5,10 +5,12 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
+
+import type { AudioTranscriptionDelay } from "./audioTranscriptionDelay"
 import type { AudioTranscriptionModel } from "./audioTranscriptionModel"
 
 export interface AudioTranscription {
-  /** The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
+  /** The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
    */
   model?: AudioTranscriptionModel
   /** The language of the input audio. Supplying the input language in
@@ -20,6 +22,12 @@ will improve accuracy and latency.
 segment.
 For `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).
 For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".
+Prompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.
  */
   prompt?: string
+  /** Controls how long the model waits before emitting transcription text.
+Higher values can improve transcription accuracy at the cost of latency.
+Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
+ */
+  delay?: AudioTranscriptionDelay
 }

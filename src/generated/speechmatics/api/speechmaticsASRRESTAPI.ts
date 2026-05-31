@@ -15,19 +15,21 @@ import type {
   DeleteJobResponse,
   DeleteJobsJobidParams,
   GetJobsJobidAlignmentParams,
+  GetJobsJobidObjectUrlsParams,
   GetJobsJobidTranscriptParams,
   GetJobsParams,
   GetUsageParams,
   PostJobsBody,
   RetrieveJobResponse,
   RetrieveJobsResponse,
+  RetrieveObjectUrlsResponse,
   RetrieveTranscriptResponse,
   UsageResponse
 } from "../schema"
 import { JobMode, JobType, OperatingPoint } from "../schema"
 
 /**
- * @summary Create a new job.
+ * @summary Create a new job
  */
 export const postJobs = <TData = AxiosResponse<CreateJobResponse>>(
   postJobsBody: PostJobsBody,
@@ -46,7 +48,7 @@ export const postJobs = <TData = AxiosResponse<CreateJobResponse>>(
 }
 
 /**
- * @summary List all jobs.
+ * @summary List all jobs
  */
 export const getJobs = <TData = AxiosResponse<RetrieveJobsResponse>>(
   params?: GetJobsParams,
@@ -59,7 +61,8 @@ export const getJobs = <TData = AxiosResponse<RetrieveJobsResponse>>(
 }
 
 /**
- * @summary Get job details, including progress and any error reports.
+ * Get job details, including progress and any error reports.
+ * @summary Get job details
  */
 export const getJobsJobid = <TData = AxiosResponse<RetrieveJobResponse>>(
   jobid: string,
@@ -69,7 +72,8 @@ export const getJobsJobid = <TData = AxiosResponse<RetrieveJobResponse>>(
 }
 
 /**
- * @summary Delete a job and remove all associated resources.
+ * Delete a job and remove all associated resources.
+ * @summary Delete a job
  */
 export const deleteJobsJobid = <TData = AxiosResponse<DeleteJobResponse>>(
   jobid: string,
@@ -109,7 +113,7 @@ export const getJobsJobidText = <TData = AxiosResponse<Blob>>(
 }
 
 /**
- * @summary Get the transcript for a transcription job.
+ * @summary Get the transcript for a transcription job
  */
 export const getJobsJobidTranscript = <TData = AxiosResponse<RetrieveTranscriptResponse>>(
   jobid: string,
@@ -151,7 +155,22 @@ export const getJobsJobidLog = <TData = AxiosResponse<Blob>>(
 }
 
 /**
- * @summary Get the usage statistics.
+ * Get signed urls for data files associated to the job.
+ * @summary Get object URLs
+ */
+export const getJobsJobidObjectUrls = <TData = AxiosResponse<RetrieveObjectUrlsResponse>>(
+  jobid: string,
+  params: GetJobsJobidObjectUrlsParams,
+  options?: AxiosRequestConfig
+): Promise<TData> => {
+  return axios.get(`/jobs/${jobid}/object-urls`, {
+    ...options,
+    params: { ...params, ...options?.params }
+  })
+}
+
+/**
+ * @summary Get usage statistics
  */
 export const getUsage = <TData = AxiosResponse<UsageResponse>>(
   params?: GetUsageParams,
@@ -172,6 +191,7 @@ export type GetJobsJobidTextResult = AxiosResponse<Blob>
 export type GetJobsJobidTranscriptResult = AxiosResponse<RetrieveTranscriptResponse>
 export type GetJobsJobidAlignmentResult = AxiosResponse<Blob>
 export type GetJobsJobidLogResult = AxiosResponse<Blob>
+export type GetJobsJobidObjectUrlsResult = AxiosResponse<RetrieveObjectUrlsResponse>
 export type GetUsageResult = AxiosResponse<UsageResponse>
 
 export const getPostJobsResponseMock = (
@@ -277,6 +297,10 @@ export const getGetJobsResponseMock = (
               faker.helpers.arrayElement(["fixed", "flexible"] as const),
               undefined
             ]),
+            audio_filtering_config: faker.helpers.arrayElement([
+              { volume_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]) },
+              undefined
+            ]),
             transcript_filtering_config: faker.helpers.arrayElement([
               {
                 remove_disfluencies: faker.helpers.arrayElement([
@@ -299,7 +323,21 @@ export const getGetJobsResponseMock = (
                   faker.datatype.boolean(),
                   undefined
                 ]),
-                speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined])
+                speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                get_speakers: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+                speakers: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    label: faker.string.alpha(20),
+                    speaker_identifiers: Array.from(
+                      { length: faker.number.int({ min: 1, max: 10 }) },
+                      (_, i) => i + 1
+                    ).map(() => faker.string.alpha(20))
+                  })),
+                  undefined
+                ])
               },
               undefined
             ])
@@ -551,6 +589,10 @@ export const getGetJobsJobidResponseMock = (
               faker.helpers.arrayElement(["fixed", "flexible"] as const),
               undefined
             ]),
+            audio_filtering_config: faker.helpers.arrayElement([
+              { volume_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]) },
+              undefined
+            ]),
             transcript_filtering_config: faker.helpers.arrayElement([
               {
                 remove_disfluencies: faker.helpers.arrayElement([
@@ -573,7 +615,21 @@ export const getGetJobsJobidResponseMock = (
                   faker.datatype.boolean(),
                   undefined
                 ]),
-                speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined])
+                speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                get_speakers: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+                speakers: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    label: faker.string.alpha(20),
+                    speaker_identifiers: Array.from(
+                      { length: faker.number.int({ min: 1, max: 10 }) },
+                      (_, i) => i + 1
+                    ).map(() => faker.string.alpha(20))
+                  })),
+                  undefined
+                ])
               },
               undefined
             ])
@@ -825,6 +881,10 @@ export const getDeleteJobsJobidResponseMock = (
               faker.helpers.arrayElement(["fixed", "flexible"] as const),
               undefined
             ]),
+            audio_filtering_config: faker.helpers.arrayElement([
+              { volume_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]) },
+              undefined
+            ]),
             transcript_filtering_config: faker.helpers.arrayElement([
               {
                 remove_disfluencies: faker.helpers.arrayElement([
@@ -847,7 +907,21 @@ export const getDeleteJobsJobidResponseMock = (
                   faker.datatype.boolean(),
                   undefined
                 ]),
-                speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined])
+                speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined]),
+                get_speakers: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+                speakers: faker.helpers.arrayElement([
+                  Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => ({
+                    label: faker.string.alpha(20),
+                    speaker_identifiers: Array.from(
+                      { length: faker.number.int({ min: 1, max: 10 }) },
+                      (_, i) => i + 1
+                    ).map(() => faker.string.alpha(20))
+                  })),
+                  undefined
+                ])
               },
               undefined
             ])
@@ -1084,6 +1158,10 @@ export const getGetJobsJobidTranscriptResponseMock = (
           faker.helpers.arrayElement(["fixed", "flexible"] as const),
           undefined
         ]),
+        audio_filtering_config: faker.helpers.arrayElement([
+          { volume_threshold: faker.helpers.arrayElement([faker.number.float(), undefined]) },
+          undefined
+        ]),
         transcript_filtering_config: faker.helpers.arrayElement([
           {
             remove_disfluencies: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
@@ -1102,13 +1180,27 @@ export const getGetJobsJobidTranscriptResponseMock = (
               faker.datatype.boolean(),
               undefined
             ]),
-            speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined])
+            speaker_sensitivity: faker.helpers.arrayElement([faker.number.float(), undefined]),
+            get_speakers: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+            speakers: faker.helpers.arrayElement([
+              Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
+                () => ({
+                  label: faker.string.alpha(20),
+                  speaker_identifiers: Array.from(
+                    { length: faker.number.int({ min: 1, max: 10 }) },
+                    (_, i) => i + 1
+                  ).map(() => faker.string.alpha(20))
+                })
+              ),
+              undefined
+            ])
           },
           undefined
         ])
       },
       undefined
     ]),
+    orchestrator_version: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
     translation_errors: faker.helpers.arrayElement([
       Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
         type: faker.helpers.arrayElement([
@@ -1243,8 +1335,7 @@ export const getGetJobsJobidTranscriptResponseMock = (
         message: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
       },
       undefined
-    ]),
-    orchestrator_version: faker.helpers.arrayElement([faker.string.alpha(20), undefined])
+    ])
   },
   results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
     () => ({
@@ -1333,6 +1424,16 @@ export const getGetJobsJobidTranscriptResponseMock = (
       ])
     })
   ),
+  speakers: faker.helpers.arrayElement([
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      label: faker.string.alpha(20),
+      speaker_identifiers: Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1
+      ).map(() => faker.string.alpha(20))
+    })),
+    undefined
+  ]),
   translations: faker.helpers.arrayElement([
     {
       [faker.string.alphanumeric(5)]: Array.from(
@@ -1360,9 +1461,9 @@ export const getGetJobsJobidTranscriptResponseMock = (
             Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(
               () => ({
                 text: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+                sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
                 start_time: faker.helpers.arrayElement([faker.number.float(), undefined]),
                 end_time: faker.helpers.arrayElement([faker.number.float(), undefined]),
-                sentiment: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
                 speaker: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
                 channel: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
                 confidence: faker.helpers.arrayElement([faker.number.float(), undefined])
@@ -1532,6 +1633,15 @@ export const getGetJobsJobidAlignmentResponseMock = (): Blob =>
 
 export const getGetJobsJobidLogResponseMock = (): Blob =>
   new Blob(faker.helpers.arrayElements(faker.word.words(10).split(" ")))
+
+export const getGetJobsJobidObjectUrlsResponseMock = (
+  overrideResponse: Partial<RetrieveObjectUrlsResponse> = {}
+): RetrieveObjectUrlsResponse => ({
+  data: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+  audio_mp3: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+  transcript: faker.helpers.arrayElement([faker.string.alpha(20), undefined]),
+  ...overrideResponse
+})
 
 export const getGetUsageResponseMock = (
   overrideResponse: Partial<UsageResponse> = {}
@@ -1754,6 +1864,29 @@ export const getGetJobsJobidLogMockHandler = (
   })
 }
 
+export const getGetJobsJobidObjectUrlsMockHandler = (
+  overrideResponse?:
+    | RetrieveObjectUrlsResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0]
+      ) => Promise<RetrieveObjectUrlsResponse> | RetrieveObjectUrlsResponse)
+) => {
+  return http.get("https://asr.api.speechmatics.com/jobs/:jobid/object-urls", async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getGetJobsJobidObjectUrlsResponseMock()
+      ),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    )
+  })
+}
+
 export const getGetUsageMockHandler = (
   overrideResponse?:
     | UsageResponse
@@ -1786,5 +1919,6 @@ export const getSpeechmaticsASRRESTAPIMock = () => [
   getGetJobsJobidTranscriptMockHandler(),
   getGetJobsJobidAlignmentMockHandler(),
   getGetJobsJobidLogMockHandler(),
+  getGetJobsJobidObjectUrlsMockHandler(),
   getGetUsageMockHandler()
 ]

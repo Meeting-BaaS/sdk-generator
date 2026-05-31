@@ -36,10 +36,12 @@ export const OpenAIModelCodes = [
   "gpt-audio-mini-2025-12-15",
   "gpt-realtime",
   "gpt-realtime-1.5",
+  "gpt-realtime-2",
   "gpt-realtime-2025-08-28",
   "gpt-realtime-mini",
   "gpt-realtime-mini-2025-10-06",
   "gpt-realtime-mini-2025-12-15",
+  "gpt-realtime-whisper",
   "whisper-1"
 ] as const
 
@@ -60,6 +62,7 @@ export const OpenAITranscriptionModelCodes = [
   "gpt-4o-mini-transcribe-2025-12-15",
   "gpt-4o-transcribe",
   "gpt-4o-transcribe-diarize",
+  "gpt-realtime-whisper",
   "whisper-1"
 ] as const
 
@@ -84,6 +87,7 @@ export const OpenAITranscriptionModel = {
   "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
   "gpt-4o-transcribe": "gpt-4o-transcribe",
   "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize",
+  "gpt-realtime-whisper": "gpt-realtime-whisper",
   "whisper-1": "whisper-1"
 } as const satisfies Record<string, OpenAITranscriptionModelCode>
 
@@ -107,6 +111,7 @@ export const OpenAIRealtimeModelCodes = [
   "gpt-audio-mini-2025-12-15",
   "gpt-realtime",
   "gpt-realtime-1.5",
+  "gpt-realtime-2",
   "gpt-realtime-2025-08-28",
   "gpt-realtime-mini",
   "gpt-realtime-mini-2025-10-06",
@@ -141,6 +146,7 @@ export const OpenAIRealtimeModel = {
   "gpt-audio-mini-2025-12-15": "gpt-audio-mini-2025-12-15",
   "gpt-realtime": "gpt-realtime",
   "gpt-realtime-1.5": "gpt-realtime-1.5",
+  "gpt-realtime-2": "gpt-realtime-2",
   "gpt-realtime-2025-08-28": "gpt-realtime-2025-08-28",
   "gpt-realtime-mini": "gpt-realtime-mini",
   "gpt-realtime-mini-2025-10-06": "gpt-realtime-mini-2025-10-06",
@@ -171,9 +177,11 @@ export const OpenAIModelLabels: Record<OpenAIModelCode, string> = {
   "gpt-audio-mini-2025-12-15": "gpt Audio Mini 2025 12 15",
   "gpt-realtime": "GPT Realtime",
   "gpt-realtime-1.5": "GPT Realtime 1.5",
+  "gpt-realtime-2": "GPT Realtime 2",
   "gpt-realtime-2025-08-28": "GPT Realtime 2025 08 28",
   "gpt-realtime-mini": "GPT Realtime Mini",
   "gpt-realtime-mini-2025-10-06": "GPT Realtime Mini 2025 10 06",
   "gpt-realtime-mini-2025-12-15": "GPT Realtime Mini 2025 12 15",
+  "gpt-realtime-whisper": "GPT Realtime Whisper",
   "whisper-1": "Whisper V2"
 }

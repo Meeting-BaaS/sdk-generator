@@ -96,9 +96,7 @@ format, or a stream of transcript events.
 export const createTranscriptionBodyResponseFormatDefault = "json"
 export const createTranscriptionBodyTemperatureDefault = 0
 export const createTranscriptionBodyIncludeItemDefault = []
-export const createTranscriptionBodyTimestampGranularitiesDefault: ("word" | "segment")[] = [
-  "segment"
-]
+export const createTranscriptionBodyTimestampGranularitiesDefault: ("word" | "segment")[] = ["segment"]
 export const createTranscriptionBodyStreamDefaultOne = false
 export const createTranscriptionBodyChunkingStrategyDefaultTwo = "auto"
 export const createTranscriptionBodyChunkingStrategyPrefixPaddingMsDefault = 300
@@ -536,9 +534,7 @@ export const createRealtimeClientSecretBodyExpiresAfterSecondsDefault = 600
 export const createRealtimeClientSecretBodyExpiresAfterSecondsMin = 10
 
 export const createRealtimeClientSecretBodyExpiresAfterSecondsMax = 7200
-export const createRealtimeClientSecretBodySessionOutputModalitiesDefault: ("text" | "audio")[] = [
-  "audio"
-]
+export const createRealtimeClientSecretBodySessionOutputModalitiesDefault: ("text" | "audio")[] = ["audio"]
 export const createRealtimeClientSecretBodySessionAudioInputNoiseReductionDefault = null
 export const createRealtimeClientSecretBodySessionAudioInputTurnDetectionTypeDefault = "server_vad"
 export const createRealtimeClientSecretBodySessionAudioInputTurnDetectionCreateResponseDefault = true
@@ -556,6 +552,7 @@ export const createRealtimeClientSecretBodySessionTracingDefaultOne = "auto"
 export const createRealtimeClientSecretBodySessionTracingDefault = null
 export const createRealtimeClientSecretBodySessionToolsItemRequireApprovalDefaultOne = "always"
 export const createRealtimeClientSecretBodySessionToolChoiceDefault = "auto"
+export const createRealtimeClientSecretBodySessionReasoningEffortDefault = "low"
 export const createRealtimeClientSecretBodySessionTruncationRetentionRatioMin = 0
 
 export const createRealtimeClientSecretBodySessionTruncationRetentionRatioMax = 1
@@ -615,6 +612,7 @@ export const createRealtimeClientSecretBody = zod
             zod.enum([
               "gpt-realtime",
               "gpt-realtime-1.5",
+              "gpt-realtime-2",
               "gpt-realtime-2025-08-28",
               "gpt-4o-realtime-preview",
               "gpt-4o-realtime-preview-2024-10-01",
@@ -686,12 +684,13 @@ export const createRealtimeClientSecretBody = zod
                           "gpt-4o-mini-transcribe",
                           "gpt-4o-mini-transcribe-2025-12-15",
                           "gpt-4o-transcribe",
-                          "gpt-4o-transcribe-diarize"
+                          "gpt-4o-transcribe-diarize",
+                          "gpt-realtime-whisper"
                         ])
                       )
                       .optional()
                       .describe(
-                        "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
+                        "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
                       ),
                     language: zod
                       .string()
@@ -703,7 +702,13 @@ export const createRealtimeClientSecretBody = zod
                       .string()
                       .optional()
                       .describe(
-                        'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\n'
+                        'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'
+                      ),
+                    delay: zod
+                      .enum(["minimal", "low", "medium", "high", "xhigh"])
+                      .optional()
+                      .describe(
+                        "Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n"
                       )
                   })
                   .optional(),
@@ -817,7 +822,7 @@ export const createRealtimeClientSecretBody = zod
                       )
                   ])
                   .describe(
-                    'Configuration for turn detection, ether Server VAD or Semantic VAD. This can be set to `null` to turn off, in which case the client must manually trigger model response.\n\nServer VAD means that the model will detect the start and end of speech based on audio volume and respond at the end of user speech.\n\nSemantic VAD is more advanced and uses a turn detection model (in conjunction with VAD) to semantically estimate whether the user has finished speaking, then dynamically sets a timeout based on this probability. For example, if user audio trails off with "uhhm", the model will score a low probability of turn end and wait longer for the user to continue speaking. This can be useful for more natural conversations, but may have a higher latency.\n'
+                    'Configuration for turn detection, ether Server VAD or Semantic VAD. This can be set to `null` to turn off, in which case the client must manually trigger model response.\n\nServer VAD means that the model will detect the start and end of speech based on audio volume and respond at the end of user speech.\n\nSemantic VAD is more advanced and uses a turn detection model (in conjunction with VAD) to semantically estimate whether the user has finished speaking, then dynamically sets a timeout based on this probability. For example, if user audio trails off with "uhhm", the model will score a low probability of turn end and wait longer for the user to continue speaking. This can be useful for more natural conversations, but may have a higher latency.\n\nFor `gpt-realtime-whisper` transcription sessions, turn detection must be\nset to `null`; VAD is not supported.\n'
                   )
                   .or(zod.null())
                   .optional()
@@ -966,6 +971,7 @@ export const createRealtimeClientSecretBody = zod
                       ),
                     server_url: zod
                       .string()
+                      .url()
                       .optional()
                       .describe(
                         "The URL for the MCP server. One of `server_url` or `connector_id` must be\nprovided.\n"
@@ -1120,6 +1126,25 @@ export const createRealtimeClientSecretBody = zod
           .describe(
             "How the model chooses tools. Provide one of the string modes or force a specific\nfunction/MCP tool.\n"
           ),
+        parallel_tool_calls: zod
+          .boolean()
+          .optional()
+          .describe(
+            "Whether the model may call multiple tools in parallel. Only supported by\nreasoning Realtime models such as `gpt-realtime-2`.\n"
+          ),
+        reasoning: zod
+          .object({
+            effort: zod
+              .enum(["minimal", "low", "medium", "high", "xhigh"])
+              .default(createRealtimeClientSecretBodySessionReasoningEffortDefault)
+              .describe(
+                "Constrains effort on reasoning for reasoning-capable Realtime models such as\n`gpt-realtime-2`.\n"
+              )
+          })
+          .optional()
+          .describe(
+            "Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.\n"
+          ),
         max_output_tokens: zod
           .number()
           .or(zod.enum(["inf"]))
@@ -1199,6 +1224,7 @@ export const createRealtimeClientSecretBody = zod
                           .describe("The type of the input item. Always `input_image`."),
                         image_url: zod
                           .string()
+                          .url()
                           .describe(
                             "The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL."
                           )
@@ -1236,6 +1262,7 @@ export const createRealtimeClientSecretBody = zod
                           .describe("The content of the file to be sent to the model.\n"),
                         file_url: zod
                           .string()
+                          .url()
                           .optional()
                           .describe("The URL of the file to be sent to the model."),
                         detail: zod.enum(["low", "high"]).optional()
@@ -1311,12 +1338,13 @@ export const createRealtimeClientSecretBody = zod
                               "gpt-4o-mini-transcribe",
                               "gpt-4o-mini-transcribe-2025-12-15",
                               "gpt-4o-transcribe",
-                              "gpt-4o-transcribe-diarize"
+                              "gpt-4o-transcribe-diarize",
+                              "gpt-realtime-whisper"
                             ])
                           )
                           .optional()
                           .describe(
-                            "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
+                            "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
                           ),
                         language: zod
                           .string()
@@ -1328,7 +1356,13 @@ export const createRealtimeClientSecretBody = zod
                           .string()
                           .optional()
                           .describe(
-                            'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\n'
+                            'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'
+                          ),
+                        delay: zod
+                          .enum(["minimal", "low", "medium", "high", "xhigh"])
+                          .optional()
+                          .describe(
+                            "Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n"
                           )
                       })
                       .optional(),
@@ -1442,7 +1476,7 @@ export const createRealtimeClientSecretBody = zod
                           )
                       ])
                       .describe(
-                        'Configuration for turn detection, ether Server VAD or Semantic VAD. This can be set to `null` to turn off, in which case the client must manually trigger model response.\n\nServer VAD means that the model will detect the start and end of speech based on audio volume and respond at the end of user speech.\n\nSemantic VAD is more advanced and uses a turn detection model (in conjunction with VAD) to semantically estimate whether the user has finished speaking, then dynamically sets a timeout based on this probability. For example, if user audio trails off with "uhhm", the model will score a low probability of turn end and wait longer for the user to continue speaking. This can be useful for more natural conversations, but may have a higher latency.\n'
+                        'Configuration for turn detection, ether Server VAD or Semantic VAD. This can be set to `null` to turn off, in which case the client must manually trigger model response.\n\nServer VAD means that the model will detect the start and end of speech based on audio volume and respond at the end of user speech.\n\nSemantic VAD is more advanced and uses a turn detection model (in conjunction with VAD) to semantically estimate whether the user has finished speaking, then dynamically sets a timeout based on this probability. For example, if user audio trails off with "uhhm", the model will score a low probability of turn end and wait longer for the user to continue speaking. This can be useful for more natural conversations, but may have a higher latency.\n\nFor `gpt-realtime-whisper` transcription sessions, turn detection must be\nset to `null`; VAD is not supported.\n'
                       )
                       .or(zod.null())
                       .optional()
@@ -1469,10 +1503,7 @@ export const createRealtimeClientSecretBody = zod
     "Create a session and client secret for the Realtime API. The request can specify\neither a realtime or a transcription session configuration.\n[Learn more about the Realtime API](/docs/guides/realtime).\n"
   )
 
-export const createRealtimeClientSecretResponseSessionOutputModalitiesDefault: (
-  | "text"
-  | "audio"
-)[] = ["audio"]
+export const createRealtimeClientSecretResponseSessionOutputModalitiesDefault: ("text" | "audio")[] = ["audio"]
 export const createRealtimeClientSecretResponseSessionAudioInputNoiseReductionDefault = null
 export const createRealtimeClientSecretResponseSessionAudioInputTurnDetectionTypeDefault =
   "server_vad"
@@ -1492,6 +1523,7 @@ export const createRealtimeClientSecretResponseSessionTracingDefaultTwo = "auto"
 export const createRealtimeClientSecretResponseSessionTracingDefaultOne = null
 export const createRealtimeClientSecretResponseSessionToolsItemRequireApprovalDefaultOne = "always"
 export const createRealtimeClientSecretResponseSessionToolChoiceDefault = "auto"
+export const createRealtimeClientSecretResponseSessionReasoningEffortDefault = "low"
 export const createRealtimeClientSecretResponseSessionTruncationRetentionRatioMin = 0
 
 export const createRealtimeClientSecretResponseSessionTruncationRetentionRatioMax = 1
@@ -1507,26 +1539,24 @@ export const createRealtimeClientSecretResponse = zod
       .number()
       .describe("Expiration timestamp for the client secret, in seconds since epoch."),
     session: zod
-      .discriminatedUnion("type", [
+      .union([
         zod
           .object({
-            client_secret: zod
-              .object({
-                value: zod
-                  .string()
-                  .describe(
-                    "Ephemeral key usable in client environments to authenticate connections to the Realtime API. Use this in client-side environments rather than a standard API token, which should only be used server-side.\n"
-                  ),
-                expires_at: zod
-                  .number()
-                  .describe(
-                    "Timestamp for when the token expires. Currently, all tokens expire\nafter one minute.\n"
-                  )
-              })
-              .describe("Ephemeral key returned by the API."),
             type: zod
               .enum(["realtime"])
               .describe("The type of session to create. Always `realtime` for the Realtime API.\n"),
+            id: zod
+              .string()
+              .describe(
+                "Unique identifier for the session that looks like `sess_1234567890abcdef`.\n"
+              ),
+            object: zod
+              .enum(["realtime.session"])
+              .describe("The object type. Always `realtime.session`."),
+            expires_at: zod
+              .number()
+              .optional()
+              .describe("Expiration timestamp for the session, in seconds since epoch."),
             output_modalities: zod
               .array(zod.enum(["text", "audio"]))
               .default(createRealtimeClientSecretResponseSessionOutputModalitiesDefault)
@@ -1539,6 +1569,7 @@ export const createRealtimeClientSecretResponse = zod
                 zod.enum([
                   "gpt-realtime",
                   "gpt-realtime-1.5",
+                  "gpt-realtime-2",
                   "gpt-realtime-2025-08-28",
                   "gpt-4o-realtime-preview",
                   "gpt-4o-realtime-preview-2024-10-01",
@@ -1571,9 +1602,11 @@ export const createRealtimeClientSecretResponse = zod
                       .object({
                         type: zod
                           .enum(["audio/pcm"])
+                          .optional()
                           .describe("The audio format. Always `audio/pcm`."),
                         rate: zod
                           .literal(24000)
+                          .optional()
                           .describe("The sample rate of the audio. Always `24000`.")
                       })
                       .describe("The PCM audio format. Only a 24kHz sample rate is supported.")
@@ -1582,6 +1615,7 @@ export const createRealtimeClientSecretResponse = zod
                           .object({
                             type: zod
                               .enum(["audio/pcmu"])
+                              .optional()
                               .describe("The audio format. Always `audio/pcmu`.")
                           })
                           .describe("The G.711 μ-law format.")
@@ -1591,6 +1625,7 @@ export const createRealtimeClientSecretResponse = zod
                           .object({
                             type: zod
                               .enum(["audio/pcma"])
+                              .optional()
                               .describe("The audio format. Always `audio/pcma`.")
                           })
                           .describe("The G.711 A-law format.")
@@ -1606,24 +1641,23 @@ export const createRealtimeClientSecretResponse = zod
                               "gpt-4o-mini-transcribe",
                               "gpt-4o-mini-transcribe-2025-12-15",
                               "gpt-4o-transcribe",
-                              "gpt-4o-transcribe-diarize"
+                              "gpt-4o-transcribe-diarize",
+                              "gpt-realtime-whisper"
                             ])
                           )
                           .optional()
                           .describe(
-                            "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
+                            "The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n"
                           ),
                         language: zod
                           .string()
                           .optional()
-                          .describe(
-                            "The language of the input audio. Supplying the input language in\n[ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n"
-                          ),
+                          .describe("The language of the input audio.\n"),
                         prompt: zod
                           .string()
                           .optional()
                           .describe(
-                            'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\n'
+                            "The prompt configured for input audio transcription, when present.\n"
                           )
                       })
                       .optional(),
@@ -1631,6 +1665,7 @@ export const createRealtimeClientSecretResponse = zod
                       .object({
                         type: zod
                           .enum(["near_field", "far_field"])
+                          .optional()
                           .describe(
                             "Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n"
                           )
@@ -1736,7 +1771,7 @@ export const createRealtimeClientSecretResponse = zod
                           )
                       ])
                       .describe(
-                        'Configuration for turn detection, ether Server VAD or Semantic VAD. This can be set to `null` to turn off, in which case the client must manually trigger model response.\n\nServer VAD means that the model will detect the start and end of speech based on audio volume and respond at the end of user speech.\n\nSemantic VAD is more advanced and uses a turn detection model (in conjunction with VAD) to semantically estimate whether the user has finished speaking, then dynamically sets a timeout based on this probability. For example, if user audio trails off with "uhhm", the model will score a low probability of turn end and wait longer for the user to continue speaking. This can be useful for more natural conversations, but may have a higher latency.\n'
+                        'Configuration for turn detection, ether Server VAD or Semantic VAD. This can be set to `null` to turn off, in which case the client must manually trigger model response.\n\nServer VAD means that the model will detect the start and end of speech based on audio volume and respond at the end of user speech.\n\nSemantic VAD is more advanced and uses a turn detection model (in conjunction with VAD) to semantically estimate whether the user has finished speaking, then dynamically sets a timeout based on this probability. For example, if user audio trails off with "uhhm", the model will score a low probability of turn end and wait longer for the user to continue speaking. This can be useful for more natural conversations, but may have a higher latency.\n\nFor `gpt-realtime-whisper` transcription sessions, turn detection must be\nset to `null`; VAD is not supported.\n'
                       )
                       .or(zod.null())
                       .optional()
@@ -1748,9 +1783,11 @@ export const createRealtimeClientSecretResponse = zod
                       .object({
                         type: zod
                           .enum(["audio/pcm"])
+                          .optional()
                           .describe("The audio format. Always `audio/pcm`."),
                         rate: zod
                           .literal(24000)
+                          .optional()
                           .describe("The sample rate of the audio. Always `24000`.")
                       })
                       .describe("The PCM audio format. Only a 24kHz sample rate is supported.")
@@ -1759,6 +1796,7 @@ export const createRealtimeClientSecretResponse = zod
                           .object({
                             type: zod
                               .enum(["audio/pcmu"])
+                              .optional()
                               .describe("The audio format. Always `audio/pcmu`.")
                           })
                           .describe("The G.711 μ-law format.")
@@ -1768,6 +1806,7 @@ export const createRealtimeClientSecretResponse = zod
                           .object({
                             type: zod
                               .enum(["audio/pcma"])
+                              .optional()
                               .describe("The audio format. Always `audio/pcma`.")
                           })
                           .describe("The G.711 A-law format.")
@@ -1847,7 +1886,10 @@ export const createRealtimeClientSecretResponse = zod
               .array(
                 zod
                   .object({
-                    type: zod.enum(["function"]).describe("The type of the tool, i.e. `function`."),
+                    type: zod
+                      .enum(["function"])
+                      .optional()
+                      .describe("The type of the tool, i.e. `function`."),
                     name: zod.string().optional().describe("The name of the function."),
                     description: zod
                       .string()
@@ -1871,6 +1913,7 @@ export const createRealtimeClientSecretResponse = zod
                           ),
                         server_url: zod
                           .string()
+                          .url()
                           .optional()
                           .describe(
                             "The URL for the MCP server. One of `server_url` or `connector_id` must be\nprovided.\n"
@@ -1886,6 +1929,7 @@ export const createRealtimeClientSecretResponse = zod
                             "connector_outlookemail",
                             "connector_sharepoint"
                           ])
+                          .optional()
                           .describe(
                             "Identifier for service connectors, like those available in ChatGPT. One of\n`server_url` or `connector_id` must be provided. Learn more about service\nconnectors [here](/docs/guides/tools-remote-mcp#connectors).\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n"
                           ),
@@ -2024,6 +2068,19 @@ export const createRealtimeClientSecretResponse = zod
               .describe(
                 "How the model chooses tools. Provide one of the string modes or force a specific\nfunction/MCP tool.\n"
               ),
+            reasoning: zod
+              .object({
+                effort: zod
+                  .enum(["minimal", "low", "medium", "high", "xhigh"])
+                  .default(createRealtimeClientSecretResponseSessionReasoningEffortDefault)
+                  .describe(
+                    "Constrains effort on reasoning for reasoning-capable Realtime models such as\n`gpt-realtime-2`.\n"
+                  )
+              })
+              .optional()
+              .describe(
+                "Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.\n"
+              ),
             max_output_tokens: zod
               .number()
               .or(zod.enum(["inf"]))
@@ -2103,6 +2160,7 @@ export const createRealtimeClientSecretResponse = zod
                               .describe("The type of the input item. Always `input_image`."),
                             image_url: zod
                               .string()
+                              .url()
                               .describe(
                                 "The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL."
                               )
@@ -2140,9 +2198,10 @@ export const createRealtimeClientSecretResponse = zod
                               .describe("The content of the file to be sent to the model.\n"),
                             file_url: zod
                               .string()
+                              .url()
                               .optional()
                               .describe("The URL of the file to be sent to the model."),
-                            detail: zod.enum(["low", "high"])
+                            detail: zod.enum(["low", "high"]).optional()
                           })
                           .describe("A file input to the model.")
                       )
@@ -2159,9 +2218,7 @@ export const createRealtimeClientSecretResponse = zod
               .or(zod.null())
               .optional()
           })
-          .describe(
-            "A new Realtime session configuration, with an ephemeral key. Default TTL\nfor keys is one minute.\n"
-          ),
+          .describe("A Realtime session configuration object.\n"),
         zod
           .object({
             type: zod
@@ -2195,9 +2252,11 @@ export const createRealtimeClientSecretResponse = zod
                       .object({
                         type: zod
                           .enum(["audio/pcm"])
+                          .optional()
                           .describe("The audio format. Always `audio/pcm`."),
                         rate: zod
                           .literal(24000)
+                          .optional()
                           .describe("The sample rate of the audio. Always `24000`.")
                       })
                       .describe("The PCM audio format. Only a 24kHz sample rate is supported.")
@@ -2206,6 +2265,7 @@ export const createRealtimeClientSecretResponse = zod
                           .object({
                             type: zod
                               .enum(["audio/pcmu"])
+                              .optional()
                               .describe("The audio format. Always `audio/pcmu`.")
                           })
                           .describe("The G.711 μ-law format.")
@@ -2215,6 +2275,7 @@ export const createRealtimeClientSecretResponse = zod
                           .object({
                             type: zod
                               .enum(["audio/pcma"])
+                              .optional()
                               .describe("The audio format. Always `audio/pcma`.")
                           })
                           .describe("The G.711 A-law format.")
@@ -2230,24 +2291,23 @@ export const createRealtimeClientSecretResponse = zod
                               "gpt-4o-mini-transcribe",
                               "gpt-4o-mini-transcribe-2025-12-15",
                               "gpt-4o-transcribe",
-                              "gpt-4o-transcribe-diarize"
+                              "gpt-4o-transcribe-diarize",
+                              "gpt-realtime-whisper"
                             ])
                           )
                           .optional()
                           .describe(
-                            "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
+                            "The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n"
                           ),
                         language: zod
                           .string()
                           .optional()
-                          .describe(
-                            "The language of the input audio. Supplying the input language in\n[ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n"
-                          ),
+                          .describe("The language of the input audio.\n"),
                         prompt: zod
                           .string()
                           .optional()
                           .describe(
-                            'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\n'
+                            "The prompt configured for input audio transcription, when present.\n"
                           )
                       })
                       .optional(),
@@ -2255,6 +2315,7 @@ export const createRealtimeClientSecretResponse = zod
                       .object({
                         type: zod
                           .enum(["near_field", "far_field"])
+                          .optional()
                           .describe(
                             "Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n"
                           )
@@ -2288,9 +2349,13 @@ export const createRealtimeClientSecretResponse = zod
                             "Duration of silence to detect speech stop (in milliseconds). Defaults\nto 500ms. With shorter values the model will respond more quickly,\nbut may jump in on short pauses from the user.\n"
                           )
                       })
+                      .describe(
+                        "Configuration for turn detection. Can be set to `null` to turn off. Server\nVAD means that the model will detect the start and end of speech based on\naudio volume and respond at the end of user speech. For `gpt-realtime-whisper`, this must be `null`; VAD is not supported.\n"
+                      )
+                      .or(zod.null())
                       .optional()
                       .describe(
-                        "Configuration for turn detection. Can be set to `null` to turn off. Server\nVAD means that the model will detect the start and end of speech based on\naudio volume and respond at the end of user speech.\n"
+                        "Configuration for turn detection. For `gpt-realtime-whisper`, this must be `null`; VAD is not supported.\n"
                       )
                   })
                   .optional()
@@ -2575,6 +2640,7 @@ export const createRealtimeSessionBody = zod
                       .describe("The type of the input item. Always `input_image`."),
                     image_url: zod
                       .string()
+                      .url()
                       .describe(
                         "The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL."
                       )
@@ -2612,6 +2678,7 @@ export const createRealtimeSessionBody = zod
                       .describe("The content of the file to be sent to the model.\n"),
                     file_url: zod
                       .string()
+                      .url()
                       .optional()
                       .describe("The URL of the file to be sent to the model."),
                     detail: zod.enum(["low", "high"]).optional()
@@ -2714,25 +2781,19 @@ export const createRealtimeSessionResponse = zod
                       "gpt-4o-mini-transcribe",
                       "gpt-4o-mini-transcribe-2025-12-15",
                       "gpt-4o-transcribe",
-                      "gpt-4o-transcribe-diarize"
+                      "gpt-4o-transcribe-diarize",
+                      "gpt-realtime-whisper"
                     ])
                   )
                   .optional()
                   .describe(
-                    "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
+                    "The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n"
                   ),
-                language: zod
-                  .string()
-                  .optional()
-                  .describe(
-                    "The language of the input audio. Supplying the input language in\n[ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n"
-                  ),
+                language: zod.string().optional().describe("The language of the input audio.\n"),
                 prompt: zod
                   .string()
                   .optional()
-                  .describe(
-                    'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\n'
-                  )
+                  .describe("The prompt configured for input audio transcription, when present.\n")
               })
               .optional(),
             noise_reduction: zod
@@ -2993,12 +3054,13 @@ export const createRealtimeTranscriptionSessionBody = zod
               "gpt-4o-mini-transcribe",
               "gpt-4o-mini-transcribe-2025-12-15",
               "gpt-4o-transcribe",
-              "gpt-4o-transcribe-diarize"
+              "gpt-4o-transcribe-diarize",
+              "gpt-realtime-whisper"
             ])
           )
           .optional()
           .describe(
-            "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
+            "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
           ),
         language: zod
           .string()
@@ -3010,7 +3072,13 @@ export const createRealtimeTranscriptionSessionBody = zod
           .string()
           .optional()
           .describe(
-            'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\n'
+            'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'
+          ),
+        delay: zod
+          .enum(["minimal", "low", "medium", "high", "xhigh"])
+          .optional()
+          .describe(
+            "Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n"
           )
       })
       .optional(),
@@ -3061,25 +3129,19 @@ export const createRealtimeTranscriptionSessionResponse = zod
               "gpt-4o-mini-transcribe",
               "gpt-4o-mini-transcribe-2025-12-15",
               "gpt-4o-transcribe",
-              "gpt-4o-transcribe-diarize"
+              "gpt-4o-transcribe-diarize",
+              "gpt-realtime-whisper"
             ])
           )
           .optional()
           .describe(
-            "The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n"
+            "The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n"
           ),
-        language: zod
-          .string()
-          .optional()
-          .describe(
-            "The language of the input audio. Supplying the input language in\n[ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n"
-          ),
+        language: zod.string().optional().describe("The language of the input audio.\n"),
         prompt: zod
           .string()
           .optional()
-          .describe(
-            'An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".\n'
-          )
+          .describe("The prompt configured for input audio transcription, when present.\n")
       })
       .optional(),
     turn_detection: zod

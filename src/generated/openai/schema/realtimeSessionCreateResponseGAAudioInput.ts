@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.3.0
  */
 
-import type { AudioTranscription } from "./audioTranscription"
+import type { AudioTranscriptionResponse } from "./audioTranscriptionResponse"
 import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
 import type { RealtimeSessionCreateResponseGAAudioInputNoiseReduction } from "./realtimeSessionCreateResponseGAAudioInputNoiseReduction"
 import type { RealtimeTurnDetection } from "./realtimeTurnDetection"
@@ -16,7 +16,7 @@ export type RealtimeSessionCreateResponseGAAudioInput = {
   format?: RealtimeAudioFormats
   /** Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](/docs/api-reference/audio/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
    */
-  transcription?: AudioTranscription
+  transcription?: AudioTranscriptionResponse
   /** Configuration for input audio noise reduction. This can be set to `null` to turn off.
 Noise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.
 Filtering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.

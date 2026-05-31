@@ -7,6 +7,7 @@
  */
 
 import type { Prompt } from "./prompt"
+import type { RealtimeReasoning } from "./realtimeReasoning"
 import type { RealtimeSessionCreateRequestGAAudio } from "./realtimeSessionCreateRequestGAAudio"
 import type { RealtimeSessionCreateRequestGAIncludeItem } from "./realtimeSessionCreateRequestGAIncludeItem"
 import type { RealtimeSessionCreateRequestGAMaxOutputTokens } from "./realtimeSessionCreateRequestGAMaxOutputTokens"
@@ -62,6 +63,11 @@ workflow name, group id, and metadata.
 function/MCP tool.
  */
   tool_choice?: RealtimeSessionCreateRequestGAToolChoice
+  /** Whether the model may call multiple tools in parallel. Only supported by
+reasoning Realtime models such as `gpt-realtime-2`.
+ */
+  parallel_tool_calls?: boolean
+  reasoning?: RealtimeReasoning
   /** Maximum number of output tokens for a single assistant response,
 inclusive of tool calls. Provide an integer between 1 and 4096 to
 limit output tokens, or `inf` for the maximum available tokens for a

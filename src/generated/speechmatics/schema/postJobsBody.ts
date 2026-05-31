@@ -7,7 +7,7 @@
  */
 
 export type PostJobsBody = {
-  /** JSON containing a `JobConfig` model indicating the type and parameters for the recognition job. */
+  /** JSON containing a [`JobConfig`](/speech-to-text/batch/input#jobconfig-schema) model indicating the type and parameters for the recognition job. */
   config: string
   /** The data file to be processed. Alternatively the data file can be fetched from a url specified in `JobConfig`. */
   data_file?: Blob

@@ -62,16 +62,14 @@ export type AudioFormat =
 /**
  * Translation configuration
  */
-export type TranslationConfig =
-  | {
-      type: "one_way"
-      target_language: string
-    }
-  | {
-      type: "two_way"
-      language_a: string
-      language_b: string
-    }
+export type TranslationConfig = {
+    type: 'one_way';
+    target_language: string;
+} | {
+    type: 'two_way';
+    language_a: string;
+    language_b: string;
+}
 
 // =============================================================================
 // Context Configuration Types
@@ -80,20 +78,18 @@ export type TranslationConfig =
 /**
  * Additional context to improve transcription accuracy
  */
-export type Context =
-  | {
-      general?: {
-        key: string
-        value: string
-      }[]
-      text?: string
-      terms?: string[]
-      translation_terms?: {
-        source: string
-        target: string
-      }[]
-    }
-  | string
+export type Context = {
+    general?: {
+        key: string;
+        value: string;
+    }[];
+    text?: string;
+    terms?: string[];
+    translation_terms?: {
+        source: string;
+        target: string;
+    }[];
+} | string
 
 // =============================================================================
 // Real-time Model Types
@@ -104,10 +100,10 @@ export type Context =
  */
 export type RealtimeModelId =
   | "stt-rt-v4"
-  | "stt-rt-v3"
   | "stt-rt-preview"
   | "stt-rt-v3-preview"
   | "stt-rt-preview-v2"
+  | "stt-rt-v3"
 
 // =============================================================================
 // WebSocket API Request Types
@@ -142,22 +138,22 @@ export interface StreamingTranscriberParams {
 /**
  * Translation status for tokens
  */
-export type TranslationStatus = "original" | "translation" | "none"
+export type TranslationStatus = 'original' | 'translation' | 'none'
 
 /**
  * Individual token in a transcription result
  * @source Token from @soniox/speech-to-text-web
  */
 export interface Token {
-  text: string
-  start_ms?: number
-  end_ms?: number
-  confidence: number
-  is_final: boolean
-  speaker?: string
-  translation_status?: TranslationStatus
-  language?: string
-  source_language?: string
+  text: string;
+      start_ms?: number;
+      end_ms?: number;
+      confidence: number;
+      is_final: boolean;
+      speaker?: string;
+      translation_status?: TranslationStatus;
+      language?: string;
+      source_language?: string;
 }
 
 /**
@@ -165,13 +161,13 @@ export interface Token {
  * @source SpeechToTextAPIResponse from @soniox/speech-to-text-web
  */
 export interface StreamingResponse {
-  text: string
-  tokens: Token[]
-  final_audio_proc_ms: number
-  total_audio_proc_ms: number
-  finished?: boolean
-  error_code?: number
-  error_message?: string
+  text: string;
+      tokens: Token[];
+      final_audio_proc_ms: number;
+      total_audio_proc_ms: number;
+      finished?: boolean;
+      error_code?: number;
+      error_message?: string;
 }
 
 // =============================================================================
@@ -196,10 +192,4 @@ export type RecorderState =
  * Error status types
  * @source ErrorStatus from @soniox/speech-to-text-web
  */
-export type ErrorStatus =
-  | "get_user_media_failed"
-  | "api_key_fetch_failed"
-  | "queue_limit_exceeded"
-  | "media_recorder_error"
-  | "api_error"
-  | "websocket_error"
+export type ErrorStatus = 'get_user_media_failed' | 'api_key_fetch_failed' | 'queue_limit_exceeded' | 'media_recorder_error' | 'api_error' | 'websocket_error'

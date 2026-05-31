@@ -47,7 +47,7 @@ Note: This parameter is only supported for the Universal-2 model.
   content_safety_confidence?: number
   /** Customize how words are spelled and formatted using to and from values. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/correct-spelling-of-terms) for more details. */
   custom_spelling?: TranscriptCustomSpelling[]
-  /** Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false */
+  /** Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2. */
   disfluencies?: boolean
   /** Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages.
 
@@ -103,6 +103,11 @@ Note: This parameter is only supported for the Universal-3 Pro model.
   redact_pii_policies?: PiiPolicy[]
   /** The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details. */
   redact_pii_sub?: TranscriptParamsRedactPiiSub
+  /** When set to `true`, returns the original unredacted transcript alongside the redacted one in the same response. Requires `redact_pii` to be `true`, otherwise a 400 error is returned.
+
+When enabled, the response includes the additional fields `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. The existing `text`, `words`, and `utterances` fields remain fully redacted. When disabled (default), the response is unchanged and contains only the redacted transcript. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.
+ */
+  redact_pii_return_unredacted?: boolean
   /** Enable [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/analyze-sentiment-of-speech), can be true or false */
   sentiment_analysis?: boolean
   /** Enable [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers), can be true or false */
@@ -130,7 +135,7 @@ Note: This parameter is only supported for the Universal-2 model.
   summary_model?: SummaryModel
   /** The type of summary. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details. */
   summary_type?: SummaryType
-  /** Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `"all"` to remove all audio tags.
+  /** Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.
 
 Note: This parameter is only supported for the Universal-3 Pro model.
  */

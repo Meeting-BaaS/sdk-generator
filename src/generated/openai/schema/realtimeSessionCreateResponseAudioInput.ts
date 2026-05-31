@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.3.0
  */
 
-import type { AudioTranscription } from "./audioTranscription"
+import type { AudioTranscriptionResponse } from "./audioTranscriptionResponse"
 import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
 import type { RealtimeSessionCreateResponseAudioInputNoiseReduction } from "./realtimeSessionCreateResponseAudioInputNoiseReduction"
 import type { RealtimeSessionCreateResponseAudioInputTurnDetection } from "./realtimeSessionCreateResponseAudioInputTurnDetection"
@@ -15,7 +15,7 @@ export type RealtimeSessionCreateResponseAudioInput = {
   format?: RealtimeAudioFormats
   /** Configuration for input audio transcription.
    */
-  transcription?: AudioTranscription
+  transcription?: AudioTranscriptionResponse
   /** Configuration for input audio noise reduction.
    */
   noise_reduction?: RealtimeSessionCreateResponseAudioInputNoiseReduction

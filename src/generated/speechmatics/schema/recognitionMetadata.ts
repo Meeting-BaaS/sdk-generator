@@ -26,6 +26,8 @@ export interface RecognitionMetadata {
   created_at: string
   type: JobType
   transcription_config?: TranscriptionConfig
+  /** The engine version used to generate transcription output. */
+  orchestrator_version?: string
   /** List of errors that occurred in the translation stage. */
   translation_errors?: TranslationError[]
   /** List of errors that occurred in the summarization stage. */
@@ -40,6 +42,4 @@ export interface RecognitionMetadata {
   output_config?: OutputConfig
   language_pack_info?: LanguagePackInfo
   language_identification?: LanguageIdentificationResult
-  /** Orchestrator version in PEP 440 Format or set to 'version_not_found' as default. */
-  orchestrator_version?: string
 }

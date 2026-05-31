@@ -7,6 +7,7 @@
  */
 import type { OperatingPoint } from "./operatingPoint"
 import type { TranscriptionConfigAdditionalVocabItem } from "./transcriptionConfigAdditionalVocabItem"
+import type { TranscriptionConfigAudioFilteringConfig } from "./transcriptionConfigAudioFilteringConfig"
 import type { TranscriptionConfigDiarization } from "./transcriptionConfigDiarization"
 import type { TranscriptionConfigMaxDelayMode } from "./transcriptionConfigMaxDelayMode"
 import type { TranscriptionConfigPunctuationOverrides } from "./transcriptionConfigPunctuationOverrides"
@@ -39,7 +40,9 @@ The default is `none`.
   enable_entities?: boolean
   /** Whether or not to enable flexible endpointing and allow the entity to continue to be spoken. */
   max_delay_mode?: TranscriptionConfigMaxDelayMode
-  /** Configuration for applying filtering to the transcription */
+  /** Configuration for limiting the transcription of quiet audio. */
+  audio_filtering_config?: TranscriptionConfigAudioFilteringConfig
+  /** Configuration for applying filtering to the transcription. */
   transcript_filtering_config?: TranscriptionConfigTranscriptFilteringConfig
   /** Configuration for speaker diarization */
   speaker_diarization_config?: TranscriptionConfigSpeakerDiarizationConfig

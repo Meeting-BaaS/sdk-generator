@@ -8,7 +8,7 @@
 import type { TranscriptRemoveAudioTags } from "./transcriptRemoveAudioTags"
 
 /**
- * Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.
+ * Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.
 
 Note: This parameter is only supported for the Universal-3 Pro model.
 

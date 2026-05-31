@@ -8,13 +8,22 @@
 import { z as zod } from "zod"
 
 /**
- * @summary Create a new job.
+ * @summary Create a new job
  */
+export const postJobsHeader = zod.object({
+  "X-SM-Processing-Data": zod
+    .string()
+    .optional()
+    .describe(
+      '**Note**: Only available for on-prem\nJSON dictionary of processing settings for the job worker. Currently supports `parallel_engines` (integer), which controls the number of engines the worker can use in parallel for this job, and `user_id` (string), which is the user id for this job. Example: `{"parallel_engines": 4}`'
+    )
+})
+
 export const postJobsBody = zod.object({
   config: zod
     .string()
     .describe(
-      "JSON containing a `JobConfig` model indicating the type and parameters for the recognition job."
+      "JSON containing a [`JobConfig`](/speech-to-text/batch/input#jobconfig-schema) model indicating the type and parameters for the recognition job."
     ),
   data_file: zod
     .instanceof(File)
@@ -29,7 +38,7 @@ export const postJobsBody = zod.object({
 })
 
 /**
- * @summary List all jobs.
+ * @summary List all jobs
  */
 export const getJobsQueryLimitMax = 100
 
@@ -63,10 +72,15 @@ export const getJobsResponseJobsItemConfigTranscriptionConfigPunctuationOverride
   /^(.|all)$/
 export const getJobsResponseJobsItemConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
   /^[A-Za-z0-9._]+$/
+export const getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+
+export const getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
 export const getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
 
 export const getJobsResponseJobsItemConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
 export const getJobsResponseJobsItemConfigTranslationConfigTargetLanguagesMax = 5
+export const getJobsResponseJobsItemConfigSummarizationConfigContentTypeDefault = "auto"
+export const getJobsResponseJobsItemConfigSummarizationConfigSummaryLengthDefault = "brief"
 
 export const getJobsResponse = zod.object({
   jobs: zod.array(
@@ -209,28 +223,51 @@ export const getJobsResponse = zod.object({
                   .describe(
                     "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
                   ),
+                audio_filtering_config: zod
+                  .object({
+                    volume_threshold: zod
+                      .number()
+                      .min(
+                        getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
+                      )
+                      .max(
+                        getJobsResponseJobsItemConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
+                      )
+                      .optional()
+                      .describe(
+                        "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
+                      )
+                  })
+                  .optional()
+                  .describe("Configuration for limiting the transcription of quiet audio."),
                 transcript_filtering_config: zod
                   .object({
                     remove_disfluencies: zod
                       .boolean()
                       .optional()
                       .describe(
-                        "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
+                        "If true, words identified as disfluencies (e.g., 'um', 'uh') will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
                       ),
                     replacements: zod
                       .array(
                         zod.object({
-                          from: zod.string(),
-                          to: zod.string()
+                          from: zod
+                            .string()
+                            .describe("The text or pattern identified to be replaced."),
+                          to: zod
+                            .string()
+                            .describe(
+                              "The corrected or formatted string to appear in the transcript."
+                            )
                         })
                       )
                       .optional()
                       .describe(
-                        "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
+                        'An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find ("from:") and the text to replace it with ("to:").'
                       )
                   })
                   .optional()
-                  .describe("Configuration for applying filtering to the transcription"),
+                  .describe("Configuration for applying filtering to the transcription."),
                 speaker_diarization_config: zod
                   .object({
                     prefer_current_speaker: zod
@@ -250,6 +287,30 @@ export const getJobsResponse = zod.object({
                       .optional()
                       .describe(
                         "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
+                      ),
+                    get_speakers: zod
+                      .boolean()
+                      .optional()
+                      .describe(
+                        "If true, speaker identifiers will be returned at the end of transcript."
+                      ),
+                    speakers: zod
+                      .array(
+                        zod.object({
+                          label: zod
+                            .string()
+                            .min(1)
+                            .describe(
+                              "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
+                            ),
+                          speaker_identifiers: zod
+                            .array(zod.string().describe("Speaker identifiers."))
+                            .min(1)
+                        })
+                      )
+                      .optional()
+                      .describe(
+                        "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
                       )
                   })
                   .optional()
@@ -340,11 +401,22 @@ export const getJobsResponse = zod.object({
               .optional(),
             summarization_config: zod
               .object({
-                content_type: zod.enum(["auto", "informative", "conversational"]).optional(),
-                summary_length: zod.enum(["brief", "detailed"]).optional(),
+                content_type: zod
+                  .enum(["auto", "informative", "conversational"])
+                  .default(getJobsResponseJobsItemConfigSummarizationConfigContentTypeDefault)
+                  .describe(
+                    "Choose from three options:\n- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.\n- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.\n- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.\n"
+                  ),
+                summary_length: zod
+                  .enum(["brief", "detailed"])
+                  .default(getJobsResponseJobsItemConfigSummarizationConfigSummaryLengthDefault)
+                  .describe(
+                    "Determines the depth of the summary:\n- `brief` - Provides a succinct summary, condensing the content into just a few sentences.\n- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each."
+                  ),
                 summary_type: zod.enum(["paragraphs", "bullets"]).optional()
               })
-              .optional(),
+              .optional()
+              .describe("Configuration options for summarization."),
             sentiment_analysis_config: zod.object({}).optional(),
             topic_detection_config: zod
               .object({
@@ -379,13 +451,14 @@ export const getJobsResponse = zod.object({
           )
       })
       .describe(
-        "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
+        "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/{id} request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
       )
   )
 })
 
 /**
- * @summary Get job details, including progress and any error reports.
+ * Get job details, including progress and any error reports.
+ * @summary Get job details
  */
 export const getJobsJobidParams = zod.object({
   jobid: zod.string().describe("ID of the job.")
@@ -399,10 +472,15 @@ export const getJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverride
   /^(.|all)$/
 export const getJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
   /^[A-Za-z0-9._]+$/
+export const getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+
+export const getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
 export const getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
 
 export const getJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
 export const getJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax = 5
+export const getJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault = "auto"
+export const getJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault = "brief"
 
 export const getJobsJobidResponse = zod.object({
   job: zod
@@ -542,28 +620,51 @@ export const getJobsJobidResponse = zod.object({
                 .describe(
                   "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
                 ),
+              audio_filtering_config: zod
+                .object({
+                  volume_threshold: zod
+                    .number()
+                    .min(
+                      getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
+                    )
+                    .max(
+                      getJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
+                    )
+                    .optional()
+                    .describe(
+                      "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
+                    )
+                })
+                .optional()
+                .describe("Configuration for limiting the transcription of quiet audio."),
               transcript_filtering_config: zod
                 .object({
                   remove_disfluencies: zod
                     .boolean()
                     .optional()
                     .describe(
-                      "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
+                      "If true, words identified as disfluencies (e.g., 'um', 'uh') will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
                     ),
                   replacements: zod
                     .array(
                       zod.object({
-                        from: zod.string(),
-                        to: zod.string()
+                        from: zod
+                          .string()
+                          .describe("The text or pattern identified to be replaced."),
+                        to: zod
+                          .string()
+                          .describe(
+                            "The corrected or formatted string to appear in the transcript."
+                          )
                       })
                     )
                     .optional()
                     .describe(
-                      "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
+                      'An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find ("from:") and the text to replace it with ("to:").'
                     )
                 })
                 .optional()
-                .describe("Configuration for applying filtering to the transcription"),
+                .describe("Configuration for applying filtering to the transcription."),
               speaker_diarization_config: zod
                 .object({
                   prefer_current_speaker: zod
@@ -583,6 +684,30 @@ export const getJobsJobidResponse = zod.object({
                     .optional()
                     .describe(
                       "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
+                    ),
+                  get_speakers: zod
+                    .boolean()
+                    .optional()
+                    .describe(
+                      "If true, speaker identifiers will be returned at the end of transcript."
+                    ),
+                  speakers: zod
+                    .array(
+                      zod.object({
+                        label: zod
+                          .string()
+                          .min(1)
+                          .describe(
+                            "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
+                          ),
+                        speaker_identifiers: zod
+                          .array(zod.string().describe("Speaker identifiers."))
+                          .min(1)
+                      })
+                    )
+                    .optional()
+                    .describe(
+                      "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
                     )
                 })
                 .optional()
@@ -671,11 +796,22 @@ export const getJobsJobidResponse = zod.object({
             .optional(),
           summarization_config: zod
             .object({
-              content_type: zod.enum(["auto", "informative", "conversational"]).optional(),
-              summary_length: zod.enum(["brief", "detailed"]).optional(),
+              content_type: zod
+                .enum(["auto", "informative", "conversational"])
+                .default(getJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault)
+                .describe(
+                  "Choose from three options:\n- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.\n- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.\n- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.\n"
+                ),
+              summary_length: zod
+                .enum(["brief", "detailed"])
+                .default(getJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault)
+                .describe(
+                  "Determines the depth of the summary:\n- `brief` - Provides a succinct summary, condensing the content into just a few sentences.\n- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each."
+                ),
               summary_type: zod.enum(["paragraphs", "bullets"]).optional()
             })
-            .optional(),
+            .optional()
+            .describe("Configuration options for summarization."),
           sentiment_analysis_config: zod.object({}).optional(),
           topic_detection_config: zod
             .object({
@@ -710,12 +846,13 @@ export const getJobsJobidResponse = zod.object({
         )
     })
     .describe(
-      "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
+      "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/{id} request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
     )
 })
 
 /**
- * @summary Delete a job and remove all associated resources.
+ * Delete a job and remove all associated resources.
+ * @summary Delete a job
  */
 export const deleteJobsJobidParams = zod.object({
   jobid: zod.string().describe("ID of the job to delete.")
@@ -738,10 +875,15 @@ export const deleteJobsJobidResponseJobConfigTranscriptionConfigPunctuationOverr
   /^(.|all)$/
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigChannelDiarizationLabelsItemRegExp =
   /^[A-Za-z0-9._]+$/
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+
+export const deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
 
 export const deleteJobsJobidResponseJobConfigTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
 export const deleteJobsJobidResponseJobConfigTranslationConfigTargetLanguagesMax = 5
+export const deleteJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault = "auto"
+export const deleteJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault = "brief"
 
 export const deleteJobsJobidResponse = zod.object({
   job: zod
@@ -881,28 +1023,51 @@ export const deleteJobsJobidResponse = zod.object({
                 .describe(
                   "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
                 ),
+              audio_filtering_config: zod
+                .object({
+                  volume_threshold: zod
+                    .number()
+                    .min(
+                      deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
+                    )
+                    .max(
+                      deleteJobsJobidResponseJobConfigTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
+                    )
+                    .optional()
+                    .describe(
+                      "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
+                    )
+                })
+                .optional()
+                .describe("Configuration for limiting the transcription of quiet audio."),
               transcript_filtering_config: zod
                 .object({
                   remove_disfluencies: zod
                     .boolean()
                     .optional()
                     .describe(
-                      "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
+                      "If true, words identified as disfluencies (e.g., 'um', 'uh') will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
                     ),
                   replacements: zod
                     .array(
                       zod.object({
-                        from: zod.string(),
-                        to: zod.string()
+                        from: zod
+                          .string()
+                          .describe("The text or pattern identified to be replaced."),
+                        to: zod
+                          .string()
+                          .describe(
+                            "The corrected or formatted string to appear in the transcript."
+                          )
                       })
                     )
                     .optional()
                     .describe(
-                      "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
+                      'An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find ("from:") and the text to replace it with ("to:").'
                     )
                 })
                 .optional()
-                .describe("Configuration for applying filtering to the transcription"),
+                .describe("Configuration for applying filtering to the transcription."),
               speaker_diarization_config: zod
                 .object({
                   prefer_current_speaker: zod
@@ -922,6 +1087,30 @@ export const deleteJobsJobidResponse = zod.object({
                     .optional()
                     .describe(
                       "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
+                    ),
+                  get_speakers: zod
+                    .boolean()
+                    .optional()
+                    .describe(
+                      "If true, speaker identifiers will be returned at the end of transcript."
+                    ),
+                  speakers: zod
+                    .array(
+                      zod.object({
+                        label: zod
+                          .string()
+                          .min(1)
+                          .describe(
+                            "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
+                          ),
+                        speaker_identifiers: zod
+                          .array(zod.string().describe("Speaker identifiers."))
+                          .min(1)
+                      })
+                    )
+                    .optional()
+                    .describe(
+                      "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
                     )
                 })
                 .optional()
@@ -1010,11 +1199,22 @@ export const deleteJobsJobidResponse = zod.object({
             .optional(),
           summarization_config: zod
             .object({
-              content_type: zod.enum(["auto", "informative", "conversational"]).optional(),
-              summary_length: zod.enum(["brief", "detailed"]).optional(),
+              content_type: zod
+                .enum(["auto", "informative", "conversational"])
+                .default(deleteJobsJobidResponseJobConfigSummarizationConfigContentTypeDefault)
+                .describe(
+                  "Choose from three options:\n- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.\n- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.\n- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.\n"
+                ),
+              summary_length: zod
+                .enum(["brief", "detailed"])
+                .default(deleteJobsJobidResponseJobConfigSummarizationConfigSummaryLengthDefault)
+                .describe(
+                  "Determines the depth of the summary:\n- `brief` - Provides a succinct summary, condensing the content into just a few sentences.\n- `detailed` - Provide a longer, structured summary. For _conversational_ content, it includes key topics and a summary of the entire conversation. For _informative_ content, it logically divides the audio into sections and provides a summary for each."
+                ),
               summary_type: zod.enum(["paragraphs", "bullets"]).optional()
             })
-            .optional(),
+            .optional()
+            .describe("Configuration options for summarization."),
           sentiment_analysis_config: zod.object({}).optional(),
           topic_detection_config: zod
             .object({
@@ -1049,7 +1249,7 @@ export const deleteJobsJobidResponse = zod.object({
         )
     })
     .describe(
-      "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
+      "Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/{id} request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance."
     )
 })
 
@@ -1072,7 +1272,7 @@ export const getJobsJobidTextParams = zod.object({
 export const getJobsJobidTextResponse = zod.instanceof(File)
 
 /**
- * @summary Get the transcript for a transcription job.
+ * @summary Get the transcript for a transcription job
  */
 export const getJobsJobidTranscriptParams = zod.object({
   jobid: zod.string().describe("ID of the job.")
@@ -1093,6 +1293,9 @@ export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigPunctuatio
   /^(.|all)$/
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigChannelDiarizationLabelsItemRegExp =
   /^[A-Za-z0-9._]+$/
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMin = 0
+
+export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMax = 100
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMin = 0
 
 export const getJobsJobidTranscriptResponseMetadataTranscriptionConfigSpeakerDiarizationConfigSpeakerSensitivityMax = 1
@@ -1220,28 +1423,47 @@ export const getJobsJobidTranscriptResponse = zod.object({
             .describe(
               "Whether or not to enable flexible endpointing and allow the entity to continue to be spoken."
             ),
+          audio_filtering_config: zod
+            .object({
+              volume_threshold: zod
+                .number()
+                .min(
+                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMin
+                )
+                .max(
+                  getJobsJobidTranscriptResponseMetadataTranscriptionConfigAudioFilteringConfigVolumeThresholdMax
+                )
+                .optional()
+                .describe(
+                  "Controls the lower limit of audio volume at which speech and audio events will be transcribed. If the volume limit is very low, then most sound will be passed to the speech recognition engine. Higher numbers will cut out increasing amounts of sound."
+                )
+            })
+            .optional()
+            .describe("Configuration for limiting the transcription of quiet audio."),
           transcript_filtering_config: zod
             .object({
               remove_disfluencies: zod
                 .boolean()
                 .optional()
                 .describe(
-                  "If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
+                  "If true, words identified as disfluencies (e.g., 'um', 'uh') will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'."
                 ),
               replacements: zod
                 .array(
                   zod.object({
-                    from: zod.string(),
-                    to: zod.string()
+                    from: zod.string().describe("The text or pattern identified to be replaced."),
+                    to: zod
+                      .string()
+                      .describe("The corrected or formatted string to appear in the transcript.")
                   })
                 )
                 .optional()
                 .describe(
-                  "A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text."
+                  'An array of objects defining custom replacements. Each replacement contains a pair of strings: the text to find ("from:") and the text to replace it with ("to:").'
                 )
             })
             .optional()
-            .describe("Configuration for applying filtering to the transcription"),
+            .describe("Configuration for applying filtering to the transcription."),
           speaker_diarization_config: zod
             .object({
               prefer_current_speaker: zod
@@ -1261,12 +1483,40 @@ export const getJobsJobidTranscriptResponse = zod.object({
                 .optional()
                 .describe(
                   "Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5."
+                ),
+              get_speakers: zod
+                .boolean()
+                .optional()
+                .describe(
+                  "If true, speaker identifiers will be returned at the end of transcript."
+                ),
+              speakers: zod
+                .array(
+                  zod.object({
+                    label: zod
+                      .string()
+                      .min(1)
+                      .describe(
+                        "Speaker label, which must not match the format used internally (e.g. S1, S2, etc)"
+                      ),
+                    speaker_identifiers: zod
+                      .array(zod.string().describe("Speaker identifiers."))
+                      .min(1)
+                  })
+                )
+                .optional()
+                .describe(
+                  "Use this option to provide speaker labels linked to their speaker identifiers. When passed, the transcription system will tag spoken words in the transcript with the provided speaker labels whenever any of the specified speakers is detected in the audio. A maximum of 50 speakers identifiers across all speakers can be provided."
                 )
             })
             .optional()
             .describe("Configuration for speaker diarization")
         })
         .optional(),
+      orchestrator_version: zod
+        .string()
+        .optional()
+        .describe("The engine version used to generate transcription output."),
       translation_errors: zod
         .array(
           zod.object({
@@ -1391,13 +1641,7 @@ export const getJobsJobidTranscriptResponse = zod.object({
             .optional(),
           message: zod.string().optional()
         })
-        .optional(),
-      orchestrator_version: zod
-        .string()
         .optional()
-        .describe(
-          "Orchestrator version in PEP 440 Format or set to 'version_not_found' as default."
-        )
     })
     .describe(
       "Summary information about the output from an ASR job, comprising the job type and configuration parameters used when generating the output."
@@ -1522,6 +1766,15 @@ export const getJobsJobidTranscriptResponse = zod.object({
         "An ASR job output item. The primary item types are `word` and `punctuation`. Other item types may be present, for example to provide semantic information of different forms."
       )
   ),
+  speakers: zod
+    .array(
+      zod.object({
+        label: zod.string().min(1).describe("Speaker label."),
+        speaker_identifiers: zod.array(zod.string().describe("Speaker identifiers.")).min(1)
+      })
+    )
+    .optional()
+    .describe("List of unique speaker identifiers detected in the transcript."),
   translations: zod
     .record(
       zod.string(),
@@ -1553,13 +1806,44 @@ export const getJobsJobidTranscriptResponse = zod.object({
             .array(
               zod
                 .object({
-                  text: zod.string().optional(),
-                  start_time: zod.number().optional(),
-                  end_time: zod.number().optional(),
-                  sentiment: zod.string().optional(),
-                  speaker: zod.string().optional(),
-                  channel: zod.string().optional(),
-                  confidence: zod.number().optional()
+                  text: zod
+                    .string()
+                    .optional()
+                    .describe("Represents the transcript of the analysed segment"),
+                  sentiment: zod
+                    .string()
+                    .optional()
+                    .describe(
+                      "The assigned sentiment to the segment, which can be positive, neutral or negative"
+                    ),
+                  start_time: zod
+                    .number()
+                    .optional()
+                    .describe(
+                      "The timestamp corresponding to the beginning of the transcription segment"
+                    ),
+                  end_time: zod
+                    .number()
+                    .optional()
+                    .describe(
+                      "The timestamp corresponding to the end of the transcription segment"
+                    ),
+                  speaker: zod
+                    .string()
+                    .optional()
+                    .describe(
+                      "The speaker label for the segment, if speaker diarization is enabled"
+                    ),
+                  channel: zod
+                    .string()
+                    .optional()
+                    .describe(
+                      "The channel label for the segment, if channel diarization is enabled"
+                    ),
+                  confidence: zod
+                    .number()
+                    .optional()
+                    .describe("A confidence score in the range of 0-1")
                 })
                 .describe("Represents a segment of text and its associated sentiment.")
             )
@@ -1660,10 +1944,16 @@ export const getJobsJobidTranscriptResponse = zod.object({
   chapters: zod
     .array(
       zod.object({
-        title: zod.string().optional(),
-        summary: zod.string().optional(),
-        start_time: zod.number().optional(),
-        end_time: zod.number().optional()
+        title: zod.string().optional().describe("The auto-generated title for the chapter"),
+        summary: zod
+          .string()
+          .optional()
+          .describe("An auto-generated paragraph-style, short summary of the chapter"),
+        start_time: zod
+          .number()
+          .optional()
+          .describe("The start time of the chapter in the audio file"),
+        end_time: zod.number().optional().describe("The end time of the chapter in the audio file")
       })
     )
     .optional()
@@ -1756,7 +2046,26 @@ export const getJobsJobidLogParams = zod.object({
 export const getJobsJobidLogResponse = zod.instanceof(File)
 
 /**
- * @summary Get the usage statistics.
+ * Get signed urls for data files associated to the job.
+ * @summary Get object URLs
+ */
+export const getJobsJobidObjectUrlsParams = zod.object({
+  jobid: zod.string().describe("ID of the job.")
+})
+
+export const getJobsJobidObjectUrlsQueryParams = zod.object({
+  ttl: zod.number().describe("Time to live in seconds for the signed URLs"),
+  url_for: zod.array(zod.enum(["data", "audio_mp3", "transcript"]))
+})
+
+export const getJobsJobidObjectUrlsResponse = zod.object({
+  data: zod.string().optional(),
+  audio_mp3: zod.string().optional(),
+  transcript: zod.string().optional()
+})
+
+/**
+ * @summary Get usage statistics
  */
 export const getUsageQueryParams = zod.object({
   since: zod

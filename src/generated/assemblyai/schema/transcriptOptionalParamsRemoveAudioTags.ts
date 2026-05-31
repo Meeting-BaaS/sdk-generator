@@ -7,7 +7,7 @@
  */
 
 /**
- * Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `"all"` to remove all audio tags.
+ * Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations.
 
 Note: This parameter is only supported for the Universal-3 Pro model.
 
@@ -17,5 +17,6 @@ export type TranscriptOptionalParamsRemoveAudioTags =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TranscriptOptionalParamsRemoveAudioTags = {
-  all: "all"
+  all: "all",
+  speaker: "speaker"
 } as const

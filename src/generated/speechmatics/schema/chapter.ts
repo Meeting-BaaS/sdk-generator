@@ -7,8 +7,12 @@
  */
 
 export interface Chapter {
+  /** The auto-generated title for the chapter */
   title?: string
+  /** An auto-generated paragraph-style, short summary of the chapter */
   summary?: string
+  /** The start time of the chapter in the audio file */
   start_time?: number
+  /** The end time of the chapter in the audio file */
   end_time?: number
 }

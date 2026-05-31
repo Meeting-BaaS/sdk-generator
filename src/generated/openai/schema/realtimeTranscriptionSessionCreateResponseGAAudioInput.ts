@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.3.0
  */
 
-import type { AudioTranscription } from "./audioTranscription"
+import type { AudioTranscriptionResponse } from "./audioTranscriptionResponse"
 import type { RealtimeAudioFormats } from "./realtimeAudioFormats"
 import type { RealtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction } from "./realtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction"
 import type { RealtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection } from "./realtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection"
@@ -15,13 +15,11 @@ export type RealtimeTranscriptionSessionCreateResponseGAAudioInput = {
   format?: RealtimeAudioFormats
   /** Configuration of the transcription model.
    */
-  transcription?: AudioTranscription
+  transcription?: AudioTranscriptionResponse
   /** Configuration for input audio noise reduction.
    */
   noise_reduction?: RealtimeTranscriptionSessionCreateResponseGAAudioInputNoiseReduction
-  /** Configuration for turn detection. Can be set to `null` to turn off. Server
-VAD means that the model will detect the start and end of speech based on
-audio volume and respond at the end of user speech.
- */
+  /** Configuration for turn detection. For `gpt-realtime-whisper`, this must be `null`; VAD is not supported.
+   */
   turn_detection?: RealtimeTranscriptionSessionCreateResponseGAAudioInputTurnDetection
 }

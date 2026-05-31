@@ -1391,12 +1391,20 @@
           "email_address",
           "event",
           "filename",
+          "gender",
           "gender_sexuality",
           "healthcare_number",
           "injury",
           "ip_address",
           "language",
           "location",
+          "location_address",
+          "location_address_street",
+          "location_city",
+          "location_coordinate",
+          "location_country",
+          "location_state",
+          "location_zip",
           "marital_status",
           "medical_condition",
           "medical_process",
@@ -1405,6 +1413,7 @@
           "number_sequence",
           "occupation",
           "organization",
+          "organization_medical_facility",
           "passport_number",
           "password",
           "person_age",
@@ -1413,6 +1422,7 @@
           "physical_attribute",
           "political_affiliation",
           "religion",
+          "sexuality",
           "statistics",
           "time",
           "url",
@@ -1421,7 +1431,7 @@
           "vehicle_id",
           "zodiac_sign"
         ],
-        "description": "The type of PII to redact",
+        "description": "The type of PII to redact. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for the full list of policies and their descriptions.",
         "title": "PiiPolicy"
       },
       "SubstitutionPolicy": {
@@ -1430,7 +1440,7 @@
           "entity_name",
           "hash"
         ],
-        "description": "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.",
+        "description": "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for more details.",
         "title": "SubstitutionPolicy"
       },
       "TranscriptOptionalParamsSpeakerOptions": {
@@ -1643,9 +1653,10 @@
       "TranscriptOptionalParamsRemoveAudioTags": {
         "type": "string",
         "enum": [
-          "all"
+          "all",
+          "speaker"
         ],
-        "description": "Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
+        "description": "Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `\"all\"` to remove all inline annotations, or `\"speaker\"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
         "title": "TranscriptOptionalParamsRemoveAudioTags"
       },
       "TranscriptParams": {
@@ -1689,7 +1700,7 @@
           "disfluencies": {
             "type": "boolean",
             "default": false,
-            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like \"umm\", in your media file; can be true or false"
+            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like \"umm\", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2."
           },
           "domain": {
             "type": [
@@ -1877,7 +1888,7 @@
                 "type": "null"
               }
             ],
-            "description": "Remove [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) from the transcript text. Set to `\"all\"` to remove all audio tags.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+            "description": "Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `\"all\"` to remove all inline annotations, or `\"speaker\"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
           },
           "temperature": {
             "type": "number",
@@ -2186,12 +2197,20 @@
           "email_address",
           "event",
           "filename",
+          "gender",
           "gender_sexuality",
           "healthcare_number",
           "injury",
           "ip_address",
           "language",
           "location",
+          "location_address",
+          "location_address_street",
+          "location_city",
+          "location_coordinate",
+          "location_country",
+          "location_state",
+          "location_zip",
           "marital_status",
           "medical_condition",
           "medical_process",
@@ -2200,6 +2219,7 @@
           "number_sequence",
           "occupation",
           "organization",
+          "organization_medical_facility",
           "passport_number",
           "password",
           "person_age",
@@ -2208,6 +2228,7 @@
           "physical_attribute",
           "political_affiliation",
           "religion",
+          "sexuality",
           "statistics",
           "time",
           "url",
@@ -2351,6 +2372,41 @@
         },
         "description": "Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection).",
         "title": "TranscriptLanguageDetectionOptions"
+      },
+      "TranscriptWarning": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "A human-readable description of the warning."
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "description": "A warning message emitted while processing a transcription request. Warnings are surfaced on the transcript response under `metadata.warnings`.\n",
+        "title": "TranscriptWarning"
+      },
+      "TranscriptMetadata": {
+        "type": "object",
+        "properties": {
+          "domain_used": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The domain-specific model that was applied to the transcription (for example, `\"medical-v1\"` when [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was applied), or `null` if no domain-specific model was used. Always present when `metadata` is present.\n"
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranscriptWarning"
+            },
+            "description": "Warning messages emitted while processing the request. Each warning is an object with a human-readable `message`. When there are no warnings to report, this field is omitted from the `metadata` object entirely.\n"
+          }
+        },
+        "description": "Additional metadata about the transcription returned on the `Transcript` object under `metadata`. Only present when there is information to report — when all of its fields would be empty, the `metadata` object is omitted from the response entirely.\n",
+        "title": "TranscriptMetadata"
       },
       "TranscriptRedactPiiAudioOptionsOverrideAudioRedactionMethod": {
         "type": "string",
@@ -2557,9 +2613,10 @@
       "TranscriptRemoveAudioTags": {
         "type": "string",
         "enum": [
-          "all"
+          "all",
+          "speaker"
         ],
-        "description": "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
+        "description": "Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `\"all\"` to remove all inline annotations, or `\"speaker\"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n",
         "title": "TranscriptRemoveAudioTags"
       },
       "TranscriptWord": {
@@ -2779,7 +2836,7 @@
               "boolean",
               "null"
             ],
-            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like \"umm\", in your media file; can be true or false"
+            "description": "Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like \"umm\", in your media file; can be true or false. Supported on Universal-3 Pro and Universal-2."
           },
           "domain": {
             "type": [
@@ -2893,6 +2950,17 @@
           "language_detection_options": {
             "$ref": "#/components/schemas/TranscriptLanguageDetectionOptions",
             "description": "Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection)."
+          },
+          "metadata": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TranscriptMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Additional metadata about the transcription, including any warnings emitted while processing the request. Only present when there is information to report; if no fields would be populated, `metadata` is omitted from the response entirely.\n"
           },
           "multichannel": {
             "type": [
@@ -3036,14 +3104,14 @@
               "string",
               "null"
             ],
-            "description": "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-models) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
+            "description": "The Summarization model used to generate the summary,\nif [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details.\n"
           },
           "summary_type": {
             "type": [
               "string",
               "null"
             ],
-            "description": "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts#summary-types) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
+            "description": "The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) is enabled. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/overview) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarize-transcripts) for details."
           },
           "remove_audio_tags": {
             "oneOf": [
@@ -3054,7 +3122,7 @@
                 "type": "null"
               }
             ],
-            "description": "Whether [audio event tags](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-pro#audio-event-tags) were removed from the transcript text.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
+            "description": "Universal-3 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `\"all\"` to remove all inline annotations, or `\"speaker\"` to remove only speaker cues while keeping other annotations.\n\nNote: This parameter is only supported for the Universal-3 Pro model.\n"
           },
           "temperature": {
             "type": [

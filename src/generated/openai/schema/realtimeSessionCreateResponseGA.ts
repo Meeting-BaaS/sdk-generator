@@ -7,11 +7,12 @@
  */
 
 import type { Prompt } from "./prompt"
+import type { RealtimeReasoning } from "./realtimeReasoning"
 import type { RealtimeSessionCreateResponseGAAudio } from "./realtimeSessionCreateResponseGAAudio"
-import type { RealtimeSessionCreateResponseGAClientSecret } from "./realtimeSessionCreateResponseGAClientSecret"
 import type { RealtimeSessionCreateResponseGAIncludeItem } from "./realtimeSessionCreateResponseGAIncludeItem"
 import type { RealtimeSessionCreateResponseGAMaxOutputTokens } from "./realtimeSessionCreateResponseGAMaxOutputTokens"
 import type { RealtimeSessionCreateResponseGAModel } from "./realtimeSessionCreateResponseGAModel"
+import type { RealtimeSessionCreateResponseGAObject } from "./realtimeSessionCreateResponseGAObject"
 import type { RealtimeSessionCreateResponseGAOutputModalitiesItem } from "./realtimeSessionCreateResponseGAOutputModalitiesItem"
 import type { RealtimeSessionCreateResponseGAToolChoice } from "./realtimeSessionCreateResponseGAToolChoice"
 import type { RealtimeSessionCreateResponseGAToolsItem } from "./realtimeSessionCreateResponseGAToolsItem"
@@ -20,16 +21,20 @@ import type { RealtimeSessionCreateResponseGAType } from "./realtimeSessionCreat
 import type { RealtimeTruncation } from "./realtimeTruncation"
 
 /**
- * A new Realtime session configuration, with an ephemeral key. Default TTL
-for keys is one minute.
+ * A Realtime session configuration object.
 
  */
 export interface RealtimeSessionCreateResponseGA {
-  /** Ephemeral key returned by the API. */
-  client_secret: RealtimeSessionCreateResponseGAClientSecret
   /** The type of session to create. Always `realtime` for the Realtime API.
    */
   type: RealtimeSessionCreateResponseGAType
+  /** Unique identifier for the session that looks like `sess_1234567890abcdef`.
+   */
+  id: string
+  /** The object type. Always `realtime.session`. */
+  object: RealtimeSessionCreateResponseGAObject
+  /** Expiration timestamp for the session, in seconds since epoch. */
+  expires_at?: number
   /** The set of modalities the model can respond with. It defaults to `["audio"]`, indicating
 that the model will respond with audio plus a transcript. `["text"]` can be used to make
 the model respond with text only. It is not possible to request both `text` and `audio` at the same time.
@@ -58,6 +63,7 @@ Note that the server sets default instructions which will be used if this field 
 function/MCP tool.
  */
   tool_choice?: RealtimeSessionCreateResponseGAToolChoice
+  reasoning?: RealtimeReasoning
   /** Maximum number of output tokens for a single assistant response,
 inclusive of tool calls. Provide an integer between 1 and 4096 to
 limit output tokens, or `inf` for the maximum available tokens for a

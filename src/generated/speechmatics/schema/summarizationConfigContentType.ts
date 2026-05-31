@@ -6,6 +6,13 @@
  * OpenAPI spec version: 2.0.0
  */
 
+/**
+ * Choose from three options:
+- `conversational` - Best suited for dialogues involving multiple participants, such as calls, meetings or discussions. It focuses on summarizing key points of the conversation.
+- `informative` - Recommended for more structured information delivered by one or more people, making it ideal for videos, podcasts, lectures, and presentations.
+- `auto` - Automatically selects the most appropriate content type based on an analysis of the transcript.
+
+ */
 export type SummarizationConfigContentType =
   (typeof SummarizationConfigContentType)[keyof typeof SummarizationConfigContentType]
 

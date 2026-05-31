@@ -7,7 +7,7 @@
  */
 
 /**
- * The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, and `gpt-4o-transcribe-diarize`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
+ * The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.
 
  */
 export type AudioTranscriptionModel =
@@ -17,3 +17,4 @@ export type AudioTranscriptionModel =
   | "gpt-4o-mini-transcribe-2025-12-15"
   | "gpt-4o-transcribe"
   | "gpt-4o-transcribe-diarize"
+  | "gpt-realtime-whisper"

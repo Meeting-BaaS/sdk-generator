@@ -43,9 +43,9 @@ export interface InitTranscriptionRequest {
   translation?: boolean
   /** **[Beta]** Translation configuration, if `translation` is enabled */
   translation_config?: TranslationConfigDTO
-  /** **[Beta]** Enable summarization for this audio */
+  /** Enable summarization for this audio */
   summarization?: boolean
-  /** **[Beta]** Summarization configuration, if `summarization` is enabled */
+  /** Summarization configuration, if `summarization` is enabled */
   summarization_config?: SummarizationConfigDTO
   /** **[Alpha]** Enable named entity recognition for this audio */
   named_entity_recognition?: boolean
@@ -55,9 +55,9 @@ export interface InitTranscriptionRequest {
   custom_spelling_config?: CustomSpellingConfigDTO
   /** Enable sentiment analysis for this audio */
   sentiment_analysis?: boolean
-  /** **[Alpha]** Enable audio to llm processing for this audio */
+  /** Enable audio to LLM processing for this audio */
   audio_to_llm?: boolean
-  /** **[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled */
+  /** Audio to LLM configuration, if `audio_to_llm` is enabled */
   audio_to_llm_config?: AudioToLlmListConfigDTO
   /** Enable PII redaction for this audio */
   pii_redaction?: boolean

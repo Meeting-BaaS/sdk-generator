@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.3.0
  */
 
-import type { AudioTranscription } from "./audioTranscription"
+import type { AudioTranscriptionResponse } from "./audioTranscriptionResponse"
 import type { RealtimeTranscriptionSessionCreateResponseClientSecret } from "./realtimeTranscriptionSessionCreateResponseClientSecret"
 import type { RealtimeTranscriptionSessionCreateResponseModalitiesItem } from "./realtimeTranscriptionSessionCreateResponseModalitiesItem"
 import type { RealtimeTranscriptionSessionCreateResponseTurnDetection } from "./realtimeTranscriptionSessionCreateResponseTurnDetection"
@@ -33,7 +33,7 @@ set this to ["text"].
   input_audio_format?: string
   /** Configuration of the transcription model.
    */
-  input_audio_transcription?: AudioTranscription
+  input_audio_transcription?: AudioTranscriptionResponse
   /** Configuration for turn detection. Can be set to `null` to turn off. Server
 VAD means that the model will detect the start and end of speech based on
 audio volume and respond at the end of user speech.

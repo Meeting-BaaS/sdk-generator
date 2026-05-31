@@ -10,5 +10,6 @@ export type TemporaryApiKeyUsageType =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TemporaryApiKeyUsageType = {
-  transcribe_websocket: "transcribe_websocket"
+  transcribe_websocket: "transcribe_websocket",
+  tts_rt: "tts_rt"
 } as const

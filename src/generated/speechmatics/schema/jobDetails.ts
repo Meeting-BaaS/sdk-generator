@@ -11,7 +11,7 @@ import type { JobDetailError } from "./jobDetailError"
 import type { JobDetailsStatus } from "./jobDetailsStatus"
 
 /**
- * Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/<id> request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance.
+ * Document describing a job. JobConfig will be present in JobDetails returned for GET jobs/{id} request in SaaS and in Batch Appliance, but it will not be present in JobDetails returned as item in RetrieveJobsResponse in case of Batch Appliance.
  */
 export interface JobDetails {
   /** The UTC date time the job was created. */
