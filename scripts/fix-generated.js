@@ -920,6 +920,108 @@ function restoreManualSpeechmaticsFiles() {
 }
 
 /**
+ * Restore Soniox streaming response types (server→client WebSocket protocol)
+ *
+ * Hand-extracted from @soniox/speech-to-text-web; stored in specs/ so it
+ * survives `openapi:clean`.
+ */
+function restoreSonioxStreamingResponseTypes() {
+  const srcPath = path.join(__dirname, "..", "specs", "soniox-streaming-response-types.ts")
+  const targetDir = path.join(__dirname, "..", "src", "generated", "soniox")
+  const destPath = path.join(targetDir, "streaming-response-types.ts")
+
+  if (!fs.existsSync(srcPath)) {
+    console.log("⚠️  Soniox streaming-response-types.ts not found in specs/, skipping restore")
+    return
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  fs.copyFileSync(srcPath, destPath)
+  fixes.push("Restored Soniox streaming-response-types.ts from specs/")
+  console.log("\n📦 Restored Soniox streaming-response-types.ts")
+}
+
+/**
+ * Restore ElevenLabs streaming response types (server→client WebSocket protocol)
+ *
+ * Hand-extracted from the ElevenLabs WS API docs; stored in specs/ so it
+ * survives `openapi:clean`.
+ */
+function restoreElevenLabsStreamingResponseTypes() {
+  const srcPath = path.join(__dirname, "..", "specs", "elevenlabs-streaming-response-types.ts")
+  const targetDir = path.join(__dirname, "..", "src", "generated", "elevenlabs")
+  const destPath = path.join(targetDir, "streaming-response-types.ts")
+
+  if (!fs.existsSync(srcPath)) {
+    console.log("⚠️  ElevenLabs streaming-response-types.ts not found in specs/, skipping restore")
+    return
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  fs.copyFileSync(srcPath, destPath)
+  fixes.push("Restored ElevenLabs streaming-response-types.ts from specs/")
+  console.log("\n📦 Restored ElevenLabs streaming-response-types.ts")
+}
+
+/**
+ * Restore Deepgram streaming response types (server→client WebSocket protocol)
+ *
+ * streaming-response-types.ts is hand-extracted from @deepgram/sdk's
+ * Fern-generated types (the OpenAPI spec doesn't model the streaming protocol).
+ * Stored in specs/ so it survives `openapi:clean`.
+ */
+function restoreDeepgramStreamingResponseTypes() {
+  const srcPath = path.join(__dirname, "..", "specs", "deepgram-streaming-response-types.ts")
+  const targetDir = path.join(__dirname, "..", "src", "generated", "deepgram")
+  const destPath = path.join(targetDir, "streaming-response-types.ts")
+
+  if (!fs.existsSync(srcPath)) {
+    console.log("⚠️  Deepgram streaming-response-types.ts not found in specs/, skipping restore")
+    return
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  fs.copyFileSync(srcPath, destPath)
+  fixes.push("Restored Deepgram streaming-response-types.ts from specs/")
+  console.log("\n📦 Restored Deepgram streaming-response-types.ts")
+}
+
+/**
+ * Restore manual Soniox SDK type re-exports
+ *
+ * sdk-types.ts re-exports official @soniox/node types and classes through this
+ * SDK's import surface. It's hand-maintained (no generator produces it) and
+ * stored in specs/ so it survives `openapi:clean`.
+ */
+function restoreManualSonioxFiles() {
+  const srcPath = path.join(__dirname, "..", "specs", "soniox-sdk-types.ts")
+  const targetDir = path.join(__dirname, "..", "src", "generated", "soniox")
+  const destPath = path.join(targetDir, "sdk-types.ts")
+
+  if (!fs.existsSync(srcPath)) {
+    console.log("⚠️  Soniox sdk-types.ts not found in specs/, skipping restore")
+    return
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+
+  fs.copyFileSync(srcPath, destPath)
+  fixes.push("Restored Soniox sdk-types.ts from specs/")
+  console.log("\n📦 Restored Soniox sdk-types.ts")
+}
+
+/**
  * Restore OpenAI streaming types (WebSocket events not in OpenAPI spec)
  * These are hand-written types for the OpenAI Realtime WebSocket API
  */
@@ -971,6 +1073,18 @@ function main() {
 
   // Restore OpenAI streaming types (WebSocket events not in OpenAPI spec)
   restoreOpenAIStreamingTypes()
+
+  // Restore Soniox SDK type re-exports (hand-maintained)
+  restoreManualSonioxFiles()
+
+  // Restore Deepgram streaming response types (hand-extracted from @deepgram/sdk)
+  restoreDeepgramStreamingResponseTypes()
+
+  // Restore Soniox streaming response types (hand-extracted from @soniox/speech-to-text-web)
+  restoreSonioxStreamingResponseTypes()
+
+  // Restore ElevenLabs streaming response types (hand-extracted from WS API docs)
+  restoreElevenLabsStreamingResponseTypes()
 
   if (fixes.length > 0) {
     console.log("\n✅ Fixes applied:")
