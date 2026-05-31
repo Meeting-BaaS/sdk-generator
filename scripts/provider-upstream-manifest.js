@@ -152,12 +152,11 @@ const PROVIDERS = {
   deepgram: {
     specKeys: ["deepgram", "deepgramStreaming", "deepgramStreamingResponseTypes"],
     upstreams: [
-      {
-        key: "deepgramModelsApi",
-        type: "remote-content",
-        url: "https://api.deepgram.com/v1/models",
-        label: "Deepgram models/languages API"
-      },
+      // Note: api.deepgram.com/v1/models is used by generate-deepgram-{languages,models}.js
+      // at generation time, but isn't tracked here — its response contains per-request
+      // data that varies between fetches even after JSON canonicalization, so any
+      // baseline would report drift every run. Model additions are caught indirectly
+      // via the deepgramSdkPackage and deepgram-openapi.yml baselines.
       {
         key: "deepgramSdkPackage",
         type: "npm-package",
@@ -260,7 +259,55 @@ const PROVIDERS = {
   }
 }
 
+/**
+ * Stable JSON stringification — sorts object keys recursively so semantically
+ * equal payloads always serialize to identical bytes. Used to normalize specs
+ * whose upstream serializer reorders keys non-deterministically (e.g. Gladia's
+ * `api.gladia.io/openapi.json`).
+ */
+function stableStringify(value) {
+  if (value === null) return "null"
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`
+  if (typeof value === "object") {
+    return `{${Object.keys(value)
+      .sort()
+      .map((k) => `${JSON.stringify(k)}:${stableStringify(value[k])}`)
+      .join(",")}}`
+  }
+  return JSON.stringify(value)
+}
+
+// Matches ISO-8601 timestamps with optional fractional seconds and either Z or
+// numeric offset. Used to mask "current time" values that some upstream specs
+// (e.g. Gladia) inject as date-time `example` fields on every request.
+const ISO_TIMESTAMP_RE =
+  /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})/g
+
+/**
+ * Return canonical bytes for hashing. If the content parses as JSON, returns
+ * a stable-key-ordered serialization with ISO-8601 timestamps masked; otherwise
+ * returns the input unchanged. Accepts string or Buffer; returns string.
+ *
+ * Why timestamp masking: Gladia's `api.gladia.io/openapi.json` embeds the
+ * current server time as `schema.example` for date-time query params, so even
+ * a fully canonical JSON serialization differs between back-to-back fetches.
+ */
+function canonicalizeForHash(content) {
+  const text = Buffer.isBuffer(content) ? content.toString("utf-8") : content
+  if (typeof text !== "string") return text
+  // Cheap pre-check: skip parse for things that obviously aren't JSON
+  const trimmed = text.trimStart()
+  if (trimmed.length === 0 || (trimmed[0] !== "{" && trimmed[0] !== "[")) return text
+  try {
+    return stableStringify(JSON.parse(text)).replace(ISO_TIMESTAMP_RE, "<TS>")
+  } catch {
+    return text
+  }
+}
+
 module.exports = {
   SPEC_SOURCES,
-  PROVIDERS
+  PROVIDERS,
+  canonicalizeForHash,
+  stableStringify
 }

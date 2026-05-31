@@ -22,7 +22,7 @@ const http = require("http")
 const https = require("https")
 const crypto = require("crypto")
 const zlib = require("zlib")
-const { SPEC_SOURCES, PROVIDERS } = require("./provider-upstream-manifest")
+const { SPEC_SOURCES, PROVIDERS, canonicalizeForHash } = require("./provider-upstream-manifest")
 
 const SPECS_DIR = path.join(__dirname, "..", "specs")
 const CHECKSUMS_FILE = path.join(SPECS_DIR, ".checksums.json")
@@ -337,7 +337,8 @@ async function checkRemoteUpstream(providerName, upstreamConfig, checksumData, w
 
   try {
     const content = await fetchBuffer(upstreamConfig.url)
-    const currentSha256 = sha256(content)
+    // canonicalizeForHash() is a no-op for non-JSON (e.g. HTML docs pages).
+    const currentSha256 = sha256(canonicalizeForHash(content))
     const previousSha256 = upstreamState.sha256
     const changed = previousSha256 != null && previousSha256 !== currentSha256
     const isNew = previousSha256 == null
@@ -450,7 +451,9 @@ async function checkSpec(specKey, checksumData, changedParents = new Set()) {
 
   try {
     const content = await fetchText(config.url)
-    const currentSha = sha256(content)
+    // Hash the canonical form so non-deterministic upstream serializers don't
+    // trigger false drift. Pairs with sync-specs.js writing canonical hashes.
+    const currentSha = sha256(canonicalizeForHash(content))
     const trackedSha = checksumData.specs[specKey]?.sha256
     const changed = trackedSha != null && trackedSha !== currentSha
     const isNew = trackedSha == null

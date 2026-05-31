@@ -28,7 +28,7 @@ const path = require("path")
 const https = require("https")
 const http = require("http")
 const crypto = require("crypto")
-const { SPEC_SOURCES } = require("./provider-upstream-manifest")
+const { SPEC_SOURCES, canonicalizeForHash } = require("./provider-upstream-manifest")
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -269,12 +269,16 @@ async function syncSpec(name, config, checksumData, options = {}) {
       return { status: "error", error: validation.error }
     }
 
-    const newHash = sha256(content)
+    // Hash the canonical form so non-deterministic upstream serializers
+    // (e.g. Gladia reorders JSON keys per request) don't trigger false drift.
+    const newHash = sha256(canonicalizeForHash(content))
     const oldHash = checksumData.specs[name]?.sha256
     const changed = newHash !== oldHash
 
-    // Update checksum data
+    // Update checksum data, preserving consumed-spec fields written by
+    // record-consumed-specs.js (consumedSha256 / consumedAt / fixedBy).
     checksumData.specs[name] = {
+      ...(checksumData.specs[name] || {}),
       sha256: newHash,
       url: config.url,
       syncedAt: new Date().toISOString(),
