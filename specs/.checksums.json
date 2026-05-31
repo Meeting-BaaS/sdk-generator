@@ -372,16 +372,6 @@
     }
   },
   "providerUpstreams": {
-    "deepgram:deepgramModelsApi": {
-      "provider": "deepgram",
-      "key": "deepgramModelsApi",
-      "type": "remote-content",
-      "label": "Deepgram models/languages API",
-      "url": "https://api.deepgram.com/v1/models",
-      "sha256": "a4a18cc6f136bdc9ffadc467c8f65558b8794ebd4f095355d2df40d28f11e3ed",
-      "size": 172799,
-      "checkedAt": "2026-05-29T06:30:40.139Z"
-    },
     "azure:azureLocaleDocs": {
       "provider": "azure",
       "key": "azureLocaleDocs",
