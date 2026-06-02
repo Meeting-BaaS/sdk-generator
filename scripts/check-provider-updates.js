@@ -74,7 +74,9 @@ function fetchBuffer(url) {
                 nextUrl = new URL(res.headers.location, requestUrl).href
               } catch {
                 reject(
-                  new Error(`Invalid redirect location "${res.headers.location}" from ${requestUrl}`)
+                  new Error(
+                    `Invalid redirect location "${res.headers.location}" from ${requestUrl}`
+                  )
                 )
                 return
               }
@@ -129,20 +131,10 @@ function readTarEntry(buffer, targetPath) {
       break
     }
 
-    const name = header
-      .subarray(0, 100)
-      .toString("utf-8")
-      .replace(/\0.*$/, "")
-    const prefix = header
-      .subarray(345, 500)
-      .toString("utf-8")
-      .replace(/\0.*$/, "")
+    const name = header.subarray(0, 100).toString("utf-8").replace(/\0.*$/, "")
+    const prefix = header.subarray(345, 500).toString("utf-8").replace(/\0.*$/, "")
     const fullName = normalizeTarPath(prefix ? `${prefix}/${name}` : name)
-    const sizeOctal = header
-      .subarray(124, 136)
-      .toString("utf-8")
-      .replace(/\0.*$/, "")
-      .trim()
+    const sizeOctal = header.subarray(124, 136).toString("utf-8").replace(/\0.*$/, "").trim()
     const size = sizeOctal ? parseInt(sizeOctal, 8) : 0
     const contentStart = offset + 512
     const contentEnd = contentStart + size
@@ -193,7 +185,10 @@ function findTypesExport(exportsField, subpath = ".") {
 }
 
 function resolveDeclarationFiles(packageJson, upstreamConfig) {
-  if (Array.isArray(upstreamConfig.declarationFiles) && upstreamConfig.declarationFiles.length > 0) {
+  if (
+    Array.isArray(upstreamConfig.declarationFiles) &&
+    upstreamConfig.declarationFiles.length > 0
+  ) {
     return upstreamConfig.declarationFiles
   }
 
@@ -332,8 +327,9 @@ async function checkPackageUpstream(providerName, upstreamConfig, checksumData, 
 }
 
 async function checkRemoteUpstream(providerName, upstreamConfig, checksumData, write) {
-  const upstreamState = (checksumData.providerUpstreams[stateKey(providerName, upstreamConfig.key)] ??=
-    {})
+  const upstreamState = (checksumData.providerUpstreams[
+    stateKey(providerName, upstreamConfig.key)
+  ] ??= {})
 
   try {
     const content = await fetchBuffer(upstreamConfig.url)
@@ -655,7 +651,9 @@ async function main() {
 
     printProviderReport(providerName, specResults, nonSpecResults)
 
-    const changed = [...specResults, ...nonSpecResults].some((result) => result.status === "changed")
+    const changed = [...specResults, ...nonSpecResults].some(
+      (result) => result.status === "changed"
+    )
     const warnings = [...specResults, ...nonSpecResults].some((result) =>
       ["warning", "local-drift", "missing", "needs-regeneration"].includes(result.status)
     )

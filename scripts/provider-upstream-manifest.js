@@ -280,8 +280,7 @@ function stableStringify(value) {
 // Matches ISO-8601 timestamps with optional fractional seconds and either Z or
 // numeric offset. Used to mask "current time" values that some upstream specs
 // (e.g. Gladia) inject as date-time `example` fields on every request.
-const ISO_TIMESTAMP_RE =
-  /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})/g
+const ISO_TIMESTAMP_RE = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})/g
 
 /**
  * Return canonical bytes for hashing. If the content parses as JSON, returns

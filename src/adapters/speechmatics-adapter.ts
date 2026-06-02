@@ -325,7 +325,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       }
 
       // Handle audio input
-      let requestBody: PostJobsBody
+      let requestBody: PostJobsBody | FormData
       let headers: Record<string, string> = {}
 
       if (audio.type === "url") {
@@ -336,12 +336,18 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         requestBody = { config: JSON.stringify(jobConfig) }
         headers = { "Content-Type": "application/json" }
       } else if (audio.type === "file") {
-        // Upload file directly with multipart form
-        requestBody = {
-          config: JSON.stringify(jobConfig),
-          data_file: audio.file as Blob
-        }
-        headers = { "Content-Type": "multipart/form-data" }
+        // POST /v2/jobs requires multipart/form-data with a boundary. We must
+        // pass a real FormData object — axios serializes plain objects as JSON
+        // even when Content-Type is set to multipart/form-data, which produces
+        // a request with no boundary parameter and Speechmatics rejects it
+        // ("Content-Type must be multipart/form-data"). With a FormData body,
+        // axios populates the boundary automatically.
+        const formData = new FormData()
+        formData.append("config", JSON.stringify(jobConfig))
+        const fileBlob = audio.file instanceof Blob ? audio.file : new Blob([audio.file as Buffer])
+        formData.append("data_file", fileBlob, "audio")
+        requestBody = formData
+        headers = {} // axios derives Content-Type (incl. boundary) from FormData
       } else {
         return {
           success: false,
