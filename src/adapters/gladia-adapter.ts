@@ -58,6 +58,7 @@ import {
 
 // Import Gladia generated types
 import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
+import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
 import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
 import type { StreamingResponse } from "../generated/gladia/schema/streamingResponse"
 import type { StreamingRequest } from "../generated/gladia/schema/streamingRequest"
@@ -350,6 +351,25 @@ export class GladiaAdapter extends BaseAdapter {
   }
 
   /**
+   * Strip a Gladia language_config down to its v2-accepted shape ({languages, code_switching}).
+   * Deprecated/legacy keys (notably `detect_language`, replaced by `language_config`) are
+   * rejected by Gladia with HTTP 400 "Invalid parameter(s)". Because caller-supplied
+   * `options.gladia` / `gladiaStreaming` objects are spread verbatim into the request, such a
+   * key can ride straight through; rebuilding a fresh object drops anything outside the
+   * whitelist. Returns undefined when nothing valid remains so the caller can omit the field.
+   */
+  private static sanitizeLanguageConfig(
+    config: LanguageConfig | undefined
+  ): LanguageConfig | undefined {
+    if (!config) return undefined
+    const { languages, code_switching } = config
+    const sanitized: LanguageConfig = {}
+    if (languages !== undefined) sanitized.languages = languages
+    if (code_switching !== undefined) sanitized.code_switching = code_switching
+    return Object.keys(sanitized).length > 0 ? sanitized : undefined
+  }
+
+  /**
    * Build Gladia transcription request from unified options
    */
   private buildTranscriptionRequest(
@@ -439,24 +459,13 @@ export class GladiaAdapter extends BaseAdapter {
       }
     }
 
-    // Sanitize language_config to Gladia v2's accepted shape.
-    // Gladia's language_config only accepts `languages` and `code_switching`.
-    // Deprecated/legacy keys (notably `detect_language`, replaced by
-    // `language_config`) are rejected with HTTP 400 "Invalid parameter(s)".
-    // Because `options.gladia` is spread verbatim above, a caller-supplied
-    // language_config can carry such a key straight through to Gladia. Strip
-    // it here so the passthrough can never leak an unsupported field — this
-    // restores the silent unknown-key drop the previous schema validation gave us.
-    if (request.language_config) {
-      const { languages, code_switching } = request.language_config
-      const sanitized: NonNullable<InitTranscriptionRequest["language_config"]> = {}
-      if (languages !== undefined) sanitized.languages = languages
-      if (code_switching !== undefined) sanitized.code_switching = code_switching
-      if (Object.keys(sanitized).length > 0) {
-        request.language_config = sanitized
-      } else {
-        delete request.language_config
-      }
+    // Strip any deprecated/unsupported keys a caller-supplied language_config carried
+    // through the `options.gladia` passthrough (see sanitizeLanguageConfig).
+    const sanitizedLanguageConfig = GladiaAdapter.sanitizeLanguageConfig(request.language_config)
+    if (sanitizedLanguageConfig) {
+      request.language_config = sanitizedLanguageConfig
+    } else {
+      delete request.language_config
     }
 
     return request
@@ -1229,6 +1238,17 @@ export class GladiaAdapter extends BaseAdapter {
           : gladiaOpts.language_config?.languages,
         code_switching: options?.codeSwitching ?? gladiaOpts.language_config?.code_switching
       }
+    }
+
+    // Strip any deprecated/unsupported keys the `...gladiaOpts.language_config` spread above
+    // carried through from a caller-supplied config (see sanitizeLanguageConfig).
+    const sanitizedLanguageConfig = GladiaAdapter.sanitizeLanguageConfig(
+      streamingRequest.language_config
+    )
+    if (sanitizedLanguageConfig) {
+      streamingRequest.language_config = sanitizedLanguageConfig
+    } else {
+      delete streamingRequest.language_config
     }
 
     // Pre-processing configuration (audio enhancement, speech threshold)
