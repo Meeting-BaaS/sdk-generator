@@ -57,7 +57,7 @@ export interface FieldMetadata {
 // Gladia
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Gladia transcription field metadata (35 fields) */
+/** Gladia transcription field metadata (34 fields) */
 export const GLADIA_TRANSCRIPTION_FIELDS = [
   {
     name: "context_prompt",
@@ -96,14 +96,6 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
         max: 1
       }
     ]
-  },
-  {
-    name: "detect_language",
-    type: "boolean",
-    required: true,
-    description:
-      "**[Deprecated]** Use `language_config` instead. Detect the language from the given audio",
-    default: true
   },
   {
     name: "enable_code_switching",

@@ -5,6 +5,72 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.6] - 2026-06-01
+
+### Fixed
+
+#### Speechmatics Batch File Upload Multipart Body
+
+Fixed `SpeechmaticsAdapter.transcribe()` for the file-input branch so `POST /v2/jobs` is sent as a real `multipart/form-data` body with a boundary. The previous implementation built a plain object `{ config, data_file }` and set the `Content-Type: multipart/form-data` header on the axios request; axios then serialized the object as JSON and Speechmatics rejected the request with `"Content-Type must be multipart/form-data"`, so no job was ever created (`transcription_id: null`). The adapter now constructs a `FormData` (normalizing `Buffer` to `Blob` for Node) and lets axios derive `Content-Type` with the boundary. URL input (`fetch_data`) was unaffected.
+
+## [0.9.5] - 2026-06-01
+
+### Added
+
+#### Provider Update Checker
+
+New `pnpm providers:check-updates` tool that fetches every tracked upstream — provider specs, npm SDK declaration files, remote-content URLs — and reports drift against the recorded baselines in `specs/.checksums.json`. Use `--write` to baseline. Exit code is `0` when clean, `2` when changes are detected, `1` on error — suitable for CI scheduling. Companion: `pnpm openapi:check-consumed` (exit `2` if any post-fix spec on disk differs from the recorded `consumedSha256`).
+
+#### Consumed-Spec Checksum Tracking
+
+`specs/.checksums.json` now records `consumedSha256` (and `consumedAt`, `fixedBy`) alongside the raw upstream `sha256` for every non-manual spec. The consumed checksum is the hash of the spec file *after* `fix-*-spec.js` runs — i.e. the exact bytes orval reads — so the file records both "what we downloaded from upstream" and "what codegen was built from", closing the gap for the five fixed specs (assemblyai, deepgram, openai, speechmatics, elevenlabs). `pnpm openapi:record-consumed` writes the field and is wired into `openapi:generate` immediately after `openapi:fix-specs`.
+
+#### Hand-Maintained Generated File Restores
+
+`scripts/fix-generated.js` now restores four files under `src/generated/` that have no generator and were being wiped by `openapi:clean`: `soniox/sdk-types.ts`, `soniox/streaming-response-types.ts`, `elevenlabs/streaming-response-types.ts`, and `deepgram/streaming-response-types.ts`. Canonical sources are tracked under `specs/` and registered as `manual` entries in the spec manifest with `dependsOnUpstreams` links so the checker flags them for review when the relevant SDK changes.
+
+#### Shared Spec Manifest
+
+Extracted `SPEC_SOURCES` and `PROVIDERS` definitions into `scripts/provider-upstream-manifest.js`, shared by `sync-specs.js` and the new checker. Also exports `canonicalizeForHash` and `stableStringify`.
+
+### Changed
+
+#### ElevenLabs Language List (public API change)
+
+`ElevenLabsLanguageCodes`, `ElevenLabsLanguages`, `ElevenLabsLanguageLabels`, and `ElevenLabsLanguage` now contain **80 entries** (was 99). ElevenLabs removed 19 languages from Scribe coverage: `la`, `mi`, `br`, `eu`, `sq`, `si`, `yi`, `fo`, `ht`, `tk`, `sa`, `bo`, `tl`, `mg`, `tt`, `haw`, `ba`, `su`, `nn`. The curated list now lives in tracked `specs/elevenlabs-languages.json` instead of being inlined in the generator script.
+
+#### Upstream Specs Synced + Regenerated
+
+All eight upstream specs were re-synced and the full provider type set regenerated. Notable: OpenAI realtime model union now includes the latest `gpt-realtime-2`, `gpt-realtime-mini-*`, `gpt-audio-1.5`, `gpt-audio-mini-*` variants; new schema files for transcript metadata (AssemblyAI), reasoning (OpenAI), usage logs and TTS (Soniox), and audio-filtering / speaker-input (Speechmatics).
+
+#### Soniox Generate Step Ordering
+
+`openapi:generate` and `openapi:generate:soniox` now run `sync-soniox-models` before `sync-soniox-streaming`. The streaming generator reads from `src/generated/soniox/models.ts` to enrich realtime model metadata, and the previous order caused `ENOENT` on a from-scratch rebuild.
+
+### Fixed
+
+#### Canonical Hashing for Non-Deterministic Upstreams
+
+Spec hashing now canonicalizes JSON content (parse + stable-key stringify) and masks ISO-8601 timestamps before producing the SHA. Without this, providers that reorder keys per request or embed the current server time in `example` fields (e.g. Gladia) reported a "changed" spec on every check, drowning real upstream signal.
+
+#### Relative Redirect Handling
+
+`sync-specs.js` and `check-provider-updates.js` now resolve relative `Location` headers against the request URL via `new URL(location, requestUrl)`, drain the redirect body, and cap at 10 hops. The prior code passed the raw `Location` value into `http.get()`, which threw `Invalid URL` and crashed the script on the first relative redirect (e.g. ElevenLabs docs).
+
+#### NPM Tarball Declaration File Lookup
+
+`normalizeTarPath` now strips a leading `./` so declaration paths resolved from `package.json` `exports.types` (`./dist/index.d.cts`) match tarball entries (`package/dist/index.d.cts`). Previously every SDK declaration hash silently failed with `File not found in npm tarball: ./dist/...`, defeating SDK-drift detection.
+
+#### sync-specs Preserves Consumed Fields
+
+`sync-specs.js` now spreads the existing checksums entry when rewriting it, so `consumedSha256` / `consumedAt` / `fixedBy` survive a re-sync. Previously they were silently wiped each time.
+
+### Internal
+
+#### Dropped Noisy Upstream
+
+Removed `deepgramModelsApi` from `providerUpstreams`. Its `/v1/models` response carries per-request fields that vary even after JSON canonicalization, so any baseline would report drift every run. Real Deepgram changes are still surfaced via the `@deepgram/sdk` npm baseline and the `deepgram-openapi.yml` spec.
+
 ## [0.9.4] - 2026-04-28
 
 ### Changed

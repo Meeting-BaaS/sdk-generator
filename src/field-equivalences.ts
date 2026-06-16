@@ -131,7 +131,7 @@ export const FIELD_EQUIVALENCES: Record<FieldCategory, CategoryMetadata> = {
     description: "Primary transcription language or language detection",
     providers: {
       gladia: {
-        transcription: ["detect_language","language","language_config"] as const,
+        transcription: ["language","language_config"] as const,
         streaming: ["language_config"] as const
       },
       deepgram: {

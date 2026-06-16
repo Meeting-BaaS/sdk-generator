@@ -439,6 +439,26 @@ export class GladiaAdapter extends BaseAdapter {
       }
     }
 
+    // Sanitize language_config to Gladia v2's accepted shape.
+    // Gladia's language_config only accepts `languages` and `code_switching`.
+    // Deprecated/legacy keys (notably `detect_language`, replaced by
+    // `language_config`) are rejected with HTTP 400 "Invalid parameter(s)".
+    // Because `options.gladia` is spread verbatim above, a caller-supplied
+    // language_config can carry such a key straight through to Gladia. Strip
+    // it here so the passthrough can never leak an unsupported field — this
+    // restores the silent unknown-key drop the previous schema validation gave us.
+    if (request.language_config) {
+      const { languages, code_switching } = request.language_config
+      const sanitized: NonNullable<InitTranscriptionRequest["language_config"]> = {}
+      if (languages !== undefined) sanitized.languages = languages
+      if (code_switching !== undefined) sanitized.code_switching = code_switching
+      if (Object.keys(sanitized).length > 0) {
+        request.language_config = sanitized
+      } else {
+        delete request.language_config
+      }
+    }
+
     return request
   }
 
