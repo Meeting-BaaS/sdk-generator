@@ -14,7 +14,7 @@ export interface OutputTranscription {
    */
   bot_id: string
   /** The transcription provider */
-  provider: "gladia"
+  provider: string
   result: OutputTranscriptionResult
   /**
    * ISO 8601 timestamp when the transcription was created

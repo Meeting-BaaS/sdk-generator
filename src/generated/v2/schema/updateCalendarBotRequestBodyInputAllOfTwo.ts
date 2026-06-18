@@ -10,6 +10,7 @@ import type { UpdateCalendarBotRequestBodyInputAllOfTwoBotImageConfig } from "./
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoCallbackConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoCallbackConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoEntryMessage } from "./updateCalendarBotRequestBodyInputAllOfTwoEntryMessage"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoExtra } from "./updateCalendarBotRequestBodyInputAllOfTwoExtra"
+import type { UpdateCalendarBotRequestBodyInputAllOfTwoMeetConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoMeetConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoRecordingMode } from "./updateCalendarBotRequestBodyInputAllOfTwoRecordingMode"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoStreamingConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoStreamingConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoTimeoutConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoTimeoutConfig"
@@ -50,7 +51,7 @@ This message will be posted in the meeting chat when the bot successfully joins.
 
 Available for Google Meet, Microsoft Teams, and Zoom meetings.
 
-Maximum: 500 characters */
+Maximum: 4096 characters */
   entry_message?: UpdateCalendarBotRequestBodyInputAllOfTwoEntryMessage
   /** Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. */
   timeout_config?: UpdateCalendarBotRequestBodyInputAllOfTwoTimeoutConfig
@@ -64,6 +65,14 @@ Maximum: 500 characters */
 
 Leave `null` for Google Meet and Microsoft Teams. */
   zoom_config?: UpdateCalendarBotRequestBodyInputAllOfTwoZoomConfig
+  /** Meet-only configuration for authenticated bots via SAML SSO.
+
+- credential_id: pin a specific login.
+- email_group: pool selector (preferred — takes priority).
+- fallback: 'fail' (default) or 'anonymous' on saturation.
+
+Leave null for anonymous Meet joins, Zoom, or Microsoft Teams. */
+  meet_config?: UpdateCalendarBotRequestBodyInputAllOfTwoMeetConfig
   /** An optional extra configuration object for the bot.
 
 This object can contain any custom key-value pairs that you want to associate with the bot. The data will be:
@@ -104,9 +113,10 @@ If you want to change transcription settings, you must provide both `transcripti
 
 Required when `transcription_enabled` is `true`. Must not be provided when `transcription_enabled` is `false`.
 
-- `provider`: Speech-to-text provider (default: "gladia")
+- `provider`: Speech-to-text provider (default: "gladia"). Supported: gladia, deepgram, assemblyai, speechmatics, soniox
 - `api_key`: Your own API key for the provider (BYOK - available on Pro plans and above)
-- `custom_params`: Custom parameters for transcription (see Gladia API documentation)
+- `region`: Provider region (e.g. "eu", "us"). Required for some providers like Speechmatics
+- `custom_params`: Custom parameters for the transcription provider
 
 Omit this field to leave transcription configuration unchanged. */
   transcription_config?: UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfig

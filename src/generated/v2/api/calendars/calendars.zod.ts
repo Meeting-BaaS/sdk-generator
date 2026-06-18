@@ -1227,7 +1227,6 @@ export const createCalendarBotBodyBotImageConfigImageDurationMin = 10
 export const createCalendarBotBodyBotImageConfigImageDurationMax = 120
 export const createCalendarBotBodyBotImageConfigDefault = null
 export const createCalendarBotBodyRecordingModeDefault = "speaker_view"
-export const createCalendarBotBodyEntryMessageMaxOne = 500
 export const createCalendarBotBodyEntryMessageDefault = null
 export const createCalendarBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
 export const createCalendarBotBodyTimeoutConfigWaitingRoomTimeoutMin = 120
@@ -1254,15 +1253,28 @@ export const createCalendarBotBodyTimeoutConfigDefault = {
 export const createCalendarBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 export const createCalendarBotBodyZoomConfigDefault = null
+export const createCalendarBotBodyMeetConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const createCalendarBotBodyMeetConfigEmailGroupMaxOne = 254
+export const createCalendarBotBodyMeetConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const createCalendarBotBodyMeetConfigDefault = null
 export const createCalendarBotBodyExtraDefault = null
 export const createCalendarBotBodyStreamingEnabledDefault = false
+export const createCalendarBotBodyStreamingConfigModeDefault = "audio"
 export const createCalendarBotBodyStreamingConfigInputUrlDefault = null
 export const createCalendarBotBodyStreamingConfigOutputUrlDefault = null
 export const createCalendarBotBodyStreamingConfigAudioFrequencyDefault = 24000
+export const createCalendarBotBodyStreamingConfigTranscriptionProviderDefault = "gladia"
+export const createCalendarBotBodyStreamingConfigTranscriptionApiKeyDefault = null
+export const createCalendarBotBodyStreamingConfigTranscriptionRegionDefault = null
+export const createCalendarBotBodyStreamingConfigTranscriptionCustomParamsDefault = null
+export const createCalendarBotBodyStreamingConfigTranscriptionDefault = null
 export const createCalendarBotBodyStreamingConfigDefault = null
 export const createCalendarBotBodyTranscriptionEnabledDefault = false
 export const createCalendarBotBodyTranscriptionConfigProviderDefault = "gladia"
 export const createCalendarBotBodyTranscriptionConfigApiKeyDefault = null
+export const createCalendarBotBodyTranscriptionConfigRegionDefault = null
 export const createCalendarBotBodyTranscriptionConfigCustomParamsDefault = null
 export const createCalendarBotBodyTranscriptionConfigDefault = null
 export const createCalendarBotBodyCallbackEnabledDefault = false
@@ -1323,11 +1335,10 @@ export const createCalendarBotBody = zod
       ),
     entry_message: zod
       .string()
-      .max(createCalendarBotBodyEntryMessageMaxOne)
       .or(zod.null())
       .optional()
       .describe(
-        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
+        "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 4096 characters"
       ),
     timeout_config: zod
       .object({
@@ -1410,6 +1421,38 @@ export const createCalendarBotBody = zod
       .describe(
         "Zoom-only configuration for authentication and join method.\n\n- **credential_id**: Use a stored Zoom credential (OBF token fetched by the bot from the API server).\n- **credential_user_id**: Resolve a stored credential by Zoom user ID.\n- **obf_token**: Provide a direct OBF token (one-off join).\n- **obf_token_url**: URL that returns an OBF token when the bot joins.\n- **zak_token_url**: URL that returns a ZAK for joining without the host.\n\nLeave `null` for Google Meet and Microsoft Teams."
       ),
+    meet_config: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(createCalendarBotBodyMeetConfigCredentialIdRegExp)
+          .optional()
+          .describe(
+            "UUID of a stored meet login (created via /v2/meet-logins). Pin a specific login for this bot."
+          ),
+        email_group: zod
+          .string()
+          .email()
+          .max(createCalendarBotBodyMeetConfigEmailGroupMaxOne)
+          .regex(createCalendarBotBodyMeetConfigEmailGroupRegExpOne)
+          .or(zod.string())
+          .optional()
+          .describe(
+            'Round-robin pool selector. Bot will be assigned to the least-loaded active meet_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+          ),
+        fallback: zod
+          .enum(["fail", "anonymous"])
+          .optional()
+          .describe(
+            "What to do if no meet_login slot is available.\n- 'fail' (default): bot creation fails with meet_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+          )
+      })
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
+      ),
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())
@@ -1425,6 +1468,12 @@ export const createCalendarBotBody = zod
       ),
     streaming_config: zod
       .object({
+        mode: zod
+          .enum(["audio", "transcription"])
+          .default(createCalendarBotBodyStreamingConfigModeDefault)
+          .describe(
+            "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+          ),
         input_url: zod
           .string()
           .url()
@@ -1439,7 +1488,7 @@ export const createCalendarBotBody = zod
           .or(zod.null())
           .optional()
           .describe(
-            "Websocket stream URL, which the bot sends the audio to. This is used to stream the output audio to a destination."
+            "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
           ),
         audio_frequency: zod
           .number()
@@ -1453,6 +1502,37 @@ export const createCalendarBotBody = zod
           .default(createCalendarBotBodyStreamingConfigAudioFrequencyDefault)
           .describe(
             "The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz."
+          ),
+        transcription: zod
+          .object({
+            provider: zod
+              .enum(["gladia", "deepgram", "assemblyai", "speechmatics", "soniox", "elevenlabs"])
+              .default(createCalendarBotBodyStreamingConfigTranscriptionProviderDefault)
+              .describe(
+                "The speech to text provider to use for real-time streaming transcription. Supported providers: 'gladia', 'deepgram', 'assemblyai', 'speechmatics', 'soniox', 'elevenlabs'."
+              ),
+            api_key: zod
+              .string()
+              .or(zod.null())
+              .optional()
+              .describe("The API key to use for the speech to text provider."),
+            region: zod
+              .string()
+              .or(zod.null())
+              .optional()
+              .describe(
+                "Region for the streaming transcription provider API endpoint. When omitted, provider-specific defaults are used: gladia='eu-west', deepgram='eu', assemblyai='eu', speechmatics='eu1', soniox='us', elevenlabs='global'."
+              ),
+            custom_params: zod
+              .record(zod.string(), zod.any())
+              .or(zod.null())
+              .optional()
+              .describe("Custom parameters for the transcription provider.")
+          })
+          .or(zod.null())
+          .optional()
+          .describe(
+            "Transcription provider configuration for real-time streaming STT. Required when mode is 'transcription'. Supports all batch providers plus 'elevenlabs' (streaming-only)."
           )
       })
       .or(zod.null())
@@ -1466,10 +1546,10 @@ export const createCalendarBotBody = zod
     transcription_config: zod
       .object({
         provider: zod
-          .enum(["gladia"])
+          .enum(["gladia", "deepgram", "assemblyai", "speechmatics", "soniox"])
           .default(createCalendarBotBodyTranscriptionConfigProviderDefault)
           .describe(
-            "The speech to text provider to use for the bot. The default and only supported provider is 'gladia'. More providers will be supported in the future."
+            "The speech to text provider to use for batch transcription. Supported providers: 'gladia', 'deepgram', 'assemblyai', 'speechmatics', 'soniox'."
           ),
         api_key: zod
           .string()
@@ -1478,12 +1558,19 @@ export const createCalendarBotBody = zod
           .describe(
             "The API key to use for the speech to text provider. This can be provided to use your own API key for the speech to text provider. It consumes less tokens than using the default API key. It is available on 'Pro' plans and above."
           ),
+        region: zod
+          .string()
+          .or(zod.null())
+          .optional()
+          .describe(
+            "Region for the transcription provider API endpoint. When omitted, provider-specific defaults are used: deepgram='eu', assemblyai='eu', speechmatics='eu1', soniox='us'. Gladia does not support region for batch transcription."
+          ),
         custom_params: zod
           .record(zod.string(), zod.any())
           .or(zod.null())
           .optional()
           .describe(
-            "Custom parameters for the transcription provider. See the transcription provider's documentation for available options. For Gladia, see https://docs.gladia.io/api-reference/v2/pre-recorded/init"
+            "Custom parameters for the transcription provider. See your provider's documentation for available options. Validated against provider-specific schemas at creation time."
           )
       })
       .or(zod.null())
@@ -1587,7 +1674,6 @@ export const updateCalendarBotBodyBotImageConfigImageDurationMin = 10
 export const updateCalendarBotBodyBotImageConfigImageDurationMax = 120
 export const updateCalendarBotBodyBotImageConfigDefault = null
 export const updateCalendarBotBodyRecordingModeDefault = "speaker_view"
-export const updateCalendarBotBodyEntryMessageMaxOne = 500
 export const updateCalendarBotBodyEntryMessageDefault = null
 export const updateCalendarBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
 export const updateCalendarBotBodyTimeoutConfigWaitingRoomTimeoutMin = 120
@@ -1614,12 +1700,25 @@ export const updateCalendarBotBodyTimeoutConfigDefault = {
 export const updateCalendarBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 export const updateCalendarBotBodyZoomConfigDefault = null
+export const updateCalendarBotBodyMeetConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const updateCalendarBotBodyMeetConfigEmailGroupMaxOne = 254
+export const updateCalendarBotBodyMeetConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const updateCalendarBotBodyMeetConfigDefault = null
 export const updateCalendarBotBodyExtraDefault = null
+export const updateCalendarBotBodyStreamingConfigModeDefault = "audio"
 export const updateCalendarBotBodyStreamingConfigInputUrlDefault = null
 export const updateCalendarBotBodyStreamingConfigOutputUrlDefault = null
 export const updateCalendarBotBodyStreamingConfigAudioFrequencyDefault = 24000
+export const updateCalendarBotBodyStreamingConfigTranscriptionProviderDefault = "gladia"
+export const updateCalendarBotBodyStreamingConfigTranscriptionApiKeyDefault = null
+export const updateCalendarBotBodyStreamingConfigTranscriptionRegionDefault = null
+export const updateCalendarBotBodyStreamingConfigTranscriptionCustomParamsDefault = null
+export const updateCalendarBotBodyStreamingConfigTranscriptionDefault = null
 export const updateCalendarBotBodyTranscriptionConfigProviderDefault = "gladia"
 export const updateCalendarBotBodyTranscriptionConfigApiKeyDefault = null
+export const updateCalendarBotBodyTranscriptionConfigRegionDefault = null
 export const updateCalendarBotBodyTranscriptionConfigCustomParamsDefault = null
 export const updateCalendarBotBodyCallbackConfigSecretDefault = null
 export const updateCalendarBotBodyCallbackConfigMethodDefault = "POST"
@@ -1697,11 +1796,10 @@ export const updateCalendarBotBody = zod
           ),
         entry_message: zod
           .string()
-          .max(updateCalendarBotBodyEntryMessageMaxOne)
           .or(zod.null())
           .optional()
           .describe(
-            "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 500 characters"
+            "The message that the bot will send when it joins the meeting.\n\nThis message will be posted in the meeting chat when the bot successfully joins.\n\nAvailable for Google Meet, Microsoft Teams, and Zoom meetings.\n\nMaximum: 4096 characters"
           ),
         timeout_config: zod
           .object({
@@ -1784,6 +1882,38 @@ export const updateCalendarBotBody = zod
           .describe(
             "Zoom-only configuration for authentication and join method.\n\n- **credential_id**: Use a stored Zoom credential (OBF token fetched by the bot from the API server).\n- **credential_user_id**: Resolve a stored credential by Zoom user ID.\n- **obf_token**: Provide a direct OBF token (one-off join).\n- **obf_token_url**: URL that returns an OBF token when the bot joins.\n- **zak_token_url**: URL that returns a ZAK for joining without the host.\n\nLeave `null` for Google Meet and Microsoft Teams."
           ),
+        meet_config: zod
+          .object({
+            credential_id: zod
+              .string()
+              .uuid()
+              .regex(updateCalendarBotBodyMeetConfigCredentialIdRegExp)
+              .optional()
+              .describe(
+                "UUID of a stored meet login (created via /v2/meet-logins). Pin a specific login for this bot."
+              ),
+            email_group: zod
+              .string()
+              .email()
+              .max(updateCalendarBotBodyMeetConfigEmailGroupMaxOne)
+              .regex(updateCalendarBotBodyMeetConfigEmailGroupRegExpOne)
+              .or(zod.string())
+              .optional()
+              .describe(
+                'Round-robin pool selector. Bot will be assigned to the least-loaded active meet_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+              ),
+            fallback: zod
+              .enum(["fail", "anonymous"])
+              .optional()
+              .describe(
+                "What to do if no meet_login slot is available.\n- 'fail' (default): bot creation fails with meet_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+              )
+          })
+          .or(zod.null())
+          .optional()
+          .describe(
+            "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
+          ),
         extra: zod
           .record(zod.string(), zod.any())
           .or(zod.null())
@@ -1799,6 +1929,12 @@ export const updateCalendarBotBody = zod
           ),
         streaming_config: zod
           .object({
+            mode: zod
+              .enum(["audio", "transcription"])
+              .default(updateCalendarBotBodyStreamingConfigModeDefault)
+              .describe(
+                "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+              ),
             input_url: zod
               .string()
               .url()
@@ -1813,7 +1949,7 @@ export const updateCalendarBotBody = zod
               .or(zod.null())
               .optional()
               .describe(
-                "Websocket stream URL, which the bot sends the audio to. This is used to stream the output audio to a destination."
+                "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
               ),
             audio_frequency: zod
               .number()
@@ -1827,6 +1963,44 @@ export const updateCalendarBotBody = zod
               .default(updateCalendarBotBodyStreamingConfigAudioFrequencyDefault)
               .describe(
                 "The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz."
+              ),
+            transcription: zod
+              .object({
+                provider: zod
+                  .enum([
+                    "gladia",
+                    "deepgram",
+                    "assemblyai",
+                    "speechmatics",
+                    "soniox",
+                    "elevenlabs"
+                  ])
+                  .default(updateCalendarBotBodyStreamingConfigTranscriptionProviderDefault)
+                  .describe(
+                    "The speech to text provider to use for real-time streaming transcription. Supported providers: 'gladia', 'deepgram', 'assemblyai', 'speechmatics', 'soniox', 'elevenlabs'."
+                  ),
+                api_key: zod
+                  .string()
+                  .or(zod.null())
+                  .optional()
+                  .describe("The API key to use for the speech to text provider."),
+                region: zod
+                  .string()
+                  .or(zod.null())
+                  .optional()
+                  .describe(
+                    "Region for the streaming transcription provider API endpoint. When omitted, provider-specific defaults are used: gladia='eu-west', deepgram='eu', assemblyai='eu', speechmatics='eu1', soniox='us', elevenlabs='global'."
+                  ),
+                custom_params: zod
+                  .record(zod.string(), zod.any())
+                  .or(zod.null())
+                  .optional()
+                  .describe("Custom parameters for the transcription provider.")
+              })
+              .or(zod.null())
+              .optional()
+              .describe(
+                "Transcription provider configuration for real-time streaming STT. Required when mode is 'transcription'. Supports all batch providers plus 'elevenlabs' (streaming-only)."
               )
           })
           .optional()
@@ -1842,10 +2016,10 @@ export const updateCalendarBotBody = zod
         transcription_config: zod
           .object({
             provider: zod
-              .enum(["gladia"])
+              .enum(["gladia", "deepgram", "assemblyai", "speechmatics", "soniox"])
               .default(updateCalendarBotBodyTranscriptionConfigProviderDefault)
               .describe(
-                "The speech to text provider to use for the bot. The default and only supported provider is 'gladia'. More providers will be supported in the future."
+                "The speech to text provider to use for batch transcription. Supported providers: 'gladia', 'deepgram', 'assemblyai', 'speechmatics', 'soniox'."
               ),
             api_key: zod
               .string()
@@ -1854,17 +2028,24 @@ export const updateCalendarBotBody = zod
               .describe(
                 "The API key to use for the speech to text provider. This can be provided to use your own API key for the speech to text provider. It consumes less tokens than using the default API key. It is available on 'Pro' plans and above."
               ),
+            region: zod
+              .string()
+              .or(zod.null())
+              .optional()
+              .describe(
+                "Region for the transcription provider API endpoint. When omitted, provider-specific defaults are used: deepgram='eu', assemblyai='eu', speechmatics='eu1', soniox='us'. Gladia does not support region for batch transcription."
+              ),
             custom_params: zod
               .record(zod.string(), zod.any())
               .or(zod.null())
               .optional()
               .describe(
-                "Custom parameters for the transcription provider. See the transcription provider's documentation for available options. For Gladia, see https://docs.gladia.io/api-reference/v2/pre-recorded/init"
+                "Custom parameters for the transcription provider. See your provider's documentation for available options. Validated against provider-specific schemas at creation time."
               )
           })
           .optional()
           .describe(
-            'The transcription configuration for the bot.\n\nRequired when `transcription_enabled` is `true`. Must not be provided when `transcription_enabled` is `false`.\n\n- `provider`: Speech-to-text provider (default: \"gladia\")\n- `api_key`: Your own API key for the provider (BYOK - available on Pro plans and above)\n- `custom_params`: Custom parameters for transcription (see Gladia API documentation)\n\nOmit this field to leave transcription configuration unchanged.'
+            'The transcription configuration for the bot.\n\nRequired when `transcription_enabled` is `true`. Must not be provided when `transcription_enabled` is `false`.\n\n- `provider`: Speech-to-text provider (default: \"gladia\"). Supported: gladia, deepgram, assemblyai, speechmatics, soniox\n- `api_key`: Your own API key for the provider (BYOK - available on Pro plans and above)\n- `region`: Provider region (e.g. \"eu\", \"us\"). Required for some providers like Speechmatics\n- `custom_params`: Custom parameters for the transcription provider\n\nOmit this field to leave transcription configuration unchanged.'
           ),
         callback_enabled: zod
           .boolean()

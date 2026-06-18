@@ -11,5 +11,9 @@ export type GetScheduledBotResponseDataTranscriptionConfigAnyOfProvider =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetScheduledBotResponseDataTranscriptionConfigAnyOfProvider = {
-  gladia: "gladia"
+  gladia: "gladia",
+  deepgram: "deepgram",
+  assemblyai: "assemblyai",
+  speechmatics: "speechmatics",
+  soniox: "soniox"
 } as const

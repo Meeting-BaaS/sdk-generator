@@ -13,6 +13,6 @@ This message will be posted in the meeting chat when the bot successfully joins.
 
 Available for Google Meet, Microsoft Teams, and Zoom meetings.
 
-Maximum: 500 characters
+Maximum: 4096 characters
  */
 export type UpdateCalendarBotRequestBodyInputAllOfTwoEntryMessage = string | null

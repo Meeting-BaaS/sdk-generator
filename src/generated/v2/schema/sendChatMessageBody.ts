@@ -10,7 +10,6 @@ export type SendChatMessageBody = {
   /**
    * The chat message text to send in the meeting.
    * @minLength 1
-   * @maxLength 500
    */
   message: string
 }

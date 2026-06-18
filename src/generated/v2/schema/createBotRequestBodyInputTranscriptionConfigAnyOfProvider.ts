@@ -7,12 +7,16 @@
  */
 
 /**
- * The speech to text provider to use for the bot. The default and only supported provider is 'gladia'. More providers will be supported in the future.
+ * The speech to text provider to use for batch transcription. Supported providers: 'gladia', 'deepgram', 'assemblyai', 'speechmatics', 'soniox'.
  */
 export type CreateBotRequestBodyInputTranscriptionConfigAnyOfProvider =
   (typeof CreateBotRequestBodyInputTranscriptionConfigAnyOfProvider)[keyof typeof CreateBotRequestBodyInputTranscriptionConfigAnyOfProvider]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateBotRequestBodyInputTranscriptionConfigAnyOfProvider = {
-  gladia: "gladia"
+  gladia: "gladia",
+  deepgram: "deepgram",
+  assemblyai: "assemblyai",
+  speechmatics: "speechmatics",
+  soniox: "soniox"
 } as const

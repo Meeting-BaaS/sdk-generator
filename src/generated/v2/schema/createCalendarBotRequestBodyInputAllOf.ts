@@ -10,6 +10,7 @@ import type { CreateCalendarBotRequestBodyInputAllOfBotImageConfig } from "./cre
 import type { CreateCalendarBotRequestBodyInputAllOfCallbackConfig } from "./createCalendarBotRequestBodyInputAllOfCallbackConfig"
 import type { CreateCalendarBotRequestBodyInputAllOfEntryMessage } from "./createCalendarBotRequestBodyInputAllOfEntryMessage"
 import type { CreateCalendarBotRequestBodyInputAllOfExtra } from "./createCalendarBotRequestBodyInputAllOfExtra"
+import type { CreateCalendarBotRequestBodyInputAllOfMeetConfig } from "./createCalendarBotRequestBodyInputAllOfMeetConfig"
 import type { CreateCalendarBotRequestBodyInputAllOfRecordingMode } from "./createCalendarBotRequestBodyInputAllOfRecordingMode"
 import type { CreateCalendarBotRequestBodyInputAllOfStreamingConfig } from "./createCalendarBotRequestBodyInputAllOfStreamingConfig"
 import type { CreateCalendarBotRequestBodyInputAllOfTimeoutConfig } from "./createCalendarBotRequestBodyInputAllOfTimeoutConfig"
@@ -47,7 +48,7 @@ This message will be posted in the meeting chat when the bot successfully joins.
 
 Available for Google Meet, Microsoft Teams, and Zoom meetings.
 
-Maximum: 500 characters */
+Maximum: 4096 characters */
   entry_message?: CreateCalendarBotRequestBodyInputAllOfEntryMessage
   /** Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. */
   timeout_config?: CreateCalendarBotRequestBodyInputAllOfTimeoutConfig
@@ -61,6 +62,14 @@ Maximum: 500 characters */
 
 Leave `null` for Google Meet and Microsoft Teams. */
   zoom_config?: CreateCalendarBotRequestBodyInputAllOfZoomConfig
+  /** Meet-only configuration for authenticated bots via SAML SSO.
+
+- credential_id: pin a specific login.
+- email_group: pool selector (preferred — takes priority).
+- fallback: 'fail' (default) or 'anonymous' on saturation.
+
+Leave null for anonymous Meet joins, Zoom, or Microsoft Teams. */
+  meet_config?: CreateCalendarBotRequestBodyInputAllOfMeetConfig
   /** An optional extra configuration object for the bot.
 
 This object can contain any custom key-value pairs that you want to associate with the bot. The data will be:

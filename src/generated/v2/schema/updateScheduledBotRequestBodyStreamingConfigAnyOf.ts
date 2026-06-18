@@ -8,13 +8,19 @@
 
 import type { UpdateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequency } from "./updateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequency"
 import type { UpdateScheduledBotRequestBodyStreamingConfigAnyOfInputUrl } from "./updateScheduledBotRequestBodyStreamingConfigAnyOfInputUrl"
+import type { UpdateScheduledBotRequestBodyStreamingConfigAnyOfMode } from "./updateScheduledBotRequestBodyStreamingConfigAnyOfMode"
 import type { UpdateScheduledBotRequestBodyStreamingConfigAnyOfOutputUrl } from "./updateScheduledBotRequestBodyStreamingConfigAnyOfOutputUrl"
+import type { UpdateScheduledBotRequestBodyStreamingConfigAnyOfTranscription } from "./updateScheduledBotRequestBodyStreamingConfigAnyOfTranscription"
 
 export type UpdateScheduledBotRequestBodyStreamingConfigAnyOf = {
+  /** The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks. */
+  mode: UpdateScheduledBotRequestBodyStreamingConfigAnyOfMode
   /** Websocket stream URL, which receives the audio sent to the bot, and the bot will stream the audio to the meeting. */
   input_url: UpdateScheduledBotRequestBodyStreamingConfigAnyOfInputUrl
-  /** Websocket stream URL, which the bot sends the audio to. This is used to stream the output audio to a destination. */
+  /** When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed. */
   output_url: UpdateScheduledBotRequestBodyStreamingConfigAnyOfOutputUrl
   /** The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz. */
   audio_frequency: UpdateScheduledBotRequestBodyStreamingConfigAnyOfAudioFrequency
+  /** Transcription provider configuration for real-time streaming STT. Required when mode is 'transcription'. Supports all batch providers plus 'elevenlabs' (streaming-only). */
+  transcription: UpdateScheduledBotRequestBodyStreamingConfigAnyOfTranscription
 }

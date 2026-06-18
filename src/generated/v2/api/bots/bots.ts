@@ -36,6 +36,8 @@ import type {
   ResendFinalWebhookResponse,
   ResumeBotRecording200,
   ResumeBotRecordingBody,
+  RetranscribeBot200,
+  RetranscribeBotBody,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponse,
   SendChatMessage200,
@@ -169,7 +171,7 @@ export const getBotDetails = (botId: string, options?: SecondParameter<typeof cu
     - `transcription_status`: The current transcription status (not-applicable, not-started, queued, processing, done, error)
     - `updated_at`: ISO 8601 timestamp when the status was last updated
     
-    **Transcription Status:** The transcription status is fetched in real-time from the transcription provider (e.g., Gladia) if transcription is enabled. This allows you to track transcription progress separately from the bot's overall status.
+    **Transcription Status:** The transcription status is fetched in real-time from the transcription provider if transcription is enabled. This allows you to track transcription progress separately from the bot's overall status.
     
     **Polling Considerations:** 
     - **Not Recommended for Active Monitoring:** Due to the nature of meetings running for extended periods (often hours), frequent polling is not recommended. Instead, use `callback_config` when creating bots or configure webhooks at the account level to receive real-time status updates.
@@ -235,7 +237,7 @@ export const leaveBot = (botId: string, options?: SecondParameter<typeof customI
 /**
  * Send a chat message to the meeting through the bot.
 
-    The message will be sent as the bot in the meeting's chat. The bot must be actively in the meeting to send messages. Messages are limited to 500 characters and cannot be empty or whitespace-only.
+    The message will be sent as the bot in the meeting's chat. The bot must be actively in the meeting to send messages. Messages are limited to 4096 characters and cannot be empty or whitespace-only.
 
     **Status Requirements:** The bot must be in one of the following statuses: `in_call_not_recording`, `in_call_recording`, `recording_paused`, or `recording_resumed`. If the bot is in any other state (e.g., `queued`, `joining_call`, `in_waiting_room`, `completed`, `failed`), the request will fail with a 409 Conflict error (`FST_ERR_BOT_STATUS`).
 
@@ -332,7 +334,7 @@ export const resumeBotRecording = (
     - Artifact URLs will return `null` in subsequent API calls
     - Bot metadata remains accessible but all associated data is removed
     
-    **Transcription Provider Deletion:** If `delete_transcription=true` is provided, the transcription data will also be deleted from the transcription provider (e.g., Gladia). This requires the bot to have transcription enabled and a transcription provider configured. If the bot uses BYOK transcription, you must have access to the transcription provider API key.
+    **Transcription Provider Deletion:** If `delete_transcription=true` is provided, the transcription data will also be deleted from the transcription provider. This requires the bot to have transcription enabled and a transcription provider configured. If the bot uses BYOK transcription, you must have access to the transcription provider API key.
     
     **Irreversible Operation:** Once data is deleted, it cannot be recovered. Make sure you have downloaded or backed up any data you need before calling this endpoint.
     
@@ -413,6 +415,25 @@ export const retryCallback = (
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: retryCallbackRequestBodyInput
+    },
+    options
+  )
+}
+/**
+ * Retry transcription for a bot that has audio recordings. Optionally override the transcription provider.
+ * @summary Retranscribe bot
+ */
+export const retranscribeBot = (
+  botId: string,
+  retranscribeBotBody: BodyType<RetranscribeBotBody>,
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<RetranscribeBot200>(
+    {
+      url: `/v2/bots/${botId}/retranscribe`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: retranscribeBotBody
     },
     options
   )
@@ -659,6 +680,7 @@ export type ResumeBotRecordingResult = NonNullable<Awaited<ReturnType<typeof res
 export type DeleteBotDataResult = NonNullable<Awaited<ReturnType<typeof deleteBotData>>>
 export type ResendFinalWebhookResult = NonNullable<Awaited<ReturnType<typeof resendFinalWebhook>>>
 export type RetryCallbackResult = NonNullable<Awaited<ReturnType<typeof retryCallback>>>
+export type RetranscribeBotResult = NonNullable<Awaited<ReturnType<typeof retranscribeBot>>>
 export type UpdateBotConfigResult = NonNullable<Awaited<ReturnType<typeof updateBotConfig>>>
 export type CreateScheduledBotResult = NonNullable<Awaited<ReturnType<typeof createScheduledBot>>>
 export type ListScheduledBotsResult = NonNullable<Awaited<ReturnType<typeof listScheduledBots>>>

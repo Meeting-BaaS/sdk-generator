@@ -114,7 +114,7 @@ To filter multiple platforms, use a comma-separated list of values. For example,
   /**
  * Filter bots by bot statuses.
 
-This parameter filters bots by their status. It can be used to find bots that have any of the specified statuses. Valid values are one or more of: queued, pickup_delayed, transcribing, completed, failed, joining_call, in_waiting_room, in_waiting_for_host, in_call_not_recording, in_call_recording, recording_paused, recording_resumed, call_ended, recording_succeeded, recording_failed, api_request_stop, bot_rejected, bot_removed, bot_removed_too_early, waiting_room_timeout, invalid_meeting_url, meeting_error.
+This parameter filters bots by their status. It can be used to find bots that have any of the specified statuses. Valid values are one or more of: queued, pickup_delayed, awaiting_reconciliation, transcribing, completed, failed, transcription_failed, joining_call, in_waiting_room, in_waiting_for_host, in_call_not_recording, in_call_recording, recording_paused, recording_resumed, call_ended, recording_succeeded, recording_failed, api_request_stop, bot_rejected, bot_removed, bot_removed_too_early, waiting_room_timeout, invalid_meeting_url, meeting_error, MEET_LOGIN_UNAVAILABLE, MEET_LOGIN_REQUIRED, MEET_LOGIN_FAILED_SAML_REJECTED, MEET_LOGIN_FAILED_TIMEOUT.
 
 Example: "queued,joining_call" would match all bots that are queued or joining the call
  */

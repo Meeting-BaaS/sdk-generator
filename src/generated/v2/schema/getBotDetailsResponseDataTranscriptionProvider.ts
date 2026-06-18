@@ -9,4 +9,11 @@
 /**
  * The transcription provider used (null if transcription is disabled or provider is 'none')
  */
-export type GetBotDetailsResponseDataTranscriptionProvider = "gladia" | null
+export type GetBotDetailsResponseDataTranscriptionProvider =
+  | "gladia"
+  | "deepgram"
+  | "assemblyai"
+  | "speechmatics"
+  | "soniox"
+  | "elevenlabs"
+  | null

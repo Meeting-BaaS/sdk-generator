@@ -25,6 +25,7 @@ All webhook types are exported from the `V2` namespace:
 - `BotWebhookCompleted` - Sent when a bot successfully completes recording
 - `BotWebhookFailed` - Sent when a bot fails to join or record
 - `BotWebhookStatusChange` - Sent when a bot's status changes
+- `BotWebhookChatMessage` - Sent when a participant posts a message in the meeting chat (event: `"bot.chat_message"`)
 
 **Calendar Webhooks:**
 
@@ -174,53 +175,95 @@ For detailed artifact documentation, see the [v2 API artifacts reference](https:
 
 | Method | Description | Parameters |
 | ------ | ----------- | ---------- |
-| `createBot` | Create a bot | [`CreateBotRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/create-bot) |
-| `batchCreateBots` | Create multiple bots | [`BatchCreateBotsRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/batch-create-bots) |
-| `listBots` | List bots | [`ListBotsParams?`](https://docs.meetingbaas.com/api-v2/reference/bots/list-bots) |
-| `getBotDetails` | Get bot details | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/get-bot-details) |
-| `getBotStatus` | Get bot status | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/get-bot-status) |
-| `getBotScreenshots` | Get bot screenshots | [`{ bot_id: string; limit?: number; cursor?: string \| null }`](https://docs.meetingbaas.com/api-v2/reference/bots/get-bot-screenshots) |
-| `leaveBot` | Leave meeting | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/leave-bot) |
-| `deleteBotData` | Delete bot data | [`{ bot_id: string; delete_from_provider?: boolean }`](https://docs.meetingbaas.com/api-v2/reference/bots/delete-bot-data) |
-| `resendFinalWebhook` | Resend final webhook | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/resend-final-webhook) |
-| `retryCallback` | Retry callback | [`{ bot_id: string; callbackConfig?: RetryCallbackRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/bots/retry-callback) |
+| `createBot` | Create a bot | [`CreateBotRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/createBot) |
+| `batchCreateBots` | Create multiple bots | [`BatchCreateBotsRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/batchCreateBots) |
+| `listBots` | List bots | [`ListBotsParams?`](https://docs.meetingbaas.com/api-v2/reference/bots/listBots) |
+| `getBotDetails` | Get bot details | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/getBotDetails) |
+| `getBotStatus` | Get bot status | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/getBotStatus) |
+| `getBotScreenshots` | Get bot screenshots | [`{ bot_id: string; limit?: number; cursor?: string \| null }`](https://docs.meetingbaas.com/api-v2/reference/bots/getBotScreenshots) |
+| `leaveBot` | Leave meeting | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/leaveBot) |
+| `deleteBotData` | Delete bot data | [`{ bot_id: string; delete_from_provider?: boolean }`](https://docs.meetingbaas.com/api-v2/reference/bots/deleteBotData) |
+| `resendFinalWebhook` | Resend final webhook | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/resendFinalWebhook) |
+| `retryCallback` | Retry callback | [`{ bot_id: string; callbackConfig?: RetryCallbackRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/bots/retryCallback) |
+| `retranscribeBot` | Re-run transcription on existing audio (optionally override provider) | [`{ bot_id: string; body?: RetranscribeBotBody }`](https://docs.meetingbaas.com/api-v2/reference/bots/retranscribeBot) |
+| `sendChatMessage` | Send a chat message as the bot | [`{ bot_id: string; body: SendChatMessageBody }`](https://docs.meetingbaas.com/api-v2/reference/bots/sendChatMessage) |
+| `pauseBotRecording` | Pause the bot's recording | [`{ bot_id: string; body?: PauseBotRecordingBody }`](https://docs.meetingbaas.com/api-v2/reference/bots/pauseBotRecording) |
+| `resumeBotRecording` | Resume the bot's recording | [`{ bot_id: string; body?: ResumeBotRecordingBody }`](https://docs.meetingbaas.com/api-v2/reference/bots/resumeBotRecording) |
+| `updateBotConfig` | Update bot configuration (currently only `extra`) | [`{ bot_id: string; body: UpdateBotConfigBody }`](https://docs.meetingbaas.com/api-v2/reference/bots/updateBotConfig) |
 
 ### Scheduled Bot Management
 
 | Method | Description | Parameters |
 | ------ | ----------- | ---------- |
-| `createScheduledBot` | Create scheduled bot | [`CreateScheduledBotRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/create-scheduled-bot) |
-| `batchCreateScheduledBots` | Create multiple scheduled bots | [`BatchCreateScheduledBotsRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/batch-create-scheduled-bots) |
-| `listScheduledBots` | List scheduled bots | [`ListScheduledBotsParams?`](https://docs.meetingbaas.com/api-v2/reference/bots/list-scheduled-bots) |
-| `getScheduledBot` | Get scheduled bot details | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/get-scheduled-bot-details) |
-| `updateScheduledBot` | Update scheduled bot | [`{ bot_id: string; body: UpdateScheduledBotRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/bots/update-scheduled-bot) |
-| `deleteScheduledBot` | Delete scheduled bot | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/delete-scheduled-bot) |
+| `createScheduledBot` | Create scheduled bot | [`CreateScheduledBotRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/createScheduledBot) |
+| `batchCreateScheduledBots` | Create multiple scheduled bots | [`BatchCreateScheduledBotsRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/bots/batchCreateScheduledBots) |
+| `listScheduledBots` | List scheduled bots | [`ListScheduledBotsParams?`](https://docs.meetingbaas.com/api-v2/reference/bots/listScheduledBots) |
+| `getScheduledBot` | Get scheduled bot details | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/getScheduledBotDetails) |
+| `updateScheduledBot` | Update scheduled bot | [`{ bot_id: string; body: UpdateScheduledBotRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/bots/updateScheduledBot) |
+| `deleteScheduledBot` | Delete scheduled bot | [`{ bot_id: string }`](https://docs.meetingbaas.com/api-v2/reference/bots/deleteScheduledBot) |
 
 ### Calendar Connection Management
 
 | Method | Description | Parameters |
 | ------ | ----------- | ---------- |
-| `listRawCalendars` | List raw calendars (preview before creating connection) | [`ListRawCalendarsRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/calendars/list-raw-calendars) |
-| `createCalendarConnection` | Create calendar connection | [`CreateCalendarConnectionRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/calendars/create-calendar-connection) |
-| `listCalendars` | List calendar connections | [`ListCalendarsParams?`](https://docs.meetingbaas.com/api-v2/reference/calendars/list-calendars) |
-| `getCalendarDetails` | Get calendar connection details | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/get-calendar-details) |
-| `updateCalendarConnection` | Update calendar connection | [`{ calendar_id: string; body: UpdateCalendarConnectionRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/calendars/update-calendar-connection) |
-| `deleteCalendarConnection` | Delete calendar connection | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/delete-calendar-connection) |
-| `syncCalendar` | Sync calendar events | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/sync-calendar) |
-| `resubscribeCalendar` | Resubscribe to calendar webhooks | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/resubscribe-calendar) |
+| `listRawCalendars` | List raw calendars (preview before creating connection) | [`ListRawCalendarsRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/calendars/listRawCalendars) |
+| `createCalendarConnection` | Create calendar connection | [`CreateCalendarConnectionRequestBodyInput`](https://docs.meetingbaas.com/api-v2/reference/calendars/createCalendarConnection) |
+| `listCalendars` | List calendar connections | [`ListCalendarsParams?`](https://docs.meetingbaas.com/api-v2/reference/calendars/listCalendars) |
+| `getCalendarDetails` | Get calendar connection details | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/getCalendarDetails) |
+| `updateCalendarConnection` | Update calendar connection | [`{ calendar_id: string; body: UpdateCalendarConnectionRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/calendars/updateCalendarConnection) |
+| `deleteCalendarConnection` | Delete calendar connection | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/deleteCalendarConnection) |
+| `syncCalendar` | Sync calendar events | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/syncCalendar) |
+| `resubscribeCalendar` | Resubscribe to calendar webhooks | [`{ calendar_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/resubscribeCalendar) |
 
 ### Calendar Event Management
 
 | Method | Description | Parameters |
 | ------ | ----------- | ---------- |
-| `listEvents` | List calendar events | [`{ calendar_id: string; query?: ListEventsParams }`](https://docs.meetingbaas.com/api-v2/reference/calendars/list-events) |
-| `listEventSeries` | List event series | [`{ calendar_id: string; query?: ListEventSeriesParams }`](https://docs.meetingbaas.com/api-v2/reference/calendars/list-event-series) |
-| `getEventDetails` | Get event details | [`{ calendar_id: string; event_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/get-event-details) |
+| `listEvents` | List calendar events | [`{ calendar_id: string; query?: ListEventsParams }`](https://docs.meetingbaas.com/api-v2/reference/calendars/listEvents) |
+| `listEventSeries` | List event series | [`{ calendar_id: string; query?: ListEventSeriesParams }`](https://docs.meetingbaas.com/api-v2/reference/calendars/listEventSeries) |
+| `getEventDetails` | Get event details | [`{ calendar_id: string; event_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/getEventDetails) |
 
 ### Calendar Bot Management
 
 | Method | Description | Parameters |
 | ------ | ----------- | ---------- |
-| `createCalendarBot` | Schedule bot for calendar event | [`{ calendar_id: string; body: CreateCalendarBotRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/calendars/create-calendar-bot) |
-| `updateCalendarBot` | Update calendar bot | [`{ calendar_id: string; event_id: string; body: UpdateCalendarBotRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/calendars/update-calendar-bot) |
-| `deleteCalendarBot` | Cancel calendar bot | [`{ calendar_id: string; event_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/delete-calendar-bot) |
+| `createCalendarBot` | Schedule bot for calendar event | [`{ calendar_id: string; body: CreateCalendarBotRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/calendars/createCalendarBot) |
+| `updateCalendarBot` | Update calendar bot | [`{ calendar_id: string; event_id: string; body: UpdateCalendarBotRequestBodyInput }`](https://docs.meetingbaas.com/api-v2/reference/calendars/updateCalendarBot) |
+| `deleteCalendarBot` | Cancel calendar bot | [`{ calendar_id: string; event_id: string }`](https://docs.meetingbaas.com/api-v2/reference/calendars/deleteCalendarBot) |
+
+### Zoom Credential Management
+
+Manage stored Zoom OAuth credentials used by bots to join Zoom meetings as authenticated users.
+
+| Method | Description | Parameters |
+| ------ | ----------- | ---------- |
+| `createZoomCredential` | Store a Zoom OAuth credential | [`CreateZoomCredentialBody`](https://docs.meetingbaas.com/api-v2/reference/zoom-credentials/createZoomCredential) |
+| `listZoomCredentials` | List Zoom credentials | [`ListZoomCredentialsParams?`](https://docs.meetingbaas.com/api-v2/reference/zoom-credentials/listZoomCredentials) |
+| `getZoomCredential` | Get Zoom credential | [`{ id: string }`](https://docs.meetingbaas.com/api-v2/reference/zoom-credentials/getZoomCredential) |
+| `updateZoomCredential` | Update Zoom credential | [`{ id: string; body: UpdateZoomCredentialBody }`](https://docs.meetingbaas.com/api-v2/reference/zoom-credentials/updateZoomCredential) |
+| `deleteZoomCredential` | Delete Zoom credential | [`{ id: string }`](https://docs.meetingbaas.com/api-v2/reference/zoom-credentials/deleteZoomCredential) |
+
+### Meet Workspace Management
+
+Manage Google Workspace SAML SSO workspaces. A meet workspace holds the cert + private key for one Workspace's Legacy SSO profile and is the parent of one or more `meet_logins`. See the [Meet SSO setup guide](https://docs.meetingbaas.com/api-v2/reference/meet-workspaces/createMeetWorkspace) for the end-to-end flow.
+
+| Method | Description | Parameters |
+| ------ | ----------- | ---------- |
+| `createMeetWorkspace` | Create a meet workspace (server-generated keypair or BYO cert+key) | [`CreateMeetWorkspaceBody`](https://docs.meetingbaas.com/api-v2/reference/meet-workspaces/createMeetWorkspace) |
+| `listMeetWorkspaces` | List meet workspaces | [`ListMeetWorkspacesParams?`](https://docs.meetingbaas.com/api-v2/reference/meet-workspaces/listMeetWorkspaces) |
+| `getMeetWorkspace` | Get a meet workspace | [`{ workspace_id: string }`](https://docs.meetingbaas.com/api-v2/reference/meet-workspaces/getMeetWorkspace) |
+| `updateMeetWorkspace` | Rename, rotate keypair, or re-enable a workspace | [`{ workspace_id: string; body: UpdateMeetWorkspaceBody }`](https://docs.meetingbaas.com/api-v2/reference/meet-workspaces/updateMeetWorkspace) |
+| `deleteMeetWorkspace` | Delete a meet workspace (cascades to its logins) | [`{ workspace_id: string }`](https://docs.meetingbaas.com/api-v2/reference/meet-workspaces/deleteMeetWorkspace) |
+
+### Meet Login Management
+
+Manage individual Google Workspace user identities attached to a meet workspace. Bots dispatched with `meet_config.email_group` or `meet_config.credential_id` are round-robin assigned to the least-loaded active login.
+
+| Method | Description | Parameters |
+| ------ | ----------- | ---------- |
+| `createMeetLogin` | Create a meet login under a workspace | [`CreateMeetLoginBody`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/createMeetLogin) |
+| `listMeetLogins` | List meet logins across all workspaces | [`ListMeetLoginsParams?`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/listMeetLogins) |
+| `getMeetLoginUtilization` | Get aggregate concurrency metrics for the login pool | _no params_ — [docs](https://docs.meetingbaas.com/api-v2/reference/meet-logins/getMeetLoginUtilization) |
+| `getMeetLogin` | Get a meet login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/getMeetLogin) |
+| `updateMeetLogin` | Rename, change `email_group`, or re-enable a login | [`{ credential_id: string; body: UpdateMeetLoginBody }`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/updateMeetLogin) |
+| `deleteMeetLogin` | Delete a meet login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/deleteMeetLogin) |

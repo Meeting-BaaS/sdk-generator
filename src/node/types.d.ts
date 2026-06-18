@@ -42,6 +42,10 @@ import type {
   CreateCalendarBotResponseErrorsItem,
   CreateCalendarConnectionRequestBodyInput,
   CreateCalendarConnectionResponseData,
+  CreateMeetLogin201Data,
+  CreateMeetLoginBody,
+  CreateMeetWorkspace201Data,
+  CreateMeetWorkspaceBody,
   CreateScheduledBotRequestBodyInput,
   CreateScheduledBotResponseData,
   CreateZoomCredential201Data,
@@ -50,12 +54,17 @@ import type {
   DeleteCalendarBotResponseDataItem,
   DeleteCalendarBotResponseErrorsItem,
   DeleteCalendarConnectionResponseData,
+  DeleteMeetLogin200Data,
+  DeleteMeetWorkspace200Data,
   DeleteScheduledBotResponseData,
   DeleteZoomCredential200Data,
   GetBotDetailsResponseData,
   GetBotStatusResponseData,
   GetCalendarDetailsResponseData,
   GetEventDetailsResponseData,
+  GetMeetLogin200Data,
+  GetMeetLoginUtilization200Data,
+  GetMeetWorkspace200Data,
   GetScheduledBotResponseData,
   GetZoomCredential200Data,
   LeaveBotResponseData,
@@ -63,6 +72,10 @@ import type {
   ListCalendarsParams,
   ListEventSeriesParams,
   ListEventsParams as ListEventsParamsV2,
+  ListMeetLogins200DataItem,
+  ListMeetLoginsParams,
+  ListMeetWorkspaces200DataItem,
+  ListMeetWorkspacesParams,
   ListRawCalendarsRequestBodyInput,
   ListRawCalendarsResponseDataItem,
   ListScheduledBotsParams,
@@ -70,6 +83,8 @@ import type {
   ListZoomCredentialsParams,
   ResendFinalWebhookResponseData,
   ResubscribeCalendarResponseData,
+  RetranscribeBot200Data,
+  RetranscribeBotBody,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponseData,
   SyncCalendarResponseData,
@@ -80,6 +95,10 @@ import type {
   UpdateCalendarBotResponseErrorsItem,
   UpdateCalendarConnectionRequestBodyInput,
   UpdateCalendarConnectionResponseData,
+  UpdateMeetLogin200Data,
+  UpdateMeetLoginBody,
+  UpdateMeetWorkspace200Data,
+  UpdateMeetWorkspaceBody,
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponseData,
   UpdateZoomCredential200Data,
@@ -220,6 +239,10 @@ export interface BaasClientV2Methods {
     bot_id: string
     callbackConfig?: RetryCallbackRequestBodyInput
   }): Promise<ApiResponseV2<RetryCallbackResponseData>>
+  retranscribeBot(params: {
+    bot_id: string
+    body?: RetranscribeBotBody
+  }): Promise<ApiResponseV2<RetranscribeBot200Data>>
   updateBotConfig(params: {
     bot_id: string
     body: UpdateBotConfigBody
@@ -312,6 +335,31 @@ export interface BaasClientV2Methods {
   }): Promise<
     BatchApiResponseV2<DeleteCalendarBotResponseDataItem, DeleteCalendarBotResponseErrorsItem>
   >
+  createMeetWorkspace(
+    params: CreateMeetWorkspaceBody
+  ): Promise<ApiResponseV2<CreateMeetWorkspace201Data>>
+  listMeetWorkspaces(
+    params?: ListMeetWorkspacesParams
+  ): Promise<ApiResponseV2<ListMeetWorkspaces200DataItem[]>>
+  getMeetWorkspace(params: {
+    workspace_id: string
+  }): Promise<ApiResponseV2<GetMeetWorkspace200Data>>
+  updateMeetWorkspace(params: {
+    workspace_id: string
+    body: UpdateMeetWorkspaceBody
+  }): Promise<ApiResponseV2<UpdateMeetWorkspace200Data>>
+  deleteMeetWorkspace(params: {
+    workspace_id: string
+  }): Promise<ApiResponseV2<DeleteMeetWorkspace200Data>>
+  createMeetLogin(params: CreateMeetLoginBody): Promise<ApiResponseV2<CreateMeetLogin201Data>>
+  listMeetLogins(params?: ListMeetLoginsParams): Promise<ApiResponseV2<ListMeetLogins200DataItem[]>>
+  getMeetLoginUtilization(): Promise<ApiResponseV2<GetMeetLoginUtilization200Data>>
+  getMeetLogin(params: { credential_id: string }): Promise<ApiResponseV2<GetMeetLogin200Data>>
+  updateMeetLogin(params: {
+    credential_id: string
+    body: UpdateMeetLoginBody
+  }): Promise<ApiResponseV2<UpdateMeetLogin200Data>>
+  deleteMeetLogin(params: { credential_id: string }): Promise<ApiResponseV2<DeleteMeetLogin200Data>>
   createZoomCredential(
     params: CreateZoomCredentialBody
   ): Promise<ApiResponseV2<CreateZoomCredential201Data>>

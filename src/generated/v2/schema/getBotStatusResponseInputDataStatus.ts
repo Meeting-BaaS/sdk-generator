@@ -16,9 +16,11 @@ export type GetBotStatusResponseInputDataStatus =
 export const GetBotStatusResponseInputDataStatus = {
   queued: "queued",
   pickup_delayed: "pickup_delayed",
+  awaiting_reconciliation: "awaiting_reconciliation",
   transcribing: "transcribing",
   completed: "completed",
   failed: "failed",
+  transcription_failed: "transcription_failed",
   joining_call: "joining_call",
   in_waiting_room: "in_waiting_room",
   in_waiting_for_host: "in_waiting_for_host",
@@ -35,5 +37,9 @@ export const GetBotStatusResponseInputDataStatus = {
   bot_removed_too_early: "bot_removed_too_early",
   waiting_room_timeout: "waiting_room_timeout",
   invalid_meeting_url: "invalid_meeting_url",
-  meeting_error: "meeting_error"
+  meeting_error: "meeting_error",
+  MEET_LOGIN_UNAVAILABLE: "MEET_LOGIN_UNAVAILABLE",
+  MEET_LOGIN_REQUIRED: "MEET_LOGIN_REQUIRED",
+  MEET_LOGIN_FAILED_SAML_REJECTED: "MEET_LOGIN_FAILED_SAML_REJECTED",
+  MEET_LOGIN_FAILED_TIMEOUT: "MEET_LOGIN_FAILED_TIMEOUT"
 } as const

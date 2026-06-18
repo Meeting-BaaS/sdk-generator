@@ -14,6 +14,10 @@ import type {
   CreateCalendarBotResponseErrorsItem,
   CreateCalendarConnectionRequestBodyInput,
   CreateCalendarConnectionResponseData,
+  CreateMeetLogin201Data,
+  CreateMeetLoginBody,
+  CreateMeetWorkspace201Data,
+  CreateMeetWorkspaceBody,
   CreateScheduledBotRequestBodyInput,
   CreateScheduledBotResponseData,
   CreateZoomCredential201Data,
@@ -23,6 +27,8 @@ import type {
   DeleteCalendarBotResponseDataItem,
   DeleteCalendarBotResponseErrorsItem,
   DeleteCalendarConnectionResponseData,
+  DeleteMeetLogin200Data,
+  DeleteMeetWorkspace200Data,
   DeleteScheduledBotResponseData,
   DeleteZoomCredential200Data,
   GetBotDetailsResponseData,
@@ -30,6 +36,9 @@ import type {
   GetBotStatusResponseData,
   GetCalendarDetailsResponseData,
   GetEventDetailsResponseData,
+  GetMeetLogin200Data,
+  GetMeetLoginUtilization200Data,
+  GetMeetWorkspace200Data,
   GetScheduledBotResponseData,
   GetZoomCredential200Data,
   LeaveBotResponseData,
@@ -41,6 +50,10 @@ import type {
   ListEventSeriesResponseDataItem,
   ListEventsParams as ListEventsParamsV2,
   ListEventsResponseDataItem,
+  ListMeetLogins200DataItem,
+  ListMeetLoginsParams,
+  ListMeetWorkspaces200DataItem,
+  ListMeetWorkspacesParams,
   ListRawCalendarsRequestBodyInput,
   ListRawCalendarsResponseDataItem,
   ListScheduledBotsParams,
@@ -53,6 +66,8 @@ import type {
   ResubscribeCalendarResponseData,
   ResumeBotRecording200Data,
   ResumeBotRecordingBody,
+  RetranscribeBot200Data,
+  RetranscribeBotBody,
   RetryCallbackRequestBodyInput,
   RetryCallbackResponseData,
   SendChatMessage200Data,
@@ -65,6 +80,10 @@ import type {
   UpdateCalendarBotResponseErrorsItem,
   UpdateCalendarConnectionRequestBodyInput,
   UpdateCalendarConnectionResponseData,
+  UpdateMeetLogin200Data,
+  UpdateMeetLoginBody,
+  UpdateMeetWorkspace200Data,
+  UpdateMeetWorkspaceBody,
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponseData,
   UpdateZoomCredential200Data,
@@ -276,6 +295,29 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
           bot_id: retryCallbackParams.shape.bot_id,
           callbackConfig: retryCallbackBody.optional()
         }),
+        params,
+        state.getOptions()
+      )
+    },
+
+    async retranscribeBot(params: {
+      bot_id: string
+      body?: RetranscribeBotBody
+    }): Promise<ApiResponseV2<RetranscribeBot200Data>> {
+      const { retranscribeBot: retranscribeBotApi } = await import(
+        "../generated/v2/api/bots/bots.js"
+      )
+      const { retranscribeBotParams, retranscribeBotBody } = await import(
+        "../generated/v2/api/bots/bots.zod.js"
+      )
+
+      return apiWrapperV2<RetranscribeBot200Data, { bot_id: string; body?: RetranscribeBotBody }>(
+        (params: { bot_id: string; body?: RetranscribeBotBody }, options) =>
+          retranscribeBotApi(params.bot_id, params.body ?? null, options),
+        z.object({
+          bot_id: retranscribeBotParams.shape.bot_id,
+          body: retranscribeBotBody.optional()
+        }) as z.ZodType<{ bot_id: string; body?: RetranscribeBotBody }>,
         params,
         state.getOptions()
       )
@@ -845,6 +887,206 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
       ) as Promise<
         BatchApiResponseV2<DeleteCalendarBotResponseDataItem, DeleteCalendarBotResponseErrorsItem>
       >
+    },
+
+    // Meet workspace methods
+    async createMeetWorkspace(
+      params: CreateMeetWorkspaceBody
+    ): Promise<ApiResponseV2<CreateMeetWorkspace201Data>> {
+      const { createMeetWorkspace: createMeetWorkspaceApi } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.js"
+      )
+      const { createMeetWorkspaceBody } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<CreateMeetWorkspace201Data, CreateMeetWorkspaceBody>(
+        createMeetWorkspaceApi,
+        createMeetWorkspaceBody as z.ZodType<CreateMeetWorkspaceBody>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async listMeetWorkspaces(
+      params?: ListMeetWorkspacesParams
+    ): Promise<ApiResponseV2<ListMeetWorkspaces200DataItem[]>> {
+      const { listMeetWorkspaces: listMeetWorkspacesApi } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.js"
+      )
+
+      return apiWrapperV2NoParams(
+        (options: AxiosRequestConfig) => listMeetWorkspacesApi(params, options),
+        state.getOptions()
+      )
+    },
+
+    async getMeetWorkspace(params: {
+      workspace_id: string
+    }): Promise<ApiResponseV2<GetMeetWorkspace200Data>> {
+      const { getMeetWorkspace: getMeetWorkspaceApi } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.js"
+      )
+      const { getMeetWorkspaceParams } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<GetMeetWorkspace200Data, { workspace_id: string }>(
+        (params: { workspace_id: string }, options: AxiosRequestConfig) =>
+          getMeetWorkspaceApi(params.workspace_id, options),
+        getMeetWorkspaceParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async updateMeetWorkspace(params: {
+      workspace_id: string
+      body: UpdateMeetWorkspaceBody
+    }): Promise<ApiResponseV2<UpdateMeetWorkspace200Data>> {
+      const { updateMeetWorkspace: updateMeetWorkspaceApi } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.js"
+      )
+      const { updateMeetWorkspaceParams, updateMeetWorkspaceBody } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<
+        UpdateMeetWorkspace200Data,
+        { workspace_id: string; body: UpdateMeetWorkspaceBody }
+      >(
+        (params: { workspace_id: string; body: UpdateMeetWorkspaceBody }, options) =>
+          updateMeetWorkspaceApi(params.workspace_id, params.body, options),
+        z.object({
+          workspace_id: updateMeetWorkspaceParams.shape.workspace_id,
+          body: updateMeetWorkspaceBody
+        }) as z.ZodType<{ workspace_id: string; body: UpdateMeetWorkspaceBody }>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async deleteMeetWorkspace(params: {
+      workspace_id: string
+    }): Promise<ApiResponseV2<DeleteMeetWorkspace200Data>> {
+      const { deleteMeetWorkspace: deleteMeetWorkspaceApi } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.js"
+      )
+      const { deleteMeetWorkspaceParams } = await import(
+        "../generated/v2/api/meet-workspaces/meet-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<DeleteMeetWorkspace200Data, { workspace_id: string }>(
+        (params: { workspace_id: string }, options: AxiosRequestConfig) =>
+          deleteMeetWorkspaceApi(params.workspace_id, options),
+        deleteMeetWorkspaceParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    // Meet login methods
+    async createMeetLogin(
+      params: CreateMeetLoginBody
+    ): Promise<ApiResponseV2<CreateMeetLogin201Data>> {
+      const { createMeetLogin: createMeetLoginApi } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.js"
+      )
+      const { createMeetLoginBody } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.zod.js"
+      )
+
+      return apiWrapperV2<CreateMeetLogin201Data, CreateMeetLoginBody>(
+        createMeetLoginApi,
+        createMeetLoginBody as z.ZodType<CreateMeetLoginBody>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async listMeetLogins(
+      params?: ListMeetLoginsParams
+    ): Promise<ApiResponseV2<ListMeetLogins200DataItem[]>> {
+      const { listMeetLogins: listMeetLoginsApi } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.js"
+      )
+
+      return apiWrapperV2NoParams(
+        (options: AxiosRequestConfig) => listMeetLoginsApi(params, options),
+        state.getOptions()
+      )
+    },
+
+    async getMeetLoginUtilization(): Promise<ApiResponseV2<GetMeetLoginUtilization200Data>> {
+      const { getMeetLoginUtilization: getMeetLoginUtilizationApi } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.js"
+      )
+
+      return apiWrapperV2NoParams(getMeetLoginUtilizationApi, state.getOptions())
+    },
+
+    async getMeetLogin(params: {
+      credential_id: string
+    }): Promise<ApiResponseV2<GetMeetLogin200Data>> {
+      const { getMeetLogin: getMeetLoginApi } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.js"
+      )
+      const { getMeetLoginParams } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.zod.js"
+      )
+
+      return apiWrapperV2<GetMeetLogin200Data, { credential_id: string }>(
+        (params: { credential_id: string }, options: AxiosRequestConfig) =>
+          getMeetLoginApi(params.credential_id, options),
+        getMeetLoginParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async updateMeetLogin(params: {
+      credential_id: string
+      body: UpdateMeetLoginBody
+    }): Promise<ApiResponseV2<UpdateMeetLogin200Data>> {
+      const { updateMeetLogin: updateMeetLoginApi } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.js"
+      )
+      const { updateMeetLoginParams, updateMeetLoginBody } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.zod.js"
+      )
+
+      return apiWrapperV2<
+        UpdateMeetLogin200Data,
+        { credential_id: string; body: UpdateMeetLoginBody }
+      >(
+        (params: { credential_id: string; body: UpdateMeetLoginBody }, options) =>
+          updateMeetLoginApi(params.credential_id, params.body, options),
+        z.object({
+          credential_id: updateMeetLoginParams.shape.credential_id,
+          body: updateMeetLoginBody
+        }) as z.ZodType<{ credential_id: string; body: UpdateMeetLoginBody }>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async deleteMeetLogin(params: {
+      credential_id: string
+    }): Promise<ApiResponseV2<DeleteMeetLogin200Data>> {
+      const { deleteMeetLogin: deleteMeetLoginApi } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.js"
+      )
+      const { deleteMeetLoginParams } = await import(
+        "../generated/v2/api/meet-logins/meet-logins.zod.js"
+      )
+
+      return apiWrapperV2<DeleteMeetLogin200Data, { credential_id: string }>(
+        (params: { credential_id: string }, options: AxiosRequestConfig) =>
+          deleteMeetLoginApi(params.credential_id, options),
+        deleteMeetLoginParams,
+        params,
+        state.getOptions()
+      )
     },
 
     // Zoom credentials methods
