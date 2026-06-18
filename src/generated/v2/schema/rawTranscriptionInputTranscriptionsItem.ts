@@ -17,7 +17,7 @@ import type { RawTranscriptionInputTranscriptionsItemTranscription } from "./raw
 import type { RawTranscriptionInputTranscriptionsItemTranslation } from "./rawTranscriptionInputTranscriptionsItemTranslation"
 
 /**
- * Gladia transcription payload with provider-specific features. Additional fields may be present based on custom parameters.
+ * Transcription payload with provider-specific features. Additional fields may be present based on custom parameters.
  */
 export type RawTranscriptionInputTranscriptionsItem = {
   metadata: RawTranscriptionInputTranscriptionsItemMetadata

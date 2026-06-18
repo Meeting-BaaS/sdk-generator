@@ -16,6 +16,7 @@ import type { GetBotDetailsResponseDataExitedAt } from "./getBotDetailsResponseD
 import type { GetBotDetailsResponseDataExtra } from "./getBotDetailsResponseDataExtra"
 import type { GetBotDetailsResponseDataJoinedAt } from "./getBotDetailsResponseDataJoinedAt"
 import type { GetBotDetailsResponseDataMeetingPlatform } from "./getBotDetailsResponseDataMeetingPlatform"
+import type { GetBotDetailsResponseDataMeetLoginCredentialId } from "./getBotDetailsResponseDataMeetLoginCredentialId"
 import type { GetBotDetailsResponseDataParticipantsItem } from "./getBotDetailsResponseDataParticipantsItem"
 import type { GetBotDetailsResponseDataRawTranscription } from "./getBotDetailsResponseDataRawTranscription"
 import type { GetBotDetailsResponseDataRecordingMode } from "./getBotDetailsResponseDataRecordingMode"
@@ -87,4 +88,6 @@ export type GetBotDetailsResponseData = {
   extra: GetBotDetailsResponseDataExtra
   /** Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided) */
   zoom_config: GetBotDetailsResponseDataZoomConfig
+  /** UUID of the meet login assigned to this bot for SAML SSO sign-in (null for anonymous bots or non-Meet platforms) */
+  meet_login_credential_id: GetBotDetailsResponseDataMeetLoginCredentialId
 }

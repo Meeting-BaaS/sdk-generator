@@ -9,23 +9,27 @@
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigApiKey } from "./updateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigApiKey"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigCustomParams } from "./updateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigCustomParams"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigProvider } from "./updateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigProvider"
+import type { UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigRegion } from "./updateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigRegion"
 
 /**
  * The transcription configuration for the bot.
 
 Required when `transcription_enabled` is `true`. Must not be provided when `transcription_enabled` is `false`.
 
-- `provider`: Speech-to-text provider (default: "gladia")
+- `provider`: Speech-to-text provider (default: "gladia"). Supported: gladia, deepgram, assemblyai, speechmatics, soniox
 - `api_key`: Your own API key for the provider (BYOK - available on Pro plans and above)
-- `custom_params`: Custom parameters for transcription (see Gladia API documentation)
+- `region`: Provider region (e.g. "eu", "us"). Required for some providers like Speechmatics
+- `custom_params`: Custom parameters for the transcription provider
 
 Omit this field to leave transcription configuration unchanged.
  */
 export type UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfig = {
-  /** The speech to text provider to use for the bot. The default and only supported provider is 'gladia'. More providers will be supported in the future. */
+  /** The speech to text provider to use for batch transcription. Supported providers: 'gladia', 'deepgram', 'assemblyai', 'speechmatics', 'soniox'. */
   provider?: UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigProvider
   /** The API key to use for the speech to text provider. This can be provided to use your own API key for the speech to text provider. It consumes less tokens than using the default API key. It is available on 'Pro' plans and above. */
   api_key?: UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigApiKey
-  /** Custom parameters for the transcription provider. See the transcription provider's documentation for available options. For Gladia, see https://docs.gladia.io/api-reference/v2/pre-recorded/init */
+  /** Region for the transcription provider API endpoint. When omitted, provider-specific defaults are used: deepgram='eu', assemblyai='eu', speechmatics='eu1', soniox='us'. Gladia does not support region for batch transcription. */
+  region?: UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigRegion
+  /** Custom parameters for the transcription provider. See your provider's documentation for available options. Validated against provider-specific schemas at creation time. */
   custom_params?: UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfigCustomParams
 }

@@ -9,12 +9,15 @@
 import type { CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfApiKey } from "./createCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfApiKey"
 import type { CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfCustomParams } from "./createCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfCustomParams"
 import type { CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfProvider } from "./createCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfProvider"
+import type { CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfRegion } from "./createCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfRegion"
 
 export type CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOf = {
-  /** The speech to text provider to use for the bot. The default and only supported provider is 'gladia'. More providers will be supported in the future. */
+  /** The speech to text provider to use for batch transcription. Supported providers: 'gladia', 'deepgram', 'assemblyai', 'speechmatics', 'soniox'. */
   provider: CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfProvider
   /** The API key to use for the speech to text provider. This can be provided to use your own API key for the speech to text provider. It consumes less tokens than using the default API key. It is available on 'Pro' plans and above. */
   api_key: CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfApiKey
-  /** Custom parameters for the transcription provider. See the transcription provider's documentation for available options. For Gladia, see https://docs.gladia.io/api-reference/v2/pre-recorded/init */
+  /** Region for the transcription provider API endpoint. When omitted, provider-specific defaults are used: deepgram='eu', assemblyai='eu', speechmatics='eu1', soniox='us'. Gladia does not support region for batch transcription. */
+  region: CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfRegion
+  /** Custom parameters for the transcription provider. See your provider's documentation for available options. Validated against provider-specific schemas at creation time. */
   custom_params: CreateCalendarBotRequestBodyAllOfTranscriptionConfigAnyOfCustomParams
 }

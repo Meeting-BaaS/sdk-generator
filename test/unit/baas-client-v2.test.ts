@@ -786,6 +786,422 @@ describe("BaasClient v2", () => {
     })
   })
 
+  describe("retranscribeBot", () => {
+    it("should retranscribe a bot without overrides", async () => {
+      const botId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Retranscription queued"
+      })
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/retranscribe`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.retranscribeBot({ bot_id: botId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.message).toBe("Retranscription queued")
+      }
+    })
+
+    it("should retranscribe a bot with provider override", async () => {
+      const botId = createMockBotId()
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Retranscription queued with new provider"
+      })
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/retranscribe`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.retranscribeBot({
+        bot_id: botId,
+        body: { transcription: { provider: "deepgram" } }
+      })
+
+      expect(result.success).toBe(true)
+    })
+
+    it("should handle retranscribe error response", async () => {
+      const botId = createMockBotId()
+      const mockError = createMockV2ErrorResponse(
+        "Bot has no audio recordings",
+        "NO_RECORDING",
+        409
+      )
+
+      server.use(
+        http.post(`https://api.meetingbaas.com/v2/bots/${botId}/retranscribe`, () => {
+          return HttpResponse.json(mockError, { status: 409 })
+        })
+      )
+
+      const result = await client.retranscribeBot({ bot_id: botId })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("NO_RECORDING")
+        expect(result.statusCode).toBe(409)
+      }
+    })
+  })
+
+  describe("Meet workspaces", () => {
+    const workspaceId = "11111111-1111-4111-8111-111111111111"
+
+    it("should create meet workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        workspace_id: workspaceId,
+        name: "Acme",
+        domain: "bots.acme.com",
+        cert_pem: "-----BEGIN CERTIFICATE-----\nMIIBIjANBg...\n-----END CERTIFICATE-----",
+        state: "active",
+        last_error_message: null,
+        last_error_at: null
+      })
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/meet-workspaces", () => {
+          return HttpResponse.json(mockResponse, { status: 201 })
+        })
+      )
+
+      const result = await client.createMeetWorkspace({
+        domain: "bots.acme.com",
+        generate_keypair: true
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.workspace_id).toBe(workspaceId)
+        expect(result.data.cert_pem).toContain("BEGIN CERTIFICATE")
+      }
+    })
+
+    it("should handle create meet workspace duplicate-domain error", async () => {
+      const mockError = createMockV2ErrorResponse(
+        "Workspace for this domain already exists",
+        "DUPLICATE_DOMAIN",
+        409
+      )
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/meet-workspaces", () => {
+          return HttpResponse.json(mockError, { status: 409 })
+        })
+      )
+
+      const result = await client.createMeetWorkspace({
+        domain: "bots.acme.com",
+        generate_keypair: true
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("DUPLICATE_DOMAIN")
+        expect(result.statusCode).toBe(409)
+      }
+    })
+
+    it("should list meet workspaces successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse([
+        {
+          workspace_id: workspaceId,
+          name: "Acme",
+          domain: "bots.acme.com",
+          cert_pem: "cert",
+          state: "active" as const
+        }
+      ])
+
+      server.use(
+        http.get("https://api.meetingbaas.com/v2/meet-workspaces", () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.listMeetWorkspaces()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(Array.isArray(result.data)).toBe(true)
+        expect(result.data).toHaveLength(1)
+        expect(result.data[0].workspace_id).toBe(workspaceId)
+      }
+    })
+
+    it("should get meet workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        workspace_id: workspaceId,
+        name: "Acme",
+        domain: "bots.acme.com",
+        cert_pem: "cert",
+        state: "active"
+      })
+
+      server.use(
+        http.get(`https://api.meetingbaas.com/v2/meet-workspaces/${workspaceId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.getMeetWorkspace({ workspace_id: workspaceId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.workspace_id).toBe(workspaceId)
+      }
+    })
+
+    it("should update meet workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        workspace_id: workspaceId,
+        name: "Acme Renamed",
+        domain: "bots.acme.com",
+        cert_pem: "cert",
+        state: "active"
+      })
+
+      server.use(
+        http.patch(`https://api.meetingbaas.com/v2/meet-workspaces/${workspaceId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.updateMeetWorkspace({
+        workspace_id: workspaceId,
+        body: { name: "Acme Renamed" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.name).toBe("Acme Renamed")
+      }
+    })
+
+    it("should delete meet workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Workspace deleted"
+      })
+
+      server.use(
+        http.delete(`https://api.meetingbaas.com/v2/meet-workspaces/${workspaceId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.deleteMeetWorkspace({ workspace_id: workspaceId })
+
+      expect(result.success).toBe(true)
+    })
+
+    it("should infer meet workspace methods on v2 client", () => {
+      expect(client).toHaveProperty("createMeetWorkspace")
+      expect(client).toHaveProperty("listMeetWorkspaces")
+      expect(client).toHaveProperty("getMeetWorkspace")
+      expect(client).toHaveProperty("updateMeetWorkspace")
+      expect(client).toHaveProperty("deleteMeetWorkspace")
+    })
+  })
+
+  describe("Meet logins", () => {
+    const workspaceId = "22222222-2222-4222-8222-222222222222"
+    const credentialId = "33333333-3333-4333-8333-333333333333"
+
+    it("should create meet login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@bots.acme.com",
+        email_group: null,
+        state: "active",
+        active_session_count: 0
+      })
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/meet-logins", () => {
+          return HttpResponse.json(mockResponse, { status: 201 })
+        })
+      )
+
+      const result = await client.createMeetLogin({
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@bots.acme.com"
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.credential_id).toBe(credentialId)
+        expect(result.data.email).toBe("bot1@bots.acme.com")
+      }
+    })
+
+    it("should handle create meet login domain-mismatch error", async () => {
+      const mockError = createMockV2ErrorResponse(
+        "Email domain does not match workspace",
+        "DOMAIN_MISMATCH",
+        422
+      )
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/meet-logins", () => {
+          return HttpResponse.json(mockError, { status: 422 })
+        })
+      )
+
+      const result = await client.createMeetLogin({
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@bots.acme.com"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("DOMAIN_MISMATCH")
+        expect(result.statusCode).toBe(422)
+      }
+    })
+
+    it("should list meet logins successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse([
+        {
+          credential_id: credentialId,
+          workspace_id: workspaceId,
+          name: "bot1",
+          email: "bot1@bots.acme.com",
+          email_group: null,
+          state: "active" as const,
+          active_session_count: 0
+        }
+      ])
+
+      server.use(
+        http.get("https://api.meetingbaas.com/v2/meet-logins", () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.listMeetLogins()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(Array.isArray(result.data)).toBe(true)
+        expect(result.data).toHaveLength(1)
+      }
+    })
+
+    it("should get meet login utilization successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        logins_total: 3,
+        logins_active: 3,
+        logins_invalid: 0,
+        concurrent_sessions: 12,
+        concurrent_capacity: 60,
+        utilization_pct: 20,
+        by_email_group: []
+      })
+
+      server.use(
+        http.get("https://api.meetingbaas.com/v2/meet-logins/utilization", () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.getMeetLoginUtilization()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.concurrent_capacity).toBe(60)
+        expect(result.data.utilization_pct).toBe(20)
+      }
+    })
+
+    it("should get meet login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@bots.acme.com",
+        email_group: null,
+        state: "active",
+        active_session_count: 0
+      })
+
+      server.use(
+        http.get(`https://api.meetingbaas.com/v2/meet-logins/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.getMeetLogin({ credential_id: credentialId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.credential_id).toBe(credentialId)
+      }
+    })
+
+    it("should update meet login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        workspace_id: workspaceId,
+        name: "bot1 renamed",
+        email: "bot1@bots.acme.com",
+        email_group: null,
+        state: "active",
+        active_session_count: 0
+      })
+
+      server.use(
+        http.patch(`https://api.meetingbaas.com/v2/meet-logins/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.updateMeetLogin({
+        credential_id: credentialId,
+        body: { name: "bot1 renamed" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.name).toBe("bot1 renamed")
+      }
+    })
+
+    it("should delete meet login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Login deleted"
+      })
+
+      server.use(
+        http.delete(`https://api.meetingbaas.com/v2/meet-logins/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.deleteMeetLogin({ credential_id: credentialId })
+
+      expect(result.success).toBe(true)
+    })
+
+    it("should infer meet login methods on v2 client", () => {
+      expect(client).toHaveProperty("createMeetLogin")
+      expect(client).toHaveProperty("listMeetLogins")
+      expect(client).toHaveProperty("getMeetLogin")
+      expect(client).toHaveProperty("getMeetLoginUtilization")
+      expect(client).toHaveProperty("updateMeetLogin")
+      expect(client).toHaveProperty("deleteMeetLogin")
+    })
+  })
+
   describe("response format", () => {
     it("should pass through v2 API response format without transformation", async () => {
       const botId = createMockBotId()

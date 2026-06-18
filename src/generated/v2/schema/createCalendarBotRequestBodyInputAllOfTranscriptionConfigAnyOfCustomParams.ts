@@ -8,7 +8,7 @@
 import type { CreateCalendarBotRequestBodyInputAllOfTranscriptionConfigAnyOfCustomParamsAnyOf } from "./createCalendarBotRequestBodyInputAllOfTranscriptionConfigAnyOfCustomParamsAnyOf"
 
 /**
- * Custom parameters for the transcription provider. See the transcription provider's documentation for available options. For Gladia, see https://docs.gladia.io/api-reference/v2/pre-recorded/init
+ * Custom parameters for the transcription provider. See your provider's documentation for available options. Validated against provider-specific schemas at creation time.
  */
 export type CreateCalendarBotRequestBodyInputAllOfTranscriptionConfigAnyOfCustomParams =
   CreateCalendarBotRequestBodyInputAllOfTranscriptionConfigAnyOfCustomParamsAnyOf | null

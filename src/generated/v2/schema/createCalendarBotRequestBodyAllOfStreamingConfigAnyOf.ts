@@ -8,13 +8,19 @@
 
 import type { CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfAudioFrequency } from "./createCalendarBotRequestBodyAllOfStreamingConfigAnyOfAudioFrequency"
 import type { CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfInputUrl } from "./createCalendarBotRequestBodyAllOfStreamingConfigAnyOfInputUrl"
+import type { CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfMode } from "./createCalendarBotRequestBodyAllOfStreamingConfigAnyOfMode"
 import type { CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfOutputUrl } from "./createCalendarBotRequestBodyAllOfStreamingConfigAnyOfOutputUrl"
+import type { CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfTranscription } from "./createCalendarBotRequestBodyAllOfStreamingConfigAnyOfTranscription"
 
 export type CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOf = {
+  /** The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks. */
+  mode: CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfMode
   /** Websocket stream URL, which receives the audio sent to the bot, and the bot will stream the audio to the meeting. */
   input_url: CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfInputUrl
-  /** Websocket stream URL, which the bot sends the audio to. This is used to stream the output audio to a destination. */
+  /** When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed. */
   output_url: CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfOutputUrl
   /** The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz. */
   audio_frequency: CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfAudioFrequency
+  /** Transcription provider configuration for real-time streaming STT. Required when mode is 'transcription'. Supports all batch providers plus 'elevenlabs' (streaming-only). */
+  transcription: CreateCalendarBotRequestBodyAllOfStreamingConfigAnyOfTranscription
 }

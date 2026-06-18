@@ -19,6 +19,6 @@ export type RawTranscriptionTranscriptionsItemTranscriptionUtterancesItem = {
   confidence: number
   channel: number
   words: RawTranscriptionTranscriptionsItemTranscriptionUtterancesItemWordsItem[]
-  /** Gladia's numeric speaker ID (0, 1, 2, etc.) */
+  /** Provider's numeric speaker ID (0, 1, 2, etc.) */
   speaker: number
 }

@@ -7,6 +7,6 @@
  */
 
 /**
- * Websocket stream URL, which the bot sends the audio to. This is used to stream the output audio to a destination.
+ * When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed.
  */
 export type CreateBotRequestBodyInputStreamingConfigAnyOfOutputUrl = string | null
