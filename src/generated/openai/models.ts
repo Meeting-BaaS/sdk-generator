@@ -5,9 +5,9 @@
  * Run 'pnpm openapi:sync-openai-models' to regenerate.
  *
  * Source files:
- * - src/generated/openai/schema/createTranscriptionRequestModel.ts
- * - src/generated/openai/schema/realtimeSessionCreateRequestGAModel.ts
- * - src/generated/openai/schema/audioTranscriptionModel.ts
+ * - src/generated/openai/schema/createTranscriptionRequest.ts
+ * - src/generated/openai/schema/realtimeSessionCreateRequestGA.ts
+ * - src/generated/openai/schema/audioTranscription.ts
  *
  * @generated
  */
@@ -37,6 +37,8 @@ export const OpenAIModelCodes = [
   "gpt-realtime",
   "gpt-realtime-1.5",
   "gpt-realtime-2",
+  "gpt-realtime-2.1",
+  "gpt-realtime-2.1-mini",
   "gpt-realtime-2025-08-28",
   "gpt-realtime-mini",
   "gpt-realtime-mini-2025-10-06",
@@ -112,6 +114,8 @@ export const OpenAIRealtimeModelCodes = [
   "gpt-realtime",
   "gpt-realtime-1.5",
   "gpt-realtime-2",
+  "gpt-realtime-2.1",
+  "gpt-realtime-2.1-mini",
   "gpt-realtime-2025-08-28",
   "gpt-realtime-mini",
   "gpt-realtime-mini-2025-10-06",
@@ -147,6 +151,8 @@ export const OpenAIRealtimeModel = {
   "gpt-realtime": "gpt-realtime",
   "gpt-realtime-1.5": "gpt-realtime-1.5",
   "gpt-realtime-2": "gpt-realtime-2",
+  "gpt-realtime-2.1": "gpt-realtime-2.1",
+  "gpt-realtime-2.1-mini": "gpt-realtime-2.1-mini",
   "gpt-realtime-2025-08-28": "gpt-realtime-2025-08-28",
   "gpt-realtime-mini": "gpt-realtime-mini",
   "gpt-realtime-mini-2025-10-06": "gpt-realtime-mini-2025-10-06",
@@ -178,6 +184,8 @@ export const OpenAIModelLabels: Record<OpenAIModelCode, string> = {
   "gpt-realtime": "GPT Realtime",
   "gpt-realtime-1.5": "GPT Realtime 1.5",
   "gpt-realtime-2": "GPT Realtime 2",
+  "gpt-realtime-2.1": "GPT Realtime 2.1",
+  "gpt-realtime-2.1-mini": "GPT Realtime 2.1 Mini",
   "gpt-realtime-2025-08-28": "GPT Realtime 2025 08 28",
   "gpt-realtime-mini": "GPT Realtime Mini",
   "gpt-realtime-mini-2025-10-06": "GPT Realtime Mini 2025 10 06",

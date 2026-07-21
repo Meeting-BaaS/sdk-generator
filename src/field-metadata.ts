@@ -57,21 +57,15 @@ export interface FieldMetadata {
 // Gladia
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Gladia transcription field metadata (34 fields) */
+/** Gladia transcription field metadata (26 fields) */
 export const GLADIA_TRANSCRIPTION_FIELDS = [
-  {
-    name: "context_prompt",
-    type: "string",
-    required: false,
-    description:
-      "**[Deprecated]** Context to feed the transcription model with for possible better accuracy"
-  },
   {
     name: "custom_vocabulary",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "**[Beta]** Can be either boolean to enable custom_vocabulary for this audio or an array with specific vocabulary list to feed the transcription model with"
+      "**[Beta]** Can be either boolean to enable custom_vocabulary for this audio or an array with specific vocabulary list to feed the transcription model with",
+    default: false
   },
   {
     name: "custom_vocabulary_config",
@@ -98,239 +92,6 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
     ]
   },
   {
-    name: "enable_code_switching",
-    type: "boolean",
-    required: false,
-    description:
-      "**[Deprecated]** Use `language_config` instead.Detect multiple languages in the given audio"
-  },
-  {
-    name: "code_switching_config",
-    type: "object",
-    required: false,
-    description:
-      "**[Deprecated]** Use `language_config` instead. Specify the configuration for code switching",
-    nestedFields: [
-      {
-        name: "languages",
-        type: "multiselect",
-        required: true,
-        description: "Specify the languages you want to use when detecting multiple languages",
-        default: [],
-        options: [
-          "af",
-          "am",
-          "ar",
-          "as",
-          "az",
-          "ba",
-          "be",
-          "bg",
-          "bn",
-          "bo",
-          "br",
-          "bs",
-          "ca",
-          "cs",
-          "cy",
-          "da",
-          "de",
-          "el",
-          "en",
-          "es",
-          "et",
-          "eu",
-          "fa",
-          "fi",
-          "fo",
-          "fr",
-          "gl",
-          "gu",
-          "ha",
-          "haw",
-          "he",
-          "hi",
-          "hr",
-          "ht",
-          "hu",
-          "hy",
-          "id",
-          "is",
-          "it",
-          "ja",
-          "jw",
-          "ka",
-          "kk",
-          "km",
-          "kn",
-          "ko",
-          "la",
-          "lb",
-          "ln",
-          "lo",
-          "lt",
-          "lv",
-          "mg",
-          "mi",
-          "mk",
-          "ml",
-          "mn",
-          "mr",
-          "ms",
-          "mt",
-          "my",
-          "ne",
-          "nl",
-          "nn",
-          "no",
-          "oc",
-          "pa",
-          "pl",
-          "ps",
-          "pt",
-          "ro",
-          "ru",
-          "sa",
-          "sd",
-          "si",
-          "sk",
-          "sl",
-          "sn",
-          "so",
-          "sq",
-          "sr",
-          "su",
-          "sv",
-          "sw",
-          "ta",
-          "te",
-          "tg",
-          "th",
-          "tk",
-          "tl",
-          "tr",
-          "tt",
-          "uk",
-          "ur",
-          "uz",
-          "vi",
-          "yi",
-          "yo",
-          "zh"
-        ],
-        inputFormat: "comma-separated"
-      }
-    ]
-  },
-  {
-    name: "language",
-    type: "select",
-    required: false,
-    description:
-      "**[Deprecated]** Use `language_config` instead. Set the spoken language for the given audio (ISO 639 standard)",
-    options: [
-      "af",
-      "am",
-      "ar",
-      "as",
-      "az",
-      "ba",
-      "be",
-      "bg",
-      "bn",
-      "bo",
-      "br",
-      "bs",
-      "ca",
-      "cs",
-      "cy",
-      "da",
-      "de",
-      "el",
-      "en",
-      "es",
-      "et",
-      "eu",
-      "fa",
-      "fi",
-      "fo",
-      "fr",
-      "gl",
-      "gu",
-      "ha",
-      "haw",
-      "he",
-      "hi",
-      "hr",
-      "ht",
-      "hu",
-      "hy",
-      "id",
-      "is",
-      "it",
-      "ja",
-      "jw",
-      "ka",
-      "kk",
-      "km",
-      "kn",
-      "ko",
-      "la",
-      "lb",
-      "ln",
-      "lo",
-      "lt",
-      "lv",
-      "mg",
-      "mi",
-      "mk",
-      "ml",
-      "mn",
-      "mr",
-      "ms",
-      "mt",
-      "my",
-      "ne",
-      "nl",
-      "nn",
-      "no",
-      "oc",
-      "pa",
-      "pl",
-      "ps",
-      "pt",
-      "ro",
-      "ru",
-      "sa",
-      "sd",
-      "si",
-      "sk",
-      "sl",
-      "sn",
-      "so",
-      "sq",
-      "sr",
-      "su",
-      "sv",
-      "sw",
-      "ta",
-      "te",
-      "tg",
-      "th",
-      "tk",
-      "tl",
-      "tr",
-      "tt",
-      "uk",
-      "ur",
-      "uz",
-      "vi",
-      "yi",
-      "yo",
-      "zh"
-    ]
-  },
-  {
     name: "callback_url",
     type: "string",
     required: false,
@@ -340,9 +101,10 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
   {
     name: "callback",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Enable callback for this transcription. If true, the `callback_config` property will be used to customize the callback behaviour"
+      "Enable callback for this transcription. If true, the `callback_config` property will be used to customize the callback behaviour",
+    default: false
   },
   {
     name: "callback_config",
@@ -370,8 +132,9 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
   {
     name: "subtitles",
     type: "boolean",
-    required: false,
-    description: "Enable subtitles generation for this transcription"
+    required: true,
+    description: "Enable subtitles generation for this transcription",
+    default: false
   },
   {
     name: "subtitles_config",
@@ -423,7 +186,7 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
         type: "select",
         required: true,
         description:
-          "Style of the subtitles. Compliance mode refers to : https://loc.gov/preservation/digital/formats//fdd/fdd000569.shtml#:~:text=SRT%20files%20are%20basic%20text,alongside%2C%20example%3A%20%22MyVideo123 ",
+          "Style of the subtitles. Compliance mode refers to : https://loc.gov/preservation/digital/formats//fdd/fdd000569.shtml#:~:text=SRT%20files%20are%20basic%20text,alongside%2C%20example%3A%20%22MyVideo123",
         default: "default",
         options: ["default", "compliance"]
       }
@@ -432,8 +195,9 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
   {
     name: "diarization",
     type: "boolean",
-    required: false,
-    description: "Enable speaker recognition (diarization) for this audio"
+    required: true,
+    description: "Enable speaker recognition (diarization) for this audio",
+    default: false
   },
   {
     name: "diarization_config",
@@ -467,8 +231,9 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
   {
     name: "translation",
     type: "boolean",
-    required: false,
-    description: "**[Beta]** Enable translation for this audio"
+    required: true,
+    description: "**[Beta]** Enable translation for this audio",
+    default: false
   },
   {
     name: "translation_config",
@@ -625,23 +390,25 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
       {
         name: "informal",
         type: "boolean",
-        required: false,
+        required: true,
         description:
-          "Forces the translation to use informal language forms when available in the target language."
+          "Forces the translation to use informal language forms when available in the target language.",
+        default: false
       }
     ]
   },
   {
     name: "summarization",
     type: "boolean",
-    required: false,
-    description: "**[Beta]** Enable summarization for this audio"
+    required: true,
+    description: "Enable summarization for this audio",
+    default: false
   },
   {
     name: "summarization_config",
     type: "object",
     required: false,
-    description: "**[Beta]** Summarization configuration, if `summarization` is enabled",
+    description: "Summarization configuration, if `summarization` is enabled",
     nestedFields: [
       {
         name: "type",
@@ -654,34 +421,18 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
     ]
   },
   {
-    name: "moderation",
-    type: "boolean",
-    required: false,
-    description: "**[Alpha]** Enable moderation for this audio"
-  },
-  {
     name: "named_entity_recognition",
     type: "boolean",
-    required: false,
-    description: "**[Alpha]** Enable named entity recognition for this audio"
-  },
-  {
-    name: "chapterization",
-    type: "boolean",
-    required: false,
-    description: "**[Alpha]** Enable chapterization for this audio"
-  },
-  {
-    name: "name_consistency",
-    type: "boolean",
-    required: false,
-    description: "**[Alpha]** Enable names consistency for this audio"
+    required: true,
+    description: "**[Alpha]** Enable named entity recognition for this audio",
+    default: false
   },
   {
     name: "custom_spelling",
     type: "boolean",
-    required: false,
-    description: "**[Alpha]** Enable custom spelling for this audio"
+    required: true,
+    description: "**[Alpha]** Enable custom spelling for this audio",
+    default: false
   },
   {
     name: "custom_spelling_config",
@@ -699,44 +450,24 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
     ]
   },
   {
-    name: "structured_data_extraction",
-    type: "boolean",
-    required: false,
-    description: "**[Alpha]** Enable structured data extraction for this audio"
-  },
-  {
-    name: "structured_data_extraction_config",
-    type: "object",
-    required: false,
-    description:
-      "**[Alpha]** Structured data extraction configuration, if `structured_data_extraction` is enabled",
-    nestedFields: [
-      {
-        name: "classes",
-        type: "array",
-        required: true,
-        description: "The list of classes to extract from the audio transcription",
-        inputFormat: "comma-separated"
-      }
-    ]
-  },
-  {
     name: "sentiment_analysis",
     type: "boolean",
-    required: false,
-    description: "Enable sentiment analysis for this audio"
+    required: true,
+    description: "Enable sentiment analysis for this audio",
+    default: false
   },
   {
     name: "audio_to_llm",
     type: "boolean",
-    required: false,
-    description: "**[Alpha]** Enable audio to llm processing for this audio"
+    required: true,
+    description: "Enable audio to LLM processing for this audio",
+    default: false
   },
   {
     name: "audio_to_llm_config",
     type: "object",
     required: false,
-    description: "**[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled",
+    description: "Audio to LLM configuration, if `audio_to_llm` is enabled",
     nestedFields: [
       {
         name: "prompts",
@@ -744,6 +475,126 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
         required: true,
         description: "The list of prompts applied on the audio transcription",
         inputFormat: "comma-separated"
+      },
+      {
+        name: "model",
+        type: "string",
+        required: true,
+        description:
+          "The model to use for the prompt execution. You can find the list of supported models [here](https://openrouter.ai/models).",
+        default: "openai/gpt-5.4-nano"
+      }
+    ]
+  },
+  {
+    name: "pii_redaction",
+    type: "boolean",
+    required: true,
+    description: "Enable PII redaction for this audio",
+    default: false
+  },
+  {
+    name: "pii_redaction_config",
+    type: "object",
+    required: false,
+    description: "PII redaction configuration, if `pii_redaction` is enabled",
+    nestedFields: [
+      {
+        name: "entity_types",
+        type: "select",
+        required: false,
+        description: "The entity types to redact",
+        options: [
+          "APPI",
+          "APPI_SENSITIVE",
+          "CCI",
+          "CORE_ENTITIES",
+          "CPRA",
+          "GDPR",
+          "GDPR_SENSITIVE",
+          "HEALTH_INFORMATION",
+          "HIPAA_SAFE_HARBOR",
+          "LIDI",
+          "NUMERICAL_EXCL_PCI",
+          "PCI",
+          "QUEBEC_PRIVACY_ACT",
+          "ACCOUNT_NUMBER",
+          "AGE",
+          "DATE",
+          "DATE_INTERVAL",
+          "DOB",
+          "DRIVER_LICENSE",
+          "DURATION",
+          "EMAIL_ADDRESS",
+          "EVENT",
+          "FILENAME",
+          "GENDER",
+          "HEALTHCARE_NUMBER",
+          "IP_ADDRESS",
+          "LANGUAGE",
+          "LOCATION",
+          "LOCATION_ADDRESS",
+          "LOCATION_ADDRESS_STREET",
+          "LOCATION_CITY",
+          "LOCATION_COORDINATE",
+          "LOCATION_COUNTRY",
+          "LOCATION_STATE",
+          "LOCATION_ZIP",
+          "MARITAL_STATUS",
+          "MONEY",
+          "NAME",
+          "NAME_FAMILY",
+          "NAME_GIVEN",
+          "NAME_MEDICAL_PROFESSIONAL",
+          "NUMERICAL_PII",
+          "OCCUPATION",
+          "ORGANIZATION",
+          "ORGANIZATION_MEDICAL_FACILITY",
+          "ORIGIN",
+          "PASSPORT_NUMBER",
+          "PASSWORD",
+          "PHONE_NUMBER",
+          "PHYSICAL_ATTRIBUTE",
+          "POLITICAL_AFFILIATION",
+          "RELIGION",
+          "SEXUALITY",
+          "SSN",
+          "TIME",
+          "URL",
+          "USERNAME",
+          "VEHICLE_ID",
+          "ZODIAC_SIGN",
+          "BLOOD_TYPE",
+          "CONDITION",
+          "DOSE",
+          "DRUG",
+          "INJURY",
+          "MEDICAL_PROCESS",
+          "STATISTICS",
+          "BANK_ACCOUNT",
+          "CREDIT_CARD",
+          "CREDIT_CARD_EXPIRATION",
+          "CVV",
+          "ROUTING_NUMBER",
+          "CORPORATE_ACTION",
+          "DAY",
+          "EFFECT",
+          "FINANCIAL_METRIC",
+          "MEDICAL_CODE",
+          "MONTH",
+          "ORGANIZATION_ID",
+          "PRODUCT",
+          "PROJECT",
+          "TREND",
+          "YEAR"
+        ]
+      },
+      {
+        name: "processed_text_type",
+        type: "select",
+        required: false,
+        description: "The type of processed text to return (marker or mask)",
+        options: ["MARKER", "MASK"]
       }
     ]
   },
@@ -757,21 +608,16 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
   {
     name: "sentences",
     type: "boolean",
-    required: false,
-    description: "Enable sentences for this audio"
-  },
-  {
-    name: "display_mode",
-    type: "boolean",
-    required: false,
-    description:
-      "**[Alpha]** Allows to change the output display_mode for this audio. The output will be reordered, creating new utterances when speakers overlapped"
+    required: true,
+    description: "Enable sentences for this audio",
+    default: false
   },
   {
     name: "punctuation_enhanced",
     type: "boolean",
-    required: false,
-    description: "**[Alpha]** Use enhanced punctuation for this audio"
+    required: true,
+    description: "**[Alpha]** Use enhanced punctuation for this audio",
+    default: false
   },
   {
     name: "language_config",
@@ -892,9 +738,10 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
       {
         name: "code_switching",
         type: "boolean",
-        required: false,
+        required: true,
         description:
-          "If true, language will be auto-detected on each utterance. Otherwise, language will be auto-detected on first utterance and then used for the rest of the transcription. If one language is set, this option will be ignored."
+          "If true, language will be auto-detected on each utterance. Otherwise, language will be auto-detected on first utterance and then used for the rest of the transcription. If one language is set, this option will be ignored.",
+        default: false
       }
     ]
   },
@@ -921,19 +768,17 @@ export const GLADIA_STREAMING_FIELDS = [
   },
   {
     name: "bit_depth",
-    type: "select",
+    type: "string",
     required: true,
     description: "The bit depth of the audio stream",
-    default: 16,
-    options: [8]
+    default: 16
   },
   {
     name: "sample_rate",
-    type: "select",
+    type: "string",
     required: true,
     description: "The sample rate of the audio stream",
-    default: 16000,
-    options: [8000]
+    default: 16000
   },
   {
     name: "channels",
@@ -1098,9 +943,10 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "code_switching",
         type: "boolean",
-        required: false,
+        required: true,
         description:
-          "If true, language will be auto-detected on each utterance. Otherwise, language will be auto-detected on first utterance and then used for the rest of the transcription. If one language is set, this option will be ignored."
+          "If true, language will be auto-detected on each utterance. Otherwise, language will be auto-detected on first utterance and then used for the rest of the transcription. If one language is set, this option will be ignored.",
+        default: false
       }
     ]
   },
@@ -1113,8 +959,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "audio_enhancer",
         type: "boolean",
-        required: false,
-        description: "If true, apply pre-processing to the audio stream to enhance the quality."
+        required: true,
+        description: "If true, apply pre-processing to the audio stream to enhance the quality.",
+        default: false
       },
       {
         name: "speech_threshold",
@@ -1137,8 +984,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "custom_vocabulary",
         type: "boolean",
-        required: false,
-        description: "If true, enable custom vocabulary for the transcription."
+        required: true,
+        description: "If true, enable custom vocabulary for the transcription.",
+        default: false
       },
       {
         name: "custom_vocabulary_config",
@@ -1167,8 +1015,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "custom_spelling",
         type: "boolean",
-        required: false,
-        description: "If true, enable custom spelling for the transcription."
+        required: true,
+        description: "If true, enable custom spelling for the transcription.",
+        default: false
       },
       {
         name: "custom_spelling_config",
@@ -1188,8 +1037,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "translation",
         type: "boolean",
-        required: false,
-        description: "If true, enable translation for the transcription"
+        required: true,
+        description: "If true, enable translation for the transcription",
+        default: false
       },
       {
         name: "translation_config",
@@ -1346,30 +1196,26 @@ export const GLADIA_STREAMING_FIELDS = [
           {
             name: "informal",
             type: "boolean",
-            required: false,
+            required: true,
             description:
-              "Forces the translation to use informal language forms when available in the target language."
+              "Forces the translation to use informal language forms when available in the target language.",
+            default: false
           }
         ]
       },
       {
         name: "named_entity_recognition",
         type: "boolean",
-        required: false,
-        description: "If true, enable named entity recognition for the transcription."
+        required: true,
+        description: "If true, enable named entity recognition for the transcription.",
+        default: false
       },
       {
         name: "sentiment_analysis",
         type: "boolean",
-        required: false,
-        description: "If true, enable sentiment analysis for the transcription."
-      },
-      {
-        name: "words_accurate_timestamps",
-        type: "boolean",
-        required: false,
-        description:
-          "If true, enable accurate word-level timestamps for the transcription. This provides precise start and end times for each word."
+        required: true,
+        description: "If true, enable sentiment analysis for the transcription.",
+        default: false
       }
     ]
   },
@@ -1382,8 +1228,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "summarization",
         type: "boolean",
-        required: false,
-        description: "If true, generates summarization for the whole transcription."
+        required: true,
+        description: "If true, generates summarization for the whole transcription.",
+        default: false
       },
       {
         name: "summarization_config",
@@ -1404,8 +1251,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "chapterization",
         type: "boolean",
-        required: false,
-        description: "If true, generates chapters for the whole transcription."
+        required: true,
+        description: "If true, generates chapters for the whole transcription.",
+        default: false
       }
     ]
   },
@@ -1418,8 +1266,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "receive_partial_transcripts",
         type: "boolean",
-        required: false,
-        description: "If true, partial transcript will be sent to websocket."
+        required: true,
+        description: "If true, partial transcript will be sent to websocket.",
+        default: false
       },
       {
         name: "receive_final_transcripts",
@@ -1473,16 +1322,18 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "receive_lifecycle_events",
         type: "boolean",
-        required: false,
-        description: "If true, lifecycle events will be sent to websocket."
+        required: true,
+        description: "If true, lifecycle events will be sent to websocket.",
+        default: false
       }
     ]
   },
   {
     name: "callback",
     type: "boolean",
-    required: false,
-    description: "If true, messages will be sent to configured url."
+    required: true,
+    description: "If true, messages will be sent to configured url.",
+    default: false
   },
   {
     name: "callback_config",
@@ -1499,8 +1350,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "receive_partial_transcripts",
         type: "boolean",
-        required: false,
-        description: "If true, partial transcript will be sent to the defined callback."
+        required: true,
+        description: "If true, partial transcript will be sent to the defined callback.",
+        default: false
       },
       {
         name: "receive_final_transcripts",
@@ -1512,8 +1364,9 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "receive_speech_events",
         type: "boolean",
-        required: false,
-        description: "If true, begin and end speech events will be sent to the defined callback."
+        required: true,
+        description: "If true, begin and end speech events will be sent to the defined callback.",
+        default: false
       },
       {
         name: "receive_pre_processing_events",
@@ -1539,14 +1392,16 @@ export const GLADIA_STREAMING_FIELDS = [
       {
         name: "receive_acknowledgments",
         type: "boolean",
-        required: false,
-        description: "If true, acknowledgments will be sent to the defined callback."
+        required: true,
+        description: "If true, acknowledgments will be sent to the defined callback.",
+        default: false
       },
       {
         name: "receive_errors",
         type: "boolean",
-        required: false,
-        description: "If true, errors will be sent to the defined callback."
+        required: true,
+        description: "If true, errors will be sent to the defined callback.",
+        default: false
       },
       {
         name: "receive_lifecycle_events",
@@ -1566,8 +1421,9 @@ export const GLADIA_LIST_FILTER_FIELDS = [
   {
     name: "offset",
     type: "number",
-    required: false,
+    required: true,
     description: "The starting point for pagination. A value of 0 starts from the first item.",
+    default: 0,
     min: 0
   },
   {
@@ -1630,7 +1486,7 @@ export type GladiaListFilterFieldName = (typeof GLADIA_LIST_FILTER_FIELDS)[numbe
 // Deepgram
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Deepgram transcription field metadata (36 fields) */
+/** Deepgram transcription field metadata (37 fields) */
 export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "callback",
@@ -1656,8 +1512,9 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "sentiment",
     type: "boolean",
-    required: false,
-    description: "Recognizes the sentiment throughout a transcript or text"
+    required: true,
+    description: "Recognizes the sentiment throughout a transcript or text",
+    default: false
   },
   {
     name: "summarize",
@@ -1676,8 +1533,9 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "topics",
     type: "boolean",
-    required: false,
-    description: "Detect topics throughout a transcript or text"
+    required: true,
+    description: "Detect topics throughout a transcript or text",
+    default: false
   },
   {
     name: "custom_topic",
@@ -1698,8 +1556,9 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "intents",
     type: "boolean",
-    required: false,
-    description: "Recognizes speaker intent throughout a transcript or text"
+    required: true,
+    description: "Recognizes speaker intent throughout a transcript or text",
+    default: false
   },
   {
     name: "custom_intent",
@@ -1719,27 +1578,38 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "detect_entities",
     type: "boolean",
-    required: false,
-    description: "Identifies and extracts key entities from content in submitted audio"
+    required: true,
+    description: "Identifies and extracts key entities from content in submitted audio",
+    default: false
   },
   {
     name: "detect_language",
-    type: "boolean",
+    type: "string",
     required: false,
     description: "Identifies the dominant language spoken in submitted audio"
   },
   {
     name: "diarize",
     type: "boolean",
+    required: true,
+    description:
+      "Deprecated: use `diarize_model` instead. Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0.",
+    default: false
+  },
+  {
+    name: "diarize_model",
+    type: "select",
     required: false,
     description:
-      "Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0"
+      "Select and enable a specific diarization model version. Specifying this parameter enables diarization and selects the model — you do not need to also set the deprecated `diarize=true` parameter. For batch, supported values are `latest` (currently v2), `v1`, and `v2`. For streaming, supported values are `latest` (currently v1) and `v1`; `v2` returns a validation error on streaming requests.",
+    options: ["latest", "v1", "v2"]
   },
   {
     name: "dictation",
     type: "boolean",
-    required: false,
-    description: "Dictation mode for controlling formatting with dictated speech"
+    required: true,
+    description: "Dictation mode for controlling formatting with dictated speech",
+    default: false
   },
   {
     name: "encoding",
@@ -1751,8 +1621,9 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "filler_words",
     type: "boolean",
-    required: false,
-    description: 'Filler Words can help transcribe interruptions in your audio, like "uh" and "um"'
+    required: true,
+    description: 'Filler Words can help transcribe interruptions in your audio, like "uh" and "um"',
+    default: false
   },
   {
     name: "keyterm",
@@ -1779,6 +1650,22 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "af",
       "am",
       "ar",
+      "ar-AE",
+      "ar-DZ",
+      "ar-EG",
+      "ar-IQ",
+      "ar-IR",
+      "ar-JO",
+      "ar-KW",
+      "ar-LB",
+      "ar-MA",
+      "ar-PS",
+      "ar-QA",
+      "ar-SA",
+      "ar-SD",
+      "ar-SY",
+      "ar-TD",
+      "ar-TN",
       "as",
       "az",
       "ba",
@@ -1832,6 +1719,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "fr-FR",
       "gl",
       "gu",
+      "gu-IN",
       "ha",
       "haw",
       "he",
@@ -1942,15 +1830,15 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "measurements",
     type: "boolean",
-    required: false,
-    description: "Spoken measurements will be converted to their corresponding abbreviations"
+    required: true,
+    description: "Spoken measurements will be converted to their corresponding abbreviations",
+    default: false
   },
   {
     name: "model",
     type: "select",
-    required: true,
+    required: false,
     description: "AI model used to process submitted audio",
-    default: "base-general",
     options: [
       "nova-3",
       "nova-3-general",
@@ -1986,33 +1874,38 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "multichannel",
     type: "boolean",
-    required: false,
-    description: "Transcribe each audio channel independently"
+    required: true,
+    description: "Transcribe each audio channel independently",
+    default: false
   },
   {
     name: "numerals",
     type: "boolean",
-    required: false,
-    description: "Numerals converts numbers from written format to numerical format"
+    required: true,
+    description: "Numerals converts numbers from written format to numerical format",
+    default: false
   },
   {
     name: "paragraphs",
     type: "boolean",
-    required: false,
-    description: "Splits audio into paragraphs to improve transcript readability"
+    required: true,
+    description: "Splits audio into paragraphs to improve transcript readability",
+    default: false
   },
   {
     name: "profanity_filter",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely"
+      "Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely",
+    default: false
   },
   {
     name: "punctuate",
     type: "boolean",
-    required: false,
-    description: "Add punctuation and capitalization to the transcript"
+    required: true,
+    description: "Add punctuation and capitalization to the transcript",
+    default: false
   },
   {
     name: "redact",
@@ -2035,15 +1928,17 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "smart_format",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability"
+      "Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability",
+    default: false
   },
   {
     name: "utterances",
     type: "boolean",
-    required: false,
-    description: "Segments speech into meaningful semantic units"
+    required: true,
+    description: "Segments speech into meaningful semantic units",
+    default: false
   },
   {
     name: "utt_split",
@@ -2055,23 +1950,23 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
   {
     name: "version",
     type: "select",
-    required: true,
+    required: false,
     description: "Version of an AI model to use",
-    default: "latest",
     options: ["latest"]
   },
   {
     name: "mip_opt_out",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip"
+      "Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip",
+    default: false
   }
 ] as const
 /** Field names for DeepgramTranscription */
 export type DeepgramTranscriptionFieldName = (typeof DEEPGRAM_TRANSCRIPTION_FIELDS)[number]["name"]
 
-/** Deepgram streaming field metadata (44 fields) */
+/** Deepgram streaming field metadata (45 fields) */
 export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "callback",
@@ -2097,8 +1992,9 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "sentiment",
     type: "boolean",
-    required: false,
-    description: "Recognizes the sentiment throughout a transcript or text"
+    required: true,
+    description: "Recognizes the sentiment throughout a transcript or text",
+    default: false
   },
   {
     name: "summarize",
@@ -2117,8 +2013,9 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "topics",
     type: "boolean",
-    required: false,
-    description: "Detect topics throughout a transcript or text"
+    required: true,
+    description: "Detect topics throughout a transcript or text",
+    default: false
   },
   {
     name: "custom_topic",
@@ -2139,8 +2036,9 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "intents",
     type: "boolean",
-    required: false,
-    description: "Recognizes speaker intent throughout a transcript or text"
+    required: true,
+    description: "Recognizes speaker intent throughout a transcript or text",
+    default: false
   },
   {
     name: "custom_intent",
@@ -2160,27 +2058,38 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "detect_entities",
     type: "boolean",
-    required: false,
-    description: "Identifies and extracts key entities from content in submitted audio"
+    required: true,
+    description: "Identifies and extracts key entities from content in submitted audio",
+    default: false
   },
   {
     name: "detect_language",
-    type: "boolean",
+    type: "string",
     required: false,
     description: "Identifies the dominant language spoken in submitted audio"
   },
   {
     name: "diarize",
     type: "boolean",
+    required: true,
+    description:
+      "Deprecated: use `diarize_model` instead. Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0.",
+    default: false
+  },
+  {
+    name: "diarize_model",
+    type: "select",
     required: false,
     description:
-      "Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0"
+      "Select and enable a specific diarization model version. Specifying this parameter enables diarization and selects the model — you do not need to also set the deprecated `diarize=true` parameter. For batch, supported values are `latest` (currently v2), `v1`, and `v2`. For streaming, supported values are `latest` (currently v1) and `v1`; `v2` returns a validation error on streaming requests.",
+    options: ["latest", "v1", "v2"]
   },
   {
     name: "dictation",
     type: "boolean",
-    required: false,
-    description: "Dictation mode for controlling formatting with dictated speech"
+    required: true,
+    description: "Dictation mode for controlling formatting with dictated speech",
+    default: false
   },
   {
     name: "encoding",
@@ -2192,8 +2101,9 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "filler_words",
     type: "boolean",
-    required: false,
-    description: 'Filler Words can help transcribe interruptions in your audio, like "uh" and "um"'
+    required: true,
+    description: 'Filler Words can help transcribe interruptions in your audio, like "uh" and "um"',
+    default: false
   },
   {
     name: "keyterm",
@@ -2220,6 +2130,22 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "af",
       "am",
       "ar",
+      "ar-AE",
+      "ar-DZ",
+      "ar-EG",
+      "ar-IQ",
+      "ar-IR",
+      "ar-JO",
+      "ar-KW",
+      "ar-LB",
+      "ar-MA",
+      "ar-PS",
+      "ar-QA",
+      "ar-SA",
+      "ar-SD",
+      "ar-SY",
+      "ar-TD",
+      "ar-TN",
       "as",
       "az",
       "ba",
@@ -2273,6 +2199,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "fr-FR",
       "gl",
       "gu",
+      "gu-IN",
       "ha",
       "haw",
       "he",
@@ -2383,15 +2310,15 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "measurements",
     type: "boolean",
-    required: false,
-    description: "Spoken measurements will be converted to their corresponding abbreviations"
+    required: true,
+    description: "Spoken measurements will be converted to their corresponding abbreviations",
+    default: false
   },
   {
     name: "model",
     type: "select",
-    required: true,
+    required: false,
     description: "AI model used to process submitted audio",
-    default: "base-general",
     options: [
       "nova-3",
       "nova-3-general",
@@ -2427,33 +2354,38 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "multichannel",
     type: "boolean",
-    required: false,
-    description: "Transcribe each audio channel independently"
+    required: true,
+    description: "Transcribe each audio channel independently",
+    default: false
   },
   {
     name: "numerals",
     type: "boolean",
-    required: false,
-    description: "Numerals converts numbers from written format to numerical format"
+    required: true,
+    description: "Numerals converts numbers from written format to numerical format",
+    default: false
   },
   {
     name: "paragraphs",
     type: "boolean",
-    required: false,
-    description: "Splits audio into paragraphs to improve transcript readability"
+    required: true,
+    description: "Splits audio into paragraphs to improve transcript readability",
+    default: false
   },
   {
     name: "profanity_filter",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely"
+      "Profanity Filter looks for recognized profanity and converts it to the nearest recognized non-profane word or removes it from the transcript completely",
+    default: false
   },
   {
     name: "punctuate",
     type: "boolean",
-    required: false,
-    description: "Add punctuation and capitalization to the transcript"
+    required: true,
+    description: "Add punctuation and capitalization to the transcript",
+    default: false
   },
   {
     name: "redact",
@@ -2476,15 +2408,17 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "smart_format",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability"
+      "Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability",
+    default: false
   },
   {
     name: "utterances",
     type: "boolean",
-    required: false,
-    description: "Segments speech into meaningful semantic units"
+    required: true,
+    description: "Segments speech into meaningful semantic units",
+    default: false
   },
   {
     name: "utt_split",
@@ -2496,17 +2430,17 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   {
     name: "version",
     type: "select",
-    required: true,
+    required: false,
     description: "Version of an AI model to use",
-    default: "latest",
     options: ["latest"]
   },
   {
     name: "mip_opt_out",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip"
+      "Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip",
+    default: false
   },
   {
     name: "channels",
@@ -2528,10 +2462,9 @@ export const DEEPGRAM_STREAMING_FIELDS = [
   },
   {
     name: "endpointing",
-    type: "select",
+    type: "string",
     required: false,
-    description: "endpointing - see https://developers.deepgram.com/docs/endpointing",
-    options: [false]
+    description: "endpointing - see https://developers.deepgram.com/docs/endpointing"
   },
   {
     name: "interim_results",
@@ -2585,9 +2518,7 @@ export const DEEPGRAM_LIST_FILTER_FIELDS = [
     type: "number",
     required: true,
     description: "Number of results to return per page. Default 10. Range [1,1000]",
-    default: 10,
-    min: 1,
-    max: 1000
+    default: 10
   },
   {
     name: "page",
@@ -2645,7 +2576,7 @@ export type DeepgramListFilterFieldName = (typeof DEEPGRAM_LIST_FILTER_FIELDS)[n
 // AssemblyAI
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** AssemblyAI transcription field metadata (40 fields) */
+/** AssemblyAI transcription field metadata (49 fields) */
 export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
   {
     name: "audio_url",
@@ -2654,11 +2585,123 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
     description: "The URL of the audio or video file to transcribe."
   },
   {
+    name: "audio_end_at",
+    type: "number",
+    required: false,
+    description:
+      "The point in time, in milliseconds, to stop transcribing in your media file. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details."
+  },
+  {
+    name: "audio_start_from",
+    type: "number",
+    required: false,
+    description:
+      "The point in time, in milliseconds, to begin transcribing in your media file. See [Set the start and end of the transcript](https://www.assemblyai.com/docs/pre-recorded-audio/set-the-start-and-end-of-the-transcript) for more details."
+  },
+  {
+    name: "auto_chapters",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Auto Chapters](https://www.assemblyai.com/docs/speech-understanding/auto-chapters), can be true or false. Requires `punctuate` to be `true`, and cannot be enabled together with `summarization`. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/quickstart) instead for more flexible chapter summaries. See the [updated Auto Chapters page](https://www.assemblyai.com/docs/speech-understanding/auto-chapters) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n",
+    default: false
+  },
+  {
+    name: "auto_highlights",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Key Phrases](https://www.assemblyai.com/docs/speech-understanding/key-phrases), either true or false",
+    default: false
+  },
+  {
+    name: "content_safety",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Content Moderation](https://www.assemblyai.com/docs/content-moderation), can be true or false",
+    default: false
+  },
+  {
+    name: "content_safety_confidence",
+    type: "number",
+    required: true,
+    description:
+      "The confidence threshold for the [Content Moderation](https://www.assemblyai.com/docs/content-moderation) model. Values must be between 25 and 100. Requires `content_safety` to be enabled; otherwise it's ignored.",
+    default: 50,
+    min: 25,
+    max: 100
+  },
+  {
+    name: "custom_spelling",
+    type: "array",
+    required: false,
+    description:
+      "Customize how words are spelled and formatted using to and from values. Each `to` value must be a single word, and each `from` phrase can contain at most 5 words. See [Custom Spelling](https://www.assemblyai.com/docs/pre-recorded-audio/correct-spelling-of-terms) for more details.",
+    inputFormat: "comma-separated"
+  },
+  {
+    name: "disfluencies",
+    type: "boolean",
+    required: true,
+    description:
+      'Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3.5 Pro and Universal-2.',
+    default: false
+  },
+  {
+    name: "domain",
+    type: "string",
+    required: false,
+    description:
+      'Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages.\n\nSupported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If `medical-v1` is used with an unsupported language, the parameter is ignored and a warning is returned.\n',
+    default: null
+  },
+  {
+    name: "entity_detection",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Entity Detection](https://www.assemblyai.com/docs/speech-understanding/entity-detection), can be true or false",
+    default: false
+  },
+  {
+    name: "filter_profanity",
+    type: "boolean",
+    required: true,
+    description:
+      "Filter profanity from the transcribed text, can be true or false. See [Profanity Filtering](https://www.assemblyai.com/docs/profanity-filtering) for more details.",
+    default: false
+  },
+  {
+    name: "format_text",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false",
+    default: true
+  },
+  {
+    name: "iab_categories",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Topic Detection](https://www.assemblyai.com/docs/speech-understanding/topic-detection), can be true or false",
+    default: false
+  },
+  {
+    name: "keyterms_prompt",
+    type: "array",
+    required: false,
+    description:
+      "Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3.5 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting) for more details.\n",
+    inputFormat: "comma-separated"
+  },
+  {
     name: "language_code",
     type: "select",
     required: true,
     description:
-      "The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).\nThe default value is 'en_us'.\n",
+      "The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is 'en_us'.\n",
     default: "en_us",
     options: [
       "en",
@@ -2766,136 +2809,249 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
     ]
   },
   {
-    name: "language_detection",
-    type: "boolean",
+    name: "language_codes",
+    type: "multiselect",
     required: false,
     description:
-      "Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false."
+      "The language codes of your audio file. Used for [Code switching](/speech-to-text/pre-recorded-audio/code-switching)\nOne of the values specified must be `en`.\n",
+    options: [
+      "en",
+      "en_au",
+      "en_uk",
+      "en_us",
+      "es",
+      "fr",
+      "de",
+      "it",
+      "pt",
+      "nl",
+      "af",
+      "sq",
+      "am",
+      "ar",
+      "hy",
+      "as",
+      "az",
+      "ba",
+      "eu",
+      "be",
+      "bn",
+      "bs",
+      "br",
+      "bg",
+      "my",
+      "ca",
+      "zh",
+      "hr",
+      "cs",
+      "da",
+      "et",
+      "fo",
+      "fi",
+      "gl",
+      "ka",
+      "el",
+      "gu",
+      "ht",
+      "ha",
+      "haw",
+      "he",
+      "hi",
+      "hu",
+      "is",
+      "id",
+      "ja",
+      "jw",
+      "kn",
+      "kk",
+      "km",
+      "ko",
+      "lo",
+      "la",
+      "lv",
+      "ln",
+      "lt",
+      "lb",
+      "mk",
+      "mg",
+      "ms",
+      "ml",
+      "mt",
+      "mi",
+      "mr",
+      "mn",
+      "ne",
+      "no",
+      "nn",
+      "oc",
+      "pa",
+      "ps",
+      "fa",
+      "pl",
+      "ro",
+      "ru",
+      "sa",
+      "sr",
+      "sn",
+      "sd",
+      "si",
+      "sk",
+      "sl",
+      "so",
+      "su",
+      "sw",
+      "sv",
+      "tl",
+      "tg",
+      "ta",
+      "tt",
+      "te",
+      "th",
+      "bo",
+      "tr",
+      "tk",
+      "uk",
+      "ur",
+      "uz",
+      "vi",
+      "cy",
+      "yi",
+      "yo"
+    ],
+    inputFormat: "comma-separated"
   },
   {
     name: "language_confidence_threshold",
     type: "number",
-    required: false,
+    required: true,
     description:
-      "The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nDefaults to 0.\n",
+      "The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nDefaults to 0. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+    default: 0,
     min: 0,
     max: 1
   },
   {
-    name: "speech_model",
-    type: "select",
+    name: "language_detection",
+    type: "boolean",
     required: true,
     description:
-      'The speech model to use for the transcription. When `null`, the "best" model is used.',
-    default: "best",
-    options: ["best", "slam-1", "universal"]
+      "Enable [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection), either true or false.",
+    default: false
+  },
+  {
+    name: "language_detection_options",
+    type: "object",
+    required: false,
+    description:
+      "Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection).",
+    nestedFields: [
+      {
+        name: "expected_languages",
+        type: "array",
+        required: false,
+        description:
+          'List of languages expected in the audio file. Defaults to `["all"]` when unspecified. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.',
+        inputFormat: "comma-separated"
+      },
+      {
+        name: "fallback_language",
+        type: "string",
+        required: true,
+        description:
+          'If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `["auto"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n',
+        default: "auto"
+      },
+      {
+        name: "code_switching",
+        type: "boolean",
+        required: true,
+        description:
+          "Whether [code switching](/speech-to-text/pre-recorded-audio/code-switching) should be detected.\n",
+        default: false
+      },
+      {
+        name: "code_switching_confidence_threshold",
+        type: "number",
+        required: true,
+        description:
+          "The confidence threshold for [code switching](/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.\n",
+        default: 0.3,
+        min: 0,
+        max: 1
+      }
+    ]
+  },
+  {
+    name: "multichannel",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Multichannel](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) transcription, can be true or false.",
+    default: false
+  },
+  {
+    name: "prompt",
+    type: "string",
+    required: false,
+    description:
+      "Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.\n\nNote: This parameter is only supported for the Universal-3.5 Pro model.\n"
   },
   {
     name: "punctuate",
     type: "boolean",
     required: true,
-    description: "Enable Automatic Punctuation, can be true or false",
+    description:
+      "Enable [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false",
     default: true
-  },
-  {
-    name: "format_text",
-    type: "boolean",
-    required: true,
-    description: "Enable Text Formatting, can be true or false",
-    default: true
-  },
-  {
-    name: "disfluencies",
-    type: "boolean",
-    required: false,
-    description: 'Transcribe Filler Words, like "umm", in your media file; can be true or false'
-  },
-  {
-    name: "multichannel",
-    type: "boolean",
-    required: false,
-    description:
-      "Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false."
-  },
-  {
-    name: "webhook_url",
-    type: "string",
-    required: false,
-    description:
-      "The URL to which we send webhook requests.\nWe sends two different types of webhook requests.\nOne request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.\n"
-  },
-  {
-    name: "webhook_auth_header_name",
-    type: "string",
-    required: false,
-    description:
-      "The header name to be sent with the transcript completed or failed webhook requests"
-  },
-  {
-    name: "webhook_auth_header_value",
-    type: "string",
-    required: false,
-    description:
-      "The header value to send back with the transcript completed or failed webhook requests for added security"
-  },
-  {
-    name: "auto_highlights",
-    type: "boolean",
-    required: false,
-    description: "Enable Key Phrases, either true or false"
-  },
-  {
-    name: "audio_start_from",
-    type: "number",
-    required: false,
-    description: "The point in time, in milliseconds, to begin transcribing in your media file"
-  },
-  {
-    name: "audio_end_at",
-    type: "number",
-    required: false,
-    description: "The point in time, in milliseconds, to stop transcribing in your media file"
-  },
-  {
-    name: "word_boost",
-    type: "array",
-    required: false,
-    description: "The list of custom vocabulary to boost transcription probability for",
-    inputFormat: "comma-separated"
-  },
-  {
-    name: "boost_param",
-    type: "select",
-    required: false,
-    description: "How much to boost specified words",
-    options: ["low", "default", "high"]
-  },
-  {
-    name: "filter_profanity",
-    type: "boolean",
-    required: false,
-    description: "Filter profanity from the transcribed text, can be true or false"
   },
   {
     name: "redact_pii",
     type: "boolean",
-    required: false,
+    required: true,
     description:
-      "Redact PII from the transcribed text using the Redact PII model, can be true or false"
+      "Redact PII from the transcribed text using the Redact PII model, can be true or false. Requires `format_text` to be `true`. See [PII Redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.",
+    default: false
   },
   {
     name: "redact_pii_audio",
     type: "boolean",
+    required: true,
+    description:
+      'Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. Requires `redact_pii` to be `true`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.',
+    default: false
+  },
+  {
+    name: "redact_pii_audio_options",
+    type: "object",
     required: false,
     description:
-      'Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'
+      "Specify options for [PII redacted audio](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) files.",
+    nestedFields: [
+      {
+        name: "return_redacted_no_speech_audio",
+        type: "boolean",
+        required: true,
+        description:
+          "By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`. Requires `redact_pii_audio` to be `true`.",
+        default: false
+      },
+      {
+        name: "override_audio_redaction_method",
+        type: "select",
+        required: false,
+        description:
+          "Specify the method used to redact audio. By default, redacted audio uses a beep sound. Set to `silence` to replace PII with silence instead of a beep.",
+        options: ["silence"]
+      }
+    ]
   },
   {
     name: "redact_pii_audio_quality",
     type: "select",
-    required: false,
+    required: true,
     description:
-      "Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.",
+      "Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction#request-for-redacted-audio) for more details.",
+    default: "mp3",
     options: ["mp3", "wav"]
   },
   {
@@ -2903,7 +3059,7 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
     type: "multiselect",
     required: false,
     description:
-      "The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.",
+      "The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.",
     options: [
       "account_number",
       "banking_information",
@@ -2920,12 +3076,20 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
       "email_address",
       "event",
       "filename",
+      "gender",
       "gender_sexuality",
       "healthcare_number",
       "injury",
       "ip_address",
       "language",
       "location",
+      "location_address",
+      "location_address_street",
+      "location_city",
+      "location_coordinate",
+      "location_country",
+      "location_state",
+      "location_zip",
       "marital_status",
       "medical_condition",
       "medical_process",
@@ -2934,6 +3098,7 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
       "number_sequence",
       "occupation",
       "organization",
+      "organization_medical_facility",
       "passport_number",
       "password",
       "person_age",
@@ -2942,6 +3107,7 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
       "physical_attribute",
       "political_affiliation",
       "religion",
+      "sexuality",
       "statistics",
       "time",
       "url",
@@ -2957,131 +3123,327 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
     type: "select",
     required: true,
     description:
-      'The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.',
+      "The replacement logic for detected PII, can be `entity_name` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.",
     default: "hash",
     options: ["entity_name", "hash"]
   },
   {
-    name: "speaker_labels",
+    name: "redact_pii_return_unredacted",
     type: "boolean",
+    required: true,
+    description:
+      "When set to `true`, returns the original unredacted transcript alongside the redacted one in the same response. Requires `redact_pii` to be `true`, otherwise a 400 error is returned.\n\nWhen enabled, the response includes the additional fields `unredacted_text`, `unredacted_words`, and `unredacted_utterances`. The existing `text`, `words`, and `utterances` fields remain fully redacted. When disabled (default), the response is unchanged and contains only the redacted transcript. See [PII redaction](https://www.assemblyai.com/docs/pii-redaction) for more details.\n",
+    default: false
+  },
+  {
+    name: "redact_static_entities",
+    type: "object",
     required: false,
     description:
-      "Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false"
+      'A map of user-defined terms to redact, where each key is a redaction label and each value is a list of exact terms to match (e.g. `{ "INTERNAL_TOOL": ["Bearclaw", "Cubclaw"] }`). Each matching term in the transcript is redacted using the `redact_pii_sub` substitution, on top of standard PII Redaction. Useful for redacting specific, predefined terms (proprietary names, internal codenames) that aren\'t general PII categories.\n\nThis is a literal find-and-replace (tolerant of casing, surrounding punctuation, and minor spacing/hyphenation), not a model — it does not generalize beyond the terms you provide. Requires `redact_pii` to be `true`, otherwise a 400 error is returned. When `redact_pii_audio` is enabled, matched terms are also redacted in the audio output. You can provide up to 100 labels, each with up to 200 terms of at most 200 characters; a label may contain only letters, numbers, spaces, underscores, and hyphens (max 80 characters). See [Static Entity Redaction](https://www.assemblyai.com/docs/guardrails/redact-pii-from-transcripts#static-entity-redaction) for more details.\n',
+    inputFormat: "json"
+  },
+  {
+    name: "sentiment_analysis",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Sentiment Analysis](https://www.assemblyai.com/docs/speech-understanding/sentiment-analysis), can be true or false. Requires `punctuate` to be `true`.",
+    default: false
+  },
+  {
+    name: "speaker_labels",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers), can be true or false. Requires `punctuate` to be `true`.",
+    default: false
+  },
+  {
+    name: "speaker_options",
+    type: "object",
+    required: false,
+    description:
+      "Specify options for [Speaker diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers). Use this to set a range of possible speakers. Requires `speaker_labels` to be `true`, and cannot be used together with `speakers_expected`. When both bounds are set, `min_speakers_expected` must be less than or equal to `max_speakers_expected`.",
+    nestedFields: [
+      {
+        name: "min_speakers_expected",
+        type: "number",
+        required: false,
+        description:
+          "A hard lower limit on the number of speaker labels — the model won't return fewer speakers than this. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers) for more details."
+      },
+      {
+        name: "max_speakers_expected",
+        type: "number",
+        required: false,
+        description:
+          "<Warning>Setting this parameter too high may hurt model accuracy</Warning>\nA hard upper limit on the number of speaker labels. If more people speak than this value, the additional speakers are merged into existing labels. Setting it higher than the true number of speakers can cause the model to over-split and return more speakers than are actually present. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers) for more details.\n"
+      }
+    ]
   },
   {
     name: "speakers_expected",
     type: "number",
     required: false,
     description:
-      "Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details."
+      "Tells the speaker label model how many speakers it should attempt to identify. Requires `speaker_labels` to be `true` and must be a positive integer; cannot be used together with `speaker_options`. See [Set number of speakers expected](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-number-of-speakers-expected) for more details.",
+    default: null
   },
   {
-    name: "content_safety",
-    type: "boolean",
-    required: false,
-    description:
-      "Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false"
-  },
-  {
-    name: "content_safety_confidence",
-    type: "number",
+    name: "speech_models",
+    type: "multiselect",
     required: true,
     description:
-      "The confidence threshold for the Content Moderation model. Values must be between 25 and 100.",
-    default: 50,
-    min: 25,
-    max: 100
-  },
-  {
-    name: "iab_categories",
-    type: "boolean",
-    required: false,
-    description:
-      "Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false"
-  },
-  {
-    name: "custom_spelling",
-    type: "array",
-    required: false,
-    description: "Customize how words are spelled and formatted using to and from values",
+      "Optional. List one or more speech models in priority order. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `universal-3-5-pro`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n",
+    default: ["universal-3-5-pro"],
+    options: ["universal-3-5-pro", "universal-2"],
     inputFormat: "comma-separated"
-  },
-  {
-    name: "keyterms_prompt",
-    type: "array",
-    required: false,
-    description:
-      "<Warning>`keyterms_prompt` is only supported when the `speech_model` is specified as `slam-1`</Warning>\nImprove accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).\n",
-    inputFormat: "comma-separated"
-  },
-  {
-    name: "prompt",
-    type: "string",
-    required: false,
-    description: "This parameter does not currently have any functionality attached to it."
-  },
-  {
-    name: "sentiment_analysis",
-    type: "boolean",
-    required: false,
-    description:
-      "Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false"
-  },
-  {
-    name: "auto_chapters",
-    type: "boolean",
-    required: false,
-    description:
-      "Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false"
-  },
-  {
-    name: "entity_detection",
-    type: "boolean",
-    required: false,
-    description:
-      "Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false"
   },
   {
     name: "speech_threshold",
     type: "number",
     required: false,
     description:
-      "Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive.\n",
+      "Reject audio files that contain less than this fraction of speech.\nValid values are in the range [0, 1] inclusive. See [Speech Threshold](https://www.assemblyai.com/docs/speech-threshold) for more details.\n",
+    default: 0,
     min: 0,
     max: 1
   },
   {
-    name: "summarization",
-    type: "boolean",
+    name: "speech_understanding",
+    type: "object",
     required: false,
     description:
-      "Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false"
+      "Enable speech understanding tasks like [Translation](https://www.assemblyai.com/docs/speech-understanding/translation), [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification), and [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting). See the task-specific docs for available options and configuration.\n",
+    nestedFields: [
+      {
+        name: "request",
+        type: "object",
+        required: true,
+        nestedFields: [
+          {
+            name: "translation",
+            type: "object",
+            required: true,
+            nestedFields: [
+              {
+                name: "target_languages",
+                type: "array",
+                required: true,
+                description:
+                  'List of target language codes (e.g., `["es", "de"]`). See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for supported languages.',
+                inputFormat: "comma-separated"
+              },
+              {
+                name: "formal",
+                type: "boolean",
+                required: true,
+                description:
+                  "Use formal language style. See [Translation](https://www.assemblyai.com/docs/speech-understanding/translation) for more details.",
+                default: true
+              },
+              {
+                name: "match_original_utterance",
+                type: "boolean",
+                required: true,
+                description:
+                  "When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.",
+                default: false
+              }
+            ]
+          },
+          {
+            name: "speaker_identification",
+            type: "object",
+            required: true,
+            nestedFields: [
+              {
+                name: "speaker_type",
+                type: "select",
+                required: true,
+                description:
+                  "Type of speaker identification. See [Speaker Identification](https://www.assemblyai.com/docs/speech-understanding/speaker-identification) for details on each type.",
+                options: ["role", "name"]
+              },
+              {
+                name: "known_values",
+                type: "array",
+                required: false,
+                description:
+                  'Required if speaker_type is "role". Each value must be 35 characters or less.',
+                inputFormat: "comma-separated"
+              },
+              {
+                name: "speakers",
+                type: "array",
+                required: false,
+                description:
+                  "An array of speaker objects with metadata to improve identification accuracy. Each object should include a `role` or `name` (depending on `speaker_type`) and an optional `description` to help the model identify the speaker. You can also include any additional custom properties (e.g., `company`, `title`) to provide more context. Use this as an alternative to `known_values` when you want to provide additional context about each speaker.",
+                inputFormat: "comma-separated"
+              }
+            ]
+          },
+          {
+            name: "custom_formatting",
+            type: "object",
+            required: true,
+            nestedFields: [
+              {
+                name: "date",
+                type: "string",
+                required: false,
+                description:
+                  'Date format pattern (e.g., `"mm/dd/yyyy"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'
+              },
+              {
+                name: "phone_number",
+                type: "string",
+                required: false,
+                description:
+                  'Phone number format pattern (e.g., `"(xxx)xxx-xxxx"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'
+              },
+              {
+                name: "email",
+                type: "string",
+                required: false,
+                description:
+                  'Email format pattern (e.g., `"username@domain.com"`). See [Custom Formatting](https://www.assemblyai.com/docs/speech-understanding/custom-formatting) for more details.'
+              }
+            ]
+          },
+          {
+            name: "summarization",
+            type: "object",
+            required: true,
+            nestedFields: [
+              {
+                name: "summary_type",
+                type: "select",
+                required: false,
+                description:
+                  "Type of summary. Bullets returns short bullet point style summaries, paragraph is generally more verbose and detailed.",
+                options: ["paragraph", "bullets"]
+              },
+              {
+                name: "effort",
+                type: "select",
+                required: false,
+                options: ["low", "medium"]
+              }
+            ]
+          },
+          {
+            name: "action_items",
+            type: "object",
+            required: true,
+            nestedFields: [
+              {
+                name: "include_decisions",
+                type: "boolean",
+                required: false,
+                description: "Option to include decision making in action items."
+              },
+              {
+                name: "effort",
+                type: "select",
+                required: false,
+                options: ["low", "medium"]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    name: "summarization",
+    type: "boolean",
+    required: true,
+    description:
+      "Enable [Summarization](https://www.assemblyai.com/docs/speech-understanding/summarization), can be true or false. Requires both `punctuate` and `format_text` to be `true`, and cannot be enabled together with `auto_chapters`. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/quickstart) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.\n\nNote: This parameter is only supported for the Universal-2 model.\n",
+    default: false
   },
   {
     name: "summary_model",
     type: "select",
-    required: false,
-    description: "The model to summarize the transcript",
+    required: true,
+    description:
+      "The model to summarize the transcript. Must be set together with `summary_type`. Compatibility - `catchy` supports `gist` and `headline`; `informative` and `conversational` support `headline`, `paragraph`, `bullets`, and `bullets_verbose`. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/quickstart) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.",
+    default: "informative",
     options: ["informative", "conversational", "catchy"]
   },
   {
     name: "summary_type",
     type: "select",
-    required: false,
-    description: "The type of summary",
+    required: true,
+    description:
+      "The type of summary. Must be set together with `summary_model`; see `summary_model` for the supported model and type combinations. Deprecated - use [LLM Gateway](https://www.assemblyai.com/docs/llm-gateway/quickstart) instead for more flexible summaries. See the [updated Summarization page](https://www.assemblyai.com/docs/speech-understanding/summarization) for details.",
+    default: "bullets",
     options: ["bullets", "bullets_verbose", "gist", "headline", "paragraph"]
+  },
+  {
+    name: "remove_audio_tags",
+    type: "select",
+    required: true,
+    description:
+      'Universal-3.5 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations. By default, all inline annotations are removed.\n\nNote: This parameter is only supported for the Universal-3.5 Pro model.\n',
+    default: "all",
+    options: ["all", "speaker"]
+  },
+  {
+    name: "temperature",
+    type: "number",
+    required: true,
+    description:
+      "Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.\n\nNote: This parameter only takes effect on the Universal-3.5 Pro model.\n",
+    default: 0,
+    min: 0,
+    max: 1
+  },
+  {
+    name: "webhook_auth_header_name",
+    type: "string",
+    required: false,
+    description:
+      "The header name to be sent with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests. Must be 1-1000 characters and contain only ASCII letters, numbers, hyphens, and underscores. Requires `webhook_auth_header_value` and `webhook_url` to also be set.",
+    default: null
+  },
+  {
+    name: "webhook_auth_header_value",
+    type: "string",
+    required: false,
+    description:
+      "The header value to send back with the transcript completed or failed [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests for added security. Must be 1-1000 characters and must not contain carriage returns or newlines. Requires `webhook_auth_header_name` and `webhook_url` to also be set.",
+    default: null
+  },
+  {
+    name: "webhook_url",
+    type: "string",
+    required: false,
+    description:
+      "The URL to which we send [webhook](https://www.assemblyai.com/docs/deployment/webhooks-for-pre-recorded-audio) requests.\n"
   },
   {
     name: "custom_topics",
     type: "boolean",
+    required: true,
+    description: "This parameter does not currently have any functionality attached to it.",
+    default: false
+  },
+  {
+    name: "speech_model",
+    type: "select",
     required: false,
-    description: "Enable custom topics, either true or false"
+    description:
+      "This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).\n",
+    options: ["universal-3-5-pro", "universal-2"]
   },
   {
     name: "topics",
     type: "array",
     required: false,
-    description: "The list of custom topics",
+    description: "This parameter does not currently have any functionality attached to it.",
     inputFormat: "comma-separated"
   }
 ] as const
@@ -3089,7 +3451,7 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
 export type AssemblyAITranscriptionFieldName =
   (typeof ASSEMBLYAI_TRANSCRIPTION_FIELDS)[number]["name"]
 
-/** AssemblyAI streaming field metadata (16 fields) */
+/** AssemblyAI streaming field metadata (42 fields) */
 export const ASSEMBLYAI_STREAMING_FIELDS = [
   {
     name: "sampleRate",
@@ -3125,6 +3487,31 @@ export const ASSEMBLYAI_STREAMING_FIELDS = [
       "Set to true to receive the SessionInformation message before the session ends. Defaults to false."
   },
   {
+    name: "domain",
+    type: "string",
+    required: false,
+    description:
+      'Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/streaming/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages. Supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned.'
+  },
+  {
+    name: "connectTimeout",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "maxConnectionRetries",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "connectionRetryDelay",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
     name: "endOfTurnConfidenceThreshold",
     type: "number",
     required: false,
@@ -3132,6 +3519,12 @@ export const ASSEMBLYAI_STREAMING_FIELDS = [
   },
   {
     name: "minEndOfTurnSilenceWhenConfident",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "minTurnSilence",
     type: "number",
     required: false,
     description: "From SDK v3"
@@ -3175,11 +3568,36 @@ export const ASSEMBLYAI_STREAMING_FIELDS = [
     inputFormat: "comma-separated"
   },
   {
+    name: "prompt",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "agentContext",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
     name: "speechModel",
     type: "select",
     required: false,
     description: "From SDK v3",
     options: ["universal-streaming-english", "universal-streaming-multilingual"]
+  },
+  {
+    name: "languageCode",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "languageCodes",
+    type: "array",
+    required: false,
+    description: "From SDK v3",
+    inputFormat: "comma-separated"
   },
   {
     name: "languageDetection",
@@ -3192,12 +3610,114 @@ export const ASSEMBLYAI_STREAMING_FIELDS = [
     type: "number",
     required: false,
     description: "From SDK v3"
+  },
+  {
+    name: "speakerLabels",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "maxSpeakers",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "voiceFocus",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "voiceFocusThreshold",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "continuousPartials",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "interruptionDelay",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "turnLeftPadMs",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "customerSupportAudioCapture",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "includePartialTurns",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "redactPii",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "redactPiiPolicies",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "redactPiiSub",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "mode",
+    type: "string",
+    required: true,
+    description: "From SDK v3"
+  },
+  {
+    name: "llmGateway",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "webhookUrl",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "webhookAuthHeaderName",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "webhookAuthHeaderValue",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
   }
 ] as const
 /** Field names for AssemblyAIStreaming */
 export type AssemblyAIStreamingFieldName = (typeof ASSEMBLYAI_STREAMING_FIELDS)[number]["name"]
 
-/** AssemblyAI streaming update field metadata (6 fields) */
+/** AssemblyAI streaming update field metadata (14 fields) */
 export const ASSEMBLYAI_STREAMING_UPDATE_FIELDS = [
   {
     name: "end_utterance_silence_threshold",
@@ -3220,6 +3740,12 @@ export const ASSEMBLYAI_STREAMING_UPDATE_FIELDS = [
     description: "From SDK v3"
   },
   {
+    name: "min_turn_silence",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
     name: "max_turn_silence",
     type: "number",
     required: false,
@@ -3236,6 +3762,50 @@ export const ASSEMBLYAI_STREAMING_UPDATE_FIELDS = [
     type: "boolean",
     required: false,
     description: "From SDK v3"
+  },
+  {
+    name: "keyterms_prompt",
+    type: "array",
+    required: false,
+    description: "From SDK v3",
+    inputFormat: "comma-separated"
+  },
+  {
+    name: "prompt",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "agent_context",
+    type: "string",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "filter_profanity",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "interruption_delay",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "turn_left_pad_ms",
+    type: "number",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "language_codes",
+    type: "array",
+    required: false,
+    description: "From SDK v3",
+    inputFormat: "comma-separated"
   }
 ] as const
 /** Field names for AssemblyAIStreamingUpdate */
@@ -3281,8 +3851,9 @@ export const ASSEMBLYAI_LIST_FILTER_FIELDS = [
   {
     name: "throttled_only",
     type: "boolean",
-    required: false,
-    description: "Only get throttled transcripts, overrides the status filter"
+    required: true,
+    description: "Only get throttled transcripts, overrides the status filter",
+    default: false
   }
 ] as const
 /** Field names for AssemblyAIListFilter */
@@ -3352,7 +3923,7 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
     type: "string",
     required: false,
     description:
-      "An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n"
+      "An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n"
   },
   {
     name: "response_format",
@@ -3366,9 +3937,10 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
   {
     name: "temperature",
     type: "number",
-    required: false,
+    required: true,
     description:
-      "The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n"
+      "The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n",
+    default: 0
   },
   {
     name: "include",
@@ -3392,17 +3964,14 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
   {
     name: "stream",
     type: "boolean",
-    required: false,
-    description:
-      "If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section of the Speech-to-Text guide](https://platform.openai.com/docs/guides/speech-to-text?lang=curl#streaming-transcriptions)\nfor more information.\n\nNote: Streaming is not supported for the `whisper-1` model and will be ignored.\n"
+    required: false
   },
   {
     name: "chunking_strategy",
-    type: "select",
+    type: "string",
     required: false,
     description:
-      'Controls how the audio is cut into chunks. When set to `"auto"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. ',
-    options: ["auto"]
+      'Controls how the audio is cut into chunks. When set to `"auto"`, the server first normalizes loudness and then uses voice activity detection (VAD) to choose boundaries. `server_vad` object can be provided to tweak VAD detection parameters manually. If unset, the audio is transcribed as a single block. Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30 seconds. '
   },
   {
     name: "known_speaker_names",
@@ -3658,7 +4227,6 @@ export const AZURE_TRANSCRIPTION_FIELDS = [
       "ar-YE",
       "as-IN",
       "az-AZ",
-      "be-BY",
       "bg-BG",
       "bn-BD",
       "bn-IN",
@@ -3739,7 +4307,6 @@ export const AZURE_TRANSCRIPTION_FIELDS = [
       "lo-LA",
       "lt-LT",
       "lv-LV",
-      "mi-NZ",
       "mk-MK",
       "ml-IN",
       "mn-MN",
@@ -3752,7 +4319,6 @@ export const AZURE_TRANSCRIPTION_FIELDS = [
       "ne-NP",
       "nl-BE",
       "nl-NL",
-      "non-HD",
       "or-IN",
       "pa-IN",
       "pl-PL",
@@ -3766,7 +4332,9 @@ export const AZURE_TRANSCRIPTION_FIELDS = [
       "sl-SI",
       "so-SO",
       "sq-AL",
+      "sr-ME",
       "sr-RS",
+      "sr-XK",
       "su-ID",
       "sv-SE",
       "sw-KE",
@@ -3855,10 +4423,308 @@ export const AZURE_LIST_FILTER_FIELDS = [
 export type AzureListFilterFieldName = (typeof AZURE_LIST_FILTER_FIELDS)[number]["name"]
 
 // ─────────────────────────────────────────────────────────────────────────────
+// ElevenLabs
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** ElevenLabs transcription field metadata (26 fields) */
+export const ELEVENLABS_TRANSCRIPTION_FIELDS = [
+  {
+    name: "model_id",
+    type: "select",
+    required: true,
+    description: "The ID of the model to use for transcription.",
+    options: ["scribe_v1", "scribe_v2"]
+  },
+  {
+    name: "file",
+    type: "string",
+    required: false,
+    description:
+      "The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 5.0GB."
+  },
+  {
+    name: "language_code",
+    type: "select",
+    required: false,
+    description:
+      "An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically.",
+    options: [
+      "en",
+      "zh",
+      "de",
+      "es",
+      "ru",
+      "ko",
+      "fr",
+      "ja",
+      "pt",
+      "tr",
+      "pl",
+      "ca",
+      "nl",
+      "ar",
+      "sv",
+      "it",
+      "id",
+      "hi",
+      "fi",
+      "vi",
+      "he",
+      "uk",
+      "el",
+      "ms",
+      "cs",
+      "ro",
+      "da",
+      "hu",
+      "ta",
+      "no",
+      "th",
+      "ur",
+      "hr",
+      "bg",
+      "lt",
+      "ml",
+      "cy",
+      "sk",
+      "te",
+      "fa",
+      "lv",
+      "bn",
+      "sr",
+      "az",
+      "sl",
+      "kn",
+      "et",
+      "mk",
+      "is",
+      "hy",
+      "ne",
+      "mn",
+      "bs",
+      "kk",
+      "sw",
+      "gl",
+      "mr",
+      "pa",
+      "km",
+      "sn",
+      "yo",
+      "so",
+      "af",
+      "oc",
+      "ka",
+      "be",
+      "tg",
+      "sd",
+      "gu",
+      "am",
+      "lo",
+      "uz",
+      "ps",
+      "mt",
+      "lb",
+      "my",
+      "as",
+      "ln",
+      "ha",
+      "jw"
+    ]
+  },
+  {
+    name: "tag_audio_events",
+    type: "boolean",
+    required: true,
+    description:
+      "Whether to tag audio events like (laughter), (footsteps), etc. in the transcription.",
+    default: true
+  },
+  {
+    name: "num_speakers",
+    type: "number",
+    required: false,
+    description:
+      "The maximum amount of speakers talking in the uploaded file. Can help with predicting who speaks when. The maximum amount of speakers that can be predicted is 32. Defaults to null, in this case the amount of speakers is set to the maximum value the model supports.",
+    min: 1,
+    max: 32
+  },
+  {
+    name: "timestamps_granularity",
+    type: "select",
+    required: true,
+    description:
+      "The granularity of the timestamps in the transcription. 'word' provides word-level timestamps and 'character' provides character-level timestamps per word.",
+    default: "word",
+    options: ["none", "word", "character"]
+  },
+  {
+    name: "diarize",
+    type: "boolean",
+    required: true,
+    description: "Whether to annotate which speaker is currently talking in the uploaded file.",
+    default: false
+  },
+  {
+    name: "diarization_threshold",
+    type: "number",
+    required: false,
+    description:
+      "Diarization threshold to apply during speaker diarization. A higher value means there will be a lower chance of one speaker being diarized as two different speakers but also a higher chance of two different speakers being diarized as one speaker (less total speakers predicted). A low value means there will be a higher chance of one speaker being diarized as two different speakers but also a lower chance of two different speakers being diarized as one speaker (more total speakers predicted). Can only be set when diarize=True and num_speakers=None. Defaults to None, in which case we will choose a threshold based on the model_id (0.22 usually).",
+    min: 0.1,
+    max: 0.4
+  },
+  {
+    name: "additional_formats",
+    type: "array",
+    required: false,
+    description: "A list of additional formats to export the transcript to.",
+    inputFormat: "comma-separated"
+  },
+  {
+    name: "file_format",
+    type: "select",
+    required: true,
+    description:
+      "The format of input audio. Options are 'pcm_s16le_16' or 'other' For `pcm_s16le_16`, the input audio must be 16-bit PCM at a 16kHz sample rate, single channel (mono), and little-endian byte order. Latency will be lower than with passing an encoded waveform.",
+    default: "other",
+    options: ["pcm_s16le_16", "other"]
+  },
+  {
+    name: "cloud_storage_url",
+    type: "string",
+    required: false,
+    description:
+      "[Deprecated] This parameter is deprecated and will be removed in the future. Use 'source_url' instead.The HTTPS URL of the file to transcribe. Exactly one of the file or cloud_storage_url parameters must be provided. The file must be accessible via HTTPS and the file size must be less than 2GB. Any valid HTTPS URL is accepted, including URLs from cloud storage providers (AWS S3, Google Cloud Storage, Cloudflare R2, etc.), CDNs, or any other HTTPS source. URLs can be pre-signed or include authentication tokens in query parameters."
+  },
+  {
+    name: "source_url",
+    type: "string",
+    required: false,
+    description:
+      "The URL of an audio or video file to transcribe. Supports hosted video or audio files, YouTube video URLs, TikTok video URLs, and other video hosting services."
+  },
+  {
+    name: "webhook",
+    type: "boolean",
+    required: true,
+    description:
+      "Whether to send the transcription result to configured speech-to-text webhooks.  If set the request will return early without the transcription, which will be delivered later via webhook.",
+    default: false
+  },
+  {
+    name: "webhook_id",
+    type: "string",
+    required: false,
+    description:
+      "Optional specific webhook ID to send the transcription result to. Only valid when webhook is set to true. If not provided, transcription will be sent to all configured speech-to-text webhooks."
+  },
+  {
+    name: "temperature",
+    type: "number",
+    required: false,
+    description:
+      "Controls the randomness of the transcription output. Accepts values between 0.0 and 2.0, where higher values result in more diverse and less deterministic results. If omitted, we will use a temperature based on the model you selected which is usually 0.",
+    min: 0,
+    max: 2
+  },
+  {
+    name: "seed",
+    type: "number",
+    required: false,
+    description:
+      "If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed. Must be an integer between 0 and 2147483647.",
+    min: 0,
+    max: 2147483647
+  },
+  {
+    name: "use_multi_channel",
+    type: "boolean",
+    required: true,
+    description:
+      "Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel is transcribed independently. By default a separate transcript is returned per channel; set multichannel_output_style='combined' to instead receive a single transcript with all channels merged and sorted by time. Each word in the response includes a 'channel_index' field indicating which channel it was spoken on. A maximum of 5 channels is supported. Each channel is billed independently at the full audio duration, so cost scales linearly with the number of channels.",
+    default: false
+  },
+  {
+    name: "multichannel_output_style",
+    type: "select",
+    required: true,
+    description:
+      "Controls the response shape when use_multi_channel is enabled. 'separate' (default) returns one transcript per channel under 'transcripts'. 'combined' merges all channels into a single transcript whose words are sorted by start time, each carrying a 'channel_index' - matching the single-channel response shape. 'combined' requires timestamps (timestamps_granularity must not be 'none') and does not support entity detection or redaction.",
+    default: "separate",
+    options: ["separate", "combined"]
+  },
+  {
+    name: "webhook_metadata",
+    type: "string",
+    required: false,
+    description:
+      "Optional metadata to be included in the webhook response. This should be a JSON string representing an object with a maximum depth of 2 levels and maximum size of 16KB. Useful for tracking internal IDs, job references, or other contextual information."
+  },
+  {
+    name: "entity_detection",
+    type: "string",
+    required: false,
+    description:
+      "Detect entities in the transcript. Can be 'all' to detect all entities, a single entity type or category string, or a list of entity types/categories. Categories include 'pii', 'phi', 'pci', 'other', 'offensive_language'. When enabled, detected entities will be returned in the 'entities' field with their text, type, and character positions. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost."
+  },
+  {
+    name: "no_verbatim",
+    type: "boolean",
+    required: true,
+    description:
+      "If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model.",
+    default: false
+  },
+  {
+    name: "use_speaker_library",
+    type: "boolean",
+    required: true,
+    description:
+      "Whether to use the speaker library for identifying known speakers during diarization. When enabled and diarize is true, detected speakers will be matched against registered speakers in the workspace's speaker library.",
+    default: false
+  },
+  {
+    name: "detect_speaker_roles",
+    type: "boolean",
+    required: true,
+    description:
+      "Whether to detect speaker roles (agent vs customer). Requires diarize=true. Cannot be used with use_multi_channel=true. When enabled, speaker_id values will be 'agent' and 'customer' instead of 'speaker_0', 'speaker_1', etc. Usage incurs an additional 10% surcharge on base transcription cost.",
+    default: false
+  },
+  {
+    name: "entity_redaction",
+    type: "string",
+    required: false,
+    description:
+      "Redact entities from the transcript text. Accepts the same format as entity_detection: 'all', a category ('pii', 'phi'), or specific entity types. Must be a subset of entity_detection. When redaction is enabled, the entities field will not be returned. Usage of this parameter will incur an additional 30% surcharge on the base transcription cost."
+  },
+  {
+    name: "entity_redaction_mode",
+    type: "string",
+    required: true,
+    description:
+      "How to format redacted entities. 'redacted' replaces with {REDACTED}, 'entity_type' replaces with {ENTITY_TYPE}, 'enumerated_entity_type' replaces with {ENTITY_TYPE_N} where N enumerates each occurrence. Only used when entity_redaction is set.",
+    default: "enumerated_entity_type"
+  },
+  {
+    name: "keyterms",
+    type: "array",
+    required: true,
+    description:
+      'A list of keyterms to bias the transcription towards.           The keyterms are words or phrases you want the model to recognise more accurately.           The number of keyterms cannot exceed 1000.           The length of each keyterm must be less than 50 characters.           Keyterms can contain at most 5 words (after normalisation).           For example ["hello", "world", "technical term"].           The following characters are not supported: `<`, `>`, `{`, `}`, `[`, `]`, `\\`.           Usage of this parameter will incur an additional 20% surcharge on the base transcription cost.           When more than 100 keyterms are provided, a minimum billable duration of 20 seconds applies per request.',
+    default: [],
+    inputFormat: "comma-separated"
+  }
+] as const
+/** Field names for ElevenLabsTranscription */
+export type ElevenLabsTranscriptionFieldName =
+  (typeof ELEVENLABS_TRANSCRIPTION_FIELDS)[number]["name"]
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Speechmatics
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Speechmatics transcription field metadata (7 fields) */
+/** Speechmatics transcription field metadata (8 fields) */
 export const SPEECHMATICS_TRANSCRIPTION_FIELDS = [
   {
     name: "language",
@@ -3869,6 +4735,7 @@ export const SPEECHMATICS_TRANSCRIPTION_FIELDS = [
     options: [
       "auto",
       "ar",
+      "ar_en",
       "ba",
       "be",
       "bg",
@@ -3945,10 +4812,17 @@ export const SPEECHMATICS_TRANSCRIPTION_FIELDS = [
     description: "Language locale to be used when generating the transcription output"
   },
   {
+    name: "model",
+    type: "select",
+    required: false,
+    description: "Specific model to use in transcription",
+    options: ["standard", "enhanced"]
+  },
+  {
     name: "operating_point",
     type: "select",
     required: false,
-    description: "Transcription operating point - standard or enhanced accuracy",
+    description: "Deprecated compatibility alias for model",
     options: ["standard", "enhanced"]
   },
   {
@@ -3977,7 +4851,7 @@ export const SPEECHMATICS_TRANSCRIPTION_FIELDS = [
 export type SpeechmaticsTranscriptionFieldName =
   (typeof SPEECHMATICS_TRANSCRIPTION_FIELDS)[number]["name"]
 
-/** Speechmatics streaming field metadata (9 fields) */
+/** Speechmatics streaming field metadata (11 fields) */
 export const SPEECHMATICS_STREAMING_FIELDS = [
   {
     name: "encoding",
@@ -4001,6 +4875,7 @@ export const SPEECHMATICS_STREAMING_FIELDS = [
     options: [
       "auto",
       "ar",
+      "ar_en",
       "ba",
       "be",
       "bg",
@@ -4101,7 +4976,19 @@ export const SPEECHMATICS_STREAMING_FIELDS = [
     name: "operating_point",
     type: "select",
     required: false,
-    options: ["standard", "enhanced"]
+    options: ["standard", "enhanced", "melia-1"]
+  },
+  {
+    name: "model",
+    type: "select",
+    required: false,
+    options: ["standard", "enhanced", "melia-1"]
+  },
+  {
+    name: "channel_diarization_labels",
+    type: "array",
+    required: false,
+    inputFormat: "comma-separated"
   }
 ] as const
 /** Field names for SpeechmaticsStreaming */
@@ -4118,6 +5005,7 @@ export const SPEECHMATICS_STREAMING_UPDATE_FIELDS = [
     options: [
       "auto",
       "ar",
+      "ar_en",
       "ba",
       "be",
       "bg",
@@ -4379,40 +5267,10 @@ export const SONIOX_TRANSCRIPTION_FIELDS = [
   },
   {
     name: "context",
-    type: "object",
+    type: "string",
     required: false,
     description:
-      "Additional context to improve transcription accuracy and formatting of specialized terms.",
-    nestedFields: [
-      {
-        name: "general",
-        type: "array",
-        required: false,
-        description: "General context items.",
-        inputFormat: "comma-separated"
-      },
-      {
-        name: "text",
-        type: "string",
-        required: false,
-        description: "Text context."
-      },
-      {
-        name: "terms",
-        type: "array",
-        required: false,
-        description: "Terms that might occur in speech.",
-        inputFormat: "comma-separated"
-      },
-      {
-        name: "translation_terms",
-        type: "array",
-        required: false,
-        description:
-          "Hints how to translate specific terms. Ignored if translation is not enabled.",
-        inputFormat: "comma-separated"
-      }
-    ]
+      "Additional context to improve transcription accuracy and formatting of specialized terms."
   },
   {
     name: "webhook_url",
@@ -4442,41 +5300,65 @@ export const SONIOX_TRANSCRIPTION_FIELDS = [
 /** Field names for SonioxTranscription */
 export type SonioxTranscriptionFieldName = (typeof SONIOX_TRANSCRIPTION_FIELDS)[number]["name"]
 
-/** Soniox streaming field metadata (11 fields) */
+/** Soniox streaming field metadata (15 fields) */
 export const SONIOX_STREAMING_FIELDS = [
   {
     name: "model",
-    type: "string",
+    type: "select",
     required: true,
-    description: "Real-time model to use (e.g., 'stt-rt-preview', 'stt-rt-v3')"
+    options: ["stt-rt-v4", "stt-rt-preview", "stt-rt-v3-preview", "stt-rt-preview-v2", "stt-rt-v3"]
   },
   {
     name: "audioFormat",
     type: "select",
     required: false,
-    description: "Audio format specification. Use 'auto' for automatic detection",
-    options: ["auto", "aac", "aiff", "amr", "asf", "flac", "mp3", "ogg", "wav", "webm"]
+    options: [
+      "auto",
+      "aac",
+      "aiff",
+      "amr",
+      "asf",
+      "flac",
+      "mp3",
+      "ogg",
+      "wav",
+      "webm",
+      "pcm_s8",
+      "pcm_s16le",
+      "pcm_s16be",
+      "pcm_s24le",
+      "pcm_s24be",
+      "pcm_s32le",
+      "pcm_s32be",
+      "pcm_u8",
+      "pcm_u16le",
+      "pcm_u16be",
+      "pcm_u24le",
+      "pcm_u24be",
+      "pcm_u32le",
+      "pcm_u32be",
+      "pcm_f32le",
+      "pcm_f32be",
+      "pcm_f64le",
+      "pcm_f64be",
+      "mulaw",
+      "alaw"
+    ]
   },
   {
     name: "sampleRate",
     type: "number",
-    required: false,
-    description: "Sample rate in Hz (required for raw PCM formats)"
+    required: false
   },
   {
     name: "numChannels",
     type: "number",
-    required: false,
-    description:
-      "Number of audio channels (1 for mono, 2 for stereo) - required for raw PCM formats",
-    min: 1,
-    max: 2
+    required: false
   },
   {
     name: "languageHints",
     type: "multiselect",
     required: false,
-    description: "Expected languages in the audio (ISO language codes)",
     inputFormat: "comma-separated",
     options: [
       "af",
@@ -4542,84 +5424,77 @@ export const SONIOX_STREAMING_FIELDS = [
     ]
   },
   {
+    name: "languageHintsStrict",
+    type: "boolean",
+    required: false
+  },
+  {
     name: "context",
-    type: "object",
-    required: false,
-    description: "Additional context to improve transcription accuracy",
-    nestedFields: [
-      {
-        name: "general",
-        type: "array",
-        required: false,
-        description: "General context items (key-value pairs)",
-        inputFormat: "comma-separated"
-      },
-      {
-        name: "text",
-        type: "string",
-        required: false,
-        description: "Text context"
-      },
-      {
-        name: "terms",
-        type: "array",
-        required: false,
-        description: "Terms that might occur in speech",
-        inputFormat: "comma-separated"
-      },
-      {
-        name: "translation_terms",
-        type: "array",
-        required: false,
-        description:
-          "Hints how to translate specific terms (ignored if translation is not enabled)",
-        inputFormat: "comma-separated"
-      }
-    ]
+    type: "string",
+    required: false
   },
   {
     name: "enableSpeakerDiarization",
     type: "boolean",
-    required: false,
-    description: "Enable speaker diarization - each token will include a speaker field"
+    required: false
   },
   {
     name: "enableLanguageIdentification",
     type: "boolean",
-    required: false,
-    description: "Enable language identification - each token will include a language field"
+    required: false
   },
   {
     name: "enableEndpointDetection",
     type: "boolean",
-    required: false,
-    description: "Enable endpoint detection to detect when a speaker has finished talking"
+    required: false
+  },
+  {
+    name: "maxEndpointDelayMs",
+    type: "number",
+    required: false
   },
   {
     name: "translation",
     type: "object",
     required: false,
-    description: "Translation configuration",
     nestedFields: [
       {
         name: "type",
         type: "select",
         required: true,
-        options: ["one_way"]
+        options: ["two_way"]
       },
       {
         name: "target_language",
         type: "string",
-        required: true,
-        description: "Target language code for translation"
+        required: true
+      },
+      {
+        name: "language_a",
+        type: "string",
+        required: true
+      },
+      {
+        name: "language_b",
+        type: "string",
+        required: true
       }
     ]
   },
   {
     name: "clientReferenceId",
     type: "string",
-    required: false,
-    description: "Optional tracking identifier (client-defined)"
+    required: false
+  },
+  {
+    name: "keepaliveIntervalMs",
+    type: "number",
+    required: false
+  },
+  {
+    name: "connectTimeoutMs",
+    type: "number",
+    required: false
   }
 ] as const
 /** Field names for SonioxStreaming */
@@ -4670,12 +5545,15 @@ export const PROVIDER_FIELDS = {
     streamingUpdate: ASSEMBLYAI_STREAMING_UPDATE_FIELDS,
     listFilters: ASSEMBLYAI_LIST_FILTER_FIELDS
   },
-  openai: {
+  "openai-whisper": {
     transcription: OPENAI_TRANSCRIPTION_FIELDS
   },
-  azure: {
+  "azure-stt": {
     transcription: AZURE_TRANSCRIPTION_FIELDS,
     listFilters: AZURE_LIST_FILTER_FIELDS
+  },
+  elevenlabs: {
+    transcription: ELEVENLABS_TRANSCRIPTION_FIELDS
   },
   speechmatics: {
     transcription: SPEECHMATICS_TRANSCRIPTION_FIELDS,

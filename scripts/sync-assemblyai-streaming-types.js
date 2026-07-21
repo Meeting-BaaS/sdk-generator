@@ -12,8 +12,8 @@
  * @see https://www.assemblyai.com/docs/speech-to-text/streaming
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const ASYNCAPI_SPEC = path.join(__dirname, "../specs/assemblyai-asyncapi.json")
 const SDK_TYPES = path.join(__dirname, "../specs/assemblyai-streaming-sdk.ts")
@@ -39,13 +39,14 @@ function parseTypeScriptType(content, typeName) {
 
   // Match each field: fieldName?: Type or fieldName: Type
   const fieldRegex = /(\w+)(\?)?:\s*([^;\n]+)/g
-  let fieldMatch
-  while ((fieldMatch = fieldRegex.exec(body)) !== null) {
+  let fieldMatch = fieldRegex.exec(body)
+  while (fieldMatch !== null) {
     const [, name, optional, tsType] = fieldMatch
     fields[name] = {
       tsType: tsType.trim(),
       optional: !!optional
     }
+    fieldMatch = fieldRegex.exec(body)
   }
 
   return fields
@@ -126,16 +127,18 @@ function jsonSchemaToZod(schema, refs = {}) {
     case "string":
       return "zod.string()"
     case "number":
-    case "integer":
+    case "integer": {
       let numType = "zod.number()"
       if (schema.minimum !== undefined) numType += `.min(${schema.minimum})`
       if (schema.maximum !== undefined) numType += `.max(${schema.maximum})`
       return numType
+    }
     case "boolean":
       return "zod.boolean()"
-    case "array":
+    case "array": {
       const itemType = schema.items ? jsonSchemaToZod(schema.items, refs) : "zod.unknown()"
       return `zod.array(${itemType})`
+    }
     default:
       return "zod.unknown()"
   }
@@ -237,10 +240,10 @@ function generateZodFromAsyncAPI(specPath) {
  * AUTO-GENERATED from AsyncAPI spec + SDK types - DO NOT EDIT MANUALLY
  *
  * Sources merged:
- * - AsyncAPI: ${ASYNCAPI_SPEC.replace(process.cwd() + "/", "")} (legacy WebSocket API)
- * - SDK types: ${SDK_TYPES.replace(process.cwd() + "/", "")} (v3 streaming fields)
+ * - AsyncAPI: ${ASYNCAPI_SPEC.replace(`${process.cwd()}/`, "")} (legacy WebSocket API)
+ * - SDK types: ${SDK_TYPES.replace(`${process.cwd()}/`, "")} (v3 streaming fields)
  *
- * @source ${ASYNCAPI_SPEC.replace(process.cwd() + "/", "")}
+ * @source ${ASYNCAPI_SPEC.replace(`${process.cwd()}/`, "")}
  * @version ${info.version || "unknown"}
  * @see https://www.assemblyai.com/docs/speech-to-text/streaming
  *

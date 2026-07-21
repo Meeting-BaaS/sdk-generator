@@ -330,7 +330,7 @@ components:
           "transcription_config":
             {
               "language": "en",
-              "operating_point": "enhanced",
+              "model": "enhanced",
               "output_locale": "en-US",
               "additional_vocab": ["gnocchi", "bucatini", "bigoli"],
               "diarization": "speaker",
@@ -483,6 +483,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -506,6 +510,10 @@ components:
           type: string
           description: |
             The channel identifier to which the audio belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -520,6 +528,10 @@ components:
         channel:
           type: string
           description: The channel identifier to which the EndOfUtterance message belongs. This field is only seen in multichannel.
+        forced:
+          type: boolean
+          description: |
+            Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`.
       required:
         - message
         - metadata
@@ -637,6 +649,11 @@ components:
             Only set when `type` is `concurrent_session_usage`. Indicates the timestamp of the most recent usage update, in the format `YYYY-MM-DDTHH:MM:SSZ` (UTC). This value is updated even when usage exceeds the quota, as it represents the most recent known data. In some cases, it may be empty or outdated due to internal errors preventing successful update.
           type: string
           example: "2025-03-25T08:45:31Z"
+        region:
+          description: >-
+            Only set when `type` is `concurrent_session_usage`. The region that reported this usage, for example `eu`.
+          type: string
+          example: "eu"
       required:
         - message
         - type
@@ -770,6 +787,8 @@ components:
           default: true
         operating_point:
           $ref: "#/components/schemas/OperatingPoint"
+        model:
+          $ref: "#/components/schemas/Model"
         punctuation_overrides:
           $ref: "#/components/schemas/PunctuationOverrides"
         conversation_config:
@@ -810,11 +829,21 @@ components:
           $ref: "#/components/schemas/ConversationConfig"
     OperatingPoint:
       type: string
+      deprecated: true
       description: |
-        Which model you wish to use. See [Operating points](http://docs.speechmatics.com/speech-to-text/#operating-points) for more details.
+        **Deprecated**: Kept for backward compatibility only. Use `model` instead going forward.
       enum:
         - standard
         - enhanced
+        - melia-1
+    Model:
+      type: string
+      description: |
+        Which model you wish to use. See [Models](http://docs.speechmatics.com/speech-to-text/models) for more details.
+      enum:
+        - standard
+        - enhanced
+        - melia-1
       default: standard
     PunctuationOverrides:
       type: object

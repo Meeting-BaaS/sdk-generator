@@ -3,48 +3,46 @@
  * Documentation: https://soniox.com/docs/stt/
  */
 
-import type {
-  AudioInput,
-  ProviderCapabilities,
-  TranscribeOptions,
-  UnifiedTranscriptResponse,
-  StreamingOptions,
-  StreamingCallbacks,
-  StreamingSession,
-  StreamEvent,
-  Utterance,
-  Word,
-  RawWebSocketMessage
-} from "../router/types"
-import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-import { buildUtterancesFromWords } from "../utils/transcription-helpers"
+import WebSocket from "ws"
 import { SonioxRegion, type SonioxRegionType } from "../constants"
-
-// Import generated Soniox types
-import { TranscriptionStatus as SonioxTranscriptionStatus } from "../generated/soniox/schema/transcriptionStatus"
-import type { Model as SonioxModelInfo } from "../generated/soniox/schema/model"
-import type { Language as SonioxLanguageInfo } from "../generated/soniox/schema/language"
-import type { SonioxModelCode } from "../generated/soniox/models"
-import type { CreateTranscriptionPayload } from "../generated/soniox/schema/createTranscriptionPayload"
-import type { TranscriptionTranscript } from "../generated/soniox/schema/transcriptionTranscript"
-import type { TranscriptionTranscriptToken } from "../generated/soniox/schema/transcriptionTranscriptToken"
-
 // Import generated API functions
 import {
   createTranscription,
+  getModels as getGeneratedModels,
   getTranscription,
   getTranscriptionTranscript,
-  uploadFile,
-  getModels as getGeneratedModels
+  uploadFile
 } from "../generated/soniox/api/sonioxPublicAPI"
+import type { SonioxModelCode } from "../generated/soniox/models"
+import type { CreateTranscriptionPayload } from "../generated/soniox/schema/createTranscriptionPayload"
+import type { Language as SonioxLanguageInfo } from "../generated/soniox/schema/language"
+import type { Model as SonioxModelInfo } from "../generated/soniox/schema/model"
 import type { Transcription as SonioxTranscription } from "../generated/soniox/schema/transcription"
+// Import generated Soniox types
+import { TranscriptionStatus as SonioxTranscriptionStatus } from "../generated/soniox/schema/transcriptionStatus"
+import type { TranscriptionTranscript } from "../generated/soniox/schema/transcriptionTranscript"
+import type { TranscriptionTranscriptToken } from "../generated/soniox/schema/transcriptionTranscriptToken"
 import type { UploadFileBody } from "../generated/soniox/schema/uploadFileBody"
-
 // WebSocket streaming types extracted from official @soniox/speech-to-text-web SDK
 import type {
-  Token as SonioxStreamingToken,
-  StreamingResponse as SonioxStreamingResponse
+  StreamingResponse as SonioxStreamingResponse,
+  Token as SonioxStreamingToken
 } from "../generated/soniox/streaming-response-types"
+import type {
+  AudioInput,
+  ProviderCapabilities,
+  StreamEvent,
+  StreamingCallbacks,
+  StreamingOptions,
+  StreamingSession,
+  TranscribeOptions,
+  UnifiedTranscriptResponse,
+  Utterance,
+  Word
+} from "../router/types"
+import { toAudioBlob } from "../utils/blob-helpers"
+import { buildUtterancesFromWords } from "../utils/transcription-helpers"
+import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 /**
  * Soniox-specific configuration options
@@ -195,7 +193,6 @@ export class SonioxAdapter extends BaseAdapter {
         return "api.eu.soniox.com"
       case SonioxRegion.jp:
         return "api.jp.soniox.com"
-      case SonioxRegion.us:
       default:
         return "api.soniox.com"
     }
@@ -210,7 +207,6 @@ export class SonioxAdapter extends BaseAdapter {
         return "stt-rt.eu.soniox.com"
       case SonioxRegion.jp:
         return "stt-rt.jp.soniox.com"
-      case SonioxRegion.us:
       default:
         return "stt-rt.soniox.com"
     }
@@ -295,10 +291,7 @@ export class SonioxAdapter extends BaseAdapter {
 
       if (audio.type === "file") {
         // File flow: upload first, then create transcription with file_id
-        const audioBlob =
-          audio.file instanceof Blob
-            ? audio.file
-            : new Blob([audio.file], { type: audio.mimeType || "audio/wav" })
+        const audioBlob = toAudioBlob(audio.file, audio.mimeType || "audio/wav")
         const uploadBody: UploadFileBody = { file: audioBlob }
         const fileResp = await uploadFile(uploadBody, this.getAxiosConfig())
 
@@ -325,7 +318,8 @@ export class SonioxAdapter extends BaseAdapter {
         }
 
         return this.pollForCompletion(meta.id)
-      } else if (audio.type === "url") {
+      }
+      if (audio.type === "url") {
         // URL flow: create transcription directly with audio_url
         const payload: CreateTranscriptionPayload = {
           ...sonioxOpts,
@@ -350,14 +344,13 @@ export class SonioxAdapter extends BaseAdapter {
         }
 
         return this.pollForCompletion(meta.id)
-      } else {
-        return {
-          success: false,
-          provider: this.name,
-          error: {
-            code: "INVALID_INPUT",
-            message: "Soniox only supports URL and File audio input"
-          }
+      }
+      return {
+        success: false,
+        provider: this.name,
+        error: {
+          code: "INVALID_INPUT",
+          message: "Soniox only supports URL and File audio input"
         }
       }
     } catch (error) {
@@ -419,6 +412,8 @@ export class SonioxAdapter extends BaseAdapter {
     const sessionId = `soniox_${Date.now()}_${Math.random().toString(36).substring(7)}`
     const createdAt = new Date()
 
+    const sonioxOpts = options?.sonioxStreaming
+
     // Build WebSocket URL with query parameters (using regional WebSocket host)
     // Respect wsBaseUrl > baseUrl > regional default
     const wsBase =
@@ -429,10 +424,12 @@ export class SonioxAdapter extends BaseAdapter {
     const wsUrl = new URL(`${wsBase}/transcribe-websocket`)
     wsUrl.searchParams.set("api_key", this.config!.apiKey)
     // Prefer sonioxStreaming.model over generic model option
-    const modelId = options?.sonioxStreaming?.model || options?.model || "stt-rt-preview"
+    const modelId = sonioxOpts?.model || options?.model || "stt-rt-preview"
     wsUrl.searchParams.set("model", modelId)
 
-    if (options?.encoding) {
+    if (sonioxOpts?.audioFormat) {
+      wsUrl.searchParams.set("audio_format", sonioxOpts.audioFormat)
+    } else if (options?.encoding) {
       // Map common encoding names to Soniox format
       const encodingMap: Record<string, string> = {
         linear16: "pcm_s16le",
@@ -443,26 +440,33 @@ export class SonioxAdapter extends BaseAdapter {
       wsUrl.searchParams.set("audio_format", encodingMap[options.encoding] || options.encoding)
     }
 
-    if (options?.sampleRate) {
-      wsUrl.searchParams.set("sample_rate", options.sampleRate.toString())
+    const sampleRate = sonioxOpts?.sampleRate ?? options?.sampleRate
+    if (sampleRate) {
+      wsUrl.searchParams.set("sample_rate", sampleRate.toString())
     }
 
-    if (options?.channels) {
-      wsUrl.searchParams.set("num_channels", options.channels.toString())
+    const numChannels = sonioxOpts?.numChannels ?? options?.channels
+    if (numChannels) {
+      wsUrl.searchParams.set("num_channels", numChannels.toString())
     }
 
     // Handle Soniox-specific streaming options first (has strict types)
-    const sonioxOpts = options?.sonioxStreaming
     if (sonioxOpts) {
       // Prefer strictly typed languageHints from sonioxStreaming
       if (sonioxOpts.languageHints && sonioxOpts.languageHints.length > 0) {
         wsUrl.searchParams.set("language_hints", JSON.stringify(sonioxOpts.languageHints))
+      }
+      if (sonioxOpts.languageHintsStrict !== undefined) {
+        wsUrl.searchParams.set("language_hints_strict", sonioxOpts.languageHintsStrict.toString())
       }
       if (sonioxOpts.enableLanguageIdentification) {
         wsUrl.searchParams.set("enable_language_identification", "true")
       }
       if (sonioxOpts.enableEndpointDetection) {
         wsUrl.searchParams.set("enable_endpoint_detection", "true")
+      }
+      if (sonioxOpts.maxEndpointDelayMs !== undefined) {
+        wsUrl.searchParams.set("max_endpoint_delay_ms", sonioxOpts.maxEndpointDelayMs.toString())
       }
       if (sonioxOpts.enableSpeakerDiarization) {
         wsUrl.searchParams.set("enable_speaker_diarization", "true")
@@ -512,8 +516,7 @@ export class SonioxAdapter extends BaseAdapter {
     let receivedData = false
 
     // Create WebSocket connection
-    const WebSocketImpl = typeof WebSocket !== "undefined" ? WebSocket : require("ws")
-    const ws: WebSocket = new WebSocketImpl(wsUrl.toString())
+    const ws = new WebSocket(wsUrl.toString())
 
     ws.onopen = () => {
       status = "open"
@@ -521,7 +524,7 @@ export class SonioxAdapter extends BaseAdapter {
       callbacks?.onOpen?.()
     }
 
-    ws.onmessage = (event: MessageEvent) => {
+    ws.onmessage = (event: WebSocket.MessageEvent) => {
       receivedData = true
 
       // Capture raw message BEFORE any parsing/processing
@@ -608,14 +611,14 @@ export class SonioxAdapter extends BaseAdapter {
       }
     }
 
-    ws.onerror = (event: Event) => {
+    ws.onerror = (_event: WebSocket.ErrorEvent) => {
       callbacks?.onError?.({
         code: "WEBSOCKET_ERROR",
         message: "WebSocket error occurred"
       })
     }
 
-    ws.onclose = (event: CloseEvent) => {
+    ws.onclose = (event: WebSocket.CloseEvent) => {
       status = "closed"
 
       // Detect immediate close after open (likely auth/config rejection)

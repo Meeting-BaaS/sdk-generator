@@ -13,7 +13,7 @@
  * Source: https://api.deepgram.com/openapi.yaml
  */
 
-const fs = require("fs")
+const fs = require("node:fs")
 const yaml = require("js-yaml")
 
 const SPEC_PATH = "./specs/deepgram-openapi.yml"
@@ -238,12 +238,12 @@ function fixArraySchemas(obj, path = "") {
   return fixes
 }
 
-let arrayFixes = fixArraySchemas(spec)
+const arrayFixes = fixArraySchemas(spec)
 if (arrayFixes > 0) {
   console.log(`   Fixed ${arrayFixes} array schemas`)
   fixCount += arrayFixes
 } else {
-  console.log(`   ✅ No malformed array schemas found`)
+  console.log("   ✅ No malformed array schemas found")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -287,7 +287,7 @@ if (spec.paths) {
 if (paramFixes > 0) {
   console.log(`   ✅ Added ${paramFixes} missing path parameters`)
 } else {
-  console.log(`   ✅ No missing path parameters`)
+  console.log("   ✅ No missing path parameters")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -298,7 +298,7 @@ console.log("\n📋 Step 8: Updating spec metadata")
 spec.info.title = "Deepgram API"
 spec.info.description =
   "Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec."
-console.log(`   ✅ Updated title and description`)
+console.log("   ✅ Updated title and description")
 
 // Filter tags
 if (spec.tags) {
@@ -311,7 +311,7 @@ if (spec.tags) {
       name.includes("model")
     )
   })
-  console.log(`   ✅ Filtered tags`)
+  console.log("   ✅ Filtered tags")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -328,7 +328,7 @@ fs.writeFileSync(SPEC_PATH, fixedContent, "utf-8")
 
 console.log(`\n✅ Applied ${fixCount} fixes/filters to Deepgram spec`)
 console.log(`📝 Filtered spec saved to: ${SPEC_PATH}`)
-console.log(`\n📊 Final spec summary:`)
+console.log("\n📊 Final spec summary:")
 console.log(`   Paths: ${Object.keys(spec.paths || {}).length}`)
 console.log(`   Schemas: ${Object.keys(spec.components?.schemas || {}).length}`)
 console.log(`   Tags: ${(spec.tags || []).length}\n`)

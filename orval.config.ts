@@ -49,8 +49,7 @@ export default defineConfig({
       mode: "single", // Use single mode instead of tags-split to avoid toSorted issue
       biome: true,
       mock: {
-        type: "msw",
-        baseUrl: "https://api.gladia.io"
+        generators: [{ type: "msw", baseUrl: "https://api.gladia.io" }]
       }
     }
   },
@@ -76,8 +75,7 @@ export default defineConfig({
       mode: "single", // Use single mode for Node 18 compatibility
       biome: true,
       mock: {
-        type: "msw",
-        baseUrl: "https://api.assemblyai.com"
+        generators: [{ type: "msw", baseUrl: "https://api.assemblyai.com" }]
       }
     }
   },
@@ -103,8 +101,7 @@ export default defineConfig({
       mode: "single", // Use single mode for Node 18 compatibility
       biome: true,
       mock: {
-        type: "msw",
-        baseUrl: "https://api.deepgram.com"
+        generators: [{ type: "msw", baseUrl: "https://api.deepgram.com" }]
       }
     }
   },
@@ -160,8 +157,7 @@ export default defineConfig({
       mode: "single",
       biome: true,
       mock: {
-        type: "msw",
-        baseUrl: "https://api.cognitive.microsoft.com"
+        generators: [{ type: "msw", baseUrl: "https://api.cognitive.microsoft.com" }]
       }
     }
   },
@@ -187,8 +183,7 @@ export default defineConfig({
       mode: "single",
       biome: true,
       mock: {
-        type: "msw",
-        baseUrl: "https://asr.api.speechmatics.com"
+        generators: [{ type: "msw", baseUrl: "https://asr.api.speechmatics.com" }]
       }
     }
   },
@@ -214,8 +209,7 @@ export default defineConfig({
       mode: "single",
       biome: true,
       mock: {
-        type: "msw",
-        baseUrl: "https://api.soniox.com"
+        generators: [{ type: "msw", baseUrl: "https://api.soniox.com" }]
       }
     }
   },
@@ -241,8 +235,7 @@ export default defineConfig({
       mode: "single",
       biome: true,
       mock: {
-        type: "msw",
-        baseUrl: "https://api.elevenlabs.io"
+        generators: [{ type: "msw", baseUrl: "https://api.elevenlabs.io" }]
       }
     }
   },

@@ -8,8 +8,8 @@
  * Run: node scripts/generate-speechmatics-languages.js
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const API_URL = "https://eu1.asr.api.speechmatics.com/v1/discovery/features"
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/speechmatics/languages.ts")
@@ -113,7 +113,7 @@ ${languages.map((lang) => `  "${lang.code}": "${lang.code}"`).join(",\n")}
     console.log(`✅ Generated ${OUTPUT_PATH}`)
     console.log(`   - ${languages.length} language codes`)
     console.log(
-      `   - SpeechmaticsLanguages, SpeechmaticsLanguageCodes, SpeechmaticsLanguageCode, SpeechmaticsLanguageLabels, SpeechmaticsLanguage`
+      "   - SpeechmaticsLanguages, SpeechmaticsLanguageCodes, SpeechmaticsLanguageCode, SpeechmaticsLanguageLabels, SpeechmaticsLanguage"
     )
   } catch (error) {
     console.error(`❌ Failed to fetch Speechmatics Feature Discovery: ${error.message}`)

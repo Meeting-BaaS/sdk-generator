@@ -11,7 +11,13 @@ export default defineConfig({
     "provider-metadata": "src/provider-metadata.ts"
   },
   format: ["cjs", "esm"],
-  dts: true,
+  // tsup 8.5.1's bundled DTS plugin injects the deprecated baseUrl option.
+  dts: {
+    compilerOptions: {
+      ignoreDeprecations: "6.0",
+      types: ["node"]
+    }
+  },
   splitting: false,
   sourcemap: true,
   clean: true,

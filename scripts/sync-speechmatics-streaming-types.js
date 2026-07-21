@@ -4,8 +4,8 @@
  * @see https://github.com/speechmatics/speechmatics-js-sdk/tree/main/packages/real-time-client
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 const yaml = require("js-yaml")
 
 const ASYNCAPI_SPEC = path.join(__dirname, "../specs/speechmatics-asyncapi.yml")
@@ -50,22 +50,24 @@ function jsonSchemaToZod(schema, indent = "  ", refs = {}) {
     case "string":
       return "zod.string()"
     case "number":
-    case "integer":
+    case "integer": {
       let numType = "zod.number()"
       if (schema.minimum !== undefined) numType += `.min(${schema.minimum})`
       if (schema.maximum !== undefined) numType += `.max(${schema.maximum})`
       return numType
+    }
     case "boolean":
       return "zod.boolean()"
-    case "array":
+    case "array": {
       const itemType = schema.items ? jsonSchemaToZod(schema.items, indent, refs) : "zod.unknown()"
       return `zod.array(${itemType})`
-    case "object":
+    }
+    case "object": {
       if (!schema.properties) return "zod.object({})"
       const props = Object.entries(schema.properties)
         .map(([key, propSchema]) => {
           const isRequired = schema.required?.includes(key)
-          let zodType = jsonSchemaToZod(propSchema, indent + "  ", refs)
+          let zodType = jsonSchemaToZod(propSchema, `${indent}  `, refs)
           if (!isRequired) zodType += ".optional()"
           const desc = propSchema.description
             ? `.describe(${JSON.stringify(propSchema.description.replace(/\n/g, " ").trim())})`
@@ -74,6 +76,7 @@ function jsonSchemaToZod(schema, indent = "  ", refs = {}) {
         })
         .join(",\n")
       return `zod.object({\n${props}\n${indent}})`
+    }
     default:
       return "zod.unknown()"
   }
@@ -127,7 +130,7 @@ function jsonSchemaToTS(schema, indent = "", refs = {}) {
       const props = Object.entries(schema.properties)
         .map(([key, propSchema]) => {
           const isRequired = required.includes(key)
-          const tsType = jsonSchemaToTS(propSchema, indent + "  ", refs)
+          const tsType = jsonSchemaToTS(propSchema, `${indent}  `, refs)
           const opt = isRequired ? "" : "?"
           return `${indent}  ${key}${opt}: ${tsType}`
         })
@@ -163,14 +166,14 @@ function generateTSInterface(name, schema, refs) {
     lines.push(`  ${key}${opt}: ${tsType}`)
   }
 
-  lines.push(`}`)
+  lines.push("}")
   return lines.join("\n")
 }
 
 /**
  * Extract and flatten streaming params from AsyncAPI schemas
  */
-function extractStreamingParams(schemas) {
+function _extractStreamingParams(schemas) {
   const result = {
     audioFormat: {},
     transcriptionConfig: {},
@@ -217,6 +220,9 @@ function generateZodFromAsyncAPI(specPath) {
   }
   if (schemas.OperatingPoint?.enum) {
     refs.OperatingPoint = `zod.enum([${schemas.OperatingPoint.enum.map((v) => JSON.stringify(v)).join(", ")}])`
+  }
+  if (schemas.Model?.enum) {
+    refs.Model = `zod.enum([${schemas.Model.enum.map((v) => JSON.stringify(v)).join(", ")}])`
   }
 
   // Generate individual schema exports
@@ -301,7 +307,7 @@ export const speechmaticsAudioFilteringConfigSchema = ${zodSchema}`)
       // Skip complex nested objects for flattened version
       if (
         prop.$ref &&
-        !["RawAudioEncodingEnum", "MaxDelayModeConfig", "OperatingPoint"].includes(
+        !["RawAudioEncodingEnum", "MaxDelayModeConfig", "OperatingPoint", "Model"].includes(
           prop.$ref.split("/").pop()
         )
       ) {
@@ -341,7 +347,7 @@ export const speechmaticsAudioFilteringConfigSchema = ${zodSchema}`)
  * Speechmatics Streaming Zod Schemas
  * AUTO-GENERATED from AsyncAPI spec - DO NOT EDIT MANUALLY
  *
- * @source ${ASYNCAPI_SPEC.replace(process.cwd() + "/", "")}
+ * @source ${ASYNCAPI_SPEC.replace(`${process.cwd()}/`, "")}
  * @version ${info.version || "unknown"}
  * @see ${info.externalDocs?.url || "https://docs.speechmatics.com/rt-api-ref"}
  *
@@ -402,7 +408,7 @@ function generateMessageTypesFromAsyncAPI(specPath) {
  * Speechmatics Streaming Message Types
  * AUTO-GENERATED from AsyncAPI spec - DO NOT EDIT MANUALLY
  *
- * @source ${ASYNCAPI_SPEC.replace(process.cwd() + "/", "")}
+ * @source ${ASYNCAPI_SPEC.replace(`${process.cwd()}/`, "")}
  * @version ${info.version || "unknown"}
  * @see ${info.externalDocs?.url || "https://docs.speechmatics.com/rt-api-ref"}
  *
@@ -412,7 +418,7 @@ function generateMessageTypesFromAsyncAPI(specPath) {
 import type { RecognitionResult } from "./schema/recognitionResult"`)
 
   // ── Enum Types ──
-  sections.push(`\n// ── Enum Types ──────────────────────────────────────────────────────────────`)
+  sections.push("\n// ── Enum Types ──────────────────────────────────────────────────────────────")
 
   const enumTypes = [
     ["InfoTypeEnum", "InfoType"],
@@ -433,7 +439,7 @@ import type { RecognitionResult } from "./schema/recognitionResult"`)
   }
 
   // ── Helper Interfaces ──
-  sections.push(`\n// ── Helper Interfaces ───────────────────────────────────────────────────────`)
+  sections.push("\n// ── Helper Interfaces ───────────────────────────────────────────────────────")
 
   const helperSchemas = [
     ["LanguagePackInfo", "LanguagePackInfo"],
@@ -452,7 +458,7 @@ import type { RecognitionResult } from "./schema/recognitionResult"`)
   }
 
   // ── Server → Client Messages ──
-  sections.push(`\n// ── Server → Client Messages ────────────────────────────────────────────────`)
+  sections.push("\n// ── Server → Client Messages ────────────────────────────────────────────────")
 
   const serverMessages = [
     "RecognitionStarted",
@@ -479,7 +485,7 @@ import type { RecognitionResult } from "./schema/recognitionResult"`)
   }
 
   // ── Convenience Aliases ──
-  sections.push(`\n// ── Convenience Aliases ─────────────────────────────────────────────────────`)
+  sections.push("\n// ── Convenience Aliases ─────────────────────────────────────────────────────")
 
   sections.push(`
 /** Combined transcript message (partial + final) */

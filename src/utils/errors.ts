@@ -193,13 +193,21 @@ export function extractProviderMessage(data: unknown): string | undefined {
   if (!data || typeof data !== "object") {
     return typeof data === "string" ? data : undefined
   }
-  const d = data as Record<string, any>
+
+  const d = data as Record<string, unknown>
+
   // OpenAI: { error: { message: "..." } }
-  if (d.error && typeof d.error === "object" && d.error.message) return String(d.error.message)
+  if (d.error && typeof d.error === "object") {
+    const error = d.error as Record<string, unknown>
+    if (error.message) return String(error.message)
+  }
   // AssemblyAI, Speechmatics: { error: "message string" }
   if (typeof d.error === "string") return d.error
   // ElevenLabs: { detail: { message: "..." } }
-  if (d.detail && typeof d.detail === "object" && d.detail.message) return String(d.detail.message)
+  if (d.detail && typeof d.detail === "object") {
+    const detail = d.detail as Record<string, unknown>
+    if (detail.message) return String(detail.message)
+  }
   // Gladia, Soniox, Azure, Deepgram modern: { message: "..." }
   if (typeof d.message === "string") return d.message
   // Deepgram legacy: { err_msg: "..." }

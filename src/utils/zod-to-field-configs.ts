@@ -56,6 +56,83 @@ export interface ZodFieldConfig {
   inputFormat?: "comma-separated" | "json"
 }
 
+type ZodShape = Record<string, z.ZodTypeAny>
+
+type ZodCheck = {
+  kind?: string
+  value?: number
+  _zod?: {
+    def?: {
+      check?: string
+      value?: number
+    }
+  }
+}
+
+type ZodInternalDef = {
+  checks?: ZodCheck[]
+  defaultValue?: unknown | (() => unknown)
+  description?: string
+  element?: z.ZodTypeAny
+  entries?: Record<string, string | number>
+  in?: z.ZodTypeAny
+  innerType?: z.ZodTypeAny
+  left?: z.ZodTypeAny
+  options?: z.ZodTypeAny[]
+  right?: z.ZodTypeAny
+  schema?: z.ZodTypeAny
+  shape?: ZodShape | (() => ZodShape)
+  type?: string | z.ZodTypeAny
+  typeName?: string
+  value?: unknown
+  values?: readonly (string | number)[]
+}
+
+type ZodSchemaInternals = {
+  _def?: ZodInternalDef
+  description?: string
+  element?: z.ZodTypeAny
+  maxValue?: number | null
+  minValue?: number | null
+  options?: readonly z.ZodTypeAny[] | readonly (string | number)[]
+  shape?: ZodShape | (() => ZodShape)
+}
+
+const ZOD_V4_TYPE_NAMES: Readonly<Record<string, string>> = {
+  array: "ZodArray",
+  boolean: "ZodBoolean",
+  default: "ZodDefault",
+  enum: "ZodEnum",
+  intersection: "ZodIntersection",
+  literal: "ZodLiteral",
+  null: "ZodNull",
+  nullable: "ZodNullable",
+  number: "ZodNumber",
+  object: "ZodObject",
+  optional: "ZodOptional",
+  pipe: "ZodEffects",
+  record: "ZodRecord",
+  string: "ZodString",
+  undefined: "ZodUndefined",
+  union: "ZodUnion"
+}
+
+function getSchemaInternals(schema: z.ZodTypeAny): ZodSchemaInternals {
+  return schema as unknown as ZodSchemaInternals
+}
+
+function getZodDef(schema: z.ZodTypeAny): ZodInternalDef | undefined {
+  return getSchemaInternals(schema)._def
+}
+
+function getUnionOptions(schema: z.ZodTypeAny): z.ZodTypeAny[] {
+  const defOptions = getZodDef(schema)?.options
+  if (defOptions) return defOptions
+
+  const schemaOptions = getSchemaInternals(schema).options
+  return Array.isArray(schemaOptions) ? (schemaOptions as z.ZodTypeAny[]) : []
+}
+
 /**
  * Extract the inner type from optional/nullable wrappers
  */
@@ -63,51 +140,37 @@ function unwrapZodType(schema: z.ZodTypeAny): { inner: z.ZodTypeAny; required: b
   let inner = schema
   let required = true
 
-  // Unwrap ZodOptional
-  if (inner._def?.typeName === "ZodOptional") {
-    required = false
-    inner = inner._def.innerType
-  }
+  for (;;) {
+    const typeName = getZodTypeName(inner)
+    const def = getZodDef(inner)
 
-  // Unwrap ZodNullable
-  if (inner._def?.typeName === "ZodNullable") {
-    inner = inner._def.innerType
-  }
-
-  // Unwrap ZodDefault (has a default value)
-  if (inner._def?.typeName === "ZodDefault") {
-    inner = inner._def.innerType
-  }
-
-  // Unwrap ZodUnion with null (e.g., .or(zod.null()) pattern)
-  // This is common in OpenAPI specs for nullable fields
-  if (inner._def?.typeName === "ZodUnion") {
-    const options = inner._def.options || []
-    // Find non-null/undefined option
-    const nonNullOption = options.find(
-      (opt: z.ZodTypeAny) =>
-        opt._def?.typeName !== "ZodNull" && opt._def?.typeName !== "ZodUndefined"
-    )
-    if (nonNullOption && options.length === 2) {
-      // It's a simple T | null union, extract T
-      inner = nonNullOption
+    if (typeName === "ZodOptional") {
+      required = false
+      if (!def?.innerType) break
+      inner = def.innerType
+      continue
     }
-  }
 
-  // Recursively unwrap if we found a wrapper inside a wrapper
-  // e.g., ZodDefault(ZodUnion(ZodEnum, ZodNull))
-  const innerTypeName = inner._def?.typeName
-  if (
-    innerTypeName === "ZodOptional" ||
-    innerTypeName === "ZodNullable" ||
-    innerTypeName === "ZodDefault" ||
-    innerTypeName === "ZodUnion"
-  ) {
-    // Check if current inner differs from what we started with at this level
-    if (inner !== schema) {
-      const recursed = unwrapZodType(inner)
-      return { inner: recursed.inner, required: required && recursed.required }
+    if (typeName === "ZodNullable" || typeName === "ZodDefault") {
+      if (!def?.innerType) break
+      inner = def.innerType
+      continue
     }
+
+    if (typeName === "ZodUnion") {
+      const options = getUnionOptions(inner)
+      const substantiveOptions = options.filter((option) => {
+        const optionTypeName = getZodTypeName(option)
+        return optionTypeName !== "ZodNull" && optionTypeName !== "ZodUndefined"
+      })
+
+      if (options.length === 2 && substantiveOptions.length === 1) {
+        inner = substantiveOptions[0]
+        continue
+      }
+    }
+
+    break
   }
 
   return { inner, required }
@@ -117,29 +180,38 @@ function unwrapZodType(schema: z.ZodTypeAny): { inner: z.ZodTypeAny; required: b
  * Get the Zod type name
  */
 function getZodTypeName(schema: z.ZodTypeAny): string {
-  return schema._def?.typeName || "Unknown"
+  const def = getZodDef(schema)
+  if (typeof def?.typeName === "string") return def.typeName
+  if (typeof def?.type === "string") return ZOD_V4_TYPE_NAMES[def.type] ?? "Unknown"
+  return "Unknown"
 }
 
 /**
  * Extract description from Zod schema
  */
 function getDescription(schema: z.ZodTypeAny): string | undefined {
-  return schema._def?.description || schema.description
+  return getZodDef(schema)?.description || getSchemaInternals(schema).description
 }
 
 /**
  * Extract min/max from Zod number schema
  */
 function getNumberConstraints(schema: z.ZodTypeAny): { min?: number; max?: number } {
-  const checks = schema._def?.checks || []
   const constraints: { min?: number; max?: number } = {}
+  const { minValue, maxValue } = getSchemaInternals(schema)
 
-  for (const check of checks) {
-    if (check.kind === "min") {
-      constraints.min = check.value
+  if (typeof minValue === "number" && Number.isFinite(minValue)) constraints.min = minValue
+  if (typeof maxValue === "number" && Number.isFinite(maxValue)) constraints.max = maxValue
+
+  for (const check of getZodDef(schema)?.checks ?? []) {
+    const checkName = check.kind ?? check._zod?.def?.check
+    const value = check.value ?? check._zod?.def?.value
+
+    if ((checkName === "min" || checkName === "greater_than") && typeof value === "number") {
+      constraints.min = value
     }
-    if (check.kind === "max") {
-      constraints.max = check.value
+    if ((checkName === "max" || checkName === "less_than") && typeof value === "number") {
+      constraints.max = value
     }
   }
 
@@ -150,23 +222,37 @@ function getNumberConstraints(schema: z.ZodTypeAny): { min?: number; max?: numbe
  * Extract enum values from Zod enum schema
  */
 function getEnumValues(schema: z.ZodTypeAny): readonly (string | number)[] | undefined {
-  if (schema._def?.typeName === "ZodEnum") {
-    return schema._def.values
+  const typeName = getZodTypeName(schema)
+  if (typeName !== "ZodEnum" && typeName !== "ZodNativeEnum") return undefined
+
+  const schemaOptions = getSchemaInternals(schema).options
+  if (Array.isArray(schemaOptions)) return schemaOptions as readonly (string | number)[]
+
+  const def = getZodDef(schema)
+  if (def?.values) return def.values
+  if (def?.entries) return Object.values(def.entries)
+  return []
+}
+
+function readZodShape(shape: ZodShape | (() => ZodShape) | undefined): ZodShape {
+  if (typeof shape === "function") {
+    return shape()
   }
-  if (schema._def?.typeName === "ZodNativeEnum") {
-    return Object.values(schema._def.values)
-  }
-  return undefined
+
+  return shape ?? {}
+}
+
+function fieldConfigsFromShape(shape: ZodShape): ZodFieldConfig[] {
+  return Object.entries(shape).map(([key, value]) => zodFieldToConfig(key, value))
 }
 
 /**
  * Extract default value from Zod schema
  */
 function getDefaultValue(schema: z.ZodTypeAny): unknown {
-  if (schema._def?.typeName === "ZodDefault") {
-    return typeof schema._def.defaultValue === "function"
-      ? schema._def.defaultValue()
-      : schema._def.defaultValue
+  const def = getZodDef(schema)
+  if (getZodTypeName(schema) === "ZodDefault") {
+    return typeof def?.defaultValue === "function" ? def.defaultValue() : def?.defaultValue
   }
   return undefined
 }
@@ -196,12 +282,13 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
       baseConfig.type = "string"
       break
 
-    case "ZodNumber":
+    case "ZodNumber": {
       baseConfig.type = "number"
       const constraints = getNumberConstraints(inner)
       if (constraints.min !== undefined) baseConfig.min = constraints.min
       if (constraints.max !== undefined) baseConfig.max = constraints.max
       break
+    }
 
     case "ZodBoolean":
       baseConfig.type = "boolean"
@@ -213,25 +300,33 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
       baseConfig.options = getEnumValues(inner)
       break
 
-    case "ZodArray":
+    case "ZodArray": {
       baseConfig.type = "array"
       baseConfig.inputFormat = "comma-separated"
       // Check if array items are enum (multiselect)
-      const itemType = inner._def?.type
+      const def = getZodDef(inner)
+      const defType = def?.type
+      const itemType =
+        getSchemaInternals(inner).element ??
+        def?.element ??
+        (typeof defType === "object" ? defType : undefined)
       if (itemType && getZodTypeName(itemType) === "ZodEnum") {
         baseConfig.type = "multiselect"
         baseConfig.options = getEnumValues(itemType)
       }
       break
+    }
 
-    case "ZodObject":
+    case "ZodObject": {
       baseConfig.type = "object"
       // Recursively extract nested fields
-      const shape = inner._def?.shape?.()
-      if (shape) {
-        baseConfig.nestedFields = zodToFieldConfigs({ shape: () => shape } as z.ZodObject<any>)
+      const internals = getSchemaInternals(inner)
+      const shape = readZodShape(internals.shape ?? getZodDef(inner)?.shape)
+      if (Object.keys(shape).length > 0) {
+        baseConfig.nestedFields = fieldConfigsFromShape(shape)
       }
       break
+    }
 
     case "ZodRecord":
       // Record types like zod.record(zod.string(), zod.any()) - arbitrary key-value objects
@@ -240,37 +335,45 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
       break
 
     case "ZodUnion":
-    case "ZodDiscriminatedUnion":
-      // For unions, try to extract common type or use first non-null option
-      const unionOptions = inner._def?.options || []
-      if (unionOptions.length > 0) {
-        // Find first non-null/undefined option
-        const substantiveOption = unionOptions.find(
-          (opt: z.ZodTypeAny) =>
-            opt._def?.typeName !== "ZodNull" && opt._def?.typeName !== "ZodUndefined"
-        )
-        if (substantiveOption) {
-          const optTypeName = getZodTypeName(substantiveOption)
-          if (optTypeName === "ZodEnum" || optTypeName === "ZodNativeEnum") {
-            baseConfig.type = "select"
-            baseConfig.options = getEnumValues(substantiveOption)
-          } else if (optTypeName === "ZodString") {
-            baseConfig.type = "string"
-          } else if (optTypeName === "ZodArray") {
-            baseConfig.type = "array"
-            baseConfig.inputFormat = "comma-separated"
-          } else if (optTypeName === "ZodNumber") {
-            baseConfig.type = "number"
-          } else if (optTypeName === "ZodBoolean") {
-            baseConfig.type = "boolean"
-          }
+    case "ZodDiscriminatedUnion": {
+      const unionOptions = getUnionOptions(inner)
+      const substantiveOptions = unionOptions.filter(
+        (option) =>
+          getZodTypeName(option) !== "ZodNull" && getZodTypeName(option) !== "ZodUndefined"
+      )
+      const objectShapes = substantiveOptions.map(extractShape)
+
+      if (objectShapes.length > 0 && objectShapes.every((shape) => Object.keys(shape).length > 0)) {
+        baseConfig.type = "object"
+        baseConfig.nestedFields = fieldConfigsFromShape(Object.assign({}, ...objectShapes))
+        break
+      }
+
+      const substantiveOption = substantiveOptions[0]
+      if (substantiveOption) {
+        const optTypeName = getZodTypeName(substantiveOption)
+        if (optTypeName === "ZodEnum" || optTypeName === "ZodNativeEnum") {
+          baseConfig.type = "select"
+          baseConfig.options = getEnumValues(substantiveOption)
+        } else if (optTypeName === "ZodString") {
+          baseConfig.type = "string"
+        } else if (optTypeName === "ZodArray") {
+          baseConfig.type = "array"
+          baseConfig.inputFormat = "comma-separated"
+        } else if (optTypeName === "ZodNumber") {
+          baseConfig.type = "number"
+        } else if (optTypeName === "ZodBoolean") {
+          baseConfig.type = "boolean"
         }
       }
       break
+    }
 
     case "ZodLiteral":
       baseConfig.type = "select"
-      baseConfig.options = [inner._def?.value]
+      baseConfig.options = (getZodDef(inner)?.values ?? [getZodDef(inner)?.value]).filter(
+        (value): value is string | number => typeof value === "string" || typeof value === "number"
+      )
       break
 
     default:
@@ -286,36 +389,37 @@ function zodFieldToConfig(name: string, schema: z.ZodTypeAny): ZodFieldConfig {
  */
 function extractShape(schema: z.ZodTypeAny): Record<string, z.ZodTypeAny> {
   const typeName = getZodTypeName(schema)
-  // Cast to any for accessing internal Zod properties
-  const def = schema._def as any
+  const def = getZodDef(schema)
+  const schemaInternals = getSchemaInternals(schema)
 
   // Handle objects with .shape function but no _def (created for recursive calls)
-  if (!def && typeof (schema as any).shape === "function") {
-    return (schema as any).shape()
+  if (!def && typeof schemaInternals.shape === "function") {
+    return schemaInternals.shape()
   }
 
   switch (typeName) {
     case "ZodObject":
-      return def?.shape?.() || (schema as any).shape || {}
+      return readZodShape(schemaInternals.shape ?? def?.shape)
 
-    case "ZodIntersection":
+    case "ZodIntersection": {
       // Merge shapes from both sides of intersection
-      const left = extractShape(def?.left)
-      const right = extractShape(def?.right)
+      const left = def?.left ? extractShape(def.left) : {}
+      const right = def?.right ? extractShape(def.right) : {}
       return { ...left, ...right }
+    }
 
-    case "ZodUnion":
-      // For unions, try first option that's an object
-      const options = def?.options || []
+    case "ZodUnion": {
+      const options = getUnionOptions(schema)
+      const mergedShape: ZodShape = {}
       for (const opt of options) {
-        const shape = extractShape(opt)
-        if (Object.keys(shape).length > 0) return shape
+        Object.assign(mergedShape, extractShape(opt))
       }
-      return {}
+      return mergedShape
+    }
 
     case "ZodEffects":
       // Unwrap effects (refinements, transforms)
-      return extractShape(def?.schema)
+      return def?.schema || def?.in ? extractShape(def.schema ?? (def.in as z.ZodTypeAny)) : {}
 
     default:
       return {}

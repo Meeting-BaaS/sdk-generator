@@ -32,8 +32,6 @@ export default {
     "**/src/generated/gladia/**/*",
     "**/src/generated/deepgram/**/*"
   ],
-
-  includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization

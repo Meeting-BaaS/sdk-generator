@@ -10,7 +10,7 @@ paths:
       summary: Transcribe and analyze pre-recorded audio and video
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       tags:
-        - subpackage_listen.subpackage_listen/v1.subpackage_listen/v1/media
+        - listen > v1 > media
       parameters:
         - name: callback
           in: query
@@ -23,13 +23,14 @@ paths:
           description: HTTP method by which the callback request will be made
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersCallbackMethod"
+            $ref: '#/components/schemas/V1ListenPostParametersCallbackMethod'
+            default: POST
         - name: extra
           in: query
           description: Arbitrary key-value pairs that are attached to the API response for usage in downstream processing
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersExtra"
+            $ref: '#/components/schemas/V1ListenPostParametersExtra'
         - name: sentiment
           in: query
           description: Recognizes the sentiment throughout a transcript or text
@@ -42,13 +43,13 @@ paths:
           description: Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersSummarize"
+            $ref: '#/components/schemas/V1ListenPostParametersSummarize'
         - name: tag
           in: query
           description: Label your requests for the purpose of identification during usage reporting
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersTag"
+            $ref: '#/components/schemas/V1ListenPostParametersTag'
         - name: topics
           in: query
           description: Detect topics throughout a transcript or text
@@ -61,13 +62,14 @@ paths:
           description: Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersCustomTopic"
+            $ref: '#/components/schemas/V1ListenPostParametersCustomTopic'
         - name: custom_topic_mode
           in: query
           description: Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersCustomTopicMode"
+            $ref: '#/components/schemas/V1ListenPostParametersCustomTopicMode'
+            default: extended
         - name: intents
           in: query
           description: Recognizes speaker intent throughout a transcript or text
@@ -80,13 +82,14 @@ paths:
           description: Custom intents you want the model to detect within your input audio if present
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersCustomIntent"
+            $ref: '#/components/schemas/V1ListenPostParametersCustomIntent'
         - name: custom_intent_mode
           in: query
           description: Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersCustomIntentMode"
+            $ref: '#/components/schemas/V1ListenPostParametersCustomIntentMode'
+            default: extended
         - name: detect_entities
           in: query
           description: Identifies and extracts key entities from content in submitted audio
@@ -99,20 +102,20 @@ paths:
           description: Identifies the dominant language spoken in submitted audio
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersDetectLanguage"
+            $ref: '#/components/schemas/V1ListenPostParametersDetectLanguage'
         - name: diarize
           in: query
-          description: Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0
+          description: 'Deprecated: use `diarize_model` instead. Recognize speaker changes. Each word in the transcript will be assigned a speaker number starting at 0.'
           required: false
           schema:
             type: boolean
             default: false
         - name: diarize_model
           in: query
-          description: Select and enable a specific batch diarization model version. If specifying this parameter, you should not set the deprecated `diarize=true` parameter. Not accepted on streaming requests.
+          description: Select and enable a specific diarization model version. Specifying this parameter enables diarization and selects the model — you do not need to also set the deprecated `diarize=true` parameter. For batch, supported values are `latest` (currently v2), `v1`, and `v2`. For streaming, supported values are `latest` (currently v1) and `v1`; `v2` returns a validation error on streaming requests.
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersDiarizeModel"
+            $ref: '#/components/schemas/V1ListenPostParametersDiarizeModel'
         - name: dictation
           in: query
           description: Dictation mode for controlling formatting with dictated speech
@@ -125,7 +128,7 @@ paths:
           description: Specify the expected encoding of your submitted audio
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersEncoding"
+            $ref: '#/components/schemas/V1ListenPostParametersEncoding'
         - name: filler_words
           in: query
           description: Filler Words can help transcribe interruptions in your audio, like "uh" and "um"
@@ -146,7 +149,7 @@ paths:
           description: Keywords can boost or suppress specialized terminology and brands
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersKeywords"
+            $ref: '#/components/schemas/V1ListenPostParametersKeywords'
         - name: language
           in: query
           description: The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
@@ -166,7 +169,8 @@ paths:
           description: AI model used to process submitted audio
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersModel"
+            $ref: '#/components/schemas/V1ListenPostParametersModel'
+            default: base-general
         - name: multichannel
           in: query
           description: Transcribe each audio channel independently
@@ -207,19 +211,20 @@ paths:
           description: Redaction removes sensitive information from your transcripts
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersRedact"
+            $ref: '#/components/schemas/V1ListenPostParametersRedact'
+            default: false
         - name: replace
           in: query
           description: Search for terms or phrases in submitted audio and replaces them
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersReplace"
+            $ref: '#/components/schemas/V1ListenPostParametersReplace'
         - name: search
           in: query
           description: Search for terms or phrases in submitted audio
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersSearch"
+            $ref: '#/components/schemas/V1ListenPostParametersSearch'
         - name: smart_format
           in: query
           description: Apply formatting to transcript output. When set to true, additional formatting will be applied to transcripts to improve readability
@@ -247,7 +252,8 @@ paths:
           description: Version of an AI model to use
           required: false
           schema:
-            $ref: "#/components/schemas/V1ListenPostParametersVersion"
+            $ref: '#/components/schemas/V1ListenPostParametersVersion'
+            default: latest
         - name: mip_opt_out
           in: query
           description: Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
@@ -264,31 +270,31 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Returns either transcription results, or a request_id when using a callback.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/listen_v1_media_transcribe_Response_200"
-        "400":
+                $ref: '#/components/schemas/listen_v1_media_transcribe_Response_200'
+        '400':
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ListenV1Response"
+                $ref: '#/components/schemas/ListenV1Response'
       requestBody:
         description: Transcribe an audio or video file
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ListenV1RequestUrl"
+              $ref: '#/components/schemas/ListenV1RequestUrl'
   /v1/speak:
     post:
       operationId: speakGenerate
       summary: Text to Speech transformation
       description: Convert text into natural-sounding speech using Deepgram's TTS REST API
       tags:
-        - subpackage_speak.subpackage_speak/v1.subpackage_speak/v1/audio
+        - speak > v1 > audio
       parameters:
         - name: callback
           in: query
@@ -301,7 +307,8 @@ paths:
           description: HTTP method by which the callback request will be made
           required: false
           schema:
-            $ref: "#/components/schemas/V1SpeakPostParametersCallbackMethod"
+            $ref: '#/components/schemas/V1SpeakPostParametersCallbackMethod'
+            default: POST
         - name: mip_opt_out
           in: query
           description: Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https://dpgr.am/deepgram-mip
@@ -314,37 +321,42 @@ paths:
           description: Label your requests for the purpose of identification during usage reporting
           required: false
           schema:
-            $ref: "#/components/schemas/V1SpeakPostParametersTag"
+            $ref: '#/components/schemas/V1SpeakPostParametersTag'
         - name: bit_rate
           in: query
           description: The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.
           required: false
           schema:
-            $ref: "#/components/schemas/V1SpeakPostParametersBitRate"
+            $ref: '#/components/schemas/V1SpeakPostParametersBitRate'
+            default: 48000
         - name: container
           in: query
           description: Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.
           required: false
           schema:
-            $ref: "#/components/schemas/V1SpeakPostParametersContainer"
+            $ref: '#/components/schemas/V1SpeakPostParametersContainer'
+            default: wav
         - name: encoding
           in: query
           description: Encoding allows you to specify the expected encoding of your audio output
           required: false
           schema:
-            $ref: "#/components/schemas/V1SpeakPostParametersEncoding"
+            $ref: '#/components/schemas/V1SpeakPostParametersEncoding'
+            default: mp3
         - name: model
           in: query
           description: AI model used to process submitted text
           required: false
           schema:
-            $ref: "#/components/schemas/V1SpeakPostParametersModel"
+            $ref: '#/components/schemas/V1SpeakPostParametersModel'
+            default: aura-asteria-en
         - name: sample_rate
           in: query
           description: Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable
           required: false
           schema:
-            $ref: "#/components/schemas/V1SpeakPostParametersSampleRate"
+            $ref: '#/components/schemas/V1SpeakPostParametersSampleRate'
+            default: 24000
         - name: speed
           in: query
           description: Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Not yet supported in all languages.
@@ -362,31 +374,31 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Successful text-to-speech transformation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/speak_v1_audio_generate_Response_200"
-        "400":
+                $ref: '#/components/schemas/speak_v1_audio_generate_Response_200'
+        '400':
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
       requestBody:
         description: Transform text to speech
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SpeakV1Request"
+              $ref: '#/components/schemas/SpeakV1Request'
   /v1/read:
     post:
       operationId: readAnalyze
       summary: Analyze text content
       description: Analyze text content using Deepgrams text analysis API
       tags:
-        - subpackage_read.subpackage_read/v1.subpackage_read/v1/text
+        - read > v1 > text
       parameters:
         - name: callback
           in: query
@@ -399,7 +411,8 @@ paths:
           description: HTTP method by which the callback request will be made
           required: false
           schema:
-            $ref: "#/components/schemas/V1ReadPostParametersCallbackMethod"
+            $ref: '#/components/schemas/V1ReadPostParametersCallbackMethod'
+            default: POST
         - name: sentiment
           in: query
           description: Recognizes the sentiment throughout a transcript or text
@@ -412,13 +425,13 @@ paths:
           description: Summarize content. For Listen API, supports string version option. For Read API, accepts boolean only.
           required: false
           schema:
-            $ref: "#/components/schemas/V1ReadPostParametersSummarize"
+            $ref: '#/components/schemas/V1ReadPostParametersSummarize'
         - name: tag
           in: query
           description: Label your requests for the purpose of identification during usage reporting
           required: false
           schema:
-            $ref: "#/components/schemas/V1ReadPostParametersTag"
+            $ref: '#/components/schemas/V1ReadPostParametersTag'
         - name: topics
           in: query
           description: Detect topics throughout a transcript or text
@@ -431,13 +444,14 @@ paths:
           description: Custom topics you want the model to detect within your input audio or text if present Submit up to `100`.
           required: false
           schema:
-            $ref: "#/components/schemas/V1ReadPostParametersCustomTopic"
+            $ref: '#/components/schemas/V1ReadPostParametersCustomTopic'
         - name: custom_topic_mode
           in: query
           description: Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param
           required: false
           schema:
-            $ref: "#/components/schemas/V1ReadPostParametersCustomTopicMode"
+            $ref: '#/components/schemas/V1ReadPostParametersCustomTopicMode'
+            default: extended
         - name: intents
           in: query
           description: Recognizes speaker intent throughout a transcript or text
@@ -450,13 +464,14 @@ paths:
           description: Custom intents you want the model to detect within your input audio if present
           required: false
           schema:
-            $ref: "#/components/schemas/V1ReadPostParametersCustomIntent"
+            $ref: '#/components/schemas/V1ReadPostParametersCustomIntent'
         - name: custom_intent_mode
           in: query
           description: Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.
           required: false
           schema:
-            $ref: "#/components/schemas/V1ReadPostParametersCustomIntentMode"
+            $ref: '#/components/schemas/V1ReadPostParametersCustomIntentMode'
+            default: extended
         - name: language
           in: query
           description: The [BCP-47 language tag](https://tools.ietf.org/html/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available
@@ -473,31 +488,31 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Successful text analysis
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReadV1Response"
-        "400":
+                $ref: '#/components/schemas/ReadV1Response'
+        '400':
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
       requestBody:
         description: Analyze a text file
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ReadV1Request"
+              $ref: '#/components/schemas/ReadV1Request'
   /v1/models:
     get:
       operationId: listModels
       summary: List Models
       description: Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/models
+        - manage > v1 > models
       parameters:
         - name: include_outdated
           in: query
@@ -514,28 +529,29 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A list of models
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ListModelsV1Response"
-        "400":
+                $ref: '#/components/schemas/ListModelsV1Response'
+        '400':
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/models/{model_id}:
     get:
       operationId: getModel
       summary: Get a specific Model
       description: Returns metadata for a specific public model
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/models
+        - manage > v1 > models
       parameters:
         - name: model_id
           in: path
+          description: The specific UUID of the model
           required: true
           schema:
             type: string
@@ -548,28 +564,29 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A model object that can be either STT or TTS
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetModelV1Response"
-        "400":
+                $ref: '#/components/schemas/GetModelV1Response'
+        '400':
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/requests:
     get:
       operationId: listProjectRequests
       summary: List Project Requests
       description: Generates a list of requests for a specific project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/requests
+        - manage > v1 > projects > requests
       parameters:
         - name: project_id
           in: path
+          description: The unique identifier of the project
           required: true
           schema:
             type: string
@@ -619,25 +636,25 @@ paths:
           description: Filter for requests where a specific deployment was used
           required: false
           schema:
-            $ref: "#/components/schemas/V1ProjectsProjectIdRequestsGetParametersDeployment"
+            $ref: '#/components/schemas/V1ProjectsProjectIdRequestsGetParametersDeployment'
         - name: endpoint
           in: query
           description: Filter for requests where a specific endpoint was used
           required: false
           schema:
-            $ref: "#/components/schemas/V1ProjectsProjectIdRequestsGetParametersEndpoint"
+            $ref: '#/components/schemas/V1ProjectsProjectIdRequestsGetParametersEndpoint'
         - name: method
           in: query
           description: Filter for requests where a specific method was used
           required: false
           schema:
-            $ref: "#/components/schemas/V1ProjectsProjectIdRequestsGetParametersMethod"
+            $ref: '#/components/schemas/V1ProjectsProjectIdRequestsGetParametersMethod'
         - name: status
           in: query
           description: Filter for requests that succeeded (status code < 300) or failed (status code >=400)
           required: false
           schema:
-            $ref: "#/components/schemas/V1ProjectsProjectIdRequestsGetParametersStatus"
+            $ref: '#/components/schemas/V1ProjectsProjectIdRequestsGetParametersStatus'
         - name: Authorization
           in: header
           description: |
@@ -647,33 +664,35 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A list of requests for a specific project
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ListProjectRequestsV1Response"
-        "400":
+                $ref: '#/components/schemas/ListProjectRequestsV1Response'
+        '400':
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/projects/{project_id}/requests/{request_id}:
     get:
       operationId: getProjectRequest
       summary: Get a Project Request
       description: Retrieves a specific request for a specific project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/requests
+        - manage > v1 > projects > requests
       parameters:
         - name: project_id
           in: path
+          description: The unique identifier of the project
           required: true
           schema:
             type: string
         - name: request_id
           in: path
+          description: The unique identifier of the request
           required: true
           schema:
             type: string
@@ -686,21 +705,23 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A specific request for a specific project
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetProjectRequestV1Response"
-        "400":
+                $ref: '#/components/schemas/GetProjectRequestV1Response'
+        '400':
           description: Invalid Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 servers:
   - url: https://agent.deepgram.com
+    description: Production
   - url: https://api.deepgram.com
+    description: Base
 components:
   schemas:
     ErrorResponseTextError:
@@ -737,9 +758,9 @@ components:
       title: ErrorResponseModernError
     ErrorResponse:
       oneOf:
-        - $ref: "#/components/schemas/ErrorResponseTextError"
-        - $ref: "#/components/schemas/ErrorResponseLegacyError"
-        - $ref: "#/components/schemas/ErrorResponseModernError"
+        - $ref: '#/components/schemas/ErrorResponseTextError'
+        - $ref: '#/components/schemas/ErrorResponseLegacyError'
+        - $ref: '#/components/schemas/ErrorResponseModernError'
       title: ErrorResponse
     V1ListenPostParametersCallbackMethod:
       type: string
@@ -762,7 +783,7 @@ components:
       title: V1ListenPostParametersSummarize0
     V1ListenPostParametersSummarize:
       oneOf:
-        - $ref: "#/components/schemas/V1ListenPostParametersSummarize0"
+        - $ref: '#/components/schemas/V1ListenPostParametersSummarize0'
         - type: boolean
           default: false
       title: V1ListenPostParametersSummarize
@@ -871,7 +892,7 @@ components:
       title: V1ListenPostParametersModel0
     V1ListenPostParametersModel:
       oneOf:
-        - $ref: "#/components/schemas/V1ListenPostParametersModel0"
+        - $ref: '#/components/schemas/V1ListenPostParametersModel0'
         - type: string
       title: V1ListenPostParametersModel
     V1ListenPostParametersRedactSchemaOneOf1Items:
@@ -884,12 +905,12 @@ components:
     V1ListenPostParametersRedact1:
       type: array
       items:
-        $ref: "#/components/schemas/V1ListenPostParametersRedactSchemaOneOf1Items"
+        $ref: '#/components/schemas/V1ListenPostParametersRedactSchemaOneOf1Items'
       title: V1ListenPostParametersRedact1
     V1ListenPostParametersRedact:
       oneOf:
         - type: string
-        - $ref: "#/components/schemas/V1ListenPostParametersRedact1"
+        - $ref: '#/components/schemas/V1ListenPostParametersRedact1'
       title: V1ListenPostParametersRedact
     V1ListenPostParametersReplace:
       oneOf:
@@ -913,7 +934,7 @@ components:
       title: V1ListenPostParametersVersion0
     V1ListenPostParametersVersion:
       oneOf:
-        - $ref: "#/components/schemas/V1ListenPostParametersVersion0"
+        - $ref: '#/components/schemas/V1ListenPostParametersVersion0'
         - type: string
       title: V1ListenPostParametersVersion
     ListenV1RequestUrl:
@@ -994,15 +1015,15 @@ components:
           items:
             type: string
         model_info:
-          $ref: "#/components/schemas/ListenV1ResponseMetadataModelInfo"
+          $ref: '#/components/schemas/ListenV1ResponseMetadataModelInfo'
         summary_info:
-          $ref: "#/components/schemas/ListenV1ResponseMetadataSummaryInfo"
+          $ref: '#/components/schemas/ListenV1ResponseMetadataSummaryInfo'
         sentiment_info:
-          $ref: "#/components/schemas/ListenV1ResponseMetadataSentimentInfo"
+          $ref: '#/components/schemas/ListenV1ResponseMetadataSentimentInfo'
         topics_info:
-          $ref: "#/components/schemas/ListenV1ResponseMetadataTopicsInfo"
+          $ref: '#/components/schemas/ListenV1ResponseMetadataTopicsInfo'
         intents_info:
-          $ref: "#/components/schemas/ListenV1ResponseMetadataIntentsInfo"
+          $ref: '#/components/schemas/ListenV1ResponseMetadataIntentsInfo'
         tags:
           type: array
           items:
@@ -1039,7 +1060,7 @@ components:
         hits:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems'
       title: ListenV1ResponseResultsChannelsItemsSearchItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems:
       type: object
@@ -1074,7 +1095,7 @@ components:
         sentences:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems'
         speaker:
           type: integer
         num_words:
@@ -1094,7 +1115,7 @@ components:
         paragraphs:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems'
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs
     ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems:
       type: object
@@ -1154,21 +1175,21 @@ components:
         words:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems'
         paragraphs:
-          $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs"
+          $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs'
         entities:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems'
         summaries:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems'
         topics:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems'
       title: ListenV1ResponseResultsChannelsItemsAlternativesItems
     ListenV1ResponseResultsChannelsItems:
       type: object
@@ -1176,18 +1197,18 @@ components:
         search:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsSearchItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsSearchItems'
         alternatives:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItemsAlternativesItems'
         detected_language:
           type: string
       title: ListenV1ResponseResultsChannelsItems
     ListenV1ResponseResultsChannels:
       type: array
       items:
-        $ref: "#/components/schemas/ListenV1ResponseResultsChannelsItems"
+        $ref: '#/components/schemas/ListenV1ResponseResultsChannelsItems'
       title: ListenV1ResponseResultsChannels
     ListenV1ResponseResultsUtterancesItemsWordsItems:
       type: object
@@ -1230,7 +1251,7 @@ components:
         words:
           type: array
           items:
-            $ref: "#/components/schemas/ListenV1ResponseResultsUtterancesItemsWordsItems"
+            $ref: '#/components/schemas/ListenV1ResponseResultsUtterancesItemsWordsItems'
         speaker:
           type: integer
         id:
@@ -1240,7 +1261,7 @@ components:
     ListenV1ResponseResultsUtterances:
       type: array
       items:
-        $ref: "#/components/schemas/ListenV1ResponseResultsUtterancesItems"
+        $ref: '#/components/schemas/ListenV1ResponseResultsUtterancesItems'
       title: ListenV1ResponseResultsUtterances
     ListenV1ResponseResultsSummary:
       type: object
@@ -1273,7 +1294,7 @@ components:
         topics:
           type: array
           items:
-            $ref: "#/components/schemas/SharedTopicsResultsTopicsSegmentsItemsTopicsItems"
+            $ref: '#/components/schemas/SharedTopicsResultsTopicsSegmentsItemsTopicsItems'
       title: SharedTopicsResultsTopicsSegmentsItems
     SharedTopicsResultsTopics:
       type: object
@@ -1281,19 +1302,19 @@ components:
         segments:
           type: array
           items:
-            $ref: "#/components/schemas/SharedTopicsResultsTopicsSegmentsItems"
+            $ref: '#/components/schemas/SharedTopicsResultsTopicsSegmentsItems'
       title: SharedTopicsResultsTopics
     SharedTopicsResults:
       type: object
       properties:
         topics:
-          $ref: "#/components/schemas/SharedTopicsResultsTopics"
+          $ref: '#/components/schemas/SharedTopicsResultsTopics'
       title: SharedTopicsResults
     SharedTopics:
       type: object
       properties:
         results:
-          $ref: "#/components/schemas/SharedTopicsResults"
+          $ref: '#/components/schemas/SharedTopicsResults'
       description: Output whenever `topics=true` is used
       title: SharedTopics
     SharedIntentsResultsIntentsSegmentsItemsIntentsItems:
@@ -1319,7 +1340,7 @@ components:
         intents:
           type: array
           items:
-            $ref: "#/components/schemas/SharedIntentsResultsIntentsSegmentsItemsIntentsItems"
+            $ref: '#/components/schemas/SharedIntentsResultsIntentsSegmentsItemsIntentsItems'
       title: SharedIntentsResultsIntentsSegmentsItems
     SharedIntentsResultsIntents:
       type: object
@@ -1327,19 +1348,19 @@ components:
         segments:
           type: array
           items:
-            $ref: "#/components/schemas/SharedIntentsResultsIntentsSegmentsItems"
+            $ref: '#/components/schemas/SharedIntentsResultsIntentsSegmentsItems'
       title: SharedIntentsResultsIntents
     SharedIntentsResults:
       type: object
       properties:
         intents:
-          $ref: "#/components/schemas/SharedIntentsResultsIntents"
+          $ref: '#/components/schemas/SharedIntentsResultsIntents'
       title: SharedIntentsResults
     SharedIntents:
       type: object
       properties:
         results:
-          $ref: "#/components/schemas/SharedIntentsResults"
+          $ref: '#/components/schemas/SharedIntentsResults'
       description: Output whenever `intents=true` is used
       title: SharedIntents
     SharedSentimentsSegmentsItems:
@@ -1374,26 +1395,26 @@ components:
         segments:
           type: array
           items:
-            $ref: "#/components/schemas/SharedSentimentsSegmentsItems"
+            $ref: '#/components/schemas/SharedSentimentsSegmentsItems'
         average:
-          $ref: "#/components/schemas/SharedSentimentsAverage"
+          $ref: '#/components/schemas/SharedSentimentsAverage'
       description: Output whenever `sentiment=true` is used
       title: SharedSentiments
     ListenV1ResponseResults:
       type: object
       properties:
         channels:
-          $ref: "#/components/schemas/ListenV1ResponseResultsChannels"
+          $ref: '#/components/schemas/ListenV1ResponseResultsChannels'
         utterances:
-          $ref: "#/components/schemas/ListenV1ResponseResultsUtterances"
+          $ref: '#/components/schemas/ListenV1ResponseResultsUtterances'
         summary:
-          $ref: "#/components/schemas/ListenV1ResponseResultsSummary"
+          $ref: '#/components/schemas/ListenV1ResponseResultsSummary'
         topics:
-          $ref: "#/components/schemas/SharedTopics"
+          $ref: '#/components/schemas/SharedTopics'
         intents:
-          $ref: "#/components/schemas/SharedIntents"
+          $ref: '#/components/schemas/SharedIntents'
         sentiments:
-          $ref: "#/components/schemas/SharedSentiments"
+          $ref: '#/components/schemas/SharedSentiments'
       required:
         - channels
       title: ListenV1ResponseResults
@@ -1401,9 +1422,9 @@ components:
       type: object
       properties:
         metadata:
-          $ref: "#/components/schemas/ListenV1ResponseMetadata"
+          $ref: '#/components/schemas/ListenV1ResponseMetadata'
         results:
-          $ref: "#/components/schemas/ListenV1ResponseResults"
+          $ref: '#/components/schemas/ListenV1ResponseResults'
       required:
         - metadata
         - results
@@ -1422,8 +1443,8 @@ components:
       title: ListenV1AcceptedResponse
     listen_v1_media_transcribe_Response_200:
       oneOf:
-        - $ref: "#/components/schemas/ListenV1Response"
-        - $ref: "#/components/schemas/ListenV1AcceptedResponse"
+        - $ref: '#/components/schemas/ListenV1Response'
+        - $ref: '#/components/schemas/ListenV1AcceptedResponse'
       title: listen_v1_media_transcribe_Response_200
     V1SpeakPostParametersCallbackMethod:
       type: string
@@ -1442,13 +1463,13 @@ components:
     V1SpeakPostParametersBitRate0:
       type: string
       enum:
-        - "32000"
-        - "48000"
+        - '32000'
+        - '48000'
       description: Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.
       title: V1SpeakPostParametersBitRate0
     V1SpeakPostParametersBitRate:
       oneOf:
-        - $ref: "#/components/schemas/V1SpeakPostParametersBitRate0"
+        - $ref: '#/components/schemas/V1SpeakPostParametersBitRate0'
         - type: number
           format: double
         - type: number
@@ -1486,11 +1507,11 @@ components:
       title: V1SpeakPostParametersContainer4
     V1SpeakPostParametersContainer:
       oneOf:
-        - $ref: "#/components/schemas/V1SpeakPostParametersContainer0"
-        - $ref: "#/components/schemas/V1SpeakPostParametersContainer1"
-        - $ref: "#/components/schemas/V1SpeakPostParametersContainer2"
-        - $ref: "#/components/schemas/V1SpeakPostParametersContainer3"
-        - $ref: "#/components/schemas/V1SpeakPostParametersContainer4"
+        - $ref: '#/components/schemas/V1SpeakPostParametersContainer0'
+        - $ref: '#/components/schemas/V1SpeakPostParametersContainer1'
+        - $ref: '#/components/schemas/V1SpeakPostParametersContainer2'
+        - $ref: '#/components/schemas/V1SpeakPostParametersContainer3'
+        - $ref: '#/components/schemas/V1SpeakPostParametersContainer4'
       title: V1SpeakPostParametersContainer
     V1SpeakPostParametersEncoding0:
       type: string
@@ -1536,28 +1557,28 @@ components:
       title: V1SpeakPostParametersEncoding6
     V1SpeakPostParametersEncoding:
       oneOf:
-        - $ref: "#/components/schemas/V1SpeakPostParametersEncoding0"
-        - $ref: "#/components/schemas/V1SpeakPostParametersEncoding1"
-        - $ref: "#/components/schemas/V1SpeakPostParametersEncoding2"
-        - $ref: "#/components/schemas/V1SpeakPostParametersEncoding3"
-        - $ref: "#/components/schemas/V1SpeakPostParametersEncoding4"
-        - $ref: "#/components/schemas/V1SpeakPostParametersEncoding5"
-        - $ref: "#/components/schemas/V1SpeakPostParametersEncoding6"
+        - $ref: '#/components/schemas/V1SpeakPostParametersEncoding0'
+        - $ref: '#/components/schemas/V1SpeakPostParametersEncoding1'
+        - $ref: '#/components/schemas/V1SpeakPostParametersEncoding2'
+        - $ref: '#/components/schemas/V1SpeakPostParametersEncoding3'
+        - $ref: '#/components/schemas/V1SpeakPostParametersEncoding4'
+        - $ref: '#/components/schemas/V1SpeakPostParametersEncoding5'
+        - $ref: '#/components/schemas/V1SpeakPostParametersEncoding6'
       title: V1SpeakPostParametersEncoding
     V1SpeakPostParametersModel:
       type: string
       enum:
-        - aura-asteria-en
-        - aura-luna-en
-        - aura-stella-en
-        - aura-athena-en
-        - aura-hera-en
-        - aura-orion-en
-        - aura-arcas-en
-        - aura-perseus-en
         - aura-angus-en
-        - aura-orpheus-en
+        - aura-arcas-en
+        - aura-asteria-en
+        - aura-athena-en
         - aura-helios-en
+        - aura-hera-en
+        - aura-luna-en
+        - aura-orion-en
+        - aura-orpheus-en
+        - aura-perseus-en
+        - aura-stella-en
         - aura-zeus-en
         - aura-2-amalthea-en
         - aura-2-andromeda-en
@@ -1569,8 +1590,8 @@ components:
         - aura-2-atlas-en
         - aura-2-aurora-en
         - aura-2-callista-en
-        - aura-2-cordelia-en
         - aura-2-cora-en
+        - aura-2-cordelia-en
         - aura-2-delia-en
         - aura-2-draco-en
         - aura-2-electra-en
@@ -1600,61 +1621,101 @@ components:
         - aura-2-theia-en
         - aura-2-vesta-en
         - aura-2-zeus-en
-        - aura-2-sirio-es
-        - aura-2-nestor-es
+        - aura-2-agustina-es
+        - aura-2-alvaro-es
+        - aura-2-antonia-es
+        - aura-2-aquila-es
         - aura-2-carina-es
         - aura-2-celeste-es
-        - aura-2-alvaro-es
         - aura-2-diana-es
-        - aura-2-aquila-es
-        - aura-2-selena-es
         - aura-2-estrella-es
+        - aura-2-gloria-es
         - aura-2-javier-es
+        - aura-2-luciano-es
+        - aura-2-nestor-es
+        - aura-2-olivia-es
+        - aura-2-selena-es
+        - aura-2-silvia-es
+        - aura-2-sirio-es
+        - aura-2-valerio-es
+        - aura-2-aurelia-de
+        - aura-2-elara-de
+        - aura-2-fabian-de
+        - aura-2-julius-de
+        - aura-2-kara-de
+        - aura-2-lara-de
+        - aura-2-viktoria-de
+        - aura-2-beatrix-nl
+        - aura-2-cornelia-nl
+        - aura-2-daphne-nl
+        - aura-2-hestia-nl
+        - aura-2-lars-nl
+        - aura-2-leda-nl
+        - aura-2-rhea-nl
+        - aura-2-roman-nl
+        - aura-2-sander-nl
+        - aura-2-agathe-fr
+        - aura-2-hector-fr
+        - aura-2-cesare-it
+        - aura-2-cinzia-it
+        - aura-2-demetra-it
+        - aura-2-dionisio-it
+        - aura-2-elio-it
+        - aura-2-flavio-it
+        - aura-2-livia-it
+        - aura-2-maia-it
+        - aura-2-melia-it
+        - aura-2-perseo-it
+        - aura-2-ama-ja
+        - aura-2-ebisu-ja
+        - aura-2-fujin-ja
+        - aura-2-izanami-ja
+        - aura-2-uzume-ja
       default: aura-asteria-en
       title: V1SpeakPostParametersModel
     V1SpeakPostParametersSampleRate0:
       type: string
       enum:
-        - "8000"
-        - "16000"
-        - "24000"
-        - "32000"
-        - "48000"
+        - '8000'
+        - '16000'
+        - '24000'
+        - '32000'
+        - '48000'
       description: Encoding - linear16. Supported sample rates - 8000, 16000, 24000, 32000, 48000 Hz.
       title: V1SpeakPostParametersSampleRate0
     V1SpeakPostParametersSampleRate1:
       type: string
       enum:
-        - "8000"
-        - "16000"
+        - '8000'
+        - '16000'
       description: Encoding - mulaw. Supported sample rates - 8000, 16000 Hz.
       title: V1SpeakPostParametersSampleRate1
     V1SpeakPostParametersSampleRate2:
       type: string
       enum:
-        - "8000"
-        - "16000"
+        - '8000'
+        - '16000'
       description: Encoding - alaw. Supported sample rates - 8000, 16000 Hz.
       title: V1SpeakPostParametersSampleRate2
     V1SpeakPostParametersSampleRate3:
       type: string
       enum:
-        - "22050"
+        - '22050'
       description: Encoding - mp3. Sample rate is fixed and not configurable (22050 Hz).
       title: V1SpeakPostParametersSampleRate3
     V1SpeakPostParametersSampleRate4:
       type: string
       enum:
-        - "48000"
+        - '48000'
       description: Encoding - opus. Sample rate is fixed at 48000 Hz.
       title: V1SpeakPostParametersSampleRate4
     V1SpeakPostParametersSampleRate:
       oneOf:
-        - $ref: "#/components/schemas/V1SpeakPostParametersSampleRate0"
-        - $ref: "#/components/schemas/V1SpeakPostParametersSampleRate1"
-        - $ref: "#/components/schemas/V1SpeakPostParametersSampleRate2"
-        - $ref: "#/components/schemas/V1SpeakPostParametersSampleRate3"
-        - $ref: "#/components/schemas/V1SpeakPostParametersSampleRate4"
+        - $ref: '#/components/schemas/V1SpeakPostParametersSampleRate0'
+        - $ref: '#/components/schemas/V1SpeakPostParametersSampleRate1'
+        - $ref: '#/components/schemas/V1SpeakPostParametersSampleRate2'
+        - $ref: '#/components/schemas/V1SpeakPostParametersSampleRate3'
+        - $ref: '#/components/schemas/V1SpeakPostParametersSampleRate4'
       title: V1SpeakPostParametersSampleRate
     SpeakV1Request:
       type: object
@@ -1685,7 +1746,7 @@ components:
       title: V1ReadPostParametersSummarize0
     V1ReadPostParametersSummarize:
       oneOf:
-        - $ref: "#/components/schemas/V1ReadPostParametersSummarize0"
+        - $ref: '#/components/schemas/V1ReadPostParametersSummarize0'
         - type: boolean
           default: false
       title: V1ReadPostParametersSummarize
@@ -1745,8 +1806,8 @@ components:
       title: ReadV1RequestText
     ReadV1Request:
       oneOf:
-        - $ref: "#/components/schemas/ReadV1RequestUrl"
-        - $ref: "#/components/schemas/ReadV1RequestText"
+        - $ref: '#/components/schemas/ReadV1RequestUrl'
+        - $ref: '#/components/schemas/ReadV1RequestText'
       title: ReadV1Request
     ReadV1ResponseMetadataMetadataSummaryInfo:
       type: object
@@ -1804,19 +1865,19 @@ components:
         language:
           type: string
         summary_info:
-          $ref: "#/components/schemas/ReadV1ResponseMetadataMetadataSummaryInfo"
+          $ref: '#/components/schemas/ReadV1ResponseMetadataMetadataSummaryInfo'
         sentiment_info:
-          $ref: "#/components/schemas/ReadV1ResponseMetadataMetadataSentimentInfo"
+          $ref: '#/components/schemas/ReadV1ResponseMetadataMetadataSentimentInfo'
         topics_info:
-          $ref: "#/components/schemas/ReadV1ResponseMetadataMetadataTopicsInfo"
+          $ref: '#/components/schemas/ReadV1ResponseMetadataMetadataTopicsInfo'
         intents_info:
-          $ref: "#/components/schemas/ReadV1ResponseMetadataMetadataIntentsInfo"
+          $ref: '#/components/schemas/ReadV1ResponseMetadataMetadataIntentsInfo'
       title: ReadV1ResponseMetadataMetadata
     ReadV1ResponseMetadata:
       type: object
       properties:
         metadata:
-          $ref: "#/components/schemas/ReadV1ResponseMetadataMetadata"
+          $ref: '#/components/schemas/ReadV1ResponseMetadataMetadata'
       title: ReadV1ResponseMetadata
     ReadV1ResponseResultsSummaryResultsSummary:
       type: object
@@ -1828,34 +1889,34 @@ components:
       type: object
       properties:
         summary:
-          $ref: "#/components/schemas/ReadV1ResponseResultsSummaryResultsSummary"
+          $ref: '#/components/schemas/ReadV1ResponseResultsSummaryResultsSummary'
       title: ReadV1ResponseResultsSummaryResults
     ReadV1ResponseResultsSummary:
       type: object
       properties:
         results:
-          $ref: "#/components/schemas/ReadV1ResponseResultsSummaryResults"
+          $ref: '#/components/schemas/ReadV1ResponseResultsSummaryResults'
       description: Output whenever `summary=true` is used
       title: ReadV1ResponseResultsSummary
     ReadV1ResponseResults:
       type: object
       properties:
         summary:
-          $ref: "#/components/schemas/ReadV1ResponseResultsSummary"
+          $ref: '#/components/schemas/ReadV1ResponseResultsSummary'
         topics:
-          $ref: "#/components/schemas/SharedTopics"
+          $ref: '#/components/schemas/SharedTopics'
         intents:
-          $ref: "#/components/schemas/SharedIntents"
+          $ref: '#/components/schemas/SharedIntents'
         sentiments:
-          $ref: "#/components/schemas/SharedSentiments"
+          $ref: '#/components/schemas/SharedSentiments'
       title: ReadV1ResponseResults
     ReadV1Response:
       type: object
       properties:
         metadata:
-          $ref: "#/components/schemas/ReadV1ResponseMetadata"
+          $ref: '#/components/schemas/ReadV1ResponseMetadata'
         results:
-          $ref: "#/components/schemas/ReadV1ResponseResults"
+          $ref: '#/components/schemas/ReadV1ResponseResults'
       required:
         - metadata
         - results
@@ -1928,7 +1989,7 @@ components:
           type: string
           format: uuid
         metadata:
-          $ref: "#/components/schemas/ListModelsV1ResponseTtsModelsMetadata"
+          $ref: '#/components/schemas/ListModelsV1ResponseTtsModelsMetadata'
       title: ListModelsV1ResponseTtsModels
     ListModelsV1Response:
       type: object
@@ -1936,11 +1997,11 @@ components:
         stt:
           type: array
           items:
-            $ref: "#/components/schemas/ListModelsV1ResponseSttModels"
+            $ref: '#/components/schemas/ListModelsV1ResponseSttModels'
         tts:
           type: array
           items:
-            $ref: "#/components/schemas/ListModelsV1ResponseTtsModels"
+            $ref: '#/components/schemas/ListModelsV1ResponseTtsModels'
       title: ListModelsV1Response
     GetModelV1Response0:
       type: object
@@ -2010,12 +2071,12 @@ components:
           type: string
           format: uuid
         metadata:
-          $ref: "#/components/schemas/GetModelV1ResponseOneOf1Metadata"
+          $ref: '#/components/schemas/GetModelV1ResponseOneOf1Metadata'
       title: GetModelV1Response1
     GetModelV1Response:
       oneOf:
-        - $ref: "#/components/schemas/GetModelV1Response0"
-        - $ref: "#/components/schemas/GetModelV1Response1"
+        - $ref: '#/components/schemas/GetModelV1Response0'
+        - $ref: '#/components/schemas/GetModelV1Response1'
       title: GetModelV1Response
     V1ProjectsProjectIdRequestsGetParametersDeployment:
       type: string
@@ -2072,7 +2133,7 @@ components:
           type: string
           description: The unique identifier of the API key
         response:
-          $ref: "#/components/schemas/ProjectRequestResponseResponse"
+          $ref: '#/components/schemas/ProjectRequestResponseResponse'
           description: The response of the request
         code:
           type: number
@@ -2100,13 +2161,13 @@ components:
         requests:
           type: array
           items:
-            $ref: "#/components/schemas/ProjectRequestResponse"
+            $ref: '#/components/schemas/ProjectRequestResponse'
       title: ListProjectRequestsV1Response
     GetProjectRequestV1Response:
       type: object
       properties:
         request:
-          $ref: "#/components/schemas/ProjectRequestResponse"
+          $ref: '#/components/schemas/ProjectRequestResponse'
       title: GetProjectRequestV1Response
   securitySchemes:
     ApiKeyAuth:

@@ -9,7 +9,7 @@ info:
     url: https://help.openai.com/
   license:
     name: MIT
-    url: https://github.com/openai/openai-openapi/blob/master/LICENSE
+    identifier: MIT
 servers:
   - url: https://api.openai.com/v1
 security:
@@ -1497,232 +1497,6 @@ paths:
               "client_secret": null
             }
       parameters: []
-webhooks:
-  batch_cancelled:
-    post:
-      description: |
-        Sent when a batch has been cancelled.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookBatchCancelled'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried.
-  batch_completed:
-    post:
-      description: |
-        Sent when a batch has completed processing.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookBatchCompleted'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried.
-  batch_expired:
-    post:
-      description: |
-        Sent when a batch has expired before completion.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookBatchExpired'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried.
-  batch_failed:
-    post:
-      description: |
-        Sent when a batch has failed.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookBatchFailed'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried.
-  eval_run_canceled:
-    post:
-      description: |
-        Sent when an eval run has been canceled.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookEvalRunCanceled'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried. 
-  eval_run_failed:
-    post:
-      description: |
-        Sent when an eval run has failed.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookEvalRunFailed'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried. 
-  eval_run_succeeded:
-    post:
-      description: |
-        Sent when an eval run has succeeded.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookEvalRunSucceeded'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried. 
-  fine_tuning_job_cancelled:
-    post:
-      description: |
-        Sent when a fine-tuning job has been cancelled.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookFineTuningJobCancelled'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried. 
-  fine_tuning_job_failed:
-    post:
-      description: |
-        Sent when a fine-tuning job has failed.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookFineTuningJobFailed'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried. 
-  fine_tuning_job_succeeded:
-    post:
-      description: |
-        Sent when a fine-tuning job has succeeded.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookFineTuningJobSucceeded'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried. 
-  realtime_call_incoming:
-    post:
-      description: |
-        Sent when Realtime API Receives a incoming SIP call.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookRealtimeCallIncoming'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200
-            status codes will be retried.
-  response_cancelled:
-    post:
-      description: |
-        Sent when a background response has been cancelled.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookResponseCancelled'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried.
-  response_completed:
-    post:
-      description: |
-        Sent when a background response has completed successfully.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookResponseCompleted'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried. 
-  response_failed:
-    post:
-      description: |
-        Sent when a background response has failed.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookResponseFailed'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried.
-  response_incomplete:
-    post:
-      description: |
-        Sent when a background response is incomplete.
-      requestBody:
-        description: The event payload sent by the API.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookResponseIncomplete'
-      responses:
-        '200':
-          description: |
-            Return a 200 status code to acknowledge receipt of the event. Non-200 
-            status codes will be retried.
 components:
   schemas:
     AudioResponseFormat:
@@ -2276,8 +2050,8 @@ components:
           type: string
           format: uri
           description: |
-            The URL for the MCP server. One of `server_url` or `connector_id` must be
-            provided.
+            The URL for the MCP server. One of `server_url`, `connector_id`, or
+            `tunnel_id` must be provided.
         connector_id:
           type: string
           enum:
@@ -2291,8 +2065,8 @@ components:
             - connector_sharepoint
           description: |
             Identifier for service connectors, like those available in ChatGPT. One of
-            `server_url` or `connector_id` must be provided. Learn more about service
-            connectors [here](/docs/guides/tools-remote-mcp#connectors).
+            `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
+            about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
 
             Currently supported `connector_id` values are:
 
@@ -2304,6 +2078,12 @@ components:
             - Outlook Calendar: `connector_outlookcalendar`
             - Outlook Email: `connector_outlookemail`
             - SharePoint: `connector_sharepoint`
+        tunnel_id:
+          type: string
+          pattern: ^tunnel_[a-z0-9]{32}$
+          description: |
+            The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+            `server_url`, `connector_id`, or `tunnel_id` must be provided.
         authorization:
           type: string
           description: |
@@ -2334,6 +2114,14 @@ components:
                   items:
                     type: string
                 - $ref: '#/components/schemas/MCPToolFilter'
+            - type: 'null'
+        allowed_callers:
+          anyOf:
+            - type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/CallableToolAllowedCaller'
+              description: The tool invocation context(s).
             - type: 'null'
         require_approval:
           anyOf:
@@ -2867,6 +2655,8 @@ components:
                 - gpt-realtime
                 - gpt-realtime-1.5
                 - gpt-realtime-2
+                - gpt-realtime-2.1
+                - gpt-realtime-2.1-mini
                 - gpt-realtime-2025-08-28
                 - gpt-4o-realtime-preview
                 - gpt-4o-realtime-preview-2024-10-01
@@ -2914,6 +2704,7 @@ components:
                   properties:
                     type:
                       $ref: '#/components/schemas/NoiseReductionType'
+                  nullable: true
                 turn_detection:
                   $ref: '#/components/schemas/RealtimeTurnDetection'
             output:
@@ -3302,6 +3093,8 @@ components:
                 - gpt-realtime
                 - gpt-realtime-1.5
                 - gpt-realtime-2
+                - gpt-realtime-2.1
+                - gpt-realtime-2.1-mini
                 - gpt-realtime-2025-08-28
                 - gpt-4o-realtime-preview
                 - gpt-4o-realtime-preview-2024-10-01
@@ -3349,6 +3142,7 @@ components:
                   properties:
                     type:
                       $ref: '#/components/schemas/NoiseReductionType'
+                  nullable: true
                 turn_detection:
                   $ref: '#/components/schemas/RealtimeTurnDetection'
             output:
@@ -3426,6 +3220,7 @@ components:
                       description: |
                         The arbitrary metadata to attach to this trace to enable
                         filtering in the Traces Dashboard.
+              nullable: true
             - type: 'null'
         tools:
           type: array
@@ -3511,6 +3306,7 @@ components:
           properties:
             type:
               $ref: '#/components/schemas/NoiseReductionType'
+          nullable: true
         input_audio_format:
           type: string
           default: pcm16
@@ -3571,6 +3367,7 @@ components:
                   properties:
                     type:
                       $ref: '#/components/schemas/NoiseReductionType'
+                  nullable: true
                 turn_detection:
                   $ref: '#/components/schemas/RealtimeTurnDetection'
         include:
@@ -4354,7 +4151,6 @@ components:
       type: string
       enum:
         - logprobs
-      default: []
     TranscriptionSegment:
       type: object
       properties:
@@ -4524,6 +4320,20 @@ components:
             "name": "My new voice",
             "created_at": 1734220800
           }
+    PromptCacheBreakpointConfig:
+      properties:
+        mode:
+          type: string
+          enum:
+            - explicit
+          description: The breakpoint mode. Always `explicit`.
+          default: explicit
+          x-stainless-const: true
+      type: object
+      required:
+        - mode
+      title: Prompt cache breakpoint
+      description: Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a token block.
     InputTextContent:
       properties:
         type:
@@ -4536,6 +4346,8 @@ components:
         text:
           type: string
           description: The text input to the model.
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpointConfig'
       type: object
       required:
         - type
@@ -4572,6 +4384,8 @@ components:
         detail:
           $ref: '#/components/schemas/ImageDetail'
           description: The detail level of the image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to `auto`.
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpointConfig'
       type: object
       required:
         - type
@@ -4581,6 +4395,7 @@ components:
     FileInputDetail:
       type: string
       enum:
+        - auto
         - low
         - high
     InputFileContent:
@@ -4604,18 +4419,25 @@ components:
           type: string
           description: |
             The content of the file to be sent to the model.
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpointConfig'
         file_url:
           type: string
           format: uri
           description: The URL of the file to be sent to the model.
         detail:
           $ref: '#/components/schemas/FileInputDetail'
-          description: The detail level of the file to be sent to the model. Use `low` for the default rendering behavior, or `high` to render the file at higher quality. Defaults to `low`.
+          description: The detail level of the file to be sent to the model. Use `auto` to let the system select the detail level; for GPT-5.6 and later models, `auto` uses high-quality rendering, which may increase input token usage. Use `low` for lower-cost rendering, or `high` to render the file at higher quality. Defaults to `auto`.
       type: object
       required:
         - type
       title: Input file
       description: A file input to the model.
+    CallableToolAllowedCaller:
+      type: string
+      enum:
+        - direct
+        - programmatic
   securitySchemes:
     ApiKeyAuth:
       type: http
@@ -4659,6 +4481,174 @@ x-oaiMeta:
         are emitted by the server.
 
         [Learn more about streaming responses](/docs/guides/streaming-responses?api-mode=responses).
+      navigationGroup: responses
+      sections:
+        - type: object
+          key: ResponseCreatedEvent
+          path: <auto>
+        - type: object
+          key: ResponseInProgressEvent
+          path: <auto>
+        - type: object
+          key: ResponseCompletedEvent
+          path: <auto>
+        - type: object
+          key: ResponseFailedEvent
+          path: <auto>
+        - type: object
+          key: ResponseIncompleteEvent
+          path: <auto>
+        - type: object
+          key: ResponseOutputItemAddedEvent
+          path: <auto>
+        - type: object
+          key: ResponseOutputItemDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseContentPartAddedEvent
+          path: <auto>
+        - type: object
+          key: ResponseContentPartDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseTextDeltaEvent
+          path: response/output_text/delta
+        - type: object
+          key: ResponseTextDoneEvent
+          path: response/output_text/done
+        - type: object
+          key: ResponseRefusalDeltaEvent
+          path: <auto>
+        - type: object
+          key: ResponseRefusalDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseFunctionCallArgumentsDeltaEvent
+          path: <auto>
+        - type: object
+          key: ResponseFunctionCallArgumentsDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseFileSearchCallInProgressEvent
+          path: <auto>
+        - type: object
+          key: ResponseFileSearchCallSearchingEvent
+          path: <auto>
+        - type: object
+          key: ResponseFileSearchCallCompletedEvent
+          path: <auto>
+        - type: object
+          key: ResponseWebSearchCallInProgressEvent
+          path: <auto>
+        - type: object
+          key: ResponseWebSearchCallSearchingEvent
+          path: <auto>
+        - type: object
+          key: ResponseWebSearchCallCompletedEvent
+          path: <auto>
+        - type: object
+          key: ResponseReasoningSummaryPartAddedEvent
+          path: <auto>
+        - type: object
+          key: ResponseReasoningSummaryPartDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseReasoningSummaryTextDeltaEvent
+          path: <auto>
+        - type: object
+          key: ResponseReasoningSummaryTextDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseReasoningTextDeltaEvent
+          path: <auto>
+        - type: object
+          key: ResponseReasoningTextDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseImageGenCallCompletedEvent
+          path: <auto>
+        - type: object
+          key: ResponseImageGenCallGeneratingEvent
+          path: <auto>
+        - type: object
+          key: ResponseImageGenCallInProgressEvent
+          path: <auto>
+        - type: object
+          key: ResponseImageGenCallPartialImageEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPCallArgumentsDeltaEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPCallArgumentsDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPCallCompletedEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPCallFailedEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPCallInProgressEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPListToolsCompletedEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPListToolsFailedEvent
+          path: <auto>
+        - type: object
+          key: ResponseMCPListToolsInProgressEvent
+          path: <auto>
+        - type: object
+          key: ResponseCodeInterpreterCallInProgressEvent
+          path: <auto>
+        - type: object
+          key: ResponseCodeInterpreterCallInterpretingEvent
+          path: <auto>
+        - type: object
+          key: ResponseCodeInterpreterCallCompletedEvent
+          path: <auto>
+        - type: object
+          key: ResponseCodeInterpreterCallCodeDeltaEvent
+          path: <auto>
+        - type: object
+          key: ResponseCodeInterpreterCallCodeDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseOutputTextAnnotationAddedEvent
+          path: <auto>
+        - type: object
+          key: ResponseQueuedEvent
+          path: <auto>
+        - type: object
+          key: ResponseCustomToolCallInputDeltaEvent
+          path: <auto>
+        - type: object
+          key: ResponseCustomToolCallInputDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseErrorEvent
+          path: <auto>
+    - id: responses-websocket-client-events
+      title: Client events
+      description: |
+        Events sent by the client over a Responses API WebSocket connection.
+      navigationGroup: responses
+      sections:
+        - type: object
+          key: ResponsesClientEventResponseCreate
+          path: <auto>
+    - id: responses-websocket-server-events
+      title: Server events (WebSocket only)
+      description: |
+        Events emitted only over a Responses API WebSocket connection.
+      navigationGroup: responses
+    - id: responses-websocket-shared-events
+      title: Server events
+      description: |
+        These events use the same payloads over WebSocket and
+        [HTTP streaming](./streaming-events).
       navigationGroup: responses
       sections:
         - type: object

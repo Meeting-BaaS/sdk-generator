@@ -5,8 +5,7 @@
 
 import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
 import { BaseWebhookHandler } from "./base-webhook"
-import type { UnifiedWebhookEvent } from "./types"
-import type { TranscriptionProvider } from "../router/types"
+import type { UnifiedWebhookEvent, WebhookProvider } from "./types"
 
 /**
  * Deepgram webhook handler
@@ -60,7 +59,7 @@ import type { TranscriptionProvider } from "../router/types"
  * ```
  */
 export class DeepgramWebhookHandler extends BaseWebhookHandler {
-  readonly provider: TranscriptionProvider = "deepgram"
+  readonly provider: WebhookProvider = "deepgram"
 
   /**
    * Check if payload matches Deepgram webhook format

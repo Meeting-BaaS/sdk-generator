@@ -5,8 +5,8 @@
  * data (speakers, words, utterances) across different provider formats.
  */
 
-import type { Speaker, Word, Utterance, TranscriptionStatus } from "../router/types"
 import type { RecognitionResult } from "../generated/speechmatics/schema/recognitionResult"
+import type { Speaker, TranscriptionStatus, Utterance, Word } from "../router/types"
 
 /**
  * Extract unique speakers from utterances

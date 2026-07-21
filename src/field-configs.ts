@@ -58,59 +58,50 @@
  * @packageDocumentation
  */
 
-import { z } from "zod"
-import { zodToFieldConfigs, type ZodFieldConfig } from "./utils/zod-to-field-configs"
-
-// Import Zod schemas from generated code
+import type { z } from "zod"
 import {
-  listenTranscribeQueryParams as deepgramTranscribeParams,
-  listProjectRequestsQueryParams as deepgramListParams
-} from "./generated/deepgram/api/deepgramAPI.zod"
-
-import { deepgramStreamingOnlyParams } from "./generated/deepgram/streaming-types.zod"
-
-import {
-  createTranscriptBody as assemblyaiTranscribeParams,
-  listTranscriptsQueryParams as assemblyaiListParams
+  listTranscriptsQueryParams as assemblyaiListParams,
+  createTranscriptBody as assemblyaiTranscribeParams
 } from "./generated/assemblyai/api/assemblyAIAPI.zod"
-
 import {
   streamingTranscriberParams as assemblyaiStreamingParams,
   streamingUpdateConfigParams as assemblyaiUpdateConfigParams
 } from "./generated/assemblyai/streaming-types.zod"
-
 import {
-  transcriptionControllerInitPreRecordedJobV2Body as gladiaTranscribeParams,
-  transcriptionControllerListV2QueryParams as gladiaListParams,
-  streamingControllerInitStreamingSessionV2Body as gladiaStreamingParams
-} from "./generated/gladia/api/gladiaControlAPI.zod"
-
-import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAudioRealtimeAPI.zod"
-
-import {
-  transcriptionsCreateBody as azureTranscribeParams,
-  transcriptionsListQueryParams as azureListParams
+  transcriptionsListQueryParams as azureListParams,
+  transcriptionsCreateBody as azureTranscribeParams
 } from "./generated/azure/api/speechServicesAPIVersion32.zod"
-
+// Import Zod schemas from generated code
 import {
-  streamingTranscriberParams as speechmaticsStreamingParams,
-  streamingUpdateConfigParams as speechmaticsUpdateConfigParams
-} from "./generated/speechmatics/streaming-types.zod"
-
+  listProjectRequestsQueryParams as deepgramListParams,
+  listenTranscribeQueryParams as deepgramTranscribeParams
+} from "./generated/deepgram/api/deepgramAPI.zod"
+import { deepgramStreamingOnlyParams } from "./generated/deepgram/streaming-types.zod"
+import { speechToTextBody as elevenlabsTranscribeParams } from "./generated/elevenlabs/api/elevenLabsSpeechToTextAPI.zod"
 import {
-  batchTranscriptionParams as speechmaticsTranscribeParams,
-  listJobsQueryParams as speechmaticsListParams
-} from "./generated/speechmatics/batch-types.zod"
-
+  transcriptionControllerListV2QueryParams as gladiaListParams,
+  streamingControllerInitStreamingSessionV2Body as gladiaStreamingParams,
+  transcriptionControllerInitPreRecordedJobV2Body as gladiaTranscribeParams
+} from "./generated/gladia/api/gladiaControlAPI.zod"
+import { createTranscriptionBody as openaiTranscribeParams } from "./generated/openai/api/openAIAudioRealtimeAPI.zod"
 import {
-  createTranscriptionBody as sonioxTranscribeParams,
-  getTranscriptionsQueryParams as sonioxListParams
+  getTranscriptionsQueryParams as sonioxListParams,
+  createTranscriptionBody as sonioxTranscribeParams
 } from "./generated/soniox/api/sonioxPublicAPI.zod"
-
 import {
   streamingTranscriberParams as sonioxStreamingParams,
   streamingUpdateConfigParams as sonioxUpdateConfigParams
 } from "./generated/soniox/streaming-types.zod"
+
+import {
+  listJobsQueryParams as speechmaticsListParams,
+  batchTranscriptionParams as speechmaticsTranscribeParams
+} from "./generated/speechmatics/batch-types.zod"
+import {
+  streamingTranscriberParams as speechmaticsStreamingParams,
+  streamingUpdateConfigParams as speechmaticsUpdateConfigParams
+} from "./generated/speechmatics/streaming-types.zod"
+import { type ZodFieldConfig, zodToFieldConfigs } from "./utils/zod-to-field-configs"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Re-export types
@@ -263,6 +254,19 @@ export type AzureTranscriptionConfig = z.infer<typeof azureTranscribeParams>
 export const AzureTranscriptionSchema = azureTranscribeParams
 /** Zod schema for Azure list filters */
 export const AzureListFilterSchema = azureListParams
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ElevenLabs - Typed field names and schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Field names for ElevenLabs transcription requests */
+export type ElevenLabsTranscriptionFieldName = keyof z.infer<typeof elevenlabsTranscribeParams>
+
+/** ElevenLabs transcription request values (fully typed) */
+export type ElevenLabsTranscriptionConfig = z.infer<typeof elevenlabsTranscribeParams>
+
+/** Zod schema for ElevenLabs transcription */
+export const ElevenLabsTranscriptionSchema = elevenlabsTranscribeParams
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Speechmatics - Typed field names and schemas
@@ -512,9 +516,30 @@ export function getAzureListFilterFields(): ZodFieldConfig[] {
  */
 export function getAzureFieldConfigs(): ProviderFieldConfigs {
   return {
-    provider: "azure",
+    provider: "azure-stt",
     transcription: getAzureTranscriptionFields(),
     listFilters: getAzureListFilterFields()
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ElevenLabs - Derived from Zod schemas
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Get ElevenLabs transcription fields (derived from OpenAPI spec)
+ */
+export function getElevenLabsTranscriptionFields(): ZodFieldConfig[] {
+  return zodToFieldConfigs(elevenlabsTranscribeParams)
+}
+
+/**
+ * Get all ElevenLabs field configs
+ */
+export function getElevenLabsFieldConfigs(): ProviderFieldConfigs {
+  return {
+    provider: "elevenlabs",
+    transcription: getElevenLabsTranscriptionFields()
   }
 }
 
@@ -622,9 +647,13 @@ export type FieldConfigProvider =
   | "deepgram"
   | "assemblyai"
   | "openai-whisper"
+  | "azure-stt"
   | "azure"
+  | "elevenlabs"
   | "speechmatics"
   | "soniox"
+
+export type CanonicalFieldConfigProvider = Exclude<FieldConfigProvider, "azure">
 
 /**
  * Get field configs for a specific provider
@@ -639,8 +668,11 @@ export function getProviderFieldConfigs(provider: FieldConfigProvider): Provider
       return getAssemblyAIFieldConfigs()
     case "openai-whisper":
       return getOpenAIFieldConfigs()
+    case "azure-stt":
     case "azure":
       return getAzureFieldConfigs()
+    case "elevenlabs":
+      return getElevenLabsFieldConfigs()
     case "speechmatics":
       return getSpeechmaticsFieldConfigs()
     case "soniox":
@@ -651,13 +683,14 @@ export function getProviderFieldConfigs(provider: FieldConfigProvider): Provider
 /**
  * Get all provider field configs
  */
-export function getAllFieldConfigs(): Record<FieldConfigProvider, ProviderFieldConfigs> {
+export function getAllFieldConfigs(): Record<CanonicalFieldConfigProvider, ProviderFieldConfigs> {
   return {
     gladia: getGladiaFieldConfigs(),
     deepgram: getDeepgramFieldConfigs(),
     assemblyai: getAssemblyAIFieldConfigs(),
     "openai-whisper": getOpenAIFieldConfigs(),
-    azure: getAzureFieldConfigs(),
+    "azure-stt": getAzureFieldConfigs(),
+    elevenlabs: getElevenLabsFieldConfigs(),
     speechmatics: getSpeechmaticsFieldConfigs(),
     soniox: getSonioxFieldConfigs()
   }

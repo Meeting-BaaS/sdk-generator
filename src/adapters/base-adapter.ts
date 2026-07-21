@@ -3,6 +3,7 @@
  * All provider adapters must implement this interface
  */
 
+import { DEFAULT_POLLING, DEFAULT_TIMEOUTS } from "../constants/defaults"
 import type {
   AudioInput,
   ListTranscriptsOptions,
@@ -15,12 +16,11 @@ import type {
   TranscriptionProvider,
   UnifiedTranscriptResponse
 } from "../router/types"
-import { DEFAULT_TIMEOUTS, DEFAULT_POLLING } from "../constants/defaults"
 import {
   ERROR_CODES,
   type ErrorCode,
-  httpStatusToErrorCode,
-  extractProviderMessage
+  extractProviderMessage,
+  httpStatusToErrorCode
 } from "../utils/errors"
 
 /**
@@ -201,7 +201,7 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
     const err = error as Error & {
       statusCode?: number
       code?: string
-      response?: { data?: any; status?: number; statusText?: string }
+      response?: { data?: unknown; status?: number; statusText?: string }
     }
 
     // Extract HTTP error details if present (axios errors)
@@ -278,7 +278,7 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
    * @returns Axios config object
    */
   protected getAxiosConfig(
-    authHeaderName: string = "Authorization",
+    authHeaderName = "Authorization",
     authHeaderValue?: (apiKey: string) => string
   ): {
     baseURL: string

@@ -16,12 +16,12 @@
  *   node scripts/check-provider-updates.js --write
  */
 
-const fs = require("fs")
-const path = require("path")
-const http = require("http")
-const https = require("https")
-const crypto = require("crypto")
-const zlib = require("zlib")
+const fs = require("node:fs")
+const path = require("node:path")
+const http = require("node:http")
+const https = require("node:https")
+const crypto = require("node:crypto")
+const zlib = require("node:zlib")
 const { SPEC_SOURCES, PROVIDERS, canonicalizeForHash } = require("./provider-upstream-manifest")
 
 const SPECS_DIR = path.join(__dirname, "..", "specs")
@@ -46,7 +46,7 @@ function loadChecksums() {
 
 function saveChecksums(data) {
   data.updatedAt = new Date().toISOString()
-  fs.writeFileSync(CHECKSUMS_FILE, JSON.stringify(data, null, 2) + "\n", "utf-8")
+  fs.writeFileSync(CHECKSUMS_FILE, `${JSON.stringify(data, null, 2)}\n`, "utf-8")
 }
 
 function fetchBuffer(url) {
@@ -135,7 +135,7 @@ function readTarEntry(buffer, targetPath) {
     const prefix = header.subarray(345, 500).toString("utf-8").replace(/\0.*$/, "")
     const fullName = normalizeTarPath(prefix ? `${prefix}/${name}` : name)
     const sizeOctal = header.subarray(124, 136).toString("utf-8").replace(/\0.*$/, "").trim()
-    const size = sizeOctal ? parseInt(sizeOctal, 8) : 0
+    const size = sizeOctal ? Number.parseInt(sizeOctal, 8) : 0
     const contentStart = offset + 512
     const contentEnd = contentStart + size
 
@@ -228,7 +228,8 @@ async function fetchNpmPackageDetails(packageName) {
 }
 
 async function checkPackageUpstream(providerName, upstreamConfig, checksumData, write) {
-  const providerSdkState = (checksumData.providerSdks[providerName] ??= { packages: {} })
+  checksumData.providerSdks[providerName] ??= { packages: {} }
+  const providerSdkState = checksumData.providerSdks[providerName]
   if (!providerSdkState.packages) providerSdkState.packages = {}
 
   const pkgName = upstreamConfig.packageName
@@ -327,9 +328,9 @@ async function checkPackageUpstream(providerName, upstreamConfig, checksumData, 
 }
 
 async function checkRemoteUpstream(providerName, upstreamConfig, checksumData, write) {
-  const upstreamState = (checksumData.providerUpstreams[
-    stateKey(providerName, upstreamConfig.key)
-  ] ??= {})
+  const upstreamKey = stateKey(providerName, upstreamConfig.key)
+  checksumData.providerUpstreams[upstreamKey] ??= {}
+  const upstreamState = checksumData.providerUpstreams[upstreamKey]
 
   try {
     const content = await fetchBuffer(upstreamConfig.url)

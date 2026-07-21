@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.8] - 2026-07-21
+
+### Added
+
+#### Generated-Type Freshness Gates
+
+Added deterministic generated-output verification, package-entrypoint checks, provider checksum tracking, and CI coverage so stale or incomplete generated API types fail before release. Public field metadata and equivalence documentation are now refreshed as part of generation.
+
+### Changed
+
+#### Provider APIs And SDKs Refreshed
+
+Re-synced and regenerated the TypeScript API surface for AssemblyAI, Azure Speech-to-Text v3.2, Deepgram, ElevenLabs, Gladia, OpenAI, Soniox, and Speechmatics. Notable additions include Soniox `stt-async-v5`, OpenAI `gpt-realtime-2.1` and `gpt-realtime-2.1-mini`, AssemblyAI `universal-3-5-pro`, ElevenLabs multichannel output controls, Gladia `/v1/models`, and Speechmatics `model`, `melia-1`, forced-transcript events, and region metadata. Removed Speechmatics alignment/data/text/object-URL endpoints no longer appear in generated clients. Provider language and locale sets are unchanged.
+
+#### Dependencies And Code Generation Updated
+
+Updated runtime dependencies including Soniox SDK 2.2, Axios 1.18, ws 8.21, and Zod 4.4. Updated the generation/test toolchain to Orval 8.22, TypeScript 6.0, Vitest 4.1, Vite 8.1, and current supporting packages. Zod field introspection now supports Zod 4, including nested object unions, while generated compatibility exports remain available.
+
+### Fixed
+
+#### Adapter Binary And Validation Compatibility
+
+Normalized Node buffers and typed-array views into Blob-compatible payloads for ElevenLabs, Soniox, Speechmatics, and Gladia. Audio validation now accepts any positive integer sample rate while retaining provider-specific encoding, channel, and bit-depth checks.
+
+#### Generated Metadata Classification
+
+Tightened field-equivalence classification so Deepgram `filler_words` and `keywords` are not mislabeled as word timestamps. Generation now fails on source extraction errors instead of falling back to stale built output.
+
+## [0.9.7] - 2026-06-16
+
+### Fixed
+
+#### Gladia Streaming Language Configuration
+
+Sanitized deprecated Gladia streaming `language_config` keys through the shared helper and removed stale `detect_language` metadata.
+
 ## [0.9.6] - 2026-06-01
 
 ### Fixed

@@ -29,46 +29,60 @@
 
 // Re-export core types (browser-safe, no node:crypto dependency)
 export type { ProviderCapabilities, TranscriptionProvider } from "./types/core"
-import type { ProviderCapabilities, TranscriptionProvider } from "./types/core"
+
+import { TranscriptLanguageCode } from "./generated/assemblyai/schema/transcriptLanguageCode"
+
+// Import Deepgram languages from generated file (derived from /v1/models)
+export {
+  DeepgramLanguage,
+  type DeepgramLanguageCode,
+  DeepgramLanguageCodes
+} from "./generated/deepgram/languages"
+
+import { DeepgramLanguageCodes } from "./generated/deepgram/languages"
 
 // Import language enums from generated types
 import { TranscriptionLanguageCodeEnum } from "./generated/gladia/schema/transcriptionLanguageCodeEnum"
-import { TranscriptLanguageCode } from "./generated/assemblyai/schema/transcriptLanguageCode"
+import type { ProviderCapabilities, TranscriptionProvider } from "./types/core"
 
 // Import Soniox languages from generated file (derived from OpenAPI spec)
 export {
+  type SonioxLanguageCode,
   SonioxLanguageCodes,
-  SonioxLanguages,
   SonioxLanguageLabels,
-  type SonioxLanguageCode
+  SonioxLanguages
 } from "./generated/soniox/languages"
+
 import { SonioxLanguageCodes } from "./generated/soniox/languages"
 
 // Import ElevenLabs languages from generated file
 export {
+  type ElevenLabsLanguageCode,
   ElevenLabsLanguageCodes,
-  ElevenLabsLanguages,
   ElevenLabsLanguageLabels,
-  type ElevenLabsLanguageCode
+  ElevenLabsLanguages
 } from "./generated/elevenlabs/languages"
+
 import { ElevenLabsLanguageCodes } from "./generated/elevenlabs/languages"
 
 // Import Speechmatics languages from generated file (derived from documentation)
 export {
+  type SpeechmaticsLanguageCode,
   SpeechmaticsLanguageCodes,
-  SpeechmaticsLanguages,
   SpeechmaticsLanguageLabels,
-  type SpeechmaticsLanguageCode
+  SpeechmaticsLanguages
 } from "./generated/speechmatics/languages"
+
 import { SpeechmaticsLanguageCodes } from "./generated/speechmatics/languages"
 
 // Import Azure locales from generated file (derived from documentation)
 export {
+  type AzureLocaleCode,
   AzureLocaleCodes,
-  AzureLocales,
   AzureLocaleLabels,
-  type AzureLocaleCode
+  AzureLocales
 } from "./generated/azure/locales"
+
 import { AzureLocaleCodes } from "./generated/azure/locales"
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -135,7 +149,7 @@ export const OpenAICapabilities = {
   streaming: true, // Via OpenAI Realtime API (WebSocket)
   diarization: true,
   wordTimestamps: true,
-  languageDetection: false,
+  languageDetection: true,
   customVocabulary: false,
   summarization: false,
   sentimentAnalysis: false,
@@ -152,8 +166,8 @@ export const AzureCapabilities = {
   streaming: false,
   diarization: true,
   wordTimestamps: true,
-  languageDetection: false,
-  customVocabulary: true,
+  languageDetection: true,
+  customVocabulary: false,
   summarization: false,
   sentimentAnalysis: false,
   entityDetection: false,
@@ -233,7 +247,7 @@ export const ElevenLabsCapabilities = {
  * const streamingProviders = Object.entries(ProviderCapabilitiesMap)
  *   .filter(([_, caps]) => caps.streaming)
  *   .map(([name]) => name)
- * // ['gladia', 'assemblyai', 'deepgram', 'openai-whisper', 'soniox']
+ * // ['gladia', 'assemblyai', 'deepgram', 'openai-whisper', 'speechmatics', 'soniox', 'elevenlabs']
  * ```
  */
 export const ProviderCapabilitiesMap = {
@@ -467,67 +481,13 @@ export const GladiaLanguageCodes = Object.values(TranscriptionLanguageCodeEnum)
 export const AssemblyAILanguageCodes = Object.values(TranscriptLanguageCode)
 
 /**
- * Deepgram supported language codes
- * Note: Deepgram accepts BCP-47 tags, these are the most common
- */
-export const DeepgramLanguageCodes = [
-  "en",
-  "en-US",
-  "en-GB",
-  "en-AU",
-  "en-IN",
-  "es",
-  "es-419",
-  "fr",
-  "fr-CA",
-  "de",
-  "it",
-  "pt",
-  "pt-BR",
-  "nl",
-  "ru",
-  "uk",
-  "pl",
-  "cs",
-  "sk",
-  "hu",
-  "ro",
-  "bg",
-  "hr",
-  "sl",
-  "el",
-  "tr",
-  "fi",
-  "sv",
-  "da",
-  "no",
-  "et",
-  "lv",
-  "lt",
-  "zh",
-  "zh-CN",
-  "zh-TW",
-  "ja",
-  "ko",
-  "th",
-  "vi",
-  "id",
-  "ms",
-  "tl",
-  "hi",
-  "ta",
-  "te",
-  "bn",
-  "ar"
-] as const
-
-/**
  * OpenAI Whisper supported language codes
  * Whisper supports ISO 639-1 codes
  */
 // OpenAI language codes are now in constants.ts
 // Re-exported from constants.ts to maintain backwards compatibility
 export { OpenAILanguageCodes } from "./constants"
+
 import { OpenAILanguageCodes } from "./constants"
 
 // Soniox language codes are imported and re-exported from generated file

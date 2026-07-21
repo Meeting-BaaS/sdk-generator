@@ -5,20 +5,19 @@
 
 import axios, { type AxiosInstance } from "axios"
 import WebSocket from "ws"
+import type { DeepgramRegionType } from "../constants"
 import type {
   AudioChunk,
   AudioInput,
   ProviderCapabilities,
+  SpeechEvent,
   StreamingCallbacks,
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse,
-  SpeechEvent,
-  RawWebSocketMessage
+  UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-import type { DeepgramRegionType } from "../constants"
 
 /**
  * Deepgram-specific configuration options
@@ -48,35 +47,24 @@ export interface DeepgramConfig extends ProviderConfig {
   region?: DeepgramRegionType
 }
 
+import type { GetProjectRequestV1Response } from "../generated/deepgram/schema/getProjectRequestV1Response"
+import type { ListenTranscribeParams } from "../generated/deepgram/schema/listenTranscribeParams"
+import type { ListenV1AcceptedResponse } from "../generated/deepgram/schema/listenV1AcceptedResponse"
 // Import Deepgram generated types
 import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
-import type { ListenV1AcceptedResponse } from "../generated/deepgram/schema/listenV1AcceptedResponse"
-import type { ListenTranscribeParams } from "../generated/deepgram/schema/listenTranscribeParams"
 import type { ListenV1ResponseResultsChannelsItemsAlternativesItems } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemsAlternativesItems"
 import type { ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems } from "../generated/deepgram/schema/listenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems"
 import type { ListenV1ResponseResultsUtterancesItems } from "../generated/deepgram/schema/listenV1ResponseResultsUtterancesItems"
-
+import type { ListProjectRequestsParams } from "../generated/deepgram/schema/listProjectRequestsParams"
 // Import Deepgram request history types for listTranscripts
 import type { ListProjectRequestsV1Response } from "../generated/deepgram/schema/listProjectRequestsV1Response"
-import type { ListProjectRequestsParams } from "../generated/deepgram/schema/listProjectRequestsParams"
 import type { ProjectRequestResponse } from "../generated/deepgram/schema/projectRequestResponse"
-import type { GetProjectRequestV1Response } from "../generated/deepgram/schema/getProjectRequestV1Response"
-import { V1ProjectsProjectIdRequestsGetParametersStatus } from "../generated/deepgram/schema/v1ProjectsProjectIdRequestsGetParametersStatus"
 import { V1ProjectsProjectIdRequestsGetParametersEndpoint } from "../generated/deepgram/schema/v1ProjectsProjectIdRequestsGetParametersEndpoint"
-
+import { V1ProjectsProjectIdRequestsGetParametersStatus } from "../generated/deepgram/schema/v1ProjectsProjectIdRequestsGetParametersStatus"
+// WebSocket streaming response types extracted from official @deepgram/sdk
+import type { DeepgramRealtimeMessage } from "../generated/deepgram/streaming-response-types"
 // Import ListTranscriptsOptions for Deepgram-specific params
 import type { ListTranscriptsOptions } from "../router/types"
-
-// WebSocket streaming response types extracted from official @deepgram/sdk
-import type {
-  DeepgramRealtimeMessage,
-  DeepgramResults,
-  DeepgramMetadata,
-  DeepgramUtteranceEnd,
-  DeepgramSpeechStarted,
-  DeepgramCloseStream,
-  DeepgramError
-} from "../generated/deepgram/streaming-response-types"
 
 /**
  * Deepgram transcription provider adapter
@@ -336,9 +324,15 @@ export class DeepgramAdapter extends BaseAdapter {
           }
         ).then((res) => res.data)
       } else {
-        throw new Error(
-          "Deepgram adapter does not support stream type for pre-recorded transcription. Use transcribeStream() for real-time streaming."
-        )
+        return {
+          success: false,
+          provider: this.name,
+          error: {
+            code: "INVALID_INPUT",
+            message:
+              "Deepgram adapter does not support stream type for pre-recorded transcription. Use transcribeStream() for real-time streaming."
+          }
+        }
       }
 
       if (options?.webhookUrl) {
@@ -1040,7 +1034,9 @@ export class DeepgramAdapter extends BaseAdapter {
       params.append("topics", "true")
     }
     if (dgOpts.customTopic && dgOpts.customTopic.length > 0) {
-      dgOpts.customTopic.forEach((topic) => params.append("custom_topic", topic))
+      for (const topic of dgOpts.customTopic) {
+        params.append("custom_topic", topic)
+      }
     }
     if (dgOpts.customTopicMode) {
       params.append("custom_topic_mode", dgOpts.customTopicMode)
@@ -1049,7 +1045,9 @@ export class DeepgramAdapter extends BaseAdapter {
       params.append("intents", "true")
     }
     if (dgOpts.customIntent && dgOpts.customIntent.length > 0) {
-      dgOpts.customIntent.forEach((intent) => params.append("custom_intent", intent))
+      for (const intent of dgOpts.customIntent) {
+        params.append("custom_intent", intent)
+      }
     }
     if (dgOpts.customIntentMode) {
       params.append("custom_intent_mode", dgOpts.customIntentMode)
@@ -1061,16 +1059,22 @@ export class DeepgramAdapter extends BaseAdapter {
     const keywords = options?.customVocabulary || dgOpts.keywords
     if (keywords) {
       const keywordList = Array.isArray(keywords) ? keywords : [keywords]
-      keywordList.forEach((kw) => params.append("keywords", kw))
+      for (const kw of keywordList) {
+        params.append("keywords", kw)
+      }
     }
     if (dgOpts.keyterm && dgOpts.keyterm.length > 0) {
-      dgOpts.keyterm.forEach((term) => params.append("keyterm", term))
+      for (const term of dgOpts.keyterm) {
+        params.append("keyterm", term)
+      }
     }
 
     // Handle redaction
     if (options?.piiRedaction || dgOpts.redact) {
       if (Array.isArray(dgOpts.redact)) {
-        dgOpts.redact.forEach((r) => params.append("redact", r))
+        for (const r of dgOpts.redact) {
+          params.append("redact", r)
+        }
       } else if (dgOpts.redact === true || options?.piiRedaction) {
         params.append("redact", "pii")
         params.append("redact", "pci")
@@ -1084,7 +1088,9 @@ export class DeepgramAdapter extends BaseAdapter {
       params.append("callback", dgOpts.callback)
     }
     if (dgOpts.tag && dgOpts.tag.length > 0) {
-      dgOpts.tag.forEach((t) => params.append("tag", t))
+      for (const t of dgOpts.tag) {
+        params.append("tag", t)
+      }
     }
     if (dgOpts.extra) {
       params.append("extra", JSON.stringify(dgOpts.extra))
@@ -1119,7 +1125,7 @@ export class DeepgramAdapter extends BaseAdapter {
       case "Results": {
         const channel = message.channel.alternatives[0]
 
-        if (channel && channel.transcript) {
+        if (channel?.transcript) {
           callbacks?.onTranscript?.({
             type: "transcript",
             text: channel.transcript,

@@ -3,26 +3,20 @@
  * Normalizes webhook callbacks from different providers to a common format
  */
 
-import type {
-  Speaker,
-  TranscriptionProvider,
-  TranscriptionStatus,
-  Utterance,
-  Word
-} from "../router/types"
-
+import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai/schema/transcript"
+import type { CallbackTranscriptionErrorPayload as GladiaWebhookErrorPayload } from "../generated/gladia/schema/callbackTranscriptionErrorPayload"
 // Provider-specific webhook payload types (fully typed from OpenAPI)
 import type { CallbackTranscriptionSuccessPayload as GladiaWebhookSuccessPayload } from "../generated/gladia/schema/callbackTranscriptionSuccessPayload"
-import type { CallbackTranscriptionErrorPayload as GladiaWebhookErrorPayload } from "../generated/gladia/schema/callbackTranscriptionErrorPayload"
-import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai/schema/transcript"
+import type { Speaker, TranscriptionStatus, Utterance, Word } from "../router/types"
 
 /** AssemblyAI webhook payload — either a full Transcript or a lightweight notification (webhook schemas dropped from docs spec) */
 type AssemblyAIWebhookPayload = AssemblyAITranscript | { transcript_id: string; status: string }
+
 import type { ListenV1Response as DeepgramWebhookPayload } from "../generated/deepgram/schema/listenV1Response"
-import type { SpeechToTextChunkResponseModel as ElevenLabsWebhookPayload } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
-import type { AzureWebhookPayload } from "./azure-webhook"
-import type { RetrieveTranscriptResponse as SpeechmaticsWebhookPayload } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+import type { SpeechToText200 as ElevenLabsWebhookPayload } from "../generated/elevenlabs/schema/speechToText200"
 import type { Transcription as SonioxWebhookPayload } from "../generated/soniox/schema/transcription"
+import type { RetrieveTranscriptResponse as SpeechmaticsWebhookPayload } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+import type { AzureWebhookPayload } from "./azure-webhook"
 
 // Re-export webhook payload types for direct access
 export type {
@@ -56,6 +50,16 @@ export type ProviderWebhookPayloadMap = {
 }
 
 /**
+ * Providers with webhook handler support.
+ *
+ * Derived from ProviderWebhookPayloadMap so providers whose payload type is
+ * `never` cannot be selected in webhook-only APIs.
+ */
+export type WebhookProvider = {
+  [P in keyof ProviderWebhookPayloadMap]: ProviderWebhookPayloadMap[P] extends never ? never : P
+}[keyof ProviderWebhookPayloadMap]
+
+/**
  * Unified webhook event types
  */
 export type WebhookEventType =
@@ -84,7 +88,7 @@ export type WebhookEventType =
  * }
  * ```
  */
-export interface UnifiedWebhookEvent<P extends TranscriptionProvider = TranscriptionProvider> {
+export interface UnifiedWebhookEvent<P extends WebhookProvider = WebhookProvider> {
   /** Whether the operation was successful */
   success: boolean
   /** Provider that sent this webhook */
@@ -142,7 +146,7 @@ export interface WebhookValidation {
   /** Whether the webhook is valid */
   valid: boolean
   /** Detected provider (if valid) */
-  provider?: TranscriptionProvider
+  provider?: WebhookProvider
   /** Error message (if invalid) */
   error?: string
   /** Additional validation details */

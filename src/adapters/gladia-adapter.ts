@@ -3,97 +3,90 @@
  * Documentation: https://docs.gladia.io/
  */
 
-import axios from "axios"
 import WebSocket from "ws"
+// Import generated API client functions - FULL TYPE SAFETY!
+import {
+  preRecordedControllerDeletePreRecordedJobV2,
+  preRecordedControllerGetAudioV2,
+  preRecordedControllerGetPreRecordedJobV2,
+  preRecordedControllerInitPreRecordedJobV2,
+  streamingControllerDeleteStreamingJobV2,
+  streamingControllerGetAudioV2,
+  streamingControllerInitStreamingSessionV2,
+  transcriptionControllerListV2
+} from "../generated/gladia/api/gladiaControlAPI"
+import type { AudioChunkAckMessage } from "../generated/gladia/schema/audioChunkAckMessage"
+import type { EndRecordingMessage } from "../generated/gladia/schema/endRecordingMessage"
+import type { EndSessionMessage } from "../generated/gladia/schema/endSessionMessage"
+// Import Gladia generated types
+import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
+import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
+import type { ListTranscriptionResponseItemsItem } from "../generated/gladia/schema/listTranscriptionResponseItemsItem"
+import type { NamedEntityRecognitionMessage } from "../generated/gladia/schema/namedEntityRecognitionMessage"
+import type { PostChapterizationMessage } from "../generated/gladia/schema/postChapterizationMessage"
+import type { PostFinalTranscriptMessage } from "../generated/gladia/schema/postFinalTranscriptMessage"
+import type { PostSummarizationMessage } from "../generated/gladia/schema/postSummarizationMessage"
+import type { PostTranscriptMessage } from "../generated/gladia/schema/postTranscriptMessage"
+import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
+import type { SentimentAnalysisMessage } from "../generated/gladia/schema/sentimentAnalysisMessage"
+import type { SpeechEndMessage } from "../generated/gladia/schema/speechEndMessage"
+// Import all streaming WebSocket message types for comprehensive handling
+import type { SpeechStartMessage } from "../generated/gladia/schema/speechStartMessage"
+import type { StartRecordingMessage } from "../generated/gladia/schema/startRecordingMessage"
+import type { StartSessionMessage } from "../generated/gladia/schema/startSessionMessage"
+import type { StopRecordingAckMessage } from "../generated/gladia/schema/stopRecordingAckMessage"
+import type { StreamingRequest } from "../generated/gladia/schema/streamingRequest"
+import type { StreamingResponse } from "../generated/gladia/schema/streamingResponse"
+import { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
+import { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
+import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
+import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
+// Import Gladia's supported values from OpenAPI-generated schema (type safety!)
+import { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
+import type { TranscriptionControllerListV2Params } from "../generated/gladia/schema/transcriptionControllerListV2Params"
+import { TranscriptionControllerListV2StatusItem } from "../generated/gladia/schema/transcriptionControllerListV2StatusItem"
+import type { TranscriptionDTO } from "../generated/gladia/schema/transcriptionDTO"
+import type { TranscriptionLanguageCodeEnum } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
+// WebSocket message types for type-safe parsing
+import type { TranscriptMessage } from "../generated/gladia/schema/transcriptMessage"
+import type { TranslationMessage } from "../generated/gladia/schema/translationMessage"
+import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
+import type { WordDTO } from "../generated/gladia/schema/wordDTO"
+import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import type {
+  AudioAckEvent,
   AudioChunk,
   AudioInput,
+  EntityEvent,
+  LifecycleEvent,
   ListTranscriptsOptions,
   ProviderCapabilities,
+  SentimentEvent,
+  SessionStatus,
+  SpeechEvent,
   StreamingCallbacks,
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse,
-  SpeechEvent,
   TranslationEvent,
-  SentimentEvent,
-  EntityEvent,
-  SummarizationEvent,
-  ChapterizationEvent,
-  AudioAckEvent,
-  LifecycleEvent,
-  RawWebSocketMessage
+  UnifiedTranscriptResponse
 } from "../router/types"
-import { mapEncodingToProvider } from "../router/audio-encoding-types"
-import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-
 // Import utilities
+import { toArrayBuffer } from "../utils/blob-helpers"
 import { ERROR_CODES } from "../utils/errors"
-import {
-  waitForWebSocketOpen,
-  closeWebSocket,
-  setupWebSocketHandlers,
-  validateSessionForAudio
-} from "../utils/websocket-helpers"
-import { validateEnumValue } from "../utils/validation"
 import {
   extractSpeakersFromUtterances,
   extractWords as extractWordsUtil,
   normalizeStatus
 } from "../utils/transcription-helpers"
-import type { SessionStatus } from "../router/types"
-
-// Import generated API client functions - FULL TYPE SAFETY!
+import { validateEnumValue } from "../utils/validation"
 import {
-  preRecordedControllerInitPreRecordedJobV2,
-  preRecordedControllerGetPreRecordedJobV2,
-  preRecordedControllerDeletePreRecordedJobV2,
-  preRecordedControllerGetAudioV2,
-  transcriptionControllerListV2,
-  streamingControllerInitStreamingSessionV2,
-  streamingControllerDeleteStreamingJobV2,
-  streamingControllerGetAudioV2
-} from "../generated/gladia/api/gladiaControlAPI"
-
-// Import Gladia generated types
-import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
-import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
-import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
-import type { StreamingResponse } from "../generated/gladia/schema/streamingResponse"
-import type { StreamingRequest } from "../generated/gladia/schema/streamingRequest"
-import type { TranscriptionControllerListV2Params } from "../generated/gladia/schema/transcriptionControllerListV2Params"
-import { TranscriptionControllerListV2StatusItem } from "../generated/gladia/schema/transcriptionControllerListV2StatusItem"
-import type { ListTranscriptionResponseItemsItem } from "../generated/gladia/schema/listTranscriptionResponseItemsItem"
-import type { TranscriptionDTO } from "../generated/gladia/schema/transcriptionDTO"
-import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
-import type { WordDTO } from "../generated/gladia/schema/wordDTO"
-// WebSocket message types for type-safe parsing
-import type { TranscriptMessage } from "../generated/gladia/schema/transcriptMessage"
-// Import Gladia's supported values from OpenAPI-generated schema (type safety!)
-import { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
-import { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
-import type { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
-import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
-import type { TranscriptionLanguageCodeEnum } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
-import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
-
-// Import all streaming WebSocket message types for comprehensive handling
-import type { SpeechStartMessage } from "../generated/gladia/schema/speechStartMessage"
-import type { SpeechEndMessage } from "../generated/gladia/schema/speechEndMessage"
-import type { TranslationMessage } from "../generated/gladia/schema/translationMessage"
-import type { SentimentAnalysisMessage } from "../generated/gladia/schema/sentimentAnalysisMessage"
-import type { NamedEntityRecognitionMessage } from "../generated/gladia/schema/namedEntityRecognitionMessage"
-import type { PostSummarizationMessage } from "../generated/gladia/schema/postSummarizationMessage"
-import type { PostChapterizationMessage } from "../generated/gladia/schema/postChapterizationMessage"
-import type { AudioChunkAckMessage } from "../generated/gladia/schema/audioChunkAckMessage"
-import type { StartSessionMessage } from "../generated/gladia/schema/startSessionMessage"
-import type { StartRecordingMessage } from "../generated/gladia/schema/startRecordingMessage"
-import type { StopRecordingAckMessage } from "../generated/gladia/schema/stopRecordingAckMessage"
-import type { EndRecordingMessage } from "../generated/gladia/schema/endRecordingMessage"
-import type { EndSessionMessage } from "../generated/gladia/schema/endSessionMessage"
-import type { PostTranscriptMessage } from "../generated/gladia/schema/postTranscriptMessage"
-import type { PostFinalTranscriptMessage } from "../generated/gladia/schema/postFinalTranscriptMessage"
+  closeWebSocket,
+  setupWebSocketHandlers,
+  validateSessionForAudio,
+  waitForWebSocketOpen
+} from "../utils/websocket-helpers"
+import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 /**
  * Gladia-specific configuration extending the base ProviderConfig
@@ -297,6 +290,18 @@ export class GladiaAdapter extends BaseAdapter {
     options?: TranscribeOptions
   ): Promise<UnifiedTranscriptResponse> {
     this.validateConfig()
+
+    if (audio.type !== "url") {
+      return {
+        success: false,
+        provider: this.name,
+        error: {
+          code: ERROR_CODES.INVALID_INPUT,
+          message:
+            "Gladia adapter currently only supports URL-based audio input. Use audio.type='url'"
+        }
+      }
+    }
 
     try {
       // Build typed request using generated types
@@ -708,20 +713,16 @@ export class GladiaAdapter extends BaseAdapter {
         responseType: "arraybuffer" as const
       }
 
-      let response: { data: ArrayBuffer; headers?: Record<string, string> }
-
-      if (jobType === "streaming") {
-        // Download audio from live/streaming job
-        response = await streamingControllerGetAudioV2(transcriptId, config)
-      } else {
-        // Download audio from pre-recorded job
-        response = await preRecordedControllerGetAudioV2(transcriptId, config)
-      }
+      const response =
+        jobType === "streaming"
+          ? await streamingControllerGetAudioV2(transcriptId, config)
+          : await preRecordedControllerGetAudioV2(transcriptId, config)
+      const contentType = response.headers?.["content-type"]
 
       return {
         success: true,
-        data: response.data,
-        contentType: response.headers?.["content-type"]
+        data: await toArrayBuffer(response.data),
+        contentType: typeof contentType === "string" ? contentType : undefined
       }
     } catch (error) {
       const err = error as { response?: { status?: number }; message?: string }
@@ -1186,12 +1187,36 @@ export class GladiaAdapter extends BaseAdapter {
   private buildStreamingRequest(options?: StreamingOptions): StreamingRequest {
     // Start with provider-specific options (fully typed from OpenAPI)
     const gladiaOpts = options?.gladiaStreaming || {}
+    const generatedGladiaOpts = gladiaOpts as Partial<StreamingRequest>
+    const topLevelGladiaOpts = options as
+      | (StreamingOptions & {
+          encoding?: StreamingOptions["encoding"] | StreamingSupportedEncodingEnum
+          sampleRate?: StreamingOptions["sampleRate"] | StreamingSupportedSampleRateEnum
+          bitDepth?: StreamingOptions["bitDepth"] | StreamingSupportedBitDepthEnum
+          maximumDurationWithoutEndpointing?: number
+          languageConfig?: LanguageConfig
+          preProcessing?: StreamingRequest["pre_processing"]
+          realtimeProcessing?: StreamingRequest["realtime_processing"]
+          postProcessing?: StreamingRequest["post_processing"]
+          messagesConfig?: StreamingRequest["messages_config"]
+        })
+      | undefined
+
+    const rawEncoding = generatedGladiaOpts.encoding ?? topLevelGladiaOpts?.encoding
+    const mappedEncoding = rawEncoding
+      ? Object.values(StreamingSupportedEncodingEnum).includes(
+          rawEncoding as StreamingSupportedEncodingEnum
+        )
+        ? rawEncoding
+        : mapEncodingToProvider(rawEncoding as NonNullable<StreamingOptions["encoding"]>, "gladia")
+      : undefined
 
     // Validate sample rate against OpenAPI-generated enum
+    const requestedSampleRate = generatedGladiaOpts.sample_rate ?? topLevelGladiaOpts?.sampleRate
     let validatedSampleRate: StreamingSupportedSampleRateEnum | undefined
-    if (options?.sampleRate) {
+    if (requestedSampleRate) {
       validatedSampleRate = validateEnumValue(
-        options.sampleRate,
+        requestedSampleRate,
         StreamingSupportedSampleRateEnum,
         "sample rate",
         "Gladia"
@@ -1199,10 +1224,11 @@ export class GladiaAdapter extends BaseAdapter {
     }
 
     // Validate bit depth against OpenAPI-generated enum
+    const requestedBitDepth = generatedGladiaOpts.bit_depth ?? topLevelGladiaOpts?.bitDepth
     let validatedBitDepth: StreamingSupportedBitDepthEnum | undefined
-    if (options?.bitDepth) {
+    if (requestedBitDepth) {
       validatedBitDepth = validateEnumValue(
-        options.bitDepth,
+        requestedBitDepth,
         StreamingSupportedBitDepthEnum,
         "bit depth",
         "Gladia"
@@ -1215,28 +1241,31 @@ export class GladiaAdapter extends BaseAdapter {
       ...gladiaOpts,
 
       // Audio format configuration (these are excluded from gladiaStreaming to avoid conflicts)
-      encoding: options?.encoding
-        ? (mapEncodingToProvider(options.encoding, "gladia") as StreamingSupportedEncodingEnum)
-        : undefined,
+      encoding: mappedEncoding as StreamingSupportedEncodingEnum | undefined,
       sample_rate: validatedSampleRate,
       bit_depth: validatedBitDepth,
-      channels: options?.channels,
+      channels: generatedGladiaOpts.channels ?? topLevelGladiaOpts?.channels,
 
       // Model and processing
-      model: (options?.model as StreamingSupportedModels) ?? gladiaOpts.model,
-      endpointing: options?.endpointing ?? gladiaOpts.endpointing,
+      model:
+        (topLevelGladiaOpts?.model as StreamingSupportedModels | undefined) ??
+        generatedGladiaOpts.model,
+      endpointing: topLevelGladiaOpts?.endpointing ?? generatedGladiaOpts.endpointing,
       maximum_duration_without_endpointing:
-        options?.maxSilence ?? gladiaOpts.maximum_duration_without_endpointing
+        topLevelGladiaOpts?.maxSilence ??
+        topLevelGladiaOpts?.maximumDurationWithoutEndpointing ??
+        generatedGladiaOpts.maximum_duration_without_endpointing
     }
 
     // Language configuration
-    if (options?.language || options?.codeSwitching || gladiaOpts.language_config) {
+    const languageConfig = generatedGladiaOpts.language_config ?? topLevelGladiaOpts?.languageConfig
+    if (options?.language || options?.codeSwitching || languageConfig) {
       streamingRequest.language_config = {
-        ...gladiaOpts.language_config,
+        ...languageConfig,
         languages: options?.language
           ? [options.language as TranscriptionLanguageCodeEnum]
-          : gladiaOpts.language_config?.languages,
-        code_switching: options?.codeSwitching ?? gladiaOpts.language_config?.code_switching
+          : languageConfig?.languages,
+        code_switching: options?.codeSwitching ?? languageConfig?.code_switching
       }
     }
 
@@ -1252,12 +1281,14 @@ export class GladiaAdapter extends BaseAdapter {
     }
 
     // Pre-processing configuration (audio enhancement, speech threshold)
-    if (gladiaOpts.pre_processing) {
-      streamingRequest.pre_processing = gladiaOpts.pre_processing
+    const preProcessing = generatedGladiaOpts.pre_processing ?? topLevelGladiaOpts?.preProcessing
+    if (preProcessing) {
+      streamingRequest.pre_processing = preProcessing
     }
 
     // Real-time processing configuration
-    const realtimeProcessing = gladiaOpts.realtime_processing || {}
+    const realtimeProcessing =
+      generatedGladiaOpts.realtime_processing ?? topLevelGladiaOpts?.realtimeProcessing ?? {}
     const hasRealtimeOptions =
       options?.customVocabulary ||
       options?.sentimentAnalysis ||
@@ -1291,7 +1322,8 @@ export class GladiaAdapter extends BaseAdapter {
     }
 
     // Post-processing configuration (summarization, chapterization)
-    const postProcessing = gladiaOpts.post_processing || {}
+    const postProcessing =
+      generatedGladiaOpts.post_processing ?? topLevelGladiaOpts?.postProcessing ?? {}
     if (options?.summarization || postProcessing.summarization || postProcessing.chapterization) {
       streamingRequest.post_processing = {
         ...postProcessing,
@@ -1300,8 +1332,9 @@ export class GladiaAdapter extends BaseAdapter {
     }
 
     // Messages configuration (controls which WebSocket events to receive)
-    if (gladiaOpts.messages_config) {
-      streamingRequest.messages_config = gladiaOpts.messages_config
+    const messagesConfig = generatedGladiaOpts.messages_config ?? topLevelGladiaOpts?.messagesConfig
+    if (messagesConfig) {
+      streamingRequest.messages_config = messagesConfig
     } else if (options?.interimResults !== undefined) {
       // If interimResults specified, configure message types accordingly
       streamingRequest.messages_config = {
@@ -1675,14 +1708,14 @@ export function createGladiaAdapter(config: GladiaConfig): GladiaAdapter {
 
 // API client functions - for advanced direct API usage
 export {
-  preRecordedControllerInitPreRecordedJobV2,
-  preRecordedControllerGetPreRecordedJobV2,
   preRecordedControllerDeletePreRecordedJobV2,
   preRecordedControllerGetAudioV2,
-  transcriptionControllerListV2,
-  streamingControllerInitStreamingSessionV2,
+  preRecordedControllerGetPreRecordedJobV2,
+  preRecordedControllerInitPreRecordedJobV2,
   streamingControllerDeleteStreamingJobV2,
-  streamingControllerGetAudioV2
+  streamingControllerGetAudioV2,
+  streamingControllerInitStreamingSessionV2,
+  transcriptionControllerListV2
 } from "../generated/gladia/api/gladiaControlAPI"
 
 // Request/Response types

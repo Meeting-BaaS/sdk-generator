@@ -14,6 +14,11 @@ import { z as zod } from "zod"
 export const speechmaticsOperatingPointSchema = zod.enum(["standard", "enhanced"])
 
 /**
+ * Speechmatics model enum
+ */
+export const speechmaticsModelSchema = zod.enum(["standard", "enhanced"])
+
+/**
  * Speechmatics diarization enum
  */
 export const speechmaticsDiarizationSchema = zod.enum(["none", "speaker", "channel"])
@@ -43,9 +48,12 @@ export const batchTranscriptionParams = zod.object({
     .string()
     .optional()
     .describe("Language locale to be used when generating the transcription output"),
+  model: speechmaticsModelSchema
+    .optional()
+    .describe("Specific model to use in transcription"),
   operating_point: speechmaticsOperatingPointSchema
     .optional()
-    .describe("Transcription operating point - standard or enhanced accuracy"),
+    .describe("Deprecated compatibility alias for model"),
   diarization: speechmaticsDiarizationSchema
     .optional()
     .describe("Specify whether speaker or channel labels are added to the transcript"),

@@ -9,8 +9,8 @@
  * @fileoverview Auto-generates pipeline visualization from codebase analysis
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const ROOT = path.join(__dirname, "..")
 const SPECS_DIR = path.join(ROOT, "specs")
@@ -51,8 +51,8 @@ function parseSpecSources() {
 
   // Parse each source entry
   const entryRegex = /(\w+):\s*\{([^}]+)\}/g
-  let entryMatch
-  while ((entryMatch = entryRegex.exec(bodyContent)) !== null) {
+  let entryMatch = entryRegex.exec(bodyContent)
+  while (entryMatch !== null) {
     const [, name, props] = entryMatch
     const source = {}
 
@@ -72,6 +72,7 @@ function parseSpecSources() {
     if (noteMatch) source.note = noteMatch[1]
 
     sources[name] = source
+    entryMatch = entryRegex.exec(bodyContent)
   }
 
   return sources
@@ -179,9 +180,10 @@ function parseOrvalConfig() {
 
   const projects = []
   const projectRegex = /(\w+(?:Api|Zod)):\s*\{/g
-  let match
-  while ((match = projectRegex.exec(content)) !== null) {
+  let match = projectRegex.exec(content)
+  while (match !== null) {
     projects.push(match[1])
+    match = projectRegex.exec(content)
   }
   return projects
 }
@@ -412,7 +414,7 @@ flowchart TB
       const hasLocales = contents.includes("locales.ts")
       const hasModels = contents.includes("models.ts")
 
-      let features = []
+      const features = []
       if (hasApi) features.push("api/")
       if (hasSchema) features.push("schema/")
       if (hasStreaming) features.push("streaming")
@@ -759,7 +761,7 @@ console.log(`Sync scripts: ${scanScripts().sync.length}`)
 console.log(`Generated providers: ${scanGenerated().length}`)
 console.log(`Orval projects: ${parseOrvalConfig().length}`)
 console.log(`Manual type overrides: ${scanManualTypes().length} providers`)
-console.log(`--- SDK Internals ---`)
+console.log("--- SDK Internals ---")
 console.log(`Adapters: ${scanAdapters().length}`)
 console.log(`Webhooks: ${scanWebhooks().length}`)
 console.log(`Router: ${scanRouter().hasRouter ? "yes" : "no"}`)

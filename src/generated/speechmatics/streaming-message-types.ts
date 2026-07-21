@@ -132,6 +132,8 @@ export interface AddPartialTranscript {
   results: RecognitionResult[]
   /** The channel identifier to which the audio belongs. This field is only seen in multichannel. */
   channel?: string
+  /** Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`. */
+  forced?: boolean
 }
 
 export interface AddTranscript {
@@ -142,6 +144,8 @@ export interface AddTranscript {
   results: RecognitionResult[]
   /** The channel identifier to which the audio belongs. This field is only seen in multichannel. */
   channel?: string
+  /** Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`. */
+  forced?: boolean
 }
 
 export interface EndOfUtterance {
@@ -149,6 +153,8 @@ export interface EndOfUtterance {
   metadata: EndOfUtteranceMetadata
   /** The channel identifier to which the EndOfUtterance message belongs. This field is only seen in multichannel. */
   channel?: string
+  /** Whether this message was triggered by a `ForceEndOfUtterance` message. This field is only seen on forced messages, where its value is `true`. */
+  forced?: boolean
 }
 
 export interface EndOfTranscript {
@@ -183,6 +189,8 @@ export interface Info {
   quota?: number
   /** Only set when `type` is `concurrent_session_usage`. Indicates the timestamp of the most recent usage update, in the format `YYYY-MM-DDTHH:MM:SSZ` (UTC). This value is updated even when usage exceeds the quota, as it represents the most recent known data. In some cases, it may be empty or outdated due to internal errors preventing successful update. */
   last_updated?: string
+  /** Only set when `type` is `concurrent_session_usage`. The region that reported this usage, for example `eu`. */
+  region?: string
 }
 
 export interface Warning {

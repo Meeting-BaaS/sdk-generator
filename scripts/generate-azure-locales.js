@@ -10,9 +10,9 @@
  * Run: node scripts/generate-azure-locales.js
  */
 
-const fs = require("fs")
-const path = require("path")
-const https = require("https")
+const fs = require("node:fs")
+const path = require("node:path")
+const https = require("node:https")
 
 const DOCS_URL =
   "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt"
@@ -251,7 +251,9 @@ function fetchUrl(url) {
           return
         }
         let data = ""
-        res.on("data", (chunk) => (data += chunk))
+        res.on("data", (chunk) => {
+          data += chunk
+        })
         res.on("end", () => resolve(data))
         res.on("error", reject)
       })
@@ -274,7 +276,7 @@ async function main() {
     const uniqueLocales = [...new Set(matches)]
       .filter((code) => {
         // Filter out false positives (like CSS classes, etc.)
-        const [lang, region] = code.split("-")
+        const [lang, _region] = code.split("-")
         return LANGUAGE_NAMES[lang] || lang.length === 2
       })
       .sort()
@@ -358,7 +360,7 @@ ${locales.map((loc) => `  "${loc.code}": "${loc.code}"`).join(",\n")}
     console.log(`✅ Generated ${OUTPUT_PATH}`)
     console.log(`   - ${locales.length} locale codes`)
     console.log(
-      `   - AzureLocales, AzureLocaleCodes, AzureLocaleCode, AzureLocaleLabels, AzureLocale`
+      "   - AzureLocales, AzureLocaleCodes, AzureLocaleCode, AzureLocaleLabels, AzureLocale"
     )
   } catch (error) {
     console.error(`❌ Failed to generate Azure locales: ${error.message}`)

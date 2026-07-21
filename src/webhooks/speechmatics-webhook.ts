@@ -3,14 +3,14 @@
  * Parses and normalizes Speechmatics webhook callbacks
  */
 
-import { BaseWebhookHandler } from "./base-webhook"
-import type { UnifiedWebhookEvent } from "./types"
-import type { TranscriptionProvider, Word } from "../router/types"
-import {
-  buildUtterancesFromWords,
-  buildTextFromSpeechmaticsResults
-} from "../utils/transcription-helpers"
 import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+import type { Word } from "../router/types"
+import {
+  buildTextFromSpeechmaticsResults,
+  buildUtterancesFromWords
+} from "../utils/transcription-helpers"
+import { BaseWebhookHandler } from "./base-webhook"
+import type { UnifiedWebhookEvent, WebhookProvider } from "./types"
 
 /**
  * Speechmatics webhook handler
@@ -50,7 +50,7 @@ import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schem
  * ```
  */
 export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
-  readonly provider: TranscriptionProvider = "speechmatics"
+  readonly provider: WebhookProvider = "speechmatics"
 
   /**
    * Check if payload matches Speechmatics webhook format
@@ -98,7 +98,7 @@ export class SpeechmaticsWebhookHandler extends BaseWebhookHandler {
    * Validate webhook request
    */
   validate(
-    payload: unknown,
+    _payload: unknown,
     options?: { queryParams?: Record<string, string>; userAgent?: string }
   ): { valid: boolean; error?: string } {
     // Check for required query parameters

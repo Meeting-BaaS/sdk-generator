@@ -3,87 +3,100 @@
  * These types provide a provider-agnostic interface for transcription services
  */
 
-import type {
-  AudioEncoding,
-  AudioSampleRate,
-  AudioChannels,
-  AudioBitDepth
-} from "./audio-encoding-types"
-
-// Provider-specific response types for type-safe raw responses
-import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
-import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
-import type { CreateTranscription200One } from "../generated/openai/schema/createTranscription200One"
-import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai/schema/transcript"
-import type { Transcription as AzureTranscription } from "../generated/azure/schema/transcription"
-
-// Provider-specific model types for type-safe model selection
-import type { DeepgramModelType } from "./streaming-enums"
-import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { SpeechModel as AssemblyAISpeechModel } from "../generated/assemblyai/schema/speechModel"
-import type { SonioxModelCode } from "../generated/soniox/models"
-import type { ElevenLabsModelCode } from "../generated/elevenlabs/models"
-
+import type { Transcript as AssemblyAITranscript } from "../generated/assemblyai/schema/transcript"
 // Provider-specific language types for type-safe language selection
 import type { TranscriptLanguageCode as AssemblyAILanguageCode } from "../generated/assemblyai/schema/transcriptLanguageCode"
-import type { TranscriptionLanguageCodeEnum as GladiaLanguageCode } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
-import type { DeepgramLanguageCode } from "../generated/deepgram/languages"
-import type { SonioxLanguageCode } from "../generated/soniox/languages"
-import type { SpeechmaticsLanguageCode } from "../generated/speechmatics/languages"
+import type { TranscriptListItem as AssemblyAITranscriptListItem } from "../generated/assemblyai/schema/transcriptListItem"
+import type { TranscriptParams as AssemblyAITranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
 import type { AzureLocaleCode } from "../generated/azure/locales"
-import type { ElevenLabsLanguageCode } from "../generated/elevenlabs/languages"
-
+import type { Transcription as AzureTranscription } from "../generated/azure/schema/transcription"
+import type { TranscriptionProperties as AzureTranscriptionProperties } from "../generated/azure/schema/transcriptionProperties"
+import type { TranscriptionsListParams as AzureListParams } from "../generated/azure/schema/transcriptionsListParams"
+import type { DeepgramLanguageCode } from "../generated/deepgram/languages"
 // Provider-specific request types for full type safety
 import type { ListenTranscribeParams } from "../generated/deepgram/schema/listenTranscribeParams"
-import type { TranscriptParams as AssemblyAITranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
+import type { ListenV1AcceptedResponse as DeepgramAcceptedResponse } from "../generated/deepgram/schema/listenV1AcceptedResponse"
+// Provider-specific response types for type-safe raw responses
+import type { ListenV1Response } from "../generated/deepgram/schema/listenV1Response"
+import type { ProjectRequestResponse as DeepgramProjectRequestResponse } from "../generated/deepgram/schema/projectRequestResponse"
+import type { ElevenLabsLanguageCode } from "../generated/elevenlabs/languages"
+import type { ElevenLabsModelCode } from "../generated/elevenlabs/models"
+import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
+import type { GetTranscriptById200 as ElevenLabsGetTranscriptResponse } from "../generated/elevenlabs/schema/getTranscriptById200"
+import type { SpeechToText200 as ElevenLabsSpeechToTextResponse } from "../generated/elevenlabs/schema/speechToText200"
+import type { SpeechToTextWebhookResponseModel as ElevenLabsWebhookResponse } from "../generated/elevenlabs/schema/speechToTextWebhookResponseModel"
+import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
+import type { InitPreRecordedTranscriptionResponse as GladiaInitPreRecordedTranscriptionResponse } from "../generated/gladia/schema/initPreRecordedTranscriptionResponse"
 import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTranscriptionRequest"
 import type { LanguageConfig as GladiaLanguageConfig } from "../generated/gladia/schema/languageConfig"
-import type { AudioToLlmListConfigDTO } from "../generated/gladia/schema/audioToLlmListConfigDTO"
-import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
-import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
-import type { CreateTranscriptionPayload as SonioxCreateTranscriptionPayload } from "../generated/soniox/schema/createTranscriptionPayload"
-import type {
-  SonioxCleanupTarget,
-  SonioxSdkTranslationConfig,
-  SonioxTranscriptionContext as SonioxSdkTranscriptionContext,
-  SonioxWaitOptions
-} from "../generated/soniox/sdk-types"
-
+import type { ListTranscriptionResponseItemsItem as GladiaListTranscriptionResponseItem } from "../generated/gladia/schema/listTranscriptionResponseItemsItem"
+import type { PreRecordedResponse } from "../generated/gladia/schema/preRecordedResponse"
 // Streaming request types for type-safe streaming options
 import type { StreamingRequest as GladiaStreamingRequest } from "../generated/gladia/schema/streamingRequest"
+import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
 import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
+import type { TranscriptionLanguageCodeEnum as GladiaLanguageCode } from "../generated/gladia/schema/transcriptionLanguageCodeEnum"
+import type { CreateTranscription200One } from "../generated/openai/schema/createTranscription200One"
+import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
+import type { SonioxLanguageCode } from "../generated/soniox/languages"
+import type { SonioxModelCode } from "../generated/soniox/models"
+import type { CreateTranscriptionPayload as SonioxCreateTranscriptionPayload } from "../generated/soniox/schema/createTranscriptionPayload"
+import type { Transcription as SonioxTranscription } from "../generated/soniox/schema/transcription"
+import type { TranscriptionTranscript as SonioxTranscriptionTranscript } from "../generated/soniox/schema/transcriptionTranscript"
 import type {
-  DeepgramStreamingOptions,
+  SonioxCleanupTarget,
+  SonioxTranscriptionContext as SonioxSdkTranscriptionContext,
+  SonioxSdkTranslationConfig,
+  SonioxWaitOptions
+} from "../generated/soniox/sdk-types"
+import type { SpeechmaticsLanguageCode } from "../generated/speechmatics/languages"
+import type { CreateJobResponse as SpeechmaticsCreateJobResponse } from "../generated/speechmatics/schema/createJobResponse"
+import type { GetJobsParams as SpeechmaticsListParams } from "../generated/speechmatics/schema/getJobsParams"
+import type { JobConfig as SpeechmaticsJobConfig } from "../generated/speechmatics/schema/jobConfig"
+import type { JobDetails as SpeechmaticsJobDetails } from "../generated/speechmatics/schema/jobDetails"
+import type { Model as SpeechmaticsGeneratedModel } from "../generated/speechmatics/schema/model"
+import type { RetrieveJobResponse as SpeechmaticsRetrieveJobResponse } from "../generated/speechmatics/schema/retrieveJobResponse"
+import type { RetrieveTranscriptResponse as SpeechmaticsRetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+import type { TranscriptionConfig as SpeechmaticsTranscriptionConfig } from "../generated/speechmatics/schema/transcriptionConfig"
+import type {
+  AudioBitDepth,
+  AudioChannels,
+  AudioEncoding,
+  AudioSampleRate
+} from "./audio-encoding-types"
+import type {
   AssemblyAIStreamingOptions,
+  DeepgramStreamingOptions,
+  ElevenLabsStreamingOptions,
   OpenAIStreamingOptions,
   SonioxStreamingOptions,
-  ElevenLabsStreamingOptions,
   SpeechmaticsStreamingOptions
 } from "./provider-streaming-types"
+// Provider-specific model types for type-safe model selection
+import type { DeepgramModelType } from "./streaming-enums"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Extended response types - rich data from each provider (fully typed from OpenAPI)
 // ─────────────────────────────────────────────────────────────────────────────
 
+import type { AutoHighlightsResult as AssemblyAIHighlightsResult } from "../generated/assemblyai/schema/autoHighlightsResult"
 // AssemblyAI extended types
 import type { Chapter as AssemblyAIChapter } from "../generated/assemblyai/schema/chapter"
+import type { ContentSafetyLabelsResult as AssemblyAIContentSafetyResult } from "../generated/assemblyai/schema/contentSafetyLabelsResult"
 import type { Entity as AssemblyAIEntity } from "../generated/assemblyai/schema/entity"
 import type { SentimentAnalysisResult as AssemblyAISentimentResult } from "../generated/assemblyai/schema/sentimentAnalysisResult"
-import type { AutoHighlightsResult as AssemblyAIHighlightsResult } from "../generated/assemblyai/schema/autoHighlightsResult"
-import type { ContentSafetyLabelsResult as AssemblyAIContentSafetyResult } from "../generated/assemblyai/schema/contentSafetyLabelsResult"
 import type { TopicDetectionModelResult as AssemblyAITopicsResult } from "../generated/assemblyai/schema/topicDetectionModelResult"
-
-// Gladia extended types
-import type { TranslationDTO as GladiaTranslation } from "../generated/gladia/schema/translationDTO"
+// Deepgram extended types
+import type { ListenV1ResponseMetadata as DeepgramMetadata } from "../generated/deepgram/schema/listenV1ResponseMetadata"
+import type { AudioToLlmListDTO as GladiaAudioToLlmResult } from "../generated/gladia/schema/audioToLlmListDTO"
+import type { ChapterizationDTO as GladiaChapters } from "../generated/gladia/schema/chapterizationDTO"
 import type { ModerationDTO as GladiaModeration } from "../generated/gladia/schema/moderationDTO"
 import type { NamedEntityRecognitionDTO as GladiaEntities } from "../generated/gladia/schema/namedEntityRecognitionDTO"
 import type { SentimentAnalysisDTO as GladiaSentiment } from "../generated/gladia/schema/sentimentAnalysisDTO"
-import type { AudioToLlmListDTO as GladiaAudioToLlmResult } from "../generated/gladia/schema/audioToLlmListDTO"
-import type { ChapterizationDTO as GladiaChapters } from "../generated/gladia/schema/chapterizationDTO"
 import type { StructuredDataExtractionDTO as GladiaStructuredData } from "../generated/gladia/schema/structuredDataExtractionDTO"
-
-// Deepgram extended types
-import type { ListenV1ResponseMetadata as DeepgramMetadata } from "../generated/deepgram/schema/listenV1ResponseMetadata"
+// Gladia extended types
+import type { TranslationDTO as GladiaTranslation } from "../generated/gladia/schema/translationDTO"
 
 export interface SonioxBatchOptions {
   language_hints?: string[]
@@ -105,11 +118,42 @@ export interface SonioxBatchOptions {
   cleanup?: SonioxCleanupTarget[]
 }
 
+export type AzureBatchOptions = Partial<
+  Omit<
+    AzureTranscription,
+    | "contentUrls"
+    | "contentContainerUrl"
+    | "createdDateTime"
+    | "lastActionDateTime"
+    | "links"
+    | "locale"
+    | "properties"
+    | "self"
+    | "status"
+  >
+> & {
+  properties?: Partial<AzureTranscriptionProperties>
+}
+
+export type SpeechmaticsBatchOptions = Partial<
+  Omit<SpeechmaticsJobConfig, "fetch_data" | "fetch_text" | "transcription_config" | "type">
+> & {
+  transcription_config?: Partial<SpeechmaticsTranscriptionConfig>
+}
+
+/**
+ * Speechmatics model type
+ * Derived from the generated Speechmatics OpenAPI schema.
+ */
+export type SpeechmaticsModel = SpeechmaticsGeneratedModel
+
 /**
  * Speechmatics operating point (model) type
- * Manually defined as Speechmatics OpenAPI spec doesn't export this cleanly
+ *
+ * @deprecated Use `SpeechmaticsModel` instead. Speechmatics renamed this field
+ * to `model`; the old name remains as a compatibility alias.
  */
-export type SpeechmaticsOperatingPoint = "standard" | "enhanced"
+export type SpeechmaticsOperatingPoint = SpeechmaticsModel
 
 /**
  * Unified transcription model type with autocomplete for all providers
@@ -135,7 +179,7 @@ export type TranscriptionModel =
   | AssemblyAISpeechModel
   | SonioxModelCode
   | ElevenLabsModelCode
-  | SpeechmaticsOperatingPoint
+  | SpeechmaticsModel
 
 /**
  * Unified transcription language type with autocomplete for all providers
@@ -265,6 +309,15 @@ export interface DeepgramExtendedData {
 }
 
 /**
+ * Extended data from Speechmatics transcription
+ * Derived from the generated transcript response so newly generated optional
+ * transcript extras stay visible on the public router surface.
+ */
+export type SpeechmaticsExtendedData = Partial<
+  Omit<SpeechmaticsRetrieveTranscriptResponse, "format" | "job" | "results">
+>
+
+/**
  * Map of provider names to their extended data types
  */
 /** ElevenLabs extended data (entities, audio events, language probability) */
@@ -292,17 +345,17 @@ export type ProviderExtendedDataMap = {
   deepgram: DeepgramExtendedData
   "openai-whisper": Record<string, never> // No extended data
   "azure-stt": Record<string, never> // No extended data
-  speechmatics: Record<string, never> // No extended data
+  speechmatics: SpeechmaticsExtendedData
   soniox: Record<string, never> // Extended data via streaming types
   elevenlabs: ElevenLabsExtendedData
 }
 
 // Re-export core types (browser-safe)
-export type { TranscriptionProvider, ProviderCapabilities, AudioInput } from "../types/core"
-import type { TranscriptionProvider } from "../types/core"
+export type { AudioInput, ProviderCapabilities, TranscriptionProvider } from "../types/core"
 
 // Import derived streaming types from provider-metadata (compile-time derived from capabilities)
-import type { StreamingProviderType, BatchOnlyProviderType } from "../provider-metadata"
+import type { BatchOnlyProviderType, StreamingProviderType } from "../provider-metadata"
+import type { TranscriptionProvider } from "../types/core"
 
 /**
  * Providers that support real-time streaming transcription
@@ -328,8 +381,8 @@ export type SessionStatus = "connecting" | "open" | "closing" | "closed"
 
 // Provider-specific list params for type-safe passthrough
 import type { ListTranscriptsParams as AssemblyAIListParams } from "../generated/assemblyai/schema/listTranscriptsParams"
-import type { TranscriptionControllerListV2Params as GladiaListParams } from "../generated/gladia/schema/transcriptionControllerListV2Params"
 import type { ListProjectRequestsParams as DeepgramListParams } from "../generated/deepgram/schema/listProjectRequestsParams"
+import type { TranscriptionControllerListV2Params as GladiaListParams } from "../generated/gladia/schema/transcriptionControllerListV2Params"
 
 /**
  * Options for listing transcripts with date/time filtering
@@ -339,6 +392,7 @@ import type { ListProjectRequestsParams as DeepgramListParams } from "../generat
  * - Gladia: status, date, before_date, after_date, custom_metadata
  * - Azure: status, skip, top, filter (OData)
  * - Deepgram: start, end, status, page, request_id, endpoint (requires projectId)
+ * - Speechmatics: created_before, limit, include_deleted
  *
  * @example Filter by date
  * ```typescript
@@ -377,8 +431,12 @@ export interface ListTranscriptsOptions {
   assemblyai?: Partial<AssemblyAIListParams>
   /** Gladia-specific list options */
   gladia?: Partial<GladiaListParams>
+  /** Azure-specific list options */
+  azure?: Partial<AzureListParams>
   /** Deepgram-specific list options (request history) */
   deepgram?: Partial<DeepgramListParams>
+  /** Speechmatics-specific list options */
+  speechmatics?: Partial<SpeechmaticsListParams>
 }
 
 // AudioInput is re-exported from ../types/core above
@@ -390,6 +448,8 @@ export interface ListTranscriptsOptions {
  * - `deepgram`: Full Deepgram API options
  * - `assemblyai`: Full AssemblyAI API options
  * - `gladia`: Full Gladia API options
+ * - `azure`: Azure batch transcription request fields
+ * - `speechmatics`: Speechmatics batch job config fields
  */
 export interface TranscribeOptions {
   /**
@@ -398,7 +458,7 @@ export interface TranscribeOptions {
    * Type-safe model selection derived from OpenAPI specs:
    * - Deepgram: 'nova-3', 'nova-2', 'enhanced', 'base', etc.
    * - AssemblyAI: 'best', 'slam-1', 'universal'
-   * - Speechmatics: 'standard', 'enhanced' (operating point)
+   * - Speechmatics: 'standard', 'enhanced' (model)
    * - Gladia: 'solaria-1' (streaming only)
    *
    * @see TranscriptionModel for full list of available models
@@ -486,6 +546,12 @@ export interface TranscribeOptions {
   gladia?: Partial<InitTranscriptionRequest>
 
   /**
+   * Azure Speech-to-Text batch options (passed directly to API)
+   * @see https://learn.microsoft.com/azure/ai-services/speech-service/batch-transcription-create
+   */
+  azure?: AzureBatchOptions
+
+  /**
    * OpenAI Whisper-specific options (passed directly to API)
    * @see https://platform.openai.com/docs/api-reference/audio/createTranscription
    */
@@ -501,6 +567,12 @@ export interface TranscribeOptions {
       "file" | "model_id" | "language_code" | "diarize" | "keyterms"
     >
   >
+
+  /**
+   * Speechmatics-specific batch options (passed directly to API)
+   * @see https://docs.speechmatics.com/batch-api-ref
+   */
+  speechmatics?: SpeechmaticsBatchOptions
 
   /**
    * Soniox-specific options (passed directly to API)
@@ -743,19 +815,74 @@ export interface ListTranscriptsResponse {
   hasMore?: boolean
 }
 
+export interface AzureTranscriptionResult {
+  combinedRecognizedPhrases?: Array<{
+    display?: string
+    lexical?: string
+  }>
+  recognizedPhrases?: Array<{
+    speaker?: number
+    nBest?: Array<{
+      confidence?: number
+      words?: Array<{
+        word: string
+        offsetInTicks: number
+        durationInTicks: number
+        confidence?: number
+      }>
+    }>
+  }>
+  duration?: number
+}
+
+export type AssemblyAIRawResponse = AssemblyAITranscript | AssemblyAITranscriptListItem
+
+export type AzureRawResponse =
+  | AzureTranscription
+  | {
+      transcription: AzureTranscription
+      transcriptionData: AzureTranscriptionResult
+    }
+
+export type DeepgramRawResponse =
+  | ListenV1Response
+  | DeepgramAcceptedResponse
+  | DeepgramProjectRequestResponse
+
+export type GladiaRawResponse =
+  | PreRecordedResponse
+  | GladiaInitPreRecordedTranscriptionResponse
+  | GladiaListTranscriptionResponseItem
+
+export type SpeechmaticsRawResponse =
+  | SpeechmaticsCreateJobResponse
+  | SpeechmaticsRetrieveJobResponse
+  | SpeechmaticsRetrieveTranscriptResponse
+  | SpeechmaticsJobDetails
+
+export type SonioxRawResponse = {
+  meta: SonioxTranscription
+  transcript?: SonioxTranscriptionTranscript
+}
+
+export type ElevenLabsRawResponse =
+  | ElevenLabsSpeechToTextResponse
+  | ElevenLabsGetTranscriptResponse
+  | ElevenLabsWebhookResponse
+
 /**
  * Map of provider names to their raw response types
  * Enables type-safe access to provider-specific raw responses
  */
 export type ProviderRawResponseMap = {
-  gladia: PreRecordedResponse
-  deepgram: ListenV1Response
+  gladia: GladiaRawResponse
+  deepgram: DeepgramRawResponse
   "openai-whisper": CreateTranscription200One
-  assemblyai: AssemblyAITranscript
-  "azure-stt": AzureTranscription
-  speechmatics: unknown // No generated type available yet
-  soniox: unknown // Uses streaming types
-  elevenlabs: unknown // Uses generated schema types
+  assemblyai: AssemblyAIRawResponse
+  "azure-stt": AzureRawResponse
+  speechmatics: SpeechmaticsRawResponse
+  soniox: SonioxRawResponse
+  elevenlabs: ElevenLabsRawResponse
 }
 
 /**
@@ -1047,7 +1174,9 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
   /**
    * Sample rate in Hz
    *
-   * Common rates: 8000, 16000, 32000, 44100, 48000
+   * Common provider rates include 8000, 16000, 22050, 24000, 32000, 44100, and 48000.
+   * Positive integer values are passed through; individual providers may enforce narrower
+   * generated enums.
    * Most providers recommend 16000 Hz for optimal quality/performance
    */
   sampleRate?: AudioSampleRate | number
@@ -1251,10 +1380,12 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    *
    * @example
    * ```typescript
+   * import { SpeechmaticsModel } from 'voice-router-dev/constants'
+   *
    * await adapter.transcribeStream({
    *   speechmaticsStreaming: {
    *     language: 'en',
-   *     operatingPoint: 'enhanced',
+   *     model: SpeechmaticsModel.enhanced,
    *     enablePartials: true,
    *     diarization: 'speaker',
    *     maxDelay: 2,

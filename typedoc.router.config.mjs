@@ -36,8 +36,6 @@ export default {
     "**/src/adapters/assemblyai-adapter.ts",
     "**/src/adapters/deepgram-adapter.ts"
   ],
-
-  includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization

@@ -12,11 +12,11 @@
  * realtime AsyncAPI/OpenAPI spec for their WebSocket protocol.
  */
 
-const fs = require("fs")
-const os = require("os")
-const path = require("path")
-const https = require("https")
-const { execFileSync } = require("child_process")
+const fs = require("node:fs")
+const os = require("node:os")
+const path = require("node:path")
+const https = require("node:https")
+const { execFileSync } = require("node:child_process")
 
 const PACKAGE_NAME = "@soniox/speech-to-text-web"
 const REGISTRY_URL = `https://registry.npmjs.org/${PACKAGE_NAME}/latest`
@@ -74,7 +74,9 @@ function fetchJson(url) {
         }
 
         let data = ""
-        res.on("data", (chunk) => (data += chunk))
+        res.on("data", (chunk) => {
+          data += chunk
+        })
         res.on("end", () => {
           try {
             resolve(JSON.parse(data))

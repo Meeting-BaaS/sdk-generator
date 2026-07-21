@@ -4,8 +4,8 @@
  * @see https://github.com/deepgram/deepgram-js-sdk/blob/main/src/lib/types/TranscriptionSchema.ts
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const SDK_SOURCE = path.join(__dirname, "../specs/deepgram-streaming-sdk.ts")
 const OUTPUT_DIR = path.join(__dirname, "../src/generated/deepgram")
@@ -57,8 +57,8 @@ function parseTypeScriptInterface(content, interfaceName) {
   const fieldPattern =
     /\/\*\*[\s\S]*?@see\s+(https?:\/\/[^\s*]+)[\s\S]*?\*\/\s*(\w+)(\?)?:\s*([^;]+);/g
 
-  let match
-  while ((match = fieldPattern.exec(fieldsBlock)) !== null) {
+  let match = fieldPattern.exec(fieldsBlock)
+  while (match !== null) {
     const [, doc, name, optional, type] = match
     fields.push({
       name,
@@ -66,6 +66,7 @@ function parseTypeScriptInterface(content, interfaceName) {
       optional: !!optional,
       doc
     })
+    match = fieldPattern.exec(fieldsBlock)
   }
 
   return fields
@@ -185,7 +186,9 @@ function main() {
     // Parse LiveSchema (streaming-only fields)
     const liveFields = parseTypeScriptInterface(content, "LiveSchema")
     console.log(`  ✓ Found ${liveFields.length} streaming-only fields:`)
-    liveFields.forEach((f) => console.log(`    - ${f.name}: ${f.type}`))
+    for (const f of liveFields) {
+      console.log(`    - ${f.name}: ${f.type}`)
+    }
 
     // Generate Zod schema
     console.log("  → Generating Zod schemas...")

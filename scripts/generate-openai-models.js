@@ -10,8 +10,9 @@
  * Run: node scripts/generate-openai-models.js
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
+const ts = require("typescript")
 
 const GENERATED_DIR = path.join(__dirname, "../src/generated/openai/schema")
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/openai/models.ts")
@@ -19,42 +20,75 @@ const OUTPUT_PATH = path.join(__dirname, "../src/generated/openai/models.ts")
 // Files to extract models from
 const MODEL_SOURCES = [
   {
-    file: "createTranscriptionRequestModel.ts",
-    typeName: "CreateTranscriptionRequestModel",
+    file: "createTranscriptionRequest.ts",
+    typeName: "CreateTranscriptionRequest",
+    propertyName: "model",
     category: "transcription"
   },
   {
-    file: "realtimeSessionCreateRequestGAModel.ts",
-    typeName: "RealtimeSessionCreateRequestGAModel",
+    file: "realtimeSessionCreateRequestGA.ts",
+    typeName: "RealtimeSessionCreateRequestGA",
+    propertyName: "model",
     category: "realtime"
   },
   {
-    file: "audioTranscriptionModel.ts",
-    typeName: "AudioTranscriptionModel",
+    file: "audioTranscription.ts",
+    typeName: "AudioTranscription",
+    propertyName: "model",
     category: "transcription"
   }
 ]
 
 /**
- * Extract string literal values from a TypeScript union type definition
+ * Add string literal values from a TypeScript type node.
  */
-function extractModelsFromFile(filePath) {
+function collectStringLiterals(typeNode, models) {
+  if (ts.isUnionTypeNode(typeNode)) {
+    for (const member of typeNode.types) collectStringLiterals(member, models)
+    return
+  }
+
+  if (ts.isParenthesizedTypeNode(typeNode)) {
+    collectStringLiterals(typeNode.type, models)
+    return
+  }
+
+  if (ts.isLiteralTypeNode(typeNode) && ts.isStringLiteral(typeNode.literal)) {
+    models.add(typeNode.literal.text)
+  }
+}
+
+/**
+ * Extract model literals from a named interface property or type alias.
+ */
+function extractModelsFromFile(filePath, source) {
   const content = fs.readFileSync(filePath, "utf-8")
+  const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true)
+  const models = new Set()
 
-  // Match quoted string literals in union types (e.g., | "whisper-1" or | 'whisper-1')
-  const modelRegex = /\|\s*(['"])([^'"]+)\1/g
-  const models = []
+  for (const statement of sourceFile.statements) {
+    if (ts.isTypeAliasDeclaration(statement) && statement.name.text === source.typeName) {
+      collectStringLiterals(statement.type, models)
+    }
 
-  let match
-  while ((match = modelRegex.exec(content)) !== null) {
-    const model = match[2]
-    // Skip generic "string" type
-    if (model !== "string") {
-      models.push(model)
+    if (ts.isInterfaceDeclaration(statement) && statement.name.text === source.typeName) {
+      const property = statement.members.find(
+        (member) =>
+          ts.isPropertySignature(member) &&
+          ((ts.isIdentifier(member.name) && member.name.text === source.propertyName) ||
+            (ts.isStringLiteral(member.name) && member.name.text === source.propertyName))
+      )
+      if (property?.type) collectStringLiterals(property.type, models)
     }
   }
 
-  return models
+  if (models.size === 0) {
+    throw new Error(
+      `No model literals found in ${source.file} (${source.typeName}.${source.propertyName})`
+    )
+  }
+
+  return [...models]
 }
 
 async function main() {
@@ -73,7 +107,7 @@ async function main() {
         continue
       }
 
-      const models = extractModelsFromFile(filePath)
+      const models = extractModelsFromFile(filePath, source)
       console.log(`   Found ${models.length} models in ${source.file}`)
 
       for (const model of models) {
@@ -91,6 +125,10 @@ async function main() {
     const sortedTranscription = Array.from(transcriptionModels).sort()
     const sortedRealtime = Array.from(realtimeModels).sort()
 
+    if (sortedTranscription.length === 0 || sortedRealtime.length === 0) {
+      throw new Error("OpenAI model generation requires non-empty transcription and realtime sets")
+    }
+
     console.log(`   Total: ${sortedAll.length} unique models`)
     console.log(`   - Transcription: ${sortedTranscription.length}`)
     console.log(`   - Realtime: ${sortedRealtime.length}`)
@@ -103,9 +141,9 @@ async function main() {
  * Run 'pnpm openapi:sync-openai-models' to regenerate.
  *
  * Source files:
- * - src/generated/openai/schema/createTranscriptionRequestModel.ts
- * - src/generated/openai/schema/realtimeSessionCreateRequestGAModel.ts
- * - src/generated/openai/schema/audioTranscriptionModel.ts
+ * - src/generated/openai/schema/createTranscriptionRequest.ts
+ * - src/generated/openai/schema/realtimeSessionCreateRequestGA.ts
+ * - src/generated/openai/schema/audioTranscription.ts
  *
  * @generated
  */
@@ -224,14 +262,14 @@ ${sortedAll
 
     fs.writeFileSync(OUTPUT_PATH, output, "utf-8")
     console.log(`✅ Generated ${OUTPUT_PATH}`)
-    console.log(`   - Exports: OpenAIModelCodes, OpenAIModelCode`)
+    console.log("   - Exports: OpenAIModelCodes, OpenAIModelCode")
     console.log(
-      `   - Exports: OpenAITranscriptionModelCodes, OpenAITranscriptionModelCode, OpenAITranscriptionModel`
+      "   - Exports: OpenAITranscriptionModelCodes, OpenAITranscriptionModelCode, OpenAITranscriptionModel"
     )
     console.log(
-      `   - Exports: OpenAIRealtimeModelCodes, OpenAIRealtimeModelCode, OpenAIRealtimeModel`
+      "   - Exports: OpenAIRealtimeModelCodes, OpenAIRealtimeModelCode, OpenAIRealtimeModel"
     )
-    console.log(`   - Exports: OpenAIModelLabels`)
+    console.log("   - Exports: OpenAIModelLabels")
   } catch (error) {
     console.error(`❌ Failed to generate OpenAI models: ${error.message}`)
     console.error(error.stack)

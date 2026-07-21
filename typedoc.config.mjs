@@ -19,8 +19,6 @@ export default {
 
   // Exclude test files only
   exclude: ["**/*.test.ts", "**/*.spec.ts", "**/test/**/*", "**/examples/**/*"],
-
-  includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization

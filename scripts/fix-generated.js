@@ -5,8 +5,8 @@
  * Fixes common syntax errors in generated TypeScript files
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const fixes = []
 
@@ -91,7 +91,7 @@ function fixDeepgramParameters(content, filePath) {
 
   // Check if file has export const declaration
   const hasConstDeclaration = content.includes(`export const ${capitalizedParamName} = {`)
-  const hasTypeDeclaration = content.includes(`export type ${capitalizedParamName}`)
+  const _hasTypeDeclaration = content.includes(`export type ${capitalizedParamName}`)
 
   // Case 1: Has const but might have duplicate properties or malformed syntax
   if (hasConstDeclaration) {
@@ -126,7 +126,7 @@ function fixDeepgramParameters(content, filePath) {
             if (!seenKeys.has(key)) {
               seenKeys.add(key)
               // Clean up the property line
-              let cleaned = trimmed.replace(/,\s*$/, "")
+              const cleaned = trimmed.replace(/,\s*$/, "")
               uniqueProps.push(`  ${cleaned}`)
             }
           }
@@ -256,7 +256,7 @@ ${uniqueProps.join(",\n")}
             // Clean up and ensure consistent format
             let cleaned = prop.replace(/,\s*$/, "") // Remove trailing comma
             if (!cleaned.startsWith("  ")) {
-              cleaned = "  " + cleaned.trim()
+              cleaned = `  ${cleaned.trim()}`
             }
             return cleaned
           })
@@ -335,6 +335,7 @@ function fixErrorTypeShadowing(content, filePath) {
   // Update references from Error to ErrorType
   if (content !== before) {
     content = content.replace(/:\s*Error([;\s])/g, ": ErrorType$1")
+    content = content.replace(/=\s*Error([;\s])/g, "= ErrorType$1")
     content = content.replace(/Error\[\]/g, "ErrorType[]")
     fixes.push(`Fixed Error type shadowing in ${filePath}`)
   }
@@ -348,7 +349,7 @@ function fixErrorTypeShadowing(content, filePath) {
  * Solution: Add union type annotation to the array constant (e.g., ("word" | "segment")[])
  */
 function fixArrayDefaults(content, filePath) {
-  const before = content
+  const _before = content
 
   // Strategy: Find all enum definitions and their associated default constants
   // Look for patterns like:
@@ -455,14 +456,14 @@ function fixFormDataObjectAppend(content, filePath) {
   for (const field of stringOrArrayFields) {
     // Skip if already fixed (contains Array.isArray for this field)
     if (
-      content.includes(`Array.isArray`) &&
+      content.includes("Array.isArray") &&
       content.match(new RegExp(`Array\\.isArray\\([\\w.]+\\.${field}\\)`))
     ) {
       continue
     }
     content = content.replace(
       new RegExp(`( )formData\\.append\\(["'\`]${field}["'\`],\\s*([\\w.]+\\.${field})\\)`),
-      (match, indent, varRef) =>
+      (_match, indent, varRef) =>
         `${indent}Array.isArray(${varRef}) ? ${varRef}.forEach(value => formData.append("${field}", value)) : formData.append("${field}", ${varRef})`
     )
   }
@@ -480,6 +481,29 @@ function fixFormDataObjectAppend(content, filePath) {
 
   if (content !== before) {
     fixes.push(`Fixed FormData object append in ${filePath}`)
+  }
+
+  return content
+}
+
+function fixOpenAIRealtimeResponseModalities(content, filePath) {
+  if (!filePath.endsWith("openAIAudioRealtimeAPI.zod.ts")) {
+    return content
+  }
+
+  const before = content
+
+  // Orval emits these optional response/session modality fields differently
+  // when the OpenAI project is generated alone versus in the full project set.
+  // Normalize to the full-generation output so targeted OpenAI generation is
+  // idempotent with `pnpm openapi:generate`.
+  content = content.replace(
+    /"((?:output_)?modalities)": zod\.array\(zod\.enum\(\['text', 'audio'\]\)\)\.optional\(\)(\.describe\('The set of modalities the model can respond with\. To disable audio,\\nset this to \[\\"text\\"\]\.\\n'\))/g,
+    '"$1": zod.any().optional()$2'
+  )
+
+  if (content !== before) {
+    fixes.push(`Normalized OpenAI realtime response modalities in ${filePath}`)
   }
 
   return content
@@ -515,10 +539,10 @@ function fixDiscriminatedUnionMissingField(content, filePath) {
   // Note: Match both zod.discriminatedUnion AND .discriminatedUnion (chained from zod)
   const discriminatedUnionRegex = /(?:zod)?\.discriminatedUnion\(['"]type['"]\s*,\s*\[/g
 
-  let match
+  let match = discriminatedUnionRegex.exec(content)
   const replacements = []
 
-  while ((match = discriminatedUnionRegex.exec(content)) !== null) {
+  while (match !== null) {
     const startIdx = match.index
     const afterMatch = content.slice(match.index + match[0].length)
 
@@ -544,6 +568,8 @@ function fixDiscriminatedUnionMissingField(content, filePath) {
         replacement: hasZodPrefix ? "zod.union([" : ".union(["
       })
     }
+
+    match = discriminatedUnionRegex.exec(content)
   }
 
   // Apply replacements in reverse order to preserve indices
@@ -578,6 +604,80 @@ function fixEmptyZodArrayCalls(content, filePath) {
 }
 
 /**
+ * Orval 8 may emit zod.bool(), which is not part of the Zod public API.
+ */
+function fixZodBooleanAliases(content, filePath) {
+  if (!filePath.includes(".zod.ts")) return content
+
+  const before = content
+  content = content.replace(/\bzod\.bool\(\)/g, "zod.boolean()")
+
+  if (content !== before) {
+    fixes.push(`Fixed zod.bool() aliases in ${filePath}`)
+  }
+
+  return content
+}
+
+const LEGACY_ZOD_EXPORT_ALIASES = {
+  "assemblyai/api/assemblyAIAPI.zod.ts": {
+    createTranscriptBody: "CreateTranscriptBody",
+    listTranscriptsQueryParams: "ListTranscriptsQueryParams"
+  },
+  "azure/api/speechServicesAPIVersion32.zod.ts": {
+    transcriptionsCreateBody: "TranscriptionsCreateBody",
+    transcriptionsListQueryParams: "TranscriptionsListQueryParams"
+  },
+  "deepgram/api/deepgramAPI.zod.ts": {
+    listenTranscribeQueryParams: "ListenTranscribeQueryParams",
+    listProjectRequestsQueryParams: "ListProjectRequestsQueryParams"
+  },
+  "elevenlabs/api/elevenLabsSpeechToTextAPI.zod.ts": {
+    speechToTextBody: "SpeechToTextBody"
+  },
+  "gladia/api/gladiaControlAPI.zod.ts": {
+    streamingControllerInitStreamingSessionV2Body: "StreamingControllerInitStreamingSessionV2Body",
+    transcriptionControllerInitPreRecordedJobV2Body:
+      "TranscriptionControllerInitPreRecordedJobV2Body",
+    transcriptionControllerListV2QueryParams: "TranscriptionControllerListV2QueryParams"
+  },
+  "openai/api/openAIAudioRealtimeAPI.zod.ts": {
+    createTranscriptionBody: "CreateTranscriptionBody"
+  },
+  "soniox/api/sonioxPublicAPI.zod.ts": {
+    createTranscriptionBody: "CreateTranscriptionBody",
+    getTranscriptionsQueryParams: "GetTranscriptionsQueryParams"
+  }
+}
+
+/**
+ * Preserve Zod constant names emitted by Orval 7 after Orval 8 capitalized them.
+ */
+function fixLegacyZodExportAliases(content, filePath) {
+  const normalizedPath = filePath.replace(/\\/g, "/")
+  const entry = Object.entries(LEGACY_ZOD_EXPORT_ALIASES).find(([suffix]) =>
+    normalizedPath.endsWith(suffix)
+  )
+  if (!entry) return content
+
+  const additions = []
+  for (const [legacyName, currentName] of Object.entries(entry[1])) {
+    if (content.includes(`export const ${legacyName} =`)) continue
+    if (!content.includes(`export const ${currentName} =`)) {
+      throw new Error(`Missing Orval 8 Zod export ${currentName} in ${filePath}`)
+    }
+    additions.push(`export const ${legacyName} = ${currentName};`)
+  }
+
+  if (additions.length > 0) {
+    fixes.push(`Added legacy Zod export aliases in ${filePath}`)
+    return `${content.trimEnd()}\n\n${additions.join("\n")}\n`
+  }
+
+  return content
+}
+
+/**
  * Fix discriminatedUnion where discriminator fields are marked .optional()
  * Orval bug: generates discriminator fields with .optional() which causes Zod to throw
  * "Discriminator property type has duplicate value undefined" at runtime.
@@ -606,8 +706,8 @@ function fixDiscriminatedUnionOptionalDiscriminator(content, filePath) {
   // Note: Match both zod.discriminatedUnion AND .discriminatedUnion (chained from zod)
   const discriminatedUnionRegex = /(?:zod)?\.discriminatedUnion\(['"](\w+)['"]\s*,\s*\[/g
 
-  let match
-  while ((match = discriminatedUnionRegex.exec(content)) !== null) {
+  let match = discriminatedUnionRegex.exec(content)
+  while (match !== null) {
     const discriminatorField = match[1] // e.g., "type"
     const startIdx = match.index + match[0].length
 
@@ -621,7 +721,10 @@ function fixDiscriminatedUnionOptionalDiscriminator(content, filePath) {
       endIdx++
     }
 
-    if (depth !== 0) continue // Malformed, skip
+    if (depth !== 0) {
+      match = discriminatedUnionRegex.exec(content)
+      continue
+    }
 
     // Extract the content inside the discriminatedUnion array
     const unionContent = content.slice(startIdx, endIdx - 1)
@@ -664,6 +767,8 @@ function fixDiscriminatedUnionOptionalDiscriminator(content, filePath) {
       // Reset regex index since content changed
       discriminatedUnionRegex.lastIndex = startIdx + fixedUnionContent.length
     }
+
+    match = discriminatedUnionRegex.exec(content)
   }
 
   if (content !== before) {
@@ -812,6 +917,18 @@ function fixMismatchedDefaultTypes(content, filePath) {
   return content
 }
 
+function trimTrailingWhitespace(content, filePath) {
+  const before = content
+  content = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
+  content = content.replace(/[ \t]+$/gm, "")
+
+  if (content !== before) {
+    fixes.push(`Normalized generated whitespace in ${filePath}`)
+  }
+
+  return content
+}
+
 /**
  * Process a single file
  */
@@ -830,16 +947,35 @@ function processFile(filePath) {
   content = fixArrayDefaults(content, filePath)
   content = fixMismatchedDefaultTypes(content, filePath)
   content = fixFormDataObjectAppend(content, filePath)
+  content = fixOpenAIRealtimeResponseModalities(content, filePath)
   content = fixDiscriminatedUnionMissingField(content, filePath)
   content = fixEmptyZodArrayCalls(content, filePath)
+  content = fixZodBooleanAliases(content, filePath)
+  content = fixLegacyZodExportAliases(content, filePath)
   content = fixDiscriminatedUnionOptionalDiscriminator(content, filePath)
   content = fixDeepgramMockProvider(content, filePath)
   content = fixDeepgramScopesDefault(content, filePath)
   content = fixGladiaSubtitlesDefault(content, filePath)
+  content = trimTrailingWhitespace(content, filePath)
 
   // Only write if changed
   if (content !== original) {
     fs.writeFileSync(filePath, content, "utf-8")
+  }
+}
+
+function trimGeneratedTrailingWhitespace(generatedDir) {
+  const files = findFiles(generatedDir, [".ts"])
+  for (const file of files) {
+    const content = fs.readFileSync(file, "utf-8")
+    const trimmed = content
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .replace(/[ \t]+$/gm, "")
+    if (trimmed !== content) {
+      fs.writeFileSync(file, trimmed, "utf-8")
+      fixes.push(`Normalized generated whitespace in ${file}`)
+    }
   }
 }
 
@@ -1044,6 +1180,101 @@ function restoreOpenAIStreamingTypes() {
   console.log("\n📦 Restored OpenAI streaming-types.ts")
 }
 
+const GENERATED_COMPATIBILITY_FILES = [
+  {
+    relativePath: "elevenlabs/schema/speechToText200.ts",
+    indexPath: "elevenlabs/schema/index.ts",
+    exportPath: "./speechToText200.js",
+    content: `import type { MultichannelSpeechToTextResponseModel } from "./multichannelSpeechToTextResponseModel.js"
+import type { SpeechToTextChunkResponseModel } from "./speechToTextChunkResponseModel.js"
+
+/** @deprecated Use SpeechToTextChunkResponseModel | MultichannelSpeechToTextResponseModel. */
+export type SpeechToText200 = SpeechToTextChunkResponseModel | MultichannelSpeechToTextResponseModel
+`
+  },
+  {
+    relativePath: "elevenlabs/schema/getTranscriptById200.ts",
+    indexPath: "elevenlabs/schema/index.ts",
+    exportPath: "./getTranscriptById200.js",
+    content: `import type { MultichannelSpeechToTextResponseModel } from "./multichannelSpeechToTextResponseModel.js"
+import type { SpeechToTextChunkResponseModel } from "./speechToTextChunkResponseModel.js"
+
+/** @deprecated Use SpeechToTextChunkResponseModel | MultichannelSpeechToTextResponseModel. */
+export type GetTranscriptById200 = SpeechToTextChunkResponseModel | MultichannelSpeechToTextResponseModel
+`
+  },
+  {
+    relativePath: "gladia/schema/listTranscriptionResponseItemsItem.ts",
+    indexPath: "gladia/schema/index.ts",
+    exportPath: "./listTranscriptionResponseItemsItem.js",
+    content: `import type { PreRecordedResponse } from "./preRecordedResponse.js"
+import type { StreamingResponse } from "./streamingResponse.js"
+
+/** @deprecated Use PreRecordedResponse | StreamingResponse. */
+export type ListTranscriptionResponseItemsItem = PreRecordedResponse | StreamingResponse
+`
+  },
+  {
+    relativePath: "openai/schema/createTranscriptionRequestModel.ts",
+    indexPath: "openai/schema/index.ts",
+    exportPath: "./createTranscriptionRequestModel.js",
+    content: `import type { CreateTranscriptionRequest } from "./createTranscriptionRequest.js"
+
+/** @deprecated Use CreateTranscriptionRequest["model"]. */
+export type CreateTranscriptionRequestModel = CreateTranscriptionRequest["model"]
+`
+  },
+  {
+    relativePath: "openai/schema/realtimeSessionCreateRequestGAModel.ts",
+    indexPath: "openai/schema/index.ts",
+    exportPath: "./realtimeSessionCreateRequestGAModel.js",
+    content: `import type { RealtimeSessionCreateRequestGA } from "./realtimeSessionCreateRequestGA.js"
+
+/** @deprecated Use NonNullable<RealtimeSessionCreateRequestGA["model"]>. */
+export type RealtimeSessionCreateRequestGAModel = NonNullable<RealtimeSessionCreateRequestGA["model"]>
+`
+  },
+  {
+    relativePath: "openai/schema/createTranscription200One.ts",
+    indexPath: "openai/schema/index.ts",
+    exportPath: "./createTranscription200One.js",
+    content: `import type { CreateTranscriptionResponseDiarizedJson } from "./createTranscriptionResponseDiarizedJson.js"
+import type { CreateTranscriptionResponseJson } from "./createTranscriptionResponseJson.js"
+import type { CreateTranscriptionResponseVerboseJson } from "./createTranscriptionResponseVerboseJson.js"
+
+/** @deprecated Use the generated createTranscription response union. */
+export type CreateTranscription200One =
+  | CreateTranscriptionResponseJson
+  | CreateTranscriptionResponseDiarizedJson
+  | CreateTranscriptionResponseVerboseJson
+`
+  }
+]
+
+/**
+ * Restore Orval 7 module paths used by public and internal imports.
+ */
+function restoreGeneratedCompatibilityFiles(generatedDir) {
+  for (const compatibilityFile of GENERATED_COMPATIBILITY_FILES) {
+    const filePath = path.join(generatedDir, compatibilityFile.relativePath)
+    const indexPath = path.join(generatedDir, compatibilityFile.indexPath)
+    const fileContent = `/** Generated compatibility alias - DO NOT EDIT. */\n${compatibilityFile.content}`
+
+    if (!fs.existsSync(filePath) || fs.readFileSync(filePath, "utf-8") !== fileContent) {
+      fs.mkdirSync(path.dirname(filePath), { recursive: true })
+      fs.writeFileSync(filePath, fileContent, "utf-8")
+      fixes.push(`Restored generated compatibility file: ${compatibilityFile.relativePath}`)
+    }
+
+    const exportLine = `export * from '${compatibilityFile.exportPath}';`
+    const indexContent = fs.readFileSync(indexPath, "utf-8")
+    if (!indexContent.includes(exportLine)) {
+      fs.writeFileSync(indexPath, `${indexContent.trimEnd()}\n${exportLine}\n`, "utf-8")
+      fixes.push(`Exported generated compatibility file: ${compatibilityFile.relativePath}`)
+    }
+  }
+}
+
 /**
  * Main function
  */
@@ -1086,9 +1317,16 @@ function main() {
   // Restore ElevenLabs streaming response types (hand-extracted from WS API docs)
   restoreElevenLabsStreamingResponseTypes()
 
+  // Preserve generated module paths and type aliases exposed by Orval 7.
+  restoreGeneratedCompatibilityFiles(generatedDir)
+
+  trimGeneratedTrailingWhitespace(generatedDir)
+
   if (fixes.length > 0) {
     console.log("\n✅ Fixes applied:")
-    fixes.forEach((fix) => console.log(`  - ${fix}`))
+    for (const fix of fixes) {
+      console.log(`  - ${fix}`)
+    }
   } else {
     console.log("\n✨ No fixes needed - all files are clean!")
   }

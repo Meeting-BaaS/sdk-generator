@@ -2,14 +2,41 @@
  * Voice Router - Unified transcription interface
  */
 
+export * from "./audio-encoding-types"
+export * from "./provider-streaming-types"
+export * from "./streaming-enums"
 export * from "./types"
 export * from "./voice-router"
-export * from "./provider-streaming-types"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Streaming Enums - User-Friendly Const Objects for Autocomplete
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Re-export types for the enums
+export type {
+  AssemblyAIEncodingType,
+  AssemblyAILanguageType,
+  AssemblyAIRegionType,
+  AssemblyAISampleRateType,
+  AssemblyAISpeechModelType,
+  AssemblyAITranscriptionModelType,
+  AzureLocaleCode,
+  AzureLocaleType,
+  DeepgramLanguageType,
+  DeepgramModelType,
+  DeepgramRedactType,
+  DeepgramTopicModeType,
+  ElevenLabsRegionType,
+  SonioxAsyncModelCode,
+  SonioxLanguageCode,
+  SonioxLanguageType,
+  SonioxModelCode,
+  SonioxRealtimeModelCode,
+  SpeechmaticsLanguageCode,
+  SpeechmaticsLanguageType,
+  SpeechmaticsModelType,
+  SpeechmaticsOperatingPointType
+} from "./streaming-enums"
 /**
  * Provider-specific streaming enums for type-safe autocomplete
  *
@@ -51,52 +78,56 @@ export * from "./provider-streaming-types"
  * ```
  */
 export {
+  // AssemblyAI
+  AssemblyAIEncoding,
+  AssemblyAILanguage,
+  AssemblyAIRegion,
+  AssemblyAISampleRate,
+  AssemblyAISpeechModel,
+  AssemblyAIStatus,
+  AssemblyAITranscriptionModel,
+  // Azure
+  AzureLocale,
+  AzureLocaleCodes,
+  AzureLocaleLabels,
+  AzureLocales,
+  // Deepgram batch
+  DeepgramCallbackMethod,
   // Deepgram streaming
   DeepgramEncoding,
+  DeepgramIntentMode,
   DeepgramLanguage,
   DeepgramModel,
   DeepgramRedact,
-  DeepgramTopicMode,
-  // Deepgram batch
-  DeepgramCallbackMethod,
-  DeepgramIntentMode,
   DeepgramRegion,
   DeepgramSampleRate,
   DeepgramStatus,
+  DeepgramTopicMode,
   // Deepgram TTS
   DeepgramTTSContainer,
   DeepgramTTSEncoding,
   DeepgramTTSModel,
   DeepgramTTSSampleRate,
-  // Gladia
-  GladiaEncoding,
-  GladiaSampleRate,
-  GladiaBitDepth,
-  GladiaModel,
-  GladiaLanguage,
-  GladiaTranslationLanguage,
-  GladiaRegion,
-  GladiaStatus,
-  // AssemblyAI
-  AssemblyAIEncoding,
-  AssemblyAIRegion,
-  AssemblyAISpeechModel,
-  AssemblyAISampleRate,
-  AssemblyAITranscriptionModel,
-  AssemblyAILanguage,
-  AssemblyAIStatus,
   // ElevenLabs
   ElevenLabsRegion,
+  GladiaBitDepth,
+  // Gladia
+  GladiaEncoding,
+  GladiaLanguage,
+  GladiaModel,
+  GladiaRegion,
+  GladiaSampleRate,
+  GladiaStatus,
+  GladiaTranslationLanguage,
   // OpenAI Whisper batch
   OpenAIModel,
-  OpenAIResponseFormat,
   // OpenAI Realtime streaming
   OpenAIRealtimeAudioFormat,
   OpenAIRealtimeModel,
   OpenAIRealtimeTranscriptionModel,
   OpenAIRealtimeTurnDetection,
-  // Soniox
-  SonioxRegion,
+  OpenAIResponseFormat,
+  SonioxAsyncModel,
   SonioxLanguage,
   SonioxLanguageCodes,
   SonioxLanguageLabels,
@@ -106,48 +137,25 @@ export {
   SonioxModelLabels,
   SonioxModels,
   SonioxRealtimeModel,
-  SonioxAsyncModel,
-  // Speechmatics
-  SpeechmaticsRegion,
+  // Soniox
+  SonioxRegion,
   SpeechmaticsLanguage,
   SpeechmaticsLanguageCodes,
   SpeechmaticsLanguageLabels,
   SpeechmaticsLanguages,
-  // Azure
-  AzureLocale,
-  AzureLocaleCodes,
-  AzureLocaleLabels,
-  AzureLocales
-} from "./streaming-enums"
-
-// Re-export types for the enums
-export type {
-  DeepgramLanguageType,
-  DeepgramModelType,
-  DeepgramRedactType,
-  DeepgramTopicModeType,
-  AssemblyAIEncodingType,
-  AssemblyAISpeechModelType,
-  AssemblyAISampleRateType,
-  AssemblyAITranscriptionModelType,
-  AssemblyAILanguageType,
-  SonioxLanguageCode,
-  SonioxLanguageType,
-  SonioxModelCode,
-  SonioxRealtimeModelCode,
-  SonioxAsyncModelCode,
-  SpeechmaticsLanguageCode,
-  SpeechmaticsLanguageType,
-  AssemblyAIRegionType,
-  ElevenLabsRegionType,
-  AzureLocaleCode,
-  AzureLocaleType
+  SpeechmaticsModel,
+  SpeechmaticsOperatingPoint,
+  // Speechmatics
+  SpeechmaticsRegion
 } from "./streaming-enums"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Raw Generated Enums (for advanced usage / backward compatibility)
 // ─────────────────────────────────────────────────────────────────────────────
 
+export { SpeakV1ContainerParameter } from "../generated/deepgram/schema/speakV1ContainerParameter"
+export { SpeakV1EncodingParameter } from "../generated/deepgram/schema/speakV1EncodingParameter"
+export { SpeakV1SampleRateParameter } from "../generated/deepgram/schema/speakV1SampleRateParameter"
 /**
  * Deepgram Raw Parameter Enums (from OpenAPI spec)
  * @deprecated Use DeepgramEncoding, DeepgramModel etc. for better autocomplete
@@ -155,21 +163,16 @@ export type {
 export { V1ListenPostParametersEncoding } from "../generated/deepgram/schema/v1ListenPostParametersEncoding"
 export { V1ListenPostParametersModel } from "../generated/deepgram/schema/v1ListenPostParametersModel"
 export { V1ListenPostParametersVersion } from "../generated/deepgram/schema/v1ListenPostParametersVersion"
-export { SpeakV1EncodingParameter } from "../generated/deepgram/schema/speakV1EncodingParameter"
-export { SpeakV1ContainerParameter } from "../generated/deepgram/schema/speakV1ContainerParameter"
-export { SpeakV1SampleRateParameter } from "../generated/deepgram/schema/speakV1SampleRateParameter"
-
+export { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
 /**
  * Gladia Raw Parameter Enums (from OpenAPI spec)
  * @deprecated Use GladiaEncoding, GladiaSampleRate, GladiaBitDepth for better autocomplete
  */
 export { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
 export { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
-export { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
-
+export type { AudioResponseFormat } from "../generated/openai/schema/audioResponseFormat"
 /**
  * OpenAI Whisper Types
  * Type-safe types for OpenAI Whisper API
  */
 export type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
-export type { AudioResponseFormat } from "../generated/openai/schema/audioResponseFormat"

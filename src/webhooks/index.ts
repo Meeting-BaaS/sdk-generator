@@ -50,59 +50,58 @@
  * ```
  */
 
-// Export types
-export type {
-  WebhookEventType,
-  UnifiedWebhookEvent,
-  WebhookValidation,
-  WebhookVerificationOptions,
-  // Provider-specific webhook payload types
-  GladiaWebhookPayload,
-  GladiaWebhookSuccessPayload,
-  GladiaWebhookErrorPayload,
-  AssemblyAIWebhookPayload,
-  DeepgramWebhookPayload,
-  ElevenLabsWebhookPayload,
-  AzureWebhookPayload,
-  SpeechmaticsWebhookPayload,
-  ProviderWebhookPayloadMap,
-  SonioxWebhookPayload
-} from "./types"
-
-// Export base handler
-export { BaseWebhookHandler } from "./base-webhook"
-
-// Export provider-specific handlers
-export {
-  GladiaWebhookHandler,
-  createGladiaWebhookHandler
-} from "./gladia-webhook"
 export {
   AssemblyAIWebhookHandler,
   createAssemblyAIWebhookHandler
 } from "./assemblyai-webhook"
 export {
-  DeepgramWebhookHandler,
-  createDeepgramWebhookHandler
-} from "./deepgram-webhook"
-export {
   AzureWebhookHandler,
   createAzureWebhookHandler
 } from "./azure-webhook"
-export { SpeechmaticsWebhookHandler } from "./speechmatics-webhook"
+// Export base handler
+export { BaseWebhookHandler } from "./base-webhook"
 export {
-  ElevenLabsWebhookHandler,
-  createElevenLabsWebhookHandler
+  createDeepgramWebhookHandler,
+  DeepgramWebhookHandler
+} from "./deepgram-webhook"
+export {
+  createElevenLabsWebhookHandler,
+  ElevenLabsWebhookHandler
 } from "./elevenlabs-webhook"
+// Export provider-specific handlers
 export {
-  SonioxWebhookHandler,
-  createSonioxWebhookHandler
+  createGladiaWebhookHandler,
+  GladiaWebhookHandler
+} from "./gladia-webhook"
+export {
+  createSonioxWebhookHandler,
+  SonioxWebhookHandler
 } from "./soniox-webhook"
+export { SpeechmaticsWebhookHandler } from "./speechmatics-webhook"
+// Export types
+export type {
+  AssemblyAIWebhookPayload,
+  AzureWebhookPayload,
+  DeepgramWebhookPayload,
+  ElevenLabsWebhookPayload,
+  GladiaWebhookErrorPayload,
+  // Provider-specific webhook payload types
+  GladiaWebhookPayload,
+  GladiaWebhookSuccessPayload,
+  ProviderWebhookPayloadMap,
+  SonioxWebhookPayload,
+  SpeechmaticsWebhookPayload,
+  UnifiedWebhookEvent,
+  WebhookEventType,
+  WebhookProvider,
+  WebhookValidation,
+  WebhookVerificationOptions
+} from "./types"
 
 // Export router
 export {
-  WebhookRouter,
   createWebhookRouter,
+  WebhookRouter,
   type WebhookRouterOptions,
   type WebhookRouterResult
 } from "./webhook-router"

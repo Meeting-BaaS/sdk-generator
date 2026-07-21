@@ -11,7 +11,7 @@
  * Source: https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
  */
 
-const fs = require("fs")
+const fs = require("node:fs")
 const yaml = require("js-yaml")
 
 const SPEC_PATH = "./specs/openai-openapi.yaml"
@@ -62,6 +62,14 @@ if (spec.paths) {
 
 console.log(`   ✅ Kept ${Object.keys(spec.paths || {}).length} audio paths`)
 console.log(`   🗑️  Removed ${removedPaths.length} non-audio paths`)
+
+// Webhooks are unrelated to audio generation and reference schemas removed below.
+const removedWebhooks = Object.keys(spec.webhooks || {}).length
+if (removedWebhooks > 0) {
+  delete spec.webhooks
+  fixCount += removedWebhooks
+  console.log(`   🗑️  Removed ${removedWebhooks} non-audio webhooks`)
+}
 
 // Step 2: Collect all $ref references from remaining paths
 console.log("\n📋 Step 2: Collecting referenced schemas")
@@ -152,16 +160,52 @@ function fixArraySchemas(obj, path = "") {
   return fixes
 }
 
-let arrayFixes = fixArraySchemas(spec)
+const arrayFixes = fixArraySchemas(spec)
 if (arrayFixes > 0) {
   console.log(`   Fixed ${arrayFixes} array schemas`)
   fixCount += arrayFixes
 } else {
-  console.log(`   ✅ No malformed array schemas found`)
+  console.log("   ✅ No malformed array schemas found")
 }
 
-// Step 6: Fix any missing path parameters
-console.log("\n📋 Step 6: Fixing missing path parameters")
+// Step 6: Repair defaults whose values do not match their schemas.
+// Stainless occasionally publishes null defaults without nullable and array
+// defaults on scalar schemas. Both produce invalid Zod output in Orval.
+console.log("\n📋 Step 6: Fixing invalid schema defaults")
+
+function fixInvalidSchemaDefaults(obj, path = "") {
+  if (!obj || typeof obj !== "object") return 0
+  let fixes = 0
+
+  if (Object.hasOwn(obj, "default")) {
+    if (obj.default === null && obj.nullable !== true) {
+      obj.nullable = true
+      fixes++
+      console.log(`   ✅ Marked null default as nullable: ${path}`)
+    } else if (obj.type === "string" && typeof obj.default !== "string") {
+      delete obj.default
+      fixes++
+      console.log(`   ✅ Removed non-string default from string schema: ${path}`)
+    }
+  }
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === "object" && value !== null) {
+      fixes += fixInvalidSchemaDefaults(value, `${path}/${key}`)
+    }
+  }
+
+  return fixes
+}
+
+const defaultFixes = fixInvalidSchemaDefaults(spec)
+fixCount += defaultFixes
+if (defaultFixes === 0) {
+  console.log("   ✅ No invalid schema defaults found")
+}
+
+// Step 7: Fix any missing path parameters
+console.log("\n📋 Step 7: Fixing missing path parameters")
 
 let paramFixes = 0
 if (spec.paths) {
@@ -199,16 +243,16 @@ if (spec.paths) {
 if (paramFixes > 0) {
   console.log(`   ✅ Added ${paramFixes} missing path parameters`)
 } else {
-  console.log(`   ✅ No missing path parameters`)
+  console.log("   ✅ No missing path parameters")
 }
 
-// Step 7: Update spec metadata
-console.log("\n📋 Step 7: Updating spec metadata")
+// Step 8: Update spec metadata
+console.log("\n📋 Step 8: Updating spec metadata")
 
 spec.info.title = "OpenAI Audio & Realtime API"
 spec.info.description =
   "OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted)."
-console.log(`   ✅ Updated title and description`)
+console.log("   ✅ Updated title and description")
 
 // Filter tags to audio and realtime only
 if (spec.tags) {
@@ -216,7 +260,7 @@ if (spec.tags) {
     const name = tag.name?.toLowerCase() || ""
     return name.includes("audio") || name.includes("realtime")
   })
-  console.log(`   ✅ Filtered tags to audio + realtime only`)
+  console.log("   ✅ Filtered tags to audio + realtime only")
 }
 
 // Save backup (only if not already exists)
@@ -231,7 +275,7 @@ fs.writeFileSync(SPEC_PATH, fixedYaml)
 
 console.log(`\n✅ Applied ${fixCount} fixes/filters to OpenAI spec`)
 console.log(`📝 Filtered spec saved to: ${SPEC_PATH}`)
-console.log(`\n📊 Final spec summary:`)
+console.log("\n📊 Final spec summary:")
 console.log(`   Paths: ${Object.keys(spec.paths || {}).length}`)
 console.log(`   Schemas: ${Object.keys(spec.components?.schemas || {}).length}`)
 console.log(`   Tags: ${(spec.tags || []).length}\n`)

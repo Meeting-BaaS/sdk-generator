@@ -47,6 +47,12 @@ export type AudioBitDepth = 8 | 16 | 24 | 32
  */
 export type AudioChannels = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 
+const SUPPORTED_AUDIO_CHANNELS = [
+  1, 2, 3, 4, 5, 6, 7, 8
+] as const satisfies readonly AudioChannels[]
+
+const SUPPORTED_AUDIO_BIT_DEPTHS = [8, 16, 24, 32] as const satisfies readonly AudioBitDepth[]
+
 /**
  * Provider-specific encoding format mappings
  *
@@ -64,17 +70,17 @@ export interface EncodingMapping {
  * Gladia encoding mappings
  * Gladia uses "wav/xxx" format for streaming
  */
-export const GLADIA_ENCODING_MAP: Record<string, string> = {
+export const GLADIA_ENCODING_MAP: Readonly<Record<string, string>> = Object.freeze({
   linear16: "wav/pcm",
   mulaw: "wav/ulaw",
   alaw: "wav/alaw"
-} as const
+})
 
 /**
  * Deepgram encoding mappings
  * Deepgram uses lowercase format names
  */
-export const DEEPGRAM_ENCODING_MAP: Record<string, string> = {
+export const DEEPGRAM_ENCODING_MAP: Readonly<Record<string, string>> = Object.freeze({
   linear16: "linear16",
   mulaw: "mulaw",
   flac: "flac",
@@ -83,15 +89,72 @@ export const DEEPGRAM_ENCODING_MAP: Record<string, string> = {
   "amr-nb": "amr-nb",
   "amr-wb": "amr-wb",
   g729: "g729"
-} as const
+})
 
 /**
  * AssemblyAI encoding mappings
  * AssemblyAI uses pcm_s16le for streaming
  */
-export const ASSEMBLYAI_ENCODING_MAP: Record<string, string> = {
+export const ASSEMBLYAI_ENCODING_MAP: Readonly<Record<string, string>> = Object.freeze({
   linear16: "pcm_s16le"
-} as const
+})
+
+type EncodingProvider = "gladia" | "deepgram" | "assemblyai"
+
+const SUPPORTED_ENCODING_PROVIDERS = ["gladia", "deepgram", "assemblyai"] as const
+
+const ENCODING_MAPS: Record<EncodingProvider, Readonly<Record<string, string>>> = {
+  gladia: GLADIA_ENCODING_MAP,
+  deepgram: DEEPGRAM_ENCODING_MAP,
+  assemblyai: ASSEMBLYAI_ENCODING_MAP
+}
+
+function requireEncodingProvider(provider: unknown): EncodingProvider {
+  if (
+    typeof provider !== "string" ||
+    !SUPPORTED_ENCODING_PROVIDERS.includes(provider as EncodingProvider)
+  ) {
+    throw new Error(
+      `Encoding provider '${formatRuntimeValue(provider)}' is not supported. Supported providers: ${SUPPORTED_ENCODING_PROVIDERS.join(", ")}`
+    )
+  }
+
+  return provider as EncodingProvider
+}
+
+function formatSupportedValues(values: readonly number[]): string {
+  return values.join(", ")
+}
+
+function formatRuntimeValue(value: unknown): string {
+  try {
+    return String(value)
+  } catch {
+    try {
+      return Object.prototype.toString.call(value)
+    } catch {
+      return "<unprintable value>"
+    }
+  }
+}
+
+function hasOwnKey(record: object, key: PropertyKey): boolean {
+  const ownKey = typeof key === "number" ? String(key) : key
+  return Reflect.ownKeys(record).includes(ownKey)
+}
+
+function getOwnDataProperty(
+  record: object,
+  key: PropertyKey
+): { present: boolean; value: unknown } {
+  const descriptor = Object.getOwnPropertyDescriptor(record, key)
+
+  if (!descriptor || !("value" in descriptor)) {
+    return { present: false, value: undefined }
+  }
+
+  return { present: true, value: descriptor.value }
+}
 
 /**
  * Get provider-specific encoding format from unified format
@@ -112,32 +175,19 @@ export const ASSEMBLYAI_ENCODING_MAP: Record<string, string> = {
  */
 export function mapEncodingToProvider(
   unifiedEncoding: AudioEncoding,
-  provider: "gladia" | "deepgram" | "assemblyai"
+  provider: EncodingProvider
 ): string {
-  let mapping: Record<string, string>
+  const validProvider = requireEncodingProvider(provider)
+  const mapping = ENCODING_MAPS[validProvider]
 
-  switch (provider) {
-    case "gladia":
-      mapping = GLADIA_ENCODING_MAP
-      break
-    case "deepgram":
-      mapping = DEEPGRAM_ENCODING_MAP
-      break
-    case "assemblyai":
-      mapping = ASSEMBLYAI_ENCODING_MAP
-      break
-  }
-
-  const providerEncoding = mapping[unifiedEncoding]
-
-  if (!providerEncoding) {
+  if (typeof unifiedEncoding !== "string" || !hasOwnKey(mapping, unifiedEncoding)) {
     throw new Error(
-      `Encoding '${unifiedEncoding}' is not supported by ${provider}. ` +
+      `Encoding '${formatRuntimeValue(unifiedEncoding)}' is not supported by ${validProvider}. ` +
         `Supported encodings: ${Object.keys(mapping).join(", ")}`
     )
   }
 
-  return providerEncoding
+  return mapping[unifiedEncoding]
 }
 
 /**
@@ -150,25 +200,72 @@ export function mapEncodingToProvider(
 export function validateAudioConfig(
   config: {
     encoding?: AudioEncoding
-    sampleRate?: AudioSampleRate
-    channels?: AudioChannels
-    bitDepth?: AudioBitDepth
+    sampleRate?: AudioSampleRate | number
+    channels?: AudioChannels | number
+    bitDepth?: AudioBitDepth | number
   },
-  provider: "gladia" | "deepgram" | "assemblyai"
+  provider: EncodingProvider
 ): void {
-  if (config.encoding) {
-    // This will throw if encoding is not supported
-    mapEncodingToProvider(config.encoding, provider)
+  if (typeof config !== "object" || config === null || Array.isArray(config)) {
+    throw new Error("Audio config must be an object")
   }
 
-  // Provider-specific validations
-  if (provider === "gladia") {
-    if (config.channels && (config.channels < 1 || config.channels > 8)) {
-      throw new Error("Gladia supports 1-8 audio channels")
+  const validProvider = requireEncodingProvider(provider)
+  const configRecord = config as Record<string, unknown>
+  const encodingConfig = getOwnDataProperty(configRecord, "encoding")
+  const sampleRateConfig = getOwnDataProperty(configRecord, "sampleRate")
+  const bitDepthConfig = getOwnDataProperty(configRecord, "bitDepth")
+  const channelsConfig = getOwnDataProperty(configRecord, "channels")
+  const { present: hasEncoding, value: encoding } = encodingConfig
+  const { present: hasSampleRate, value: sampleRate } = sampleRateConfig
+  const { present: hasBitDepth, value: bitDepth } = bitDepthConfig
+  const { present: hasChannels, value: channels } = channelsConfig
+
+  if (
+    hasSampleRate &&
+    sampleRate !== undefined &&
+    (typeof sampleRate !== "number" || !Number.isInteger(sampleRate) || sampleRate <= 0)
+  ) {
+    throw new Error("Sample rate must be a positive integer")
+  }
+
+  if (
+    hasBitDepth &&
+    bitDepth !== undefined &&
+    (typeof bitDepth !== "number" ||
+      !SUPPORTED_AUDIO_BIT_DEPTHS.includes(bitDepth as AudioBitDepth))
+  ) {
+    throw new Error(
+      `Bit depth must be one of: ${formatSupportedValues(SUPPORTED_AUDIO_BIT_DEPTHS)}`
+    )
+  }
+
+  if (hasEncoding && encoding !== undefined) {
+    // This will throw if encoding is not supported
+    mapEncodingToProvider(encoding as AudioEncoding, validProvider)
+  }
+
+  if (hasChannels && channels !== undefined) {
+    if (
+      typeof channels !== "number" ||
+      !Number.isInteger(channels) ||
+      !SUPPORTED_AUDIO_CHANNELS.includes(channels as AudioChannels)
+    ) {
+      if (validProvider === "gladia") {
+        throw new Error("Gladia supports 1-8 audio channels")
+      }
+      throw new Error(
+        `Audio channels must be one of: ${formatSupportedValues(SUPPORTED_AUDIO_CHANNELS)}`
+      )
     }
   }
 
-  if (provider === "assemblyai" && config.encoding && config.encoding !== "linear16") {
+  if (
+    validProvider === "assemblyai" &&
+    hasEncoding &&
+    encoding !== undefined &&
+    encoding !== "linear16"
+  ) {
     throw new Error("AssemblyAI streaming only supports linear16 encoding")
   }
 }

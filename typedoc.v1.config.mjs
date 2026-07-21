@@ -25,8 +25,6 @@ export default {
     "**/src/node/v2-methods.ts",
     "**/src/generated/v2/**/*"
   ],
-
-  includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization

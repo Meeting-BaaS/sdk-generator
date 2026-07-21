@@ -32,8 +32,6 @@ export default {
     "**/src/generated/assemblyai/**/*",
     "**/src/generated/deepgram/**/*"
   ],
-
-  includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization

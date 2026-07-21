@@ -8,8 +8,8 @@
  * Run: node scripts/generate-deepgram-models.js
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const API_URL = "https://api.deepgram.com/v1/models"
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/deepgram/models.ts")
@@ -141,7 +141,7 @@ ${models
     console.log(`✅ Generated ${OUTPUT_PATH}`)
     console.log(`   - ${models.length} models`)
     console.log(
-      `   - Exports: DeepgramModelCodes, DeepgramModelCode, DeepgramModel, DeepgramModelLabels`
+      "   - Exports: DeepgramModelCodes, DeepgramModelCode, DeepgramModel, DeepgramModelLabels"
     )
   } catch (error) {
     console.error(`❌ Failed to fetch Deepgram models: ${error.message}`)

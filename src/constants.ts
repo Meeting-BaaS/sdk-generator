@@ -20,11 +20,11 @@
 // Deepgram Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { V1ListenPostParametersEncoding } from "./generated/deepgram/schema/v1ListenPostParametersEncoding"
-import { V1ListenPostParametersRedactSchemaOneOf1Items } from "./generated/deepgram/schema/v1ListenPostParametersRedactSchemaOneOf1Items"
 import { V1ListenPostParametersCallbackMethod } from "./generated/deepgram/schema/v1ListenPostParametersCallbackMethod"
 import { V1ListenPostParametersCustomIntentMode } from "./generated/deepgram/schema/v1ListenPostParametersCustomIntentMode"
 import { V1ListenPostParametersCustomTopicMode } from "./generated/deepgram/schema/v1ListenPostParametersCustomTopicMode"
+import { V1ListenPostParametersEncoding } from "./generated/deepgram/schema/v1ListenPostParametersEncoding"
+import { V1ListenPostParametersRedactSchemaOneOf1Items } from "./generated/deepgram/schema/v1ListenPostParametersRedactSchemaOneOf1Items"
 
 /**
  * Deepgram audio encoding formats
@@ -133,22 +133,22 @@ export {
   _DeepgramModelCodes as DeepgramModelCodes,
   _DeepgramModelLabels as DeepgramModelLabels
 }
-export type { DeepgramModelCode } from "./generated/deepgram/models"
+export type {
+  DeepgramArchitecture,
+  DeepgramLanguageCode,
+  DeepgramMultilingualArchitecture
+} from "./generated/deepgram/languages"
 
 // Re-export auto-generated Deepgram language constants
 // Generated from https://api.deepgram.com/v1/models by scripts/generate-deepgram-languages.js
 export {
+  DeepgramArchitectureLanguages,
+  DeepgramArchitectures,
   DeepgramLanguage,
   DeepgramLanguageCodes,
-  DeepgramArchitectures,
-  DeepgramArchitectureLanguages,
   DeepgramMultilingualArchitectures
 } from "./generated/deepgram/languages"
-export type {
-  DeepgramLanguageCode,
-  DeepgramArchitecture,
-  DeepgramMultilingualArchitecture
-} from "./generated/deepgram/languages"
+export type { DeepgramModelCode } from "./generated/deepgram/models"
 
 // Re-export auto-generated Soniox language constants
 // Generated from Soniox OpenAPI spec by scripts/generate-soniox-languages.js
@@ -169,14 +169,14 @@ export type { SonioxLanguageCode } from "./generated/soniox/languages"
 // Re-export auto-generated Soniox model constants
 // Generated from Soniox OpenAPI spec by scripts/generate-soniox-models.js
 import {
+  SonioxAsyncModel as _SonioxAsyncModel,
+  SonioxAsyncModelCodes as _SonioxAsyncModelCodes,
   SonioxModel as _SonioxModel,
   SonioxModelCodes as _SonioxModelCodes,
   SonioxModelLabels as _SonioxModelLabels,
   SonioxModels as _SonioxModels,
   SonioxRealtimeModel as _SonioxRealtimeModel,
-  SonioxRealtimeModelCodes as _SonioxRealtimeModelCodes,
-  SonioxAsyncModel as _SonioxAsyncModel,
-  SonioxAsyncModelCodes as _SonioxAsyncModelCodes
+  SonioxRealtimeModelCodes as _SonioxRealtimeModelCodes
 } from "./generated/soniox/models"
 export {
   _SonioxModel as SonioxModel,
@@ -189,9 +189,9 @@ export {
   _SonioxAsyncModelCodes as SonioxAsyncModelCodes
 }
 export type {
+  SonioxAsyncModelCode,
   SonioxModelCode,
-  SonioxRealtimeModelCode,
-  SonioxAsyncModelCode
+  SonioxRealtimeModelCode
 } from "./generated/soniox/models"
 
 // Re-export auto-generated Speechmatics language constants
@@ -210,11 +210,11 @@ export {
 }
 export type { SpeechmaticsLanguageCode } from "./generated/speechmatics/languages"
 
-// Re-export Speechmatics operating point (model quality tier)
-import { OperatingPoint as _SpeechmaticsOperatingPoint } from "./generated/speechmatics/schema/operatingPoint"
+// Re-export Speechmatics model quality tier
+import { Model as _SpeechmaticsModel } from "./generated/speechmatics/schema/model"
 
 /**
- * Speechmatics operating point (model quality tier)
+ * Speechmatics model quality tier
  *
  * Values: `standard`, `enhanced`
  *
@@ -223,16 +223,24 @@ import { OperatingPoint as _SpeechmaticsOperatingPoint } from "./generated/speec
  *
  * @example
  * ```typescript
- * import { SpeechmaticsOperatingPoint } from 'voice-router-dev/constants'
+ * import { SpeechmaticsModel } from 'voice-router-dev/constants'
  *
  * await router.transcribe('speechmatics', audioUrl, {
- *   model: SpeechmaticsOperatingPoint.enhanced
+ *   model: SpeechmaticsModel.enhanced
  * })
  * ```
  */
-export const SpeechmaticsOperatingPoint = _SpeechmaticsOperatingPoint
-export type SpeechmaticsOperatingPointType =
-  (typeof SpeechmaticsOperatingPoint)[keyof typeof SpeechmaticsOperatingPoint]
+export const SpeechmaticsModel = _SpeechmaticsModel
+export type SpeechmaticsModelType = (typeof SpeechmaticsModel)[keyof typeof SpeechmaticsModel]
+
+/**
+ * Speechmatics operating point (model quality tier)
+ *
+ * @deprecated Use `SpeechmaticsModel` instead. Speechmatics renamed this field
+ * to `model`; this alias is kept for existing SDK consumers.
+ */
+export const SpeechmaticsOperatingPoint = SpeechmaticsModel
+export type SpeechmaticsOperatingPointType = SpeechmaticsModelType
 
 // Re-export auto-generated Azure locale constants
 // Generated from Azure documentation by scripts/generate-azure-locales.js
@@ -718,12 +726,11 @@ export type DeepgramCallbackMethodType =
 /** Deepgram sample rate type derived from const object */
 export type DeepgramSampleRateType = (typeof DeepgramSampleRate)[keyof typeof DeepgramSampleRate]
 
+/** Deepgram language type (alias for DeepgramLanguageCode) */
+export type { DeepgramLanguageCode as DeepgramLanguageType } from "./generated/deepgram/languages"
 /** Deepgram model type derived from const object */
 /** Deepgram model type (alias for DeepgramModelCode) */
 export type { DeepgramModelCode as DeepgramModelType } from "./generated/deepgram/models"
-
-/** Deepgram language type (alias for DeepgramLanguageCode) */
-export type { DeepgramLanguageCode as DeepgramLanguageType } from "./generated/deepgram/languages"
 
 /** Gladia encoding type derived from const object */
 export type GladiaEncodingType = (typeof GladiaEncoding)[keyof typeof GladiaEncoding]
@@ -918,8 +925,8 @@ export type SonioxRegionType = (typeof SonioxRegion)[keyof typeof SonioxRegion]
 
 import { SpeakV1ContainerParameter } from "./generated/deepgram/schema/speakV1ContainerParameter"
 import { SpeakV1EncodingParameter } from "./generated/deepgram/schema/speakV1EncodingParameter"
-import { V1SpeakPostParametersModel } from "./generated/deepgram/schema/v1SpeakPostParametersModel"
 import { SpeakV1SampleRateParameter } from "./generated/deepgram/schema/speakV1SampleRateParameter"
+import { V1SpeakPostParametersModel } from "./generated/deepgram/schema/v1SpeakPostParametersModel"
 
 /**
  * Deepgram TTS voice models
@@ -998,20 +1005,18 @@ export type DeepgramTTSSampleRateType =
 // OpenAI Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { AudioResponseFormat } from "./generated/openai/schema/audioResponseFormat"
-import { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestInputAudioFormat"
-import { RealtimeTranscriptionSessionCreateRequestTurnDetectionType } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestTurnDetectionType"
-
 // Re-export auto-generated OpenAI model constants
 // Generated from orval types by scripts/generate-openai-models.js
 import {
-  OpenAITranscriptionModel as _OpenAITranscriptionModel,
-  OpenAITranscriptionModelCodes as _OpenAITranscriptionModelCodes,
+  OpenAIModelCodes as _OpenAIModelCodes,
+  OpenAIModelLabels as _OpenAIModelLabels,
   OpenAIRealtimeModel as _OpenAIRealtimeModel,
   OpenAIRealtimeModelCodes as _OpenAIRealtimeModelCodes,
-  OpenAIModelCodes as _OpenAIModelCodes,
-  OpenAIModelLabels as _OpenAIModelLabels
+  OpenAITranscriptionModel as _OpenAITranscriptionModel
 } from "./generated/openai/models"
+import { AudioResponseFormat } from "./generated/openai/schema/audioResponseFormat"
+import { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestInputAudioFormat"
+import { RealtimeTranscriptionSessionCreateRequestTurnDetectionType } from "./generated/openai/schema/realtimeTranscriptionSessionCreateRequestTurnDetectionType"
 
 /**
  * OpenAI transcription models (batch)
@@ -1030,8 +1035,8 @@ export const OpenAIRealtimeModelCodes = _OpenAIRealtimeModelCodes
 
 export type {
   OpenAIModelCode,
-  OpenAITranscriptionModelCode,
-  OpenAIRealtimeModelCode
+  OpenAIRealtimeModelCode,
+  OpenAITranscriptionModelCode
 } from "./generated/openai/models"
 
 /**

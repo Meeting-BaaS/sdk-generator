@@ -33,8 +33,6 @@ export default {
     "**/src/adapters/azure-stt-adapter.ts",
     "**/src/generated/**/*" // Exclude all generated types to avoid build errors
   ],
-
-  includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization

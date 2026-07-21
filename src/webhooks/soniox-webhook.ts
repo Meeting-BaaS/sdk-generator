@@ -8,11 +8,10 @@
  * @see https://soniox.com/docs/stt/async/webhooks
  */
 
-import { BaseWebhookHandler } from "./base-webhook"
-import type { UnifiedWebhookEvent } from "./types"
-import type { TranscriptionProvider } from "../router/types"
 import type { Transcription as SonioxWebhookPayload } from "../generated/soniox/schema/transcription"
 import { TranscriptionStatus as SonioxTranscriptionStatus } from "../generated/soniox/schema/transcriptionStatus"
+import { BaseWebhookHandler } from "./base-webhook"
+import type { UnifiedWebhookEvent, WebhookProvider } from "./types"
 
 export type { SonioxWebhookPayload }
 
@@ -37,7 +36,7 @@ export type { SonioxWebhookPayload }
  * ```
  */
 export class SonioxWebhookHandler extends BaseWebhookHandler {
-  readonly provider: TranscriptionProvider = "soniox"
+  readonly provider: WebhookProvider = "soniox"
 
   /**
    * Check if payload matches Soniox webhook format

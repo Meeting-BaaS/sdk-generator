@@ -10,10 +10,11 @@ interface TranscriptReadyNotification {
   transcript_id: string
   status: string
 }
-import { BaseWebhookHandler } from "./base-webhook"
-import type { UnifiedWebhookEvent, WebhookVerificationOptions } from "./types"
-import type { TranscriptionProvider, Word, Utterance } from "../router/types"
+
 import crypto from "node:crypto"
+import type { Utterance, Word } from "../router/types"
+import { BaseWebhookHandler } from "./base-webhook"
+import type { UnifiedWebhookEvent, WebhookProvider, WebhookVerificationOptions } from "./types"
 
 /**
  * AssemblyAI webhook handler
@@ -71,7 +72,7 @@ import crypto from "node:crypto"
  * ```
  */
 export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
-  readonly provider: TranscriptionProvider = "assemblyai"
+  readonly provider: WebhookProvider = "assemblyai"
 
   /**
    * Check if payload matches AssemblyAI webhook format
@@ -299,7 +300,7 @@ export class AssemblyAIWebhookHandler extends BaseWebhookHandler {
 
       // Compare signatures (constant-time comparison)
       return crypto.timingSafeEqual(Buffer.from(options.signature), Buffer.from(computedSignature))
-    } catch (error) {
+    } catch (_error) {
       // If any error occurs during verification, treat as invalid
       return false
     }

@@ -12,8 +12,8 @@
  * Run: node scripts/generate-deepgram-languages.js
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const API_URL = "https://api.deepgram.com/v1/models"
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/deepgram/languages.ts")
@@ -206,11 +206,11 @@ export type DeepgramMultilingualArchitecture = (typeof DeepgramMultilingualArchi
     console.log(
       `   - ${Object.keys(sortedArchLanguages).length} architectures with language mappings`
     )
-    console.log(`   - Exports: DeepgramLanguageCodes, DeepgramLanguageCode, DeepgramLanguage`)
+    console.log("   - Exports: DeepgramLanguageCodes, DeepgramLanguageCode, DeepgramLanguage")
     console.log(
-      `   - Exports: DeepgramArchitectures, DeepgramArchitecture, DeepgramArchitectureLanguages`
+      "   - Exports: DeepgramArchitectures, DeepgramArchitecture, DeepgramArchitectureLanguages"
     )
-    console.log(`   - Exports: DeepgramMultilingualArchitectures, DeepgramMultilingualArchitecture`)
+    console.log("   - Exports: DeepgramMultilingualArchitectures, DeepgramMultilingualArchitecture")
   } catch (error) {
     console.error(`❌ Failed to fetch Deepgram models: ${error.message}`)
     process.exit(1)

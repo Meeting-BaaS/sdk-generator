@@ -23,11 +23,11 @@
  *   - Soniox: https://api.soniox.com/v1/openapi.json
  */
 
-const fs = require("fs")
-const path = require("path")
-const https = require("https")
-const http = require("http")
-const crypto = require("crypto")
+const fs = require("node:fs")
+const path = require("node:path")
+const https = require("node:https")
+const http = require("node:http")
+const crypto = require("node:crypto")
 const { SPEC_SOURCES, canonicalizeForHash } = require("./provider-upstream-manifest")
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -51,7 +51,7 @@ function loadChecksums() {
 
 function saveChecksums(data) {
   data.updatedAt = new Date().toISOString()
-  fs.writeFileSync(CHECKSUMS_FILE, JSON.stringify(data, null, 2) + "\n", "utf-8")
+  fs.writeFileSync(CHECKSUMS_FILE, `${JSON.stringify(data, null, 2)}\n`, "utf-8")
 }
 
 // ── HTTP Helpers ─────────────────────────────────────────────────────────────
@@ -92,7 +92,9 @@ function fetchUrl(url) {
           }
 
           let data = ""
-          res.on("data", (chunk) => (data += chunk))
+          res.on("data", (chunk) => {
+            data += chunk
+          })
           res.on("end", () => resolve(data))
           res.on("error", reject)
         })
@@ -115,7 +117,8 @@ function validateSpec(content, format) {
         return { valid: false, error: "Missing openapi/asyncapi/swagger version field" }
       }
       return { valid: true, version: parsed.openapi || parsed.asyncapi || parsed.swagger }
-    } else if (format === "yaml") {
+    }
+    if (format === "yaml") {
       // Basic YAML validation - check for openapi/asyncapi field
       if (
         !content.includes("openapi:") &&
@@ -126,7 +129,8 @@ function validateSpec(content, format) {
       }
       const versionMatch = content.match(/(?:openapi|asyncapi):\s*['"]?([^'"\s]+)['"]?/)
       return { valid: true, version: versionMatch ? versionMatch[1] : "unknown" }
-    } else if (format === "typescript") {
+    }
+    if (format === "typescript") {
       // TypeScript SDK file - check for expected exports
       if (!content.includes("interface") && !content.includes("type")) {
         return { valid: false, error: "Missing TypeScript interface/type definitions" }
@@ -179,7 +183,7 @@ async function checkReference(name, ref, checksumData) {
     if (changed) {
       const oldDisplay = ref.type === "npm-version" ? `v${oldValue}` : oldValue.slice(0, 12)
       console.log(`    ⚠️  Reference CHANGED: ${ref.note} (${oldDisplay} → ${displayValue})`)
-      console.log(`       Manual spec may need updating`)
+      console.log("       Manual spec may need updating")
     } else if (isNew) {
       console.log(`    📌 Reference tracked: ${ref.note} (${displayValue})`)
     } else {
@@ -420,7 +424,7 @@ async function main() {
   // Save checksums
   if (!checkOnlyMode) {
     saveChecksums(checksumData)
-    console.log(`\n  💾 Checksums saved to specs/.checksums.json`)
+    console.log("\n  💾 Checksums saved to specs/.checksums.json")
   }
 
   // ── Summary ────────────────────────────────────────────────────────────────

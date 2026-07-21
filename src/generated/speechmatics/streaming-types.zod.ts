@@ -34,7 +34,8 @@ export const speechmaticsTranscriptionConfigSchema = zod.object({
   transcript_filtering_config: zod.unknown() /* TODO: resolve TranscriptFilteringConfig */.optional(),
   enable_partials: zod.boolean().optional().describe("Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages) See [Partial transcripts](https://docs.speechmatics.com/speech-to-text/realtime/output#partial-transcripts)."),
   enable_entities: zod.boolean().optional(),
-  operating_point: zod.enum(["standard", "enhanced"]).optional(),
+  operating_point: zod.enum(["standard", "enhanced", "melia-1"]).optional(),
+  model: zod.enum(["standard", "enhanced", "melia-1"]).optional(),
   punctuation_overrides: zod.unknown() /* TODO: resolve PunctuationOverrides */.optional(),
   conversation_config: zod.unknown() /* TODO: resolve ConversationConfig */.optional(),
   channel_diarization_labels: zod.array(zod.string()).optional()
@@ -96,7 +97,8 @@ export const streamingTranscriberParams = zod.object({
   max_delay_mode: zod.enum(["flexible", "fixed"]).optional(),
   enable_partials: zod.boolean().optional().describe("Whether or not to send Partials (i.e. `AddPartialTranslation` messages) as well as Finals (i.e. `AddTranslation` messages) See [Partial transcripts](https://docs.speechmatics.com/speech-to-text/realtime/output#partial-transcripts)."),
   enable_entities: zod.boolean().optional(),
-  operating_point: zod.enum(["standard", "enhanced"]).optional(),
+  operating_point: zod.enum(["standard", "enhanced", "melia-1"]).optional(),
+  model: zod.enum(["standard", "enhanced", "melia-1"]).optional(),
   channel_diarization_labels: zod.array(zod.string()).optional()
 })
 

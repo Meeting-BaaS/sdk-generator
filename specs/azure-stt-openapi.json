@@ -33,11 +33,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get the supported locales": {
-            "$ref": "./examples/get_supported_dataset_locales.json"
-          }
         }
       }
     },
@@ -89,14 +84,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all datasets": {
-            "$ref": "./examples/get_datasets.json"
-          },
-          "Get all acoustic datasets": {
-            "$ref": "./examples/get_acoustic_datasets.json"
-          }
         }
       },
       "post": {
@@ -142,14 +129,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Create a dataset with content url": {
-            "$ref": "./examples/create_dataset_with_content_url.json"
-          },
-          "Create dataset from data blocks": {
-            "$ref": "./examples/create_dataset_with_blocks.json"
-          }
         }
       }
     },
@@ -192,11 +171,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a dataset": {
-            "$ref": "./examples/get_dataset.json"
           }
         }
       },
@@ -252,11 +226,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Update a dataset": {
-            "$ref": "./examples/update_dataset.json"
-          }
         }
       },
       "delete": {
@@ -287,11 +256,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete a dataset": {
-            "$ref": "./examples/delete_dataset.json"
           }
         }
       }
@@ -335,11 +299,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get uploaded blocks for dataset": {
-            "$ref": "./examples/get_dataset_blocks.json"
           }
         }
       },
@@ -390,11 +349,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Upload a block for a dataset": {
-            "$ref": "./examples/upload_block.json"
           }
         }
       }
@@ -486,12 +440,7 @@
             }
           }
         },
-        "deprecated": true,
-        "x-ms-examples": {
-          "Upload a dataset": {
-            "$ref": "./examples/upload_dataset.json"
-          }
-        }
+        "deprecated": true
       }
     },
     "/datasets/{id}/blocks:commit": {
@@ -538,11 +487,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Commit uploaded blocks to dataset": {
-            "$ref": "./examples/commit_block_list.json"
           }
         }
       }
@@ -606,14 +550,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all files": {
-            "$ref": "./examples/get_dataset_files.json"
-          },
-          "Get all dataset report files": {
-            "$ref": "./examples/get_dataset_report_files.json"
-          }
         }
       }
     },
@@ -661,11 +597,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get a file": {
-            "$ref": "./examples/get_dataset_file.json"
-          }
         }
       }
     },
@@ -694,11 +625,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get the supported locales": {
-            "$ref": "./examples/get_supported_endpoint_locales.json"
           }
         }
       }
@@ -751,14 +677,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all endpoints": {
-            "$ref": "./examples/get_endpoints.json"
-          },
-          "Get all queued endpoints.": {
-            "$ref": "./examples/get_not_started_endpoints.json"
-          }
         }
       },
       "post": {
@@ -804,11 +722,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Create an endpoint": {
-            "$ref": "./examples/create_endpoint.json"
-          }
         }
       }
     },
@@ -852,11 +765,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get an endpoint": {
-            "$ref": "./examples/get_endpoint.json"
-          }
         }
       },
       "delete": {
@@ -887,11 +795,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete an endpoint": {
-            "$ref": "./examples/delete_endpoint.json"
           }
         }
       },
@@ -946,11 +849,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Update an endpoint": {
-            "$ref": "./examples/update_endpoint.json"
           }
         }
       }
@@ -1011,11 +909,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all endpoint logs": {
-            "$ref": "./examples/get_endpoint_logs.json"
-          }
         }
       },
       "delete": {
@@ -1053,11 +946,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete all endpoint logs": {
-            "$ref": "./examples/delete_endpoint_logs.json"
           }
         }
       }
@@ -1105,11 +993,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get an endpoint log": {
-            "$ref": "./examples/get_endpoint_log.json"
-          }
         }
       },
       "delete": {
@@ -1147,11 +1030,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete an endpoint log": {
-            "$ref": "./examples/delete_endpoint_log.json"
           }
         }
       }
@@ -1204,11 +1082,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all base model logs": {
-            "$ref": "./examples/get_base_model_logs.json"
-          }
         }
       },
       "delete": {
@@ -1245,11 +1118,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete all base model logs": {
-            "$ref": "./examples/delete_base_model_logs.json"
           }
         }
       }
@@ -1296,11 +1164,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get a base model log": {
-            "$ref": "./examples/get_base_model_log.json"
-          }
         }
       },
       "delete": {
@@ -1338,11 +1201,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Delete a base model log": {
-            "$ref": "./examples/delete_base_model_log.json"
-          }
         }
       }
     },
@@ -1371,11 +1229,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get the supported locales": {
-            "$ref": "./examples/get_supported_evaluations_locales.json"
           }
         }
       }
@@ -1428,14 +1281,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all evaluations": {
-            "$ref": "./examples/get_evaluations.json"
-          },
-          "Get all evaluations with where status is equal to 'Running'": {
-            "$ref": "./examples/get_evaluations_with_status_running.json"
-          }
         }
       },
       "post": {
@@ -1480,11 +1325,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Create a evaluation": {
-            "$ref": "./examples/create_evaluation.json"
           }
         }
       }
@@ -1548,11 +1388,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all files": {
-            "$ref": "./examples/get_evaluation_files.json"
-          }
         }
       }
     },
@@ -1600,11 +1435,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get a file": {
-            "$ref": "./examples/get_evaluation_file.json"
-          }
         }
       }
     },
@@ -1647,11 +1477,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a evaluation": {
-            "$ref": "./examples/get_evaluation.json"
           }
         }
       },
@@ -1707,11 +1532,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Update a evaluation": {
-            "$ref": "./examples/update_evaluation.json"
-          }
         }
       },
       "delete": {
@@ -1743,11 +1563,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Delete a evaluation": {
-            "$ref": "./examples/delete_evaluation.json"
-          }
         }
       }
     },
@@ -1776,11 +1591,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get the supported locales": {
-            "$ref": "./examples/get_supported_model_locales.json"
           }
         }
       }
@@ -1833,11 +1643,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all models in state 'Running'": {
-            "$ref": "./examples/get_running_models.json"
-          }
         }
       },
       "post": {
@@ -1883,14 +1688,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Create a model": {
-            "$ref": "./examples/create_model.json"
-          },
-          "Create a model with custom model weight": {
-            "$ref": "./examples/create_model_with_weight.json"
-          }
         }
       }
     },
@@ -1935,11 +1732,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all english base models": {
-            "$ref": "./examples/get_english_base_models.json"
-          }
         }
       }
     },
@@ -1982,14 +1774,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a model": {
-            "$ref": "./examples/get_model.json"
-          },
-          "Get a model with custom model weight": {
-            "$ref": "./examples/get_model_with_weight.json"
           }
         }
       },
@@ -2045,11 +1829,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Update a model": {
-            "$ref": "./examples/update_model.json"
-          }
         }
       },
       "delete": {
@@ -2080,11 +1859,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete a model": {
-            "$ref": "./examples/delete_model.json"
           }
         }
       }
@@ -2121,11 +1895,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a base model": {
-            "$ref": "./examples/get_base_model.json"
           }
         }
       }
@@ -2189,12 +1958,7 @@
             }
           }
         },
-        "x-ms-long-running-operation": true,
-        "x-ms-examples": {
-          "Copy a model from source resource to target resource": {
-            "$ref": "./examples/copy_model_with_authorization.json"
-          }
-        }
+        "x-ms-long-running-operation": true
       }
     },
     "/models:authorizecopy": {
@@ -2235,11 +1999,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Create a copy model authorization on target resource": {
-            "$ref": "./examples/create_copy_model_authorization.json"
-          }
         }
       }
     },
@@ -2279,11 +2038,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get a model manifest": {
-            "$ref": "./examples/get_model_manifest.json"
-          }
         }
       }
     },
@@ -2322,11 +2076,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a base model manifest": {
-            "$ref": "./examples/get_base_model_manifest.json"
           }
         }
       }
@@ -2390,11 +2139,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all files": {
-            "$ref": "./examples/get_model_files.json"
-          }
         }
       }
     },
@@ -2442,11 +2186,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get a file": {
-            "$ref": "./examples/get_model_file.json"
-          }
         }
       }
     },
@@ -2490,14 +2229,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Get model copy operation pending": {
-            "$ref": "./examples/get_operation_copy_model_pending.json"
-          },
-          "Get model copy operation": {
-            "$ref": "./examples/get_operation_copy_model.json"
-          }
         }
       }
     },
@@ -2526,11 +2257,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get the supported locales": {
-            "$ref": "./examples/get_supported_project_locales.json"
           }
         }
       }
@@ -2576,14 +2302,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all projects": {
-            "$ref": "./examples/get_projects.json"
-          },
-          "Get all projects created in 2018 or 2019": {
-            "$ref": "./examples/get_projects_from_2018_and_2019.json"
-          }
         }
       },
       "post": {
@@ -2629,11 +2347,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Create a project": {
-            "$ref": "./examples/create_project.json"
-          }
         }
       }
     },
@@ -2669,11 +2382,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a project": {
-            "$ref": "./examples/get_project.json"
           }
         }
       },
@@ -2722,11 +2430,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Update a project": {
-            "$ref": "./examples/update_project.json"
-          }
         }
       },
       "delete": {
@@ -2757,11 +2460,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete a project": {
-            "$ref": "./examples/delete_project.json"
           }
         }
       }
@@ -2822,11 +2520,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all evaluations": {
-            "$ref": "./examples/get_project_evaluations.json"
-          }
         }
       }
     },
@@ -2886,11 +2579,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all datasets": {
-            "$ref": "./examples/get_project_datasets.json"
-          }
         }
       }
     },
@@ -2950,11 +2638,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all endpoints": {
-            "$ref": "./examples/get_project_endpoints.json"
-          }
         }
       }
     },
@@ -3014,11 +2697,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all models": {
-            "$ref": "./examples/get_project_models.json"
-          }
         }
       }
     },
@@ -3078,11 +2756,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all transcriptions": {
-            "$ref": "./examples/get_project_transcriptions.json"
-          }
         }
       }
     },
@@ -3111,11 +2784,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get the supported locales": {
-            "$ref": "./examples/get_supported_transcription_locales.json"
           }
         }
       }
@@ -3168,14 +2836,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all transcriptions": {
-            "$ref": "./examples/get_transcriptions.json"
-          },
-          "Get all failed transcriptions": {
-            "$ref": "./examples/get_failed_transcriptions.json"
-          }
         }
       },
       "post": {
@@ -3221,23 +2881,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Create a transcription for URIs": {
-            "$ref": "./examples/create_uri_transcription.json"
-          },
-          "Create a transcription with basic two-speaker diarization": {
-            "$ref": "./examples/create_simple_diarization_transcription.json"
-          },
-          "Create a transcription with multispeaker diarization": {
-            "$ref": "./examples/create_multispeaker_diarization_transcription.json"
-          },
-          "Create a transcription with language identification": {
-            "$ref": "./examples/create_lid_transcription.json"
-          },
-          "Create a transcription from blob container": {
-            "$ref": "./examples/create_container_transcription.json"
-          }
         }
       }
     },
@@ -3280,11 +2923,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a transcription": {
-            "$ref": "./examples/get_transcription.json"
           }
         }
       },
@@ -3340,11 +2978,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Update a transcription": {
-            "$ref": "./examples/update_transcription.json"
-          }
         }
       },
       "delete": {
@@ -3375,11 +3008,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete a transcription": {
-            "$ref": "./examples/delete_transcription.json"
           }
         }
       }
@@ -3443,14 +3071,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all files": {
-            "$ref": "./examples/get_transcription_files.json"
-          },
-          "Get all transcription files the name of which starts with the specified string": {
-            "$ref": "./examples/get_transcription_files_filtered_by_name.json"
-          }
         }
       }
     },
@@ -3497,11 +3117,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a file": {
-            "$ref": "./examples/get_transcription_file.json"
           }
         }
       }
@@ -3554,14 +3169,6 @@
         "x-ms-pageable": {
           "itemName": "values",
           "nextLinkName": "@nextLink"
-        },
-        "x-ms-examples": {
-          "Get all web hooks": {
-            "$ref": "./examples/get_web_hooks.json"
-          },
-          "Get all web hooks created in 03/2020 ordered by their name": {
-            "$ref": "./examples/get_web_hooks_from_march_2020.json"
-          }
         }
       },
       "post": {
@@ -3608,11 +3215,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Create a web hook": {
-            "$ref": "./examples/create_web_hook.json"
-          }
         }
       }
     },
@@ -3655,11 +3257,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get a web hook": {
-            "$ref": "./examples/get_web_hook.json"
           }
         }
       },
@@ -3716,11 +3313,6 @@
               "$ref": "#/definitions/Error"
             }
           }
-        },
-        "x-ms-examples": {
-          "Update a web hook": {
-            "$ref": "./examples/update_web_hook.json"
-          }
         }
       },
       "delete": {
@@ -3751,11 +3343,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete a web hook": {
-            "$ref": "./examples/delete_web_hook.json"
           }
         }
       }
@@ -3797,11 +3384,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Ping a web hook": {
-            "$ref": "./examples/ping_web_hook.json"
           }
         }
       }
@@ -3846,11 +3428,6 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        },
-        "x-ms-examples": {
-          "Test a web hook": {
-            "$ref": "./examples/test_web_hook.json"
           }
         }
       }

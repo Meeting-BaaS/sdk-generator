@@ -8,8 +8,8 @@
  * Run: node scripts/generate-soniox-languages.js
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const SPEC_PATH = path.join(__dirname, "../specs/soniox-openapi.json")
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/soniox/languages.ts")
@@ -107,7 +107,7 @@ ${languages.map((lang) => `  ${lang.code}: "${lang.code}"`).join(",\n")}
   console.log(`✅ Generated ${OUTPUT_PATH}`)
   console.log(`   - ${languages.length} language codes`)
   console.log(
-    `   - SonioxLanguages, SonioxLanguageCodes, SonioxLanguageCode, SonioxLanguageLabels, SonioxLanguage`
+    "   - SonioxLanguages, SonioxLanguageCodes, SonioxLanguageCode, SonioxLanguageLabels, SonioxLanguage"
   )
 }
 

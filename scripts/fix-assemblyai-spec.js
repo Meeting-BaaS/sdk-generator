@@ -11,7 +11,7 @@
  * Follows the same pattern as fix-elevenlabs-spec.js.
  */
 
-const fs = require("fs")
+const fs = require("node:fs")
 
 const SPEC_PATH = "./specs/assemblyai-openapi.json"
 const BACKUP_PATH = "./specs/assemblyai-openapi.json.backup"
@@ -96,7 +96,7 @@ console.log("\n📋 Step 3: Stripping inline Authorization header parameters")
 
 let authParamFixes = 0
 if (spec.paths) {
-  for (const [pathKey, pathObj] of Object.entries(spec.paths)) {
+  for (const [_pathKey, pathObj] of Object.entries(spec.paths)) {
     for (const [method, operation] of Object.entries(pathObj)) {
       if (typeof operation !== "object" || !operation) continue
       if (!["get", "post", "put", "patch", "delete", "options", "head"].includes(method)) {
@@ -127,25 +127,55 @@ console.log(`   🗑️  Removed ${authParamFixes} inline Authorization params`)
 // Step 4: Collect all $ref references from remaining paths
 console.log("\n📋 Step 4: Collecting referenced schemas")
 
-function collectRefs(obj, refs = new Set()) {
+function collectRefs(obj, refs = new Set(), responseRefs = new Set()) {
   if (!obj || typeof obj !== "object") return refs
 
   if (obj.$ref && typeof obj.$ref === "string") {
-    const match = obj.$ref.match(/#\/components\/schemas\/(.+)/)
-    if (match) {
-      refs.add(match[1])
+    const schemaMatch = obj.$ref.match(/#\/components\/schemas\/(.+)/)
+    if (schemaMatch) {
+      refs.add(schemaMatch[1])
+    }
+
+    const responseMatch = obj.$ref.match(/#\/components\/responses\/(.+)/)
+    if (responseMatch) {
+      responseRefs.add(responseMatch[1])
     }
   }
 
   for (const value of Object.values(obj)) {
-    collectRefs(value, refs)
+    collectRefs(value, refs, responseRefs)
   }
 
   return refs
 }
 
 // Collect refs from paths
-let referencedSchemas = collectRefs(spec.paths)
+let referencedSchemas = new Set()
+const referencedResponses = new Set()
+collectRefs(spec.paths, referencedSchemas, referencedResponses)
+if (spec.components?.responses) {
+  const visitedResponses = new Set()
+  const responseQueue = [...referencedResponses]
+
+  while (responseQueue.length > 0) {
+    const responseName = responseQueue.shift()
+    if (visitedResponses.has(responseName)) continue
+    visitedResponses.add(responseName)
+
+    const before = referencedResponses.size
+    collectRefs(spec.components.responses[responseName], referencedSchemas, referencedResponses)
+    if (referencedResponses.size > before) {
+      for (const nestedResponseName of referencedResponses) {
+        if (
+          !visitedResponses.has(nestedResponseName) &&
+          !responseQueue.includes(nestedResponseName)
+        ) {
+          responseQueue.push(nestedResponseName)
+        }
+      }
+    }
+  }
+}
 console.log(`   Found ${referencedSchemas.size} directly referenced schemas`)
 
 // Step 5: Resolve transitive dependencies
@@ -168,6 +198,49 @@ function resolveTransitiveDeps(schemas, allSchemas, resolved = new Set()) {
 if (spec.components?.schemas) {
   referencedSchemas = resolveTransitiveDeps(referencedSchemas, spec.components.schemas)
   console.log(`   Total schemas needed (with dependencies): ${referencedSchemas.size}`)
+}
+
+const FALLBACK_SCHEMAS = {
+  ErrorDetails: {
+    type: "object",
+    properties: {},
+    description: "Additional error details if available",
+    title: "ErrorDetails"
+  },
+  Error: {
+    type: "object",
+    properties: {
+      error: { type: "string", description: "Error message describing what went wrong" },
+      code: { type: "string", description: "Error code for programmatic handling" },
+      details: {
+        $ref: "#/components/schemas/ErrorDetails",
+        description: "Additional error details if available"
+      }
+    },
+    required: ["error"],
+    title: "Error"
+  }
+}
+
+let fallbackSchemaFixes = 0
+if (spec.components?.schemas) {
+  let restoredInPass = 0
+  do {
+    restoredInPass = 0
+    for (const schemaName of [...referencedSchemas]) {
+      if (!spec.components.schemas[schemaName] && FALLBACK_SCHEMAS[schemaName]) {
+        spec.components.schemas[schemaName] = FALLBACK_SCHEMAS[schemaName]
+        collectRefs(spec.components.schemas[schemaName], referencedSchemas, referencedResponses)
+        restoredInPass++
+        fallbackSchemaFixes++
+        fixCount++
+      }
+    }
+  } while (restoredInPass > 0)
+}
+
+if (fallbackSchemaFixes > 0) {
+  console.log(`   ✅ Restored ${fallbackSchemaFixes} missing referenced fallback schema(s)`)
 }
 
 // Step 6: Remove unreferenced schemas
@@ -210,13 +283,37 @@ function fixArraySchemas(obj, path = "") {
   return fixes
 }
 
-let arrayFixes = fixArraySchemas(spec)
+const arrayFixes = fixArraySchemas(spec)
 if (arrayFixes > 0) {
   console.log(`   Fixed ${arrayFixes} array schemas`)
   fixCount += arrayFixes
 } else {
-  console.log(`   ✅ No malformed array schemas found`)
+  console.log("   ✅ No malformed array schemas found")
 }
+
+function fixMalformedSpeechUnderstandingSchemas(schemas) {
+  let fixes = 0
+  const summarizationProperties = schemas?.SummarizationRequestBody?.properties
+  if (summarizationProperties?.summariazation && !summarizationProperties.summarization) {
+    summarizationProperties.summarization = summarizationProperties.summariazation
+    delete summarizationProperties.summariazation
+    fixes++
+    console.log("   ✅ Fixed SummarizationRequestBody.summarization spelling")
+  }
+
+  const includeDecisions =
+    schemas?.ActionItemsRequestBody?.properties?.action_items?.properties?.include_decisions
+  if (includeDecisions?.type === "bool") {
+    includeDecisions.type = "boolean"
+    fixes++
+    console.log("   ✅ Fixed ActionItemsRequestBody.include_decisions boolean type")
+  }
+
+  return fixes
+}
+
+const speechUnderstandingFixes = fixMalformedSpeechUnderstandingSchemas(spec.components?.schemas)
+fixCount += speechUnderstandingFixes
 
 // Step 8: Fix any missing path parameters
 console.log("\n📋 Step 8: Fixing missing path parameters")
@@ -262,7 +359,7 @@ if (spec.paths) {
 if (paramFixes > 0) {
   console.log(`   ✅ Added ${paramFixes} missing path parameters`)
 } else {
-  console.log(`   ✅ No missing path parameters`)
+  console.log("   ✅ No missing path parameters")
 }
 
 // Step 9: Remove deprecated request fields that conflict with their replacements
@@ -289,11 +386,11 @@ if (transcriptParamsSchema?.properties) {
     }
   }
 } else {
-  console.log(`   ⏭️  TranscriptParams not found (skipped)`)
+  console.log("   ⏭️  TranscriptParams not found (skipped)")
 }
 
 // Step 10: Update spec metadata
-console.log("\n📋 Step 9: Updating spec metadata")
+console.log("\n📋 Step 10: Updating spec metadata")
 
 spec.info.title = "AssemblyAI API"
 spec.info.description =
@@ -306,7 +403,7 @@ if (spec.tags) {
     const name = tag.name?.toLowerCase() || ""
     return name.includes("transcript") || name.includes("upload") || name.includes("speech")
   })
-  console.log(`   ✅ Filtered tags to STT only`)
+  console.log("   ✅ Filtered tags to STT only")
 }
 
 // Save backup (only if not already exists)
@@ -320,7 +417,7 @@ fs.writeFileSync(SPEC_PATH, JSON.stringify(spec, null, 2))
 
 console.log(`\n✅ Applied ${fixCount} fixes/filters to AssemblyAI spec`)
 console.log(`📝 Filtered spec saved to: ${SPEC_PATH}`)
-console.log(`\n📊 Final spec summary:`)
+console.log("\n📊 Final spec summary:")
 console.log(`   Paths: ${Object.keys(spec.paths || {}).length}`)
 console.log(`   Schemas: ${Object.keys(spec.components?.schemas || {}).length}`)
 console.log(`   Tags: ${(spec.tags || []).length}\n`)

@@ -8,8 +8,8 @@
  * Run: node scripts/generate-elevenlabs-models.js
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const SPEC_PATH = path.join(__dirname, "../specs/elevenlabs-openapi.json")
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/elevenlabs/models.ts")
@@ -26,7 +26,7 @@ function main() {
   const spec = JSON.parse(fs.readFileSync(SPEC_PATH, "utf-8"))
 
   // Extract model_id enum from the Body schema
-  const bodySchema = spec.components?.schemas?.["Body_Speech_to_Text_v1_speech_to_text_post"]
+  const bodySchema = spec.components?.schemas?.Body_Speech_to_Text_v1_speech_to_text_post
   const modelIdProp = bodySchema?.properties?.model_id
   const modelEnum = modelIdProp?.enum
 

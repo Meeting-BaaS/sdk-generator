@@ -12,9 +12,27 @@
           "speech-to-text"
         ],
         "summary": "Speech To Text",
-        "description": "Transcribe an audio or video file. If webhook is set to true, the request will be processed asynchronously and results sent to configured webhooks. When use_multi_channel is true and the provided audio has multiple channels, a 'transcripts' object with separate transcripts for each channel is returned. Otherwise, returns a single transcript. The optional webhook_metadata parameter allows you to attach custom data that will be included in webhook responses for request correlation and tracking.",
+        "description": "Transcribe an audio or video file. If webhook is set to true, the request will be processed asynchronously and results sent to configured webhooks. When use_multi_channel is true and the provided audio has multiple channels, a 'transcripts' object with separate transcripts for each channel is returned; set multichannel_output_style='combined' to instead receive a single transcript with all channels merged and sorted by time. Otherwise, returns a single transcript. The optional webhook_metadata parameter allows you to attach custom data that will be included in webhook responses for request correlation and tracking.",
         "operationId": "speech_to_text",
         "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A single-use authentication token created via POST /v1/single-use-token/batch_scribe. This token can only be used once and expires after 15 minutes. Alternative to API key or bearer token authentication for frontend clients.",
+              "title": "Token"
+            },
+            "description": "A single-use authentication token created via POST /v1/single-use-token/batch_scribe. This token can only be used once and expires after 15 minutes. Alternative to API key or bearer token authentication for frontend clients."
+          },
           {
             "name": "enable_logging",
             "in": "query",
@@ -614,8 +632,18 @@
           "use_multi_channel": {
             "type": "boolean",
             "title": "Use Multi Channel",
-            "description": "Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel will be transcribed independently and the results will be combined. Each word in the response will include a 'channel_index' field indicating which channel it was spoken on. A maximum of 5 channels is supported. Each channel is billed independently at the full audio duration, so cost scales linearly with the number of channels.",
+            "description": "Whether the audio file contains multiple channels where each channel contains a single speaker. When enabled, each channel is transcribed independently. By default a separate transcript is returned per channel; set multichannel_output_style='combined' to instead receive a single transcript with all channels merged and sorted by time. Each word in the response includes a 'channel_index' field indicating which channel it was spoken on. A maximum of 5 channels is supported. Each channel is billed independently at the full audio duration, so cost scales linearly with the number of channels.",
             "default": false
+          },
+          "multichannel_output_style": {
+            "type": "string",
+            "enum": [
+              "separate",
+              "combined"
+            ],
+            "title": "Multichannel Output Style",
+            "description": "Controls the response shape when use_multi_channel is enabled. 'separate' (default) returns one transcript per channel under 'transcripts'. 'combined' merges all channels into a single transcript whose words are sorted by start time, each carrying a 'channel_index' - matching the single-channel response shape. 'combined' requires timestamps (timestamps_granularity must not be 'none') and does not support entity detection or redaction.",
+            "default": "separate"
           },
           "webhook_metadata": {
             "anyOf": [
@@ -659,6 +687,12 @@
             "type": "boolean",
             "title": "No Verbatim",
             "description": "If true, the transcription will not have any filler words, false starts and non-speech sounds. Only supported with scribe_v2 model.",
+            "default": false
+          },
+          "use_speaker_library": {
+            "type": "boolean",
+            "title": "Use Speaker Library",
+            "description": "Whether to use the speaker library for identifying known speakers during diarization. When enabled and diarize is true, detected speakers will be matched against registered speakers in the workspace's speaker library.",
             "default": false
           },
           "detect_speaker_roles": {
@@ -1413,6 +1447,18 @@
             ],
             "title": "Characters",
             "description": "The characters that make up the word and their timing information."
+          },
+          "channel_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Index",
+            "description": "The channel this word was spoken on (for multichannel audio). Null for single-channel transcriptions."
           }
         },
         "type": "object",

@@ -3,10 +3,9 @@
  * Parses and normalizes Azure STT webhook callbacks
  */
 
-import { BaseWebhookHandler } from "./base-webhook"
-import type { UnifiedWebhookEvent, WebhookVerificationOptions } from "./types"
-import type { TranscriptionProvider } from "../router/types"
 import crypto from "node:crypto"
+import { BaseWebhookHandler } from "./base-webhook"
+import type { UnifiedWebhookEvent, WebhookProvider, WebhookVerificationOptions } from "./types"
 
 /**
  * Azure webhook event payload structure
@@ -85,7 +84,7 @@ export interface AzureWebhookPayload {
  * ```
  */
 export class AzureWebhookHandler extends BaseWebhookHandler {
-  readonly provider: TranscriptionProvider = "azure-stt"
+  readonly provider: WebhookProvider = "azure-stt"
 
   /**
    * Check if payload matches Azure webhook format
@@ -259,7 +258,7 @@ export class AzureWebhookHandler extends BaseWebhookHandler {
 
       // Compare signatures (constant-time comparison)
       return crypto.timingSafeEqual(Buffer.from(options.signature), Buffer.from(computedSignature))
-    } catch (error) {
+    } catch (_error) {
       // If any error occurs during verification, treat as invalid
       return false
     }

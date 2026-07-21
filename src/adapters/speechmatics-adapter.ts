@@ -4,35 +4,37 @@
  */
 
 import axios, { type AxiosInstance } from "axios"
-import type {
-  AudioInput,
-  ProviderCapabilities,
-  TranscribeOptions,
-  UnifiedTranscriptResponse,
-  StreamingOptions,
-  StreamingCallbacks,
-  StreamingSession,
-  StreamEvent,
-  Word,
-  Utterance
-} from "../router/types"
-import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-import {
-  buildUtterancesFromWords,
-  buildTextFromSpeechmaticsResults
-} from "../utils/transcription-helpers"
+import WebSocket from "ws"
 import type { SpeechmaticsRegionType } from "../constants"
-import type {
-  SpeechmaticsRealtimeMessage,
-  AddPartialTranscript,
-  AddTranscript,
-  RecognitionStarted,
-  Warning as SpeechmaticsWarning,
-  Error as SpeechmaticsError
-} from "../generated/speechmatics/streaming-message-types"
 import type { RecognitionResult } from "../generated/speechmatics/schema/recognitionResult"
 import type { TranscriptionConfig } from "../generated/speechmatics/schema/transcriptionConfig"
 import type { TranscriptionConfigMaxDelayMode } from "../generated/speechmatics/schema/transcriptionConfigMaxDelayMode"
+import type {
+  AddPartialTranscript,
+  AddTranscript,
+  RecognitionStarted,
+  Error as SpeechmaticsError,
+  SpeechmaticsRealtimeMessage,
+  Warning as SpeechmaticsWarning
+} from "../generated/speechmatics/streaming-message-types"
+import type {
+  AudioInput,
+  ListTranscriptsOptions,
+  ProviderCapabilities,
+  SpeechmaticsExtendedData,
+  StreamingCallbacks,
+  StreamingOptions,
+  StreamingSession,
+  TranscribeOptions,
+  UnifiedTranscriptResponse,
+  Word
+} from "../router/types"
+import { toAudioBlob } from "../utils/blob-helpers"
+import {
+  buildTextFromSpeechmaticsResults,
+  buildUtterancesFromWords
+} from "../utils/transcription-helpers"
+import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 /**
  * Speechmatics-specific configuration options
@@ -53,19 +55,22 @@ export interface SpeechmaticsConfig extends ProviderConfig {
   region?: SpeechmaticsRegionType
 }
 
-// Import Speechmatics types from generated schema
-import type { JobConfig } from "../generated/speechmatics/schema/jobConfig"
 import type { CreateJobResponse } from "../generated/speechmatics/schema/createJobResponse"
-import type { RetrieveJobResponse } from "../generated/speechmatics/schema/retrieveJobResponse"
-import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
-import { NotificationConfigContentsItem } from "../generated/speechmatics/schema/notificationConfigContentsItem"
-// Import generated enums/constants (avoid hardcoding values)
-import { OperatingPoint } from "../generated/speechmatics/schema/operatingPoint"
-import { TranscriptionConfigDiarization } from "../generated/speechmatics/schema/transcriptionConfigDiarization"
-import { SummarizationConfigSummaryType } from "../generated/speechmatics/schema/summarizationConfigSummaryType"
-import { SummarizationConfigSummaryLength } from "../generated/speechmatics/schema/summarizationConfigSummaryLength"
+import type { GetJobsParams } from "../generated/speechmatics/schema/getJobsParams"
+import type { JobConfig } from "../generated/speechmatics/schema/jobConfig"
+// Import Speechmatics types from generated schema
+import type { JobDetails } from "../generated/speechmatics/schema/jobDetails"
 import { JobDetailsStatus } from "../generated/speechmatics/schema/jobDetailsStatus"
+// Import generated enums/constants (avoid hardcoding values)
+import { Model as SpeechmaticsModel } from "../generated/speechmatics/schema/model"
+import { NotificationConfigContentsItem } from "../generated/speechmatics/schema/notificationConfigContentsItem"
 import type { PostJobsBody } from "../generated/speechmatics/schema/postJobsBody"
+import type { RetrieveJobResponse } from "../generated/speechmatics/schema/retrieveJobResponse"
+import type { RetrieveJobsResponse } from "../generated/speechmatics/schema/retrieveJobsResponse"
+import type { RetrieveTranscriptResponse } from "../generated/speechmatics/schema/retrieveTranscriptResponse"
+import { SummarizationConfigSummaryLength } from "../generated/speechmatics/schema/summarizationConfigSummaryLength"
+import { SummarizationConfigSummaryType } from "../generated/speechmatics/schema/summarizationConfigSummaryType"
+import { TranscriptionConfigDiarization } from "../generated/speechmatics/schema/transcriptionConfigDiarization"
 
 /**
  * Speechmatics transcription provider adapter
@@ -123,9 +128,7 @@ import type { PostJobsBody } from "../generated/speechmatics/schema/postJobsBody
  * }, {
  *   language: 'en',
  *   diarization: true,
- *   metadata: {
- *     operating_point: 'enhanced'  // Higher accuracy model
- *   }
+ *   model: 'enhanced'  // Higher accuracy model
  * });
  *
  * console.log('Speakers:', result.data.speakers);
@@ -270,14 +273,19 @@ export class SpeechmaticsAdapter extends BaseAdapter {
 
     try {
       // Build job config
-      // Model maps to operating_point from generated OperatingPoint enum
-      const operatingPoint = (options?.model as OperatingPoint) || OperatingPoint.standard
+      const speechmaticsOpts = options?.speechmatics
+      const model =
+        (options?.model as SpeechmaticsModel) ||
+        (speechmaticsOpts?.transcription_config?.model as SpeechmaticsModel) ||
+        SpeechmaticsModel.standard
 
       const jobConfig: JobConfig = {
+        ...speechmaticsOpts,
         type: "transcription",
         transcription_config: {
-          language: options?.language || "en",
-          operating_point: operatingPoint
+          ...speechmaticsOpts?.transcription_config,
+          language: options?.language || speechmaticsOpts?.transcription_config?.language || "en",
+          model
         }
       }
 
@@ -329,12 +337,15 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       let headers: Record<string, string> = {}
 
       if (audio.type === "url") {
-        // Use fetch_data for URL input (JSON request)
+        // Use fetch_data for URL input. Speechmatics accepts the job
+        // config as multipart FormData, even when the audio itself is a URL.
         jobConfig.fetch_data = {
           url: audio.url
         }
-        requestBody = { config: JSON.stringify(jobConfig) }
-        headers = { "Content-Type": "application/json" }
+        const formData = new FormData()
+        formData.append("config", JSON.stringify(jobConfig))
+        requestBody = formData
+        headers = {}
       } else if (audio.type === "file") {
         // POST /v2/jobs requires multipart/form-data with a boundary. We must
         // pass a real FormData object — axios serializes plain objects as JSON
@@ -344,7 +355,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         // axios populates the boundary automatically.
         const formData = new FormData()
         formData.append("config", JSON.stringify(jobConfig))
-        const fileBlob = audio.file instanceof Blob ? audio.file : new Blob([audio.file as Buffer])
+        const fileBlob = toAudioBlob(audio.file, audio.mimeType || "audio/wav")
         formData.append("data_file", fileBlob, "audio")
         requestBody = formData
         headers = {} // axios derives Content-Type (incl. boundary) from FormData
@@ -452,10 +463,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
    *
    * @see https://docs.speechmatics.com/
    */
-  async deleteTranscript(
-    transcriptId: string,
-    force: boolean = false
-  ): Promise<{ success: boolean }> {
+  async deleteTranscript(transcriptId: string, force = false): Promise<{ success: boolean }> {
     this.validateConfig()
 
     try {
@@ -472,6 +480,47 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         return { success: true }
       }
       throw error
+    }
+  }
+
+  /**
+   * List transcription jobs.
+   *
+   * Speechmatics exposes this as GET /jobs. The API supports limit and
+   * created_before pagination; other unified filters are provider-unsupported
+   * and intentionally ignored here.
+   */
+  async listTranscripts(options?: ListTranscriptsOptions): Promise<{
+    transcripts: UnifiedTranscriptResponse[]
+    total?: number
+    hasMore?: boolean
+  }> {
+    this.validateConfig()
+
+    try {
+      const params: GetJobsParams = {
+        ...options?.speechmatics
+      }
+
+      if (options?.limit) {
+        params.limit = options.limit
+      }
+      if (options?.beforeDate) {
+        params.created_before = options.beforeDate
+      }
+
+      const response = await this.client!.get<RetrieveJobsResponse>("/jobs", { params })
+      const jobs = response.data.jobs || []
+
+      return {
+        transcripts: jobs.map((job) => this.normalizeJobDetails(job)),
+        hasMore: options?.limit ? jobs.length >= options.limit : false
+      }
+    } catch (error) {
+      return {
+        transcripts: [this.createErrorResponse(error)],
+        hasMore: false
+      }
     }
   }
 
@@ -522,8 +571,11 @@ export class SpeechmaticsAdapter extends BaseAdapter {
     let recognitionStarted = false
 
     // Create WebSocket connection
-    const WebSocketImpl = typeof WebSocket !== "undefined" ? WebSocket : require("ws")
-    const ws: WebSocket = new WebSocketImpl(wsUrl)
+    const ws = new WebSocket(wsUrl, {
+      headers: {
+        Authorization: `Bearer ${this.config!.apiKey}`
+      }
+    })
 
     // Build typed StartRecognition message using generated TranscriptionConfig.
     // RT transcription_config extends batch TranscriptionConfig with enable_partials
@@ -539,7 +591,10 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       language,
       enable_entities: smOpts?.enableEntities ?? options?.entityDetection ?? false,
       enable_partials: smOpts?.enablePartials ?? options?.interimResults !== false,
-      operating_point: (smOpts?.operatingPoint as OperatingPoint) || OperatingPoint.enhanced,
+      model:
+        (smOpts?.model as SpeechmaticsModel) ||
+        (smOpts?.operatingPoint as SpeechmaticsModel) ||
+        SpeechmaticsModel.enhanced,
       ...(smOpts?.maxDelay !== undefined && { max_delay: smOpts.maxDelay }),
       ...(smOpts?.maxDelayMode && {
         max_delay_mode: smOpts.maxDelayMode as TranscriptionConfigMaxDelayMode
@@ -592,7 +647,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       ws.send(msg)
     }
 
-    ws.onmessage = (event: MessageEvent) => {
+    ws.onmessage = (event: WebSocket.MessageEvent) => {
       const rawPayload = typeof event.data === "string" ? event.data : event.data.toString()
 
       try {
@@ -631,7 +686,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
               words,
               speaker: words[0]?.speaker,
               confidence: partial.results[0]?.alternatives?.[0]?.confidence,
-              channel: partial.channel ? parseInt(partial.channel) : undefined
+              channel: partial.channel ? Number.parseInt(partial.channel, 10) : undefined
             })
             break
           }
@@ -647,7 +702,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
               words,
               speaker: words[0]?.speaker,
               confidence: final.results[0]?.alternatives?.[0]?.confidence,
-              channel: final.channel ? parseInt(final.channel) : undefined
+              channel: final.channel ? Number.parseInt(final.channel, 10) : undefined
             })
 
             // Build utterances from final transcript words
@@ -719,7 +774,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
       })
     }
 
-    ws.onclose = (event: CloseEvent) => {
+    ws.onclose = (event: WebSocket.CloseEvent) => {
       status = "closed"
       callbacks?.onClose?.(event.code, event.reason)
     }
@@ -831,9 +886,48 @@ export class SpeechmaticsAdapter extends BaseAdapter {
   }
 
   /**
+   * Normalize Speechmatics job metadata from GET /jobs.
+   */
+  private normalizeJobDetails(item: JobDetails): UnifiedTranscriptResponse {
+    const status = this.normalizeStatus(item.status)
+    const success = status !== "error"
+
+    return {
+      success,
+      provider: this.name,
+      data: {
+        id: item.id,
+        text: "",
+        status,
+        duration: item.duration,
+        metadata: {
+          createdAt: item.created_at,
+          dataName: item.data_name,
+          textName: item.text_name,
+          errors: item.errors
+        }
+      },
+      error: success
+        ? undefined
+        : {
+            code: "JOB_FAILED",
+            message: `Job ${item.id} ended with status ${item.status}`
+          },
+      raw: item
+    }
+  }
+
+  /**
    * Normalize Speechmatics response to unified format
    */
   private normalizeResponse(response: RetrieveTranscriptResponse): UnifiedTranscriptResponse {
+    const {
+      format: _format,
+      job: _job,
+      results: _results,
+      ...extended
+    }: RetrieveTranscriptResponse = response
+
     // Build text preserving punctuation positions
     const text = buildTextFromSpeechmaticsResults(response.results)
 
@@ -880,7 +974,7 @@ export class SpeechmaticsAdapter extends BaseAdapter {
         summary: response.summary?.content,
         createdAt: response.job.created_at
       },
-      extended: {},
+      extended: extended as SpeechmaticsExtendedData,
       tracking: {
         requestId: response.job.id
       },

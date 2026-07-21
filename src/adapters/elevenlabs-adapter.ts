@@ -4,38 +4,34 @@
  */
 
 import axios, { type AxiosInstance } from "axios"
-import type {
-  AudioInput,
-  ProviderCapabilities,
-  TranscribeOptions,
-  UnifiedTranscriptResponse,
-  StreamingOptions,
-  StreamingCallbacks,
-  StreamingSession,
-  StreamEvent,
-  Utterance,
-  Word,
-  ElevenLabsExtendedData
-} from "../router/types"
-import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-import { buildUtterancesFromWords } from "../utils/transcription-helpers"
+import WebSocket from "ws"
 import { ElevenLabsRegion, type ElevenLabsRegionType } from "../constants"
-
-// Import generated ElevenLabs types
-import type { BodySpeechToTextV1SpeechToTextPost } from "../generated/elevenlabs/schema/bodySpeechToTextV1SpeechToTextPost"
-import type { SpeechToTextChunkResponseModel } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
-import type { SpeechToTextWordResponseModel } from "../generated/elevenlabs/schema/speechToTextWordResponseModel"
+import type { ElevenLabsModelCode } from "../generated/elevenlabs/models"
 import type { MultichannelSpeechToTextResponseModel } from "../generated/elevenlabs/schema/multichannelSpeechToTextResponseModel"
 import type { SpeechToText200 } from "../generated/elevenlabs/schema/speechToText200"
+import type { SpeechToTextChunkResponseModel } from "../generated/elevenlabs/schema/speechToTextChunkResponseModel"
 import type { SpeechToTextWebhookResponseModel } from "../generated/elevenlabs/schema/speechToTextWebhookResponseModel"
-import type { ElevenLabsModelCode } from "../generated/elevenlabs/models"
-
 // WebSocket streaming types extracted from official elevenlabs SDK
 import type {
-  ElevenLabsRealtimeMessage,
   CommittedTranscriptWithTimestampsPayload,
+  ElevenLabsRealtimeMessage,
   TranscriptionWord as ElevenLabsTranscriptionWord
 } from "../generated/elevenlabs/streaming-response-types"
+import type {
+  AudioInput,
+  ElevenLabsExtendedData,
+  ProviderCapabilities,
+  StreamEvent,
+  StreamingCallbacks,
+  StreamingOptions,
+  StreamingSession,
+  TranscribeOptions,
+  UnifiedTranscriptResponse,
+  Word
+} from "../router/types"
+import { toAudioBlob } from "../utils/blob-helpers"
+import { buildUtterancesFromWords } from "../utils/transcription-helpers"
+import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 /**
  * ElevenLabs-specific configuration options
@@ -134,7 +130,6 @@ export class ElevenLabsAdapter extends BaseAdapter {
         return "api.eu.residency.elevenlabs.io"
       case ElevenLabsRegion.in:
         return "api.in.residency.elevenlabs.io"
-      case ElevenLabsRegion.global:
       default:
         return "api.elevenlabs.io"
     }
@@ -223,10 +218,7 @@ export class ElevenLabsAdapter extends BaseAdapter {
       if (audio.type === "url") {
         formData.append("cloud_storage_url", audio.url)
       } else if (audio.type === "file") {
-        const audioBlob =
-          audio.file instanceof Blob
-            ? audio.file
-            : new Blob([audio.file], { type: audio.mimeType || "audio/wav" })
+        const audioBlob = toAudioBlob(audio.file, audio.mimeType || "audio/wav")
         formData.append("file", audioBlob, audio.filename || "audio.wav")
       } else {
         return {
@@ -429,8 +421,7 @@ export class ElevenLabsAdapter extends BaseAdapter {
     let openedAt: number | null = null
     let receivedData = false
 
-    const WebSocketImpl = typeof WebSocket !== "undefined" ? WebSocket : require("ws")
-    const ws: WebSocket = new WebSocketImpl(wsUrl.toString(), {
+    const ws = new WebSocket(wsUrl.toString(), {
       headers: {
         "xi-api-key": this.config!.apiKey
       }
@@ -442,7 +433,7 @@ export class ElevenLabsAdapter extends BaseAdapter {
       callbacks?.onOpen?.()
     }
 
-    ws.onmessage = (event: MessageEvent) => {
+    ws.onmessage = (event: WebSocket.MessageEvent) => {
       receivedData = true
 
       const rawPayload = typeof event.data === "string" ? event.data : event.data.toString()
@@ -547,7 +538,7 @@ export class ElevenLabsAdapter extends BaseAdapter {
       })
     }
 
-    ws.onclose = (event: CloseEvent) => {
+    ws.onclose = (event: WebSocket.CloseEvent) => {
       status = "closed"
 
       const timeSinceOpen = openedAt ? Date.now() - openedAt : null

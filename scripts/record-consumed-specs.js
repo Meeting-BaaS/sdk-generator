@@ -20,9 +20,9 @@
  *   node scripts/record-consumed-specs.js --check   # report drift, write nothing
  */
 
-const fs = require("fs")
-const path = require("path")
-const crypto = require("crypto")
+const fs = require("node:fs")
+const path = require("node:path")
+const crypto = require("node:crypto")
 const { SPEC_SOURCES } = require("./provider-upstream-manifest")
 
 const SPECS_DIR = path.join(__dirname, "..", "specs")
@@ -68,7 +68,8 @@ function main() {
       continue
     }
 
-    const entry = (checksumData.specs[specKey] ??= {})
+    checksumData.specs[specKey] ??= {}
+    const entry = checksumData.specs[specKey]
     const onDiskSha = sha256(fs.readFileSync(outputPath))
     const previous = entry.consumedSha256
     const drifted = previous != null && previous !== onDiskSha
@@ -108,7 +109,7 @@ function main() {
 
   if (!checkOnly && changes > 0) {
     checksumData.updatedAt = new Date().toISOString()
-    fs.writeFileSync(CHECKSUMS_FILE, JSON.stringify(checksumData, null, 2) + "\n", "utf-8")
+    fs.writeFileSync(CHECKSUMS_FILE, `${JSON.stringify(checksumData, null, 2)}\n`, "utf-8")
     console.log(`\n  💾 Updated ${changes} consumed checksum(s) in specs/.checksums.json`)
   } else if (!checkOnly) {
     console.log("\n  ✅ Consumed checksums already up to date")

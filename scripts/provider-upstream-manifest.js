@@ -53,7 +53,8 @@ const SPEC_SOURCES = {
   azure: {
     url: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Speech/SpeechToText/stable/v3.2/speechtotext.json",
     output: "specs/azure-stt-openapi.json",
-    format: "json"
+    format: "json",
+    fixedBy: "fix-azure-spec.js"
   },
   speechmatics: {
     url: "https://raw.githubusercontent.com/speechmatics/speechmatics-js-sdk/main/packages/batch-client/schema/batch.yml",

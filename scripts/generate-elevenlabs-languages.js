@@ -13,8 +13,8 @@
  * @see https://elevenlabs.io/docs/capabilities/speech-to-text#supported-languages
  */
 
-const fs = require("fs")
-const path = require("path")
+const fs = require("node:fs")
+const path = require("node:path")
 
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/elevenlabs/languages.ts")
 const SOURCE_PATH = path.join(__dirname, "../specs/elevenlabs-languages.json")

@@ -11,9 +11,9 @@
  * Regenerate with: pnpm openapi:generate-field-metadata
  */
 
-const fs = require("fs")
-const path = require("path")
-const { execSync } = require("child_process")
+const fs = require("node:fs")
+const path = require("node:path")
+const { execSync } = require("node:child_process")
 
 const OUTPUT_FILE = path.join(__dirname, "../src/field-metadata.ts")
 
@@ -26,80 +26,129 @@ const OUTPUT_FILE = path.join(__dirname, "../src/field-metadata.ts")
 const LANGUAGE_FIELD_CONFIG = {
   gladia: {
     fieldNames: ["language"],
-    constantArrayName: "GladiaLanguageCodes",
-    constantObjectName: "GladiaLanguage", // Fallback for object format
-    importPath: "./generated/gladia/languages"
+    sourcePath: "src/generated/gladia/schema/transcriptionLanguageCodeEnum.ts",
+    sourceExportName: "TranscriptionLanguageCodeEnum"
   },
   assemblyai: {
     fieldNames: ["language_code"],
-    constantArrayName: "AssemblyAILanguageCodes",
-    constantObjectName: "AssemblyAILanguage", // Fallback for object format
-    importPath: "./generated/assemblyai/languages"
+    sourcePath: "src/generated/assemblyai/schema/transcriptLanguageCode.ts",
+    sourceExportName: "TranscriptLanguageCode"
   },
   deepgram: {
     fieldNames: ["language"],
-    constantArrayName: "DeepgramLanguageCodes",
-    constantObjectName: "DeepgramLanguage",
-    importPath: "./generated/deepgram/languages"
+    sourcePath: "src/generated/deepgram/languages.ts",
+    sourceExportName: "DeepgramLanguageCodes"
   },
   speechmatics: {
     fieldNames: ["language"],
-    constantArrayName: "SpeechmaticsLanguageCodes",
-    constantObjectName: "SpeechmaticsLanguage",
-    importPath: "./generated/speechmatics/languages"
+    sourcePath: "src/generated/speechmatics/languages.ts",
+    sourceExportName: "SpeechmaticsLanguageCodes"
   },
   soniox: {
     fieldNames: ["language_hints", "languageHints"],
-    constantArrayName: "SonioxLanguageCodes",
-    constantObjectName: "SonioxLanguage",
-    importPath: "./generated/soniox/languages"
+    sourcePath: "src/generated/soniox/languages.ts",
+    sourceExportName: "SonioxLanguageCodes"
   },
-  azure: {
+  "azure-stt": {
     fieldNames: ["locale", "defaultLanguage"],
-    constantArrayName: "AzureLocaleCodes",
-    constantObjectName: "AzureLocale",
-    importPath: "./generated/azure/locales"
+    sourcePath: "src/generated/azure/locales.ts",
+    sourceExportName: "AzureLocaleCodes"
   },
-  openai: {
+  "openai-whisper": {
     fieldNames: ["language"],
-    constantArrayName: "OpenAILanguageCodes",
-    constantObjectName: "OpenAILanguage",
-    importPath: "./constants" // OpenAI uses manual constants
+    sourcePath: "src/constants.ts", // OpenAI uses manual constants
+    sourceExportName: "OpenAILanguageCodes"
+  },
+  elevenlabs: {
+    fieldNames: ["language_code"],
+    sourcePath: "src/generated/elevenlabs/languages.ts",
+    sourceExportName: "ElevenLabsLanguageCodes"
   }
 }
 
 /**
- * Load language codes from generated files
+ * Extract the initializer for a named exported const from a TypeScript source file.
+ */
+function extractConstInitializer(source, exportName) {
+  const marker = `export const ${exportName} =`
+  const markerIndex = source.indexOf(marker)
+  if (markerIndex === -1) {
+    throw new Error(`export const ${exportName} not found`)
+  }
+
+  let index = markerIndex + marker.length
+  while (/\s/.test(source[index])) index += 1
+
+  const open = source[index]
+  const close = open === "[" ? "]" : open === "{" ? "}" : null
+  if (!close) {
+    throw new Error(`export const ${exportName} initializer is not an array or object`)
+  }
+
+  let depth = 0
+  let quote = null
+  let escaped = false
+
+  for (let i = index; i < source.length; i += 1) {
+    const char = source[i]
+
+    if (quote) {
+      if (escaped) {
+        escaped = false
+      } else if (char === "\\") {
+        escaped = true
+      } else if (char === quote) {
+        quote = null
+      }
+      continue
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char
+      continue
+    }
+
+    if (char === open) {
+      depth += 1
+    } else if (char === close) {
+      depth -= 1
+      if (depth === 0) {
+        return source.slice(index, i + 1)
+      }
+    }
+  }
+
+  throw new Error(`export const ${exportName} initializer was not closed`)
+}
+
+/**
+ * Load string values from a source TypeScript const array or object.
  *
- * Handles both array exports (e.g., DeepgramLanguageCodes) and
- * object exports (e.g., GladiaLanguage where we use Object.values())
+ * This intentionally reads source files rather than dist/*.js so API-derived
+ * metadata generation never depends on stale build output.
+ */
+function loadStringValuesFromSource(config) {
+  const sourcePath = path.join(__dirname, "..", config.sourcePath)
+  const source = fs.readFileSync(sourcePath, "utf-8")
+  const initializer = extractConstInitializer(source, config.sourceExportName)
+
+  if (initializer.startsWith("[")) {
+    return [...initializer.matchAll(/["']([^"']+)["']/g)].map(([, value]) => value)
+  }
+
+  return [...initializer.matchAll(/:\s*["']([^"']+)["']/g)].map(([, value]) => value)
+}
+
+/**
+ * Load language codes from source TypeScript files.
  */
 function loadLanguageCodes() {
   const languageCodes = {}
 
   for (const [provider, config] of Object.entries(LANGUAGE_FIELD_CONFIG)) {
     try {
-      // Try loading from dist first (built JS)
-      const distPath = path.join(__dirname, "../dist/constants.js")
-      if (fs.existsSync(distPath)) {
-        const constants = require(distPath)
-
-        // First try the array export (e.g., DeepgramLanguageCodes)
-        if (constants[config.constantArrayName]) {
-          const value = constants[config.constantArrayName]
-          if (Array.isArray(value)) {
-            languageCodes[provider] = [...value]
-          } else if (typeof value === "object") {
-            // Object map format (e.g., GladiaLanguage = { af: "af", ... })
-            languageCodes[provider] = Object.values(value)
-          }
-          console.log(`  → Loaded ${languageCodes[provider].length} language codes for ${provider}`)
-        } else if (config.constantObjectName && constants[config.constantObjectName]) {
-          // Fallback to object constant (e.g., GladiaLanguage)
-          languageCodes[provider] = Object.values(constants[config.constantObjectName])
-          console.log(`  → Loaded ${languageCodes[provider].length} language codes for ${provider}`)
-        }
-      }
+      languageCodes[provider] = loadStringValuesFromSource(config)
+      console.log(`  → Loaded ${languageCodes[provider].length} language codes for ${provider}`)
     } catch (err) {
       console.log(`  ⚠ Could not load language codes for ${provider}: ${err.message}`)
     }
@@ -229,8 +278,7 @@ async function main() {
   console.log("  → Loading auto-generated language codes...")
   const languageCodes = loadLanguageCodes()
 
-  // We need to compile and run the field-configs to extract the data
-  // Use ts-node to execute TypeScript directly
+  // We need to compile and run the source field-configs to extract current data.
   const extractScript = `
     const {
       getGladiaFieldConfigs,
@@ -238,6 +286,7 @@ async function main() {
       getAssemblyAIFieldConfigs,
       getOpenAIFieldConfigs,
       getAzureFieldConfigs,
+      getElevenLabsFieldConfigs,
       getSpeechmaticsFieldConfigs,
       getSonioxFieldConfigs
     } = require("./src/field-configs.ts")
@@ -246,8 +295,9 @@ async function main() {
       gladia: getGladiaFieldConfigs(),
       deepgram: getDeepgramFieldConfigs(),
       assemblyai: getAssemblyAIFieldConfigs(),
-      openai: getOpenAIFieldConfigs(),
-      azure: getAzureFieldConfigs(),
+      "openai-whisper": getOpenAIFieldConfigs(),
+      "azure-stt": getAzureFieldConfigs(),
+      elevenlabs: getElevenLabsFieldConfigs(),
       speechmatics: getSpeechmaticsFieldConfigs(),
       soniox: getSonioxFieldConfigs()
     }
@@ -255,7 +305,7 @@ async function main() {
     console.log(JSON.stringify(configs))
   `
 
-  // Run with ts-node to get the field configs
+  // Run with ts-node so metadata is derived from the current TypeScript source.
   console.log("  → Extracting field metadata from Zod schemas...")
   let configs
   try {
@@ -270,39 +320,8 @@ async function main() {
     configs = JSON.parse(result)
   } catch (error) {
     console.error("❌ Failed to extract field configs:", error.message)
-    // Fallback: try to parse field-configs.ts directly and build manually
-    console.log("  → Falling back to manual extraction...")
-
-    // Alternative: require the built JS if available
-    try {
-      const distPath = path.join(__dirname, "../dist/field-configs.js")
-      if (fs.existsSync(distPath)) {
-        const {
-          getGladiaFieldConfigs,
-          getDeepgramFieldConfigs,
-          getAssemblyAIFieldConfigs,
-          getOpenAIFieldConfigs,
-          getAzureFieldConfigs,
-          getSpeechmaticsFieldConfigs,
-          getSonioxFieldConfigs
-        } = require(distPath)
-
-        configs = {
-          gladia: getGladiaFieldConfigs(),
-          deepgram: getDeepgramFieldConfigs(),
-          assemblyai: getAssemblyAIFieldConfigs(),
-          openai: getOpenAIFieldConfigs(),
-          azure: getAzureFieldConfigs(),
-          speechmatics: getSpeechmaticsFieldConfigs(),
-          soniox: getSonioxFieldConfigs()
-        }
-      } else {
-        throw new Error("dist/field-configs.js not found. Run 'pnpm build:quick' first.")
-      }
-    } catch (fallbackError) {
-      console.error("❌ Fallback also failed:", fallbackError.message)
-      process.exit(1)
-    }
+    console.error("❌ Field metadata must be generated from src/field-configs.ts, not dist output.")
+    process.exit(1)
   }
 
   console.log("  ✓ Extracted field metadata for all providers")
@@ -362,17 +381,23 @@ export interface FieldMetadata {
 
   // Generate for each provider
   const providers = [
-    { key: "gladia", name: "Gladia", config: configs.gladia },
-    { key: "deepgram", name: "Deepgram", config: configs.deepgram },
-    { key: "assemblyai", name: "AssemblyAI", config: configs.assemblyai },
-    { key: "openai", name: "OpenAI", config: configs.openai },
-    { key: "azure", name: "Azure", config: configs.azure },
-    { key: "speechmatics", name: "Speechmatics", config: configs.speechmatics },
-    { key: "soniox", name: "Soniox", config: configs.soniox }
+    { key: "gladia", name: "Gladia", prefix: "GLADIA", config: configs.gladia },
+    { key: "deepgram", name: "Deepgram", prefix: "DEEPGRAM", config: configs.deepgram },
+    { key: "assemblyai", name: "AssemblyAI", prefix: "ASSEMBLYAI", config: configs.assemblyai },
+    { key: "openai-whisper", name: "OpenAI", prefix: "OPENAI", config: configs["openai-whisper"] },
+    { key: "azure-stt", name: "Azure", prefix: "AZURE", config: configs["azure-stt"] },
+    { key: "elevenlabs", name: "ElevenLabs", prefix: "ELEVENLABS", config: configs.elevenlabs },
+    {
+      key: "speechmatics",
+      name: "Speechmatics",
+      prefix: "SPEECHMATICS",
+      config: configs.speechmatics
+    },
+    { key: "soniox", name: "Soniox", prefix: "SONIOX", config: configs.soniox }
   ]
 
-  for (const { key, name, config } of providers) {
-    const upperKey = key.toUpperCase()
+  for (const { key, name, prefix, config } of providers) {
+    const upperKey = prefix
     const pascalName = name.replace(/[^a-zA-Z]/g, "")
 
     output += `// ─────────────────────────────────────────────────────────────────────────────
@@ -449,8 +474,8 @@ export interface FieldMetadata {
 export const PROVIDER_FIELDS = {
 `
 
-  for (const { key, config } of providers) {
-    const upperKey = key.toUpperCase()
+  for (const { key, prefix, config } of providers) {
+    const upperKey = prefix
     const props = []
 
     if (config.transcription?.length) {
@@ -466,7 +491,7 @@ export const PROVIDER_FIELDS = {
       props.push(`    listFilters: ${upperKey}_LIST_FILTER_FIELDS`)
     }
 
-    output += `  ${key}: {\n${props.join(",\n")},\n  },\n`
+    output += `  ${JSON.stringify(key)}: {\n${props.join(",\n")},\n  },\n`
   }
 
   output += `} as const
@@ -476,6 +501,16 @@ export type FieldMetadataProvider = keyof typeof PROVIDER_FIELDS
 
   // Write output
   fs.writeFileSync(OUTPUT_FILE, output)
+  try {
+    execSync("pnpm exec biome format --write src/field-metadata.ts", {
+      cwd: path.join(__dirname, ".."),
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"]
+    })
+    console.log("  → Formatted field metadata with Biome")
+  } catch (formatError) {
+    console.log(`  ⚠ Could not format field metadata: ${formatError.message}`)
+  }
 
   // Count fields for summary
   let totalFields = 0

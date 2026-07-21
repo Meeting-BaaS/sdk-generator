@@ -11,7 +11,7 @@
  * Source: https://api.elevenlabs.io/openapi.json
  */
 
-const fs = require("fs")
+const fs = require("node:fs")
 
 const SPEC_PATH = "./specs/elevenlabs-openapi.json"
 const BACKUP_PATH = "./specs/elevenlabs-openapi.json.backup"
@@ -138,12 +138,12 @@ function fixArraySchemas(obj, path = "") {
   return fixes
 }
 
-let arrayFixes = fixArraySchemas(spec)
+const arrayFixes = fixArraySchemas(spec)
 if (arrayFixes > 0) {
   console.log(`   Fixed ${arrayFixes} array schemas`)
   fixCount += arrayFixes
 } else {
-  console.log(`   ✅ No malformed array schemas found`)
+  console.log("   ✅ No malformed array schemas found")
 }
 
 // Step 6: Fix any missing path parameters
@@ -185,7 +185,7 @@ if (spec.paths) {
 if (paramFixes > 0) {
   console.log(`   ✅ Added ${paramFixes} missing path parameters`)
 } else {
-  console.log(`   ✅ No missing path parameters`)
+  console.log("   ✅ No missing path parameters")
 }
 
 // Step 7: Update spec metadata
@@ -194,7 +194,7 @@ console.log("\n📋 Step 7: Updating spec metadata")
 spec.info.title = "ElevenLabs Speech-to-Text API"
 spec.info.description =
   "ElevenLabs Speech-to-Text API - Batch and realtime transcription endpoints. Filtered from the official ElevenLabs API spec."
-console.log(`   ✅ Updated title and description`)
+console.log("   ✅ Updated title and description")
 
 // Filter tags to STT only
 if (spec.tags) {
@@ -202,13 +202,13 @@ if (spec.tags) {
     const name = tag.name?.toLowerCase() || ""
     return name.includes("speech-to-text") || name.includes("stt") || name.includes("transcri")
   })
-  console.log(`   ✅ Filtered tags to STT only`)
+  console.log("   ✅ Filtered tags to STT only")
 }
 
 // Remove security schemes that aren't relevant (keep xi-api-key)
 if (spec.components?.securitySchemes) {
   // Keep all security schemes - ElevenLabs uses xi-api-key
-  console.log(`   ✅ Security schemes preserved`)
+  console.log("   ✅ Security schemes preserved")
 }
 
 // Save backup (only if not already exists)
@@ -222,7 +222,7 @@ fs.writeFileSync(SPEC_PATH, JSON.stringify(spec, null, 2))
 
 console.log(`\n✅ Applied ${fixCount} fixes/filters to ElevenLabs spec`)
 console.log(`📝 Filtered spec saved to: ${SPEC_PATH}`)
-console.log(`\n📊 Final spec summary:`)
+console.log("\n📊 Final spec summary:")
 console.log(`   Paths: ${Object.keys(spec.paths || {}).length}`)
 console.log(`   Schemas: ${Object.keys(spec.components?.schemas || {}).length}`)
 console.log(`   Tags: ${(spec.tags || []).length}\n`)

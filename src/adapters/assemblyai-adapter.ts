@@ -3,8 +3,9 @@
  * Documentation: https://www.assemblyai.com/docs
  */
 
-import axios from "axios"
 import WebSocket from "ws"
+import type { AssemblyAIRegionType } from "../constants"
+import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import type {
   AudioChunk,
   AudioInput,
@@ -14,12 +15,9 @@ import type {
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse,
-  RawWebSocketMessage
+  UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-import { mapEncodingToProvider } from "../router/audio-encoding-types"
-import type { AssemblyAIRegionType } from "../constants"
 
 /**
  * AssemblyAI adapter configuration
@@ -54,35 +52,31 @@ export interface AssemblyAIConfig extends ProviderConfig {
 // Import generated API client functions - FULL TYPE SAFETY!
 import {
   createTranscript,
-  getTranscript as getTranscriptAPI,
   deleteTranscript as deleteTranscriptAPI,
+  getTranscript as getTranscriptAPI,
   listTranscripts as listTranscriptsAPI
 } from "../generated/assemblyai/api/assemblyAIAPI"
-
+import type { ListTranscriptsParams } from "../generated/assemblyai/schema/listTranscriptsParams"
+import type { SpeechModel } from "../generated/assemblyai/schema/speechModel"
 // Import AssemblyAI generated types
 import type { Transcript } from "../generated/assemblyai/schema/transcript"
+import type { TranscriptListItem } from "../generated/assemblyai/schema/transcriptListItem"
 import type { TranscriptParams } from "../generated/assemblyai/schema/transcriptParams"
 import type { TranscriptStatus } from "../generated/assemblyai/schema/transcriptStatus"
-import type { TranscriptListItem } from "../generated/assemblyai/schema/transcriptListItem"
-import type { ListTranscriptsParams } from "../generated/assemblyai/schema/listTranscriptsParams"
-import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
 import type { TranscriptUtterance } from "../generated/assemblyai/schema/transcriptUtterance"
-import type { SpeechModel } from "../generated/assemblyai/schema/speechModel"
+import type { TranscriptWord } from "../generated/assemblyai/schema/transcriptWord"
 
 // Import AssemblyAI v3 Streaming types (auto-synced from SDK)
 import type {
   BeginEvent,
-  TurnEvent,
-  TerminationEvent,
   ErrorEvent,
   StreamingEventMessage,
-  StreamingWord,
+  StreamingForceEndpoint,
   StreamingUpdateConfiguration,
-  StreamingForceEndpoint
+  StreamingWord,
+  TerminationEvent,
+  TurnEvent
 } from "../generated/assemblyai/streaming-types"
-
-// Import provider-specific streaming options
-import type { AssemblyAIStreamingOptions } from "../router/provider-streaming-types"
 
 /**
  * AssemblyAI transcription provider adapter
@@ -542,8 +536,8 @@ export class AssemblyAIAdapter extends BaseAdapter {
     const request: TranscriptParams = {
       ...typedOpts,
       audio_url: audioUrl,
-      // speech_models is required — default to universal-3-pro
-      speech_models: speechModels ?? ["universal-3-pro"],
+      // speech_models is required - default to the current highest-accuracy model
+      speech_models: speechModels ?? ["universal-3-5-pro"],
       // Enable punctuation and formatting by default
       punctuate: typedOpts.punctuate ?? true,
       format_text: typedOpts.format_text ?? true
@@ -551,10 +545,10 @@ export class AssemblyAIAdapter extends BaseAdapter {
 
     // Map normalized options (take precedence over assemblyai-specific)
     if (options) {
-      // Model selection (universal-3-pro, universal-2, etc.)
+      // Model selection (universal-3-5-pro, universal-2, etc.)
       // Uses speech_models (plural, array) — speech_model (singular) is deprecated
       if (options.model) {
-        request.speech_models = [options.model as string]
+        request.speech_models = [options.model as SpeechModel]
       }
 
       // Language configuration
@@ -773,7 +767,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
    * - Force endpoint command
    *
    * @param options - Streaming configuration options
-   * @param options.sampleRate - Sample rate (8000, 16000, 22050, 44100, 48000)
+   * @param options.sampleRate - Sample rate in Hz; positive integer values are passed through
    * @param options.encoding - Audio encoding in unified format (linear16) - mapped to AssemblyAI's pcm_s16le
    * @param options.assemblyaiStreaming - All AssemblyAI-specific streaming options
    * @param callbacks - Event callbacks for transcription results
@@ -1198,10 +1192,14 @@ export class AssemblyAIAdapter extends BaseAdapter {
     // ─────────────────────────────────────────────────────────────────
     const keyterms = options?.customVocabulary || aaiOpts.keyterms
     if (keyterms && keyterms.length > 0) {
-      keyterms.forEach((term) => params.append("keyterms", term))
+      for (const term of keyterms) {
+        params.append("keyterms", term)
+      }
     }
     if (aaiOpts.keytermsPrompt && aaiOpts.keytermsPrompt.length > 0) {
-      aaiOpts.keytermsPrompt.forEach((prompt) => params.append("keyterms_prompt", prompt))
+      for (const prompt of aaiOpts.keytermsPrompt) {
+        params.append("keyterms_prompt", prompt)
+      }
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -1329,8 +1327,8 @@ export function createAssemblyAIAdapter(config: AssemblyAIConfig): AssemblyAIAda
 // API client functions - for advanced direct API usage
 export {
   createTranscript,
-  getTranscript as getTranscriptAPI,
   deleteTranscript as deleteTranscriptAPI,
+  getTranscript as getTranscriptAPI,
   listTranscripts as listTranscriptsAPI
 } from "../generated/assemblyai/api/assemblyAIAPI"
 

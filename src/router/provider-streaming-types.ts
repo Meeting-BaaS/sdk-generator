@@ -11,53 +11,45 @@
  * ```
  */
 
-// Gladia types - from OpenAPI-generated schema
-import type { StreamingRequest } from "../generated/gladia/schema/streamingRequest"
-import type { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
-import type { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
-import type { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
-import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
-
+// Speechmatics types for strict type checking
+import type {
+  ElevenLabsAudioFormatType,
+  SpeechmaticsModelType,
+  SpeechmaticsRegionType
+} from "../constants"
 // Deepgram types - from OpenAPI-generated schema
 import type { V1ListenPostParametersEncoding } from "../generated/deepgram/schema/v1ListenPostParametersEncoding"
 import type { V1ListenPostParametersVersion } from "../generated/deepgram/schema/v1ListenPostParametersVersion"
-
-// New typed enums for better autocomplete
-import type {
-  DeepgramModelType,
-  DeepgramRedactType,
-  DeepgramTopicModeType,
-  AssemblyAIEncodingType,
-  AssemblyAISpeechModelType,
-  AssemblyAISampleRateType
-} from "./streaming-enums"
-
-// Soniox language and model types for strict type checking
-import type { SonioxLanguageCode } from "../generated/soniox/languages"
-import type { SonioxRealtimeModelCode } from "../generated/soniox/models"
-
 // ElevenLabs types for strict type checking
 import type { ElevenLabsRealtimeModelCode } from "../generated/elevenlabs/models"
-import type { ElevenLabsAudioFormatType } from "../constants"
-
-// Speechmatics types for strict type checking
-import type { SpeechmaticsRegionType } from "../constants"
-
-// Common callback types
-import type { StreamingCallbacks, StreamingProvider } from "./types"
-
+import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
+import type { MessagesConfig } from "../generated/gladia/schema/messagesConfig"
+import type { PostProcessingConfig } from "../generated/gladia/schema/postProcessingConfig"
+import type { PreProcessingConfig } from "../generated/gladia/schema/preProcessingConfig"
+import type { RealtimeProcessingConfig } from "../generated/gladia/schema/realtimeProcessingConfig"
+import type { StreamingSupportedBitDepthEnum } from "../generated/gladia/schema/streamingSupportedBitDepthEnum"
+import type { StreamingSupportedEncodingEnum } from "../generated/gladia/schema/streamingSupportedEncodingEnum"
+// Gladia model type from generated schema
+import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
+import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
+import type { StreamingSupportedSampleRateEnum } from "../generated/gladia/schema/streamingSupportedSampleRateEnum"
 // OpenAI Realtime types - from OpenAPI-generated schema
 import type { RealtimeSessionCreateRequestGAModel } from "../generated/openai/schema/realtimeSessionCreateRequestGAModel"
 import type { RealtimeTranscriptionSessionCreateRequestInputAudioFormat } from "../generated/openai/schema/realtimeTranscriptionSessionCreateRequestInputAudioFormat"
 import type { RealtimeTranscriptionSessionCreateRequestTurnDetectionType } from "../generated/openai/schema/realtimeTranscriptionSessionCreateRequestTurnDetectionType"
-
-// Gladia model type from generated schema
-import type { StreamingSupportedModels } from "../generated/gladia/schema/streamingSupportedModels"
-import type { StreamingSupportedRegions } from "../generated/gladia/schema/streamingSupportedRegions"
-import type { MessagesConfig } from "../generated/gladia/schema/messagesConfig"
-import type { PreProcessingConfig } from "../generated/gladia/schema/preProcessingConfig"
-import type { RealtimeProcessingConfig } from "../generated/gladia/schema/realtimeProcessingConfig"
-import type { PostProcessingConfig } from "../generated/gladia/schema/postProcessingConfig"
+// Soniox language and model types for strict type checking
+import type { SonioxLanguageCode } from "../generated/soniox/languages"
+import type { SonioxRealtimeModelCode } from "../generated/soniox/models"
+// New typed enums for better autocomplete
+import type {
+  AssemblyAIEncodingType,
+  AssemblyAISpeechModelType,
+  DeepgramModelType,
+  DeepgramRedactType,
+  DeepgramTopicModeType
+} from "./streaming-enums"
+// Common callback types
+import type { StreamingCallbacks, StreamingOptions, StreamingProvider } from "./types"
 
 /**
  * Gladia streaming options (from OpenAPI spec)
@@ -299,14 +291,15 @@ export interface AssemblyAIStreamingOptions {
 
   /**
    * Sample rate in Hz
-   * Use `AssemblyAISampleRate` const for autocomplete:
+   * Positive integer values are passed through to the AssemblyAI SDK.
+   * Use `AssemblyAISampleRate` const for common-rate autocomplete:
    * @example
    * ```typescript
    * import { AssemblyAISampleRate } from '@meeting-baas/sdk'
    * { sampleRate: AssemblyAISampleRate.rate16000 }
    * ```
    */
-  sampleRate?: AssemblyAISampleRateType
+  sampleRate?: number
 
   /**
    * Audio encoding format
@@ -855,10 +848,18 @@ export interface SpeechmaticsStreamingOptions {
   domain?: string
 
   /**
-   * Operating point (model accuracy tier)
+   * Model accuracy tier
    * @default "enhanced"
    */
-  operatingPoint?: "standard" | "enhanced"
+  model?: SpeechmaticsModelType
+
+  /**
+   * Operating point (model accuracy tier)
+   *
+   * @deprecated Use `model` instead. Speechmatics renamed this field to
+   * `model`; the old option remains as a compatibility alias.
+   */
+  operatingPoint?: SpeechmaticsModelType
 
   /**
    * Maximum delay in seconds between spoken word and final transcript (0.7-4)
@@ -908,40 +909,87 @@ export interface SpeechmaticsStreamingOptions {
 /**
  * Union of all provider-specific streaming options
  */
+type ProviderSpecificStreamingOptionKey =
+  | "gladia"
+  | "gladiaStreaming"
+  | "deepgram"
+  | "deepgramStreaming"
+  | "assemblyai"
+  | "assemblyaiStreaming"
+  | "openai"
+  | "openaiStreaming"
+  | "soniox"
+  | "sonioxStreaming"
+  | "elevenlabs"
+  | "elevenlabsStreaming"
+  | "audioToLlm"
+  | "codeSwitchingConfig"
+  | "speechmaticsStreaming"
+
+type ProviderNeutralStreamingOptions = Omit<StreamingOptions, ProviderSpecificStreamingOptionKey>
+
+export type GladiaProviderStreamingOptions = Omit<
+  ProviderNeutralStreamingOptions,
+  "encoding" | "sampleRate" | "bitDepth" | "model" | "region"
+> &
+  GladiaStreamingOptions & {
+    provider: "gladia"
+    gladiaStreaming?: StreamingOptions["gladiaStreaming"]
+  }
+
+export type DeepgramProviderStreamingOptions = ProviderNeutralStreamingOptions & {
+  provider: "deepgram"
+  deepgramStreaming?: DeepgramStreamingOptions
+}
+
+export type AssemblyAIProviderStreamingOptions = ProviderNeutralStreamingOptions & {
+  provider: "assemblyai"
+  assemblyaiStreaming?: AssemblyAIStreamingOptions
+}
+
+export type OpenAIProviderStreamingOptions = ProviderNeutralStreamingOptions & {
+  provider: "openai-whisper"
+  openaiStreaming?: OpenAIStreamingOptions
+}
+
+export type SonioxProviderStreamingOptions = ProviderNeutralStreamingOptions & {
+  provider: "soniox"
+  sonioxStreaming?: SonioxStreamingOptions
+}
+
+export type ElevenLabsProviderStreamingOptions = ProviderNeutralStreamingOptions & {
+  provider: "elevenlabs"
+  elevenlabsStreaming?: ElevenLabsStreamingOptions
+}
+
+export type SpeechmaticsProviderStreamingOptions = ProviderNeutralStreamingOptions & {
+  provider: "speechmatics"
+  speechmaticsStreaming?: SpeechmaticsStreamingOptions
+}
+
 export type ProviderStreamingOptions =
-  | ({ provider: "gladia" } & GladiaStreamingOptions)
-  | ({ provider: "deepgram" } & DeepgramStreamingOptions)
-  | ({ provider: "assemblyai" } & AssemblyAIStreamingOptions)
-  | ({ provider: "openai-whisper" } & OpenAIStreamingOptions)
-  | ({ provider: "soniox" } & SonioxStreamingOptions)
-  | ({ provider: "elevenlabs" } & ElevenLabsStreamingOptions)
-  | ({ provider: "speechmatics" } & SpeechmaticsStreamingOptions)
+  | GladiaProviderStreamingOptions
+  | DeepgramProviderStreamingOptions
+  | AssemblyAIProviderStreamingOptions
+  | OpenAIProviderStreamingOptions
+  | SonioxProviderStreamingOptions
+  | ElevenLabsProviderStreamingOptions
+  | SpeechmaticsProviderStreamingOptions
 
 /**
  * Type-safe streaming options for a specific provider
  */
-export type StreamingOptionsForProvider<P extends StreamingProvider> = P extends "gladia"
-  ? GladiaStreamingOptions
-  : P extends "deepgram"
-    ? DeepgramStreamingOptions
-    : P extends "assemblyai"
-      ? AssemblyAIStreamingOptions
-      : P extends "openai-whisper"
-        ? OpenAIStreamingOptions
-        : P extends "soniox"
-          ? SonioxStreamingOptions
-          : P extends "elevenlabs"
-            ? ElevenLabsStreamingOptions
-            : P extends "speechmatics"
-              ? SpeechmaticsStreamingOptions
-              : never
+export type StreamingOptionsForProvider<P extends StreamingProvider> = Omit<
+  Extract<ProviderStreamingOptions, { provider: P }>,
+  "provider"
+>
 
 /**
  * Type-safe transcribeStream parameters for a specific provider
  */
 export interface TranscribeStreamParams<P extends StreamingProvider> {
   /** Streaming options specific to this provider */
-  options?: StreamingOptionsForProvider<P> & { provider: P }
+  options?: Extract<ProviderStreamingOptions, { provider: P }>
   /** Event callbacks */
   callbacks?: StreamingCallbacks
 }
@@ -950,31 +998,30 @@ export interface TranscribeStreamParams<P extends StreamingProvider> {
 // Re-export streaming enums for convenience
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Re-export types
+export type {
+  AssemblyAIEncodingType,
+  AssemblyAISampleRateType,
+  AssemblyAISpeechModelType,
+  DeepgramModelType,
+  DeepgramRedactType,
+  DeepgramTopicModeType
+} from "./streaming-enums"
 export {
+  // AssemblyAI
+  AssemblyAIEncoding,
+  AssemblyAISampleRate,
+  AssemblyAISpeechModel,
   // Deepgram
   DeepgramEncoding,
   DeepgramModel,
   DeepgramRedact,
   DeepgramTopicMode,
+  GladiaBitDepth,
   // Gladia
   GladiaEncoding,
-  GladiaSampleRate,
-  GladiaBitDepth,
-  GladiaModel,
   GladiaLanguage,
-  GladiaTranslationLanguage,
-  // AssemblyAI
-  AssemblyAIEncoding,
-  AssemblyAISpeechModel,
-  AssemblyAISampleRate
-} from "./streaming-enums"
-
-// Re-export types
-export type {
-  DeepgramModelType,
-  DeepgramRedactType,
-  DeepgramTopicModeType,
-  AssemblyAIEncodingType,
-  AssemblyAISpeechModelType,
-  AssemblyAISampleRateType
+  GladiaModel,
+  GladiaSampleRate,
+  GladiaTranslationLanguage
 } from "./streaming-enums"

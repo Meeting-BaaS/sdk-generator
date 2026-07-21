@@ -6,9 +6,9 @@
  */
 
 import type WebSocket from "ws"
-import type { StreamingCallbacks, SessionStatus } from "../router/types"
 import { DEFAULT_TIMEOUTS } from "../constants/defaults"
-import { ERROR_CODES, createError } from "./errors"
+import type { SessionStatus, StreamingCallbacks } from "../router/types"
+import { createError, ERROR_CODES } from "./errors"
 
 /**
  * Wait for WebSocket connection to open with timeout

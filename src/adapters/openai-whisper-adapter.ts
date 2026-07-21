@@ -5,6 +5,33 @@
 
 import axios from "axios"
 import WebSocket from "ws"
+// Import model and response format constants (derived from official spec)
+import {
+  OpenAIModel,
+  OpenAIRealtimeAudioFormat,
+  OpenAIRealtimeModel,
+  OpenAIRealtimeTranscriptionModel,
+  OpenAIRealtimeTurnDetection,
+  OpenAIResponseFormat
+} from "../constants"
+// Import generated API client function - FULL TYPE SAFETY!
+import { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
+// Import OpenAI generated types (all from official Stainless-hosted spec)
+import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
+import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
+import { CreateTranscriptionRequestTimestampGranularitiesItem } from "../generated/openai/schema/createTranscriptionRequestTimestampGranularitiesItem"
+import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
+import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
+// Import OpenAI Realtime streaming types
+import type {
+  ConversationItemInputAudioTranscriptionCompletedEvent,
+  InputAudioBufferSpeechStartedEvent,
+  InputAudioBufferSpeechStoppedEvent,
+  ErrorEvent as RealtimeErrorEvent,
+  RealtimeServerEvent,
+  SessionCreatedEvent
+} from "../generated/openai/streaming-types"
+import { getOpenAIRealtimeUrl, REALTIME_SERVER_EVENTS } from "../generated/openai/streaming-types"
 import type {
   AudioChunk,
   AudioInput,
@@ -13,41 +40,14 @@ import type {
   StreamingOptions,
   StreamingSession,
   TranscribeOptions,
-  UnifiedTranscriptResponse,
-  RawWebSocketMessage
+  UnifiedTranscriptResponse
 } from "../router/types"
 import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
-// Import OpenAI Realtime streaming types
-import type {
-  RealtimeServerEvent,
-  ConversationItemInputAudioTranscriptionCompletedEvent,
-  InputAudioBufferSpeechStartedEvent,
-  InputAudioBufferSpeechStoppedEvent,
-  SessionCreatedEvent,
-  ErrorEvent as RealtimeErrorEvent
-} from "../generated/openai/streaming-types"
-import { getOpenAIRealtimeUrl, REALTIME_SERVER_EVENTS } from "../generated/openai/streaming-types"
-
-// Import generated API client function - FULL TYPE SAFETY!
-import { createTranscription } from "../generated/openai/api/openAIAudioRealtimeAPI"
-
-// Import OpenAI generated types (all from official Stainless-hosted spec)
-import type { CreateTranscriptionRequest } from "../generated/openai/schema/createTranscriptionRequest"
-import type { CreateTranscriptionRequestModel } from "../generated/openai/schema/createTranscriptionRequestModel"
-import { CreateTranscriptionRequestTimestampGranularitiesItem } from "../generated/openai/schema/createTranscriptionRequestTimestampGranularitiesItem"
-import type { CreateTranscriptionResponseDiarizedJson } from "../generated/openai/schema/createTranscriptionResponseDiarizedJson"
-import type { CreateTranscriptionResponseVerboseJson } from "../generated/openai/schema/createTranscriptionResponseVerboseJson"
-
-// Import model and response format constants (derived from official spec)
-import {
-  OpenAIModel,
-  OpenAIResponseFormat,
-  OpenAIRealtimeModel,
-  OpenAIRealtimeAudioFormat,
-  OpenAIRealtimeTurnDetection,
-  OpenAIRealtimeTranscriptionModel
-} from "../constants"
+type OpenAITranscriptionResponse =
+  | CreateTranscriptionResponseVerboseJson
+  | CreateTranscriptionResponseDiarizedJson
+  | { text: string }
 
 /**
  * OpenAI Whisper transcription provider adapter
@@ -232,8 +232,8 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       }
 
       if (isDiarization) {
-        // Diarization model uses verbose_json format with speaker info
-        request.response_format = OpenAIResponseFormat.verbose_json
+        // Speaker annotations require diarized_json for the diarization model.
+        request.response_format = OpenAIResponseFormat.diarized_json
       } else if (needsWords || options?.diarization) {
         // Use verbose_json for word timestamps
         request.response_format = OpenAIResponseFormat.verbose_json
@@ -253,7 +253,11 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
       // Use generated API client function - FULLY TYPED!
       const response = await createTranscription(request, this.getAxiosConfig())
 
-      return this.normalizeResponse(response.data as any, model, isDiarization)
+      return this.normalizeResponse(
+        response.data as OpenAITranscriptionResponse,
+        model,
+        isDiarization
+      )
     } catch (error) {
       return this.createErrorResponse(error)
     }
@@ -263,7 +267,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
    * OpenAI Whisper returns results synchronously, so getTranscript is not needed.
    * This method exists for interface compatibility but will return an error.
    */
-  async getTranscript(transcriptId: string): Promise<UnifiedTranscriptResponse> {
+  async getTranscript(_transcriptId: string): Promise<UnifiedTranscriptResponse> {
     return {
       success: false,
       provider: this.name,
@@ -331,7 +335,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
 
     let sessionStatus: "connecting" | "open" | "closing" | "closed" = "connecting"
     const sessionId = `openai-realtime-${Date.now()}-${Math.random().toString(36).substring(7)}`
-    let currentTranscript = ""
+    let _currentTranscript = ""
 
     // Handle WebSocket events
     ws.on("open", () => {
@@ -397,7 +401,7 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
         }
 
         this.handleRealtimeMessage(message, callbacks, (text) => {
-          currentTranscript = text
+          _currentTranscript = text
         })
       } catch (error) {
         // Still capture raw message even if parse fails
@@ -631,11 +635,8 @@ export class OpenAIWhisperAdapter extends BaseAdapter {
    * Normalize OpenAI response to unified format
    */
   private normalizeResponse(
-    response:
-      | CreateTranscriptionResponseVerboseJson
-      | CreateTranscriptionResponseDiarizedJson
-      | { text: string },
-    model: CreateTranscriptionRequestModel,
+    response: OpenAITranscriptionResponse,
+    _model: CreateTranscriptionRequestModel,
     isDiarization: boolean
   ): UnifiedTranscriptResponse {
     // Handle simple json format

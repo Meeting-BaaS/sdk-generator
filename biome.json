@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.5/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.9/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,7 +7,17 @@
     "defaultBranch": "main"
   },
   "files": {
-    "includes": ["**", "!dist/**", "!examples/**", "!open-api/**"]
+    "includes": [
+      "**",
+      "!dist",
+      "!examples",
+      "!open-api",
+      "!specs",
+      "!src/generated",
+      "!rust-sdk/src/generated",
+      "!generated-csharp",
+      "!docs/generated"
+    ]
   },
   "formatter": {
     "indentStyle": "space",
@@ -15,6 +25,16 @@
     "lineWidth": 100
   },
   "overrides": [
+    {
+      "includes": ["scripts/fix-generated.js"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noParameterAssign": "off"
+          }
+        }
+      }
+    },
     {
       "includes": ["src/generated/**"],
       "linter": {

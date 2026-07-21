@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.check-changes.outputs.has_changes }}
-      changed_providers: ${{ steps.sync-specs.outputs.changed_providers }}
+      changed_providers: ${{ steps.check-changes.outputs.changed_providers || steps.sync-specs.outputs.changed_providers }}
 
     steps:
       - name: Checkout code
@@ -73,11 +73,11 @@ jobs:
             echo "changed_providers=$CHANGED_PROVIDERS" >> $GITHUB_OUTPUT
           fi
 
-      # Step 2: Full SDK regeneration (expensive — only runs if specs changed)
+      # Step 2: Full SDK regeneration. This runs even when raw spec checksums
+      # are stable because codegen also refreshes live language/model metadata.
       - name: Regenerate SDK
-        if: steps.sync-specs.outputs.has_spec_changes == 'true'
         run: |
-          echo "Specs changed — running full SDK regeneration..."
+          echo "Running full SDK regeneration..."
           pnpm openapi:generate && pnpm build
           echo "SDK regenerated successfully"
 
@@ -114,7 +114,25 @@ jobs:
           else
             echo "API schema changes detected:"
             echo "$FILTERED_CHANGES"
+            CHANGED_PROVIDERS="$(
+              echo "$FILTERED_CHANGES" | awk '
+                /^specs\// {
+                  provider = $0
+                  sub(/^specs\//, "", provider)
+                  sub(/[-.].*$/, "", provider)
+                  print provider
+                }
+                /^src\/generated\// {
+                  split($0, parts, "/")
+                  print parts[3]
+                }
+                /^src\/(field-metadata|field-equivalences)\.ts$/ || /^docs\/FIELD_EQUIVALENCES\.md$/ {
+                  print "public-metadata"
+                }
+              ' | sort -u | awk 'NF { providers = providers (providers ? ", " : "") $0 } END { print providers }'
+            )"
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "changed_providers=${CHANGED_PROVIDERS:-unknown}" >> $GITHUB_OUTPUT
           fi
 
   test:
@@ -183,6 +201,18 @@ jobs:
       - name: Build SDK
         run: pnpm openapi:rebuild
 
+      - name: Check generated API types
+        run: pnpm openapi:check-generated
+
+      - name: Run linting
+        run: pnpm lint
+
+      - name: Check source types
+        run: pnpm typecheck
+
+      - name: Check package entrypoints
+        run: pnpm test:entrypoints
+
       - name: Commit and push changes
         run: |
           git add .
@@ -192,7 +222,7 @@ jobs:
           git push origin main
 
       - name: Publish to npm
-        run: pnpm publish --access public
+        run: pnpm publish --access public --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

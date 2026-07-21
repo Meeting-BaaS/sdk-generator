@@ -76,7 +76,28 @@ export type StreamingTranscriberParams = {
   websocketBaseUrl?: string;
   apiKey?: string;
   token?: string;
-  sampleRate: number;
+  /**
+   * Milliseconds to wait for the streaming handshake (socket open + server
+   * `Begin`) before treating the attempt as failed. Defaults to 1000.
+   */
+  connectTimeout?: number;
+  /**
+   * Number of additional connection attempts after the first one fails on a
+   * transient error (timeout, network drop, unexpected close). 0 disables
+   * retries. Permanent failures (auth, insufficient funds, malformed config)
+   * are never retried. Defaults to 2.
+   */
+  maxConnectionRetries?: number;
+  /**
+   * Milliseconds to wait between connection attempts. Defaults to 500.
+   */
+  connectionRetryDelay?: number;
+  /**
+   * Required for PCM encodings (and for dual-channel mode). May be omitted
+   * for Opus encodings (`opus`, `ogg_opus`) — the stream is self-describing
+   * and the server ignores the value.
+   */
+  sampleRate?: number;
   encoding?: AudioEncoding;
   endOfTurnConfidenceThreshold?: number;
   /**
@@ -91,7 +112,21 @@ export type StreamingTranscriberParams = {
   keyterms?: string[];
   keytermsPrompt?: string[];
   prompt?: string;
-  speechModel: StreamingSpeechModel;
+  agentContext?: string;
+  speechModel?: StreamingSpeechModel;
+  /**
+   * @deprecated Use `languageCodes` instead (pass a single-element array, e.g. `["es"]`,
+   * for the same behavior). Still supported for backward compatibility.
+   */
+  languageCode?: string;
+  /**
+   * Recommended way to select languages. Steers transcription toward a set of
+   * languages by biasing output toward them on a per-token basis while still
+   * allowing native code-switching among them. Pass the languages you expect
+   * (e.g. `["en", "es"]`), or a single-element array (e.g. `["es"]`) for a
+   * monolingual session. Universal-3.5 Pro Streaming only.
+   */
+  languageCodes?: string[];
   languageDetection?: boolean;
   domain?: StreamingDomain;
   inactivityTimeout?: number;
@@ -107,6 +142,7 @@ export type StreamingTranscriberParams = {
   redactPii?: boolean;
   redactPiiPolicies?: StreamingPiiPolicy[];
   redactPiiSub?: StreamingPiiSubstitution;
+  mode?: StreamingMode;
   llmGateway?: LLMGatewayConfig;
   webhookUrl?: string;
   webhookAuthHeaderName?: string;
@@ -146,6 +182,7 @@ export type StreamingEvents =
   | "turn"
   | "speechStarted"
   | "llmGatewayResponse"
+  | "speakerRevision"
   | "warning"
   | "vad"
   | "error";
@@ -156,6 +193,7 @@ export type StreamingListeners = {
   turn?: (event: TurnEvent) => void;
   speechStarted?: (event: SpeechStartedEvent) => void;
   llmGatewayResponse?: (event: LLMGatewayResponseEvent) => void;
+  speakerRevision?: (event: SpeakerRevisionEvent) => void;
   warning?: (event: WarningEvent) => void;
   vad?: (event: VadFrame) => void;
   error?: (error: Error) => void;
@@ -165,10 +203,14 @@ export type StreamingSpeechModel =
   | "universal-streaming-english"
   | "universal-streaming-multilingual"
   | "u3-rt-pro"
+  | "u3-rt-pro-beta-1"
   | "whisper-rt"
+  | "universal-3-5-pro"
   | "u3-pro";
 
 export type StreamingDomain = "medical-v1";
+
+export type StreamingMode = "max_accuracy" | "min_latency" | "balanced";
 
 export type VoiceFocusModel = "near-field" | "far-field";
 
@@ -330,13 +372,24 @@ export type StreamingUpdateConfiguration = {
   format_turns?: boolean;
   keyterms_prompt?: string[];
   prompt?: string;
+  agent_context?: string;
   filter_profanity?: boolean;
   interruption_delay?: number;
   turn_left_pad_ms?: number;
+  /**
+   * Steer transcription toward a set of languages mid-stream. Pass an empty
+   * array (`[]`) to clear steering and restore the model's default
+   * multilingual code-switching. Universal-3.5 Pro Streaming only.
+   */
+  language_codes?: string[];
 };
 
 export type StreamingForceEndpoint = {
   type: "ForceEndpoint";
+};
+
+export type StreamingKeepAlive = {
+  type: "KeepAlive";
 };
 
 export type ErrorEvent = {
@@ -358,16 +411,42 @@ export type LLMGatewayResponseEvent = {
   data: unknown;
 };
 
+/**
+ * A single earlier Turn whose speaker labels were revised by reclustering.
+ * Match by `turn_order` against the original Turn; replace its per-word
+ * `speaker` assignments (and the turn-level `speaker_label`) with these. Text
+ * and word timestamps are unchanged from the original Turn.
+ */
+export type SpeakerRevisionItem = {
+  turn_order: number;
+  speaker_label?: string;
+  words: StreamingWord[];
+};
+
+/**
+ * Server-side correction to previously-emitted Turns' speaker labels.
+ * Diarization-only (emitted only when `speakerLabels` is enabled). Sent once
+ * per offline-recluster resolve; `revisions` carries one entry per earlier
+ * Turn whose label actually changed (unchanged turns are omitted). Apply each
+ * entry by matching its `turn_order`.
+ */
+export type SpeakerRevisionEvent = {
+  type: "SpeakerRevision";
+  revisions: SpeakerRevisionItem[];
+};
+
 export type StreamingEventMessage =
   | BeginEvent
   | TurnEvent
   | SpeechStartedEvent
   | TerminationEvent
   | LLMGatewayResponseEvent
+  | SpeakerRevisionEvent
   | ErrorEvent
   | WarningEvent;
 
 export type StreamingOperationMessage =
   | StreamingUpdateConfiguration
   | StreamingForceEndpoint
+  | StreamingKeepAlive
   | StreamingTerminateSession;

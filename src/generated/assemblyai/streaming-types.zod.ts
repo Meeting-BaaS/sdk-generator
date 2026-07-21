@@ -32,6 +32,9 @@ export const streamingTranscriberParams = zod.object({
   disablePartialTranscripts: zod.boolean().optional().describe("Set to true to not receive partial transcripts. Defaults to false."),
   enableExtraSessionInformation: zod.boolean().optional().describe("Set to true to receive the SessionInformation message before the session ends. Defaults to false."),
   domain: zod.string().optional().describe("Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `\"medical-v1\"` to enable [Medical Mode](https://www.assemblyai.com/docs/streaming/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages. Supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned."),
+  connectTimeout: zod.number().optional().describe("From SDK v3"),
+  maxConnectionRetries: zod.number().optional().describe("From SDK v3"),
+  connectionRetryDelay: zod.number().optional().describe("From SDK v3"),
   endOfTurnConfidenceThreshold: zod.number().optional().describe("From SDK v3"),
   minEndOfTurnSilenceWhenConfident: zod.number().optional().describe("From SDK v3"),
   minTurnSilence: zod.number().optional().describe("From SDK v3"),
@@ -42,7 +45,10 @@ export const streamingTranscriberParams = zod.object({
   keyterms: zod.array(zod.string()).optional().describe("From SDK v3"),
   keytermsPrompt: zod.array(zod.string()).optional().describe("From SDK v3"),
   prompt: zod.string().optional().describe("From SDK v3"),
-  speechModel: zod.enum(["universal-streaming-english", "universal-streaming-multilingual"]).describe("From SDK v3"),
+  agentContext: zod.string().optional().describe("From SDK v3"),
+  speechModel: zod.enum(["universal-streaming-english", "universal-streaming-multilingual"]).optional().describe("From SDK v3"),
+  languageCode: zod.string().optional().describe("From SDK v3"),
+  languageCodes: zod.array(zod.string()).optional().describe("From SDK v3"),
   languageDetection: zod.boolean().optional().describe("From SDK v3"),
   inactivityTimeout: zod.number().optional().describe("From SDK v3"),
   speakerLabels: zod.boolean().optional().describe("From SDK v3"),
@@ -57,11 +63,11 @@ export const streamingTranscriberParams = zod.object({
   redactPii: zod.boolean().optional().describe("From SDK v3"),
   redactPiiPolicies: zod.unknown().optional().describe("From SDK v3"),
   redactPiiSub: zod.unknown().optional().describe("From SDK v3"),
+  mode: zod.unknown().describe("From SDK v3"),
   llmGateway: zod.unknown().optional().describe("From SDK v3"),
   webhookUrl: zod.string().optional().describe("From SDK v3"),
   webhookAuthHeaderName: zod.string().optional().describe("From SDK v3"),
-  webhookAuthHeaderValue: zod.string().optional().describe("From SDK v3"),
-  mode: zod.unknown().describe("From SDK v3")
+  webhookAuthHeaderValue: zod.string().optional().describe("From SDK v3")
 })
 
 /**
@@ -79,7 +85,9 @@ export const streamingUpdateConfigParams = zod.object({
   format_turns: zod.boolean().optional().describe("From SDK v3"),
   keyterms_prompt: zod.array(zod.string()).optional().describe("From SDK v3"),
   prompt: zod.string().optional().describe("From SDK v3"),
+  agent_context: zod.string().optional().describe("From SDK v3"),
   filter_profanity: zod.boolean().optional().describe("From SDK v3"),
   interruption_delay: zod.number().optional().describe("From SDK v3"),
-  turn_left_pad_ms: zod.number().optional().describe("From SDK v3")
+  turn_left_pad_ms: zod.number().optional().describe("From SDK v3"),
+  language_codes: zod.array(zod.string()).optional().describe("From SDK v3")
 })

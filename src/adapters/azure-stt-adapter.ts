@@ -4,16 +4,6 @@
  */
 
 import axios from "axios"
-import type {
-  AudioInput,
-  ListTranscriptsOptions,
-  ProviderCapabilities,
-  TranscribeOptions,
-  UnifiedTranscriptResponse
-} from "../router/types"
-import { BaseAdapter, type ProviderConfig } from "./base-adapter"
-import { buildUtterancesFromWords } from "../utils/transcription-helpers"
-
 // Import generated API client functions - FULL TYPE SAFETY!
 import {
   transcriptionsCreate,
@@ -25,21 +15,28 @@ import {
   webHooksDelete,
   webHooksList
 } from "../generated/azure/api/speechServicesAPIVersion32"
-
-// Import Azure generated types for list
-import type { PaginatedTranscriptions } from "../generated/azure/schema/paginatedTranscriptions"
-import { Status as AzureStatus } from "../generated/azure/schema/status"
-import type { TranscriptionsListParams } from "../generated/azure/schema/transcriptionsListParams"
-
 // Import Azure generated types
 import type { File as AzureFile } from "../generated/azure/schema/file"
 import { FileKind } from "../generated/azure/schema/fileKind"
+// Import Azure generated types for list
+import type { PaginatedTranscriptions } from "../generated/azure/schema/paginatedTranscriptions"
 import { ProfanityFilterMode } from "../generated/azure/schema/profanityFilterMode"
 import { PunctuationMode } from "../generated/azure/schema/punctuationMode"
+import { Status as AzureStatus } from "../generated/azure/schema/status"
 import type { Transcription } from "../generated/azure/schema/transcription"
 import type { TranscriptionProperties } from "../generated/azure/schema/transcriptionProperties"
+import type { TranscriptionsListParams } from "../generated/azure/schema/transcriptionsListParams"
 import type { WebHook } from "../generated/azure/schema/webHook"
 import type { WebHookEvents } from "../generated/azure/schema/webHookEvents"
+import type {
+  AudioInput,
+  ListTranscriptsOptions,
+  ProviderCapabilities,
+  TranscribeOptions,
+  UnifiedTranscriptResponse
+} from "../router/types"
+import { buildUtterancesFromWords } from "../utils/transcription-helpers"
+import { BaseAdapter, type ProviderConfig } from "./base-adapter"
 
 /**
  * Azure transcription result structure from content URL
@@ -155,14 +152,14 @@ export class AzureSTTAdapter extends BaseAdapter {
   }
 
   private region?: string
-  protected baseUrl = "https://eastus.api.cognitive.microsoft.com/speechtotext/v3.1" // Default, overridden in initialize()
+  protected baseUrl = "https://eastus.api.cognitive.microsoft.com/speechtotext/v3.2" // Default, overridden in initialize()
 
   initialize(config: ProviderConfig & { region?: string }): void {
     super.initialize(config)
 
     this.region = config.region || "eastus"
     this.baseUrl =
-      config.baseUrl || `https://${this.region}.api.cognitive.microsoft.com/speechtotext/v3.1`
+      config.baseUrl || `https://${this.region}.api.cognitive.microsoft.com/speechtotext/v3.2`
   }
 
   /**
@@ -201,9 +198,11 @@ export class AzureSTTAdapter extends BaseAdapter {
     }
 
     try {
+      const azureOpts = options?.azure
       const transcriptionRequest: Transcription = {
-        displayName: "SDK Transcription",
-        description: "",
+        ...azureOpts,
+        displayName: azureOpts?.displayName || "SDK Transcription",
+        description: azureOpts?.description || "",
         locale: options?.language || "en-US",
         contentUrls: [audio.url],
         properties: this.buildTranscriptionProperties(options)
@@ -373,7 +372,9 @@ export class AzureSTTAdapter extends BaseAdapter {
 
     try {
       // Build params from unified options
-      const params: TranscriptionsListParams = {}
+      const params: TranscriptionsListParams = {
+        ...options?.azure
+      }
 
       // Map unified options to Azure params
       if (options?.limit) {
@@ -521,10 +522,13 @@ export class AzureSTTAdapter extends BaseAdapter {
    */
   private buildTranscriptionProperties(options?: TranscribeOptions): TranscriptionProperties {
     const properties: TranscriptionProperties = {
-      wordLevelTimestampsEnabled: options?.wordTimestamps ?? true,
-      punctuationMode: PunctuationMode.DictatedAndAutomatic,
-      profanityFilterMode: ProfanityFilterMode.Masked
+      ...options?.azure?.properties
     }
+
+    properties.wordLevelTimestampsEnabled =
+      options?.wordTimestamps ?? properties.wordLevelTimestampsEnabled ?? true
+    properties.punctuationMode = properties.punctuationMode ?? PunctuationMode.DictatedAndAutomatic
+    properties.profanityFilterMode = properties.profanityFilterMode ?? ProfanityFilterMode.Masked
 
     if (options?.diarization) {
       properties.diarizationEnabled = true
@@ -557,7 +561,6 @@ export class AzureSTTAdapter extends BaseAdapter {
         return "processing"
       case AzureStatus.Failed:
         return "error"
-      case AzureStatus.NotStarted:
       default:
         return "queued"
     }

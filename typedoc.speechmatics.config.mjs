@@ -34,8 +34,6 @@ export default {
     "**/src/adapters/openai-whisper-adapter.ts",
     "**/src/generated/**/*" // Exclude all generated types to avoid build errors
   ],
-
-  includeVersion: true,
   tsconfig: "./tsconfig.json",
 
   // Organization

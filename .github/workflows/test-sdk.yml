@@ -49,8 +49,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Check generated API types
+        if: matrix.node-version == 22
+        run: pnpm openapi:check-generated
+
       - name: Build SDK
         run: pnpm openapi:rebuild
+
+      - name: Check source types
+        run: pnpm typecheck
+
+      - name: Check package entrypoints
+        run: pnpm test:entrypoints
 
       - name: Run tests
         run: pnpm test
@@ -69,4 +79,3 @@ jobs:
           name: coverage-${{ matrix.node-version }}
           path: coverage/
           retention-days: 30
-

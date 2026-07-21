@@ -3,8 +3,12 @@
  * All provider-specific webhook handlers must implement this
  */
 
-import type { UnifiedWebhookEvent, WebhookValidation, WebhookVerificationOptions } from "./types"
-import type { TranscriptionProvider } from "../router/types"
+import type {
+  UnifiedWebhookEvent,
+  WebhookProvider,
+  WebhookValidation,
+  WebhookVerificationOptions
+} from "./types"
 
 /**
  * Abstract base class for webhook handlers
@@ -13,7 +17,7 @@ import type { TranscriptionProvider } from "../router/types"
  */
 export abstract class BaseWebhookHandler {
   /** Provider name */
-  abstract readonly provider: TranscriptionProvider
+  abstract readonly provider: WebhookProvider
 
   /**
    * Check if this payload matches this provider's webhook format

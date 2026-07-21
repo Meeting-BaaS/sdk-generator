@@ -3,16 +3,20 @@
  * Routes webhook payloads to the correct provider handler
  */
 
-import type { BaseWebhookHandler } from "./base-webhook"
-import { GladiaWebhookHandler } from "./gladia-webhook"
 import { AssemblyAIWebhookHandler } from "./assemblyai-webhook"
-import { DeepgramWebhookHandler } from "./deepgram-webhook"
 import { AzureWebhookHandler } from "./azure-webhook"
-import { SpeechmaticsWebhookHandler } from "./speechmatics-webhook"
+import type { BaseWebhookHandler } from "./base-webhook"
+import { DeepgramWebhookHandler } from "./deepgram-webhook"
 import { ElevenLabsWebhookHandler } from "./elevenlabs-webhook"
+import { GladiaWebhookHandler } from "./gladia-webhook"
 import { SonioxWebhookHandler } from "./soniox-webhook"
-import type { UnifiedWebhookEvent, WebhookValidation, WebhookVerificationOptions } from "./types"
-import type { TranscriptionProvider } from "../router/types"
+import { SpeechmaticsWebhookHandler } from "./speechmatics-webhook"
+import type {
+  UnifiedWebhookEvent,
+  WebhookProvider,
+  WebhookValidation,
+  WebhookVerificationOptions
+} from "./types"
 
 /**
  * Webhook router options
@@ -21,7 +25,7 @@ export interface WebhookRouterOptions {
   /**
    * Specific provider to use (skips auto-detection)
    */
-  provider?: TranscriptionProvider
+  provider?: WebhookProvider
 
   /**
    * Webhook verification options (signature, secret, etc.)
@@ -59,7 +63,7 @@ export interface WebhookRouterResult {
   /**
    * Detected or specified provider
    */
-  provider?: TranscriptionProvider
+  provider?: WebhookProvider
 
   /**
    * Parsed unified webhook event
@@ -76,6 +80,11 @@ export interface WebhookRouterResult {
    */
   verified?: boolean
 }
+
+type ExplicitWebhookProvider =
+  | { present: false }
+  | { present: true; provider: WebhookProvider }
+  | { present: true; error: string }
 
 /**
  * Webhook router with automatic provider detection
@@ -161,7 +170,7 @@ export interface WebhookRouterResult {
  * ```
  */
 export class WebhookRouter {
-  private handlers: Map<TranscriptionProvider, BaseWebhookHandler>
+  private handlers: Map<WebhookProvider, BaseWebhookHandler>
 
   constructor() {
     // Initialize all provider handlers
@@ -184,9 +193,16 @@ export class WebhookRouter {
    * @returns Routing result with parsed event
    */
   route(payload: unknown, options?: WebhookRouterOptions): WebhookRouterResult {
-    // If provider is specified, use that handler directly
-    if (options?.provider) {
-      return this.routeToProvider(payload, options.provider, options)
+    const explicitProvider = this.readExplicitProvider(options)
+    if (explicitProvider.present) {
+      if ("error" in explicitProvider) {
+        return {
+          success: false,
+          error: explicitProvider.error
+        }
+      }
+
+      return this.routeToProvider(payload, explicitProvider.provider, options)
     }
 
     // Auto-detect provider
@@ -215,7 +231,7 @@ export class WebhookRouter {
   detectProvider(
     payload: unknown,
     options?: { queryParams?: Record<string, string>; userAgent?: string }
-  ): TranscriptionProvider | undefined {
+  ): WebhookProvider | undefined {
     // Try each handler's matches() method
     for (const [provider, handler] of this.handlers) {
       if (handler.matches(payload, options)) {
@@ -234,18 +250,19 @@ export class WebhookRouter {
    * @returns Validation result
    */
   validate(payload: unknown, options?: WebhookRouterOptions): WebhookValidation {
-    // If provider is specified, use that handler directly
-    if (options?.provider) {
-      const handler = this.handlers.get(options.provider)
-      if (!handler) {
+    const explicitProvider = this.readExplicitProvider(options)
+    if (explicitProvider.present) {
+      if ("error" in explicitProvider) {
         return {
           valid: false,
-          error: `Unknown provider: ${options.provider}`
+          error: explicitProvider.error
         }
       }
+
+      const handler = this.handlers.get(explicitProvider.provider)!
       return handler.validate(payload, {
-        queryParams: options.queryParams,
-        userAgent: options.userAgent
+        queryParams: options?.queryParams,
+        userAgent: options?.userAgent
       })
     }
 
@@ -286,7 +303,7 @@ export class WebhookRouter {
    */
   verify(
     payload: unknown,
-    provider: TranscriptionProvider,
+    provider: WebhookProvider,
     options: WebhookVerificationOptions
   ): boolean {
     const handler = this.handlers.get(provider)
@@ -303,7 +320,7 @@ export class WebhookRouter {
    */
   private routeToProvider(
     payload: unknown,
-    provider: TranscriptionProvider,
+    provider: WebhookProvider,
     options?: WebhookRouterOptions
   ): WebhookRouterResult {
     const handler = this.handlers.get(provider)
@@ -371,7 +388,7 @@ export class WebhookRouter {
    * @param provider - Provider name
    * @returns Handler instance or undefined
    */
-  getHandler(provider: TranscriptionProvider): BaseWebhookHandler | undefined {
+  getHandler(provider: WebhookProvider): BaseWebhookHandler | undefined {
     return this.handlers.get(provider)
   }
 
@@ -380,8 +397,56 @@ export class WebhookRouter {
    *
    * @returns Array of provider names
    */
-  getProviders(): TranscriptionProvider[] {
+  getProviders(): WebhookProvider[] {
     return Array.from(this.handlers.keys())
+  }
+
+  private readExplicitProvider(options?: WebhookRouterOptions): ExplicitWebhookProvider {
+    if (!options || typeof options !== "object") {
+      return { present: false }
+    }
+
+    const descriptor = Object.getOwnPropertyDescriptor(options, "provider")
+    if (!descriptor) {
+      return { present: false }
+    }
+
+    if (!("value" in descriptor)) {
+      return {
+        present: true,
+        error: "Invalid provider option: provider must be an own data property"
+      }
+    }
+
+    const provider = descriptor.value
+    if (typeof provider !== "string" || !this.handlers.has(provider as WebhookProvider)) {
+      return {
+        present: true,
+        error: `Unknown provider: ${WebhookRouter.formatRuntimeValue(provider)}`
+      }
+    }
+
+    return {
+      present: true,
+      provider: provider as WebhookProvider
+    }
+  }
+
+  private static formatRuntimeValue(value: unknown): string {
+    if (value === "") return "<empty string>"
+    if (value === null) return "null"
+    if (value === undefined) return "undefined"
+    if (typeof value === "symbol") return value.toString()
+
+    try {
+      return String(value)
+    } catch {
+      try {
+        return Object.prototype.toString.call(value)
+      } catch {
+        return "<unprintable value>"
+      }
+    }
   }
 }
 

@@ -3,13 +3,13 @@
  * Parses and normalizes Gladia webhook callbacks
  */
 
-import type { CallbackTranscriptionSuccessPayload } from "../generated/gladia/schema/callbackTranscriptionSuccessPayload"
 import type { CallbackTranscriptionErrorPayload } from "../generated/gladia/schema/callbackTranscriptionErrorPayload"
+import type { CallbackTranscriptionSuccessPayload } from "../generated/gladia/schema/callbackTranscriptionSuccessPayload"
 import type { UtteranceDTO } from "../generated/gladia/schema/utteranceDTO"
 import type { WordDTO } from "../generated/gladia/schema/wordDTO"
+import type { Utterance, Word } from "../router/types"
 import { BaseWebhookHandler } from "./base-webhook"
-import type { UnifiedWebhookEvent } from "./types"
-import type { TranscriptionProvider, Utterance, Word } from "../router/types"
+import type { UnifiedWebhookEvent, WebhookProvider } from "./types"
 
 /**
  * Gladia webhook handler
@@ -42,7 +42,7 @@ import type { TranscriptionProvider, Utterance, Word } from "../router/types"
  * ```
  */
 export class GladiaWebhookHandler extends BaseWebhookHandler {
-  readonly provider: TranscriptionProvider = "gladia"
+  readonly provider: WebhookProvider = "gladia"
 
   /**
    * Convert Gladia WordDTO to unified Word type
