@@ -202,7 +202,7 @@ const assemblyProviderStreaming = {
 const sonioxProviderStreaming = {
   provider: "soniox",
   sonioxStreaming: {
-    model: SonioxRealtimeModel.stt_rt_preview,
+    model: SonioxRealtimeModel.stt_rt_v5,
     audioFormat: "pcm_s16le"
   }
 } satisfies ProviderStreamingOptions

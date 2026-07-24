@@ -605,9 +605,9 @@ export interface SonioxStreamingOptions {
    * @example
    * ```typescript
    * import { SonioxModel } from 'voice-router-dev/constants'
-   * { model: SonioxModel.stt_rt_v3 }
+   * { model: SonioxModel.stt_rt_v5 }
    * ```
-   * @default "stt-rt-preview"
+   * @default "stt-rt-v5"
    */
   model?: SonioxRealtimeModelCode
 

@@ -1,0 +1,262 @@
+# Models
+URL: /stt/models
+
+Learn about latest models, changelog, and deprecations.
+
+Soniox Speech-to-Text AI provides multiple models for real-time and asynchronous
+transcription and translation. This page lists the currently available models,
+their capabilities, and important updates.
+
+***
+
+## Current models
+
+{/*TABLE START */}
+
+{/* NOTE: Width is set so that we have maximum of 2 lines in 'Example' column. */}
+
+{/* NOTE: Font size is set so the table doesn't look "too big".*/}
+
+<div>
+  | <div style={{ width: "150px" }}>Model </div> | {" "} <div style={{ width: "70px" }}>Type</div> | Status     |
+  | -------------------------------------------- | ----------------------------------------------- | ---------- |
+  | **stt-rt-v5**                                | Real-time                                       | **Active** |
+  | **stt-async-v5**                             | Async                                           | **Active** |
+</div>
+
+{/* TABLE END */}
+
+***
+
+## Aliases
+
+Aliases provide a stable reference so you don't need to change your code when newer versions are released.
+
+| Alias            | Points to      | Notes |
+| ---------------- | -------------- | ----- |
+| **stt-rt-v4**    | `stt-rt-v5`    |       |
+| **stt-async-v4** | `stt-async-v5` |       |
+
+***
+
+## Changelog
+
+### June 16, 2026
+
+**New models:** stt-rt-v5
+
+**Replaces:** stt-rt-v4
+
+#### Overview
+
+stt-rt-v5 is the new Soniox real-time speech-to-text model for live audio.
+It delivers higher accuracy, reinvented speaker separation, improved spoken language identification, higher-quality real-time translation, faster semantic endpointing, better context handling,
+and more reliable recognition and formatting of structured speech data such as numbers, dates, emails, names, addresses, and codes.
+
+#### Key improvements
+
+* Higher real-time transcription accuracy across 60+ languages
+* Better robustness on noisy audio, telephony, far-field microphones, accents, interruptions, overlapping speech, and mixed-language conversations
+* Reinvented speaker separation for identifying who said what in live conversations
+* Improved spoken language identification across multilingual and accented speech
+* Higher-quality real-time translation across 3,600+ language pairs
+* Faster and more reliable semantic endpointing for voice agents, dictation, command systems, and conversational apps
+* Better alphanumeric recognition and formatting for numbers, dates, times, emails, IDs, codes, names, and addresses
+* More robust context usage for names, domain terms, product names, translation preferences, and custom vocabulary
+
+#### API compatibility
+
+The stt-rt-v5 model is fully compatible with the existing stt-rt-v4 model and Soniox Real-Time API.
+To upgrade, simply replace the model name in your API request: `{ "model": "stt-rt-v5" }`
+
+#### Deprecation notice
+
+The stt-rt-v4 model will be removed on June 30, 2026.
+After June 30, 2026, requests using stt-rt-v4 will automatically route to stt-rt-v5 with no service interruption and no API changes required.
+
+### June 11, 2026
+
+**New models:** stt-async-v5
+
+**Replaces:** stt-async-v4
+
+#### Overview
+
+**stt-async-v5** is the new Soniox async speech-to-text model for processing recorded audio.
+It delivers higher accuracy, stronger speaker separation, improved language identification, better context handling,
+and more reliable formatting of structured speech data such as numbers, dates, emails, names, and codes.
+
+#### Key improvements
+
+* Higher transcription accuracy across 60+ languages
+* Better robustness on noisy audio, telephony, accents, and mixed-language speech
+* Completely reengineered speaker separation for identifying who said what
+* Improved spoken language identification across multilingual conversations
+* Better alphanumeric recognition and formatting for numbers, dates, times, emails, IDs, and codes
+* More robust context usage for names, domain terms, product names, and custom vocabulary
+
+#### API compatibility
+
+* The stt-async-v5 model is fully compatible with the existing stt-async-v4 model and Soniox API
+* To upgrade, simply replace the model name in your API request to `{ "model": "stt-async-v5" }`
+
+#### Deprecation notice
+
+* The stt-async-v4 model will be removed on June 30, 2026
+* After June 30, 2026, requests using stt-async-v4 will automatically route to stt-async-v5 with no service interruption and no API changes required
+
+### February 5, 2026
+
+**New models:** stt-rt-v4
+
+**Replaces:** stt-rt-v3
+
+#### Overview
+
+**Soniox v4 Real-Time** is a next-generation real-time speech recognition model built for low-latency voice interactions.
+It delivers speaker-native accuracy across 60+ languages with improved latency, reliability, and conversational behavior.
+The model is production-ready and fully backward-compatible with v3 Real-Time.
+
+#### Key improvements
+
+* Higher accuracy across all supported languages
+* Better multilingual detection and mid-sentence language switching
+* Lower endpoint latency with faster final transcription
+* Improved semantic endpointing for more natural turn-taking
+* Lower manual finalization latency with faster final transcription
+* More stable, higher-quality transcription on long and multi-hour recordings
+* Stronger use of provided context for domain-specific accuracy
+* More fluent, accurate, and consistent translation across all supported languages
+* Added `max_endpoint_delay_ms` for controlling end-of-speech endpoint delay
+
+#### API compatibility
+
+* The stt-rt-v4 model is fully compatible with the existing stt-rt-v3 model and Soniox API
+* To upgrade, simply replace the model name in your API request:
+  * `{ "model": "stt-rt-v4" }` for real-time
+
+#### Deprecation notice
+
+* The stt-rt-v3 model will be removed on February 28, 2026
+* After February 28, 2026, requests will automatically route to stt-rt-v4 with no service interruption. No API changes required
+
+### January 29, 2026
+
+**New models:** stt-async-v4
+
+**Replaces:** stt-async-v3
+
+#### Overview
+
+**Soniox v4 Async** is the latest generation of Soniox’s asynchronous speech recognition and translation model. This release delivers a significant improvement in accuracy, robustness, and multilingual performance across more than 60 languages. v4 Async reaches human-parity transcription quality in real-world scenarios, while also introducing stronger long-form processing, improved speaker diarization, richer context handling, and higher-quality translation output. The model is designed for production-scale workloads and consistent, high-fidelity results across diverse acoustic environments and language mixes.
+
+#### Key improvements
+
+* Higher transcription accuracy across all languages, reaching speaker-native quality in many domains
+* More robust performance in noise, accents, overlapping speech, and poor audio
+* Better language identification and smoother mid-sentence language switching
+* Improved speaker separation and more consistent labeling in multi-speaker audio
+* Better normalization of dates, numbers, phone/email addresses, and other structured content
+* More stable, higher-quality transcription on long and multi-hour recordings
+* Stronger use of provided context for domain-specific accuracy
+* More fluent, accurate, and consistent translation across all supported languages
+
+#### API compatibility
+
+* The  stt-async-v4 model is fully compatible with the existing stt-async-v3 model and Soniox API
+* To upgrade, simply replace the model name in your API request:
+  * `{ "model": "stt-async-v4" }` for async
+
+#### Deprecation notice
+
+* The stt-async-v3 model will be removed on February 28, 2026
+* After February 28, 2026, requests will automatically route to stt-async-v4 with no service interruption. No API changes required
+
+### October 31, 2025
+
+#### Model retirement and upgrade
+
+We have accelerated the retirement of older models following the overwhelmingly positive response to the new v3 models. The following models have been retired:
+
+* stt-async-preview-v1
+* stt-rt-preview-v2
+
+Both models have been **aliased to the new Soniox v3 models.**
+This means all existing requests using the old model names are now automatically served with v3, giving every user our most accurate, capable, and intelligent voice AI experience, without any code changes required.
+
+#### Context compatibility
+
+The context feature is now backward compatible with v3 models, ensuring smooth migration from older versions. However, we **strongly recommend updating to the new context** structure for best results and future flexibility. Learn more about [context](/stt/concepts/context).
+
+### October 29, 2025
+
+**Model update:** v3 enhancements
+
+**Applies to:** stt-rt-v3, stt-async-v3
+
+#### New features
+
+* **Extended audio duration support:** both real-time (stt-rt-v3) and asynchronous (stt-async-v3) models now support **audio up to 5 hours** in a single request.
+
+#### Quality improvements
+
+* **Higher transcription accuracy** across challenging audio conditions and diverse languages.
+
+#### Notes
+
+* No API changes are required; existing integrations continue to work seamlessly.
+* For asynchronous processing, large files up to 5 hours can now be uploaded directly without chunking.
+* For real-time streaming, sessions up to 5 hours are supported under the same WebSocket connection.
+
+### October 21, 2025
+
+**New models:** stt-rt-v3, stt-async-v3
+
+**Replaces:** stt-rt-preview-v2, stt-async-preview-v1
+
+#### Overview
+
+The **v3 models** introduce major improvements across recognition, translation, and reasoning — making Soniox faster, more accurate, and more capable than ever before.
+
+These models power real-time and asynchronous speech processing in 60+ languages, with enhanced accuracy, robustness, and context understanding.
+
+#### Key improvements
+
+* Higher transcription accuracy across 60+ languages
+* Improved multilingual switching — seamless recognition when speakers change language mid-sentence
+* Significantly higher translation quality, especially for languages such as German and Korean
+* The async model now also supports translation
+* Support for new advanced structured context, enabling richer domain- and task-specific adaptation
+* Enhanced alphanumeric accuracy (addresses, IDs, codes, serials)
+* More accurate speaker diarization, even in overlapping speech
+* Extended maximum audio duration to 5 hours for both async and real-time models
+
+#### API compatibility
+
+* The v3 models are fully compatible with the existing Soniox API, if you are not using the context feature.
+* To upgrade, simply replace the model name in your API request:
+  * `{ "model": "stt-rt-v3" }` for real-time
+  * `{ "model": "stt-async-v3" }` for async
+* If you are using the context feature, update to the new structured [context](/stt/concepts/context) for improved accuracy.
+
+#### Deprecation notice
+
+The following preview models are **deprecated** and will be retired on **November 30, 2025:**
+
+* stt-async-preview-v1
+* stt-rt-preview-v2
+
+Please migrate to the v3 models before that date to ensure uninterrupted service.
+
+### August 15, 2025
+
+* Deprecated `stt-rt-preview-v1`
+
+### August 5, 2025
+
+* Released `stt-rt-preview-v2`
+  * Higher transcription accuracy
+  * Improved translation quality
+  * Expanded to support all translation pairs
+  * More reliable automatic language switching
+  * **Replaces:** stt-rt-preview-v2, stt-async-preview-v1

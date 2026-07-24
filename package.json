@@ -102,7 +102,7 @@
     "openapi:sync:assemblyai": "node scripts/sync-specs.js --provider assemblyai",
     "openapi:sync:deepgram": "node scripts/sync-specs.js --provider deepgram",
     "openapi:sync:speechmatics": "node scripts/sync-specs.js --provider speechmatics && node scripts/sync-specs.js --provider speechmaticsAsync",
-    "openapi:sync:soniox": "node scripts/sync-specs.js --provider soniox",
+    "openapi:sync:soniox": "node scripts/sync-specs.js --provider soniox && node scripts/sync-specs.js --provider sonioxModels",
     "openapi:sync:elevenlabs": "node scripts/sync-specs.js --provider elevenlabs",
     "openapi:validate": "node scripts/sync-specs.js --validate-only",
     "openapi:record-consumed": "node scripts/record-consumed-specs.js",

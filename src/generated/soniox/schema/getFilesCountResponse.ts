@@ -6,10 +6,10 @@
  */
 
 export interface GetFilesCountResponse {
-  /** Total number of files across all sources. */
-  total: number;
-  /** Number of files uploaded via Public API. */
-  public_api: number;
   /** Number of files uploaded via the Playground. */
   playground: number;
+  /** Number of files uploaded via Public API. */
+  public_api: number;
+  /** Total number of files across all sources. */
+  total: number;
 }

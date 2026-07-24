@@ -14,8 +14,15 @@ export interface TTSModel {
   aliased_model_id: string | null;
   /** Name of the model. */
   name: string;
-  /** List of available voices for this model. */
-  voices: TTSVoice[];
   /** List of languages supported by the model. */
   languages: Language[];
+  /** List of available voices for this model. */
+  voices: TTSVoice[];
+  supports_timestamps?: boolean;
+  /** Whether the model supports adjusting the speaking rate via the `speed` parameter. */
+  supports_speed_adjustment: boolean;
+  /** Minimum supported speaking rate. */
+  speed_min: number;
+  /** Maximum supported speaking rate. */
+  speed_max: number;
 }

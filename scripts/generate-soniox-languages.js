@@ -10,8 +10,9 @@
 
 const fs = require("node:fs")
 const path = require("node:path")
+const yaml = require("js-yaml")
 
-const SPEC_PATH = path.join(__dirname, "../specs/soniox-openapi.json")
+const SPEC_PATH = path.join(__dirname, "../specs/soniox-openapi.yaml")
 const OUTPUT_PATH = path.join(__dirname, "../src/generated/soniox/languages.ts")
 
 function main() {
@@ -24,7 +25,7 @@ function main() {
     process.exit(1)
   }
 
-  const spec = JSON.parse(fs.readFileSync(SPEC_PATH, "utf-8"))
+  const spec = yaml.load(fs.readFileSync(SPEC_PATH, "utf-8"))
 
   // Extract languages from GetModelsResponse example
   const getModelsResponse = spec.components?.schemas?.GetModelsResponse

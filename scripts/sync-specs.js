@@ -20,7 +20,7 @@
  *   - Speechmatics: https://github.com/speechmatics/speechmatics-js-sdk
  *   - Azure: https://github.com/Azure/azure-rest-api-specs (Speech/SpeechToText v3.2)
  *   - OpenAI: https://app.stainless.com/api/spec/documented/openai (Stainless live spec)
- *   - Soniox: https://api.soniox.com/v1/openapi.json
+ *   - Soniox: https://soniox.com/docs/openapi.yaml
  */
 
 const fs = require("node:fs")
@@ -136,6 +136,12 @@ function validateSpec(content, format) {
         return { valid: false, error: "Missing TypeScript interface/type definitions" }
       }
       return { valid: true, version: "sdk" }
+    }
+    if (format === "markdown") {
+      if (!content.trimStart().startsWith("#")) {
+        return { valid: false, error: "Missing Markdown heading" }
+      }
+      return { valid: true, version: "docs" }
     }
     return { valid: false, error: "Unknown format" }
   } catch (e) {

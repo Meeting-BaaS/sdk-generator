@@ -33,7 +33,7 @@ export const GetFilesResponse = zod.object({
 
 
 /**
- * Uploads a new file. Files are automatically deleted 30 days after upload. However, we strongly recommend that you manually delete files as soon as you have obtained your transcription results, rather than waiting for automatic deletion.
+ * Uploads a new file.
  * @summary Upload file
  */
 export const uploadFileBodyClientReferenceIdOneMax = 256;
@@ -59,9 +59,9 @@ export const UploadFileResponse = zod.object({
  * @summary Get files count
  */
 export const GetFilesCountResponse = zod.object({
-  "total": zod.number().describe('Total number of files across all sources.'),
+  "playground": zod.number().describe('Number of files uploaded via the Playground.'),
   "public_api": zod.number().describe('Number of files uploaded via Public API.'),
-  "playground": zod.number().describe('Number of files uploaded via the Playground.')
+  "total": zod.number().describe('Total number of files across all sources.')
 })
 
 
@@ -133,7 +133,7 @@ export const GetTranscriptionsResponse = zod.object({
 
 
 /**
- * Creates a new transcription. Transcriptions are automatically deleted 30 days after being submitted.
+ * Creates a new transcription.
  * @summary Create transcription
  */
 export const createTranscriptionBodyModelMax = 32;
@@ -217,9 +217,9 @@ export const CreateTranscriptionResponse = zod.object({
  * @summary Get transcriptions count
  */
 export const GetTranscriptionsCountResponse = zod.object({
-  "total": zod.number().describe('Total number of transcriptions across all scopes.'),
+  "playground": zod.number().describe('Number of transcriptions created via the Playground.'),
   "public_api": zod.number().describe('Number of transcriptions created via Public API.'),
-  "playground": zod.number().describe('Number of transcriptions created via the Playground.')
+  "total": zod.number().describe('Total number of transcriptions across all scopes.')
 })
 
 
@@ -289,6 +289,132 @@ export const GetTranscriptionTranscriptResponse = zod.object({
 
 
 /**
+ * Retrieves the list of voices in your project.
+ * @summary Get voices
+ */
+export const getVoicesQueryLimitDefault = 1000;
+export const getVoicesQueryLimitMax = 1000;
+
+
+
+export const GetVoicesQueryParams = zod.object({
+  "limit": zod.number().min(1).max(getVoicesQueryLimitMax).default(getVoicesQueryLimitDefault).describe('Maximum number of voices to return.'),
+  "cursor": zod.union([zod.string(),zod.null()]).optional().describe('Pagination cursor for the next page of results.')
+})
+
+export const GetVoicesResponse = zod.object({
+  "voices": zod.array(zod.object({
+  "id": zod.uuid().describe('Unique identifier of the voice.'),
+  "name": zod.string().describe('Name of the voice.'),
+  "filename": zod.string().describe('Original file name of the uploaded audio clip.'),
+  "created_at": zod.iso.datetime({"offset":true}).describe('UTC timestamp indicating when the voice was created.'),
+  "models": zod.array(zod.object({
+  "model": zod.string().describe('Name of the model.'),
+  "status": zod.enum(['not_computed', 'processing', 'ready', 'failed']).describe('Has to be \'ready\' for the voice to be usable with this model.'),
+  "error_type": zod.union([zod.string(),zod.null()]).optional().describe('Machine-readable error category when status is \'failed\'. Stable across releases — safe to use in control flow. `null` otherwise.'),
+  "error_message": zod.union([zod.string(),zod.null()]).optional().describe('Human-readable error message when status is \'failed\' (e.g. the reference audio is too long). `null` otherwise.')
+})).describe('Voice status for each available model. A model with status \'not_computed\' is not prepared yet (e.g. it was released after the voice was created); call recompute to prepare the voice for it.')
+})).describe('List of voices.'),
+  "next_page_cursor": zod.union([zod.string(),zod.null()]).optional().describe('A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.')
+})
+
+
+/**
+ * Uploads a reference audio clip and creates a new voice.
+ * @summary Create voice
+ */
+export const createVoiceBodyNameMax = 128;
+
+
+
+export const CreateVoiceBody = zod.object({
+  "name": zod.string().min(1).max(createVoiceBodyNameMax).describe('A name for the voice, unique within your project.'),
+  "file": zod.instanceof(File).describe('The reference audio clip for the voice.')
+})
+
+export const CreateVoiceResponse = zod.object({
+  "id": zod.uuid().describe('Unique identifier of the voice.'),
+  "name": zod.string().describe('Name of the voice.'),
+  "filename": zod.string().describe('Original file name of the uploaded audio clip.'),
+  "created_at": zod.iso.datetime({"offset":true}).describe('UTC timestamp indicating when the voice was created.'),
+  "models": zod.array(zod.object({
+  "model": zod.string().describe('Name of the model.'),
+  "status": zod.enum(['not_computed', 'processing', 'ready', 'failed']).describe('Has to be \'ready\' for the voice to be usable with this model.'),
+  "error_type": zod.union([zod.string(),zod.null()]).optional().describe('Machine-readable error category when status is \'failed\'. Stable across releases — safe to use in control flow. `null` otherwise.'),
+  "error_message": zod.union([zod.string(),zod.null()]).optional().describe('Human-readable error message when status is \'failed\' (e.g. the reference audio is too long). `null` otherwise.')
+})).describe('Voice status for each available model. A model with status \'not_computed\' is not prepared yet (e.g. it was released after the voice was created); call recompute to prepare the voice for it.')
+})
+
+
+/**
+ * Returns the total number of voices in your project.
+ * @summary Get voices count
+ */
+export const GetVoicesCountResponse = zod.object({
+  "total": zod.number().describe('Total number of voices in your project.')
+})
+
+
+/**
+ * Retrieve metadata for a voice.
+ * @summary Get voice
+ */
+export const GetVoiceParams = zod.object({
+  "voice_id": zod.uuid()
+})
+
+export const GetVoiceResponse = zod.object({
+  "id": zod.uuid().describe('Unique identifier of the voice.'),
+  "name": zod.string().describe('Name of the voice.'),
+  "filename": zod.string().describe('Original file name of the uploaded audio clip.'),
+  "created_at": zod.iso.datetime({"offset":true}).describe('UTC timestamp indicating when the voice was created.'),
+  "models": zod.array(zod.object({
+  "model": zod.string().describe('Name of the model.'),
+  "status": zod.enum(['not_computed', 'processing', 'ready', 'failed']).describe('Has to be \'ready\' for the voice to be usable with this model.'),
+  "error_type": zod.union([zod.string(),zod.null()]).optional().describe('Machine-readable error category when status is \'failed\'. Stable across releases — safe to use in control flow. `null` otherwise.'),
+  "error_message": zod.union([zod.string(),zod.null()]).optional().describe('Human-readable error message when status is \'failed\' (e.g. the reference audio is too long). `null` otherwise.')
+})).describe('Voice status for each available model. A model with status \'not_computed\' is not prepared yet (e.g. it was released after the voice was created); call recompute to prepare the voice for it.')
+})
+
+
+/**
+ * Permanently deletes the specified voice and its embeddings.
+ * @summary Delete voice
+ */
+export const DeleteVoiceParams = zod.object({
+  "voice_id": zod.uuid()
+})
+
+export const DeleteVoiceResponse = zod.void()
+
+
+/**
+ * Prepares the voice for use with available models it is not ready for yet. Use this after a new model is released to make an existing voice usable with it. Models the voice is already prepared for are left unchanged.
+ * @summary Recompute voice
+ */
+export const RecomputeVoiceParams = zod.object({
+  "voice_id": zod.uuid()
+})
+
+export const RecomputeVoiceBody = zod.object({
+  "model": zod.union([zod.string(),zod.null()]).optional().describe('The model to prepare this voice for. If omitted, the voice is prepared for every available model it is not ready for yet.')
+})
+
+export const RecomputeVoiceResponse = zod.object({
+  "id": zod.uuid().describe('Unique identifier of the voice.'),
+  "name": zod.string().describe('Name of the voice.'),
+  "filename": zod.string().describe('Original file name of the uploaded audio clip.'),
+  "created_at": zod.iso.datetime({"offset":true}).describe('UTC timestamp indicating when the voice was created.'),
+  "models": zod.array(zod.object({
+  "model": zod.string().describe('Name of the model.'),
+  "status": zod.enum(['not_computed', 'processing', 'ready', 'failed']).describe('Has to be \'ready\' for the voice to be usable with this model.'),
+  "error_type": zod.union([zod.string(),zod.null()]).optional().describe('Machine-readable error category when status is \'failed\'. Stable across releases — safe to use in control flow. `null` otherwise.'),
+  "error_message": zod.union([zod.string(),zod.null()]).optional().describe('Human-readable error message when status is \'failed\' (e.g. the reference audio is too long). `null` otherwise.')
+})).describe('Voice status for each available model. A model with status \'not_computed\' is not prepared yet (e.g. it was released after the voice was created); call recompute to prepare the voice for it.')
+})
+
+
+/**
  * Retrieves list of available models and their attributes.
  * @summary Get models
  */
@@ -306,6 +432,8 @@ export const GetModelsResponse = zod.object({
   "supports_language_hints_strict": zod.boolean(),
   "supports_max_endpoint_delay": zod.boolean(),
   "supports_endpoint_sensitivity": zod.boolean(),
+  "supports_endpoint_latency_adjustment": zod.boolean(),
+  "endpoint_latency_adjustment_max_level": zod.number().describe('Maximum endpoint_latency_adjustment_level the model accepts. Valid levels are 0 (no adjustment) through this value; 0 means the feature is unsupported.'),
   "translation_targets": zod.array(zod.object({
   "target_language": zod.string(),
   "source_languages": zod.array(zod.string()),
@@ -327,64 +455,55 @@ export const GetTtsModelsResponse = zod.object({
   "id": zod.string().describe('Unique identifier of the model.'),
   "aliased_model_id": zod.union([zod.string(),zod.null()]).describe('If this is an alias, the id of the aliased model.'),
   "name": zod.string().describe('Name of the model.'),
+  "languages": zod.array(zod.object({
+  "code": zod.string().describe('2-letter language code.'),
+  "name": zod.string().describe('Language name.')
+})).describe('List of languages supported by the model.'),
   "voices": zod.array(zod.object({
   "id": zod.string().describe('Unique identifier of the voice.'),
   "description": zod.string().describe('Description of the TTS voice.'),
   "gender": zod.enum(['male', 'female', 'neutral']).describe('Gender of the TTS voice.')
 })).describe('List of available voices for this model.'),
-  "languages": zod.array(zod.object({
-  "code": zod.string().describe('2-letter language code.'),
-  "name": zod.string().describe('Language name.')
-})).describe('List of languages supported by the model.')
+  "supports_timestamps": zod.boolean().optional(),
+  "supports_speed_adjustment": zod.boolean().describe('Whether the model supports adjusting the speaking rate via the `speed` parameter.'),
+  "speed_min": zod.number().describe('Minimum supported speaking rate.'),
+  "speed_max": zod.number().describe('Maximum supported speaking rate.')
 })).describe('List of available TTS models and their attributes.')
 })
 
 
 /**
- * Returns per-request usage log entries for the project. The project is implied by the API key used for authentication. Filters by request end time. The window between start_time and end_time must not exceed 31 days. start_time must not be earlier than 91 days ago.
- * @summary Get usage logs
+ * Generates audio from text using the TTS REST endpoint.
+ * @summary Generate speech
  */
-export const getUsageLogsQueryLimitDefault = 1000;
-export const getUsageLogsQueryLimitMax = 1000;
-
-export const getUsageLogsQuerySortDefault = `end_time_asc`;
-
-export const GetUsageLogsQueryParams = zod.object({
-  "start_time": zod.string().describe('Start of the time window (inclusive). Filters by request end time.'),
-  "end_time": zod.string().describe('End of the time window (exclusive). Filters by request end time.'),
-  "limit": zod.number().min(1).max(getUsageLogsQueryLimitMax).default(getUsageLogsQueryLimitDefault).describe('Maximum number of usage log entries to return.'),
-  "sort": zod.enum(['end_time_asc', 'end_time_desc']).default(getUsageLogsQuerySortDefault).describe('Sort order by end_time.Use `end_time_desc` to get the most recent entries first. When paginating, pass the same `sort` value alongside the cursor.'),
-  "cursor": zod.union([zod.string(),zod.null()]).optional().describe('Pagination cursor for the next page of results.')
+export const GenerateTtsHeader = zod.object({
+  "X-Request-Id": zod.string().optional().describe('Optional request ID for tracing.')
 })
 
-export const GetUsageLogsResponse = zod.object({
-  "usage_logs": zod.array(zod.object({
-  "uuid": zod.uuid().describe('Unique identifier of the request.'),
-  "request_scope": zod.string().describe('Scope of the request (api \/ playground).'),
-  "client_reference_id": zod.string().describe('Client reference ID supplied on the original request. Empty string if none.'),
-  "model": zod.string().describe('Model identifier.'),
-  "start_time": zod.iso.datetime({"offset":true}).describe('When the request started.'),
-  "end_time": zod.iso.datetime({"offset":true}).describe('When the request ended.'),
-  "input_text_tokens": zod.number(),
-  "input_audio_tokens": zod.number(),
-  "input_audio_duration_ms": zod.number(),
-  "output_text_tokens": zod.number(),
-  "output_audio_tokens": zod.number(),
-  "output_audio_duration_ms": zod.number(),
-  "cost_usd": zod.string(),
-  "input_cost_usd": zod.string(),
-  "input_text_cost_usd": zod.string(),
-  "input_audio_cost_usd": zod.string(),
-  "output_cost_usd": zod.string(),
-  "output_text_cost_usd": zod.string(),
-  "output_audio_cost_usd": zod.string()
-})).describe('Per-request usage log entries ordered by end_time, uuid (per `sort`).'),
-  "next_page_cursor": zod.union([zod.string(),zod.null()]).optional().describe('A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.')
+export const generateTtsBodyModelDefault = `tts-rt-v1`;
+export const generateTtsBodyClientReferenceIdOneMax = 256;
+
+
+
+export const GenerateTtsBody = zod.object({
+  "model": zod.string().default(generateTtsBodyModelDefault).describe('TTS model to use.'),
+  "language": zod.string().describe('Language code of the input text.'),
+  "voice": zod.string().describe('Voice to use: a built-in voice name (for example `Adrian`) or the ID of a [cloned voice](https:\/\/soniox.com\/docs\/tts\/concepts\/voice-cloning).'),
+  "audio_format": zod.string().describe('Output audio format (for example `mp3`, `wav`, `pcm_s16le`, `pcm_s16be`).'),
+  "text": zod.string().describe('Input text to generate audio from.'),
+  "sample_rate": zod.union([zod.number(),zod.null()]).optional().describe('Optional output sample rate in Hz.'),
+  "bitrate": zod.union([zod.number(),zod.null()]).optional().describe('Optional output bitrate in bits per second.'),
+  "client_reference_id": zod.union([zod.string().max(generateTtsBodyClientReferenceIdOneMax),zod.null()]).optional().describe('Optional tracking identifier string. Does not need to be unique. Ignored if the request authenticates with a temporary API key.'),
+  "speed": zod.union([zod.number(),zod.null()]).optional().describe('Optional speaking rate of the generated speech, from `0.7` to `1.3`. `1.0` is the normal speed; lower values slow speech down and higher values speed it up. Defaults to `1.0`.')
 })
+
+export const GenerateTtsResponse = zod.unknown()
 
 
 /**
  * Creates a short-lived API key for specific temporary use cases. The key will automatically expire after the specified duration.
+ *
+ * Use `single_use` and `max_session_duration_seconds` to limit how the key can be used by a client. See the [Temporary API keys guide](https://soniox.com/docs/guides/temporary-api-keys) for details.
  * @summary Create temporary API key
  */
 export const createTemporaryApiKeyBodyExpiresInSecondsMax = 3600;
@@ -400,7 +519,7 @@ export const CreateTemporaryApiKeyBody = zod.object({
   "expires_in_seconds": zod.number().min(1).max(createTemporaryApiKeyBodyExpiresInSecondsMax).describe('Duration in seconds until the temporary API key expires.'),
   "client_reference_id": zod.union([zod.string().max(createTemporaryApiKeyBodyClientReferenceIdOneMax),zod.null()]).optional().describe('Optional tracking identifier string. Does not need to be unique.'),
   "single_use": zod.union([zod.boolean(),zod.null()]).optional().describe('If true, the temporary API key can be used only once.'),
-  "max_session_duration_seconds": zod.union([zod.number().min(1).max(createTemporaryApiKeyBodyMaxSessionDurationSecondsOneMax),zod.null()]).optional().describe('Maximum WebSocket connection duration in seconds. If exceeded, the connection will be dropped. If not set, no limit is applied.')
+  "max_session_duration_seconds": zod.union([zod.number().min(1).max(createTemporaryApiKeyBodyMaxSessionDurationSecondsOneMax),zod.null()]).optional().describe('Maximum connection duration in seconds for WebSocket and TTS HTTP streaming endpoints. If exceeded, the connection will be dropped. If not set, no limit is applied.')
 })
 
 export const CreateTemporaryApiKeyResponse = zod.object({
@@ -410,15 +529,67 @@ export const CreateTemporaryApiKeyResponse = zod.object({
 
 
 /**
+ * Returns per-request usage log entries for the project. The project is implied by the API key used for authentication. Filters by request end time. The window between start_time and end_time must not exceed 31 days. start_time must not be earlier than 91 days ago.
+ * @summary Get usage logs
+ */
+export const getUsageLogsQueryLimitDefault = 1000;
+export const getUsageLogsQueryLimitMax = 1000;
+
+export const getUsageLogsQuerySortDefault = `end_time_asc`;
+
+export const GetUsageLogsQueryParams = zod.object({
+  "start_time": zod.string().describe('Start of the time window (inclusive). Filters by request end time. Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`).'),
+  "end_time": zod.string().describe('End of the time window (exclusive). Filters by request end time. Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`).'),
+  "limit": zod.number().min(1).max(getUsageLogsQueryLimitMax).default(getUsageLogsQueryLimitDefault).describe('Maximum number of usage log entries to return.'),
+  "sort": zod.enum(['end_time_asc', 'end_time_desc']).default(getUsageLogsQuerySortDefault).describe('Sort order by end_time.Use `end_time_desc` to get the most recent entries first. When paginating, pass the same `sort` value alongside the cursor.'),
+  "cursor": zod.union([zod.string(),zod.null()]).optional().describe('Pagination cursor for the next page of results.')
+})
+
+export const getUsageLogsResponseUsageLogsItemCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getUsageLogsResponseUsageLogsItemInputCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getUsageLogsResponseUsageLogsItemInputTextCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getUsageLogsResponseUsageLogsItemInputAudioCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getUsageLogsResponseUsageLogsItemOutputCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getUsageLogsResponseUsageLogsItemOutputTextCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getUsageLogsResponseUsageLogsItemOutputAudioCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+
+
+export const GetUsageLogsResponse = zod.object({
+  "usage_logs": zod.array(zod.object({
+  "uuid": zod.uuid().describe('Unique identifier of the request.'),
+  "request_scope": zod.string().describe('Scope of the request (api \/ playground).'),
+  "client_reference_id": zod.string().describe('Client reference ID supplied on the original request. Empty string if none.'),
+  "model": zod.string().describe('Model identifier.'),
+  "start_time": zod.iso.datetime({"offset":true}).describe('When the request started.'),
+  "end_time": zod.iso.datetime({"offset":true}).describe('When the request ended.'),
+  "input_text_tokens": zod.number(),
+  "input_audio_tokens": zod.number(),
+  "input_audio_duration_ms": zod.number(),
+  "output_text_tokens": zod.number(),
+  "output_audio_tokens": zod.number(),
+  "output_audio_duration_ms": zod.number(),
+  "cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemCostUsdTwoRegExp)]),
+  "input_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemInputCostUsdTwoRegExp)]),
+  "input_text_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemInputTextCostUsdTwoRegExp)]),
+  "input_audio_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemInputAudioCostUsdTwoRegExp)]),
+  "output_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemOutputCostUsdTwoRegExp)]),
+  "output_text_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemOutputTextCostUsdTwoRegExp)]),
+  "output_audio_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemOutputAudioCostUsdTwoRegExp)])
+})).describe('Per-request usage log entries ordered by end_time, uuid (per `sort`).'),
+  "next_page_cursor": zod.union([zod.string(),zod.null()]).optional().describe('A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.')
+})
+
+
+/**
  * Current concurrent counts plus configured concurrency limits for the project and its organization. Region-scoped.
- * @summary Get current concurrent sessions and configured limits
+ * @summary Get concurrency limits
  */
 export const GetConcurrencyLimitsResponse = zod.object({
   "project": zod.object({
   "current": zod.object({
   "transcribe_concurrent": zod.number(),
   "tts_concurrent": zod.number()
-}).describe('Live counts read from Redis'),
+}).describe('Live counts.'),
   "limits": zod.object({
   "transcribe_concurrent": zod.union([zod.number(),zod.null()]),
   "tts_concurrent": zod.union([zod.number(),zod.null()])
@@ -428,7 +599,7 @@ export const GetConcurrencyLimitsResponse = zod.object({
   "current": zod.object({
   "transcribe_concurrent": zod.number(),
   "tts_concurrent": zod.number()
-}).describe('Live counts read from Redis'),
+}).describe('Live counts.'),
   "limits": zod.object({
   "transcribe_concurrent": zod.union([zod.number(),zod.null()]),
   "tts_concurrent": zod.union([zod.number(),zod.null()])

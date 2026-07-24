@@ -103,11 +103,8 @@ export type Context =
  * Real-time model identifier.
  */
 export type RealtimeModelId =
+  | "stt-rt-v5"
   | "stt-rt-v4"
-  | "stt-rt-v3"
-  | "stt-rt-preview"
-  | "stt-rt-v3-preview"
-  | "stt-rt-preview-v2"
 
 // =============================================================================
 // WebSocket API Request Types

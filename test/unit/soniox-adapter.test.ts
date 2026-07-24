@@ -78,7 +78,7 @@ describe("SonioxAdapter", () => {
         id: "soniox-1",
         status: "queued",
         created_at: "2026-06-24T00:00:00Z",
-        model: SonioxAsyncModel.stt_async_v3,
+        model: SonioxAsyncModel.stt_async_v5,
         filename: "remote.mp3",
         enable_speaker_diarization: true,
         enable_language_identification: true,
@@ -99,7 +99,7 @@ describe("SonioxAdapter", () => {
         url: "https://example.com/audio.mp3"
       },
       {
-        model: SonioxAsyncModel.stt_async_v3,
+        model: SonioxAsyncModel.stt_async_v5,
         language: "en",
         diarization: true,
         languageDetection: true,
@@ -117,7 +117,7 @@ describe("SonioxAdapter", () => {
 
     expect(createTranscriptionMock).toHaveBeenCalledWith(
       {
-        model: SonioxAsyncModel.stt_async_v3,
+        model: SonioxAsyncModel.stt_async_v5,
         audio_url: "https://example.com/audio.mp3",
         language_hints: ["en"],
         language_hints_strict: true,
@@ -166,7 +166,7 @@ describe("SonioxAdapter", () => {
         id: "soniox-file-1",
         status: "queued",
         created_at: "2026-06-24T00:00:01Z",
-        model: "stt-async-preview",
+        model: "stt-async-v5",
         filename: "meeting.wav",
         enable_speaker_diarization: false,
         enable_language_identification: false
@@ -195,7 +195,7 @@ describe("SonioxAdapter", () => {
     expect(uploadBody.file.type).toBe("audio/wav")
     expect(createTranscriptionMock).toHaveBeenCalledWith(
       {
-        model: "stt-async-preview",
+        model: "stt-async-v5",
         file_id: "file-1",
         language_hints: undefined,
         enable_speaker_diarization: undefined,
@@ -242,7 +242,7 @@ describe("SonioxAdapter", () => {
         id: "soniox-2",
         status: "completed",
         created_at: "2026-06-24T00:00:00Z",
-        model: SonioxAsyncModel.stt_async_v3,
+        model: SonioxAsyncModel.stt_async_v5,
         filename: "remote.mp3",
         enable_speaker_diarization: true,
         enable_language_identification: true,
@@ -351,7 +351,7 @@ describe("SonioxAdapter", () => {
         diarization: true,
         languageDetection: true,
         sonioxStreaming: {
-          model: SonioxRealtimeModel.stt_rt_v3,
+          model: SonioxRealtimeModel.stt_rt_v5,
           audioFormat: "pcm_s16le",
           sampleRate: 48000,
           numChannels: 2,
@@ -389,7 +389,7 @@ describe("SonioxAdapter", () => {
     const url = new URL(ws.url)
     expect(`${url.origin}${url.pathname}`).toBe("wss://stt-rt.jp.soniox.com/transcribe-websocket")
     expect(url.searchParams.get("api_key")).toBe("secret")
-    expect(url.searchParams.get("model")).toBe(SonioxRealtimeModel.stt_rt_v3)
+    expect(url.searchParams.get("model")).toBe(SonioxRealtimeModel.stt_rt_v5)
     expect(url.searchParams.get("audio_format")).toBe("pcm_s16le")
     expect(url.searchParams.get("sample_rate")).toBe("48000")
     expect(url.searchParams.get("num_channels")).toBe("2")

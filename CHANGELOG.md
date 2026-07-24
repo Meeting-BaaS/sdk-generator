@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.8] - 2026-07-21
+## [0.9.8] - 2026-07-24
 
 ### Added
 
@@ -17,13 +17,17 @@ Added deterministic generated-output verification, package-entrypoint checks, pr
 
 #### Provider APIs And SDKs Refreshed
 
-Re-synced and regenerated the TypeScript API surface for AssemblyAI, Azure Speech-to-Text v3.2, Deepgram, ElevenLabs, Gladia, OpenAI, Soniox, and Speechmatics. Notable additions include Soniox `stt-async-v5`, OpenAI `gpt-realtime-2.1` and `gpt-realtime-2.1-mini`, AssemblyAI `universal-3-5-pro`, ElevenLabs multichannel output controls, Gladia `/v1/models`, and Speechmatics `model`, `melia-1`, forced-transcript events, and region metadata. Removed Speechmatics alignment/data/text/object-URL endpoints no longer appear in generated clients. Provider language and locale sets are unchanged.
+Re-synced and regenerated the TypeScript API surface for AssemblyAI, Azure Speech-to-Text v3.2, Deepgram, ElevenLabs, Gladia, OpenAI, Soniox, and Speechmatics. Notable additions include Soniox `stt-rt-v5`, `stt-async-v5`, TTS, and voice-management endpoints; OpenAI `gpt-realtime-2.1` and `gpt-realtime-2.1-mini`; AssemblyAI `universal-3-5-pro`; ElevenLabs multichannel output controls; Gladia `/v1/models`; Speechmatics `model`, `melia-1`, forced-transcript events, and region metadata; and Deepgram locale `hu-HU`. Removed Speechmatics alignment/data/text/object-URL endpoints no longer appear in generated clients. Other provider language and locale sets are unchanged.
 
 #### Dependencies And Code Generation Updated
 
 Updated runtime dependencies including Soniox SDK 2.2, Axios 1.18, ws 8.21, and Zod 4.4. Updated the generation/test toolchain to Orval 8.22, TypeScript 6.0, Vitest 4.1, Vite 8.1, and current supporting packages. Zod field introspection now supports Zod 4, including nested object unions, while generated compatibility exports remain available.
 
 ### Fixed
+
+#### Soniox OpenAPI And Model Discovery
+
+Switched Soniox synchronization from the retired `api.soniox.com/v1/openapi.json` endpoint to the official `soniox.com/docs/openapi.yaml` schema. Soniox model constants now use the checksummed official models documentation because the OpenAPI response example lags current releases. Public model constants contain current v5 models and their v4 aliases; retired preview and v3 identifiers were removed. Batch and streaming defaults now use v5.
 
 #### Adapter Binary And Validation Compatibility
 

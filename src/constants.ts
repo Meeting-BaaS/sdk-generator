@@ -167,7 +167,7 @@ export {
 export type { SonioxLanguageCode } from "./generated/soniox/languages"
 
 // Re-export auto-generated Soniox model constants
-// Generated from Soniox OpenAPI spec by scripts/generate-soniox-models.js
+// Generated from Soniox models documentation by scripts/generate-soniox-models.js
 import {
   SonioxAsyncModel as _SonioxAsyncModel,
   SonioxAsyncModelCodes as _SonioxAsyncModelCodes,

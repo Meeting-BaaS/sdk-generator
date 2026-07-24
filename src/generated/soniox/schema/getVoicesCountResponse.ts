@@ -5,10 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * Live counts.
- */
-export interface CurrentValues {
-  transcribe_concurrent: number;
-  tts_concurrent: number;
+export interface GetVoicesCountResponse {
+  /** Total number of voices in your project. */
+  total: number;
 }

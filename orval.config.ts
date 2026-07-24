@@ -31,7 +31,7 @@ const SPEECHMATICS_INPUT = {
 }
 
 const SONIOX_INPUT = {
-  target: "./specs/soniox-openapi.json"
+  target: "./specs/soniox-openapi.yaml"
 }
 
 const ELEVENLABS_INPUT = {

@@ -154,7 +154,7 @@ semantically different.
 - AssemblyAI: `speech_model` (best, nano)
 - ElevenLabs: `model_id` (scribe model identifiers)
 - Speechmatics: `model` (standard, enhanced); `operating_point` is deprecated compatibility
-- Soniox: Model specified in URL/config (stt-rt-preview, stt-async-preview)
+- Soniox: Model specified in URL/config (stt-rt-v5, stt-async-v5)
 - OpenAI: `model` (whisper-1, gpt-4o-transcribe, etc.)
 
 **Non-equivalences (fields with same intent but different behavior):**

@@ -6,10 +6,10 @@
  */
 
 export interface GetTranscriptionsCountResponse {
-  /** Total number of transcriptions across all scopes. */
-  total: number;
-  /** Number of transcriptions created via Public API. */
-  public_api: number;
   /** Number of transcriptions created via the Playground. */
   playground: number;
+  /** Number of transcriptions created via Public API. */
+  public_api: number;
+  /** Total number of transcriptions across all scopes. */
+  total: number;
 }

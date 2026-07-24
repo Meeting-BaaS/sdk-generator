@@ -4,6 +4,7 @@ import {
   OpenAIRealtimeModelCodes,
   OpenAITranscriptionModelCodes
 } from "../../src/generated/openai/models"
+import { SonioxAsyncModelCodes, SonioxRealtimeModelCodes } from "../../src/generated/soniox/models"
 
 const packageJson = JSON.parse(readFileSync("package.json", "utf8")) as {
   scripts: Record<string, string>
@@ -13,6 +14,23 @@ describe("generated API freshness scripts", () => {
   it("keeps generated OpenAI model sets non-empty", () => {
     expect(OpenAITranscriptionModelCodes.length).toBeGreaterThan(0)
     expect(OpenAIRealtimeModelCodes.length).toBeGreaterThan(0)
+  })
+
+  it("uses Soniox's published OpenAPI schema instead of the retired API endpoint", () => {
+    const manifest = readFileSync("scripts/provider-upstream-manifest.js", "utf8")
+    const orvalConfig = readFileSync("orval.config.ts", "utf8")
+
+    expect(manifest).toContain('url: "https://soniox.com/docs/openapi.yaml"')
+    expect(manifest).toContain('output: "specs/soniox-openapi.yaml"')
+    expect(manifest).toContain('url: "https://soniox.com/docs/stt/models.mdx"')
+    expect(manifest).toContain('output: "specs/soniox-models.mdx"')
+    expect(manifest).not.toContain("https://api.soniox.com/v1/openapi.json")
+    expect(orvalConfig).toContain('target: "./specs/soniox-openapi.yaml"')
+  })
+
+  it("keeps Soniox model constants aligned with current models and aliases", () => {
+    expect(SonioxRealtimeModelCodes).toEqual(["stt-rt-v5", "stt-rt-v4"])
+    expect(SonioxAsyncModelCodes).toEqual(["stt-async-v5", "stt-async-v4"])
   })
 
   it("regenerates public metadata and field-equivalence artifacts after provider types", () => {

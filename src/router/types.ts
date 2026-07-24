@@ -162,7 +162,7 @@ export type SpeechmaticsOperatingPoint = SpeechmaticsModel
  * - Deepgram: nova-3, nova-2, enhanced, base, etc.
  * - AssemblyAI: best, slam-1, universal
  * - Gladia: solaria-1
- * - Soniox: stt-rt-v3, stt-rt-preview, stt-async-v3, etc.
+ * - Soniox: stt-rt-v5, stt-async-v5, and current aliases
  * - Speechmatics: standard, enhanced
  *
  * Use provider const objects for autocomplete:
@@ -170,7 +170,7 @@ export type SpeechmaticsOperatingPoint = SpeechmaticsModel
  * ```typescript
  * import { DeepgramModel, SonioxModel } from 'voice-router-dev'
  * { model: DeepgramModel["nova-3"] }
- * { model: SonioxModel.stt_rt_v3 }
+ * { model: SonioxModel.stt_rt_v5 }
  * ```
  */
 export type TranscriptionModel =
@@ -1334,7 +1334,7 @@ export interface StreamingOptions extends Omit<TranscribeOptions, "webhookUrl"> 
    * ```typescript
    * await adapter.transcribeStream({
    *   sonioxStreaming: {
-   *     model: 'stt-rt-preview',
+   *     model: 'stt-rt-v5',
    *     enableSpeakerDiarization: true,
    *     enableEndpointDetection: true,
    *     context: {

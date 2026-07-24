@@ -107,11 +107,8 @@ export const sonioxContextSchema = zod.union([
  * Real-time model identifier.
  */
 export const sonioxRealtimeModelSchema = zod.enum([
-  "stt-rt-v4",
-  "stt-rt-preview",
-  "stt-rt-v3-preview",
-  "stt-rt-preview-v2",
-  "stt-rt-v3"
+  "stt-rt-v5",
+  "stt-rt-v4"
 ])
 
 // =============================================================================

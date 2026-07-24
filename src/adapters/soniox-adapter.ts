@@ -55,12 +55,11 @@ export interface SonioxConfig extends ProviderConfig {
    * @example
    * ```typescript
    * import { SonioxModel } from 'voice-router-dev/constants'
-   * { model: SonioxModel.stt_async_v3 }       // Async/batch
-   * { model: SonioxModel.stt_rt_preview }    // Real-time streaming
-   * { model: SonioxModel.stt_rt_v3 }         // Real-time v3
+   * { model: SonioxModel.stt_async_v5 } // Async/batch
+   * { model: SonioxModel.stt_rt_v5 }    // Real-time streaming
    * ```
    *
-   * @default "stt-async-preview"
+   * @default "stt-async-v5"
    */
   model?: SonioxModelCode
 
@@ -182,7 +181,7 @@ export class SonioxAdapter extends BaseAdapter {
   /**
    * Default model for batch transcription
    */
-  private defaultModel = "stt-async-preview"
+  private defaultModel = "stt-async-v5"
 
   /**
    * Get regional API host based on configured region
@@ -424,7 +423,7 @@ export class SonioxAdapter extends BaseAdapter {
     const wsUrl = new URL(`${wsBase}/transcribe-websocket`)
     wsUrl.searchParams.set("api_key", this.config!.apiKey)
     // Prefer sonioxStreaming.model over generic model option
-    const modelId = sonioxOpts?.model || options?.model || "stt-rt-preview"
+    const modelId = sonioxOpts?.model || options?.model || "stt-rt-v5"
     wsUrl.searchParams.set("model", modelId)
 
     if (sonioxOpts?.audioFormat) {
@@ -724,7 +723,7 @@ export class SonioxAdapter extends BaseAdapter {
    * console.log('Available models:', models.map(m => m.id));
    *
    * // Get supported languages for a specific model
-   * const rtModel = models.find(m => m.id === 'stt-rt-preview');
+   * const rtModel = models.find(m => m.id === 'stt-rt-v5');
    * console.log('Languages:', rtModel?.languages.map(l => l.code));
    * ```
    */
@@ -743,7 +742,7 @@ export class SonioxAdapter extends BaseAdapter {
   /**
    * Get supported languages for a specific model
    *
-   * @param modelId - The model ID (e.g., 'stt-rt-preview', 'stt-async-preview')
+   * @param modelId - The model ID (e.g., 'stt-rt-v5', 'stt-async-v5')
    * @returns Array of supported language objects with code and name
    */
   async getLanguagesForModel(modelId: SonioxModelCode): Promise<SonioxLanguageInfo[]> {
@@ -884,7 +883,7 @@ export class SonioxAdapter extends BaseAdapter {
  * ```typescript
  * const adapter = createSonioxAdapter({
  *   apiKey: process.env.SONIOX_API_KEY,
- *   model: 'stt-rt-preview' // Real-time model
+ *   model: 'stt-rt-v5' // Real-time model
  * })
  * ```
  */

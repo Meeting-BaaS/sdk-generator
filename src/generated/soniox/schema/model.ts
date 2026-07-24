@@ -24,6 +24,9 @@ export interface Model {
   supports_language_hints_strict: boolean;
   supports_max_endpoint_delay: boolean;
   supports_endpoint_sensitivity: boolean;
+  supports_endpoint_latency_adjustment: boolean;
+  /** Maximum endpoint_latency_adjustment_level the model accepts. Valid levels are 0 (no adjustment) through this value; 0 means the feature is unsupported. */
+  endpoint_latency_adjustment_max_level: number;
   /** List of supported one-way translation targets. If list is empty, check for one_way_translation field */
   translation_targets: TranslationTarget[];
   /** List of supported two-way translation pairs.  If list is empty, check for two_way_translation field */

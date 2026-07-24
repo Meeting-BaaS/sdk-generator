@@ -6,7 +6,7 @@
       "syncedAt": "2026-07-20T05:58:20.121Z",
       "size": 124455,
       "consumedSha256": "1493d03922166b746e993f00b4f275c47488a8d8d5d092f5095d095ab4ca8afd",
-      "consumedAt": "2026-07-20T06:33:42.754Z"
+      "consumedAt": "2026-07-24T12:25:30.838Z"
     },
     "assemblyai": {
       "sha256": "457806b920d34b607d55dc409ded2cdd1ecf957e55ebbf279fab475947194d7e",
@@ -14,7 +14,7 @@
       "syncedAt": "2026-07-20T05:58:20.232Z",
       "size": 254390,
       "consumedSha256": "45aa5c0d86a67a3c2e6bdc10a5e4a5bb25bd9464a5be49edae14af64959c5972",
-      "consumedAt": "2026-07-20T06:33:42.755Z",
+      "consumedAt": "2026-07-24T12:25:30.839Z",
       "fixedBy": "fix-assemblyai-spec.js"
     },
     "assemblyaiAsync": {
@@ -29,7 +29,7 @@
       "syncedAt": "2026-07-20T05:58:20.272Z",
       "size": 14187,
       "consumedSha256": "3e84ccf5cd383cd4cf215a869d7fc4c596b975c33a73fc4eece1048f4961ef1c",
-      "consumedAt": "2026-07-20T06:33:42.755Z"
+      "consumedAt": "2026-07-24T12:25:30.839Z"
     },
     "assemblyaiStreamingTypes": {
       "sha256": "b6c6b2bf2531ae3acfd70c0273846b63cb3eecdab2ef0cf4eb54ef46a117fda6",
@@ -43,7 +43,7 @@
       "syncedAt": "2026-07-20T05:58:20.284Z",
       "size": 196110,
       "consumedSha256": "1f958b28e2a90235e35ef94a8de15753cc4d5e9d74672d61db13ffe6ab3df772",
-      "consumedAt": "2026-07-20T06:33:42.755Z",
+      "consumedAt": "2026-07-24T12:25:30.839Z",
       "fixedBy": "fix-deepgram-spec.js"
     },
     "openai": {
@@ -52,7 +52,7 @@
       "syncedAt": "2026-07-20T05:58:21.596Z",
       "size": 3530008,
       "consumedSha256": "a25cae831eb76574ca796b92c254f2a2bfcad15b062bd2dfbe7d84870df6f36a",
-      "consumedAt": "2026-07-20T06:33:42.755Z",
+      "consumedAt": "2026-07-24T12:25:30.840Z",
       "fixedBy": "fix-openai-spec.js"
     },
     "openaiRealtime": {
@@ -67,7 +67,7 @@
       "syncedAt": "2026-07-20T05:58:21.780Z",
       "size": 222580,
       "consumedSha256": "6b364c2207280933b53799cdde6d7323b4f014be50327196679a283417ba2f45",
-      "consumedAt": "2026-07-20T06:33:42.756Z",
+      "consumedAt": "2026-07-24T12:25:30.840Z",
       "fixedBy": "fix-azure-spec.js"
     },
     "speechmatics": {
@@ -76,7 +76,7 @@
       "syncedAt": "2026-07-20T05:58:21.789Z",
       "size": 73044,
       "consumedSha256": "716db3f2ba8cdf60bd41388a70f51779841189a0cbec3d811dd949270629c8fe",
-      "consumedAt": "2026-07-20T06:33:42.756Z",
+      "consumedAt": "2026-07-24T12:25:30.840Z",
       "fixedBy": "fix-speechmatics-spec.js"
     },
     "speechmaticsAsync": {
@@ -85,7 +85,7 @@
       "syncedAt": "2026-07-20T05:58:21.794Z",
       "size": 52089,
       "consumedSha256": "9b369bf42315fdc242ab1c07517bcf76c3372baa14e1edaad416332705536487",
-      "consumedAt": "2026-07-20T06:33:42.756Z"
+      "consumedAt": "2026-07-24T12:25:30.840Z"
     },
     "speechmaticsBatchTypes": {
       "sha256": "97e26200fb2858b62020d50c083bab1b1fe45fc1d87ff850a18709d57b04d994",
@@ -99,20 +99,20 @@
       "syncedAt": "2026-07-20T05:58:21.799Z",
       "size": 4890,
       "consumedSha256": "5ddb637a98e792e8110237f3f8c73fba42a268578aa1dea8a9ff43568543341f",
-      "consumedAt": "2026-07-20T06:33:42.756Z"
+      "consumedAt": "2026-07-24T12:25:30.841Z"
     },
     "soniox": {
-      "sha256": "7fdda0fb853740527aa96453e14c61db06fc0fc6b03e96165e43af169fb2edc1",
-      "url": "https://api.soniox.com/v1/openapi.json",
-      "syncedAt": "2026-06-16T08:24:43.519Z",
-      "size": 89407,
-      "consumedSha256": "c58233fb762ffc4f1fc830a84a047fc11ad82fefd03b843e45342ef3290f0bf7",
-      "consumedAt": "2026-07-20T06:33:42.757Z"
+      "sha256": "64d5a7dec8fd33de3642141b5b8c3081a470308e76748cb6fc23be3efea99b36",
+      "url": "https://soniox.com/docs/openapi.yaml",
+      "syncedAt": "2026-07-24T12:21:55.012Z",
+      "size": 154863,
+      "consumedSha256": "64d5a7dec8fd33de3642141b5b8c3081a470308e76748cb6fc23be3efea99b36",
+      "consumedAt": "2026-07-24T12:25:30.841Z"
     },
     "sonioxStreaming": {
-      "sha256": "55d3b9ad18dfccf54cb0325311312a68ae00fc1ab7fad57b200a81a8b374fa92",
+      "sha256": "4923489a732fafd0a9b7851d7ea3456bcfef474c78e3b23e6228dcb5e536a413",
       "manual": true,
-      "checkedAt": "2026-07-20T05:58:22.062Z",
+      "checkedAt": "2026-07-24T12:26:52.578Z",
       "note": "No official AsyncAPI spec - local streaming types are generated from the Soniox streaming SDK"
     },
     "elevenlabs": {
@@ -121,7 +121,7 @@
       "syncedAt": "2026-07-20T05:58:22.444Z",
       "size": 1842248,
       "consumedSha256": "8b79d8b7a0f21416b203ed9e54b2694045158e3138cab05dff91713847640af5",
-      "consumedAt": "2026-07-20T06:33:42.757Z",
+      "consumedAt": "2026-07-24T12:25:30.841Z",
       "fixedBy": "fix-elevenlabs-spec.js"
     },
     "elevenlabsLanguages": {
@@ -143,16 +143,24 @@
       "note": "Hand-maintained @soniox/node re-exports — restored into src/generated/soniox/sdk-types.ts by fix-generated.js; review when sonioxNodeSdk changes"
     },
     "sonioxStreamingResponseTypes": {
-      "sha256": "25fea4389be90d95cafdf46dee07e7f5a0945c535d01b3e0a3bfb63f8a655503",
+      "sha256": "4d902ec0d1f78486d0816c38269757c619bce19651799c7a3236dfae33998aa4",
       "manual": true,
-      "checkedAt": "2026-07-20T05:58:22.062Z",
-      "note": "Hand-extracted server→client WebSocket types from @soniox/speech-to-text-web — restored into src/generated/soniox/streaming-response-types.ts by fix-generated.js; review when sonioxStreamingSdk changes"
+      "checkedAt": "2026-07-24T12:26:56.356Z",
+      "note": "Hand-extracted server→client WebSocket types from @soniox/speech-to-text-web with model IDs from Soniox docs — restored into src/generated/soniox/streaming-response-types.ts by fix-generated.js; review when Soniox models or sonioxStreamingSdk change"
     },
     "elevenlabsStreamingResponseTypes": {
       "sha256": "7f473c2a91fa2c43d5dfcc5f52fced9ef028d1e34b6bfd495711fac076b7286a",
       "manual": true,
       "checkedAt": "2026-07-20T05:58:22.062Z",
       "note": "Hand-extracted server→client WebSocket types from ElevenLabs WS API docs — restored into src/generated/elevenlabs/streaming-response-types.ts by fix-generated.js; review when elevenlabsSdkPackage changes"
+    },
+    "sonioxModels": {
+      "sha256": "a4647bdb7af237d17bff30c57899630e60e4166e5b703544cc3e5cc66a03c9f3",
+      "url": "https://soniox.com/docs/stt/models.mdx",
+      "syncedAt": "2026-07-24T12:21:55.343Z",
+      "size": 11345,
+      "consumedSha256": "a4647bdb7af237d17bff30c57899630e60e4166e5b703544cc3e5cc66a03c9f3",
+      "consumedAt": "2026-07-24T12:25:30.841Z"
     }
   },
   "references": {
@@ -171,7 +179,7 @@
       "checkedAt": "2026-04-28T07:05:09.432Z"
     }
   },
-  "updatedAt": "2026-07-20T06:33:42.757Z",
+  "updatedAt": "2026-07-24T12:26:56.357Z",
   "providerSdks": {
     "gladia": {
       "packages": {

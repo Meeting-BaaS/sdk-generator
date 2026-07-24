@@ -1729,6 +1729,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "hr-HR",
       "ht",
       "hu",
+      "hu-HU",
       "hy",
       "id",
       "id-ID",
@@ -2209,6 +2210,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "hr-HR",
       "ht",
       "hu",
+      "hu-HU",
       "hy",
       "id",
       "id-ID",
@@ -5306,7 +5308,7 @@ export const SONIOX_STREAMING_FIELDS = [
     name: "model",
     type: "select",
     required: true,
-    options: ["stt-rt-v4", "stt-rt-preview", "stt-rt-v3-preview", "stt-rt-preview-v2", "stt-rt-v3"]
+    options: ["stt-rt-v5", "stt-rt-v4"]
   },
   {
     name: "audioFormat",

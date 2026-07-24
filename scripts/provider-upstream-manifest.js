@@ -85,14 +85,20 @@ const SPEC_SOURCES = {
     dependsOnUpstreams: ["deepgramSdkPackage"]
   },
   soniox: {
-    url: "https://api.soniox.com/v1/openapi.json",
-    output: "specs/soniox-openapi.json",
-    format: "json"
+    url: "https://soniox.com/docs/openapi.yaml",
+    output: "specs/soniox-openapi.yaml",
+    format: "yaml"
+  },
+  sonioxModels: {
+    url: "https://soniox.com/docs/stt/models.mdx",
+    output: "specs/soniox-models.mdx",
+    format: "markdown"
   },
   sonioxStreaming: {
     manual: true,
     output: "specs/soniox-streaming-types.ts",
     note: "No official AsyncAPI spec - local streaming types are generated from the Soniox streaming SDK",
+    dependsOn: ["sonioxModels"],
     dependsOnUpstreams: ["sonioxStreamingSdk"]
   },
   sonioxSdkTypes: {
@@ -104,7 +110,8 @@ const SPEC_SOURCES = {
   sonioxStreamingResponseTypes: {
     manual: true,
     output: "specs/soniox-streaming-response-types.ts",
-    note: "Hand-extracted server→client WebSocket types from @soniox/speech-to-text-web — restored into src/generated/soniox/streaming-response-types.ts by fix-generated.js; review when sonioxStreamingSdk changes",
+    note: "Hand-extracted server→client WebSocket types from @soniox/speech-to-text-web with model IDs from Soniox docs — restored into src/generated/soniox/streaming-response-types.ts by fix-generated.js; review when Soniox models or sonioxStreamingSdk change",
+    dependsOn: ["sonioxModels"],
     dependsOnUpstreams: ["sonioxStreamingSdk"]
   },
   elevenlabsStreamingResponseTypes: {
@@ -218,7 +225,13 @@ const PROVIDERS = {
     ]
   },
   soniox: {
-    specKeys: ["soniox", "sonioxStreaming", "sonioxSdkTypes", "sonioxStreamingResponseTypes"],
+    specKeys: [
+      "soniox",
+      "sonioxModels",
+      "sonioxStreaming",
+      "sonioxSdkTypes",
+      "sonioxStreamingResponseTypes"
+    ],
     upstreams: [
       {
         key: "sonioxNodeSdk",

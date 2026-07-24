@@ -7,11 +7,11 @@
 
 export type GetUsageLogsParams = {
 /**
- * Start of the time window (inclusive). Filters by request end time.
+ * Start of the time window (inclusive). Filters by request end time. Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`).
  */
 start_time: string;
 /**
- * End of the time window (exclusive). Filters by request end time.
+ * End of the time window (exclusive). Filters by request end time. Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`).
  */
 end_time: string;
 /**

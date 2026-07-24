@@ -24,11 +24,11 @@ export interface UsageLogEntry {
   output_text_tokens: number;
   output_audio_tokens: number;
   output_audio_duration_ms: number;
-  cost_usd: string;
-  input_cost_usd: string;
-  input_text_cost_usd: string;
-  input_audio_cost_usd: string;
-  output_cost_usd: string;
-  output_text_cost_usd: string;
-  output_audio_cost_usd: string;
+  cost_usd: number | string;
+  input_cost_usd: number | string;
+  input_text_cost_usd: number | string;
+  input_audio_cost_usd: number | string;
+  output_cost_usd: number | string;
+  output_text_cost_usd: number | string;
+  output_audio_cost_usd: number | string;
 }
