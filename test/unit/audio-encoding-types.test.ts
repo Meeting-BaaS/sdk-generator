@@ -40,6 +40,8 @@ describe("audio encoding router helpers", () => {
     expect(mapEncodingToProvider("g729", "deepgram")).toBe("g729")
 
     expect(mapEncodingToProvider("linear16", "assemblyai")).toBe("pcm_s16le")
+    expect(mapEncodingToProvider("mulaw", "assemblyai")).toBe("pcm_mulaw")
+    expect(mapEncodingToProvider("opus", "assemblyai")).toBe("opus")
   })
 
   it("exposes runtime-immutable encoding maps", () => {
@@ -52,8 +54,8 @@ describe("audio encoding router helpers", () => {
     expect(() => mapEncodingToProvider("flac", "gladia")).toThrow(
       "Encoding 'flac' is not supported by gladia. Supported encodings: linear16, mulaw, alaw"
     )
-    expect(() => mapEncodingToProvider("mulaw", "assemblyai")).toThrow(
-      "Encoding 'mulaw' is not supported by assemblyai. Supported encodings: linear16"
+    expect(() => mapEncodingToProvider("flac", "assemblyai")).toThrow(
+      "Encoding 'flac' is not supported by assemblyai. Supported encodings: linear16, mulaw, opus"
     )
   })
 

@@ -502,8 +502,14 @@ import { TranscriptLanguageCode } from "./generated/assemblyai/schema/transcript
 export const AssemblyAIEncoding = {
   /** PCM signed 16-bit little-endian (recommended) */
   pcmS16le: "pcm_s16le",
-  /** μ-law (telephony) */
-  pcmMulaw: "pcm_mulaw"
+  /** Mu-law (telephony) */
+  pcmMulaw: "pcm_mulaw",
+  /** Raw Opus packets */
+  opus: "opus",
+  /** Opus in an Ogg container */
+  oggOpus: "ogg_opus",
+  /** AAC audio */
+  aac: "aac"
 } as const satisfies Record<string, import("./generated/assemblyai/streaming-types").AudioEncoding>
 
 /**
@@ -512,21 +518,25 @@ export const AssemblyAIEncoding = {
  * Uses the `speech_models` (plural) API parameter — pass as array.
  * AssemblyAI routes audio to the best available model from the list.
  *
- * - `universal-3-pro`: Highest accuracy, latest generation
+ * - `universal-3-5-pro`: Highest accuracy, latest generation
  * - `universal-2`: Previous generation, broad language support
+ * - `universal-3-pro`: Deprecated compatibility alias; normalized to
+ *   `universal-3-5-pro` by the router
  *
  * @example
  * ```typescript
  * import { AssemblyAITranscriptionModel } from 'voice-router-dev/constants'
  *
  * await router.transcribe('assemblyai', audioUrl, {
- *   model: AssemblyAITranscriptionModel["universal-3-pro"]
+ *   model: AssemblyAITranscriptionModel["universal-3-5-pro"]
  * })
  * ```
  */
 export const AssemblyAITranscriptionModel = {
-  "universal-3-pro": "universal-3-pro",
-  "universal-2": "universal-2"
+  "universal-3-5-pro": "universal-3-5-pro",
+  "universal-2": "universal-2",
+  /** @deprecated Use `universal-3-5-pro`. */
+  "universal-3-pro": "universal-3-pro"
 } as const
 
 /**
@@ -566,7 +576,17 @@ export const AssemblyAISpeechModel = {
   /** Optimized for English */
   english: "universal-streaming-english",
   /** Supports 20+ languages */
-  multilingual: "universal-streaming-multilingual"
+  multilingual: "universal-streaming-multilingual",
+  /** Universal-3 realtime production model */
+  u3RealtimePro: "u3-rt-pro",
+  /** Universal-3 realtime beta */
+  u3RealtimeProBeta1: "u3-rt-pro-beta-1",
+  /** Realtime Whisper model */
+  whisperRealtime: "whisper-rt",
+  /** Universal-3.5 Pro streaming model */
+  universal35Pro: "universal-3-5-pro",
+  /** @deprecated Use `u3RealtimePro`. */
+  u3Pro: "u3-pro"
 } as const satisfies Record<
   string,
   import("./generated/assemblyai/streaming-types").StreamingSpeechModel

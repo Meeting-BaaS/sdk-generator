@@ -134,6 +134,90 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Transcript"
+                },
+                "example": {
+                  "id": "0072a82b-aa22-4962-add2-6121c36c17c6",
+                  "language_model": "assemblyai_default",
+                  "acoustic_model": "assemblyai_default",
+                  "language_code": null,
+                  "speech_understanding": null,
+                  "translated_texts": null,
+                  "status": "processing",
+                  "audio_url": "https://assembly.ai/wildfires.mp3",
+                  "text": null,
+                  "words": null,
+                  "utterances": null,
+                  "confidence": null,
+                  "audio_duration": null,
+                  "punctuate": true,
+                  "format_text": true,
+                  "dual_channel": false,
+                  "webhook_url": null,
+                  "webhook_status_code": null,
+                  "webhook_auth": false,
+                  "webhook_auth_header_name": null,
+                  "speed_boost": false,
+                  "auto_highlights_result": null,
+                  "auto_highlights": true,
+                  "audio_start_from": null,
+                  "audio_end_at": null,
+                  "word_boost": [],
+                  "boost_param": null,
+                  "prompt": null,
+                  "keyterms_prompt": null,
+                  "filter_profanity": true,
+                  "redact_pii": false,
+                  "redact_pii_audio": false,
+                  "redact_pii_audio_quality": null,
+                  "redact_pii_audio_options": null,
+                  "redact_pii_policies": null,
+                  "redact_pii_sub": null,
+                  "redact_static_entities": null,
+                  "speaker_labels": true,
+                  "speaker_options": {
+                    "min_speakers_expected": 2,
+                    "max_speakers_expected": 2,
+                    "advanced_speaker_segmentation": true
+                  },
+                  "content_safety": true,
+                  "iab_categories": true,
+                  "content_safety_labels": {},
+                  "iab_categories_result": {},
+                  "language_detection": true,
+                  "language_detection_options": null,
+                  "language_detection_results": null,
+                  "language_confidence_threshold": 0.7,
+                  "language_confidence": null,
+                  "custom_spelling": null,
+                  "throttled": false,
+                  "auto_chapters": false,
+                  "summarization": false,
+                  "summary_type": null,
+                  "summary_model": null,
+                  "custom_topics": false,
+                  "topics": [],
+                  "speech_threshold": null,
+                  "speech_model": null,
+                  "speech_models": [
+                    "universal-3-pro",
+                    "universal-2"
+                  ],
+                  "speech_model_used": null,
+                  "temperature": null,
+                  "remove_audio_tags": "all",
+                  "chapters": null,
+                  "disfluencies": false,
+                  "entity_detection": true,
+                  "sentiment_analysis": true,
+                  "sentiment_analysis_results": null,
+                  "entities": null,
+                  "speakers_expected": 2,
+                  "summary": null,
+                  "custom_topics_results": null,
+                  "is_deleted": null,
+                  "multichannel": null,
+                  "project_id": 14296,
+                  "token_id": 14296
                 }
               }
             },
@@ -1331,7 +1415,7 @@
           },
           "language_code": {
             "x-label": "Language code",
-            "description": "The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is 'en_us'.\n",
+            "description": "The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nIf you don't specify a language, it's detected automatically. Cannot be used together with `language_detection`.\n",
             "oneOf": [
               {
                 "anyOf": [
@@ -1347,7 +1431,6 @@
                 "type": "null"
               }
             ],
-            "default": "en_us",
             "x-ts-type": "LiteralUnion<TranscriptLanguageCode, string> | null",
             "x-go-type": "TranscriptLanguageCode"
           },
@@ -1364,7 +1447,7 @@
           },
           "language_confidence_threshold": {
             "x-label": "Language confidence threshold",
-            "description": "The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nDefaults to 0. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+            "description": "The confidence threshold for the automatically detected language.\nAn error will be returned if the language confidence is below this threshold.\nDefaults to 0. Can only be set when `language_detection` is enabled. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
             "type": "number",
             "format": "float",
             "minimum": 0,
@@ -1373,9 +1456,8 @@
           },
           "language_detection": {
             "x-label": "Language detection",
-            "description": "Enable [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection), either true or false.",
-            "type": "boolean",
-            "default": false
+            "description": "[Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) identifies the spoken language and routes the request to the best model. It's applied automatically when you don't specify a `language_code`. Set to `false` only together with a `language_code`; disabling it without specifying a language returns an error.",
+            "type": "boolean"
           },
           "language_detection_options": {
             "x-label": "Specify options for Automatic Language Detection.",
@@ -1551,14 +1633,15 @@
           },
           "speech_models": {
             "x-label": "Speech models",
-            "description": "Optional. List one or more speech models in priority order. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `universal-3-5-pro`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n",
+            "description": "Optional. List one or more speech models in priority order. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `[\"universal-3-5-pro\", \"universal-2\"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n",
             "type": "array",
             "items": {
               "x-label": "Speech model",
               "$ref": "#/components/schemas/SpeechModel"
             },
             "default": [
-              "universal-3-5-pro"
+              "universal-3-5-pro",
+              "universal-2"
             ]
           },
           "speech_threshold": {
@@ -1705,7 +1788,6 @@
         },
         "example": {
           "speech_model": null,
-          "language_code": "en_us",
           "language_detection": true,
           "language_confidence_threshold": 0.7,
           "punctuate": true,
@@ -1785,7 +1867,6 @@
         ],
         "example": {
           "speech_model": null,
-          "language_code": "en_us",
           "language_detection": true,
           "language_confidence_threshold": 0.7,
           "audio_url": "https://assembly.ai/wildfires.mp3",
@@ -2561,7 +2642,7 @@
       "TranscriptLanguageCode": {
         "x-label": "Language code",
         "type": "string",
-        "description": "The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is 'en_us'.\n",
+        "description": "The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\n",
         "x-fern-sdk-group-name": "transcripts",
         "enum": [
           "en",
@@ -3259,7 +3340,7 @@
           },
           "language_code": {
             "x-label": "Language code",
-            "description": "The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\nThe default value is 'en_us'.\n",
+            "description": "The language of your audio file.\nPossible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).\n",
             "anyOf": [
               {
                 "$ref": "#/components/schemas/TranscriptLanguageCode"
@@ -3486,7 +3567,7 @@
           },
           "speech_models": {
             "x-label": "Speech models",
-            "description": "List of speech models that were used (in priority order) to transcribe the audio. If not specified in the request, this defaults to `universal-3-5-pro`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n",
+            "description": "List of speech models that were used (in priority order) to transcribe the audio. If not specified in the request, this defaults to `[\"universal-3-5-pro\", \"universal-2\"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.\n",
             "type": [
               "array",
               "null"

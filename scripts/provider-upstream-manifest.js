@@ -129,7 +129,7 @@ const SPEC_SOURCES = {
   elevenlabsLanguages: {
     manual: true,
     output: "specs/elevenlabs-languages.json",
-    note: "Curated STT language list (spec has no enum, docs page is JS-rendered) — generated into src/generated/elevenlabs/languages.ts; review when elevenlabsLanguageDocs changes",
+    note: "Curated STT language list (spec has no enum) — generated into src/generated/elevenlabs/languages.ts; review when elevenlabsLanguageDocs changes",
     dependsOnUpstreams: ["elevenlabsLanguageDocs"]
   }
 }
@@ -260,7 +260,7 @@ const PROVIDERS = {
       {
         key: "elevenlabsLanguageDocs",
         type: "remote-content",
-        url: "https://elevenlabs.io/docs/capabilities/speech-to-text#supported-languages",
+        url: "https://elevenlabs.io/docs/overview/capabilities/speech-to-text#supported-languages",
         label: "ElevenLabs STT language documentation"
       },
       {
@@ -295,11 +295,13 @@ function stableStringify(value) {
 // numeric offset. Used to mask "current time" values that some upstream specs
 // (e.g. Gladia) inject as date-time `example` fields on every request.
 const ISO_TIMESTAMP_RE = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})/g
+const ISO_DATE_EXAMPLE_RE = /("example":)"\d{4}-\d{2}-\d{2}"/g
 
 /**
  * Return canonical bytes for hashing. If the content parses as JSON, returns
- * a stable-key-ordered serialization with ISO-8601 timestamps masked; otherwise
- * returns the input unchanged. Accepts string or Buffer; returns string.
+ * a stable-key-ordered serialization with volatile ISO-8601 examples masked;
+ * otherwise returns the input unchanged. Accepts string or Buffer; returns
+ * string.
  *
  * Why timestamp masking: Gladia's `api.gladia.io/openapi.json` embeds the
  * current server time as `schema.example` for date-time query params, so even
@@ -312,7 +314,9 @@ function canonicalizeForHash(content) {
   const trimmed = text.trimStart()
   if (trimmed.length === 0 || (trimmed[0] !== "{" && trimmed[0] !== "[")) return text
   try {
-    return stableStringify(JSON.parse(text)).replace(ISO_TIMESTAMP_RE, "<TS>")
+    return stableStringify(JSON.parse(text))
+      .replace(ISO_TIMESTAMP_RE, "<TS>")
+      .replace(ISO_DATE_EXAMPLE_RE, '$1"<DATE>"')
   } catch {
     return text
   }

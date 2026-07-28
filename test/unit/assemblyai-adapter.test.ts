@@ -107,7 +107,7 @@ describe("AssemblyAIAdapter", () => {
     wsInstances.length = 0
   })
 
-  it("maps unified URL transcription options and legacy speech_model passthrough", async () => {
+  it("maps unified URL transcription options and normalizes the legacy model", async () => {
     createTranscriptMock.mockResolvedValue({
       data: {
         id: "aai-1",
@@ -126,7 +126,7 @@ describe("AssemblyAIAdapter", () => {
       },
       {
         language: "fr",
-        model: "universal-2",
+        model: "universal-3-pro",
         diarization: true,
         speakersExpected: 2,
         summarization: true,
@@ -136,7 +136,7 @@ describe("AssemblyAIAdapter", () => {
         customVocabulary: ["Meeting BaaS", "SDK"],
         webhookUrl: "https://example.com/webhook",
         assemblyai: {
-          speech_model: "deprecated-model",
+          speech_model: "universal-2",
           punctuate: false
         }
       }
@@ -145,7 +145,7 @@ describe("AssemblyAIAdapter", () => {
     expect(createTranscriptMock).toHaveBeenCalledWith(
       {
         audio_url: "https://example.com/audio.mp3",
-        speech_models: ["universal-2"],
+        speech_models: ["universal-3-5-pro"],
         punctuate: false,
         format_text: true,
         language_code: "fr_us",
@@ -180,6 +180,38 @@ describe("AssemblyAIAdapter", () => {
         status: "queued"
       }
     })
+  })
+
+  it("normalizes legacy AssemblyAI passthrough model fields", async () => {
+    createTranscriptMock.mockResolvedValue({
+      data: {
+        id: "aai-legacy",
+        status: "queued"
+      },
+      status: 200
+    } as Awaited<ReturnType<typeof createTranscript>>)
+
+    const adapter = new AssemblyAIAdapter()
+    adapter.initialize({ apiKey: "secret" })
+
+    await adapter.transcribe(
+      {
+        type: "url",
+        url: "https://example.com/audio.mp3"
+      },
+      {
+        assemblyai: {
+          speech_models: ["universal-3-pro", "universal-2"]
+        }
+      }
+    )
+
+    expect(createTranscriptMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        speech_models: ["universal-3-5-pro", "universal-2"]
+      }),
+      expect.any(Object)
+    )
   })
 
   it("rejects non-URL audio input before calling the generated API", async () => {
@@ -394,14 +426,26 @@ describe("AssemblyAIAdapter", () => {
         customVocabulary: ["Meeting BaaS", "SDK"],
         assemblyaiStreaming: {
           speechModel: "universal-streaming-english",
+          languageCodes: ["en", "fr"],
           languageDetection: true,
+          domain: "medical-v1",
           endOfTurnConfidenceThreshold: 0.6,
           minEndOfTurnSilenceWhenConfident: 700,
           maxTurnSilence: 2000,
           vadThreshold: 0.3,
           formatTurns: true,
+          sessionHeartbeat: true,
           filterProfanity: true,
           keytermsPrompt: ["technical meeting"],
+          redactPii: true,
+          redactPiiPolicies: ["person_name", "phone_number"],
+          redactPiiSub: "entity_name",
+          mode: "balanced",
+          llmGateway: {
+            model: "claude-sonnet-4-5",
+            messages: [{ role: "system", content: "Summarize the call" }],
+            max_tokens: 100
+          },
           inactivityTimeout: 60000
         }
       },
@@ -425,16 +469,28 @@ describe("AssemblyAIAdapter", () => {
     expect(url.searchParams.get("sample_rate")).toBe("16000")
     expect(url.searchParams.get("encoding")).toBe("pcm_s16le")
     expect(url.searchParams.get("speech_model")).toBe("universal-streaming-english")
+    expect(url.searchParams.get("language_codes")).toBe('["en","fr"]')
     expect(url.searchParams.get("language_detection")).toBe("true")
+    expect(url.searchParams.get("domain")).toBe("medical-v1")
     expect(url.searchParams.get("end_of_turn_confidence_threshold")).toBe("0.6")
-    expect(url.searchParams.get("min_end_of_turn_silence_when_confident")).toBe("700")
+    expect(url.searchParams.get("min_turn_silence")).toBe("700")
     expect(url.searchParams.get("max_turn_silence")).toBe("2000")
     expect(url.searchParams.get("vad_threshold")).toBe("0.3")
     expect(url.searchParams.get("format_turns")).toBe("true")
+    expect(url.searchParams.get("session_heartbeat")).toBe("true")
     expect(url.searchParams.get("filter_profanity")).toBe("true")
     expect(url.searchParams.get("inactivity_timeout")).toBe("60000")
-    expect(url.searchParams.getAll("keyterms")).toEqual(["Meeting BaaS", "SDK"])
-    expect(url.searchParams.getAll("keyterms_prompt")).toEqual(["technical meeting"])
+    expect(url.searchParams.get("keyterms")).toBeNull()
+    expect(url.searchParams.get("keyterms_prompt")).toBe('["technical meeting"]')
+    expect(url.searchParams.get("redact_pii")).toBe("true")
+    expect(url.searchParams.get("redact_pii_policies")).toBe('["person_name","phone_number"]')
+    expect(url.searchParams.get("redact_pii_sub")).toBe("entity_name")
+    expect(url.searchParams.get("mode")).toBe("balanced")
+    expect(JSON.parse(url.searchParams.get("llm_gateway") ?? "")).toEqual({
+      model: "claude-sonnet-4-5",
+      messages: [{ role: "system", content: "Summarize the call" }],
+      max_tokens: 100
+    })
     expect(ws.options).toMatchObject({
       headers: {
         Authorization: "secret"
@@ -485,6 +541,13 @@ describe("AssemblyAIAdapter", () => {
       session_duration_seconds: 2.3
     })
     ws.receive({
+      type: "Heartbeat",
+      total_audio_received_ms: 1200,
+      total_duration_ms: 1500,
+      realtime_factor: 0.8,
+      max_speech_probability: 0.94
+    })
+    ws.receive({
       error: "Invalid stream configuration"
     })
 
@@ -497,6 +560,13 @@ describe("AssemblyAIAdapter", () => {
       type: "termination",
       audioDurationSeconds: 1.2,
       sessionDurationSeconds: 2.3
+    })
+    expect(onMetadata).toHaveBeenCalledWith({
+      type: "Heartbeat",
+      total_audio_received_ms: 1200,
+      total_duration_ms: 1500,
+      realtime_factor: 0.8,
+      max_speech_probability: 0.94
     })
     expect(onTranscript).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -591,14 +661,18 @@ describe("AssemblyAIAdapter", () => {
 
     session.updateConfiguration?.({
       end_of_turn_confidence_threshold: 0.5,
-      vad_threshold: 0.2
+      vad_threshold: 0.2,
+      session_heartbeat: true,
+      language_codes: ["en", "es"]
     })
     session.forceEndpoint?.()
     expect(ws.sent[3]).toBe(
       JSON.stringify({
         type: "UpdateConfiguration",
         end_of_turn_confidence_threshold: 0.5,
-        vad_threshold: 0.2
+        vad_threshold: 0.2,
+        session_heartbeat: true,
+        language_codes: ["en", "es"]
       })
     )
     expect(ws.sent[4]).toBe(JSON.stringify({ type: "ForceEndpoint" }))

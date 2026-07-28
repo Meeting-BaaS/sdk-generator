@@ -8,7 +8,6 @@
 
 /**
  * The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
- * The default value is 'en_us'.
  */
 export type TranscriptLanguageCode = typeof TranscriptLanguageCode[keyof typeof TranscriptLanguageCode];
 

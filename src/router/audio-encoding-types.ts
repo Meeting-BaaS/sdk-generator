@@ -93,10 +93,12 @@ export const DEEPGRAM_ENCODING_MAP: Readonly<Record<string, string>> = Object.fr
 
 /**
  * AssemblyAI encoding mappings
- * AssemblyAI uses pcm_s16le for streaming
+ * AssemblyAI accepts PCM, mu-law, and self-describing Opus streams.
  */
 export const ASSEMBLYAI_ENCODING_MAP: Readonly<Record<string, string>> = Object.freeze({
-  linear16: "pcm_s16le"
+  linear16: "pcm_s16le",
+  mulaw: "pcm_mulaw",
+  opus: "opus"
 })
 
 type EncodingProvider = "gladia" | "deepgram" | "assemblyai"

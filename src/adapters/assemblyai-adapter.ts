@@ -7,6 +7,7 @@ import WebSocket from "ws"
 import type { AssemblyAIRegionType } from "../constants"
 import { mapEncodingToProvider } from "../router/audio-encoding-types"
 import type {
+  AssemblyAICompatibleSpeechModel,
   AudioChunk,
   AudioInput,
   ListTranscriptsOptions,
@@ -77,6 +78,19 @@ import type {
   TerminationEvent,
   TurnEvent
 } from "../generated/assemblyai/streaming-types"
+
+const ASSEMBLYAI_LEGACY_BATCH_MODEL = "universal-3-pro"
+const ASSEMBLYAI_REPLACEMENT_BATCH_MODEL: SpeechModel = "universal-3-5-pro"
+
+function normalizeAssemblyAIBatchModel(model: AssemblyAICompatibleSpeechModel): SpeechModel {
+  return model === ASSEMBLYAI_LEGACY_BATCH_MODEL ? ASSEMBLYAI_REPLACEMENT_BATCH_MODEL : model
+}
+
+function normalizeAssemblyAIBatchModels(
+  models: readonly AssemblyAICompatibleSpeechModel[]
+): SpeechModel[] {
+  return models.map(normalizeAssemblyAIBatchModel)
+}
 
 /**
  * AssemblyAI transcription provider adapter
@@ -521,14 +535,12 @@ export class AssemblyAIAdapter extends BaseAdapter {
     // Migrate deprecated speech_model → speech_models before building request.
     // AssemblyAI rejects requests containing both fields (HTTP 400).
     // speech_model may arrive via older consumer code through passthrough options.
-    const passthrough = options?.assemblyai as
-      | (Partial<TranscriptParams> & { speech_model?: string })
-      | undefined
+    const passthrough = options?.assemblyai
     let speechModels: TranscriptParams["speech_models"] | undefined
     if (passthrough?.speech_model != null && !passthrough.speech_models) {
-      speechModels = [passthrough.speech_model] as TranscriptParams["speech_models"]
+      speechModels = [normalizeAssemblyAIBatchModel(passthrough.speech_model)]
     } else if (passthrough?.speech_models) {
-      speechModels = passthrough.speech_models
+      speechModels = normalizeAssemblyAIBatchModels(passthrough.speech_models)
     }
 
     // Build fully typed request from provider-specific options (typed from OpenAPI)
@@ -548,7 +560,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
       // Model selection (universal-3-5-pro, universal-2, etc.)
       // Uses speech_models (plural, array) — speech_model (singular) is deprecated
       if (options.model) {
-        request.speech_models = [options.model as SpeechModel]
+        request.speech_models = [
+          normalizeAssemblyAIBatchModel(options.model as AssemblyAICompatibleSpeechModel)
+        ]
       }
 
       // Language configuration
@@ -1133,7 +1147,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
     // ─────────────────────────────────────────────────────────────────
     // Audio format parameters (required)
     // ─────────────────────────────────────────────────────────────────
-    const sampleRate = options?.sampleRate || aaiOpts.sampleRate || 16000
+    const sampleRate = options?.sampleRate ?? aaiOpts.sampleRate ?? 16000
     params.append("sample_rate", String(sampleRate))
 
     const encoding = options?.encoding
@@ -1147,8 +1161,17 @@ export class AssemblyAIAdapter extends BaseAdapter {
     if (aaiOpts.speechModel) {
       params.append("speech_model", aaiOpts.speechModel)
     }
-    if (aaiOpts.languageDetection) {
-      params.append("language_detection", "true")
+    if (aaiOpts.languageCode !== undefined) {
+      params.append("language_code", aaiOpts.languageCode)
+    }
+    if (aaiOpts.languageCodes !== undefined) {
+      params.append("language_codes", JSON.stringify(aaiOpts.languageCodes))
+    }
+    if (aaiOpts.languageDetection !== undefined) {
+      params.append("language_detection", String(aaiOpts.languageDetection))
+    }
+    if (aaiOpts.domain !== undefined) {
+      params.append("domain", aaiOpts.domain)
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -1160,11 +1183,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
         String(aaiOpts.endOfTurnConfidenceThreshold)
       )
     }
-    if (aaiOpts.minEndOfTurnSilenceWhenConfident !== undefined) {
-      params.append(
-        "min_end_of_turn_silence_when_confident",
-        String(aaiOpts.minEndOfTurnSilenceWhenConfident)
-      )
+    const minTurnSilence = aaiOpts.minTurnSilence ?? aaiOpts.minEndOfTurnSilenceWhenConfident
+    if (minTurnSilence !== undefined) {
+      params.append("min_turn_silence", String(minTurnSilence))
     }
     if (aaiOpts.maxTurnSilence !== undefined) {
       params.append("max_turn_silence", String(aaiOpts.maxTurnSilence))
@@ -1183,23 +1204,76 @@ export class AssemblyAIAdapter extends BaseAdapter {
     if (aaiOpts.formatTurns !== undefined) {
       params.append("format_turns", String(aaiOpts.formatTurns))
     }
-    if (aaiOpts.filterProfanity) {
-      params.append("filter_profanity", "true")
+    if (aaiOpts.sessionHeartbeat !== undefined) {
+      params.append("session_heartbeat", String(aaiOpts.sessionHeartbeat))
+    }
+    if (aaiOpts.filterProfanity !== undefined) {
+      params.append("filter_profanity", String(aaiOpts.filterProfanity))
     }
 
     // ─────────────────────────────────────────────────────────────────
     // Custom vocabulary parameters
     // ─────────────────────────────────────────────────────────────────
-    const keyterms = options?.customVocabulary || aaiOpts.keyterms
-    if (keyterms && keyterms.length > 0) {
-      for (const term of keyterms) {
-        params.append("keyterms", term)
-      }
+    const keytermsPrompt = aaiOpts.keytermsPrompt ?? options?.customVocabulary ?? aaiOpts.keyterms
+    if (keytermsPrompt?.length) {
+      params.append("keyterms_prompt", JSON.stringify(keytermsPrompt))
     }
-    if (aaiOpts.keytermsPrompt && aaiOpts.keytermsPrompt.length > 0) {
-      for (const prompt of aaiOpts.keytermsPrompt) {
-        params.append("keyterms_prompt", prompt)
-      }
+    if (aaiOpts.prompt !== undefined) {
+      params.append("prompt", aaiOpts.prompt)
+    }
+    if (aaiOpts.agentContext !== undefined) {
+      params.append("agent_context", aaiOpts.agentContext)
+    }
+    if (aaiOpts.speakerLabels !== undefined) {
+      params.append("speaker_labels", String(aaiOpts.speakerLabels))
+    }
+    if (aaiOpts.maxSpeakers !== undefined) {
+      params.append("max_speakers", String(aaiOpts.maxSpeakers))
+    }
+    if (aaiOpts.voiceFocus !== undefined) {
+      params.append("voice_focus", aaiOpts.voiceFocus)
+    }
+    if (aaiOpts.voiceFocusThreshold !== undefined) {
+      params.append("voice_focus_threshold", String(aaiOpts.voiceFocusThreshold))
+    }
+    if (aaiOpts.continuousPartials !== undefined) {
+      params.append("continuous_partials", String(aaiOpts.continuousPartials))
+    }
+    if (aaiOpts.interruptionDelay !== undefined) {
+      params.append("interruption_delay", String(aaiOpts.interruptionDelay))
+    }
+    if (aaiOpts.turnLeftPadMs !== undefined) {
+      params.append("turn_left_pad_ms", String(aaiOpts.turnLeftPadMs))
+    }
+    if (aaiOpts.includePartialTurns !== undefined) {
+      params.append("include_partial_turns", String(aaiOpts.includePartialTurns))
+    }
+    if (aaiOpts.redactPii !== undefined) {
+      params.append("redact_pii", String(aaiOpts.redactPii))
+    }
+    if (aaiOpts.redactPiiPolicies !== undefined) {
+      params.append("redact_pii_policies", JSON.stringify(aaiOpts.redactPiiPolicies))
+    }
+    if (aaiOpts.redactPiiSub !== undefined) {
+      params.append("redact_pii_sub", aaiOpts.redactPiiSub)
+    }
+    if (aaiOpts.mode !== undefined) {
+      params.append("mode", aaiOpts.mode)
+    }
+    if (aaiOpts.llmGateway !== undefined) {
+      params.append("llm_gateway", JSON.stringify(aaiOpts.llmGateway))
+    }
+    if (aaiOpts.webhookUrl !== undefined) {
+      params.append("webhook_url", aaiOpts.webhookUrl)
+    }
+    if (aaiOpts.webhookAuthHeaderName !== undefined) {
+      params.append("webhook_auth_header_name", aaiOpts.webhookAuthHeaderName)
+    }
+    if (aaiOpts.webhookAuthHeaderValue !== undefined) {
+      params.append("webhook_auth_header_value", aaiOpts.webhookAuthHeaderValue)
+    }
+    if (aaiOpts.customerSupportAudioCapture !== undefined) {
+      params.append("_customer_support_audio_capture", String(aaiOpts.customerSupportAudioCapture))
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -1228,12 +1302,9 @@ export class AssemblyAIAdapter extends BaseAdapter {
       return
     }
 
-    // Handle typed messages
-    const typedMessage = message as BeginEvent | TurnEvent | TerminationEvent
-
-    switch (typedMessage.type) {
+    switch (message.type) {
       case "Begin": {
-        const beginMsg = typedMessage as BeginEvent
+        const beginMsg = message as BeginEvent
         callbacks?.onMetadata?.({
           type: "begin",
           sessionId: beginMsg.id,
@@ -1243,7 +1314,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
       }
 
       case "Turn": {
-        const turnMsg = typedMessage as TurnEvent
+        const turnMsg = message as TurnEvent
 
         // Always send transcript event
         callbacks?.onTranscript?.({
@@ -1284,7 +1355,7 @@ export class AssemblyAIAdapter extends BaseAdapter {
       }
 
       case "Termination": {
-        const termMsg = typedMessage as TerminationEvent
+        const termMsg = message as TerminationEvent
         callbacks?.onMetadata?.({
           type: "termination",
           audioDurationSeconds: termMsg.audio_duration_seconds,

@@ -160,7 +160,8 @@ export type SpeechmaticsOperatingPoint = SpeechmaticsModel
  *
  * Strict union type - only accepts valid models from each provider:
  * - Deepgram: nova-3, nova-2, enhanced, base, etc.
- * - AssemblyAI: best, slam-1, universal
+ * - AssemblyAI: universal-3-5-pro, universal-2, and the deprecated
+ *   universal-3-pro compatibility alias
  * - Gladia: solaria-1
  * - Soniox: stt-rt-v5, stt-async-v5, and current aliases
  * - Speechmatics: standard, enhanced
@@ -177,9 +178,37 @@ export type TranscriptionModel =
   | DeepgramModelType
   | StreamingSupportedModels
   | AssemblyAISpeechModel
+  | AssemblyAILegacySpeechModel
   | SonioxModelCode
   | ElevenLabsModelCode
   | SpeechmaticsModel
+
+/**
+ * AssemblyAI batch model retained for router compatibility.
+ *
+ * @deprecated AssemblyAI replaced `universal-3-pro` with
+ * `universal-3-5-pro`. The router accepts this value and normalizes it before
+ * sending the request.
+ */
+export type AssemblyAILegacySpeechModel = "universal-3-pro"
+
+/** AssemblyAI batch model accepted by the router compatibility layer. */
+export type AssemblyAICompatibleSpeechModel = AssemblyAISpeechModel | AssemblyAILegacySpeechModel
+
+/**
+ * AssemblyAI batch options accepted by the router.
+ *
+ * Generated provider types remain exact to the current upstream spec, while
+ * these model fields retain compatibility with the replaced model name.
+ */
+export type AssemblyAIRouterOptions = Omit<
+  Partial<AssemblyAITranscriptParams>,
+  "speech_model" | "speech_models"
+> & {
+  /** @deprecated Use `speech_models`. */
+  speech_model?: AssemblyAICompatibleSpeechModel | null
+  speech_models?: AssemblyAICompatibleSpeechModel[]
+}
 
 /**
  * Unified transcription language type with autocomplete for all providers
@@ -190,10 +219,11 @@ export type TranscriptionModel =
  * Provider language sources:
  * - AssemblyAI: OpenAPI spec enum (102 languages)
  * - Gladia: OpenAPI spec enum (99 languages)
- * - Deepgram: Auto-generated from /v1/models API (161 BCP-47 codes)
+ * - Deepgram: Auto-generated from /v1/models API (179 BCP-47 codes)
  * - Soniox: Auto-generated from OpenAPI spec (60 languages)
- * - Speechmatics: Auto-generated from Feature Discovery API (62 languages)
- * - Azure: Auto-generated from Microsoft docs (154 locales)
+ * - ElevenLabs: Curated from official Scribe documentation (99 languages)
+ * - Speechmatics: Auto-generated from Feature Discovery API (63 languages)
+ * - Azure: Auto-generated from Microsoft docs (153 locales)
  *
  * Use provider const objects for autocomplete:
  * @example
@@ -457,7 +487,8 @@ export interface TranscribeOptions {
    *
    * Type-safe model selection derived from OpenAPI specs:
    * - Deepgram: 'nova-3', 'nova-2', 'enhanced', 'base', etc.
-   * - AssemblyAI: 'best', 'slam-1', 'universal'
+   * - AssemblyAI: 'universal-3-5-pro', 'universal-2', plus the deprecated
+   *   'universal-3-pro' compatibility alias
    * - Speechmatics: 'standard', 'enhanced' (model)
    * - Gladia: 'solaria-1' (streaming only)
    *
@@ -537,7 +568,7 @@ export interface TranscribeOptions {
    * AssemblyAI-specific options (passed directly to API)
    * @see https://www.assemblyai.com/docs/api-reference/transcripts/submit
    */
-  assemblyai?: Partial<AssemblyAITranscriptParams>
+  assemblyai?: AssemblyAIRouterOptions
 
   /**
    * Gladia-specific options (passed directly to API)

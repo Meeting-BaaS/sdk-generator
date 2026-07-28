@@ -274,7 +274,15 @@ export interface DeepgramStreamingOptions {
 }
 
 // AssemblyAI streaming types - from auto-synced SDK types
-import type { StreamingUpdateConfiguration } from "../generated/assemblyai/streaming-types"
+import type {
+  LLMGatewayConfig,
+  StreamingDomain,
+  StreamingMode,
+  StreamingPiiPolicy,
+  StreamingPiiSubstitution,
+  StreamingUpdateConfiguration,
+  VoiceFocusModel
+} from "../generated/assemblyai/streaming-types"
 
 /**
  * AssemblyAI streaming options
@@ -332,8 +340,17 @@ export interface AssemblyAIStreamingOptions {
    */
   speechModel?: AssemblyAISpeechModelType
 
+  /** @deprecated Use `languageCodes` instead. */
+  languageCode?: string
+
+  /** Languages expected in the stream, including code-switching candidates. */
+  languageCodes?: string[]
+
   /** Enable automatic language detection */
   languageDetection?: boolean
+
+  /** Domain-specific recognition mode. */
+  domain?: StreamingDomain
 
   // ─────────────────────────────────────────────────────────────────
   // End-of-Turn Detection Options
@@ -352,6 +369,9 @@ export interface AssemblyAIStreamingOptions {
    * @default 1000
    */
   minEndOfTurnSilenceWhenConfident?: number
+
+  /** Minimum silence duration (ms) before ending a turn. */
+  minTurnSilence?: number
 
   /**
    * Maximum silence duration (ms) before forcing end-of-turn
@@ -380,6 +400,9 @@ export interface AssemblyAIStreamingOptions {
    */
   formatTurns?: boolean
 
+  /** Emit periodic server heartbeat events. */
+  sessionHeartbeat?: boolean
+
   /** Filter profanity in real-time transcription */
   filterProfanity?: boolean
 
@@ -398,6 +421,66 @@ export interface AssemblyAIStreamingOptions {
    * Provides additional context about the terms to improve recognition
    */
   keytermsPrompt?: string[]
+
+  /** Free-form transcription prompt. */
+  prompt?: string
+
+  /** Context about the agent or conversation. */
+  agentContext?: string
+
+  /** Enable speaker diarization labels. */
+  speakerLabels?: boolean
+
+  /** Maximum expected speaker count. */
+  maxSpeakers?: number
+
+  /** Voice-focus microphone profile. */
+  voiceFocus?: VoiceFocusModel
+
+  /** Voice-focus activation threshold. */
+  voiceFocusThreshold?: number
+
+  /** Emit continuously revised partial turns. */
+  continuousPartials?: boolean
+
+  /** Delay before interruption detection, in milliseconds. */
+  interruptionDelay?: number
+
+  /** Audio left-padding for detected turns, in milliseconds. */
+  turnLeftPadMs?: number
+
+  /** Include partial turns in event output. */
+  includePartialTurns?: boolean
+
+  /** Enable streaming PII redaction. */
+  redactPii?: boolean
+
+  /** Entity categories to redact. */
+  redactPiiPolicies?: StreamingPiiPolicy[]
+
+  /** Replacement style for redacted entities. */
+  redactPiiSub?: StreamingPiiSubstitution
+
+  /** Streaming latency/accuracy mode. */
+  mode?: StreamingMode
+
+  /** Configure AssemblyAI's LLM gateway. */
+  llmGateway?: LLMGatewayConfig
+
+  /** Webhook destination for streaming events. */
+  webhookUrl?: string
+
+  /** Webhook authentication header name. */
+  webhookAuthHeaderName?: string
+
+  /** Webhook authentication header value. */
+  webhookAuthHeaderValue?: string
+
+  /**
+   * Enable AssemblyAI support audio capture.
+   * Only use when explicitly coordinating with AssemblyAI support.
+   */
+  customerSupportAudioCapture?: boolean
 
   // ─────────────────────────────────────────────────────────────────
   // Session Configuration

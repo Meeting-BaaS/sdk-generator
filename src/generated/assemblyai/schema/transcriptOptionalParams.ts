@@ -69,7 +69,7 @@ export interface TranscriptOptionalParams {
   keyterms_prompt?: string[];
   /**
      * The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
-     * The default value is 'en_us'.
+     * If you don't specify a language, it's detected automatically. Cannot be used together with `language_detection`.
      */
   language_code?: TranscriptLanguageCode | string | null;
   /**
@@ -81,12 +81,12 @@ export interface TranscriptOptionalParams {
   /**
      * The confidence threshold for the automatically detected language.
      * An error will be returned if the language confidence is below this threshold.
-     * Defaults to 0. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+     * Defaults to 0. Can only be set when `language_detection` is enabled. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
      * @minimum 0
      * @maximum 1
      */
   language_confidence_threshold?: number;
-  /** Enable [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection), either true or false. */
+  /** [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) identifies the spoken language and routes the request to the best model. It's applied automatically when you don't specify a `language_code`. Set to `false` only together with a `language_code`; disabling it without specifying a language returns an error. */
   language_detection?: boolean;
   /** Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection). */
   language_detection_options?: TranscriptOptionalParamsLanguageDetectionOptions;
@@ -135,7 +135,7 @@ export interface TranscriptOptionalParams {
      * @nullable
      */
   speakers_expected?: number | null;
-  /** Optional. List one or more speech models in priority order. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `universal-3-5-pro`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior. */
+  /** Optional. List one or more speech models in priority order. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `["universal-3-5-pro", "universal-2"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior. */
   speech_models?: SpeechModel[];
   /**
      * Reject audio files that contain less than this fraction of speech.

@@ -141,7 +141,6 @@ export interface Transcript {
   /**
      * The language of your audio file.
      * Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
-     * The default value is 'en_us'.
      */
   language_code?: TranscriptLanguageCode | string;
   /**
@@ -244,7 +243,7 @@ export interface Transcript {
   /** The speech model that was actually used for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models. */
   speech_model_used?: SpeechModel;
   /**
-     * List of speech models that were used (in priority order) to transcribe the audio. If not specified in the request, this defaults to `universal-3-5-pro`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
+     * List of speech models that were used (in priority order) to transcribe the audio. If not specified in the request, this defaults to `["universal-3-5-pro", "universal-2"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
      * @nullable
      */
   speech_models?: SpeechModel[] | null;

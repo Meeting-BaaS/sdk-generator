@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.8] - 2026-07-24
+## [0.9.8] - 2026-07-28
 
 ### Added
 
@@ -17,11 +17,13 @@ Added deterministic generated-output verification, package-entrypoint checks, pr
 
 #### Provider APIs And SDKs Refreshed
 
-Re-synced and regenerated the TypeScript API surface for AssemblyAI, Azure Speech-to-Text v3.2, Deepgram, ElevenLabs, Gladia, OpenAI, Soniox, and Speechmatics. Notable additions include Soniox `stt-rt-v5`, `stt-async-v5`, TTS, and voice-management endpoints; OpenAI `gpt-realtime-2.1` and `gpt-realtime-2.1-mini`; AssemblyAI `universal-3-5-pro`; ElevenLabs multichannel output controls; Gladia `/v1/models`; Speechmatics `model`, `melia-1`, forced-transcript events, and region metadata; and Deepgram locale `hu-HU`. Removed Speechmatics alignment/data/text/object-URL endpoints no longer appear in generated clients. Other provider language and locale sets are unchanged.
+Re-synced and regenerated the TypeScript API surface for AssemblyAI, Azure Speech-to-Text v3.2, Deepgram, ElevenLabs, Gladia, OpenAI, Soniox, and Speechmatics. Notable additions include Soniox `stt-rt-v5`, `stt-async-v5`, TTS, and voice-management endpoints; OpenAI `gpt-realtime-2.1` and `gpt-realtime-2.1-mini`; AssemblyAI `universal-3-5-pro`; ElevenLabs multichannel output controls; Gladia `/v1/models`; Speechmatics `model`, `melia-1`, forced-transcript events, and region metadata; and Deepgram locale `hu-HU`. Removed Speechmatics alignment/data/text/object-URL endpoints no longer appear in generated clients.
+
+The final release refresh updates the tracked SDK baselines to Gladia 1.1.0, AssemblyAI 4.36.4, Deepgram 5.7.0, OpenAI 7.0.0, Azure Speech SDK 1.51.0, and Speechmatics realtime 8.5.1. AssemblyAI streaming types now cover the current model, encoding, language, heartbeat, speaker, voice-focus, PII, latency-mode, LLM-gateway, and webhook options and events. ElevenLabs Scribe languages increased from 80 to 99; the generated list adds the newly documented languages, corrects Javanese from `jw` to `jv`, and removes Yoruba `yo`, which is no longer listed by the provider.
 
 #### Dependencies And Code Generation Updated
 
-Updated runtime dependencies including Soniox SDK 2.2, Axios 1.18, ws 8.21, and Zod 4.4. Updated the generation/test toolchain to Orval 8.22, TypeScript 6.0, Vitest 4.1, Vite 8.1, and current supporting packages. Zod field introspection now supports Zod 4, including nested object unions, while generated compatibility exports remain available.
+Updated runtime dependencies including Soniox SDK 2.2, Axios 1.18, ws 8.21, and Zod 4.4. Updated the generation/test toolchain to Orval 8.22, TypeScript 6.0, Vitest 4.1, Vite 8.1, Node types 26.1.2, js-yaml 5.2.2, and current supporting packages. Zod field introspection now supports Zod 4, including nested object unions, while generated compatibility exports remain available.
 
 ### Fixed
 
@@ -36,6 +38,14 @@ Normalized Node buffers and typed-array views into Blob-compatible payloads for 
 #### Generated Metadata Classification
 
 Tightened field-equivalence classification so Deepgram `filler_words` and `keywords` are not mislabeled as word timestamps. Generation now fails on source extraction errors instead of falling back to stale built output.
+
+#### AssemblyAI Model Compatibility
+
+Kept the replaced batch model `universal-3-pro` as a deprecated router constant and input literal. Unified `model`, deprecated `assemblyai.speech_model`, and `assemblyai.speech_models` inputs normalize it to the current `universal-3-5-pro` value before requests are sent. Current generated provider types remain exact to the upstream specification. The deprecated streaming `u3-pro` model is also retained because the current AssemblyAI SDK still declares it.
+
+#### Volatile Provider Checksums
+
+Excluded date-only `example` values from Gladia spec hashing, alongside existing timestamp normalization, so daily documentation examples do not create false provider-update alerts. Meaningful date fields remain checksummed.
 
 ## [0.9.7] - 2026-06-16
 

@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs"
+import { createRequire } from "node:module"
 import { describe, expect, it } from "vitest"
 import {
   OpenAIRealtimeModelCodes,
@@ -9,11 +10,42 @@ import { SonioxAsyncModelCodes, SonioxRealtimeModelCodes } from "../../src/gener
 const packageJson = JSON.parse(readFileSync("package.json", "utf8")) as {
   scripts: Record<string, string>
 }
+const require = createRequire(import.meta.url)
+const { canonicalizeForHash } = require("../../scripts/provider-upstream-manifest.js") as {
+  canonicalizeForHash: (content: string) => string
+}
 
 describe("generated API freshness scripts", () => {
   it("keeps generated OpenAI model sets non-empty", () => {
     expect(OpenAITranscriptionModelCodes.length).toBeGreaterThan(0)
     expect(OpenAIRealtimeModelCodes.length).toBeGreaterThan(0)
+  })
+
+  it("masks volatile date examples without hiding meaningful date fields", () => {
+    const first = canonicalizeForHash(
+      JSON.stringify({
+        example: "2026-07-27",
+        generatedAt: "2026-07-27T10:00:00Z",
+        releaseDate: "2026-07-27"
+      })
+    )
+    const second = canonicalizeForHash(
+      JSON.stringify({
+        example: "2026-07-28",
+        generatedAt: "2026-07-28T11:00:00Z",
+        releaseDate: "2026-07-27"
+      })
+    )
+    const changedReleaseDate = canonicalizeForHash(
+      JSON.stringify({
+        example: "2026-07-28",
+        generatedAt: "2026-07-28T11:00:00Z",
+        releaseDate: "2026-07-28"
+      })
+    )
+
+    expect(first).toBe(second)
+    expect(second).not.toBe(changedReleaseDate)
   })
 
   it("uses Soniox's published OpenAPI schema instead of the retired API endpoint", () => {
@@ -161,6 +193,17 @@ describe("generated API freshness scripts", () => {
     expect(script).toContain("pnpm openapi:sync-elevenlabs-models")
     expect(script).toContain("pnpm openapi:refresh-public-metadata")
     expect(script.trim().endsWith("pnpm openapi:refresh-public-metadata")).toBe(true)
+  })
+
+  it("tracks the current ElevenLabs Scribe language catalog", () => {
+    const source = JSON.parse(readFileSync("specs/elevenlabs-languages.json", "utf8"))
+    const codes = source.languages.map((language: { code: string }) => language.code)
+
+    expect(codes).toHaveLength(99)
+    expect(codes).toEqual(expect.arrayContaining(["ast", "yue", "fil", "kea", "luo", "nso", "umb"]))
+    expect(codes).toContain("jv")
+    expect(codes).not.toContain("jw")
+    expect(codes).not.toContain("yo")
   })
 
   it("fails builds instead of silently reusing stale generated API types", () => {

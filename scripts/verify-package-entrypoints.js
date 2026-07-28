@@ -60,6 +60,7 @@ function assertTypeConsumerCompiles(label) {
     `import {
   AssemblyAIStatus,
   AssemblyAISpeechModel,
+  AssemblyAITranscriptionModel,
   AllProviders,
   AzureStatus,
   BatchOnlyProviders,
@@ -78,6 +79,8 @@ function assertTypeConsumerCompiles(label) {
   mapEncodingToProvider,
   validateAudioConfig,
   type AssemblyAIStatusType,
+  type AssemblyAICompatibleSpeechModel,
+  type AssemblyAIRouterOptions,
   type AudioEncoding,
   type AzureBatchOptions,
   type AzureStatusType,
@@ -100,6 +103,7 @@ function assertTypeConsumerCompiles(label) {
   type StreamingOptions,
   type StreamingOptionsForProvider,
   type TranscribeOptions,
+  type TranscriptionModel,
   type TranscribeStreamParams,
   type UnifiedTranscriptResponse,
   type VoiceRouterConfig
@@ -137,6 +141,13 @@ const bitDepth: GladiaBitDepthType = GladiaBitDepth.NUMBER_16
 const sampleRate: GladiaSampleRateType = GladiaSampleRate.NUMBER_16000
 const providerEncoding: GladiaEncodingType = GladiaEncoding["wav/pcm"]
 const assemblyStatus: AssemblyAIStatusType = AssemblyAIStatus.completed
+const legacyAssemblyModel: AssemblyAICompatibleSpeechModel =
+  AssemblyAITranscriptionModel["universal-3-pro"]
+const legacyUnifiedModel: TranscriptionModel = legacyAssemblyModel
+const assemblyRouterOptions: AssemblyAIRouterOptions = {
+  speech_model: legacyAssemblyModel,
+  speech_models: [legacyAssemblyModel, AssemblyAITranscriptionModel["universal-2"]]
+}
 const azureStatus: AzureStatusType = AzureStatus.Succeeded
 const constantsAzureStatus: ConstantsAzureStatusType = azureStatus
 const realtimeFormat: OpenAIRealtimeAudioFormatType = OpenAIRealtimeAudioFormat.pcm16
@@ -231,6 +242,8 @@ const speechmaticsBatchOptions: SpeechmaticsBatchOptions = {
   transcription_config: { domain: "finance" }
 }
 const transcribeOptions: TranscribeOptions = {
+  model: legacyUnifiedModel,
+  assemblyai: assemblyRouterOptions,
   azure: azureBatchOptions,
   speechmatics: speechmaticsBatchOptions
 }
@@ -368,6 +381,9 @@ void router
 void mapped
 void providerEncoding
 void assemblyStatus
+void legacyAssemblyModel
+void legacyUnifiedModel
+void assemblyRouterOptions
 void assemblyParams
 void gladiaParams
 void deepgramOptionsForProvider

@@ -14,6 +14,7 @@
 
 const fs = require("node:fs")
 const path = require("node:path")
+const ts = require("typescript")
 
 const ASYNCAPI_SPEC = path.join(__dirname, "../specs/assemblyai-asyncapi.json")
 const SDK_TYPES = path.join(__dirname, "../specs/assemblyai-streaming-sdk.ts")
@@ -28,25 +29,52 @@ const STREAMING_TYPES_OUTPUT = path.join(OUTPUT_DIR, "streaming-types.ts")
  * @returns {Object} Map of field name to { tsType, optional }
  */
 function parseTypeScriptType(content, typeName) {
-  const fields = {}
+  const sourceFile = ts.createSourceFile(
+    path.basename(SDK_TYPES),
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS
+  )
+  const aliases = new Map()
 
-  // Match the type definition block
-  const typeRegex = new RegExp(`export type ${typeName}\\s*=\\s*\\{([^}]+)\\}`, "s")
-  const match = content.match(typeRegex)
-  if (!match) return fields
-
-  const body = match[1]
-
-  // Match each field: fieldName?: Type or fieldName: Type
-  const fieldRegex = /(\w+)(\?)?:\s*([^;\n]+)/g
-  let fieldMatch = fieldRegex.exec(body)
-  while (fieldMatch !== null) {
-    const [, name, optional, tsType] = fieldMatch
-    fields[name] = {
-      tsType: tsType.trim(),
-      optional: !!optional
+  for (const statement of sourceFile.statements) {
+    if (ts.isTypeAliasDeclaration(statement)) {
+      aliases.set(statement.name.text, statement.type)
     }
-    fieldMatch = fieldRegex.exec(body)
+  }
+
+  const declaration = sourceFile.statements.find(
+    (statement) => ts.isTypeAliasDeclaration(statement) && statement.name.text === typeName
+  )
+  if (!declaration || !ts.isTypeLiteralNode(declaration.type)) return {}
+
+  const literalValues = (typeNode) => {
+    if (ts.isLiteralTypeNode(typeNode) && ts.isStringLiteral(typeNode.literal)) {
+      return [typeNode.literal.text]
+    }
+    if (ts.isUnionTypeNode(typeNode)) {
+      const values = typeNode.types.flatMap((member) => literalValues(member) || [])
+      return values.length === typeNode.types.length ? values : null
+    }
+    if (ts.isTypeReferenceNode(typeNode) && ts.isIdentifier(typeNode.typeName)) {
+      const alias = aliases.get(typeNode.typeName.text)
+      return alias ? literalValues(alias) : null
+    }
+    return null
+  }
+
+  const fields = {}
+  for (const member of declaration.type.members) {
+    if (!ts.isPropertySignature(member) || !member.type || !member.name) continue
+    const name = member.name.getText(sourceFile).replace(/^["']|["']$/g, "")
+    const itemType = ts.isArrayTypeNode(member.type) ? member.type.elementType : null
+    fields[name] = {
+      tsType: member.type.getText(sourceFile),
+      optional: Boolean(member.questionToken),
+      literalValues: literalValues(member.type),
+      arrayLiteralValues: itemType ? literalValues(itemType) : null
+    }
   }
 
   return fields
@@ -55,42 +83,25 @@ function parseTypeScriptType(content, typeName) {
 /**
  * Convert TypeScript type to Zod schema string
  */
-function tsTypeToZod(tsType, optional = false) {
+function tsTypeToZod(field) {
+  const { tsType, optional, literalValues, arrayLiteralValues } = field
   let zodType
 
-  // Handle union types with literals (e.g., "universal-streaming-english" | "universal-streaming-multilingual")
-  if (tsType.includes("|") && tsType.includes('"')) {
-    const literals = tsType.match(/"[^"]+"/g)
-    if (literals) {
-      zodType = `zod.enum([${literals.join(", ")}])`
-    } else {
-      zodType = "zod.string()"
-    }
-  }
-  // Handle string[]
-  else if (tsType === "string[]") {
+  if (literalValues?.length) {
+    zodType = `zod.enum([${literalValues.map(JSON.stringify).join(", ")}])`
+  } else if (arrayLiteralValues?.length) {
+    zodType = `zod.array(zod.enum([${arrayLiteralValues.map(JSON.stringify).join(", ")}]))`
+  } else if (tsType === "string[]") {
     zodType = "zod.array(zod.string())"
-  }
-  // Handle number
-  else if (tsType === "number") {
+  } else if (tsType === "number") {
     zodType = "zod.number()"
-  }
-  // Handle boolean
-  else if (tsType === "boolean") {
+  } else if (tsType === "boolean") {
     zodType = "zod.boolean()"
-  }
-  // Handle string
-  else if (tsType === "string") {
+  } else if (tsType === "string") {
     zodType = "zod.string()"
-  }
-  // Handle specific known types
-  else if (tsType === "AudioEncoding") {
-    zodType = 'zod.enum(["pcm_s16le", "pcm_mulaw"])'
-  } else if (tsType === "StreamingSpeechModel") {
-    zodType = 'zod.enum(["universal-streaming-english", "universal-streaming-multilingual"])'
-  }
-  // Default fallback
-  else {
+  } else if (tsType === "AudioEncoding") {
+    zodType = 'zod.enum(["pcm_s16le", "pcm_mulaw", "opus", "ogg_opus", "aac"])'
+  } else {
     zodType = "zod.unknown()"
   }
 
@@ -195,9 +206,22 @@ function generateZodFromAsyncAPI(specPath) {
     for (const [key, field] of Object.entries(sdkFields)) {
       // Skip fields already added from AsyncAPI, and skip internal fields
       if (addedKeys.has(key)) continue
-      if (["websocketBaseUrl", "apiKey", "token"].includes(key)) continue
+      if (
+        [
+          "websocketBaseUrl",
+          "apiKey",
+          "token",
+          "connectTimeout",
+          "maxConnectionRetries",
+          "connectionRetryDelay",
+          "channels",
+          "channelAttribution"
+        ].includes(key)
+      ) {
+        continue
+      }
 
-      const zodType = tsTypeToZod(field.tsType, field.optional)
+      const zodType = tsTypeToZod(field)
       streamingParams.push(`  ${key}: ${zodType}.describe("From SDK v3")`)
     }
   }
@@ -230,7 +254,7 @@ function generateZodFromAsyncAPI(specPath) {
       if (key === "type") continue
       if (updateAddedKeys.has(key)) continue
 
-      const zodType = tsTypeToZod(field.tsType, field.optional)
+      const zodType = tsTypeToZod(field)
       updateParams.push(`  ${key}: ${zodType}.describe("From SDK v3")`)
     }
   }
