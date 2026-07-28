@@ -45,7 +45,7 @@ Kept the replaced batch model `universal-3-pro` as a deprecated router constant 
 
 #### Volatile Provider Checksums
 
-Excluded date-only `example` values from Gladia spec hashing, alongside existing timestamp normalization, so daily documentation examples do not create false provider-update alerts. Meaningful date fields remain checksummed.
+Excluded date-only `example` values from Gladia spec hashing, alongside existing timestamp normalization, so daily documentation examples do not create false provider-update alerts. Meaningful date fields remain checksummed. Unchanged canonical specs, references, manual inputs, and consumed checksums now preserve their checked-in bytes and timestamps, allowing the publish-time sync to remain clean before the generated-freshness gate runs.
 
 ## [0.9.7] - 2026-06-16
 

@@ -156,9 +156,11 @@ function validateSpec(content, format) {
  * For npm-version type, extracts and compares the package version.
  * For raw type, hashes the content and compares.
  */
-async function checkReference(name, ref, checksumData) {
+async function checkReference(name, ref, checksumData, options = {}) {
   try {
-    const content = await fetchUrl(ref.url)
+    const fetchContent = options.fetchContent || fetchUrl
+    const now = options.now || (() => new Date().toISOString())
+    const content = await fetchContent(ref.url)
 
     let trackingValue
     let displayValue
@@ -174,16 +176,25 @@ async function checkReference(name, ref, checksumData) {
       displayValue = trackingValue.slice(0, 12)
     }
 
-    const oldValue = checksumData.references[name]?.trackingValue
+    const previous = checksumData.references[name]
+    const oldValue = previous?.trackingValue
     const changed = oldValue != null && trackingValue !== oldValue
     const isNew = oldValue == null
 
-    checksumData.references[name] = {
+    const reference = {
       trackingValue,
       url: ref.url,
       note: ref.note,
-      type: ref.type || "sha256",
-      checkedAt: new Date().toISOString()
+      type: ref.type || "sha256"
+    }
+    const metadataChanged =
+      changed ||
+      isNew ||
+      previous?.url !== reference.url ||
+      previous?.note !== reference.note ||
+      previous?.type !== reference.type
+    if (!options.checkOnly && metadataChanged) {
+      checksumData.references[name] = { ...reference, checkedAt: now() }
     }
 
     if (changed) {
@@ -196,7 +207,7 @@ async function checkReference(name, ref, checksumData) {
       console.log(`    ✅ Reference unchanged: ${ref.note} (${displayValue})`)
     }
 
-    return { changed, isNew }
+    return { changed, isNew, metadataChanged }
   } catch (e) {
     console.log(`    ⚠️  Reference check failed: ${ref.note} — ${e.message}`)
     return { changed: false, error: e.message }
@@ -209,9 +220,10 @@ async function checkReference(name, ref, checksumData) {
  * Sync a single spec. Computes checksums and detects changes.
  */
 async function syncSpec(name, config, checksumData, options = {}) {
-  const outputPath = path.join(__dirname, "..", config.output)
+  const outputPath = options.outputPath || path.join(__dirname, "..", config.output)
   const checkOnly = options.checkOnly || false
   const changedSpecs = options.changedSpecs || new Set()
+  const now = options.now || (() => new Date().toISOString())
 
   // ── Manual specs ─────────────────────────────────────────────────────────
   if (config.manual) {
@@ -224,11 +236,17 @@ async function syncSpec(name, config, checksumData, options = {}) {
     // Track local file checksum
     const localContent = fs.readFileSync(outputPath, "utf-8")
     const localHash = sha256(localContent)
-    checksumData.specs[name] = {
-      sha256: localHash,
-      manual: true,
-      checkedAt: new Date().toISOString(),
-      note: config.note
+    const previous = checksumData.specs[name]
+    const metadataChanged =
+      previous?.sha256 !== localHash || previous?.manual !== true || previous?.note !== config.note
+    if (!checkOnly && metadataChanged) {
+      checksumData.specs[name] = {
+        ...(previous || {}),
+        sha256: localHash,
+        manual: true,
+        checkedAt: now(),
+        note: config.note
+      }
     }
 
     // Check if parent specs changed (dependsOn)
@@ -247,7 +265,11 @@ async function syncSpec(name, config, checksumData, options = {}) {
     let refChanged = false
     if (config.reference) {
       console.log(`  🔍 ${name}: Checking upstream reference...`)
-      const refResult = await checkReference(name, config.reference, checksumData)
+      const refResult = await checkReference(name, config.reference, checksumData, {
+        checkOnly,
+        fetchContent: options.fetchContent,
+        now
+      })
       refChanged = refResult.changed
     }
 
@@ -270,7 +292,8 @@ async function syncSpec(name, config, checksumData, options = {}) {
   console.log(`  📥 ${name}: Fetching from ${config.url}`)
 
   try {
-    const content = await fetchUrl(config.url)
+    const fetchContent = options.fetchContent || fetchUrl
+    const content = await fetchContent(config.url)
 
     // Validate
     const validation = validateSpec(content, config.format)
@@ -282,17 +305,21 @@ async function syncSpec(name, config, checksumData, options = {}) {
     // Hash the canonical form so non-deterministic upstream serializers
     // (e.g. Gladia reorders JSON keys per request) don't trigger false drift.
     const newHash = sha256(canonicalizeForHash(content))
-    const oldHash = checksumData.specs[name]?.sha256
+    const previous = checksumData.specs[name]
+    const oldHash = previous?.sha256
     const changed = newHash !== oldHash
+    const metadataChanged = changed || previous?.url !== config.url
 
     // Update checksum data, preserving consumed-spec fields written by
     // record-consumed-specs.js (consumedSha256 / consumedAt / fixedBy).
-    checksumData.specs[name] = {
-      ...(checksumData.specs[name] || {}),
-      sha256: newHash,
-      url: config.url,
-      syncedAt: new Date().toISOString(),
-      size: content.length
+    if (!checkOnly && metadataChanged) {
+      checksumData.specs[name] = {
+        ...(previous || {}),
+        sha256: newHash,
+        url: config.url,
+        syncedAt: now(),
+        size: content.length
+      }
     }
 
     if (checkOnly) {
@@ -302,15 +329,28 @@ async function syncSpec(name, config, checksumData, options = {}) {
       return { status: changed ? "changed" : "unchanged", changed, version: validation.version }
     }
 
-    // Write spec to disk
-    const dir = path.dirname(outputPath)
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
+    // Transformed specs must restore raw upstream bytes so changed fixer logic
+    // can be reapplied. Untransformed specs preserve checked-in bytes when the
+    // canonical content is unchanged, preventing volatile examples and
+    // serializer ordering from dirtying a clean release checkout.
+    const outputMissing = !fs.existsSync(outputPath)
+    const shouldWrite = changed || outputMissing || config.fixedBy
+    if (shouldWrite) {
+      const dir = path.dirname(outputPath)
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true })
+      }
+      fs.writeFileSync(outputPath, content, "utf-8")
     }
-    fs.writeFileSync(outputPath, content, "utf-8")
 
     const icon = changed ? "🔄" : "✅"
-    const label = changed ? "Updated" : "Saved"
+    const label = changed
+      ? "Updated"
+      : outputMissing
+        ? "Restored"
+        : config.fixedBy
+          ? "Refreshed"
+          : "Unchanged"
     console.log(`  ${icon} ${name}: ${label} → ${config.output} (${validation.version})`)
 
     return { status: "success", changed, version: validation.version }
@@ -390,6 +430,7 @@ async function main() {
   const checksumData = loadChecksums()
   if (!checksumData.specs) checksumData.specs = {}
   if (!checksumData.references) checksumData.references = {}
+  const originalChecksumData = JSON.stringify(checksumData)
 
   // Track which specs changed in this run (for dependsOn resolution)
   const changedSpecs = new Set()
@@ -429,8 +470,12 @@ async function main() {
 
   // Save checksums
   if (!checkOnlyMode) {
-    saveChecksums(checksumData)
-    console.log("\n  💾 Checksums saved to specs/.checksums.json")
+    if (JSON.stringify(checksumData) !== originalChecksumData) {
+      saveChecksums(checksumData)
+      console.log("\n  💾 Checksums saved to specs/.checksums.json")
+    } else {
+      console.log("\n  ✅ Checksums already up to date")
+    }
   }
 
   // ── Summary ────────────────────────────────────────────────────────────────
@@ -480,8 +525,11 @@ async function main() {
   }
 }
 
-// Run
-main().catch((e) => {
-  console.error("Fatal error:", e)
-  process.exit(1)
-})
+if (require.main === module) {
+  main().catch((e) => {
+    console.error("Fatal error:", e)
+    process.exit(1)
+  })
+}
+
+module.exports = { checkReference, syncSpec }

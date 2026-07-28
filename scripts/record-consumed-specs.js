@@ -42,6 +42,18 @@ function loadChecksums() {
   }
 }
 
+function updateConsumedEntry(entry, onDiskSha, fixedBy, now = () => new Date().toISOString()) {
+  const hashChanged = entry.consumedSha256 !== onDiskSha
+  const fixedByChanged = fixedBy ? entry.fixedBy !== fixedBy : entry.fixedBy != null
+  if (!hashChanged && !fixedByChanged) return false
+
+  entry.consumedSha256 = onDiskSha
+  entry.consumedAt = now()
+  if (fixedBy) entry.fixedBy = fixedBy
+  else delete entry.fixedBy
+  return true
+}
+
 function main() {
   const checkOnly = process.argv.includes("--check")
   const checksumData = loadChecksums()
@@ -90,11 +102,8 @@ function main() {
       continue
     }
 
-    if (previous !== onDiskSha) changes++
-    entry.consumedSha256 = onDiskSha
-    entry.consumedAt = new Date().toISOString()
-    if (config.fixedBy) entry.fixedBy = config.fixedBy
-    else if (entry.fixedBy) delete entry.fixedBy
+    const entryChanged = updateConsumedEntry(entry, onDiskSha, config.fixedBy)
+    if (entryChanged) changes++
 
     const matchesUpstream = entry.sha256 != null && entry.sha256 === onDiskSha
     const note = config.fixedBy
@@ -104,7 +113,7 @@ function main() {
       : matchesUpstream
         ? "matches upstream (untransformed)"
         : "untransformed"
-    console.log(`  ${changes && previous !== onDiskSha ? "🔄" : "✅"} ${specKey}: ${note}${tag}`)
+    console.log(`  ${entryChanged ? "🔄" : "✅"} ${specKey}: ${note}${tag}`)
   }
 
   if (!checkOnly && changes > 0) {
@@ -124,4 +133,6 @@ function main() {
   }
 }
 
-main()
+if (require.main === module) main()
+
+module.exports = { updateConsumedEntry }

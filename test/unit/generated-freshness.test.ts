@@ -1,5 +1,8 @@
-import { readFileSync } from "node:fs"
+import { createHash } from "node:crypto"
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { createRequire } from "node:module"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
 import { describe, expect, it } from "vitest"
 import {
   OpenAIRealtimeModelCodes,
@@ -13,6 +16,22 @@ const packageJson = JSON.parse(readFileSync("package.json", "utf8")) as {
 const require = createRequire(import.meta.url)
 const { canonicalizeForHash } = require("../../scripts/provider-upstream-manifest.js") as {
   canonicalizeForHash: (content: string) => string
+}
+const { syncSpec } = require("../../scripts/sync-specs.js") as {
+  syncSpec: (
+    name: string,
+    config: Record<string, unknown>,
+    checksumData: Record<string, Record<string, Record<string, unknown>>>,
+    options: Record<string, unknown>
+  ) => Promise<{ changed: boolean }>
+}
+const { updateConsumedEntry } = require("../../scripts/record-consumed-specs.js") as {
+  updateConsumedEntry: (
+    entry: Record<string, unknown>,
+    onDiskSha: string,
+    fixedBy?: string,
+    now?: () => string
+  ) => boolean
 }
 
 describe("generated API freshness scripts", () => {
@@ -46,6 +65,126 @@ describe("generated API freshness scripts", () => {
 
     expect(first).toBe(second)
     expect(second).not.toBe(changedReleaseDate)
+  })
+
+  it("keeps unchanged canonical specs and checksum timestamps byte-stable", async () => {
+    const tempDir = mkdtempSync(join(tmpdir(), "voice-router-sync-"))
+    const outputPath = join(tempDir, "gladia.json")
+    const original = JSON.stringify({
+      openapi: "3.1.0",
+      info: { title: "Gladia", version: "1" },
+      paths: {},
+      example: "2026-07-27",
+      generatedAt: "2026-07-27T10:00:00Z"
+    })
+    const fetched = JSON.stringify({
+      openapi: "3.1.0",
+      info: { title: "Gladia", version: "1" },
+      paths: {},
+      example: "2026-07-28",
+      generatedAt: "2026-07-28T11:00:00Z"
+    })
+    const canonicalHash = createHash("sha256").update(canonicalizeForHash(original)).digest("hex")
+    const checksumData = {
+      specs: {
+        gladia: {
+          sha256: canonicalHash,
+          url: "https://example.com/openapi.json",
+          syncedAt: "2026-07-27T10:00:00Z",
+          size: original.length
+        }
+      },
+      references: {}
+    }
+    const checksumBefore = JSON.stringify(checksumData)
+
+    try {
+      writeFileSync(outputPath, original)
+      const result = await syncSpec(
+        "gladia",
+        {
+          output: "unused.json",
+          url: "https://example.com/openapi.json",
+          format: "json"
+        },
+        checksumData,
+        {
+          outputPath,
+          fetchContent: async () => fetched,
+          now: () => "2026-07-28T11:00:00Z"
+        }
+      )
+
+      expect(result.changed).toBe(false)
+      expect(readFileSync(outputPath, "utf8")).toBe(original)
+      expect(JSON.stringify(checksumData)).toBe(checksumBefore)
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true })
+    }
+  })
+
+  it("restores raw bytes for unchanged specs that require a fixer", async () => {
+    const tempDir = mkdtempSync(join(tmpdir(), "voice-router-sync-fixed-"))
+    const outputPath = join(tempDir, "provider.json")
+    const fetched = JSON.stringify({
+      openapi: "3.1.0",
+      info: { title: "Provider", version: "1" },
+      paths: { "/audio": {} }
+    })
+    const canonicalHash = createHash("sha256").update(canonicalizeForHash(fetched)).digest("hex")
+    const checksumData = {
+      specs: {
+        provider: {
+          sha256: canonicalHash,
+          url: "https://example.com/openapi.json",
+          syncedAt: "2026-07-27T10:00:00Z",
+          size: fetched.length
+        }
+      },
+      references: {}
+    }
+    const checksumBefore = JSON.stringify(checksumData)
+
+    try {
+      writeFileSync(
+        outputPath,
+        '{"openapi":"3.1.0","info":{"title":"Filtered","version":"1"},"paths":{}}'
+      )
+      const result = await syncSpec(
+        "provider",
+        {
+          output: "unused.json",
+          url: "https://example.com/openapi.json",
+          format: "json",
+          fixedBy: "fix-provider-spec.js"
+        },
+        checksumData,
+        {
+          outputPath,
+          fetchContent: async () => fetched,
+          now: () => "2026-07-28T11:00:00Z"
+        }
+      )
+
+      expect(result.changed).toBe(false)
+      expect(readFileSync(outputPath, "utf8")).toBe(fetched)
+      expect(JSON.stringify(checksumData)).toBe(checksumBefore)
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true })
+    }
+  })
+
+  it("preserves consumed timestamps when the checksum is unchanged", () => {
+    const entry = {
+      consumedSha256: "same",
+      consumedAt: "2026-07-27T10:00:00Z",
+      fixedBy: "fix-provider-spec.js"
+    }
+
+    expect(
+      updateConsumedEntry(entry, "same", "fix-provider-spec.js", () => "2026-07-28T11:00:00Z")
+    ).toBe(false)
+    expect(entry.consumedAt).toBe("2026-07-27T10:00:00Z")
   })
 
   it("uses Soniox's published OpenAPI schema instead of the retired API endpoint", () => {
