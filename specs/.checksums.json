@@ -80,12 +80,12 @@
       "fixedBy": "fix-speechmatics-spec.js"
     },
     "speechmaticsAsync": {
-      "sha256": "9b369bf42315fdc242ab1c07517bcf76c3372baa14e1edaad416332705536487",
+      "sha256": "75e977979b36b602eeb8ebe593f42bac28c9e2555d5db04c941659d75e9e7ac5",
       "url": "https://raw.githubusercontent.com/speechmatics/docs/refs/heads/main/spec/realtime.yaml",
-      "syncedAt": "2026-07-28T10:35:11.576Z",
-      "size": 52089,
-      "consumedSha256": "9b369bf42315fdc242ab1c07517bcf76c3372baa14e1edaad416332705536487",
-      "consumedAt": "2026-07-28T10:35:16.061Z"
+      "syncedAt": "2026-07-28T12:56:48.037Z",
+      "size": 52196,
+      "consumedSha256": "75e977979b36b602eeb8ebe593f42bac28c9e2555d5db04c941659d75e9e7ac5",
+      "consumedAt": "2026-07-28T12:56:53.296Z"
     },
     "speechmaticsBatchTypes": {
       "sha256": "97e26200fb2858b62020d50c083bab1b1fe45fc1d87ff850a18709d57b04d994",
@@ -179,7 +179,7 @@
       "checkedAt": "2026-04-28T07:05:09.432Z"
     }
   },
-  "updatedAt": "2026-07-28T10:35:16.062Z",
+  "updatedAt": "2026-07-28T12:56:53.322Z",
   "providerSdks": {
     "gladia": {
       "packages": {

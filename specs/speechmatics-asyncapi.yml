@@ -1127,7 +1127,7 @@ components:
         tags:
           type: array
           description: |
-            This is a set list of profanities and disfluencies respectively that cannot be altered by the end user. `[disfluency]` is only present in English, and `[profanity]` is present in English, Spanish, and Italian
+            This is a set list of profanities and disfluencies respectively that cannot be altered by the end user. `[disfluency]` is present in the [supported languages](https://docs.speechmatics.com/speech-to-text/formatting#supported-languages-for-disfluencies), and `[profanity]` is present in English, Spanish, and Italian
           items:
             $ref: "#/components/schemas/RecognitionAlternativeTagsEnum"
       required:
