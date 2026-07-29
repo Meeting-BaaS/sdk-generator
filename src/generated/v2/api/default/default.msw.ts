@@ -62,9 +62,31 @@ export const getPostV2MeetSsoCookiesMockHandler = (overrideResponse?: void | ((i
       })
   })
 }
+
+export const getGetV2TeamsLoginResolveSessionMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<void> | void)) => {
+  return http.get('https://api.meetingbaas.com/v2/teams-login/resolve-session', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 200,
+        
+      })
+  })
+}
+
+export const getPostV2TeamsLoginReleaseSessionMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void)) => {
+  return http.post('https://api.meetingbaas.com/v2/teams-login/release-session', async (info) => {await delay(1000);
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 200,
+        
+      })
+  })
+}
 export const getDefaultMock = () => [
   getGetV2MeetSsoSetCookieMockHandler(),
   getGetV2MeetSsoSignInMockHandler(),
   getGetV2MeetSsoSignOutMockHandler(),
   getGetV2MeetSsoCookiesMockHandler(),
-  getPostV2MeetSsoCookiesMockHandler()]
+  getPostV2MeetSsoCookiesMockHandler(),
+  getGetV2TeamsLoginResolveSessionMockHandler(),
+  getPostV2TeamsLoginReleaseSessionMockHandler()]

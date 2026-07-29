@@ -20,7 +20,7 @@ import { z as zod } from "zod"
 
     **Per-team Uniqueness on Email:** Each `email` may exist at most once per team. Attempting to register the same email twice returns 409.
 
-    **Concurrency:** Each login supports up to 20 concurrent SSO sessions by default (configurable per environment). When a login hits its capacity, the round-robin assigner skips it and tries the next one in the pool. If all logins in a pool are saturated, the bot creation fails with `MEET_LOGIN_UNAVAILABLE` (or falls back to anonymous, depending on your `fallback` setting).
+    **Concurrency:** Each login supports up to 20 concurrent SSO sessions by default. When a login hits its capacity, the round-robin assigner skips it and tries the next one in the pool. If all logins in a pool are saturated, the bot creation fails with `MEET_LOGIN_UNAVAILABLE` (or falls back to anonymous, depending on your `fallback` setting).
 
     **Error Scenarios:**
     - `404 Not Found`: `workspace_id` is unknown or does not belong to your team.

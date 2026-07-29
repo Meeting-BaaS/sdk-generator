@@ -7,6 +7,7 @@
  */
 
 import type { GetBotDetailsResponseInputDataAudio } from "./getBotDetailsResponseInputDataAudio"
+import type { GetBotDetailsResponseInputDataCallbackConfig } from "./getBotDetailsResponseInputDataCallbackConfig"
 import type { GetBotDetailsResponseInputDataChatMessages } from "./getBotDetailsResponseInputDataChatMessages"
 import type { GetBotDetailsResponseInputDataDiarization } from "./getBotDetailsResponseInputDataDiarization"
 import type { GetBotDetailsResponseInputDataDurationSeconds } from "./getBotDetailsResponseInputDataDurationSeconds"
@@ -90,4 +91,6 @@ export type GetBotDetailsResponseInputData = {
   zoom_config: GetBotDetailsResponseInputDataZoomConfig
   /** UUID of the meet login assigned to this bot for SAML SSO sign-in (null for anonymous bots or non-Meet platforms) */
   meet_login_credential_id: GetBotDetailsResponseInputDataMeetLoginCredentialId
+  /** Callback configuration (null if callback is disabled) */
+  callback_config: GetBotDetailsResponseInputDataCallbackConfig
 }
