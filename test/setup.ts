@@ -22,12 +22,16 @@ import { getBotsMock } from "../src/generated/v2/api/bots/bots.msw"
 import { getCalendarsMock as getV2CalendarsMock } from "../src/generated/v2/api/calendars/calendars.msw"
 import { getMeetLoginsMock } from "../src/generated/v2/api/meet-logins/meet-logins.msw"
 import { getMeetWorkspacesMock } from "../src/generated/v2/api/meet-workspaces/meet-workspaces.msw"
+import { getTeamsLoginsMock } from "../src/generated/v2/api/teams-logins/teams-logins.msw"
+import { getTeamsWorkspacesMock } from "../src/generated/v2/api/teams-workspaces/teams-workspaces.msw"
 import { getZoomCredentialsMock } from "../src/generated/v2/api/zoom-credentials/zoom-credentials.msw"
 
 // Note: Scheduled bot mocks are included in getBotsMock() (no separate scheduled-bots directory)
 const v2Mocks: HttpHandler[] = [
   ...getBotsMock(),
   ...getV2CalendarsMock(),
+  ...getTeamsLoginsMock(),
+  ...getTeamsWorkspacesMock(),
   ...getMeetLoginsMock(),
   ...getMeetWorkspacesMock(),
   ...getZoomCredentialsMock()

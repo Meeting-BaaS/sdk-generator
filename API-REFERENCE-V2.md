@@ -243,6 +243,31 @@ Manage stored Zoom OAuth credentials used by bots to join Zoom meetings as authe
 | `updateZoomCredential` | Update Zoom credential | [`{ id: string; body: UpdateZoomCredentialBody }`](https://docs.meetingbaas.com/api-v2/reference/zoom-credentials/updateZoomCredential) |
 | `deleteZoomCredential` | Delete Zoom credential | [`{ id: string }`](https://docs.meetingbaas.com/api-v2/reference/zoom-credentials/deleteZoomCredential) |
 
+### Teams Workspace Management
+
+Manage Microsoft 365 tenants used by authenticated Teams bots. A teams workspace represents one M365 tenant (identified by its primary domain — no keypair or certificate) and is the parent of one or more `teams_logins`. See the [Teams authentication guide](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/createTeamsWorkspace) for the end-to-end flow.
+
+| Method | Description | Parameters |
+| ------ | ----------- | ---------- |
+| `createTeamsWorkspace` | Create a teams workspace for an M365 tenant | [`CreateTeamsWorkspaceBody`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/createTeamsWorkspace) |
+| `listTeamsWorkspaces` | List teams workspaces | [`ListTeamsWorkspacesParams?`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/listTeamsWorkspaces) |
+| `getTeamsWorkspace` | Get a teams workspace | [`{ workspace_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/getTeamsWorkspace) |
+| `updateTeamsWorkspace` | Rename or re-enable a workspace | [`{ workspace_id: string; body: UpdateTeamsWorkspaceBody }`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/updateTeamsWorkspace) |
+| `deleteTeamsWorkspace` | Delete a teams workspace (cascades to its logins) | [`{ workspace_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/deleteTeamsWorkspace) |
+
+### Teams Login Management
+
+Manage individual Microsoft 365 user identities attached to a teams workspace. Each login stores an `email` + `password` (write-only, encrypted at rest and never returned). Bots dispatched with `teams_config.email_group` or `teams_config.credential_id` are round-robin assigned to the least-loaded active login.
+
+| Method | Description | Parameters |
+| ------ | ----------- | ---------- |
+| `createTeamsLogin` | Create a teams login under a workspace | [`CreateTeamsLoginBody`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/createTeamsLogin) |
+| `listTeamsLogins` | List teams logins across all workspaces | [`ListTeamsLoginsParams?`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/listTeamsLogins) |
+| `getTeamsLoginUtilization` | Get aggregate concurrency metrics for the login pool | _no params_ — [docs](https://docs.meetingbaas.com/api-v2/reference/teams-logins/getTeamsLoginUtilization) |
+| `getTeamsLogin` | Get a teams login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/getTeamsLogin) |
+| `updateTeamsLogin` | Rename, rotate the password, change `email_group`, or re-enable a login | [`{ credential_id: string; body: UpdateTeamsLoginBody }`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/updateTeamsLogin) |
+| `deleteTeamsLogin` | Delete a teams login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/deleteTeamsLogin) |
+
 ### Meet Workspace Management
 
 Manage Google Workspace SAML SSO workspaces. A meet workspace holds the cert + private key for one Workspace's Legacy SSO profile and is the parent of one or more `meet_logins`. See the [Meet SSO setup guide](https://docs.meetingbaas.com/api-v2/reference/meet-workspaces/createMeetWorkspace) for the end-to-end flow.
