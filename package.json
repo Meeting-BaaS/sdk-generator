@@ -48,11 +48,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meeting-baas/sdk-generator.git"
+    "url": "git+https://github.com/Meeting-BaaS/sdk-generator.git"
   },
   "homepage": "https://meetingbaas.com",
   "bugs": {
-    "url": "https://github.com/meeting-baas/sdk-generator/issues"
+    "url": "https://github.com/Meeting-BaaS/sdk-generator/issues"
   },
   "keywords": [
     "meeting",
