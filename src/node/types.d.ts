@@ -48,6 +48,10 @@ import type {
   CreateMeetWorkspaceBody,
   CreateScheduledBotRequestBodyInput,
   CreateScheduledBotResponseData,
+  CreateTeamsLogin201Data,
+  CreateTeamsLoginBody,
+  CreateTeamsWorkspace201Data,
+  CreateTeamsWorkspaceBody,
   CreateZoomCredential201Data,
   CreateZoomCredentialBody,
   DeleteBotDataResponseData,
@@ -57,6 +61,8 @@ import type {
   DeleteMeetLogin200Data,
   DeleteMeetWorkspace200Data,
   DeleteScheduledBotResponseData,
+  DeleteTeamsLogin200Data,
+  DeleteTeamsWorkspace200Data,
   DeleteZoomCredential200Data,
   GetBotDetailsResponseData,
   GetBotStatusResponseData,
@@ -66,6 +72,9 @@ import type {
   GetMeetLoginUtilization200Data,
   GetMeetWorkspace200Data,
   GetScheduledBotResponseData,
+  GetTeamsLogin200Data,
+  GetTeamsLoginUtilization200Data,
+  GetTeamsWorkspace200Data,
   GetZoomCredential200Data,
   LeaveBotResponseData,
   ListBotsParams,
@@ -79,6 +88,10 @@ import type {
   ListRawCalendarsRequestBodyInput,
   ListRawCalendarsResponseDataItem,
   ListScheduledBotsParams,
+  ListTeamsLogins200DataItem,
+  ListTeamsLoginsParams,
+  ListTeamsWorkspaces200DataItem,
+  ListTeamsWorkspacesParams,
   ListZoomCredentials200DataItem,
   ListZoomCredentialsParams,
   ResendFinalWebhookResponseData,
@@ -101,6 +114,10 @@ import type {
   UpdateMeetWorkspaceBody,
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponseData,
+  UpdateTeamsLogin200Data,
+  UpdateTeamsLoginBody,
+  UpdateTeamsWorkspace200Data,
+  UpdateTeamsWorkspaceBody,
   UpdateZoomCredential200Data,
   PauseBotRecording200Data,
   PauseBotRecordingBody,
@@ -360,6 +377,35 @@ export interface BaasClientV2Methods {
     body: UpdateMeetLoginBody
   }): Promise<ApiResponseV2<UpdateMeetLogin200Data>>
   deleteMeetLogin(params: { credential_id: string }): Promise<ApiResponseV2<DeleteMeetLogin200Data>>
+  createTeamsWorkspace(
+    params: CreateTeamsWorkspaceBody
+  ): Promise<ApiResponseV2<CreateTeamsWorkspace201Data>>
+  listTeamsWorkspaces(
+    params?: ListTeamsWorkspacesParams
+  ): Promise<ApiResponseV2<ListTeamsWorkspaces200DataItem[]>>
+  getTeamsWorkspace(params: {
+    workspace_id: string
+  }): Promise<ApiResponseV2<GetTeamsWorkspace200Data>>
+  updateTeamsWorkspace(params: {
+    workspace_id: string
+    body: UpdateTeamsWorkspaceBody
+  }): Promise<ApiResponseV2<UpdateTeamsWorkspace200Data>>
+  deleteTeamsWorkspace(params: {
+    workspace_id: string
+  }): Promise<ApiResponseV2<DeleteTeamsWorkspace200Data>>
+  createTeamsLogin(params: CreateTeamsLoginBody): Promise<ApiResponseV2<CreateTeamsLogin201Data>>
+  listTeamsLogins(
+    params?: ListTeamsLoginsParams
+  ): Promise<ApiResponseV2<ListTeamsLogins200DataItem[]>>
+  getTeamsLoginUtilization(): Promise<ApiResponseV2<GetTeamsLoginUtilization200Data>>
+  getTeamsLogin(params: { credential_id: string }): Promise<ApiResponseV2<GetTeamsLogin200Data>>
+  updateTeamsLogin(params: {
+    credential_id: string
+    body: UpdateTeamsLoginBody
+  }): Promise<ApiResponseV2<UpdateTeamsLogin200Data>>
+  deleteTeamsLogin(params: {
+    credential_id: string
+  }): Promise<ApiResponseV2<DeleteTeamsLogin200Data>>
   createZoomCredential(
     params: CreateZoomCredentialBody
   ): Promise<ApiResponseV2<CreateZoomCredential201Data>>

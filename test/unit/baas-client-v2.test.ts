@@ -1202,6 +1202,483 @@ describe("BaasClient v2", () => {
     })
   })
 
+  describe("Teams workspaces", () => {
+    const workspaceId = "44444444-4444-4444-8444-444444444444"
+
+    it("should create teams workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        workspace_id: workspaceId,
+        name: "Contoso",
+        domain: "contoso.onmicrosoft.com",
+        state: "active",
+        last_error_message: null,
+        last_error_at: null,
+        extra: null,
+        created_at: "2026-08-10T00:00:00Z",
+        updated_at: "2026-08-10T00:00:00Z"
+      })
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-workspaces", async ({ request }) => {
+          const body = (await request.json()) as Record<string, unknown>
+          expect(body).toEqual({
+            domain: "contoso.onmicrosoft.com",
+            name: "Contoso"
+          })
+          return HttpResponse.json(mockResponse, { status: 201 })
+        })
+      )
+
+      const result = await client.createTeamsWorkspace({
+        domain: "contoso.onmicrosoft.com",
+        name: "Contoso"
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.workspace_id).toBe(workspaceId)
+        expect(result.data.domain).toBe("contoso.onmicrosoft.com")
+      }
+    })
+
+    it("should handle create teams workspace duplicate-domain error", async () => {
+      const mockError = createMockV2ErrorResponse(
+        "Workspace for this domain already exists",
+        "DUPLICATE_DOMAIN",
+        409
+      )
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-workspaces", () => {
+          return HttpResponse.json(mockError, { status: 409 })
+        })
+      )
+
+      const result = await client.createTeamsWorkspace({
+        domain: "contoso.onmicrosoft.com"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("DUPLICATE_DOMAIN")
+        expect(result.statusCode).toBe(409)
+      }
+    })
+
+    it("should list teams workspaces successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse([
+        {
+          workspace_id: workspaceId,
+          name: "Contoso",
+          domain: "contoso.onmicrosoft.com",
+          state: "active" as const
+        }
+      ])
+
+      server.use(
+        http.get("https://api.meetingbaas.com/v2/teams-workspaces", () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.listTeamsWorkspaces()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(Array.isArray(result.data)).toBe(true)
+        expect(result.data).toHaveLength(1)
+        expect(result.data[0].workspace_id).toBe(workspaceId)
+      }
+    })
+
+    it("should get teams workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        workspace_id: workspaceId,
+        name: "Contoso",
+        domain: "contoso.onmicrosoft.com",
+        state: "active"
+      })
+
+      server.use(
+        http.get(`https://api.meetingbaas.com/v2/teams-workspaces/${workspaceId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.getTeamsWorkspace({ workspace_id: workspaceId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.workspace_id).toBe(workspaceId)
+      }
+    })
+
+    it("should update teams workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        workspace_id: workspaceId,
+        name: "Contoso Renamed",
+        domain: "contoso.onmicrosoft.com",
+        state: "active"
+      })
+
+      server.use(
+        http.patch(
+          `https://api.meetingbaas.com/v2/teams-workspaces/${workspaceId}`,
+          async ({ request }) => {
+            const body = (await request.json()) as Record<string, unknown>
+            expect(body).toEqual({ name: "Contoso Renamed" })
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
+      )
+
+      const result = await client.updateTeamsWorkspace({
+        workspace_id: workspaceId,
+        body: { name: "Contoso Renamed" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.name).toBe("Contoso Renamed")
+      }
+    })
+
+    it("should delete teams workspace successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Workspace deleted"
+      })
+
+      server.use(
+        http.delete(`https://api.meetingbaas.com/v2/teams-workspaces/${workspaceId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.deleteTeamsWorkspace({ workspace_id: workspaceId })
+
+      expect(result.success).toBe(true)
+    })
+
+    it("should reject an invalid teams workspace domain before the request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-workspaces", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ workspace_id: workspaceId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsWorkspace({
+        name: "Contoso",
+        domain: "contoso"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
+    })
+
+    it("should reject an oversized teams workspace name before the request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-workspaces", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ workspace_id: workspaceId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsWorkspace({
+        name: "a".repeat(101),
+        domain: "contoso.onmicrosoft.com"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
+    })
+
+    it("should infer teams workspace methods on v2 client", () => {
+      expect(client).toHaveProperty("createTeamsWorkspace")
+      expect(client).toHaveProperty("listTeamsWorkspaces")
+      expect(client).toHaveProperty("getTeamsWorkspace")
+      expect(client).toHaveProperty("updateTeamsWorkspace")
+      expect(client).toHaveProperty("deleteTeamsWorkspace")
+    })
+  })
+
+  describe("Teams logins", () => {
+    const workspaceId = "55555555-5555-4555-8555-555555555555"
+    const credentialId = "66666666-6666-4666-8666-666666666666"
+
+    it("should create teams login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@contoso.onmicrosoft.com",
+        email_group: null,
+        state: "active",
+        active_session_count: 0
+      })
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-logins", async ({ request }) => {
+          const body = (await request.json()) as Record<string, unknown>
+          expect(body).toEqual({
+            workspace_id: workspaceId,
+            name: "bot1",
+            email: "bot1@contoso.onmicrosoft.com",
+            password: "s3cret-password"
+          })
+          return HttpResponse.json(mockResponse, { status: 201 })
+        })
+      )
+
+      const result = await client.createTeamsLogin({
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@contoso.onmicrosoft.com",
+        password: "s3cret-password"
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.credential_id).toBe(credentialId)
+        expect(result.data.email).toBe("bot1@contoso.onmicrosoft.com")
+      }
+    })
+
+    it("should handle create teams login domain-mismatch error", async () => {
+      const mockError = createMockV2ErrorResponse(
+        "Email domain does not match workspace",
+        "DOMAIN_MISMATCH",
+        422
+      )
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-logins", () => {
+          return HttpResponse.json(mockError, { status: 422 })
+        })
+      )
+
+      const result = await client.createTeamsLogin({
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@contoso.onmicrosoft.com",
+        password: "s3cret-password"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("DOMAIN_MISMATCH")
+        expect(result.statusCode).toBe(422)
+      }
+    })
+
+    it("should list teams logins successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse([
+        {
+          credential_id: credentialId,
+          workspace_id: workspaceId,
+          name: "bot1",
+          email: "bot1@contoso.onmicrosoft.com",
+          email_group: null,
+          state: "active" as const,
+          active_session_count: 0
+        }
+      ])
+
+      server.use(
+        http.get("https://api.meetingbaas.com/v2/teams-logins", () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.listTeamsLogins()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(Array.isArray(result.data)).toBe(true)
+        expect(result.data).toHaveLength(1)
+      }
+    })
+
+    it("should get teams login utilization successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        logins_total: 3,
+        logins_active: 3,
+        logins_invalid: 0,
+        concurrent_sessions: 12,
+        concurrent_capacity: 60,
+        utilization_pct: 20,
+        by_email_group: []
+      })
+
+      server.use(
+        http.get("https://api.meetingbaas.com/v2/teams-logins/utilization", () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.getTeamsLoginUtilization()
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.concurrent_capacity).toBe(60)
+        expect(result.data.utilization_pct).toBe(20)
+      }
+    })
+
+    it("should get teams login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "bot1@contoso.onmicrosoft.com",
+        email_group: null,
+        state: "active",
+        active_session_count: 0
+      })
+
+      server.use(
+        http.get(`https://api.meetingbaas.com/v2/teams-logins/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.getTeamsLogin({ credential_id: credentialId })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.credential_id).toBe(credentialId)
+      }
+    })
+
+    it("should update teams login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        credential_id: credentialId,
+        workspace_id: workspaceId,
+        name: "bot1 renamed",
+        email: "bot1@contoso.onmicrosoft.com",
+        email_group: null,
+        state: "active",
+        active_session_count: 0
+      })
+
+      server.use(
+        http.patch(
+          `https://api.meetingbaas.com/v2/teams-logins/${credentialId}`,
+          async ({ request }) => {
+            const body = (await request.json()) as Record<string, unknown>
+            expect(body).toEqual({ name: "bot1 renamed" })
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
+      )
+
+      const result = await client.updateTeamsLogin({
+        credential_id: credentialId,
+        body: { name: "bot1 renamed" }
+      })
+
+      expect(result.success).toBe(true)
+      if (result.success) {
+        expect(result.data.name).toBe("bot1 renamed")
+      }
+    })
+
+    it("should delete teams login successfully", async () => {
+      const mockResponse = createMockV2SuccessResponse({
+        message: "Login deleted"
+      })
+
+      server.use(
+        http.delete(`https://api.meetingbaas.com/v2/teams-logins/${credentialId}`, () => {
+          return HttpResponse.json(mockResponse, { status: 200 })
+        })
+      )
+
+      const result = await client.deleteTeamsLogin({ credential_id: credentialId })
+
+      expect(result.success).toBe(true)
+    })
+
+    it("should reject a malformed teams login workspace_id before request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-logins", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ credential_id: credentialId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsLogin({
+        workspace_id: "not-a-uuid",
+        name: "bot1",
+        email: "bot1@contoso.onmicrosoft.com",
+        password: "s3cr3t-p@ss"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
+    })
+
+    it("should reject an invalid teams login email before the request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-logins", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ credential_id: credentialId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsLogin({
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "not-an-email",
+        password: "s3cr3t-p@ss"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
+    })
+
+    it("should infer teams login methods on v2 client", () => {
+      expect(client).toHaveProperty("createTeamsLogin")
+      expect(client).toHaveProperty("listTeamsLogins")
+      expect(client).toHaveProperty("getTeamsLogin")
+      expect(client).toHaveProperty("getTeamsLoginUtilization")
+      expect(client).toHaveProperty("updateTeamsLogin")
+      expect(client).toHaveProperty("deleteTeamsLogin")
+    })
+  })
+
   describe("response format", () => {
     it("should pass through v2 API response format without transformation", async () => {
       const botId = createMockBotId()
