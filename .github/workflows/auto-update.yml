@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.check-changes.outputs.has_changes }}
+      pending_publish: ${{ steps.check-changes.outputs.pending_publish }}
 
     steps:
       - name: Checkout code
@@ -57,6 +58,17 @@ jobs:
         run: |
           echo "Checking for actual file changes..."
 
+          # Detect a version that was committed but never published
+          # (e.g. a previous run pushed the bump commit and then failed to publish)
+          LOCAL_VERSION=$(node -p "require('./package.json').version")
+          PUBLISHED_VERSION=$(npm view "@meeting-baas/sdk" version 2>/dev/null || echo "none")
+          if [ "$LOCAL_VERSION" != "$PUBLISHED_VERSION" ]; then
+            echo "Version $LOCAL_VERSION is committed but npm has $PUBLISHED_VERSION - publish pending"
+            echo "pending_publish=true" >> $GITHUB_OUTPUT
+          else
+            echo "pending_publish=false" >> $GITHUB_OUTPUT
+          fi
+
           # Get all changed & untracked files
           #   • modified / deleted:   git diff --name-only
           #   • added      :         git ls-files --others --exclude-standard
@@ -89,7 +101,7 @@ jobs:
           fi
 
   test:
-    if: needs.check-and-update.outputs.has_changes == 'true'
+    if: needs.check-and-update.outputs.has_changes == 'true' || needs.check-and-update.outputs.pending_publish == 'true'
     uses: ./.github/workflows/test-sdk.yml
     needs: check-and-update
     with:
@@ -97,7 +109,7 @@ jobs:
       upload-coverage: 'false'
 
   bump-version-and-publish:
-    if: needs.check-and-update.outputs.has_changes == 'true'
+    if: needs.check-and-update.outputs.has_changes == 'true' || needs.check-and-update.outputs.pending_publish == 'true'
     runs-on: ubuntu-latest
     needs: [check-and-update, test]
     permissions:
@@ -111,11 +123,14 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # NOTE: no registry-url here. Setting it makes setup-node write an
+      # .npmrc with _authToken=${NODE_AUTH_TOKEN} and export a placeholder
+      # token, which short-circuits npm trusted publishing (OIDC) and makes
+      # the publish fail with E404.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -136,6 +151,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # Node 22 bundles npm 10.x, which predates trusted publishing.
+      # npm >= 11.5.1 is required for OIDC-based publishes.
+      - name: Update npm for trusted publishing
+        run: npm install -g npm@latest
+
       - name: Configure Git
         run: |
           git config --local user.email "action@github.com"
@@ -148,8 +168,14 @@ jobs:
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $CURRENT_VERSION"
 
-          # Bump patch version
-          NEW_VERSION=$(pnpm version patch --no-git-tag-version)
+          if [ "${{ needs.check-and-update.outputs.has_changes }}" = "true" ]; then
+            # Bump patch version
+            NEW_VERSION=$(pnpm version patch --no-git-tag-version)
+          else
+            # Republish of an already-committed version that never reached npm
+            NEW_VERSION="v$CURRENT_VERSION"
+            echo "No API changes - republishing pending version $NEW_VERSION"
+          fi
           echo "New version: $NEW_VERSION"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
@@ -160,14 +186,20 @@ jobs:
       - name: Commit and push changes
         run: |
           git add .
-          git commit -m "chore: auto-update SDK to ${{ steps.bump-version.outputs.new_version }} [skip ci]"
-          git push origin main
+          if git diff --cached --quiet; then
+            echo "Nothing to commit (republish of pending version)"
+          else
+            git commit -m "chore: auto-update SDK to ${{ steps.bump-version.outputs.new_version }} [skip ci]"
+            git push origin main
+          fi
 
+      # npm >= 11.5.1 exchanges the GitHub OIDC token for npm credentials
+      # automatically when a trusted publisher is configured for the package.
       - name: Publish to npm
-        run: pnpm publish --access public
+        run: npm publish --access public
 
   create-release:
-    if: needs.check-and-update.outputs.has_changes == 'true'
+    if: needs.check-and-update.outputs.has_changes == 'true' || needs.check-and-update.outputs.pending_publish == 'true'
     runs-on: ubuntu-latest
     needs: [check-and-update, bump-version-and-publish]
     permissions:
