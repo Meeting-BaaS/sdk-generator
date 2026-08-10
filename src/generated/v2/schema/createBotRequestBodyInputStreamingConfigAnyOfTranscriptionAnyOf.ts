@@ -18,6 +18,6 @@ export type CreateBotRequestBodyInputStreamingConfigAnyOfTranscriptionAnyOf = {
   api_key?: CreateBotRequestBodyInputStreamingConfigAnyOfTranscriptionAnyOfApiKey
   /** Region for the streaming transcription provider API endpoint. When omitted, provider-specific defaults are used: gladia='eu-west', deepgram='eu', assemblyai='eu', speechmatics='eu1', soniox='us', elevenlabs='global'. */
   region?: CreateBotRequestBodyInputStreamingConfigAnyOfTranscriptionAnyOfRegion
-  /** Custom parameters for the transcription provider. */
+  /** Custom parameters forwarded to the provider's real-time (live) session API — e.g. Gladia's POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under 'realtime_processing' (e.g. {"language_config": {"languages": ["ru"]}, "realtime_processing": {"translation": true, "translation_config": {"target_languages": ["en"]}}}), not top-level as in batch. Validated against the provider's live schema at bot creation; unknown fields are rejected. 'encoding', 'sample_rate', 'bit_depth' and 'channels' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate. */
   custom_params?: CreateBotRequestBodyInputStreamingConfigAnyOfTranscriptionAnyOfCustomParams
 }

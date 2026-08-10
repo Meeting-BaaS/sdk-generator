@@ -25,4 +25,14 @@ export type BotWebhookStatusChangeInputDataStatus = {
   start_time?: number
   /** Error message describing what went wrong. Only present for 'recording_failed' status */
   error_message?: string
+  /**
+   * The retry attempt number now being started (1-based). Only present for the non-terminal 'retrying' status, emitted when a failed attempt is re-queued for another try. A terminal bot.failed follows only if all retries are exhausted.
+   * @maximum 9007199254740991
+   */
+  attempt?: number
+  /**
+   * The maximum number of attempts allowed (platform-dependent; e.g. 5 for Zoom). Only present for the 'retrying' status.
+   * @maximum 9007199254740991
+   */
+  max?: number
 }

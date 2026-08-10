@@ -24,3 +24,11 @@ export const getV2MeetSsoCookies = (options?: SecondParameter<typeof customInsta
 export const postV2MeetSsoCookies = (options?: SecondParameter<typeof customInstance>) => {
   return customInstance<void>({ url: "/v2/meet-sso/cookies", method: "POST" }, options)
 }
+export const getV2TeamsLoginResolveSession = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<void>({ url: "/v2/teams-login/resolve-session", method: "GET" }, options)
+}
+export const postV2TeamsLoginReleaseSession = (
+  options?: SecondParameter<typeof customInstance>
+) => {
+  return customInstance<void>({ url: "/v2/teams-login/release-session", method: "POST" }, options)
+}

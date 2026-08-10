@@ -7,7 +7,7 @@
  */
 
 /**
- * The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks.
+ * The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'.
  */
 export type UpdateScheduledBotRequestBodyStreamingConfigAnyOfMode =
   (typeof UpdateScheduledBotRequestBodyStreamingConfigAnyOfMode)[keyof typeof UpdateScheduledBotRequestBodyStreamingConfigAnyOfMode]

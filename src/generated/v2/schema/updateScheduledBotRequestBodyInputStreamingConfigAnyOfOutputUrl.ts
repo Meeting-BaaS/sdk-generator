@@ -7,6 +7,6 @@
  */
 
 /**
- * When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed.
+ * When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s).
  */
 export type UpdateScheduledBotRequestBodyInputStreamingConfigAnyOfOutputUrl = string | null

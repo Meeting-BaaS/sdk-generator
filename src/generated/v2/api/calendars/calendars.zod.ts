@@ -1226,6 +1226,7 @@ export const createCalendarBotBodyBotImageConfigImageDurationMin = 10
 
 export const createCalendarBotBodyBotImageConfigImageDurationMax = 120
 export const createCalendarBotBodyBotImageConfigDefault = null
+export const createCalendarBotBodyIgnoredParticipantNamesDefault = []
 export const createCalendarBotBodyRecordingModeDefault = "speaker_view"
 export const createCalendarBotBodyEntryMessageDefault = null
 export const createCalendarBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
@@ -1239,7 +1240,7 @@ export const createCalendarBotBodyTimeoutConfigNoOneJoinedTimeoutMax = 1800
 export const createCalendarBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createCalendarBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
-export const createCalendarBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const createCalendarBotBodyTimeoutConfigSilenceTimeoutMax = 3600
 export const createCalendarBotBodyTimeoutConfigGracePeriodDefault = 0
 export const createCalendarBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -1259,6 +1260,12 @@ export const createCalendarBotBodyMeetConfigEmailGroupMaxOne = 254
 export const createCalendarBotBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
 export const createCalendarBotBodyMeetConfigDefault = null
+export const createCalendarBotBodyTeamsConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const createCalendarBotBodyTeamsConfigEmailGroupMaxOne = 254
+export const createCalendarBotBodyTeamsConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const createCalendarBotBodyTeamsConfigDefault = null
 export const createCalendarBotBodyExtraDefault = null
 export const createCalendarBotBodyStreamingEnabledDefault = false
 export const createCalendarBotBodyStreamingConfigModeDefault = "audio"
@@ -1327,6 +1334,12 @@ export const createCalendarBotBody = zod
       .describe(
         "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
       ),
+    ignored_participant_names: zod
+      .array(zod.string())
+      .default(createCalendarBotBodyIgnoredParticipantNamesDefault)
+      .describe(
+        "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
+      ),
     recording_mode: zod
       .enum(["audio_only", "speaker_view", "gallery_view"])
       .default(createCalendarBotBodyRecordingModeDefault)
@@ -1364,7 +1377,7 @@ export const createCalendarBotBody = zod
           .max(createCalendarBotBodyTimeoutConfigSilenceTimeoutMax)
           .default(createCalendarBotBodyTimeoutConfigSilenceTimeoutDefault)
           .describe(
-            "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+            "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
           ),
         grace_period: zod
           .number()
@@ -1453,6 +1466,38 @@ export const createCalendarBotBody = zod
       .describe(
         "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
       ),
+    teams_config: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(createCalendarBotBodyTeamsConfigCredentialIdRegExp)
+          .optional()
+          .describe(
+            "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+          ),
+        email_group: zod
+          .string()
+          .email()
+          .max(createCalendarBotBodyTeamsConfigEmailGroupMaxOne)
+          .regex(createCalendarBotBodyTeamsConfigEmailGroupRegExpOne)
+          .or(zod.string())
+          .optional()
+          .describe(
+            'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+          ),
+        fallback: zod
+          .enum(["fail", "anonymous"])
+          .optional()
+          .describe(
+            "What to do if no teams_login slot is available.\n- 'fail' (default): bot creation fails with teams_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+          )
+      })
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+      ),
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())
@@ -1472,7 +1517,7 @@ export const createCalendarBotBody = zod
           .enum(["audio", "transcription"])
           .default(createCalendarBotBodyStreamingConfigModeDefault)
           .describe(
-            "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+            "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'."
           ),
         input_url: zod
           .string()
@@ -1488,7 +1533,7 @@ export const createCalendarBotBody = zod
           .or(zod.null())
           .optional()
           .describe(
-            "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
+            "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s)."
           ),
         audio_frequency: zod
           .number()
@@ -1527,7 +1572,9 @@ export const createCalendarBotBody = zod
               .record(zod.string(), zod.any())
               .or(zod.null())
               .optional()
-              .describe("Custom parameters for the transcription provider.")
+              .describe(
+                'Custom parameters forwarded to the provider\'s real-time (live) session API — e.g. Gladia\'s POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under \'realtime_processing\' (e.g. {\"language_config\": {\"languages\": [\"ru\"]}, \"realtime_processing\": {\"translation\": true, \"translation_config\": {\"target_languages\": [\"en\"]}}}), not top-level as in batch. Validated against the provider\'s live schema at bot creation; unknown fields are rejected. \'encoding\', \'sample_rate\', \'bit_depth\' and \'channels\' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate.'
+              )
           })
           .or(zod.null())
           .optional()
@@ -1673,6 +1720,7 @@ export const updateCalendarBotBodyBotImageConfigImageDurationMin = 10
 
 export const updateCalendarBotBodyBotImageConfigImageDurationMax = 120
 export const updateCalendarBotBodyBotImageConfigDefault = null
+export const updateCalendarBotBodyIgnoredParticipantNamesDefault = []
 export const updateCalendarBotBodyRecordingModeDefault = "speaker_view"
 export const updateCalendarBotBodyEntryMessageDefault = null
 export const updateCalendarBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
@@ -1686,7 +1734,7 @@ export const updateCalendarBotBodyTimeoutConfigNoOneJoinedTimeoutMax = 1800
 export const updateCalendarBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const updateCalendarBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
-export const updateCalendarBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const updateCalendarBotBodyTimeoutConfigSilenceTimeoutMax = 3600
 export const updateCalendarBotBodyTimeoutConfigGracePeriodDefault = 0
 export const updateCalendarBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -1706,6 +1754,12 @@ export const updateCalendarBotBodyMeetConfigEmailGroupMaxOne = 254
 export const updateCalendarBotBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
 export const updateCalendarBotBodyMeetConfigDefault = null
+export const updateCalendarBotBodyTeamsConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const updateCalendarBotBodyTeamsConfigEmailGroupMaxOne = 254
+export const updateCalendarBotBodyTeamsConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const updateCalendarBotBodyTeamsConfigDefault = null
 export const updateCalendarBotBodyExtraDefault = null
 export const updateCalendarBotBodyStreamingConfigModeDefault = "audio"
 export const updateCalendarBotBodyStreamingConfigInputUrlDefault = null
@@ -1788,6 +1842,12 @@ export const updateCalendarBotBody = zod
           .describe(
             "Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image."
           ),
+        ignored_participant_names: zod
+          .array(zod.string())
+          .default(updateCalendarBotBodyIgnoredParticipantNamesDefault)
+          .describe(
+            "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
+          ),
         recording_mode: zod
           .enum(["audio_only", "speaker_view", "gallery_view"])
           .default(updateCalendarBotBodyRecordingModeDefault)
@@ -1825,7 +1885,7 @@ export const updateCalendarBotBody = zod
               .max(updateCalendarBotBodyTimeoutConfigSilenceTimeoutMax)
               .default(updateCalendarBotBodyTimeoutConfigSilenceTimeoutDefault)
               .describe(
-                "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+                "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
               ),
             grace_period: zod
               .number()
@@ -1914,6 +1974,38 @@ export const updateCalendarBotBody = zod
           .describe(
             "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
           ),
+        teams_config: zod
+          .object({
+            credential_id: zod
+              .string()
+              .uuid()
+              .regex(updateCalendarBotBodyTeamsConfigCredentialIdRegExp)
+              .optional()
+              .describe(
+                "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+              ),
+            email_group: zod
+              .string()
+              .email()
+              .max(updateCalendarBotBodyTeamsConfigEmailGroupMaxOne)
+              .regex(updateCalendarBotBodyTeamsConfigEmailGroupRegExpOne)
+              .or(zod.string())
+              .optional()
+              .describe(
+                'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+              ),
+            fallback: zod
+              .enum(["fail", "anonymous"])
+              .optional()
+              .describe(
+                "What to do if no teams_login slot is available.\n- 'fail' (default): bot creation fails with teams_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+              )
+          })
+          .or(zod.null())
+          .optional()
+          .describe(
+            "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+          ),
         extra: zod
           .record(zod.string(), zod.any())
           .or(zod.null())
@@ -1933,7 +2025,7 @@ export const updateCalendarBotBody = zod
               .enum(["audio", "transcription"])
               .default(updateCalendarBotBodyStreamingConfigModeDefault)
               .describe(
-                "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+                "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'."
               ),
             input_url: zod
               .string()
@@ -1949,7 +2041,7 @@ export const updateCalendarBotBody = zod
               .or(zod.null())
               .optional()
               .describe(
-                "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
+                "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s)."
               ),
             audio_frequency: zod
               .number()
@@ -1995,7 +2087,9 @@ export const updateCalendarBotBody = zod
                   .record(zod.string(), zod.any())
                   .or(zod.null())
                   .optional()
-                  .describe("Custom parameters for the transcription provider.")
+                  .describe(
+                    'Custom parameters forwarded to the provider\'s real-time (live) session API — e.g. Gladia\'s POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under \'realtime_processing\' (e.g. {\"language_config\": {\"languages\": [\"ru\"]}, \"realtime_processing\": {\"translation\": true, \"translation_config\": {\"target_languages\": [\"en\"]}}}), not top-level as in batch. Validated against the provider\'s live schema at bot creation; unknown fields are rejected. \'encoding\', \'sample_rate\', \'bit_depth\' and \'channels\' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate.'
+                  )
               })
               .or(zod.null())
               .optional()

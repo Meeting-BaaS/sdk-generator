@@ -13,6 +13,7 @@ import type { UpdateScheduledBotRequestBodyExtra } from "./updateScheduledBotReq
 import type { UpdateScheduledBotRequestBodyMeetConfig } from "./updateScheduledBotRequestBodyMeetConfig"
 import type { UpdateScheduledBotRequestBodyRecordingMode } from "./updateScheduledBotRequestBodyRecordingMode"
 import type { UpdateScheduledBotRequestBodyStreamingConfig } from "./updateScheduledBotRequestBodyStreamingConfig"
+import type { UpdateScheduledBotRequestBodyTeamsConfig } from "./updateScheduledBotRequestBodyTeamsConfig"
 import type { UpdateScheduledBotRequestBodyTimeoutConfig } from "./updateScheduledBotRequestBodyTimeoutConfig"
 import type { UpdateScheduledBotRequestBodyTranscriptionConfig } from "./updateScheduledBotRequestBodyTranscriptionConfig"
 import type { UpdateScheduledBotRequestBodyZoomConfig } from "./updateScheduledBotRequestBodyZoomConfig"
@@ -46,6 +47,12 @@ If set to `true` (default), multiple bots can join the same meeting URL.
 
 Default: `true` */
   allow_multiple_bots?: boolean
+  /** Participant names to ignore when evaluating auto-leave conditions.
+
+The bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).
+
+By ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely. */
+  ignored_participant_names?: string[]
   /** The recording mode of the bot.
 
 Determines what the bot records during the meeting:
@@ -84,6 +91,14 @@ Leave `null` for Google Meet and Microsoft Teams. */
 
 Leave null for anonymous Meet joins, Zoom, or Microsoft Teams. */
   meet_config?: UpdateScheduledBotRequestBodyMeetConfig
+  /** Teams-only configuration for authenticated bots via a signed-in Microsoft account.
+
+- credential_id: pin a specific login.
+- email_group: pool selector (preferred — takes priority).
+- fallback: 'fail' (default) or 'anonymous' on saturation.
+
+Leave null for anonymous Teams joins, Zoom, or Google Meet. */
+  teams_config?: UpdateScheduledBotRequestBodyTeamsConfig
   /** An optional extra configuration object for the bot.
 
 This object can contain any custom key-value pairs that you want to associate with the bot. The data will be:

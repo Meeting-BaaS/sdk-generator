@@ -24,11 +24,11 @@ Required when `streaming_enabled` is `true`. Must not be provided when `streamin
 Omit this field to leave streaming configuration unchanged.
  */
 export type UpdateCalendarBotRequestBodyInputAllOfTwoStreamingConfig = {
-  /** The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks. */
+  /** The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'. */
   mode?: UpdateCalendarBotRequestBodyInputAllOfTwoStreamingConfigMode
   /** Websocket stream URL, which receives the audio sent to the bot, and the bot will stream the audio to the meeting. */
   input_url?: UpdateCalendarBotRequestBodyInputAllOfTwoStreamingConfigInputUrl
-  /** When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed. */
+  /** When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s). */
   output_url?: UpdateCalendarBotRequestBodyInputAllOfTwoStreamingConfigOutputUrl
   /** The audio frequency in Hz. Supported values: 24000 (default), 32000, 48000 Hz. */
   audio_frequency?: UpdateCalendarBotRequestBodyInputAllOfTwoStreamingConfigAudioFrequency

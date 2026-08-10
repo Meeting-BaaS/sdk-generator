@@ -36,6 +36,7 @@ export const createBotBodyBotImageConfigImageDurationMin = 10
 export const createBotBodyBotImageConfigImageDurationMax = 120
 export const createBotBodyBotImageConfigDefault = null
 export const createBotBodyAllowMultipleBotsDefault = true
+export const createBotBodyIgnoredParticipantNamesDefault = []
 export const createBotBodyRecordingModeDefault = "speaker_view"
 export const createBotBodyEntryMessageDefault = null
 export const createBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
@@ -49,7 +50,7 @@ export const createBotBodyTimeoutConfigNoOneJoinedTimeoutMax = 1800
 export const createBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
-export const createBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const createBotBodyTimeoutConfigSilenceTimeoutMax = 3600
 export const createBotBodyTimeoutConfigGracePeriodDefault = 0
 export const createBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -69,6 +70,12 @@ export const createBotBodyMeetConfigEmailGroupMaxOne = 254
 export const createBotBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
 export const createBotBodyMeetConfigDefault = null
+export const createBotBodyTeamsConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const createBotBodyTeamsConfigEmailGroupMaxOne = 254
+export const createBotBodyTeamsConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const createBotBodyTeamsConfigDefault = null
 export const createBotBodyExtraDefault = null
 export const createBotBodyStreamingEnabledDefault = false
 export const createBotBodyStreamingConfigModeDefault = "audio"
@@ -143,6 +150,12 @@ export const createBotBody = zod.object({
     .describe(
       "Whether to allow multiple bots to join the same meeting.\n\nIf set to `false`, only a single bot will be allowed to join using the same meeting URL within the last 5 minutes. This prevents duplicate bots from joining the same meeting.\n\nIf set to `true` (default), multiple bots can join the same meeting URL.\n\nDefault: `true`"
     ),
+  ignored_participant_names: zod
+    .array(zod.string())
+    .default(createBotBodyIgnoredParticipantNamesDefault)
+    .describe(
+      "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
+    ),
   recording_mode: zod
     .enum(["audio_only", "speaker_view", "gallery_view"])
     .default(createBotBodyRecordingModeDefault)
@@ -180,7 +193,7 @@ export const createBotBody = zod.object({
         .max(createBotBodyTimeoutConfigSilenceTimeoutMax)
         .default(createBotBodyTimeoutConfigSilenceTimeoutDefault)
         .describe(
-          "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+          "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
         ),
       grace_period: zod
         .number()
@@ -269,6 +282,38 @@ export const createBotBody = zod.object({
     .describe(
       "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
     ),
+  teams_config: zod
+    .object({
+      credential_id: zod
+        .string()
+        .uuid()
+        .regex(createBotBodyTeamsConfigCredentialIdRegExp)
+        .optional()
+        .describe(
+          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+        ),
+      email_group: zod
+        .string()
+        .email()
+        .max(createBotBodyTeamsConfigEmailGroupMaxOne)
+        .regex(createBotBodyTeamsConfigEmailGroupRegExpOne)
+        .or(zod.string())
+        .optional()
+        .describe(
+          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+        ),
+      fallback: zod
+        .enum(["fail", "anonymous"])
+        .optional()
+        .describe(
+          "What to do if no teams_login slot is available.\n- 'fail' (default): bot creation fails with teams_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+        )
+    })
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+    ),
   extra: zod
     .record(zod.string(), zod.any())
     .or(zod.null())
@@ -288,7 +333,7 @@ export const createBotBody = zod.object({
         .enum(["audio", "transcription"])
         .default(createBotBodyStreamingConfigModeDefault)
         .describe(
-          "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+          "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'."
         ),
       input_url: zod
         .string()
@@ -304,7 +349,7 @@ export const createBotBody = zod.object({
         .or(zod.null())
         .optional()
         .describe(
-          "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
+          "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s)."
         ),
       audio_frequency: zod
         .number()
@@ -341,7 +386,9 @@ export const createBotBody = zod.object({
             .record(zod.string(), zod.any())
             .or(zod.null())
             .optional()
-            .describe("Custom parameters for the transcription provider.")
+            .describe(
+              'Custom parameters forwarded to the provider\'s real-time (live) session API — e.g. Gladia\'s POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under \'realtime_processing\' (e.g. {\"language_config\": {\"languages\": [\"ru\"]}, \"realtime_processing\": {\"translation\": true, \"translation_config\": {\"target_languages\": [\"en\"]}}}), not top-level as in batch. Validated against the provider\'s live schema at bot creation; unknown fields are rejected. \'encoding\', \'sample_rate\', \'bit_depth\' and \'channels\' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate.'
+            )
         })
         .or(zod.null())
         .optional()
@@ -420,7 +467,7 @@ export const createBotBody = zod.object({
 /**
  * List all bots for your team with pagination support.
     
-    Filter by status (queued, joining, in_call_recording, transcribing, completed, failed), meeting platform (zoom, meet, teams), and date range. Results are ordered by creation date (newest first). Use cursor-based pagination for efficient navigation through large result sets.
+    Filter by status (queued, joining, in_call_recording, retrying, transcribing, completed, failed), meeting platform (zoom, meet, teams), and date range. Results are ordered by creation date (newest first). Use cursor-based pagination for efficient navigation through large result sets.
     
     **Pagination:** Uses cursor-based pagination. Provide a `cursor` query parameter to fetch the next page. The response includes a `next_cursor` if more results are available. The `limit` parameter controls how many results are returned per page (default: 50, max: 250).
     
@@ -691,6 +738,7 @@ export const batchCreateBotsBodyBotImageConfigImageDurationMin = 10
 export const batchCreateBotsBodyBotImageConfigImageDurationMax = 120
 export const batchCreateBotsBodyBotImageConfigDefault = null
 export const batchCreateBotsBodyAllowMultipleBotsDefault = true
+export const batchCreateBotsBodyIgnoredParticipantNamesDefault = []
 export const batchCreateBotsBodyRecordingModeDefault = "speaker_view"
 export const batchCreateBotsBodyEntryMessageDefault = null
 export const batchCreateBotsBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
@@ -704,7 +752,7 @@ export const batchCreateBotsBodyTimeoutConfigNoOneJoinedTimeoutMax = 1800
 export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutMin = 300
 
-export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutMax = 3600
 export const batchCreateBotsBodyTimeoutConfigGracePeriodDefault = 0
 export const batchCreateBotsBodyTimeoutConfigGracePeriodMin = 0
 
@@ -724,6 +772,12 @@ export const batchCreateBotsBodyMeetConfigEmailGroupMaxOne = 254
 export const batchCreateBotsBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
 export const batchCreateBotsBodyMeetConfigDefault = null
+export const batchCreateBotsBodyTeamsConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const batchCreateBotsBodyTeamsConfigEmailGroupMaxOne = 254
+export const batchCreateBotsBodyTeamsConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const batchCreateBotsBodyTeamsConfigDefault = null
 export const batchCreateBotsBodyExtraDefault = null
 export const batchCreateBotsBodyStreamingEnabledDefault = false
 export const batchCreateBotsBodyStreamingConfigModeDefault = "audio"
@@ -798,6 +852,12 @@ export const batchCreateBotsBodyItem = zod.object({
     .describe(
       "Whether to allow multiple bots to join the same meeting.\n\nIf set to `false`, only a single bot will be allowed to join using the same meeting URL within the last 5 minutes. This prevents duplicate bots from joining the same meeting.\n\nIf set to `true` (default), multiple bots can join the same meeting URL.\n\nDefault: `true`"
     ),
+  ignored_participant_names: zod
+    .array(zod.string())
+    .default(batchCreateBotsBodyIgnoredParticipantNamesDefault)
+    .describe(
+      "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
+    ),
   recording_mode: zod
     .enum(["audio_only", "speaker_view", "gallery_view"])
     .default(batchCreateBotsBodyRecordingModeDefault)
@@ -835,7 +895,7 @@ export const batchCreateBotsBodyItem = zod.object({
         .max(batchCreateBotsBodyTimeoutConfigSilenceTimeoutMax)
         .default(batchCreateBotsBodyTimeoutConfigSilenceTimeoutDefault)
         .describe(
-          "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+          "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
         ),
       grace_period: zod
         .number()
@@ -924,6 +984,38 @@ export const batchCreateBotsBodyItem = zod.object({
     .describe(
       "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
     ),
+  teams_config: zod
+    .object({
+      credential_id: zod
+        .string()
+        .uuid()
+        .regex(batchCreateBotsBodyTeamsConfigCredentialIdRegExp)
+        .optional()
+        .describe(
+          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+        ),
+      email_group: zod
+        .string()
+        .email()
+        .max(batchCreateBotsBodyTeamsConfigEmailGroupMaxOne)
+        .regex(batchCreateBotsBodyTeamsConfigEmailGroupRegExpOne)
+        .or(zod.string())
+        .optional()
+        .describe(
+          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+        ),
+      fallback: zod
+        .enum(["fail", "anonymous"])
+        .optional()
+        .describe(
+          "What to do if no teams_login slot is available.\n- 'fail' (default): bot creation fails with teams_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+        )
+    })
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+    ),
   extra: zod
     .record(zod.string(), zod.any())
     .or(zod.null())
@@ -943,7 +1035,7 @@ export const batchCreateBotsBodyItem = zod.object({
         .enum(["audio", "transcription"])
         .default(batchCreateBotsBodyStreamingConfigModeDefault)
         .describe(
-          "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+          "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'."
         ),
       input_url: zod
         .string()
@@ -959,7 +1051,7 @@ export const batchCreateBotsBodyItem = zod.object({
         .or(zod.null())
         .optional()
         .describe(
-          "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
+          "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s)."
         ),
       audio_frequency: zod
         .number()
@@ -996,7 +1088,9 @@ export const batchCreateBotsBodyItem = zod.object({
             .record(zod.string(), zod.any())
             .or(zod.null())
             .optional()
-            .describe("Custom parameters for the transcription provider.")
+            .describe(
+              'Custom parameters forwarded to the provider\'s real-time (live) session API — e.g. Gladia\'s POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under \'realtime_processing\' (e.g. {\"language_config\": {\"languages\": [\"ru\"]}, \"realtime_processing\": {\"translation\": true, \"translation_config\": {\"target_languages\": [\"en\"]}}}), not top-level as in batch. Validated against the provider\'s live schema at bot creation; unknown fields are rejected. \'encoding\', \'sample_rate\', \'bit_depth\' and \'channels\' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate.'
+            )
         })
         .or(zod.null())
         .optional()
@@ -1332,7 +1426,19 @@ export const getBotDetailsResponse = zod.object({
       .or(zod.null())
       .describe(
         "UUID of the meet login assigned to this bot for SAML SSO sign-in (null for anonymous bots or non-Meet platforms)"
-      )
+      ),
+    callback_config: zod
+      .object({
+        enabled: zod.boolean(),
+        url: zod.string().describe("Callback URL"),
+        secret: zod
+          .string()
+          .or(zod.null())
+          .describe("Secret for validating callbacks (null if not set)"),
+        method: zod.enum(["POST", "PUT"]).describe("HTTP method for callback")
+      })
+      .or(zod.null())
+      .describe("Callback configuration (null if callback is disabled)")
   })
 })
 
@@ -1343,7 +1449,7 @@ export const getBotDetailsResponse = zod.object({
     
     **Response Fields:**
     - `bot_id`: The UUID of the bot
-    - `status`: The current bot status (queued, joining, in_call_recording, transcribing, completed, failed)
+    - `status`: The current bot status (queued, joining, in_call_recording, retrying, transcribing, completed, failed)
     - `transcription_status`: The current transcription status (not-applicable, not-started, queued, processing, done, error)
     - `updated_at`: ISO 8601 timestamp when the status was last updated
     
@@ -1955,6 +2061,7 @@ export const createScheduledBotBodyBotImageConfigImageDurationMin = 10
 export const createScheduledBotBodyBotImageConfigImageDurationMax = 120
 export const createScheduledBotBodyBotImageConfigDefault = null
 export const createScheduledBotBodyAllowMultipleBotsDefault = true
+export const createScheduledBotBodyIgnoredParticipantNamesDefault = []
 export const createScheduledBotBodyRecordingModeDefault = "speaker_view"
 export const createScheduledBotBodyEntryMessageDefault = null
 export const createScheduledBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
@@ -1968,7 +2075,7 @@ export const createScheduledBotBodyTimeoutConfigNoOneJoinedTimeoutMax = 1800
 export const createScheduledBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createScheduledBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
-export const createScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const createScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 3600
 export const createScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
 export const createScheduledBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -1988,6 +2095,12 @@ export const createScheduledBotBodyMeetConfigEmailGroupMaxOne = 254
 export const createScheduledBotBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
 export const createScheduledBotBodyMeetConfigDefault = null
+export const createScheduledBotBodyTeamsConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const createScheduledBotBodyTeamsConfigEmailGroupMaxOne = 254
+export const createScheduledBotBodyTeamsConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const createScheduledBotBodyTeamsConfigDefault = null
 export const createScheduledBotBodyExtraDefault = null
 export const createScheduledBotBodyStreamingEnabledDefault = false
 export const createScheduledBotBodyStreamingConfigModeDefault = "audio"
@@ -2065,6 +2178,12 @@ export const createScheduledBotBody = zod
       .describe(
         "Whether to allow multiple bots to join the same meeting.\n\nIf set to `false`, only a single bot will be allowed to join using the same meeting URL within the last 5 minutes. This prevents duplicate bots from joining the same meeting.\n\nIf set to `true` (default), multiple bots can join the same meeting URL.\n\nDefault: `true`"
       ),
+    ignored_participant_names: zod
+      .array(zod.string())
+      .default(createScheduledBotBodyIgnoredParticipantNamesDefault)
+      .describe(
+        "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
+      ),
     recording_mode: zod
       .enum(["audio_only", "speaker_view", "gallery_view"])
       .default(createScheduledBotBodyRecordingModeDefault)
@@ -2102,7 +2221,7 @@ export const createScheduledBotBody = zod
           .max(createScheduledBotBodyTimeoutConfigSilenceTimeoutMax)
           .default(createScheduledBotBodyTimeoutConfigSilenceTimeoutDefault)
           .describe(
-            "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+            "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
           ),
         grace_period: zod
           .number()
@@ -2191,6 +2310,38 @@ export const createScheduledBotBody = zod
       .describe(
         "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
       ),
+    teams_config: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(createScheduledBotBodyTeamsConfigCredentialIdRegExp)
+          .optional()
+          .describe(
+            "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+          ),
+        email_group: zod
+          .string()
+          .email()
+          .max(createScheduledBotBodyTeamsConfigEmailGroupMaxOne)
+          .regex(createScheduledBotBodyTeamsConfigEmailGroupRegExpOne)
+          .or(zod.string())
+          .optional()
+          .describe(
+            'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+          ),
+        fallback: zod
+          .enum(["fail", "anonymous"])
+          .optional()
+          .describe(
+            "What to do if no teams_login slot is available.\n- 'fail' (default): bot creation fails with teams_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+          )
+      })
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+      ),
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())
@@ -2210,7 +2361,7 @@ export const createScheduledBotBody = zod
           .enum(["audio", "transcription"])
           .default(createScheduledBotBodyStreamingConfigModeDefault)
           .describe(
-            "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+            "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'."
           ),
         input_url: zod
           .string()
@@ -2226,7 +2377,7 @@ export const createScheduledBotBody = zod
           .or(zod.null())
           .optional()
           .describe(
-            "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
+            "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s)."
           ),
         audio_frequency: zod
           .number()
@@ -2265,7 +2416,9 @@ export const createScheduledBotBody = zod
               .record(zod.string(), zod.any())
               .or(zod.null())
               .optional()
-              .describe("Custom parameters for the transcription provider.")
+              .describe(
+                'Custom parameters forwarded to the provider\'s real-time (live) session API — e.g. Gladia\'s POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under \'realtime_processing\' (e.g. {\"language_config\": {\"languages\": [\"ru\"]}, \"realtime_processing\": {\"translation\": true, \"translation_config\": {\"target_languages\": [\"en\"]}}}), not top-level as in batch. Validated against the provider\'s live schema at bot creation; unknown fields are rejected. \'encoding\', \'sample_rate\', \'bit_depth\' and \'channels\' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate.'
+              )
           })
           .or(zod.null())
           .optional()
@@ -2551,6 +2704,7 @@ export const batchCreateScheduledBotsBodyBotImageConfigImageDurationMin = 10
 export const batchCreateScheduledBotsBodyBotImageConfigImageDurationMax = 120
 export const batchCreateScheduledBotsBodyBotImageConfigDefault = null
 export const batchCreateScheduledBotsBodyAllowMultipleBotsDefault = true
+export const batchCreateScheduledBotsBodyIgnoredParticipantNamesDefault = []
 export const batchCreateScheduledBotsBodyRecordingModeDefault = "speaker_view"
 export const batchCreateScheduledBotsBodyEntryMessageDefault = null
 export const batchCreateScheduledBotsBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
@@ -2564,7 +2718,7 @@ export const batchCreateScheduledBotsBodyTimeoutConfigNoOneJoinedTimeoutMax = 18
 export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMin = 300
 
-export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMax = 3600
 export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodDefault = 0
 export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMin = 0
 
@@ -2584,6 +2738,12 @@ export const batchCreateScheduledBotsBodyMeetConfigEmailGroupMaxOne = 254
 export const batchCreateScheduledBotsBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
 export const batchCreateScheduledBotsBodyMeetConfigDefault = null
+export const batchCreateScheduledBotsBodyTeamsConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const batchCreateScheduledBotsBodyTeamsConfigEmailGroupMaxOne = 254
+export const batchCreateScheduledBotsBodyTeamsConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const batchCreateScheduledBotsBodyTeamsConfigDefault = null
 export const batchCreateScheduledBotsBodyExtraDefault = null
 export const batchCreateScheduledBotsBodyStreamingEnabledDefault = false
 export const batchCreateScheduledBotsBodyStreamingConfigModeDefault = "audio"
@@ -2661,6 +2821,12 @@ export const batchCreateScheduledBotsBodyItem = zod
       .describe(
         "Whether to allow multiple bots to join the same meeting.\n\nIf set to `false`, only a single bot will be allowed to join using the same meeting URL within the last 5 minutes. This prevents duplicate bots from joining the same meeting.\n\nIf set to `true` (default), multiple bots can join the same meeting URL.\n\nDefault: `true`"
       ),
+    ignored_participant_names: zod
+      .array(zod.string())
+      .default(batchCreateScheduledBotsBodyIgnoredParticipantNamesDefault)
+      .describe(
+        "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
+      ),
     recording_mode: zod
       .enum(["audio_only", "speaker_view", "gallery_view"])
       .default(batchCreateScheduledBotsBodyRecordingModeDefault)
@@ -2698,7 +2864,7 @@ export const batchCreateScheduledBotsBodyItem = zod
           .max(batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMax)
           .default(batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutDefault)
           .describe(
-            "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+            "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
           ),
         grace_period: zod
           .number()
@@ -2787,6 +2953,38 @@ export const batchCreateScheduledBotsBodyItem = zod
       .describe(
         "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
       ),
+    teams_config: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(batchCreateScheduledBotsBodyTeamsConfigCredentialIdRegExp)
+          .optional()
+          .describe(
+            "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+          ),
+        email_group: zod
+          .string()
+          .email()
+          .max(batchCreateScheduledBotsBodyTeamsConfigEmailGroupMaxOne)
+          .regex(batchCreateScheduledBotsBodyTeamsConfigEmailGroupRegExpOne)
+          .or(zod.string())
+          .optional()
+          .describe(
+            'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+          ),
+        fallback: zod
+          .enum(["fail", "anonymous"])
+          .optional()
+          .describe(
+            "What to do if no teams_login slot is available.\n- 'fail' (default): bot creation fails with teams_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+          )
+      })
+      .or(zod.null())
+      .optional()
+      .describe(
+        "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+      ),
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())
@@ -2806,7 +3004,7 @@ export const batchCreateScheduledBotsBodyItem = zod
           .enum(["audio", "transcription"])
           .default(batchCreateScheduledBotsBodyStreamingConfigModeDefault)
           .describe(
-            "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+            "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'."
           ),
         input_url: zod
           .string()
@@ -2822,7 +3020,7 @@ export const batchCreateScheduledBotsBodyItem = zod
           .or(zod.null())
           .optional()
           .describe(
-            "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
+            "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s)."
           ),
         audio_frequency: zod
           .number()
@@ -2861,7 +3059,9 @@ export const batchCreateScheduledBotsBodyItem = zod
               .record(zod.string(), zod.any())
               .or(zod.null())
               .optional()
-              .describe("Custom parameters for the transcription provider.")
+              .describe(
+                'Custom parameters forwarded to the provider\'s real-time (live) session API — e.g. Gladia\'s POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under \'realtime_processing\' (e.g. {\"language_config\": {\"languages\": [\"ru\"]}, \"realtime_processing\": {\"translation\": true, \"translation_config\": {\"target_languages\": [\"en\"]}}}), not top-level as in batch. Validated against the provider\'s live schema at bot creation; unknown fields are rejected. \'encoding\', \'sample_rate\', \'bit_depth\' and \'channels\' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate.'
+              )
           })
           .or(zod.null())
           .optional()
@@ -3183,6 +3383,7 @@ export const updateScheduledBotBodyBotImageConfigImageDurationMin = 10
 export const updateScheduledBotBodyBotImageConfigImageDurationMax = 120
 export const updateScheduledBotBodyBotImageConfigDefault = null
 export const updateScheduledBotBodyAllowMultipleBotsDefault = true
+export const updateScheduledBotBodyIgnoredParticipantNamesDefault = []
 export const updateScheduledBotBodyRecordingModeDefault = "speaker_view"
 export const updateScheduledBotBodyEntryMessageDefault = null
 export const updateScheduledBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
@@ -3196,7 +3397,7 @@ export const updateScheduledBotBodyTimeoutConfigNoOneJoinedTimeoutMax = 1800
 export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
-export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 1800
+export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 3600
 export const updateScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
 export const updateScheduledBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -3216,6 +3417,12 @@ export const updateScheduledBotBodyMeetConfigEmailGroupMaxOne = 254
 export const updateScheduledBotBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
 export const updateScheduledBotBodyMeetConfigDefault = null
+export const updateScheduledBotBodyTeamsConfigCredentialIdRegExp =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const updateScheduledBotBodyTeamsConfigEmailGroupMaxOne = 254
+export const updateScheduledBotBodyTeamsConfigEmailGroupRegExpOne =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
+export const updateScheduledBotBodyTeamsConfigDefault = null
 export const updateScheduledBotBodyExtraDefault = null
 export const updateScheduledBotBodyStreamingEnabledDefault = false
 export const updateScheduledBotBodyStreamingConfigModeDefault = "audio"
@@ -3294,6 +3501,12 @@ export const updateScheduledBotBody = zod.object({
     .describe(
       "Whether to allow multiple bots to join the same meeting.\n\nIf set to `false`, only a single bot will be allowed to join using the same meeting URL within the last 5 minutes. This prevents duplicate bots from joining the same meeting.\n\nIf set to `true` (default), multiple bots can join the same meeting URL.\n\nDefault: `true`"
     ),
+  ignored_participant_names: zod
+    .array(zod.string())
+    .default(updateScheduledBotBodyIgnoredParticipantNamesDefault)
+    .describe(
+      "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
+    ),
   recording_mode: zod
     .enum(["audio_only", "speaker_view", "gallery_view"])
     .default(updateScheduledBotBodyRecordingModeDefault)
@@ -3331,7 +3544,7 @@ export const updateScheduledBotBody = zod.object({
         .max(updateScheduledBotBodyTimeoutConfigSilenceTimeoutMax)
         .default(updateScheduledBotBodyTimeoutConfigSilenceTimeoutDefault)
         .describe(
-          "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 30 minutes"
+          "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
         ),
       grace_period: zod
         .number()
@@ -3420,6 +3633,38 @@ export const updateScheduledBotBody = zod.object({
     .describe(
       "Meet-only configuration for authenticated bots via SAML SSO.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Meet joins, Zoom, or Microsoft Teams."
     ),
+  teams_config: zod
+    .object({
+      credential_id: zod
+        .string()
+        .uuid()
+        .regex(updateScheduledBotBodyTeamsConfigCredentialIdRegExp)
+        .optional()
+        .describe(
+          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+        ),
+      email_group: zod
+        .string()
+        .email()
+        .max(updateScheduledBotBodyTeamsConfigEmailGroupMaxOne)
+        .regex(updateScheduledBotBodyTeamsConfigEmailGroupRegExpOne)
+        .or(zod.string())
+        .optional()
+        .describe(
+          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+        ),
+      fallback: zod
+        .enum(["fail", "anonymous"])
+        .optional()
+        .describe(
+          "What to do if no teams_login slot is available.\n- 'fail' (default): bot creation fails with teams_login_unavailable.\n- 'anonymous': silently fall back to an anonymous (non-authenticated) bot."
+        )
+    })
+    .or(zod.null())
+    .optional()
+    .describe(
+      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+    ),
   extra: zod
     .record(zod.string(), zod.any())
     .or(zod.null())
@@ -3439,7 +3684,7 @@ export const updateScheduledBotBody = zod.object({
         .enum(["audio", "transcription"])
         .default(updateScheduledBotBodyStreamingConfigModeDefault)
         .describe(
-          "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and POSTs transcript events to output_url via HTTP webhooks."
+          "The streaming mode. 'audio' (default) streams raw audio to output_url via WebSocket. 'transcription' runs real-time speech-to-text and sends transcript events to output_url over a WebSocket connection, as JSON messages with event 'transcript.segment'."
         ),
       input_url: zod
         .string()
@@ -3455,7 +3700,7 @@ export const updateScheduledBotBody = zod.object({
         .or(zod.null())
         .optional()
         .describe(
-          "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': HTTP URL where transcript events are POSTed."
+          "When mode is 'audio': WebSocket URL where the bot sends raw audio. When mode is 'transcription': WebSocket URL where the bot sends JSON messages: 'session.started' once live transcription is up, 'transcript.segment' for each transcript piece, 'translation' for each real-time provider translation (e.g. Gladia live translation, enabled via streaming_config.transcription.custom_params), and 'error' if the transcription session fails (e.g. invalid custom_params or provider outage). The connection is kept alive with WebSocket pings (~30s)."
         ),
       audio_frequency: zod
         .number()
@@ -3492,7 +3737,9 @@ export const updateScheduledBotBody = zod.object({
             .record(zod.string(), zod.any())
             .or(zod.null())
             .optional()
-            .describe("Custom parameters for the transcription provider.")
+            .describe(
+              'Custom parameters forwarded to the provider\'s real-time (live) session API — e.g. Gladia\'s POST /v2/live. The live APIs accept a DIFFERENT shape than the batch APIs: for Gladia, translation must be nested under \'realtime_processing\' (e.g. {\"language_config\": {\"languages\": [\"ru\"]}, \"realtime_processing\": {\"translation\": true, \"translation_config\": {\"target_languages\": [\"en\"]}}}), not top-level as in batch. Validated against the provider\'s live schema at bot creation; unknown fields are rejected. \'encoding\', \'sample_rate\', \'bit_depth\' and \'channels\' are set by the platform and cannot be overridden — use streaming_config.audio_frequency to control the audio sample rate.'
+            )
         })
         .or(zod.null())
         .optional()

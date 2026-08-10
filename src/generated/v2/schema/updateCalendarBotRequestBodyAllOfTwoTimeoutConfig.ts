@@ -43,9 +43,9 @@ If no audio is detected for this duration after the bot joins, the bot will leav
 
 Default: 600 seconds (10 minutes)
 Minimum: 5 minutes
-Maximum: 30 minutes
+Maximum: 60 minutes
    * @minimum 300
-   * @maximum 1800
+   * @maximum 3600
    */
   silence_timeout: number
   /**

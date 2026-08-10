@@ -6,7 +6,7 @@
  * OpenAPI spec version: 2.0.0
  */
 import type { CreateCalendarBotRequestBodyInputAllOf } from "./createCalendarBotRequestBodyInputAllOf"
-import type { CreateCalendarBotRequestBodyInputAllOfFourthree } from "./createCalendarBotRequestBodyInputAllOfFourthree"
+import type { CreateCalendarBotRequestBodyInputAllOfFourseven } from "./createCalendarBotRequestBodyInputAllOfFourseven"
 
 export type CreateCalendarBotRequestBodyInput = CreateCalendarBotRequestBodyInputAllOf &
-  CreateCalendarBotRequestBodyInputAllOfFourthree
+  CreateCalendarBotRequestBodyInputAllOfFourseven

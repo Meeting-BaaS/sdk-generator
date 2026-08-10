@@ -10,8 +10,8 @@ import type { OutputTranscriptionResultUtterancesItemWordsItem } from "./outputT
 export type OutputTranscriptionResultUtterancesItem = {
   /** The transcribed text for this utterance */
   text: string
-  /** ISO 639-1 language code (e.g., 'en', 'es') */
-  language: string
+  /** ISO 639-1 language code (e.g., 'en', 'es'). Only present when the transcription provider reported a language for this utterance. */
+  language?: string
   /** Start time in seconds (floating point) */
   start: number
   /** End time in seconds (floating point) */

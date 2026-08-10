@@ -13,6 +13,7 @@ import type { UpdateCalendarBotRequestBodyInputAllOfTwoExtra } from "./updateCal
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoMeetConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoMeetConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoRecordingMode } from "./updateCalendarBotRequestBodyInputAllOfTwoRecordingMode"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoStreamingConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoStreamingConfig"
+import type { UpdateCalendarBotRequestBodyInputAllOfTwoTeamsConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoTeamsConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoTimeoutConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoTimeoutConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoTranscriptionConfig"
 import type { UpdateCalendarBotRequestBodyInputAllOfTwoZoomConfig } from "./updateCalendarBotRequestBodyInputAllOfTwoZoomConfig"
@@ -35,6 +36,12 @@ Accepts a single HTTPS URL or an array of up to 5 HTTPS URLs pointing to image f
   bot_image?: UpdateCalendarBotRequestBodyInputAllOfTwoBotImage
   /** Configuration for how bot avatar images are displayed. Only relevant when multiple images are provided in bot_image. */
   bot_image_config?: UpdateCalendarBotRequestBodyInputAllOfTwoBotImageConfig
+  /** Participant names to ignore when evaluating auto-leave conditions.
+
+The bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).
+
+By ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely. */
+  ignored_participant_names?: string[]
   /** The recording mode of the bot.
 
 Determines what the bot records during the meeting:
@@ -73,6 +80,14 @@ Leave `null` for Google Meet and Microsoft Teams. */
 
 Leave null for anonymous Meet joins, Zoom, or Microsoft Teams. */
   meet_config?: UpdateCalendarBotRequestBodyInputAllOfTwoMeetConfig
+  /** Teams-only configuration for authenticated bots via a signed-in Microsoft account.
+
+- credential_id: pin a specific login.
+- email_group: pool selector (preferred — takes priority).
+- fallback: 'fail' (default) or 'anonymous' on saturation.
+
+Leave null for anonymous Teams joins, Zoom, or Google Meet. */
+  teams_config?: UpdateCalendarBotRequestBodyInputAllOfTwoTeamsConfig
   /** An optional extra configuration object for the bot.
 
 This object can contain any custom key-value pairs that you want to associate with the bot. The data will be:
