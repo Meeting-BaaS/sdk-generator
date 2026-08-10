@@ -5,8 +5,8 @@
       "url": "https://api.gladia.io/openapi.json",
       "syncedAt": "2026-08-10T09:18:29.713Z",
       "size": 125128,
-      "consumedSha256": "761295beb8a701d0c96050a2c99f091c816c3f9496a6e47d6086b1af09556a82",
-      "consumedAt": "2026-08-10T09:22:45.345Z",
+      "consumedSha256": "f659edc8693d8c9cc614d6ed1b22ea7523d299aaaa85ee0801b41f819da17300",
+      "consumedAt": "2026-08-10T09:33:12.280Z",
       "fixedBy": "fix-gladia-spec.js"
     },
     "assemblyai": {
@@ -180,7 +180,7 @@
       "checkedAt": "2026-04-28T07:05:09.432Z"
     }
   },
-  "updatedAt": "2026-08-10T09:28:38.228Z",
+  "updatedAt": "2026-08-10T09:33:12.320Z",
   "providerSdks": {
     "gladia": {
       "packages": {
