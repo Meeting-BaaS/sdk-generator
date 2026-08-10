@@ -13,10 +13,17 @@ import type { VadConfig } from './vadConfig.js';
 export interface CreateTranscriptionRequest {
   /** The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. */
   file: Blob;
-  /** ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`. */
-  model: string | 'whisper-1' | 'gpt-4o-transcribe' | 'gpt-4o-mini-transcribe' | 'gpt-4o-mini-transcribe-2025-12-15' | 'gpt-4o-transcribe-diarize';
+  /** ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`. */
+  model: string | 'whisper-1' | 'gpt-transcribe' | 'gpt-4o-transcribe' | 'gpt-4o-mini-transcribe' | 'gpt-4o-mini-transcribe-2025-12-15' | 'gpt-4o-transcribe-diarize';
   /** The language of the input audio. Supplying the input language in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format will improve accuracy and latency. */
   language?: string;
+  /**
+     * Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe`.
+     * @minItems 1
+     */
+  languages?: string[];
+  /** Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe`. */
+  keywords?: string[];
   /** An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`. */
   prompt?: string;
   response_format?: AudioResponseFormat;

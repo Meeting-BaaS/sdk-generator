@@ -133,6 +133,7 @@ export * from './toolChoiceOptions.js';
 export * from './transcriptionDiarizedSegment.js';
 export * from './transcriptionDiarizedSegmentType.js';
 export * from './transcriptionInclude.js';
+export * from './transcriptionLanguage.js';
 export * from './transcriptionSegment.js';
 export * from './transcriptionWord.js';
 export * from './transcriptTextDeltaEvent.js';

@@ -6,6 +6,7 @@
  * OpenAPI spec version: 2.3.0
  */
 import type { CreateTranscriptionResponseJsonLogprobsItem } from './createTranscriptionResponseJsonLogprobsItem.js';
+import type { TranscriptionLanguage } from './transcriptionLanguage.js';
 import type { TranscriptTextUsageDuration } from './transcriptTextUsageDuration.js';
 import type { TranscriptTextUsageTokens } from './transcriptTextUsageTokens.js';
 
@@ -15,6 +16,8 @@ import type { TranscriptTextUsageTokens } from './transcriptTextUsageTokens.js';
 export interface CreateTranscriptionResponseJson {
   /** The transcribed text. */
   text: string;
+  /** The languages detected in the audio. Returned by `gpt-transcribe`. An empty array indicates that no language could be reliably detected. */
+  languages?: TranscriptionLanguage[];
   /** The log probabilities of the tokens in the transcription. Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added to the `include` array. */
   logprobs?: CreateTranscriptionResponseJsonLogprobsItem[];
   /** Token usage statistics for the request. */

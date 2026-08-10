@@ -357,7 +357,7 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
         required: true,
         description: "Model you want the translation model to use to translate",
         default: "base",
-        options: ["base", "enhanced"]
+        options: ["base", "batch", "enhanced"]
       },
       {
         name: "match_original_utterances",
@@ -1163,7 +1163,7 @@ export const GLADIA_STREAMING_FIELDS = [
             required: true,
             description: "Model you want the translation model to use to translate",
             default: "base",
-            options: ["base", "enhanced"]
+            options: ["base", "batch", "enhanced"]
           },
           {
             name: "match_original_utterances",
@@ -1630,7 +1630,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
     type: "array",
     required: false,
     description:
-      "Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3",
+      "Key term prompting improves recognition of specialized terminology and brands. Only compatible with Nova-3.\n\n`keyterm` accepts plain terms only. Unlike the legacy `keywords` feature, it does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm.\n\nTo boost multiple separate keyterms, repeat the `keyterm` parameter (for example, `keyterm=term1&keyterm=term2`). To boost one multi-word phrase as a single keyterm, join the words with `%20` or `+` (for example, `keyterm=customer%20service`). Do not separate keyterms with commas, semicolons, or line breaks.\n",
     inputFormat: "comma-separated"
   },
   {
@@ -1672,6 +1672,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "be",
       "be-BY",
       "bg",
+      "bg-BG",
       "bn",
       "bn-IN",
       "bo",
@@ -1680,6 +1681,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "bs-BA",
       "ca",
       "cs",
+      "cs-CZ",
       "cy",
       "da",
       "da-DK",
@@ -1707,6 +1709,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "es-MX",
       "es-US",
       "et",
+      "et-EE",
       "eu",
       "fa",
       "fi",
@@ -1731,6 +1734,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "hu",
       "hu-HU",
       "hy",
+      "hy-AM",
       "id",
       "id-ID",
       "is",
@@ -1751,7 +1755,9 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "ln",
       "lo",
       "lt",
+      "lt-LT",
       "lv",
+      "lv-LV",
       "mg",
       "mi",
       "mk",
@@ -1775,6 +1781,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "no-NO",
       "oc",
       "pa",
+      "pa-IN",
       "pl",
       "pl-PL",
       "ps",
@@ -1790,7 +1797,9 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "sd",
       "si",
       "sk",
+      "sk-SK",
       "sl",
+      "sl-SI",
       "sl-SL",
       "sn",
       "so",
@@ -2111,7 +2120,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
     type: "array",
     required: false,
     description:
-      "Key term prompting can boost or suppress specialized terminology and brands. Only compatible with Nova-3",
+      "Key term prompting improves recognition of specialized terminology and brands. Only compatible with Nova-3.\n\n`keyterm` accepts plain terms only. Unlike the legacy `keywords` feature, it does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm.\n\nTo boost multiple separate keyterms, repeat the `keyterm` parameter (for example, `keyterm=term1&keyterm=term2`). To boost one multi-word phrase as a single keyterm, join the words with `%20` or `+` (for example, `keyterm=customer%20service`). Do not separate keyterms with commas, semicolons, or line breaks.\n",
     inputFormat: "comma-separated"
   },
   {
@@ -2153,6 +2162,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "be",
       "be-BY",
       "bg",
+      "bg-BG",
       "bn",
       "bn-IN",
       "bo",
@@ -2161,6 +2171,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "bs-BA",
       "ca",
       "cs",
+      "cs-CZ",
       "cy",
       "da",
       "da-DK",
@@ -2188,6 +2199,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "es-MX",
       "es-US",
       "et",
+      "et-EE",
       "eu",
       "fa",
       "fi",
@@ -2212,6 +2224,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "hu",
       "hu-HU",
       "hy",
+      "hy-AM",
       "id",
       "id-ID",
       "is",
@@ -2232,7 +2245,9 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "ln",
       "lo",
       "lt",
+      "lt-LT",
       "lv",
+      "lv-LV",
       "mg",
       "mi",
       "mk",
@@ -2256,6 +2271,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "no-NO",
       "oc",
       "pa",
+      "pa-IN",
       "pl",
       "pl-PL",
       "ps",
@@ -2271,7 +2287,9 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "sd",
       "si",
       "sk",
+      "sk-SK",
       "sl",
+      "sl-SI",
       "sl-SL",
       "sn",
       "so",
@@ -2978,6 +2996,14 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
         default: 0.3,
         min: 0,
         max: 1
+      },
+      {
+        name: "localization",
+        type: "array",
+        required: false,
+        description:
+          "Render the transcript in a regional variant of the detected language. Supported values are `en_au` (Australian English) and `en_uk` (British English) — only English is supported today, and you can specify at most one locale per base language. Base or default-region codes such as `en` and `en_us` are not localization variants and return a `400`.\n\nWhen the detected language matches the requested locale's base language, the transcript uses that locale's spelling and `language_code` returns the region-aware code (for example `en_au`) instead of the base `en`. Otherwise, when the detected language isn't available as a locale, the option is ignored. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+        inputFormat: "comma-separated"
       }
     ]
   },
@@ -3936,7 +3962,7 @@ export type AssemblyAIListFilterFieldName = (typeof ASSEMBLYAI_LIST_FILTER_FIELD
 // OpenAI
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** OpenAI transcription field metadata (12 fields) */
+/** OpenAI transcription field metadata (14 fields) */
 export const OPENAI_TRANSCRIPTION_FIELDS = [
   {
     name: "file",
@@ -3950,7 +3976,7 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
     type: "string",
     required: true,
     description:
-      "ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.\n"
+      "ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.\n"
   },
   {
     name: "language",
@@ -3990,6 +4016,22 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
       "he",
       "fa"
     ]
+  },
+  {
+    name: "languages",
+    type: "array",
+    required: false,
+    description:
+      "Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe`.\n",
+    inputFormat: "comma-separated"
+  },
+  {
+    name: "keywords",
+    type: "array",
+    required: false,
+    description:
+      "Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe`.\n",
+    inputFormat: "comma-separated"
   },
   {
     name: "prompt",

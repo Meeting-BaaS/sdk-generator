@@ -1493,6 +1493,15 @@
                 "minimum": 0,
                 "maximum": 1,
                 "default": 0.3
+              },
+              "localization": {
+                "x-label": "Localization",
+                "description": "Render the transcript in a regional variant of the detected language. Supported values are `en_au` (Australian English) and `en_uk` (British English) — only English is supported today, and you can specify at most one locale per base language. Base or default-region codes such as `en` and `en_us` are not localization variants and return a `400`.\n\nWhen the detected language matches the requested locale's base language, the transcript uses that locale's spelling and `language_code` returns the region-aware code (for example `en_au`) instead of the base `en`. Otherwise, when the detected language isn't available as a locale, the option is ignored. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+                "type": "array",
+                "items": {
+                  "x-label": "locale",
+                  "type": "string"
+                }
               }
             }
           },
@@ -3427,6 +3436,15 @@
                 "minimum": 0,
                 "maximum": 1,
                 "default": 0.3
+              },
+              "localization": {
+                "x-label": "Localization",
+                "description": "Render the transcript in a regional variant of the detected language. Supported values are `en_au` (Australian English) and `en_uk` (British English) — only English is supported today, and you can specify at most one locale per base language. Base or default-region codes such as `en` and `en_us` are not localization variants and return a `400`.\n\nWhen the detected language matches the requested locale's base language, the transcript uses that locale's spelling and `language_code` returns the region-aware code (for example `en_au`) instead of the base `en`. Otherwise, when the detected language isn't available as a locale, the option is ignored. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+                "type": "array",
+                "items": {
+                  "x-label": "locale",
+                  "type": "string"
+                }
               }
             }
           },

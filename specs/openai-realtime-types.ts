@@ -24,7 +24,14 @@ export interface RealtimeSessionConfig {
   output_audio_format?: "pcm16" | "g711_ulaw" | "g711_alaw"
   /** Input audio transcription config */
   input_audio_transcription?: {
-    model: "whisper-1"
+    model:
+      | "whisper-1"
+      | "gpt-4o-transcribe"
+      | "gpt-4o-mini-transcribe"
+      | "gpt-4o-mini-transcribe-2025-12-15"
+      | "gpt-4o-transcribe-diarize"
+      | "gpt-transcribe"
+      | "gpt-live-transcribe"
   }
   /** Voice activity detection config */
   turn_detection?: {

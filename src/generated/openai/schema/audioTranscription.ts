@@ -8,14 +8,21 @@
 import type { AudioTranscriptionDelay } from './audioTranscriptionDelay.js';
 
 export interface AudioTranscription {
-  /** The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels. */
-  model?: string | 'whisper-1' | 'gpt-4o-mini-transcribe' | 'gpt-4o-mini-transcribe-2025-12-15' | 'gpt-4o-transcribe' | 'gpt-4o-transcribe-diarize' | 'gpt-realtime-whisper';
+  /** The model to use for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels. */
+  model?: string | 'whisper-1' | 'gpt-transcribe' | 'gpt-live-transcribe' | 'gpt-4o-mini-transcribe' | 'gpt-4o-mini-transcribe-2025-12-15' | 'gpt-4o-transcribe' | 'gpt-4o-transcribe-diarize' | 'gpt-realtime-whisper';
   /**
      * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
      * will improve accuracy and latency.
      */
   language?: string;
+  /**
+     * Possible languages of the input audio, in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.
+     * @minItems 1
+     */
+  languages?: string[];
+  /** Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and `gpt-live-transcribe`. */
+  keywords?: string[];
   /**
      * An optional text to guide the model's style or continue a previous audio
      * segment.

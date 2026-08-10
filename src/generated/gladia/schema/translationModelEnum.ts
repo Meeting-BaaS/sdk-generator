@@ -13,5 +13,6 @@ export type TranslationModelEnum = typeof TranslationModelEnum[keyof typeof Tran
 
 export const TranslationModelEnum = {
   base: 'base',
+  batch: 'batch',
   enhanced: 'enhanced',
 } as const;

@@ -34,6 +34,7 @@ export const OpenAIModelCodes = [
   "gpt-audio-mini",
   "gpt-audio-mini-2025-10-06",
   "gpt-audio-mini-2025-12-15",
+  "gpt-live-transcribe",
   "gpt-realtime",
   "gpt-realtime-1.5",
   "gpt-realtime-2",
@@ -44,6 +45,7 @@ export const OpenAIModelCodes = [
   "gpt-realtime-mini-2025-10-06",
   "gpt-realtime-mini-2025-12-15",
   "gpt-realtime-whisper",
+  "gpt-transcribe",
   "whisper-1"
 ] as const
 
@@ -64,7 +66,9 @@ export const OpenAITranscriptionModelCodes = [
   "gpt-4o-mini-transcribe-2025-12-15",
   "gpt-4o-transcribe",
   "gpt-4o-transcribe-diarize",
+  "gpt-live-transcribe",
   "gpt-realtime-whisper",
+  "gpt-transcribe",
   "whisper-1"
 ] as const
 
@@ -89,7 +93,9 @@ export const OpenAITranscriptionModel = {
   "gpt-4o-mini-transcribe-2025-12-15": "gpt-4o-mini-transcribe-2025-12-15",
   "gpt-4o-transcribe": "gpt-4o-transcribe",
   "gpt-4o-transcribe-diarize": "gpt-4o-transcribe-diarize",
+  "gpt-live-transcribe": "gpt-live-transcribe",
   "gpt-realtime-whisper": "gpt-realtime-whisper",
+  "gpt-transcribe": "gpt-transcribe",
   "whisper-1": "whisper-1"
 } as const satisfies Record<string, OpenAITranscriptionModelCode>
 
@@ -181,6 +187,7 @@ export const OpenAIModelLabels: Record<OpenAIModelCode, string> = {
   "gpt-audio-mini": "gpt Audio Mini",
   "gpt-audio-mini-2025-10-06": "gpt Audio Mini 2025 10 06",
   "gpt-audio-mini-2025-12-15": "gpt Audio Mini 2025 12 15",
+  "gpt-live-transcribe": "gpt Live Transcribe",
   "gpt-realtime": "GPT Realtime",
   "gpt-realtime-1.5": "GPT Realtime 1.5",
   "gpt-realtime-2": "GPT Realtime 2",
@@ -191,5 +198,6 @@ export const OpenAIModelLabels: Record<OpenAIModelCode, string> = {
   "gpt-realtime-mini-2025-10-06": "GPT Realtime Mini 2025 10 06",
   "gpt-realtime-mini-2025-12-15": "GPT Realtime Mini 2025 12 15",
   "gpt-realtime-whisper": "GPT Realtime Whisper",
+  "gpt-transcribe": "gpt Transcribe",
   "whisper-1": "Whisper V2"
 }

@@ -201,7 +201,8 @@ export const FIELD_EQUIVALENCES: Record<FieldCategory, CategoryMetadata> = {
           "language_detection_options.expected_languages",
           "language_detection_options.fallback_language",
           "language_detection_options.code_switching",
-          "language_detection_options.code_switching_confidence_threshold"
+          "language_detection_options.code_switching_confidence_threshold",
+          "language_detection_options.localization"
         ] as const,
         streaming: [] as const
       },

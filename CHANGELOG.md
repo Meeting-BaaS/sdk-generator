@@ -19,6 +19,8 @@ Added deterministic generated-output verification, package-entrypoint checks, pr
 
 Re-synced and regenerated the TypeScript API surface for AssemblyAI, Azure Speech-to-Text v3.2, Deepgram, ElevenLabs, Gladia, OpenAI, Soniox, and Speechmatics. Notable additions include Soniox `stt-rt-v5`, `stt-async-v5`, TTS, and voice-management endpoints; OpenAI `gpt-realtime-2.1` and `gpt-realtime-2.1-mini`; AssemblyAI `universal-3-5-pro`; ElevenLabs multichannel output controls; Gladia `/v1/models`; Speechmatics `model`, `melia-1`, forced-transcript events, and region metadata; and Deepgram locale `hu-HU`. Removed Speechmatics alignment/data/text/object-URL endpoints no longer appear in generated clients.
 
+A follow-up upstream review added OpenAI transcription models `gpt-transcribe` and `gpt-live-transcribe` plus request `languages` hints, `keywords` biasing, and per-language detection results in transcription responses; AssemblyAI `language_detection_options.localization` regional variants (`en_au`, `en_uk`); the Gladia `batch` translation model; Deepgram `listen` languages for Bulgarian, Czech, Estonian, Armenian, Lithuanian, Latvian, Nepali, Punjabi, Slovak, and Slovenian with expanded keyterm documentation; and realtime session transcription typing for the current OpenAI model set (tracked OpenAI SDK moved to 7.4.0).
+
 The final release refresh updates the tracked SDK baselines to Gladia 1.1.0, AssemblyAI 4.36.4, Deepgram 5.7.0, OpenAI 7.0.0, Azure Speech SDK 1.51.0, and Speechmatics realtime 8.5.1. AssemblyAI streaming types now cover the current model, encoding, language, heartbeat, speaker, voice-focus, PII, latency-mode, LLM-gateway, and webhook options and events. ElevenLabs Scribe languages increased from 80 to 99; the generated list adds the newly documented languages, corrects Javanese from `jw` to `jv`, and removes Yoruba `yo`, which is no longer listed by the provider.
 
 #### Dependencies And Code Generation Updated
@@ -46,6 +48,10 @@ Kept the replaced batch model `universal-3-pro` as a deprecated router constant 
 #### Volatile Provider Checksums
 
 Excluded date-only `example` values from Gladia spec hashing, alongside existing timestamp normalization, so daily documentation examples do not create false provider-update alerts. Meaningful date fields remain checksummed. Unchanged canonical specs, references, manual inputs, and consumed checksums now preserve their checked-in bytes and timestamps, allowing the publish-time sync to remain clean before the generated-freshness gate runs.
+
+#### Gladia Webhook Spec Validation
+
+Added `fix-gladia-spec.js` to the spec-fix pipeline. Gladia's upstream spec now ships empty `responses: {}` objects on its webhook operations, which fail OpenAPI validation during generation; the fixer removes the empty objects (webhooks are not part of the generated client) so Gladia code generation succeeds again.
 
 ## [0.9.7] - 2026-06-16
 

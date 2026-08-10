@@ -5,6 +5,7 @@
  * OpenAI Audio API - Transcription, Translation, Speech, and Realtime streaming endpoints. Filtered from the official OpenAI API spec (Stainless-hosted).
  * OpenAPI spec version: 2.3.0
  */
+import type { TranscriptionLanguage } from './transcriptionLanguage.js';
 import type { TranscriptTextDoneEventLogprobsItem } from './transcriptTextDoneEventLogprobsItem.js';
 import type { TranscriptTextDoneEventType } from './transcriptTextDoneEventType.js';
 import type { TranscriptTextUsageTokens } from './transcriptTextUsageTokens.js';
@@ -17,6 +18,8 @@ export interface TranscriptTextDoneEvent {
   type: TranscriptTextDoneEventType;
   /** The text that was transcribed. */
   text: string;
+  /** The languages detected in the audio. Returned by `gpt-transcribe`. An empty array indicates that no language could be reliably detected. */
+  languages?: TranscriptionLanguage[];
   /** The log probabilities of the individual tokens in the transcription. Only included if you [create a transcription](/docs/api-reference/audio/create-transcription) with the `include[]` parameter set to `logprobs`. */
   logprobs?: TranscriptTextDoneEventLogprobsItem[];
   usage?: TranscriptTextUsageTokens;

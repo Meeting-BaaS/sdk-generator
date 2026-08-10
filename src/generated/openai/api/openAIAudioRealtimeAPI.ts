@@ -64,6 +64,12 @@ formData.append(`model`, createTranscriptionRequest.model);
 if(createTranscriptionRequest.language !== undefined) {
  formData.append(`language`, createTranscriptionRequest.language);
  }
+if(createTranscriptionRequest.languages !== undefined) {
+ createTranscriptionRequest.languages.forEach(value => formData.append(`languages`, value));
+ }
+if(createTranscriptionRequest.keywords !== undefined) {
+ createTranscriptionRequest.keywords.forEach(value => formData.append(`keywords`, value));
+ }
 if(createTranscriptionRequest.prompt !== undefined) {
  formData.append(`prompt`, createTranscriptionRequest.prompt);
  }

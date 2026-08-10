@@ -46,6 +46,7 @@ Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
 format, or a stream of transcript events.
 
  */
+
 export const createTranscriptionBodyResponseFormatDefault = `json`;
 export const createTranscriptionBodyTemperatureDefault = 0;
 export const createTranscriptionBodyStreamOneDefault = false;
@@ -61,8 +62,10 @@ export const createTranscriptionBodyKnownSpeakerReferencesMax = 4;
 
 export const CreateTranscriptionBody = zod.object({
   "file": zod.instanceof(File).describe('The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n'),
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe-diarize'])]).describe('ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe-diarize'])]).describe('ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.\n'),
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format will improve accuracy and latency.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe`.\n'),
+  "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe`.\n'),
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio segment. The [prompt](\/docs\/guides\/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n'),
   "response_format": zod.enum(['json', 'text', 'srt', 'verbose_json', 'vtt', 'diarized_json']).default(createTranscriptionBodyResponseFormatDefault).describe('The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`, or `diarized_json`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`, the only supported format is `json`. For `gpt-4o-transcribe-diarize`, the supported formats are `json`, `text`, and `diarized_json`, with `diarized_json` required to receive speaker annotations.\n'),
   "temperature": zod.number().default(createTranscriptionBodyTemperatureDefault).describe('The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https:\/\/en.wikipedia.org\/wiki\/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n'),
@@ -81,6 +84,9 @@ export const CreateTranscriptionBody = zod.object({
 
 export const CreateTranscriptionResponse = zod.union([zod.object({
   "text": zod.string().describe('The transcribed text.'),
+  "languages": zod.array(zod.object({
+  "code": zod.string().describe('The code of a language detected in the audio.')
+}).describe('A language detected in transcribed audio.')).optional().describe('The languages detected in the audio. Returned by `gpt-transcribe`. An empty array indicates that no language could be reliably detected.\n'),
   "logprobs": zod.array(zod.object({
   "token": zod.string().optional().describe('The token in the transcription.'),
   "logprob": zod.number().optional().describe('The log probability of the token.'),
@@ -228,6 +234,7 @@ export const createRealtimeClientSecretBodyExpiresAfterSecondsDefault = 600;
 export const createRealtimeClientSecretBodyExpiresAfterSecondsMin = 10;
 export const createRealtimeClientSecretBodyExpiresAfterSecondsMax = 7200;
 
+
 export const createRealtimeClientSecretBodySessionOneAudioInputNoiseReductionDefault = null;
 export const createRealtimeClientSecretBodySessionOneAudioInputTurnDetectionOneOneTypeDefault = `server_vad`;
 export const createRealtimeClientSecretBodySessionOneAudioInputTurnDetectionOneOneCreateResponseDefault = true;
@@ -293,8 +300,10 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio\/pcma`.')
 }).describe('The G.711 A-law format.')]).optional().describe('The format of the input audio.'),
   "transcription": zod.object({
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-live-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in\n[ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
+  "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
   "delay": zod.enum(['minimal', 'low', 'medium', 'high', 'xhigh']).optional().describe('Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n')
 }).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](\/docs\/api-reference\/audio\/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
@@ -434,8 +443,10 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio\/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-live-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in\n[ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
+  "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
   "delay": zod.enum(['minimal', 'low', 'medium', 'high', 'xhigh']).optional().describe('Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n')
 }).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](\/docs\/api-reference\/audio\/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
@@ -461,6 +472,7 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "include": zod.array(zod.enum(['item.input_audio_transcription.logprobs'])).optional().describe('Additional fields to include in server outputs.\n\n`item.input_audio_transcription.logprobs`: Include logprobs for input audio transcription.\n')
 }).describe('Realtime transcription session object configuration.')]).optional().describe('Session configuration to use for the client secret. Choose either a realtime\nsession or a transcription session.\n')
 }).describe('Create a session and client secret for the Realtime API. The request can specify\neither a realtime or a transcription session configuration.\n[Learn more about the Realtime API](\/docs\/guides\/realtime).\n')
+
 
 export const createRealtimeClientSecretResponseSessionOneAudioInputNoiseReductionDefault = null;
 export const createRealtimeClientSecretResponseSessionOneAudioInputTurnDetectionOneOneTypeDefault = `server_vad`;
@@ -496,6 +508,7 @@ export const createRealtimeClientSecretResponseSessionOnePromptOneVariablesOneTh
 export const createRealtimeClientSecretResponseSessionOnePromptOneVariablesOneFourTypeDefault = `input_file`;
 export const createRealtimeClientSecretResponseSessionOnePromptOneVariablesOneFourPromptCacheBreakpointModeDefault = `explicit`;
 
+
 export const CreateRealtimeClientSecretResponse = zod.object({
   "value": zod.string().describe('The generated client secret value.'),
   "expires_at": zod.number().describe('Expiration timestamp for the client secret, in seconds since epoch.'),
@@ -518,8 +531,9 @@ export const CreateRealtimeClientSecretResponse = zod.object({
   "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio\/pcma`.')
 }).describe('The G.711 A-law format.')]).optional().describe('The format of the input audio.'),
   "transcription": zod.object({
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-live-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
   "language": zod.string().optional().describe('The language of the input audio.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('The possible input audio languages configured for transcription, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format.\n'),
   "prompt": zod.string().optional().describe('The prompt configured for input audio transcription, when present.\n')
 }).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](\/docs\/api-reference\/audio\/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
   "noise_reduction": zod.object({
@@ -659,8 +673,9 @@ export const CreateRealtimeClientSecretResponse = zod.object({
   "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio\/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-live-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
   "language": zod.string().optional().describe('The language of the input audio.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('The possible input audio languages configured for transcription, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format.\n'),
   "prompt": zod.string().optional().describe('The prompt configured for input audio transcription, when present.\n')
 }).optional().describe('Configuration of the transcription model.\n'),
   "noise_reduction": zod.object({
@@ -785,6 +800,7 @@ export const CreateRealtimeSessionBody = zod.object({
 }).describe('Reference to a prompt template and its variables.\n[Learn more](\/docs\/guides\/text?api-mode=responses#reusable-prompts).\n'),zod.null()]).optional()
 }).describe('A new Realtime session configuration, with an ephemeral key. Default TTL\nfor keys is one minute.\n')
 
+
 export const createRealtimeSessionResponseTracingOneDefault = `auto`;
 
 export const CreateRealtimeSessionResponse = zod.object({
@@ -806,8 +822,9 @@ export const CreateRealtimeSessionResponse = zod.object({
   "type": zod.enum(['audio/pcma']).optional().describe('The audio format. Always `audio\/pcma`.')
 }).describe('The G.711 A-law format.')]).optional(),
   "transcription": zod.object({
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-live-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
   "language": zod.string().optional().describe('The language of the input audio.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('The possible input audio languages configured for transcription, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format.\n'),
   "prompt": zod.string().optional().describe('The prompt configured for input audio transcription, when present.\n')
 }).optional().describe('Configuration for input audio transcription.\n'),
   "noise_reduction": zod.object({
@@ -874,6 +891,7 @@ Returns the created Realtime transcription session object, plus an ephemeral key
 export const createRealtimeTranscriptionSessionBodyInputAudioNoiseReductionDefault = null;
 export const createRealtimeTranscriptionSessionBodyInputAudioFormatDefault = `pcm16`;
 
+
 export const CreateRealtimeTranscriptionSessionBody = zod.object({
   "turn_detection": zod.object({
   "type": zod.enum(['server_vad']).optional().describe('Type of turn detection. Only `server_vad` is currently supported for transcription sessions.\n'),
@@ -886,13 +904,18 @@ export const CreateRealtimeTranscriptionSessionBody = zod.object({
 }).nullish().default(createRealtimeTranscriptionSessionBodyInputAudioNoiseReductionDefault).describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
   "input_audio_format": zod.enum(['pcm16', 'g711_ulaw', 'g711_alaw']).default(createRealtimeTranscriptionSessionBodyInputAudioFormatDefault).describe('The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.\nFor `pcm16`, input audio must be 16-bit PCM at a 24kHz sample rate,\nsingle channel (mono), and little-endian byte order.\n'),
   "input_audio_transcription": zod.object({
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-live-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model to use for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. Use `gpt-4o-transcribe-diarize` when you need diarization with speaker labels.\n'),
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in\n[ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
+  "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
   "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
   "delay": zod.enum(['minimal', 'low', 'medium', 'high', 'xhigh']).optional().describe('Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n')
 }).optional().describe('Configuration for input audio transcription. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
   "include": zod.array(zod.enum(['item.input_audio_transcription.logprobs'])).optional().describe('The set of items to include in the transcription. Current available items are:\n`item.input_audio_transcription.logprobs`\n')
 }).describe('Realtime transcription session object configuration.')
+
+
+
 
 export const CreateRealtimeTranscriptionSessionResponse = zod.object({
   "client_secret": zod.object({
@@ -902,8 +925,9 @@ export const CreateRealtimeTranscriptionSessionResponse = zod.object({
   "modalities": zod.any().optional().describe('The set of modalities the model can respond with. To disable audio,\nset this to [\"text\"].\n'),
   "input_audio_format": zod.string().optional().describe('The format of input audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.\n'),
   "input_audio_transcription": zod.object({
-  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
+  "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-live-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe', 'gpt-4o-transcribe-diarize', 'gpt-realtime-whisper'])]).optional().describe('The model used for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`.\n'),
   "language": zod.string().optional().describe('The language of the input audio.\n'),
+  "languages": zod.array(zod.string()).min(1).optional().describe('The possible input audio languages configured for transcription, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format.\n'),
   "prompt": zod.string().optional().describe('The prompt configured for input audio transcription, when present.\n')
 }).optional().describe('Configuration of the transcription model.\n'),
   "turn_detection": zod.object({

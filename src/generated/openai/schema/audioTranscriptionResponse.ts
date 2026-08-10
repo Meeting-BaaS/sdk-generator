@@ -7,10 +7,15 @@
  */
 
 export interface AudioTranscriptionResponse {
-  /** The model used for transcription. Current options are `whisper-1`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. */
-  model?: string | 'whisper-1' | 'gpt-4o-mini-transcribe' | 'gpt-4o-mini-transcribe-2025-12-15' | 'gpt-4o-transcribe' | 'gpt-4o-transcribe-diarize' | 'gpt-realtime-whisper';
+  /** The model used for transcription. Current options are `whisper-1`, `gpt-transcribe`, `gpt-live-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `gpt-4o-transcribe`, `gpt-4o-transcribe-diarize`, and `gpt-realtime-whisper`. */
+  model?: string | 'whisper-1' | 'gpt-transcribe' | 'gpt-live-transcribe' | 'gpt-4o-mini-transcribe' | 'gpt-4o-mini-transcribe-2025-12-15' | 'gpt-4o-transcribe' | 'gpt-4o-transcribe-diarize' | 'gpt-realtime-whisper';
   /** The language of the input audio. */
   language?: string;
+  /**
+     * The possible input audio languages configured for transcription, in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format.
+     * @minItems 1
+     */
+  languages?: string[];
   /** The prompt configured for input audio transcription, when present. */
   prompt?: string;
 }
