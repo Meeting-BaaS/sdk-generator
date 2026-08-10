@@ -1349,6 +1349,56 @@ describe("BaasClient v2", () => {
       expect(result.success).toBe(true)
     })
 
+    it("should reject an invalid teams workspace domain before the request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-workspaces", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ workspace_id: workspaceId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsWorkspace({
+        name: "Contoso",
+        domain: "contoso"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
+    })
+
+    it("should reject an oversized teams workspace name before the request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-workspaces", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ workspace_id: workspaceId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsWorkspace({
+        name: "a".repeat(101),
+        domain: "contoso.onmicrosoft.com"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
+    })
+
     it("should infer teams workspace methods on v2 client", () => {
       expect(client).toHaveProperty("createTeamsWorkspace")
       expect(client).toHaveProperty("listTeamsWorkspaces")
@@ -1541,6 +1591,60 @@ describe("BaasClient v2", () => {
       const result = await client.deleteTeamsLogin({ credential_id: credentialId })
 
       expect(result.success).toBe(true)
+    })
+
+    it("should reject a malformed teams login workspace_id before the request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-logins", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ credential_id: credentialId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsLogin({
+        workspace_id: "not-a-uuid",
+        name: "bot1",
+        email: "bot1@contoso.onmicrosoft.com",
+        password: "s3cr3t-p@ss"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
+    })
+
+    it("should reject an invalid teams login email before the request is sent", async () => {
+      let requestCount = 0
+
+      server.use(
+        http.post("https://api.meetingbaas.com/v2/teams-logins", () => {
+          requestCount++
+          return HttpResponse.json(createMockV2SuccessResponse({ credential_id: credentialId }), {
+            status: 201
+          })
+        })
+      )
+
+      const result = await client.createTeamsLogin({
+        workspace_id: workspaceId,
+        name: "bot1",
+        email: "not-an-email",
+        password: "s3cr3t-p@ss"
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.code).toBe("VALIDATION_ERROR")
+        expect(result.statusCode).toBe(400)
+      }
+      expect(requestCount).toBe(0)
     })
 
     it("should infer teams login methods on v2 client", () => {
