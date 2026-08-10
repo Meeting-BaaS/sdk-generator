@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.8] - 2026-07-28
+## [0.9.8] - 2026-08-10
 
 ### Added
 
@@ -51,7 +51,7 @@ Excluded date-only `example` values from Gladia spec hashing, alongside existing
 
 #### Gladia Webhook Spec Validation
 
-Added `fix-gladia-spec.js` to the spec-fix pipeline. Gladia's upstream spec now ships empty `responses: {}` objects on its webhook operations, which fail OpenAPI validation during generation; the fixer removes the empty objects (webhooks are not part of the generated client) so Gladia code generation succeeds again.
+Added `fix-gladia-spec.js` to the spec-fix pipeline. Gladia's upstream spec now ships empty `responses: {}` objects on its webhook operations, which fail OpenAPI validation during generation; the fixer removes the empty objects (webhooks are not part of the generated client) so Gladia code generation succeeds again. The fixer also pins Gladia's volatile date and date-time `example` values to fixed placeholders so the checked-in spec stays byte-identical across daily upstream fetches.
 
 ## [0.9.7] - 2026-06-16
 
