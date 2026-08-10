@@ -2,7 +2,8 @@ const SPEC_SOURCES = {
   gladia: {
     url: "https://api.gladia.io/openapi.json",
     output: "specs/gladia-openapi.json",
-    format: "json"
+    format: "json",
+    fixedBy: "fix-gladia-spec.js"
   },
   assemblyai: {
     url: "https://www.assemblyai.com/docs/openapi.json",
