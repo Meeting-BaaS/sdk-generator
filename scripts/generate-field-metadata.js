@@ -509,7 +509,12 @@ export type FieldMetadataProvider = keyof typeof PROVIDER_FIELDS
     })
     console.log("  → Formatted field metadata with Biome")
   } catch (formatError) {
-    console.log(`  ⚠ Could not format field metadata: ${formatError.message}`)
+    console.error(`  ✗ Could not format field metadata: ${formatError.message}`)
+    console.error(
+      "  Biome is required for deterministic generated output (the freshness gate compares bytes)."
+    )
+    console.error("  Run inside the dev shell (direnv) so `biome` is on PATH.")
+    process.exit(1)
   }
 
   // Count fields for summary

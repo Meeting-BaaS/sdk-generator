@@ -763,7 +763,12 @@ function main() {
       stdio: ["pipe", "pipe", "pipe"]
     })
   } catch (formatError) {
-    console.log(`Could not format ${OUTPUT_TS_PATH}: ${formatError.message}`)
+    console.error(`Could not format ${OUTPUT_TS_PATH}: ${formatError.message}`)
+    console.error(
+      "Biome is required for deterministic generated output (the freshness gate compares bytes)."
+    )
+    console.error("Run inside the dev shell (direnv) so `biome` is on PATH.")
+    process.exit(1)
   }
   console.log(`Generated: ${OUTPUT_TS_PATH}`)
 
