@@ -117,10 +117,10 @@
       "note": "No official AsyncAPI spec - local streaming types are generated from the Soniox streaming SDK"
     },
     "elevenlabs": {
-      "sha256": "17901895c2a8811181f1e8f68d11b00a45ff4a3c0561b9a89755182ae9ee2d7c",
+      "sha256": "2a3bb6a95a49d17e9790a8320fe197bb55e376ea25225f3e8685cf4b5e319e26",
       "url": "https://api.elevenlabs.io/openapi.json",
-      "syncedAt": "2026-08-10T09:18:35.846Z",
-      "size": 1951506,
+      "syncedAt": "2026-08-10T10:21:08.672Z",
+      "size": 1951525,
       "consumedSha256": "8b79d8b7a0f21416b203ed9e54b2694045158e3138cab05dff91713847640af5",
       "consumedAt": "2026-07-28T10:35:16.062Z",
       "fixedBy": "fix-elevenlabs-spec.js"
@@ -180,7 +180,7 @@
       "checkedAt": "2026-04-28T07:05:09.432Z"
     }
   },
-  "updatedAt": "2026-08-10T09:33:12.320Z",
+  "updatedAt": "2026-08-10T10:21:08.776Z",
   "providerSdks": {
     "gladia": {
       "packages": {
