@@ -20,6 +20,10 @@ import type {
   CreateMeetWorkspaceBody,
   CreateScheduledBotRequestBodyInput,
   CreateScheduledBotResponseData,
+  CreateTeamsLogin201Data,
+  CreateTeamsLoginBody,
+  CreateTeamsWorkspace201Data,
+  CreateTeamsWorkspaceBody,
   CreateZoomCredential201Data,
   CreateZoomCredentialBody,
   DeleteBotDataResponseData,
@@ -30,6 +34,8 @@ import type {
   DeleteMeetLogin200Data,
   DeleteMeetWorkspace200Data,
   DeleteScheduledBotResponseData,
+  DeleteTeamsLogin200Data,
+  DeleteTeamsWorkspace200Data,
   DeleteZoomCredential200Data,
   GetBotDetailsResponseData,
   GetBotScreenshotsResponseDataItem,
@@ -40,6 +46,9 @@ import type {
   GetMeetLoginUtilization200Data,
   GetMeetWorkspace200Data,
   GetScheduledBotResponseData,
+  GetTeamsLogin200Data,
+  GetTeamsLoginUtilization200Data,
+  GetTeamsWorkspace200Data,
   GetZoomCredential200Data,
   LeaveBotResponseData,
   ListBotsParams,
@@ -58,6 +67,10 @@ import type {
   ListRawCalendarsResponseDataItem,
   ListScheduledBotsParams,
   ListScheduledBotsResponseDataItem,
+  ListTeamsLogins200DataItem,
+  ListTeamsLoginsParams,
+  ListTeamsWorkspaces200DataItem,
+  ListTeamsWorkspacesParams,
   ListZoomCredentials200DataItem,
   ListZoomCredentialsParams,
   PauseBotRecording200Data,
@@ -86,6 +99,10 @@ import type {
   UpdateMeetWorkspaceBody,
   UpdateScheduledBotRequestBodyInput,
   UpdateScheduledBotResponseData,
+  UpdateTeamsLogin200Data,
+  UpdateTeamsLoginBody,
+  UpdateTeamsWorkspace200Data,
+  UpdateTeamsWorkspaceBody,
   UpdateZoomCredential200Data,
   UpdateZoomCredentialBody
 } from "../generated/v2/schema"
@@ -1084,6 +1101,206 @@ export function createV2Methods(state: ClientState): BaasClientV2Methods {
         (params: { credential_id: string }, options: AxiosRequestConfig) =>
           deleteMeetLoginApi(params.credential_id, options),
         deleteMeetLoginParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    // Teams workspace methods
+    async createTeamsWorkspace(
+      params: CreateTeamsWorkspaceBody
+    ): Promise<ApiResponseV2<CreateTeamsWorkspace201Data>> {
+      const { createTeamsWorkspace: createTeamsWorkspaceApi } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.js"
+      )
+      const { createTeamsWorkspaceBody } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<CreateTeamsWorkspace201Data, CreateTeamsWorkspaceBody>(
+        createTeamsWorkspaceApi,
+        createTeamsWorkspaceBody as z.ZodType<CreateTeamsWorkspaceBody>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async listTeamsWorkspaces(
+      params?: ListTeamsWorkspacesParams
+    ): Promise<ApiResponseV2<ListTeamsWorkspaces200DataItem[]>> {
+      const { listTeamsWorkspaces: listTeamsWorkspacesApi } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.js"
+      )
+
+      return apiWrapperV2NoParams(
+        (options: AxiosRequestConfig) => listTeamsWorkspacesApi(params, options),
+        state.getOptions()
+      )
+    },
+
+    async getTeamsWorkspace(params: {
+      workspace_id: string
+    }): Promise<ApiResponseV2<GetTeamsWorkspace200Data>> {
+      const { getTeamsWorkspace: getTeamsWorkspaceApi } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.js"
+      )
+      const { getTeamsWorkspaceParams } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<GetTeamsWorkspace200Data, { workspace_id: string }>(
+        (params: { workspace_id: string }, options: AxiosRequestConfig) =>
+          getTeamsWorkspaceApi(params.workspace_id, options),
+        getTeamsWorkspaceParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async updateTeamsWorkspace(params: {
+      workspace_id: string
+      body: UpdateTeamsWorkspaceBody
+    }): Promise<ApiResponseV2<UpdateTeamsWorkspace200Data>> {
+      const { updateTeamsWorkspace: updateTeamsWorkspaceApi } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.js"
+      )
+      const { updateTeamsWorkspaceParams, updateTeamsWorkspaceBody } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<
+        UpdateTeamsWorkspace200Data,
+        { workspace_id: string; body: UpdateTeamsWorkspaceBody }
+      >(
+        (params: { workspace_id: string; body: UpdateTeamsWorkspaceBody }, options) =>
+          updateTeamsWorkspaceApi(params.workspace_id, params.body, options),
+        z.object({
+          workspace_id: updateTeamsWorkspaceParams.shape.workspace_id,
+          body: updateTeamsWorkspaceBody
+        }) as z.ZodType<{ workspace_id: string; body: UpdateTeamsWorkspaceBody }>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async deleteTeamsWorkspace(params: {
+      workspace_id: string
+    }): Promise<ApiResponseV2<DeleteTeamsWorkspace200Data>> {
+      const { deleteTeamsWorkspace: deleteTeamsWorkspaceApi } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.js"
+      )
+      const { deleteTeamsWorkspaceParams } = await import(
+        "../generated/v2/api/teams-workspaces/teams-workspaces.zod.js"
+      )
+
+      return apiWrapperV2<DeleteTeamsWorkspace200Data, { workspace_id: string }>(
+        (params: { workspace_id: string }, options: AxiosRequestConfig) =>
+          deleteTeamsWorkspaceApi(params.workspace_id, options),
+        deleteTeamsWorkspaceParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    // Teams login methods
+    async createTeamsLogin(
+      params: CreateTeamsLoginBody
+    ): Promise<ApiResponseV2<CreateTeamsLogin201Data>> {
+      const { createTeamsLogin: createTeamsLoginApi } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.js"
+      )
+      const { createTeamsLoginBody } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.zod.js"
+      )
+
+      return apiWrapperV2<CreateTeamsLogin201Data, CreateTeamsLoginBody>(
+        createTeamsLoginApi,
+        createTeamsLoginBody as z.ZodType<CreateTeamsLoginBody>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async listTeamsLogins(
+      params?: ListTeamsLoginsParams
+    ): Promise<ApiResponseV2<ListTeamsLogins200DataItem[]>> {
+      const { listTeamsLogins: listTeamsLoginsApi } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.js"
+      )
+
+      return apiWrapperV2NoParams(
+        (options: AxiosRequestConfig) => listTeamsLoginsApi(params, options),
+        state.getOptions()
+      )
+    },
+
+    async getTeamsLoginUtilization(): Promise<ApiResponseV2<GetTeamsLoginUtilization200Data>> {
+      const { getTeamsLoginUtilization: getTeamsLoginUtilizationApi } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.js"
+      )
+
+      return apiWrapperV2NoParams(getTeamsLoginUtilizationApi, state.getOptions())
+    },
+
+    async getTeamsLogin(params: {
+      credential_id: string
+    }): Promise<ApiResponseV2<GetTeamsLogin200Data>> {
+      const { getTeamsLogin: getTeamsLoginApi } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.js"
+      )
+      const { getTeamsLoginParams } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.zod.js"
+      )
+
+      return apiWrapperV2<GetTeamsLogin200Data, { credential_id: string }>(
+        (params: { credential_id: string }, options: AxiosRequestConfig) =>
+          getTeamsLoginApi(params.credential_id, options),
+        getTeamsLoginParams,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async updateTeamsLogin(params: {
+      credential_id: string
+      body: UpdateTeamsLoginBody
+    }): Promise<ApiResponseV2<UpdateTeamsLogin200Data>> {
+      const { updateTeamsLogin: updateTeamsLoginApi } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.js"
+      )
+      const { updateTeamsLoginParams, updateTeamsLoginBody } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.zod.js"
+      )
+
+      return apiWrapperV2<
+        UpdateTeamsLogin200Data,
+        { credential_id: string; body: UpdateTeamsLoginBody }
+      >(
+        (params: { credential_id: string; body: UpdateTeamsLoginBody }, options) =>
+          updateTeamsLoginApi(params.credential_id, params.body, options),
+        z.object({
+          credential_id: updateTeamsLoginParams.shape.credential_id,
+          body: updateTeamsLoginBody
+        }) as z.ZodType<{ credential_id: string; body: UpdateTeamsLoginBody }>,
+        params,
+        state.getOptions()
+      )
+    },
+
+    async deleteTeamsLogin(params: {
+      credential_id: string
+    }): Promise<ApiResponseV2<DeleteTeamsLogin200Data>> {
+      const { deleteTeamsLogin: deleteTeamsLoginApi } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.js"
+      )
+      const { deleteTeamsLoginParams } = await import(
+        "../generated/v2/api/teams-logins/teams-logins.zod.js"
+      )
+
+      return apiWrapperV2<DeleteTeamsLogin200Data, { credential_id: string }>(
+        (params: { credential_id: string }, options: AxiosRequestConfig) =>
+          deleteTeamsLoginApi(params.credential_id, options),
+        deleteTeamsLoginParams,
         params,
         state.getOptions()
       )

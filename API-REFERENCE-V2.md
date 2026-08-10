@@ -267,3 +267,28 @@ Manage individual Google Workspace user identities attached to a meet workspace.
 | `getMeetLogin` | Get a meet login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/getMeetLogin) |
 | `updateMeetLogin` | Rename, change `email_group`, or re-enable a login | [`{ credential_id: string; body: UpdateMeetLoginBody }`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/updateMeetLogin) |
 | `deleteMeetLogin` | Delete a meet login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/meet-logins/deleteMeetLogin) |
+
+### Teams Workspace Management
+
+Manage Microsoft 365 tenants used for authenticated Teams bots. A teams workspace represents one tenant (identified by its primary domain) and is the parent of one or more `teams_logins`.
+
+| Method | Description | Parameters |
+| ------ | ----------- | ---------- |
+| `createTeamsWorkspace` | Create a teams workspace for a Microsoft 365 tenant | [`CreateTeamsWorkspaceBody`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/createTeamsWorkspace) |
+| `listTeamsWorkspaces` | List teams workspaces | [`ListTeamsWorkspacesParams?`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/listTeamsWorkspaces) |
+| `getTeamsWorkspace` | Get a teams workspace | [`{ workspace_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/getTeamsWorkspace) |
+| `updateTeamsWorkspace` | Rename or re-enable a workspace | [`{ workspace_id: string; body: UpdateTeamsWorkspaceBody }`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/updateTeamsWorkspace) |
+| `deleteTeamsWorkspace` | Delete a teams workspace (cascades to its logins) | [`{ workspace_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-workspaces/deleteTeamsWorkspace) |
+
+### Teams Login Management
+
+Manage individual Microsoft 365 accounts attached to a teams workspace. Passwords are write-only (encrypted at rest, never returned). Logins sharing the same `email_group` form one round-robin pool.
+
+| Method | Description | Parameters |
+| ------ | ----------- | ---------- |
+| `createTeamsLogin` | Create a teams login under a workspace | [`CreateTeamsLoginBody`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/createTeamsLogin) |
+| `listTeamsLogins` | List teams logins across all workspaces | [`ListTeamsLoginsParams?`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/listTeamsLogins) |
+| `getTeamsLoginUtilization` | Get aggregate concurrency metrics for the login pool | _no params_ — [docs](https://docs.meetingbaas.com/api-v2/reference/teams-logins/getTeamsLoginUtilization) |
+| `getTeamsLogin` | Get a teams login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/getTeamsLogin) |
+| `updateTeamsLogin` | Rename, change password/`email_group`, or re-enable a login | [`{ credential_id: string; body: UpdateTeamsLoginBody }`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/updateTeamsLogin) |
+| `deleteTeamsLogin` | Delete a teams login | [`{ credential_id: string }`](https://docs.meetingbaas.com/api-v2/reference/teams-logins/deleteTeamsLogin) |
