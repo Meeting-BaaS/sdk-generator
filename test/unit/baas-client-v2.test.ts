@@ -1219,7 +1219,12 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.post("https://api.meetingbaas.com/v2/teams-workspaces", () => {
+        http.post("https://api.meetingbaas.com/v2/teams-workspaces", async ({ request }) => {
+          const body = (await request.json()) as Record<string, unknown>
+          expect(body).toEqual({
+            domain: "contoso.onmicrosoft.com",
+            name: "Contoso"
+          })
           return HttpResponse.json(mockResponse, { status: 201 })
         })
       )
@@ -1317,9 +1322,14 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.patch(`https://api.meetingbaas.com/v2/teams-workspaces/${workspaceId}`, () => {
-          return HttpResponse.json(mockResponse, { status: 200 })
-        })
+        http.patch(
+          `https://api.meetingbaas.com/v2/teams-workspaces/${workspaceId}`,
+          async ({ request }) => {
+            const body = (await request.json()) as Record<string, unknown>
+            expect(body).toEqual({ name: "Contoso Renamed" })
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
       )
 
       const result = await client.updateTeamsWorkspace({
@@ -1424,7 +1434,14 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.post("https://api.meetingbaas.com/v2/teams-logins", () => {
+        http.post("https://api.meetingbaas.com/v2/teams-logins", async ({ request }) => {
+          const body = (await request.json()) as Record<string, unknown>
+          expect(body).toEqual({
+            workspace_id: workspaceId,
+            name: "bot1",
+            email: "bot1@contoso.onmicrosoft.com",
+            password: "s3cret-password"
+          })
           return HttpResponse.json(mockResponse, { status: 201 })
         })
       )
@@ -1561,9 +1578,14 @@ describe("BaasClient v2", () => {
       })
 
       server.use(
-        http.patch(`https://api.meetingbaas.com/v2/teams-logins/${credentialId}`, () => {
-          return HttpResponse.json(mockResponse, { status: 200 })
-        })
+        http.patch(
+          `https://api.meetingbaas.com/v2/teams-logins/${credentialId}`,
+          async ({ request }) => {
+            const body = (await request.json()) as Record<string, unknown>
+            expect(body).toEqual({ name: "bot1 renamed" })
+            return HttpResponse.json(mockResponse, { status: 200 })
+          }
+        )
       )
 
       const result = await client.updateTeamsLogin({
@@ -1593,7 +1615,7 @@ describe("BaasClient v2", () => {
       expect(result.success).toBe(true)
     })
 
-    it("should reject a malformed teams login workspace_id before the request is sent", async () => {
+    it("should reject a malformed teams login workspace_id before request is sent", async () => {
       let requestCount = 0
 
       server.use(
