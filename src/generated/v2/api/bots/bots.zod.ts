@@ -55,11 +55,15 @@ export const createBotBodyTimeoutConfigGracePeriodDefault = 0
 export const createBotBodyTimeoutConfigGracePeriodMin = 0
 
 export const createBotBodyTimeoutConfigGracePeriodMax = 600
+export const createBotBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
+export const createBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 21600
+export const createBotBodyTimeoutConfigMaxRecordingDurationDefault = null
 export const createBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
-  grace_period: 0
+  grace_period: 0,
+  max_recording_duration: null
 }
 export const createBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -202,11 +206,20 @@ export const createBotBody = zod.object({
         .optional()
         .describe(
           "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
+        ),
+      max_recording_duration: zod
+        .number()
+        .min(createBotBodyTimeoutConfigMaxRecordingDurationMinOne)
+        .max(createBotBodyTimeoutConfigMaxRecordingDurationMaxOne)
+        .or(zod.null())
+        .optional()
+        .describe(
+          "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–21600 seconds (2–6 hours)"
         )
     })
     .default(createBotBodyTimeoutConfigDefault)
     .describe(
-      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout."
+      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours)."
     ),
   zoom_config: zod
     .object({
@@ -757,11 +770,15 @@ export const batchCreateBotsBodyTimeoutConfigGracePeriodDefault = 0
 export const batchCreateBotsBodyTimeoutConfigGracePeriodMin = 0
 
 export const batchCreateBotsBodyTimeoutConfigGracePeriodMax = 600
+export const batchCreateBotsBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
+export const batchCreateBotsBodyTimeoutConfigMaxRecordingDurationMaxOne = 21600
+export const batchCreateBotsBodyTimeoutConfigMaxRecordingDurationDefault = null
 export const batchCreateBotsBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
-  grace_period: 0
+  grace_period: 0,
+  max_recording_duration: null
 }
 export const batchCreateBotsBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -904,11 +921,20 @@ export const batchCreateBotsBodyItem = zod.object({
         .optional()
         .describe(
           "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
+        ),
+      max_recording_duration: zod
+        .number()
+        .min(batchCreateBotsBodyTimeoutConfigMaxRecordingDurationMinOne)
+        .max(batchCreateBotsBodyTimeoutConfigMaxRecordingDurationMaxOne)
+        .or(zod.null())
+        .optional()
+        .describe(
+          "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–21600 seconds (2–6 hours)"
         )
     })
     .default(batchCreateBotsBodyTimeoutConfigDefault)
     .describe(
-      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout."
+      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours)."
     ),
   zoom_config: zod
     .object({
@@ -2080,11 +2106,15 @@ export const createScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
 export const createScheduledBotBodyTimeoutConfigGracePeriodMin = 0
 
 export const createScheduledBotBodyTimeoutConfigGracePeriodMax = 600
+export const createScheduledBotBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
+export const createScheduledBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 21600
+export const createScheduledBotBodyTimeoutConfigMaxRecordingDurationDefault = null
 export const createScheduledBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
-  grace_period: 0
+  grace_period: 0,
+  max_recording_duration: null
 }
 export const createScheduledBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -2230,11 +2260,20 @@ export const createScheduledBotBody = zod
           .optional()
           .describe(
             "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
+          ),
+        max_recording_duration: zod
+          .number()
+          .min(createScheduledBotBodyTimeoutConfigMaxRecordingDurationMinOne)
+          .max(createScheduledBotBodyTimeoutConfigMaxRecordingDurationMaxOne)
+          .or(zod.null())
+          .optional()
+          .describe(
+            "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–21600 seconds (2–6 hours)"
           )
       })
       .default(createScheduledBotBodyTimeoutConfigDefault)
       .describe(
-        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout."
+        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours)."
       ),
     zoom_config: zod
       .object({
@@ -2723,11 +2762,15 @@ export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodDefault = 0
 export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMin = 0
 
 export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMax = 600
+export const batchCreateScheduledBotsBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
+export const batchCreateScheduledBotsBodyTimeoutConfigMaxRecordingDurationMaxOne = 21600
+export const batchCreateScheduledBotsBodyTimeoutConfigMaxRecordingDurationDefault = null
 export const batchCreateScheduledBotsBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
-  grace_period: 0
+  grace_period: 0,
+  max_recording_duration: null
 }
 export const batchCreateScheduledBotsBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -2873,11 +2916,20 @@ export const batchCreateScheduledBotsBodyItem = zod
           .optional()
           .describe(
             "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
+          ),
+        max_recording_duration: zod
+          .number()
+          .min(batchCreateScheduledBotsBodyTimeoutConfigMaxRecordingDurationMinOne)
+          .max(batchCreateScheduledBotsBodyTimeoutConfigMaxRecordingDurationMaxOne)
+          .or(zod.null())
+          .optional()
+          .describe(
+            "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–21600 seconds (2–6 hours)"
           )
       })
       .default(batchCreateScheduledBotsBodyTimeoutConfigDefault)
       .describe(
-        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout."
+        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours)."
       ),
     zoom_config: zod
       .object({
@@ -3195,6 +3247,9 @@ export const getScheduledBotDetailsResponseDataTimeoutConfigWaitingRoomTimeoutMa
 export const getScheduledBotDetailsResponseDataTimeoutConfigNoOneJoinedTimeoutMinOne =
   -9007199254740991
 export const getScheduledBotDetailsResponseDataTimeoutConfigNoOneJoinedTimeoutMaxOne = 9007199254740991
+export const getScheduledBotDetailsResponseDataTimeoutConfigMaxRecordingDurationMinOne =
+  -9007199254740991
+export const getScheduledBotDetailsResponseDataTimeoutConfigMaxRecordingDurationMaxOne = 9007199254740991
 export const getScheduledBotDetailsResponseDataStreamingConfigAudioFrequencyMinOne =
   -9007199254740991
 export const getScheduledBotDetailsResponseDataStreamingConfigAudioFrequencyMaxOne = 9007199254740991
@@ -3257,7 +3312,13 @@ export const getScheduledBotDetailsResponse = zod.object({
         .min(getScheduledBotDetailsResponseDataTimeoutConfigNoOneJoinedTimeoutMinOne)
         .max(getScheduledBotDetailsResponseDataTimeoutConfigNoOneJoinedTimeoutMaxOne)
         .or(zod.null())
-        .describe("Timeout in seconds if no one joins (null if not set)")
+        .describe("Timeout in seconds if no one joins (null if not set)"),
+      max_recording_duration: zod
+        .number()
+        .min(getScheduledBotDetailsResponseDataTimeoutConfigMaxRecordingDurationMinOne)
+        .max(getScheduledBotDetailsResponseDataTimeoutConfigMaxRecordingDurationMaxOne)
+        .or(zod.null())
+        .describe("Maximum recording duration in seconds (null if not set, max 12h)")
     }),
     transcription_config: zod
       .object({
@@ -3402,11 +3463,15 @@ export const updateScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
 export const updateScheduledBotBodyTimeoutConfigGracePeriodMin = 0
 
 export const updateScheduledBotBodyTimeoutConfigGracePeriodMax = 600
+export const updateScheduledBotBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
+export const updateScheduledBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 21600
+export const updateScheduledBotBodyTimeoutConfigMaxRecordingDurationDefault = null
 export const updateScheduledBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
-  grace_period: 0
+  grace_period: 0,
+  max_recording_duration: null
 }
 export const updateScheduledBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
@@ -3553,11 +3618,20 @@ export const updateScheduledBotBody = zod.object({
         .optional()
         .describe(
           "The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.\n\nDefault: 0 (disabled)\nMaximum: 600 seconds (10 minutes)"
+        ),
+      max_recording_duration: zod
+        .number()
+        .min(updateScheduledBotBodyTimeoutConfigMaxRecordingDurationMinOne)
+        .max(updateScheduledBotBodyTimeoutConfigMaxRecordingDurationMaxOne)
+        .or(zod.null())
+        .optional()
+        .describe(
+          "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–21600 seconds (2–6 hours)"
         )
     })
     .default(updateScheduledBotBodyTimeoutConfigDefault)
     .describe(
-      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout."
+      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours)."
     ),
   zoom_config: zod
     .object({

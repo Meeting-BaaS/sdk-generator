@@ -6,6 +6,7 @@
  * OpenAPI spec version: 2.0.0
  */
 
+import type { GetScheduledBotResponseDataTimeoutConfigMaxRecordingDuration } from "./getScheduledBotResponseDataTimeoutConfigMaxRecordingDuration"
 import type { GetScheduledBotResponseDataTimeoutConfigNoOneJoinedTimeout } from "./getScheduledBotResponseDataTimeoutConfigNoOneJoinedTimeout"
 import type { GetScheduledBotResponseDataTimeoutConfigWaitingRoomTimeout } from "./getScheduledBotResponseDataTimeoutConfigWaitingRoomTimeout"
 
@@ -14,4 +15,6 @@ export type GetScheduledBotResponseDataTimeoutConfig = {
   waiting_room_timeout: GetScheduledBotResponseDataTimeoutConfigWaitingRoomTimeout
   /** Timeout in seconds if no one joins (null if not set) */
   no_one_joined_timeout: GetScheduledBotResponseDataTimeoutConfigNoOneJoinedTimeout
+  /** Maximum recording duration in seconds (null if not set, max 12h) */
+  max_recording_duration: GetScheduledBotResponseDataTimeoutConfigMaxRecordingDuration
 }

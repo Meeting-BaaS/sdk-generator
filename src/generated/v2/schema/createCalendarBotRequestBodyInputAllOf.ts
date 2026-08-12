@@ -57,7 +57,7 @@ Available for Google Meet, Microsoft Teams, and Zoom meetings.
 
 Maximum: 4096 characters */
   entry_message?: CreateCalendarBotRequestBodyInputAllOfEntryMessage
-  /** Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. */
+  /** Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours). */
   timeout_config?: CreateCalendarBotRequestBodyInputAllOfTimeoutConfig
   /** Zoom-only configuration for authentication and join method.
 
