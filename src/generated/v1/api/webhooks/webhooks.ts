@@ -43,8 +43,8 @@ Sent when a bot successfully completes recording a meeting. Contains full transc
       }
     ],
     \"speakers\": [
-      \"Jane Smith\",
-      \"John Doe\"
+      \"John Doe\",
+      \"Jane Smith\"
     ],
     \"mp4\": \"https://storage.example.com/recordings/video123.mp4?token=abc\",
     \"audio\": \"https://storage.example.com/recordings/audio123.wav?token=abc\",
@@ -205,8 +205,8 @@ Sent when a bot successfully completes recording a meeting.
       }
     ],
     \"speakers\": [
-      \"Jane Smith\",
-      \"John Doe\"
+      \"John Doe\",
+      \"Jane Smith\"
     ],
     \"mp4\": \"https://storage.example.com/recordings/video123.mp4?token=abc\",
     \"audio\": \"https://storage.example.com/recordings/audio123.wav?token=abc\",

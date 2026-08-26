@@ -1246,7 +1246,7 @@ export const createCalendarBotBodyTimeoutConfigGracePeriodMin = 0
 
 export const createCalendarBotBodyTimeoutConfigGracePeriodMax = 600
 export const createCalendarBotBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
-export const createCalendarBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 21600
+export const createCalendarBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 43200
 export const createCalendarBotBodyTimeoutConfigMaxRecordingDurationDefault = null
 export const createCalendarBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
@@ -1398,12 +1398,12 @@ export const createCalendarBotBody = zod
           .or(zod.null())
           .optional()
           .describe(
-            "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–21600 seconds (2–6 hours)"
+            "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–43200 seconds (2–12 hours)"
           )
       })
       .default(createCalendarBotBodyTimeoutConfigDefault)
       .describe(
-        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours)."
+        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
       ),
     zoom_config: zod
       .object({
@@ -1753,7 +1753,7 @@ export const updateCalendarBotBodyTimeoutConfigGracePeriodMin = 0
 
 export const updateCalendarBotBodyTimeoutConfigGracePeriodMax = 600
 export const updateCalendarBotBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
-export const updateCalendarBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 21600
+export const updateCalendarBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 43200
 export const updateCalendarBotBodyTimeoutConfigMaxRecordingDurationDefault = null
 export const updateCalendarBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
@@ -1919,12 +1919,12 @@ export const updateCalendarBotBody = zod
               .or(zod.null())
               .optional()
               .describe(
-                "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–21600 seconds (2–6 hours)"
+                "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–43200 seconds (2–12 hours)"
               )
           })
           .default(updateCalendarBotBodyTimeoutConfigDefault)
           .describe(
-            "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 6 hours)."
+            "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
           ),
         zoom_config: zod
           .object({
