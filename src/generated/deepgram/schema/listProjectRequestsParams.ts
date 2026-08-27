@@ -21,6 +21,8 @@ start?: string;
 end?: string;
 /**
  * Number of results to return per page. Default 10. Range [1,1000]
+ * @minimum 1
+ * @maximum 1000
  */
 limit?: number;
 /**

@@ -24,4 +24,6 @@ export interface CreateTTSPayload {
   client_reference_id?: string | null;
   /** Optional speaking rate of the generated speech, from `0.7` to `1.3`. `1.0` is the normal speed; lower values slow speech down and higher values speed it up. Defaults to `1.0`. */
   speed?: number | null;
+  /** Optional. When `true`, shortens the pauses between words so the generated speech flows more naturally. Defaults to `false`. Only supported on models with `supports_silence_reduction` set to `true`; enabling it on any other model returns an `invalid_request` error. */
+  reduce_silence?: boolean | null;
 }

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@soniox/node':
-        specifier: 2.2.0
-        version: 2.2.0
+        specifier: 2.3.0
+        version: 2.3.0
       axios:
         specifier: 1.18.1
         version: 1.18.1
@@ -829,8 +829,8 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@soniox/node@2.2.0':
-    resolution: {integrity: sha512-5gYrhlbINfNs9CcNmHETEhNBKaniP6RgdYuZYOXyRx/tnjzZ/M4kKGMXatdUGquji0biO7IfOcmr9fZqJYDB2Q==}
+  '@soniox/node@2.3.0':
+    resolution: {integrity: sha512-WGDxaUFzet/NXoLYj5kw/JPAvFFWwce+iwhBNfWupNpXubXR5ijpUO6Qt5xnVYmpqnDtG57t8TIfKaFprL6y3g==}
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -2870,7 +2870,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@soniox/node@2.2.0': {}
+  '@soniox/node@2.3.0': {}
 
   '@standard-schema/spec@1.1.0': {}
 

@@ -247,6 +247,44 @@ if (arrayFixes > 0) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Step 6b: Fix numeric fields mistyped as strings
+// Upstream regression (2026-08): timing/confidence response fields changed to
+// `type: string` with `title: float` — the `title` betrays the intended
+// `format: float`. The live API returns JSON numbers, so string types would
+// make generated Zod validation reject every real response.
+// ─────────────────────────────────────────────────────────────────────────────
+console.log("\n📋 Step 6b: Fixing numeric fields mistyped as strings")
+
+function fixStringifiedNumbers(obj, path = "") {
+  if (!obj || typeof obj !== "object") return 0
+  let fixes = 0
+
+  if (obj.type === "string" && (obj.title === "float" || obj.title === "double")) {
+    obj.type = "number"
+    obj.format = obj.title
+    delete obj.title
+    fixes++
+    console.log(`   ✅ Restored number type: ${path}`)
+  }
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === "object" && value !== null) {
+      fixes += fixStringifiedNumbers(value, `${path}/${key}`)
+    }
+  }
+
+  return fixes
+}
+
+const numberFixes = fixStringifiedNumbers(spec)
+if (numberFixes > 0) {
+  console.log(`   Fixed ${numberFixes} mistyped numeric fields`)
+  fixCount += numberFixes
+} else {
+  console.log("   ✅ No mistyped numeric fields found")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Step 7: Fix missing path parameters
 // ─────────────────────────────────────────────────────────────────────────────
 console.log("\n📋 Step 7: Fixing missing path parameters")

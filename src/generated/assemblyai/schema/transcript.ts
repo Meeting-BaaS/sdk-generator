@@ -18,6 +18,7 @@ import type { TopicDetectionModelResult } from './topicDetectionModelResult.js';
 import type { TranscriptCustomSpelling } from './transcriptCustomSpelling.js';
 import type { TranscriptLanguageCode } from './transcriptLanguageCode.js';
 import type { TranscriptLanguageDetectionOptions } from './transcriptLanguageDetectionOptions.js';
+import type { TranscriptMetadata } from './transcriptMetadata.js';
 import type { TranscriptRedactPiiAudioOptions } from './transcriptRedactPiiAudioOptions.js';
 import type { TranscriptRemoveAudioTags } from './transcriptRemoveAudioTags.js';
 import type { TranscriptSpeechUnderstanding } from './transcriptSpeechUnderstanding.js';
@@ -172,6 +173,11 @@ export interface Transcript {
   language_detection?: boolean | null;
   /** Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection). */
   language_detection_options?: TranscriptLanguageDetectionOptions;
+  /**
+     * Additional information about the transcript, including any warnings raised while processing the request.
+     * @nullable
+     */
+  metadata?: TranscriptMetadata;
   /**
      * Whether [Multichannel transcription](https://www.assemblyai.com/docs/pre-recorded-audio/transcribe-multiple-audio-channels) was enabled in the transcription request, either true or false
      * @nullable

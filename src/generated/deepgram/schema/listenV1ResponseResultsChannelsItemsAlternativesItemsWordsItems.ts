@@ -11,4 +11,8 @@ export interface ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems
   start?: number;
   end?: number;
   confidence?: number;
+  /** The speaker of the word, present when diarization is enabled */
+  speaker?: number;
+  /** Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming */
+  speaker_confidence?: number;
 }

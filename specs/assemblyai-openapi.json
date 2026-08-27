@@ -1502,6 +1502,16 @@
                   "x-label": "locale",
                   "type": "string"
                 }
+              },
+              "on_no_speech_detected": {
+                "x-label": "On no speech detected",
+                "description": "Controls what happens when no speech is detected in the audio. With `error` (the default), the transcript fails and the reason is returned in `error`. With `fallback`, the transcript completes with an empty `text`, `language_code` is set to the `fallback_language`, and an explanatory warning is returned in `metadata.warnings`.\n\n`fallback` requires `fallback_language` to be set to a specific language code; `auto` returns a `400`. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+                "type": "string",
+                "enum": [
+                  "error",
+                  "fallback"
+                ],
+                "default": "error"
               }
             }
           },
@@ -3444,6 +3454,45 @@
                 "items": {
                   "x-label": "locale",
                   "type": "string"
+                }
+              },
+              "on_no_speech_detected": {
+                "x-label": "On no speech detected",
+                "description": "Controls what happens when no speech is detected in the audio. With `error` (the default), the transcript fails and the reason is returned in `error`. With `fallback`, the transcript completes with an empty `text`, `language_code` is set to the `fallback_language`, and an explanatory warning is returned in `metadata.warnings`.\n\n`fallback` requires `fallback_language` to be set to a specific language code; `auto` returns a `400`. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+                "type": "string",
+                "enum": [
+                  "error",
+                  "fallback"
+                ],
+                "default": "error"
+              }
+            }
+          },
+          "metadata": {
+            "x-label": "Metadata",
+            "description": "Additional information about the transcript, including any warnings raised while processing the request.",
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "warnings": {
+                "x-label": "Warnings",
+                "description": "Warnings raised while processing the request, for example when [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) was skipped because the audio contained no speech.\n",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "x-label": "Warning",
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "x-label": "Message",
+                      "description": "A human-readable description of the warning.",
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }

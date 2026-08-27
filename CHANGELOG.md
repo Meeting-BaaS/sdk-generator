@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.9] - 2026-08-17
+
+### Changed
+
+#### Provider APIs Refreshed
+
+Weekly upstream review regenerated the provider surface. Gladia transcription requests now type the `model` field as an enum of `solaria-1` (default), `solaria-3`, and `solaria-fusion`. AssemblyAI adds `language_detection_options.on_no_speech_detected` (`error` | `fallback`) and a `metadata` object with processing warnings on transcripts. Deepgram adds Afrikaans, Assamese, Georgian, Mongolian, Pashto, and Urdu (Pakistan) `listen` language variants and tightens TTS bitrate parameter validation. Soniox adds `/v1/usage/summary` and `/v1/concurrent-streams-history` endpoints, the TTS `reduce_silence` option with a `supports_silence_reduction` model flag, the `pcm_s16be` TTS audio format, and loosens usage-log cost fields to strings; the tracked `@soniox/node` SDK moved from 2.2.0 to 2.3.0 (additive: usage/concurrency types, `reduce_silence`).
+
+### Fixed
+
+#### Deepgram Numeric Fields Regression
+
+Deepgram's upstream spec changed 28 timing and confidence response fields (`start`, `end`, `confidence`, `start_word`, `end_word`, `speaker_confidence`, `confidence_score`) from `type: number` to `type: string` with `title: float` — a spec-generator regression, since the live API returns JSON numbers and stringly-typed Zod schemas would reject every real response. `fix-deepgram-spec.js` now restores `type: number` with the intended `format` for any string schema carrying a `float`/`double` title.
+
+#### Tooling Isolation
+
+Biome and Vitest now exclude `.worktrees/` so sibling git worktrees (with their own configs and test suites) cannot fail lint with nested-root configuration errors or inflate the test run.
+
 ## [0.9.8] - 2026-08-10
 
 ### Added

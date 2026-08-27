@@ -202,7 +202,8 @@ export const FIELD_EQUIVALENCES: Record<FieldCategory, CategoryMetadata> = {
           "language_detection_options.fallback_language",
           "language_detection_options.code_switching",
           "language_detection_options.code_switching_confidence_threshold",
-          "language_detection_options.localization"
+          "language_detection_options.localization",
+          "language_detection_options.on_no_speech_detected"
         ] as const,
         streaming: [] as const
       },
@@ -252,7 +253,7 @@ export const FIELD_EQUIVALENCES: Record<FieldCategory, CategoryMetadata> = {
     description: "Choose transcription model/tier",
     providers: {
       gladia: {
-        transcription: [] as const,
+        transcription: ["model"] as const,
         streaming: ["model"] as const
       },
       assemblyai: {

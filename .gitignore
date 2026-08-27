@@ -45,3 +45,4 @@ docs/generated/
 
 # Codex CLI local artifacts
 .codex
+.worktrees/

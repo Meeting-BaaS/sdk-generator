@@ -14,6 +14,7 @@ import type { LanguageConfig } from './languageConfig.js';
 import type { PiiRedactionConfigDTO } from './piiRedactionConfigDTO.js';
 import type { SubtitlesConfigDTO } from './subtitlesConfigDTO.js';
 import type { SummarizationConfigDTO } from './summarizationConfigDTO.js';
+import type { TranscriptionSupportedModels } from './transcriptionSupportedModels.js';
 import type { TranslationConfigDTO } from './translationConfigDTO.js';
 
 export interface InitTranscriptionRequest {
@@ -70,6 +71,8 @@ export interface InitTranscriptionRequest {
   punctuation_enhanced?: boolean;
   /** Specify the language configuration */
   language_config?: LanguageConfig;
+  /** The model used to process the audio. "solaria-1" is used by default. */
+  model?: TranscriptionSupportedModels;
   /** URL to a Gladia file or to an external audio or video file */
   audio_url: string;
 }

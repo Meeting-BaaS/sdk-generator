@@ -5,6 +5,7 @@
  * AssemblyAI Speech-to-Text API - Batch transcription endpoints. Filtered from the official AssemblyAI docs spec.
  * OpenAPI spec version: 1.3.4
  */
+import type { TranscriptOptionalParamsLanguageDetectionOptionsOnNoSpeechDetected } from './transcriptOptionalParamsLanguageDetectionOptionsOnNoSpeechDetected.js';
 
 /**
  * Specify options for [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection).
@@ -28,4 +29,10 @@ export type TranscriptOptionalParamsLanguageDetectionOptions = {
      * When the detected language matches the requested locale's base language, the transcript uses that locale's spelling and `language_code` returns the region-aware code (for example `en_au`) instead of the base `en`. Otherwise, when the detected language isn't available as a locale, the option is ignored. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
      */
   localization?: string[];
+  /**
+     * Controls what happens when no speech is detected in the audio. With `error` (the default), the transcript fails and the reason is returned in `error`. With `fallback`, the transcript completes with an empty `text`, `language_code` is set to the `fallback_language`, and an explanatory warning is returned in `metadata.warnings`.
+     *
+     * `fallback` requires `fallback_language` to be set to a specific language code; `auto` returns a `400`. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+     */
+  on_no_speech_detected?: TranscriptOptionalParamsLanguageDetectionOptionsOnNoSpeechDetected;
 };

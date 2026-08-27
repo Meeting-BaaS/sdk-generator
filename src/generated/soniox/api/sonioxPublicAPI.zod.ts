@@ -467,7 +467,8 @@ export const GetTtsModelsResponse = zod.object({
   "supports_timestamps": zod.boolean().optional(),
   "supports_speed_adjustment": zod.boolean().describe('Whether the model supports adjusting the speaking rate via the `speed` parameter.'),
   "speed_min": zod.number().describe('Minimum supported speaking rate.'),
-  "speed_max": zod.number().describe('Maximum supported speaking rate.')
+  "speed_max": zod.number().describe('Maximum supported speaking rate.'),
+  "supports_silence_reduction": zod.boolean().describe('Whether the model supports shortening the pauses between words via the `reduce_silence` parameter.')
 })).describe('List of available TTS models and their attributes.')
 })
 
@@ -494,7 +495,8 @@ export const GenerateTtsBody = zod.object({
   "sample_rate": zod.union([zod.number(),zod.null()]).optional().describe('Optional output sample rate in Hz.'),
   "bitrate": zod.union([zod.number(),zod.null()]).optional().describe('Optional output bitrate in bits per second.'),
   "client_reference_id": zod.union([zod.string().max(generateTtsBodyClientReferenceIdOneMax),zod.null()]).optional().describe('Optional tracking identifier string. Does not need to be unique. Ignored if the request authenticates with a temporary API key.'),
-  "speed": zod.union([zod.number(),zod.null()]).optional().describe('Optional speaking rate of the generated speech, from `0.7` to `1.3`. `1.0` is the normal speed; lower values slow speech down and higher values speed it up. Defaults to `1.0`.')
+  "speed": zod.union([zod.number(),zod.null()]).optional().describe('Optional speaking rate of the generated speech, from `0.7` to `1.3`. `1.0` is the normal speed; lower values slow speech down and higher values speed it up. Defaults to `1.0`.'),
+  "reduce_silence": zod.union([zod.boolean(),zod.null()]).optional().describe('Optional. When `true`, shortens the pauses between words so the generated speech flows more naturally. Defaults to `false`. Only supported on models with `supports_silence_reduction` set to `true`; enabling it on any other model returns an `invalid_request` error.')
 })
 
 export const GenerateTtsResponse = zod.unknown()
@@ -545,15 +547,6 @@ export const GetUsageLogsQueryParams = zod.object({
   "cursor": zod.union([zod.string(),zod.null()]).optional().describe('Pagination cursor for the next page of results.')
 })
 
-export const getUsageLogsResponseUsageLogsItemCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-export const getUsageLogsResponseUsageLogsItemInputCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-export const getUsageLogsResponseUsageLogsItemInputTextCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-export const getUsageLogsResponseUsageLogsItemInputAudioCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-export const getUsageLogsResponseUsageLogsItemOutputCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-export const getUsageLogsResponseUsageLogsItemOutputTextCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-export const getUsageLogsResponseUsageLogsItemOutputAudioCostUsdTwoRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-
-
 export const GetUsageLogsResponse = zod.object({
   "usage_logs": zod.array(zod.object({
   "uuid": zod.uuid().describe('Unique identifier of the request.'),
@@ -568,15 +561,86 @@ export const GetUsageLogsResponse = zod.object({
   "output_text_tokens": zod.number(),
   "output_audio_tokens": zod.number(),
   "output_audio_duration_ms": zod.number(),
-  "cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemCostUsdTwoRegExp)]),
-  "input_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemInputCostUsdTwoRegExp)]),
-  "input_text_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemInputTextCostUsdTwoRegExp)]),
-  "input_audio_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemInputAudioCostUsdTwoRegExp)]),
-  "output_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemOutputCostUsdTwoRegExp)]),
-  "output_text_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemOutputTextCostUsdTwoRegExp)]),
-  "output_audio_cost_usd": zod.union([zod.number(),zod.string().regex(getUsageLogsResponseUsageLogsItemOutputAudioCostUsdTwoRegExp)])
+  "cost_usd": zod.string(),
+  "input_cost_usd": zod.string(),
+  "input_text_cost_usd": zod.string(),
+  "input_audio_cost_usd": zod.string(),
+  "output_cost_usd": zod.string(),
+  "output_text_cost_usd": zod.string(),
+  "output_audio_cost_usd": zod.string()
 })).describe('Per-request usage log entries ordered by end_time, uuid (per `sort`).'),
   "next_page_cursor": zod.union([zod.string(),zod.null()]).optional().describe('A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.')
+})
+
+
+/**
+ * Returns daily cost and activity for the project, broken down per model and summed across all models. The project is implied by the API key used for authentication.
+ *
+ * Usage is aggregated by whole UTC day. The window is half-open, `[start_time, end_time)`, and a day is included when the window covers any part of it, so an `end_time` exactly at midnight excludes that day. The window must not cover more than 366 UTC days.
+ * @summary Get usage summary
+ */
+export const GetUsageSummaryQueryParams = zod.object({
+  "start_time": zod.string().describe('Start of the window (inclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-01T00:00:00Z`). Its UTC day is included.'),
+  "end_time": zod.string().describe('End of the window (exclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-03T00:00:00Z`) and strictly after `start_time`. Its UTC day is included unless it falls exactly on midnight.')
+})
+
+export const GetUsageSummaryResponse = zod.object({
+  "total": zod.object({
+  "model": zod.union([zod.string(),zod.null()]).optional().describe('Model identifier. `null` on the `total` entry.'),
+  "days": zod.array(zod.iso.date()).describe('One UTC day (`YYYY-MM-DD`) per element, in ascending order. Every day in the requested window is present, including days with no usage. All the per-day arrays below align to this axis.'),
+  "total_cost_usd": zod.string().describe('Total cost over the window, in USD. Equals `total_input_cost_usd` + `total_output_cost_usd` + `total_duration_cost_usd`.'),
+  "total_input_cost_usd": zod.string().describe('Total cost of input tokens over the window, in USD.'),
+  "total_output_cost_usd": zod.string().describe('Total cost of output tokens over the window, in USD.'),
+  "total_duration_cost_usd": zod.string().describe('Total cost over the window for models billed by session duration rather than by tokens, in USD. `0` for Speech-to-Text and Text-to-Speech models.'),
+  "cost_usd": zod.array(zod.string()).describe('Cost per day, in USD, aligned to `days`.'),
+  "input_cost_usd": zod.array(zod.string()).describe('Cost of input tokens per day, in USD, aligned to `days`.'),
+  "output_cost_usd": zod.array(zod.string()).describe('Cost of output tokens per day, in USD, aligned to `days`.'),
+  "duration_cost_usd": zod.array(zod.string()).describe('Duration-billed cost per day, in USD, aligned to `days`.'),
+  "total_num_requests": zod.number().describe('Number of requests over the window.'),
+  "total_input_text_tokens": zod.number(),
+  "total_input_audio_tokens": zod.number(),
+  "total_input_audio_duration_ms": zod.number(),
+  "total_output_text_tokens": zod.number(),
+  "total_output_audio_tokens": zod.number(),
+  "total_output_audio_duration_ms": zod.number(),
+  "total_duration_ms": zod.number().describe('Billed session duration over the window, in milliseconds, for models billed by duration. `0` for Speech-to-Text and Text-to-Speech models.'),
+  "num_requests": zod.array(zod.number()).describe('Number of requests per day, aligned to `days`.'),
+  "input_text_tokens": zod.array(zod.number()),
+  "input_audio_tokens": zod.array(zod.number()),
+  "input_audio_duration_ms": zod.array(zod.number()),
+  "output_text_tokens": zod.array(zod.number()),
+  "output_audio_tokens": zod.array(zod.number()),
+  "output_audio_duration_ms": zod.array(zod.number()),
+  "duration_ms": zod.array(zod.number()).describe('Billed session duration per day, in milliseconds, aligned to `days`.')
+}).describe('Cost and activity across all models. Its `model` is `null`.'),
+  "models": zod.array(zod.object({
+  "model": zod.union([zod.string(),zod.null()]).optional().describe('Model identifier. `null` on the `total` entry.'),
+  "days": zod.array(zod.iso.date()).describe('One UTC day (`YYYY-MM-DD`) per element, in ascending order. Every day in the requested window is present, including days with no usage. All the per-day arrays below align to this axis.'),
+  "total_cost_usd": zod.string().describe('Total cost over the window, in USD. Equals `total_input_cost_usd` + `total_output_cost_usd` + `total_duration_cost_usd`.'),
+  "total_input_cost_usd": zod.string().describe('Total cost of input tokens over the window, in USD.'),
+  "total_output_cost_usd": zod.string().describe('Total cost of output tokens over the window, in USD.'),
+  "total_duration_cost_usd": zod.string().describe('Total cost over the window for models billed by session duration rather than by tokens, in USD. `0` for Speech-to-Text and Text-to-Speech models.'),
+  "cost_usd": zod.array(zod.string()).describe('Cost per day, in USD, aligned to `days`.'),
+  "input_cost_usd": zod.array(zod.string()).describe('Cost of input tokens per day, in USD, aligned to `days`.'),
+  "output_cost_usd": zod.array(zod.string()).describe('Cost of output tokens per day, in USD, aligned to `days`.'),
+  "duration_cost_usd": zod.array(zod.string()).describe('Duration-billed cost per day, in USD, aligned to `days`.'),
+  "total_num_requests": zod.number().describe('Number of requests over the window.'),
+  "total_input_text_tokens": zod.number(),
+  "total_input_audio_tokens": zod.number(),
+  "total_input_audio_duration_ms": zod.number(),
+  "total_output_text_tokens": zod.number(),
+  "total_output_audio_tokens": zod.number(),
+  "total_output_audio_duration_ms": zod.number(),
+  "total_duration_ms": zod.number().describe('Billed session duration over the window, in milliseconds, for models billed by duration. `0` for Speech-to-Text and Text-to-Speech models.'),
+  "num_requests": zod.array(zod.number()).describe('Number of requests per day, aligned to `days`.'),
+  "input_text_tokens": zod.array(zod.number()),
+  "input_audio_tokens": zod.array(zod.number()),
+  "input_audio_duration_ms": zod.array(zod.number()),
+  "output_text_tokens": zod.array(zod.number()),
+  "output_audio_tokens": zod.array(zod.number()),
+  "output_audio_duration_ms": zod.array(zod.number()),
+  "duration_ms": zod.array(zod.number()).describe('Billed session duration per day, in milliseconds, aligned to `days`.')
+})).describe('One entry per model that recorded usage in the window. Empty when the project had no usage.')
 })
 
 
@@ -605,6 +669,33 @@ export const GetConcurrencyLimitsResponse = zod.object({
   "tts_concurrent": zod.union([zod.number(),zod.null()])
 }).describe('Configured limits')
 })
+})
+
+
+/**
+ * Returns historical concurrent stream counts for the project, aggregated per period. The project is implied by the API key used for authentication. Region-scoped.
+ *
+ * Every aggregation period in the requested window is returned, with no gaps. Periods with no recorded activity have every field set to `0`.
+ * @summary Get concurrent streams history
+ */
+export const GetConcurrentStreamsHistoryQueryParams = zod.object({
+  "start_time": zod.string().describe('Start of the time window (inclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`). Filters by `period_start`.'),
+  "end_time": zod.string().describe('End of the time window (exclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`) and strictly after `start_time`. Filters by `period_start`.'),
+  "period_sec": zod.union([zod.literal(60),zod.literal(3600),zod.literal(86400)]).describe('Aggregation period in seconds. One of `60` (per-minute), `3600` (hourly), `86400` (daily). The period also caps how long the requested window may be.'),
+  "kind": zod.enum(['stt', 'tts']).describe('Stream kind to return. `stt` covers Speech-to-Text WebSocket sessions, `tts` covers Text-to-Speech WebSocket streams and REST requests.')
+})
+
+export const GetConcurrentStreamsHistoryResponse = zod.object({
+  "kind": zod.enum(['stt', 'tts']).describe('Stream kind these entries describe (`stt` or `tts`).'),
+  "entries": zod.array(zod.object({
+  "period_start": zod.iso.datetime({"offset":true}).describe('Start of the aggregation period, UTC. Aligned to a multiple of `period_sec`.'),
+  "period_sec": zod.number().describe('Aggregation period in seconds.'),
+  "sample_min": zod.number().describe('Lowest recorded concurrent stream count in the period. Always `0`, because that is what the per-minute tier records. Use `sample_max` for the peak.'),
+  "sample_max": zod.number().describe('Peak concurrent stream count in the period. Stays exact when periods are rolled up into hours and days. `0` when the period had no activity.'),
+  "sample_sum": zod.number().describe('Sum of the recorded concurrency values in the period. Divide by `sample_count` for the average concurrency while streams were active, or by `total_count` for the average across the whole period with idle slots counted as zero.'),
+  "sample_count": zod.number().describe('Number of values actually recorded in the period. For `period_sec=60` this is how many samples were taken during that minute, so it is usually larger than `total_count`. For hourly and daily periods it is the number of source periods that had data, at most `total_count`. `0` when the period had no activity.'),
+  "total_count": zod.number().describe('Number of slots the period covers. `1` for `period_sec=60`, `60` for `3600` (minutes per hour), `24` for `86400` (hours per day). `0` when the period had no activity.')
+})).describe('Per-period concurrent stream aggregates for the authenticated project, ordered by `period_start` ascending. Every aggregation period in the requested window is returned, with no gaps. Periods with no recorded activity have every field set to `0`.')
 })
 
 export const createTranscriptionBody = CreateTranscriptionBody;

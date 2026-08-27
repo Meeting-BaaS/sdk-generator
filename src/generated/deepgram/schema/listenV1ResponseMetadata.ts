@@ -12,6 +12,7 @@ import type { ListenV1ResponseMetadataSummaryInfo } from './listenV1ResponseMeta
 import type { ListenV1ResponseMetadataTopicsInfo } from './listenV1ResponseMetadataTopicsInfo.js';
 
 export interface ListenV1ResponseMetadata {
+  /** @deprecated */
   transaction_key?: string;
   request_id: string;
   sha256: string;

@@ -10,7 +10,7 @@ paths:
       summary: Transcribe and analyze pre-recorded audio and video
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       tags:
-        - listen > v1 > media
+        - media
       parameters:
         - name: callback
           in: query
@@ -110,6 +110,7 @@ paths:
           schema:
             type: boolean
             default: false
+          deprecated: true
         - name: diarize_model
           in: query
           description: Select and enable a specific diarization model version. Specifying this parameter enables diarization and selects the model — you do not need to also set the deprecated `diarize=true` parameter. For batch, supported values are `latest` (currently v2), `v1`, and `v2`. For streaming, supported values are `latest` (currently v1) and `v1`; `v2` returns a validation error on streaming requests.
@@ -299,7 +300,7 @@ paths:
       summary: Text to Speech transformation
       description: Convert text into natural-sounding speech using Deepgram's TTS REST API
       tags:
-        - speak > v1 > audio
+        - audio
       parameters:
         - name: callback
           in: query
@@ -369,6 +370,8 @@ paths:
           schema:
             type: number
             format: double
+            minimum: 0.7
+            maximum: 1.5
             default: 1
         - name: Authorization
           in: header
@@ -403,7 +406,7 @@ paths:
       summary: Analyze text content
       description: Analyze text content using Deepgrams text analysis API
       tags:
-        - read > v1 > text
+        - text
       parameters:
         - name: callback
           in: query
@@ -517,7 +520,7 @@ paths:
       summary: List Models
       description: Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
       tags:
-        - manage > v1 > models
+        - models
       parameters:
         - name: include_outdated
           in: query
@@ -552,7 +555,7 @@ paths:
       summary: Get a specific Model
       description: Returns metadata for a specific public model
       tags:
-        - manage > v1 > models
+        - models
       parameters:
         - name: model_id
           in: path
@@ -587,7 +590,7 @@ paths:
       summary: List Project Requests
       description: Generates a list of requests for a specific project
       tags:
-        - manage > v1 > projects > requests
+        - requests
       parameters:
         - name: project_id
           in: path
@@ -616,6 +619,8 @@ paths:
           schema:
             type: number
             format: double
+            minimum: 1
+            maximum: 1000
             default: 10
         - name: page
           in: query
@@ -687,7 +692,7 @@ paths:
       summary: Get a Project Request
       description: Retrieves a specific request for a specific project
       tags:
-        - manage > v1 > projects > requests
+        - requests
       parameters:
         - name: project_id
           in: path
@@ -1002,6 +1007,7 @@ components:
         transaction_key:
           type: string
           default: deprecated
+          deprecated: true
         request_id:
           type: string
           format: uuid
@@ -1047,13 +1053,13 @@ components:
       properties:
         confidence:
           type: number
-          format: double
+          format: float
         start:
           type: number
-          format: double
+          format: float
         end:
           type: number
-          format: double
+          format: float
         snippet:
           type: string
       title: ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems
@@ -1074,13 +1080,20 @@ components:
           type: string
         start:
           type: number
-          format: double
+          format: float
         end:
           type: number
-          format: double
+          format: float
         confidence:
           type: number
-          format: double
+          format: float
+        speaker:
+          type: integer
+          description: The speaker of the word, present when diarization is enabled
+        speaker_confidence:
+          type: number
+          description: Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming
+          format: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems:
       type: object
@@ -1089,10 +1102,10 @@ components:
           type: string
         start:
           type: number
-          format: double
+          format: float
         end:
           type: number
-          format: double
+          format: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems:
       type: object
@@ -1107,10 +1120,10 @@ components:
           type: integer
         start:
           type: number
-          format: double
+          format: float
         end:
           type: number
-          format: double
+          format: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs:
       type: object
@@ -1133,13 +1146,13 @@ components:
           type: string
         confidence:
           type: number
-          format: double
+          format: float
         start_word:
           type: number
-          format: double
+          format: float
         end_word:
           type: number
-          format: double
+          format: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems:
       type: object
@@ -1148,10 +1161,10 @@ components:
           type: string
         start_word:
           type: number
-          format: double
+          format: float
         end_word:
           type: number
-          format: double
+          format: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems:
       type: object
@@ -1160,10 +1173,10 @@ components:
           type: string
         start_word:
           type: number
-          format: double
+          format: float
         end_word:
           type: number
-          format: double
+          format: float
         topics:
           type: array
           items:
@@ -1176,7 +1189,7 @@ components:
           type: string
         confidence:
           type: number
-          format: double
+          format: float
         words:
           type: array
           items:
@@ -1222,18 +1235,18 @@ components:
           type: string
         start:
           type: number
-          format: double
+          format: float
         end:
           type: number
-          format: double
+          format: float
         confidence:
           type: number
-          format: double
+          format: float
         speaker:
           type: integer
         speaker_confidence:
           type: number
-          format: double
+          format: float
         punctuated_word:
           type: string
       title: ListenV1ResponseResultsUtterancesItemsWordsItems
@@ -1242,13 +1255,13 @@ components:
       properties:
         start:
           type: number
-          format: double
+          format: float
         end:
           type: number
-          format: double
+          format: float
         confidence:
           type: number
-          format: double
+          format: float
         channel:
           type: integer
         transcript:
@@ -1283,7 +1296,7 @@ components:
           type: string
         confidence_score:
           type: number
-          format: double
+          format: float
       title: SharedTopicsResultsTopicsSegmentsItemsTopicsItems
     SharedTopicsResultsTopicsSegmentsItems:
       type: object
@@ -1329,7 +1342,7 @@ components:
           type: string
         confidence_score:
           type: number
-          format: double
+          format: float
       title: SharedIntentsResultsIntentsSegmentsItemsIntentsItems
     SharedIntentsResultsIntentsSegmentsItems:
       type: object
@@ -1477,8 +1490,12 @@ components:
         - $ref: '#/components/schemas/V1SpeakPostParametersBitRate0'
         - type: number
           format: double
+          minimum: 4000
+          maximum: 650000
         - type: number
           format: double
+          minimum: 4000
+          maximum: 192000
       title: V1SpeakPostParametersBitRate
     V1SpeakPostParametersContainer0:
       type: string

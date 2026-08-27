@@ -9,6 +9,7 @@
   "files": {
     "includes": [
       "**",
+      "!.worktrees",
       "!dist",
       "!examples",
       "!open-api",

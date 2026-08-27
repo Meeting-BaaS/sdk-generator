@@ -103,7 +103,7 @@ semantically different.
 | Provider | Transcription Fields | Streaming Fields |
 |----------|---------------------|------------------|
 | Gladia | `language_config` | `language_config` |
-| AssemblyAI | `language_code`, `language_detection`, `language_detection_options`, `language_detection_options.expected_languages`, `language_detection_options.fallback_language`, `language_detection_options.code_switching`, `language_detection_options.code_switching_confidence_threshold`, `language_detection_options.localization` | — |
+| AssemblyAI | `language_code`, `language_detection`, `language_detection_options`, `language_detection_options.expected_languages`, `language_detection_options.fallback_language`, `language_detection_options.code_switching`, `language_detection_options.code_switching_confidence_threshold`, `language_detection_options.localization`, `language_detection_options.on_no_speech_detected` | — |
 | Deepgram | `detect_language`, `language` | `detect_language`, `language` |
 | OpenAI Whisper | `language` | — |
 | Azure STT | `locale` | — |
@@ -138,7 +138,7 @@ semantically different.
 
 | Provider | Transcription Fields | Streaming Fields |
 |----------|---------------------|------------------|
-| Gladia | — | `model` |
+| Gladia | `model` | `model` |
 | AssemblyAI | `speech_models`, `speech_model` | — |
 | Deepgram | `model` | `model` |
 | OpenAI Whisper | `model` | — |

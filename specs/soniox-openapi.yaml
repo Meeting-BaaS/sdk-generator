@@ -1956,6 +1956,274 @@ paths:
         - Usage logs
       security:
         - PublicApiAuth: []
+  /v1/usage/summary:
+    get:
+      operationId: get_usage_summary
+      summary: Get usage summary
+      parameters:
+        - in: query
+          name: start_time
+          schema:
+            description: Start of the window (inclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-01T00:00:00Z`). Its UTC day is included.
+            title: Start Time
+            type: string
+          required: true
+          description: Start of the window (inclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-01T00:00:00Z`). Its UTC day is included.
+        - in: query
+          name: end_time
+          schema:
+            description: End of the window (exclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-03T00:00:00Z`) and strictly after `start_time`. Its UTC day is included unless it falls exactly on midnight.
+            title: End Time
+            type: string
+          required: true
+          description: End of the window (exclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-03T00:00:00Z`) and strictly after `start_time`. Its UTC day is included unless it falls exactly on midnight.
+      responses:
+        '200':
+          description: Daily cost and activity aggregates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsageSummaryResponse'
+              example:
+                total:
+                  model: null
+                  days:
+                    - '2026-04-01'
+                    - '2026-04-02'
+                  total_cost_usd: '0.2567250000'
+                  total_input_cost_usd: '0.0415500000'
+                  total_output_cost_usd: '0.2151750000'
+                  total_duration_cost_usd: '0.0000000000'
+                  cost_usd:
+                    - '0.1711500000'
+                    - '0.0855750000'
+                  input_cost_usd:
+                    - '0.0277000000'
+                    - '0.0138500000'
+                  output_cost_usd:
+                    - '0.1434500000'
+                    - '0.0717250000'
+                  duration_cost_usd:
+                    - '0.0000000000'
+                    - '0.0000000000'
+                  total_num_requests: 285
+                  total_input_text_tokens: 4800
+                  total_input_audio_tokens: 15000
+                  total_input_audio_duration_ms: 1800000
+                  total_output_text_tokens: 10800
+                  total_output_audio_tokens: 8250
+                  total_output_audio_duration_ms: 990000
+                  total_duration_ms: 0
+                  num_requests:
+                    - 190
+                    - 95
+                  input_text_tokens:
+                    - 3200
+                    - 1600
+                  input_audio_tokens:
+                    - 10000
+                    - 5000
+                  input_audio_duration_ms:
+                    - 1200000
+                    - 600000
+                  output_text_tokens:
+                    - 7200
+                    - 3600
+                  output_audio_tokens:
+                    - 5500
+                    - 2750
+                  output_audio_duration_ms:
+                    - 660000
+                    - 330000
+                  duration_ms:
+                    - 0
+                    - 0
+                models:
+                  - model: stt-async-v5
+                    days:
+                      - '2026-04-01'
+                      - '2026-04-02'
+                    total_cost_usd: '0.0613500000'
+                    total_input_cost_usd: '0.0235500000'
+                    total_output_cost_usd: '0.0378000000'
+                    total_duration_cost_usd: '0.0000000000'
+                    cost_usd:
+                      - '0.0409000000'
+                      - '0.0204500000'
+                    input_cost_usd:
+                      - '0.0157000000'
+                      - '0.0078500000'
+                    output_cost_usd:
+                      - '0.0252000000'
+                      - '0.0126000000'
+                    duration_cost_usd:
+                      - '0.0000000000'
+                      - '0.0000000000'
+                    total_num_requests: 60
+                    total_input_text_tokens: 300
+                    total_input_audio_tokens: 15000
+                    total_input_audio_duration_ms: 1800000
+                    total_output_text_tokens: 10800
+                    total_output_audio_tokens: 0
+                    total_output_audio_duration_ms: 0
+                    total_duration_ms: 0
+                    num_requests:
+                      - 40
+                      - 20
+                    input_text_tokens:
+                      - 200
+                      - 100
+                    input_audio_tokens:
+                      - 10000
+                      - 5000
+                    input_audio_duration_ms:
+                      - 1200000
+                      - 600000
+                    output_text_tokens:
+                      - 7200
+                      - 3600
+                    output_audio_tokens:
+                      - 0
+                      - 0
+                    output_audio_duration_ms:
+                      - 0
+                      - 0
+                    duration_ms:
+                      - 0
+                      - 0
+                  - model: tts-rt-v1
+                    days:
+                      - '2026-04-01'
+                      - '2026-04-02'
+                    total_cost_usd: '0.1953750000'
+                    total_input_cost_usd: '0.0180000000'
+                    total_output_cost_usd: '0.1773750000'
+                    total_duration_cost_usd: '0.0000000000'
+                    cost_usd:
+                      - '0.1302500000'
+                      - '0.0651250000'
+                    input_cost_usd:
+                      - '0.0120000000'
+                      - '0.0060000000'
+                    output_cost_usd:
+                      - '0.1182500000'
+                      - '0.0591250000'
+                    duration_cost_usd:
+                      - '0.0000000000'
+                      - '0.0000000000'
+                    total_num_requests: 225
+                    total_input_text_tokens: 4500
+                    total_input_audio_tokens: 0
+                    total_input_audio_duration_ms: 0
+                    total_output_text_tokens: 0
+                    total_output_audio_tokens: 8250
+                    total_output_audio_duration_ms: 990000
+                    total_duration_ms: 0
+                    num_requests:
+                      - 150
+                      - 75
+                    input_text_tokens:
+                      - 3000
+                      - 1500
+                    input_audio_tokens:
+                      - 0
+                      - 0
+                    input_audio_duration_ms:
+                      - 0
+                      - 0
+                    output_text_tokens:
+                      - 0
+                      - 0
+                    output_audio_tokens:
+                      - 5500
+                      - 2750
+                    output_audio_duration_ms:
+                      - 660000
+                      - 330000
+                    duration_ms:
+                      - 0
+                      - 0
+        '400':
+          description: |
+            Invalid request.
+
+            Error types:
+            - `invalid_request`: A query parameter is missing or invalid. Common causes: `start_time` / `end_time` not parseable as ISO 8601, `end_time` not strictly after `start_time`, or the window covers more than 366 UTC days.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 400
+                error_type: invalid_request
+                message: Your request did not pass validation. One or more fields in the request body are missing or have invalid values. See `validation_errors` for the specific field and retry with corrected values.
+                validation_errors:
+                  - error_type: value_error
+                    location: query.payload
+                    message: The window covers 517 UTC days, which exceeds the maximum of 366.
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#invalid-request
+        '401':
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 401
+                error_type: unauthenticated
+                message: Incorrect API key provided. You can get an API key at https://console.soniox.com
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#unauthenticated
+        '404':
+          description: |
+            Not found.
+
+            Error types:
+            - `not_found`: The project could not be resolved while collecting its usage. Retry, and contact support if it persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: |
+            Rate / capacity limit exceeded.
+
+            Error types:
+            - `limit_exceeded`: The caller hit a per-minute request rate or other capacity limit. The `message` describes which limit was hit.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 429
+                error_type: limit_exceeded
+                message: Requests per minute limit has been exceeded for your organization.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#limit-exceeded
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 500
+                error_type: internal_error
+                message: The server encountered an error. Please try again. If the issue persists contact support@soniox.com.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#internal-error
+      description: |
+        Returns daily cost and activity for the project, broken down per model and summed across all models. The project is implied by the API key used for authentication.
+
+        Usage is aggregated by whole UTC day. The window is half-open, `[start_time, end_time)`, and a day is included when the window covers any part of it, so an `end_time` exactly at midnight excludes that day. The window must not cover more than 366 UTC days.
+      tags:
+        - Usage summary
+      security:
+        - PublicApiAuth: []
   /v1/concurrency-limits:
     get:
       operationId: get_concurrency_limits
@@ -2034,6 +2302,146 @@ paths:
       description: Current concurrent counts plus configured concurrency limits for the project and its organization. Region-scoped.
       tags:
         - Concurrency Limits
+      security:
+        - PublicApiAuth: []
+  /v1/concurrent-streams-history:
+    get:
+      operationId: get_concurrent_streams_history
+      summary: Get concurrent streams history
+      parameters:
+        - in: query
+          name: start_time
+          schema:
+            description: Start of the time window (inclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`). Filters by `period_start`.
+            title: Start Time
+            type: string
+          required: true
+          description: Start of the time window (inclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`). Filters by `period_start`.
+        - in: query
+          name: end_time
+          schema:
+            description: End of the time window (exclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`) and strictly after `start_time`. Filters by `period_start`.
+            title: End Time
+            type: string
+          required: true
+          description: End of the time window (exclusive). Must be an ISO 8601 timestamp in UTC (e.g. `2026-04-28T09:00:00Z`) and strictly after `start_time`. Filters by `period_start`.
+        - in: query
+          name: period_sec
+          schema:
+            description: Aggregation period in seconds. One of `60` (per-minute), `3600` (hourly), `86400` (daily). The period also caps how long the requested window may be.
+            enum:
+              - 60
+              - 3600
+              - 86400
+            title: Period Sec
+            type: integer
+          required: true
+          description: Aggregation period in seconds. One of `60` (per-minute), `3600` (hourly), `86400` (daily). The period also caps how long the requested window may be.
+        - in: query
+          name: kind
+          schema:
+            allOf:
+              - enum:
+                  - stt
+                  - tts
+                title: ConcurrentStreamKind
+                type: string
+            description: Stream kind to return. `stt` covers Speech-to-Text WebSocket sessions, `tts` covers Text-to-Speech WebSocket streams and REST requests.
+          required: true
+          description: Stream kind to return. `stt` covers Speech-to-Text WebSocket sessions, `tts` covers Text-to-Speech WebSocket streams and REST requests.
+      responses:
+        '200':
+          description: Per-period concurrent stream aggregates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConcurrentStreamsHistoryResponse'
+              example:
+                kind: tts
+                entries:
+                  - period_start: '2026-04-28T09:00:00Z'
+                    period_sec: 60
+                    sample_min: 0
+                    sample_max: 4
+                    sample_sum: 21
+                    sample_count: 9
+                    total_count: 1
+                  - period_start: '2026-04-28T09:01:00Z'
+                    period_sec: 60
+                    sample_min: 0
+                    sample_max: 0
+                    sample_sum: 0
+                    sample_count: 0
+                    total_count: 0
+        '400':
+          description: |
+            Invalid request.
+
+            Error types:
+            - `invalid_request`: A query parameter is missing or invalid. Common causes: `period_sec` is not one of `60`, `3600`, `86400`, `start_time` / `end_time` not parseable as ISO 8601, `end_time` not strictly after `start_time`, the window between them exceeds the maximum for the requested `period_sec`, or the window would return more than 20000 entries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 400
+                error_type: invalid_request
+                message: Your request did not pass validation. One or more fields in the request body are missing or have invalid values. See `validation_errors` for the specific field and retry with corrected values.
+                validation_errors:
+                  - error_type: value_error
+                    location: query.payload
+                    message: For period_sec=60, the window between `start_time` and `end_time` must not exceed 7 days.
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#invalid-request
+        '401':
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 401
+                error_type: unauthenticated
+                message: Incorrect API key provided. You can get an API key at https://console.soniox.com
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#unauthenticated
+        '429':
+          description: |
+            Rate / capacity limit exceeded.
+
+            Error types:
+            - `limit_exceeded`: The caller hit a per-minute request rate or other capacity limit. The `message` describes which limit was hit.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 429
+                error_type: limit_exceeded
+                message: Requests per minute limit has been exceeded for your organization.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#limit-exceeded
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 500
+                error_type: internal_error
+                message: The server encountered an error. Please try again. If the issue persists contact support@soniox.com.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#internal-error
+      description: |
+        Returns historical concurrent stream counts for the project, aggregated per period. The project is implied by the API key used for authentication. Region-scoped.
+
+        Every aggregation period in the requested window is returned, with no gaps. Periods with no recorded activity have every field set to `0`.
+      tags:
+        - Concurrent streams history
       security:
         - PublicApiAuth: []
 components:
@@ -3742,6 +4150,10 @@ components:
           description: Maximum supported speaking rate.
           title: Speed Max
           type: number
+        supports_silence_reduction:
+          description: Whether the model supports shortening the pauses between words via the `reduce_silence` parameter.
+          title: Supports Silence Reduction
+          type: boolean
       required:
         - id
         - aliased_model_id
@@ -3751,6 +4163,7 @@ components:
         - supports_speed_adjustment
         - speed_min
         - speed_max
+        - supports_silence_reduction
       title: TTSModel
       type: object
     TTSVoice:
@@ -3790,6 +4203,7 @@ components:
         bitrate: 128000
         client_reference_id: some_internal_id
         speed: 1.2
+        reduce_silence: true
       properties:
         model:
           default: tts-rt-v1
@@ -3838,6 +4252,12 @@ components:
             - type: 'null'
           description: Optional speaking rate of the generated speech, from `0.7` to `1.3`. `1.0` is the normal speed; lower values slow speech down and higher values speed it up. Defaults to `1.0`.
           title: Speed
+        reduce_silence:
+          anyOf:
+            - type: boolean
+            - type: 'null'
+          description: Optional. When `true`, shortens the pauses between words so the generated speech flows more naturally. Defaults to `false`. Only supported on models with `supports_silence_reduction` set to `true`; enabling it on any other model returns an `invalid_request` error.
+          title: Reduce Silence
       required:
         - model
         - language
@@ -4061,47 +4481,26 @@ components:
           title: Output Audio Duration Ms
           type: integer
         cost_usd:
-          anyOf:
-            - type: number
-            - pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
-              type: string
           title: Cost Usd
+          type: string
         input_cost_usd:
-          anyOf:
-            - type: number
-            - pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
-              type: string
           title: Input Cost Usd
+          type: string
         input_text_cost_usd:
-          anyOf:
-            - type: number
-            - pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
-              type: string
           title: Input Text Cost Usd
+          type: string
         input_audio_cost_usd:
-          anyOf:
-            - type: number
-            - pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
-              type: string
           title: Input Audio Cost Usd
+          type: string
         output_cost_usd:
-          anyOf:
-            - type: number
-            - pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
-              type: string
           title: Output Cost Usd
+          type: string
         output_text_cost_usd:
-          anyOf:
-            - type: number
-            - pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
-              type: string
           title: Output Text Cost Usd
+          type: string
         output_audio_cost_usd:
-          anyOf:
-            - type: number
-            - pattern: ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$
-              type: string
           title: Output Audio Cost Usd
+          type: string
       required:
         - uuid
         - request_scope
@@ -4123,6 +4522,174 @@ components:
         - output_text_cost_usd
         - output_audio_cost_usd
       title: UsageLogEntry
+      type: object
+    GetUsageSummaryResponse:
+      properties:
+        total:
+          allOf:
+            - $ref: '#/components/schemas/UsageSummaryEntry'
+          description: Cost and activity across all models. Its `model` is `null`.
+        models:
+          description: One entry per model that recorded usage in the window. Empty when the project had no usage.
+          items:
+            $ref: '#/components/schemas/UsageSummaryEntry'
+          title: Models
+          type: array
+      required:
+        - total
+        - models
+      title: GetUsageSummaryResponse
+      type: object
+    UsageSummaryEntry:
+      properties:
+        model:
+          anyOf:
+            - type: string
+            - type: 'null'
+          description: Model identifier. `null` on the `total` entry.
+          title: Model
+        days:
+          description: One UTC day (`YYYY-MM-DD`) per element, in ascending order. Every day in the requested window is present, including days with no usage. All the per-day arrays below align to this axis.
+          items:
+            format: date
+            type: string
+          title: Days
+          type: array
+        total_cost_usd:
+          description: Total cost over the window, in USD. Equals `total_input_cost_usd` + `total_output_cost_usd` + `total_duration_cost_usd`.
+          title: Total Cost Usd
+          type: string
+        total_input_cost_usd:
+          description: Total cost of input tokens over the window, in USD.
+          title: Total Input Cost Usd
+          type: string
+        total_output_cost_usd:
+          description: Total cost of output tokens over the window, in USD.
+          title: Total Output Cost Usd
+          type: string
+        total_duration_cost_usd:
+          description: Total cost over the window for models billed by session duration rather than by tokens, in USD. `0` for Speech-to-Text and Text-to-Speech models.
+          title: Total Duration Cost Usd
+          type: string
+        cost_usd:
+          description: Cost per day, in USD, aligned to `days`.
+          items:
+            type: string
+          title: Cost Usd
+          type: array
+        input_cost_usd:
+          description: Cost of input tokens per day, in USD, aligned to `days`.
+          items:
+            type: string
+          title: Input Cost Usd
+          type: array
+        output_cost_usd:
+          description: Cost of output tokens per day, in USD, aligned to `days`.
+          items:
+            type: string
+          title: Output Cost Usd
+          type: array
+        duration_cost_usd:
+          description: Duration-billed cost per day, in USD, aligned to `days`.
+          items:
+            type: string
+          title: Duration Cost Usd
+          type: array
+        total_num_requests:
+          description: Number of requests over the window.
+          title: Total Num Requests
+          type: integer
+        total_input_text_tokens:
+          title: Total Input Text Tokens
+          type: integer
+        total_input_audio_tokens:
+          title: Total Input Audio Tokens
+          type: integer
+        total_input_audio_duration_ms:
+          title: Total Input Audio Duration Ms
+          type: integer
+        total_output_text_tokens:
+          title: Total Output Text Tokens
+          type: integer
+        total_output_audio_tokens:
+          title: Total Output Audio Tokens
+          type: integer
+        total_output_audio_duration_ms:
+          title: Total Output Audio Duration Ms
+          type: integer
+        total_duration_ms:
+          description: Billed session duration over the window, in milliseconds, for models billed by duration. `0` for Speech-to-Text and Text-to-Speech models.
+          title: Total Duration Ms
+          type: integer
+        num_requests:
+          description: Number of requests per day, aligned to `days`.
+          items:
+            type: integer
+          title: Num Requests
+          type: array
+        input_text_tokens:
+          items:
+            type: integer
+          title: Input Text Tokens
+          type: array
+        input_audio_tokens:
+          items:
+            type: integer
+          title: Input Audio Tokens
+          type: array
+        input_audio_duration_ms:
+          items:
+            type: integer
+          title: Input Audio Duration Ms
+          type: array
+        output_text_tokens:
+          items:
+            type: integer
+          title: Output Text Tokens
+          type: array
+        output_audio_tokens:
+          items:
+            type: integer
+          title: Output Audio Tokens
+          type: array
+        output_audio_duration_ms:
+          items:
+            type: integer
+          title: Output Audio Duration Ms
+          type: array
+        duration_ms:
+          description: Billed session duration per day, in milliseconds, aligned to `days`.
+          items:
+            type: integer
+          title: Duration Ms
+          type: array
+      required:
+        - days
+        - total_cost_usd
+        - total_input_cost_usd
+        - total_output_cost_usd
+        - total_duration_cost_usd
+        - cost_usd
+        - input_cost_usd
+        - output_cost_usd
+        - duration_cost_usd
+        - total_num_requests
+        - total_input_text_tokens
+        - total_input_audio_tokens
+        - total_input_audio_duration_ms
+        - total_output_text_tokens
+        - total_output_audio_tokens
+        - total_output_audio_duration_ms
+        - total_duration_ms
+        - num_requests
+        - input_text_tokens
+        - input_audio_tokens
+        - input_audio_duration_ms
+        - output_text_tokens
+        - output_audio_tokens
+        - output_audio_duration_ms
+        - duration_ms
+      title: UsageSummaryEntry
       type: object
     GetConcurrencyLimitsResponse:
       properties:
@@ -4178,6 +4745,70 @@ components:
         - tts_concurrent
       title: LimitValues
       type: object
+    GetConcurrentStreamsHistoryResponse:
+      properties:
+        kind:
+          allOf:
+            - $ref: '#/components/schemas/ConcurrentStreamKind'
+          description: Stream kind these entries describe (`stt` or `tts`).
+        entries:
+          description: Per-period concurrent stream aggregates for the authenticated project, ordered by `period_start` ascending. Every aggregation period in the requested window is returned, with no gaps. Periods with no recorded activity have every field set to `0`.
+          items:
+            $ref: '#/components/schemas/ConcurrentStreamsHistoryEntry'
+          title: Entries
+          type: array
+      required:
+        - kind
+        - entries
+      title: GetConcurrentStreamsHistoryResponse
+      type: object
+    ConcurrentStreamsHistoryEntry:
+      properties:
+        period_start:
+          description: Start of the aggregation period, UTC. Aligned to a multiple of `period_sec`.
+          format: date-time
+          title: Period Start
+          type: string
+        period_sec:
+          description: Aggregation period in seconds.
+          title: Period Sec
+          type: integer
+        sample_min:
+          description: Lowest recorded concurrent stream count in the period. Always `0`, because that is what the per-minute tier records. Use `sample_max` for the peak.
+          title: Sample Min
+          type: integer
+        sample_max:
+          description: Peak concurrent stream count in the period. Stays exact when periods are rolled up into hours and days. `0` when the period had no activity.
+          title: Sample Max
+          type: integer
+        sample_sum:
+          description: Sum of the recorded concurrency values in the period. Divide by `sample_count` for the average concurrency while streams were active, or by `total_count` for the average across the whole period with idle slots counted as zero.
+          title: Sample Sum
+          type: integer
+        sample_count:
+          description: Number of values actually recorded in the period. For `period_sec=60` this is how many samples were taken during that minute, so it is usually larger than `total_count`. For hourly and daily periods it is the number of source periods that had data, at most `total_count`. `0` when the period had no activity.
+          title: Sample Count
+          type: integer
+        total_count:
+          description: Number of slots the period covers. `1` for `period_sec=60`, `60` for `3600` (minutes per hour), `24` for `86400` (hours per day). `0` when the period had no activity.
+          title: Total Count
+          type: integer
+      required:
+        - period_start
+        - period_sec
+        - sample_min
+        - sample_max
+        - sample_sum
+        - sample_count
+        - total_count
+      title: ConcurrentStreamsHistoryEntry
+      type: object
+    ConcurrentStreamKind:
+      enum:
+        - stt
+        - tts
+      title: ConcurrentStreamKind
+      type: string
   securitySchemes:
     PublicApiAuth:
       type: http

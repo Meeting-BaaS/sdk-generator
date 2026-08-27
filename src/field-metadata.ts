@@ -57,7 +57,7 @@ export interface FieldMetadata {
 // Gladia
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Gladia transcription field metadata (26 fields) */
+/** Gladia transcription field metadata (27 fields) */
 export const GLADIA_TRANSCRIPTION_FIELDS = [
   {
     name: "custom_vocabulary",
@@ -744,6 +744,14 @@ export const GLADIA_TRANSCRIPTION_FIELDS = [
         default: false
       }
     ]
+  },
+  {
+    name: "model",
+    type: "select",
+    required: true,
+    description: 'The model used to process the audio. "solaria-1" is used by default.',
+    default: "solaria-1",
+    options: ["solaria-1", "solaria-3", "solaria-fusion"]
   },
   {
     name: "audio_url",
@@ -1648,6 +1656,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
     default: "en",
     options: [
       "af",
+      "af-ZA",
       "am",
       "ar",
       "ar-AE",
@@ -1667,6 +1676,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "ar-TD",
       "ar-TN",
       "as",
+      "as-IN",
       "az",
       "ba",
       "be",
@@ -1744,6 +1754,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "ja-JP",
       "jw",
       "ka",
+      "ka-GE",
       "kk",
       "km",
       "kn",
@@ -1785,6 +1796,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "pl",
       "pl-PL",
       "ps",
+      "ps-AF",
       "pt",
       "pt-BR",
       "pt-PT",
@@ -1825,6 +1837,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "tt",
       "uk",
       "ur",
+      "ur-PK",
       "uz",
       "vi",
       "yi",
@@ -2138,6 +2151,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
     default: "en",
     options: [
       "af",
+      "af-ZA",
       "am",
       "ar",
       "ar-AE",
@@ -2157,6 +2171,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "ar-TD",
       "ar-TN",
       "as",
+      "as-IN",
       "az",
       "ba",
       "be",
@@ -2234,6 +2249,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "ja-JP",
       "jw",
       "ka",
+      "ka-GE",
       "kk",
       "km",
       "kn",
@@ -2275,6 +2291,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "pl",
       "pl-PL",
       "ps",
+      "ps-AF",
       "pt",
       "pt-BR",
       "pt-PT",
@@ -2315,6 +2332,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "tt",
       "uk",
       "ur",
+      "ur-PK",
       "uz",
       "vi",
       "yi",
@@ -2538,7 +2556,9 @@ export const DEEPGRAM_LIST_FILTER_FIELDS = [
     type: "number",
     required: true,
     description: "Number of results to return per page. Default 10. Range [1,1000]",
-    default: 10
+    default: 10,
+    min: 1,
+    max: 1000
   },
   {
     name: "page",
@@ -3004,6 +3024,15 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
         description:
           "Render the transcript in a regional variant of the detected language. Supported values are `en_au` (Australian English) and `en_uk` (British English) — only English is supported today, and you can specify at most one locale per base language. Base or default-region codes such as `en` and `en_us` are not localization variants and return a `400`.\n\nWhen the detected language matches the requested locale's base language, the transcript uses that locale's spelling and `language_code` returns the region-aware code (for example `en_au`) instead of the base `en`. Otherwise, when the detected language isn't available as a locale, the option is ignored. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
         inputFormat: "comma-separated"
+      },
+      {
+        name: "on_no_speech_detected",
+        type: "select",
+        required: true,
+        description:
+          "Controls what happens when no speech is detected in the audio. With `error` (the default), the transcript fails and the reason is returned in `error`. With `fallback`, the transcript completes with an empty `text`, `language_code` is set to the `fallback_language`, and an explanatory warning is returned in `metadata.warnings`.\n\n`fallback` requires `fallback_language` to be set to a specific language code; `auto` returns a `400`. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.\n",
+        default: "error",
+        options: ["error", "fallback"]
       }
     ]
   },

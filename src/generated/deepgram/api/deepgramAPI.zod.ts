@@ -137,7 +137,9 @@ export const ListenTranscribeResponse = zod.union([zod.object({
   "word": zod.string().optional(),
   "start": zod.number().optional(),
   "end": zod.number().optional(),
-  "confidence": zod.number().optional()
+  "confidence": zod.number().optional(),
+  "speaker": zod.number().optional().describe('The speaker of the word, present when diarization is enabled'),
+  "speaker_confidence": zod.number().optional().describe('Confidence in the speaker assignment. Returned only for pre-recorded diarization; not available for streaming')
 })).optional(),
   "paragraphs": zod.object({
   "transcript": zod.string().optional(),
@@ -252,20 +254,30 @@ export const ListenTranscribeResponse = zod.union([zod.object({
  */
 export const speakGenerateQueryCallbackMethodDefault = `POST`;
 export const speakGenerateQueryMipOptOutDefault = false;
+export const speakGenerateQueryBitRateTwoMin = 4000;
+export const speakGenerateQueryBitRateTwoMax = 650000;
+
+export const speakGenerateQueryBitRateThreeMin = 4000;
+export const speakGenerateQueryBitRateThreeMax = 192000;
+
 export const speakGenerateQueryModelDefault = `aura-asteria-en`;
 export const speakGenerateQuerySpeedDefault = 1;
+export const speakGenerateQuerySpeedMin = 0.7;
+export const speakGenerateQuerySpeedMax = 1.5;
+
+
 
 export const SpeakGenerateQueryParams = zod.object({
   "callback": zod.string().optional().describe('URL to which we\'ll make the callback request'),
   "callback_method": zod.enum(['POST', 'PUT']).default(speakGenerateQueryCallbackMethodDefault).describe('HTTP method by which the callback request will be made'),
   "mip_opt_out": zod.boolean().default(speakGenerateQueryMipOptOutDefault).describe('Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https:\/\/dpgr.am\/deepgram-mip'),
   "tag": zod.union([zod.string(),zod.array(zod.string())]).optional().describe('Label your requests for the purpose of identification during usage reporting'),
-  "bit_rate": zod.union([zod.enum(['32000', '48000']).describe('Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.'),zod.number(),zod.number()]).optional().describe('The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.'),
+  "bit_rate": zod.union([zod.enum(['32000', '48000']).describe('Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.'),zod.number().min(speakGenerateQueryBitRateTwoMin).max(speakGenerateQueryBitRateTwoMax),zod.number().min(speakGenerateQueryBitRateThreeMin).max(speakGenerateQueryBitRateThreeMax)]).optional().describe('The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.'),
   "container": zod.union([zod.enum(['none']).describe('No container.'),zod.enum(['wav']).describe('Encoding - linear16. Supported container - wav (default), or no container.'),zod.enum(['wav']).describe('Encoding - mulaw. Supported container - wav (default), or no container.'),zod.enum(['wav']).describe('Encoding - alaw. Supported container - wav (default), or no container.'),zod.enum(['ogg']).describe('Encoding - opus. Supported container - ogg (default).')]).optional().describe('Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.'),
   "encoding": zod.union([zod.enum(['linear16']).describe('Encoding - linear16. Uncompressed, high-quality audio format often used for telephony or audio processing.'),zod.enum(['flac']).describe('Encoding - flac. Lossless audio format for high-quality compression.'),zod.enum(['mulaw']).describe('Encoding - mulaw. Compressed audio format commonly used in telephony.'),zod.enum(['alaw']).describe('Encoding - alaw. Similar to mulaw but used in international telephony.'),zod.enum(['mp3']).describe('Encoding - mp3. Popular compressed audio format for music and streaming.'),zod.enum(['opus']).describe('Encoding - opus. High-compression audio format optimized for real-time communications.'),zod.enum(['aac']).describe('Encoding - aac. Advanced audio format offering better quality at smaller file sizes than mp3.')]).optional().describe('Encoding allows you to specify the expected encoding of your audio output'),
   "model": zod.enum(['aura-angus-en', 'aura-arcas-en', 'aura-asteria-en', 'aura-athena-en', 'aura-helios-en', 'aura-hera-en', 'aura-luna-en', 'aura-orion-en', 'aura-orpheus-en', 'aura-perseus-en', 'aura-stella-en', 'aura-zeus-en', 'aura-2-amalthea-en', 'aura-2-andromeda-en', 'aura-2-apollo-en', 'aura-2-arcas-en', 'aura-2-aries-en', 'aura-2-asteria-en', 'aura-2-athena-en', 'aura-2-atlas-en', 'aura-2-aurora-en', 'aura-2-callista-en', 'aura-2-cora-en', 'aura-2-cordelia-en', 'aura-2-delia-en', 'aura-2-draco-en', 'aura-2-electra-en', 'aura-2-harmonia-en', 'aura-2-helena-en', 'aura-2-hera-en', 'aura-2-hermes-en', 'aura-2-hyperion-en', 'aura-2-iris-en', 'aura-2-janus-en', 'aura-2-juno-en', 'aura-2-jupiter-en', 'aura-2-luna-en', 'aura-2-mars-en', 'aura-2-minerva-en', 'aura-2-neptune-en', 'aura-2-odysseus-en', 'aura-2-ophelia-en', 'aura-2-orion-en', 'aura-2-orpheus-en', 'aura-2-pandora-en', 'aura-2-phoebe-en', 'aura-2-pluto-en', 'aura-2-saturn-en', 'aura-2-selene-en', 'aura-2-thalia-en', 'aura-2-theia-en', 'aura-2-vesta-en', 'aura-2-zeus-en', 'aura-2-agustina-es', 'aura-2-alvaro-es', 'aura-2-antonia-es', 'aura-2-aquila-es', 'aura-2-carina-es', 'aura-2-celeste-es', 'aura-2-diana-es', 'aura-2-estrella-es', 'aura-2-gloria-es', 'aura-2-javier-es', 'aura-2-luciano-es', 'aura-2-nestor-es', 'aura-2-olivia-es', 'aura-2-selena-es', 'aura-2-silvia-es', 'aura-2-sirio-es', 'aura-2-valerio-es', 'aura-2-aurelia-de', 'aura-2-elara-de', 'aura-2-fabian-de', 'aura-2-julius-de', 'aura-2-kara-de', 'aura-2-lara-de', 'aura-2-viktoria-de', 'aura-2-beatrix-nl', 'aura-2-cornelia-nl', 'aura-2-daphne-nl', 'aura-2-hestia-nl', 'aura-2-lars-nl', 'aura-2-leda-nl', 'aura-2-rhea-nl', 'aura-2-roman-nl', 'aura-2-sander-nl', 'aura-2-agathe-fr', 'aura-2-hector-fr', 'aura-2-cesare-it', 'aura-2-cinzia-it', 'aura-2-demetra-it', 'aura-2-dionisio-it', 'aura-2-elio-it', 'aura-2-flavio-it', 'aura-2-livia-it', 'aura-2-maia-it', 'aura-2-melia-it', 'aura-2-perseo-it', 'aura-2-ama-ja', 'aura-2-ebisu-ja', 'aura-2-fujin-ja', 'aura-2-izanami-ja', 'aura-2-uzume-ja']).default(speakGenerateQueryModelDefault).describe('AI model used to process submitted text'),
   "sample_rate": zod.union([zod.enum(['8000', '16000', '24000', '32000', '48000']).describe('Encoding - linear16. Supported sample rates - 8000, 16000, 24000, 32000, 48000 Hz.'),zod.enum(['8000', '16000']).describe('Encoding - mulaw. Supported sample rates - 8000, 16000 Hz.'),zod.enum(['8000', '16000']).describe('Encoding - alaw. Supported sample rates - 8000, 16000 Hz.'),zod.enum(['22050']).describe('Encoding - mp3. Sample rate is fixed and not configurable (22050 Hz).'),zod.enum(['48000']).describe('Encoding - opus. Sample rate is fixed at 48000 Hz.')]).optional().describe('Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable'),
-  "speed": zod.number().default(speakGenerateQuerySpeedDefault).describe('Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Not yet supported in all languages.')
+  "speed": zod.number().min(speakGenerateQuerySpeedMin).max(speakGenerateQuerySpeedMax).default(speakGenerateQuerySpeedDefault).describe('Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Not yet supported in all languages.')
 })
 
 export const SpeakGenerateHeader = zod.object({
@@ -496,11 +508,14 @@ export const ListProjectRequestsParams = zod.object({
 })
 
 export const listProjectRequestsQueryLimitDefault = 10;
+export const listProjectRequestsQueryLimitMax = 1000;
+
+
 
 export const ListProjectRequestsQueryParams = zod.object({
   "start": zod.iso.datetime({"offset":true}).optional().describe('Start date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'),
   "end": zod.iso.datetime({"offset":true}).optional().describe('End date of the requested date range. Formats accepted are YYYY-MM-DD, YYYY-MM-DDTHH:MM:SS, or YYYY-MM-DDTHH:MM:SS+HH:MM'),
-  "limit": zod.number().default(listProjectRequestsQueryLimitDefault).describe('Number of results to return per page. Default 10. Range [1,1000]'),
+  "limit": zod.number().min(1).max(listProjectRequestsQueryLimitMax).default(listProjectRequestsQueryLimitDefault).describe('Number of results to return per page. Default 10. Range [1,1000]'),
   "page": zod.number().optional().describe('Navigate and return the results to retrieve specific portions of information of the response'),
   "accessor": zod.string().optional().describe('Filter for requests where a specific accessor was used'),
   "request_id": zod.string().optional().describe('Filter for a specific request id'),

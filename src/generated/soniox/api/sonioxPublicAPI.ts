@@ -18,6 +18,8 @@ import type {
   CreateVoiceBody,
   File,
   GetConcurrencyLimitsResponse,
+  GetConcurrentStreamsHistoryParams,
+  GetConcurrentStreamsHistoryResponse,
   GetFilesCountResponse,
   GetFilesParams,
   GetFilesResponse,
@@ -28,6 +30,8 @@ import type {
   GetTranscriptionsResponse,
   GetUsageLogsParams,
   GetUsageLogsResponse,
+  GetUsageSummaryParams,
+  GetUsageSummaryResponse,
   GetVoicesCountResponse,
   GetVoicesParams,
   GetVoicesResponse,
@@ -51,6 +55,7 @@ import type {
 } from 'msw';
 
 import {
+  ConcurrentStreamKind,
   TTSVoiceGender,
   TranscriptionMode,
   TranscriptionStatus,
@@ -349,6 +354,22 @@ export const getUsageLogs = (
   }
 
 /**
+ * Returns daily cost and activity for the project, broken down per model and summed across all models. The project is implied by the API key used for authentication.
+ *
+ * Usage is aggregated by whole UTC day. The window is half-open, `[start_time, end_time)`, and a day is included when the window covers any part of it, so an `end_time` exactly at midnight excludes that day. The window must not cover more than 366 UTC days.
+ * @summary Get usage summary
+ */
+export const getUsageSummary = (
+    params: GetUsageSummaryParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<GetUsageSummaryResponse>> => {
+    return axios.get(
+      `/v1/usage/summary`,{
+    ...options,
+        params: {...params, ...options?.params},}
+    );
+  }
+
+/**
  * Current concurrent counts plus configured concurrency limits for the project and its organization. Region-scoped.
  * @summary Get concurrency limits
  */
@@ -357,6 +378,22 @@ export const getConcurrencyLimits = (
  ): Promise<AxiosResponse<GetConcurrencyLimitsResponse>> => {
     return axios.get(
       `/v1/concurrency-limits`,options
+    );
+  }
+
+/**
+ * Returns historical concurrent stream counts for the project, aggregated per period. The project is implied by the API key used for authentication. Region-scoped.
+ *
+ * Every aggregation period in the requested window is returned, with no gaps. Periods with no recorded activity have every field set to `0`.
+ * @summary Get concurrent streams history
+ */
+export const getConcurrentStreamsHistory = (
+    params: GetConcurrentStreamsHistoryParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<GetConcurrentStreamsHistoryResponse>> => {
+    return axios.get(
+      `/v1/concurrent-streams-history`,{
+    ...options,
+        params: {...params, ...options?.params},}
     );
   }
 
@@ -382,7 +419,9 @@ export type GetTtsModelsResult = AxiosResponse<GetTTSModelsResponse>
 export type GenerateTtsResult = AxiosResponse<Blob>
 export type CreateTemporaryApiKeyResult = AxiosResponse<CreateTemporaryApiKeyResponse>
 export type GetUsageLogsResult = AxiosResponse<GetUsageLogsResponse>
+export type GetUsageSummaryResult = AxiosResponse<GetUsageSummaryResponse>
 export type GetConcurrencyLimitsResult = AxiosResponse<GetConcurrencyLimitsResponse>
+export type GetConcurrentStreamsHistoryResult = AxiosResponse<GetConcurrentStreamsHistoryResponse>
 
 
 export const getGetFilesResponseMock = (overrideResponse: Partial<Extract<GetFilesResponse, object>> = {}): GetFilesResponse => ({files: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), filename: faker.string.alpha({length: {min: 10, max: 20}}), size: faker.number.int(), created_at: faker.date.past().toISOString().slice(0, 19) + 'Z', client_reference_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined])})), next_page_cursor: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), ...overrideResponse})
@@ -415,15 +454,19 @@ export const getRecomputeVoiceResponseMock = (overrideResponse: Partial<Extract<
 
 export const getGetModelsResponseMock = (overrideResponse: Partial<Extract<GetModelsResponse, object>> = {}): GetModelsResponse => ({models: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), aliased_model_id: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), name: faker.string.alpha({length: {min: 10, max: 20}}), context_version: faker.helpers.arrayElement([faker.number.int(),null,]), transcription_mode: faker.helpers.arrayElement(Object.values(TranscriptionMode)), languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({code: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}})})), supports_language_hints_strict: faker.datatype.boolean(), supports_max_endpoint_delay: faker.datatype.boolean(), supports_endpoint_sensitivity: faker.datatype.boolean(), supports_endpoint_latency_adjustment: faker.datatype.boolean(), endpoint_latency_adjustment_max_level: faker.number.int(), translation_targets: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({target_language: faker.string.alpha({length: {min: 10, max: 20}}), source_languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), exclude_source_languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}})))})), two_way_translation_pairs: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), one_way_translation: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), two_way_translation: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,])})), ...overrideResponse})
 
-export const getGetTtsModelsResponseMock = (overrideResponse: Partial<Extract<GetTTSModelsResponse, object>> = {}): GetTTSModelsResponse => ({models: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), aliased_model_id: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), name: faker.string.alpha({length: {min: 10, max: 20}}), languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({code: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}})})), voices: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.string.alpha({length: {min: 10, max: 20}}), gender: faker.helpers.arrayElement(Object.values(TTSVoiceGender))})), supports_timestamps: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), supports_speed_adjustment: faker.datatype.boolean(), speed_min: faker.number.float({fractionDigits: 2}), speed_max: faker.number.float({fractionDigits: 2})})), ...overrideResponse})
+export const getGetTtsModelsResponseMock = (overrideResponse: Partial<Extract<GetTTSModelsResponse, object>> = {}): GetTTSModelsResponse => ({models: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), aliased_model_id: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), name: faker.string.alpha({length: {min: 10, max: 20}}), languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({code: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}})})), voices: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.string.alpha({length: {min: 10, max: 20}}), gender: faker.helpers.arrayElement(Object.values(TTSVoiceGender))})), supports_timestamps: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), supports_speed_adjustment: faker.datatype.boolean(), speed_min: faker.number.float({fractionDigits: 2}), speed_max: faker.number.float({fractionDigits: 2}), supports_silence_reduction: faker.datatype.boolean()})), ...overrideResponse})
 
 export const getGenerateTtsResponseMock = (): ArrayBuffer => (faker.helpers.arrayElement([new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 }))]))
 
 export const getCreateTemporaryApiKeyResponseMock = (overrideResponse: Partial<Extract<CreateTemporaryApiKeyResponse, object>> = {}): CreateTemporaryApiKeyResponse => ({api_key: faker.string.alpha({length: {min: 10, max: 20}}), expires_at: faker.date.past().toISOString().slice(0, 19) + 'Z', ...overrideResponse})
 
-export const getGetUsageLogsResponseMock = (overrideResponse: Partial<Extract<GetUsageLogsResponse, object>> = {}): GetUsageLogsResponse => ({usage_logs: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({uuid: faker.string.uuid(), request_scope: faker.string.alpha({length: {min: 10, max: 20}}), client_reference_id: faker.string.alpha({length: {min: 10, max: 20}}), model: faker.string.alpha({length: {min: 10, max: 20}}), start_time: faker.date.past().toISOString().slice(0, 19) + 'Z', end_time: faker.date.past().toISOString().slice(0, 19) + 'Z', input_text_tokens: faker.number.int(), input_audio_tokens: faker.number.int(), input_audio_duration_ms: faker.number.int(), output_text_tokens: faker.number.int(), output_audio_tokens: faker.number.int(), output_audio_duration_ms: faker.number.int(), cost_usd: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),faker.helpers.fromRegExp("^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"),]), input_cost_usd: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),faker.helpers.fromRegExp("^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"),]), input_text_cost_usd: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),faker.helpers.fromRegExp("^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"),]), input_audio_cost_usd: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),faker.helpers.fromRegExp("^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"),]), output_cost_usd: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),faker.helpers.fromRegExp("^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"),]), output_text_cost_usd: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),faker.helpers.fromRegExp("^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"),]), output_audio_cost_usd: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),faker.helpers.fromRegExp("^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"),])})), next_page_cursor: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), ...overrideResponse})
+export const getGetUsageLogsResponseMock = (overrideResponse: Partial<Extract<GetUsageLogsResponse, object>> = {}): GetUsageLogsResponse => ({usage_logs: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({uuid: faker.string.uuid(), request_scope: faker.string.alpha({length: {min: 10, max: 20}}), client_reference_id: faker.string.alpha({length: {min: 10, max: 20}}), model: faker.string.alpha({length: {min: 10, max: 20}}), start_time: faker.date.past().toISOString().slice(0, 19) + 'Z', end_time: faker.date.past().toISOString().slice(0, 19) + 'Z', input_text_tokens: faker.number.int(), input_audio_tokens: faker.number.int(), input_audio_duration_ms: faker.number.int(), output_text_tokens: faker.number.int(), output_audio_tokens: faker.number.int(), output_audio_duration_ms: faker.number.int(), cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), input_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), input_text_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), input_audio_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), output_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), output_text_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), output_audio_cost_usd: faker.string.alpha({length: {min: 10, max: 20}})})), next_page_cursor: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), ...overrideResponse})
+
+export const getGetUsageSummaryResponseMock = (overrideResponse: Partial<Extract<GetUsageSummaryResponse, object>> = {}): GetUsageSummaryResponse => ({total: {...{model: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), days: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.date.past().toISOString().slice(0, 10))), total_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), total_input_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), total_output_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), total_duration_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), input_cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), output_cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), duration_cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), total_num_requests: faker.number.int(), total_input_text_tokens: faker.number.int(), total_input_audio_tokens: faker.number.int(), total_input_audio_duration_ms: faker.number.int(), total_output_text_tokens: faker.number.int(), total_output_audio_tokens: faker.number.int(), total_output_audio_duration_ms: faker.number.int(), total_duration_ms: faker.number.int(), num_requests: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), input_text_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), input_audio_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), input_audio_duration_ms: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), output_text_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), output_audio_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), output_audio_duration_ms: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), duration_ms: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int()))},}, models: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({model: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), days: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.date.past().toISOString().slice(0, 10))), total_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), total_input_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), total_output_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), total_duration_cost_usd: faker.string.alpha({length: {min: 10, max: 20}}), cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), input_cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), output_cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), duration_cost_usd: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), total_num_requests: faker.number.int(), total_input_text_tokens: faker.number.int(), total_input_audio_tokens: faker.number.int(), total_input_audio_duration_ms: faker.number.int(), total_output_text_tokens: faker.number.int(), total_output_audio_tokens: faker.number.int(), total_output_audio_duration_ms: faker.number.int(), total_duration_ms: faker.number.int(), num_requests: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), input_text_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), input_audio_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), input_audio_duration_ms: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), output_text_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), output_audio_tokens: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), output_audio_duration_ms: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int())), duration_ms: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.number.int()))})), ...overrideResponse})
 
 export const getGetConcurrencyLimitsResponseMock = (overrideResponse: Partial<Extract<GetConcurrencyLimitsResponse, object>> = {}): GetConcurrencyLimitsResponse => ({project: {current: {transcribe_concurrent: faker.number.int(), tts_concurrent: faker.number.int()}, limits: {transcribe_concurrent: faker.helpers.arrayElement([faker.number.int(),null,]), tts_concurrent: faker.helpers.arrayElement([faker.number.int(),null,])}}, organization: {current: {transcribe_concurrent: faker.number.int(), tts_concurrent: faker.number.int()}, limits: {transcribe_concurrent: faker.helpers.arrayElement([faker.number.int(),null,]), tts_concurrent: faker.helpers.arrayElement([faker.number.int(),null,])}}, ...overrideResponse})
+
+export const getGetConcurrentStreamsHistoryResponseMock = (overrideResponse: Partial<Extract<GetConcurrentStreamsHistoryResponse, object>> = {}): GetConcurrentStreamsHistoryResponse => ({kind: faker.helpers.arrayElement(Object.values(ConcurrentStreamKind)), entries: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({period_start: faker.date.past().toISOString().slice(0, 19) + 'Z', period_sec: faker.number.int(), sample_min: faker.number.int(), sample_max: faker.number.int(), sample_sum: faker.number.int(), sample_count: faker.number.int(), total_count: faker.number.int()})), ...overrideResponse})
 
 
 export const getGetFilesMockHandler = (overrideResponse?: GetFilesResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetFilesResponse> | GetFilesResponse), options?: RequestHandlerOptions) => {
@@ -688,6 +731,18 @@ export const getGetUsageLogsMockHandler = (overrideResponse?: GetUsageLogsRespon
   }, options)
 }
 
+export const getGetUsageSummaryMockHandler = (overrideResponse?: GetUsageSummaryResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetUsageSummaryResponse> | GetUsageSummaryResponse), options?: RequestHandlerOptions) => {
+  return http.get('https://api.soniox.com/v1/usage/summary', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetUsageSummaryResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
 export const getGetConcurrencyLimitsMockHandler = (overrideResponse?: GetConcurrencyLimitsResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetConcurrencyLimitsResponse> | GetConcurrencyLimitsResponse), options?: RequestHandlerOptions) => {
   return http.get('https://api.soniox.com/v1/concurrency-limits', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
 
@@ -695,6 +750,18 @@ export const getGetConcurrencyLimitsMockHandler = (overrideResponse?: GetConcurr
     return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
     : getGetConcurrencyLimitsResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
+export const getGetConcurrentStreamsHistoryMockHandler = (overrideResponse?: GetConcurrentStreamsHistoryResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetConcurrentStreamsHistoryResponse> | GetConcurrentStreamsHistoryResponse), options?: RequestHandlerOptions) => {
+  return http.get('https://api.soniox.com/v1/concurrent-streams-history', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetConcurrentStreamsHistoryResponseMock(),
       { status: 200
       })
   }, options)
@@ -722,4 +789,6 @@ export const getSonioxPublicAPIMock = () => [
   getGenerateTtsMockHandler(),
   getCreateTemporaryApiKeyMockHandler(),
   getGetUsageLogsMockHandler(),
-  getGetConcurrencyLimitsMockHandler()]
+  getGetUsageSummaryMockHandler(),
+  getGetConcurrencyLimitsMockHandler(),
+  getGetConcurrentStreamsHistoryMockHandler()]

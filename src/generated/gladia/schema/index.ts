@@ -189,6 +189,7 @@ export * from './transcriptionDTO.js';
 export * from './transcriptionLanguageCodeEnum.js';
 export * from './transcriptionMetadataDTO.js';
 export * from './transcriptionResultDTO.js';
+export * from './transcriptionSupportedModels.js';
 export * from './transcriptMessage.js';
 export * from './transcriptMessageData.js';
 export * from './transcriptMessageType.js';

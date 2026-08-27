@@ -25,4 +25,6 @@ export interface TTSModel {
   speed_min: number;
   /** Maximum supported speaking rate. */
   speed_max: number;
+  /** Whether the model supports shortening the pauses between words via the `reduce_silence` parameter. */
+  supports_silence_reduction: boolean;
 }

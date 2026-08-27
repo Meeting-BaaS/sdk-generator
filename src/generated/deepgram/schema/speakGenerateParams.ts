@@ -52,6 +52,8 @@ model?: V1SpeakPostParametersModel;
 sample_rate?: V1SpeakPostParametersSampleRate;
 /**
  * Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Not yet supported in all languages.
+ * @minimum 0.7
+ * @maximum 1.5
  */
 speed?: number;
 };
