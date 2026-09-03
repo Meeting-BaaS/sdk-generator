@@ -112,7 +112,7 @@ export const listBots = (
     
     Processes each bot creation request sequentially (index 0, 1, 2...). Each item is validated and processed independently. If some bots fail to create, the request still returns 201 with a `data` array containing successful creations and an `errors` array containing failures. Each error includes the `index` of the failed item in the original request array.
     
-    **Processing Order:** Items are processed in the order they appear in the request array. Each item goes through the same validation and checks as a single bot creation: platform detection, BYOK transcription check, daily bot cap check, token availability check, and deduplication lock acquisition.
+    **Processing Order:** Items are processed in the order they appear in the request array. Each item goes through the same validation and checks as a single bot creation: platform detection, transcription key availability, daily bot cap check, token availability check, and deduplication lock acquisition.
     
     **Partial Success:** The response always has `success: true`, even if all items fail. Check the `errors` array to identify failed items. The `data` array contains successfully created bots with their `bot_id` and preserved `extra` metadata. The `errors` array contains failed items with `index`, `code`, `message`, `details`, and preserved `extra` metadata.
     
@@ -551,7 +551,7 @@ export const listScheduledBots = (
     
     Processes each scheduled bot creation request sequentially. Each item is validated and processed independently. Token reservation and daily bot cap checks are NOT performed at creation time - they are performed when each bot actually joins the meeting.
     
-    **Processing Order:** Items are processed in the order they appear in the request array. Each item goes through validation: platform detection, BYOK transcription check, and join time validation. Unlike immediate bot creation, daily bot cap and token availability are not checked at creation time.
+    **Processing Order:** Items are processed in the order they appear in the request array. Each item goes through validation: platform detection, transcription key availability, and join time validation. Unlike immediate bot creation, daily bot cap and token availability are not checked at creation time.
     
     **Partial Success:** The response always has `success: true`, even if all items fail. Check the `errors` array to identify failed items. The `data` array contains successfully scheduled bots with their `bot_id` and preserved `extra` metadata.
     
@@ -560,7 +560,6 @@ export const listScheduledBots = (
     **Error Scenarios:** 
     - Validation errors: Invalid join time, invalid meeting URL, invalid configuration
     - Platform detection failures: `INVALID_MEETING_PLATFORM`
-    - BYOK not enabled: `BYOK_TRANSCRIPTION_NOT_ENABLED_ON_PLAN`
     - System failures: `BOT_CREATE_FAILED`
     
     **Note:** Daily bot cap and token availability are checked when each bot joins, not at creation time. If these checks fail at join time, the bot will transition to `failed` status and send a failure webhook.

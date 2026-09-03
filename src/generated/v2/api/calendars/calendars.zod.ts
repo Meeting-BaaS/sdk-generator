@@ -1571,6 +1571,7 @@ export const createCalendarBotBody = zod
               ),
             api_key: zod
               .string()
+              .min(1)
               .or(zod.null())
               .optional()
               .describe("The API key to use for the speech to text provider."),
@@ -1613,6 +1614,7 @@ export const createCalendarBotBody = zod
           ),
         api_key: zod
           .string()
+          .min(1)
           .or(zod.null())
           .optional()
           .describe(
@@ -2099,6 +2101,7 @@ export const updateCalendarBotBody = zod
                   ),
                 api_key: zod
                   .string()
+                  .min(1)
                   .or(zod.null())
                   .optional()
                   .describe("The API key to use for the speech to text provider."),
@@ -2143,6 +2146,7 @@ export const updateCalendarBotBody = zod
               ),
             api_key: zod
               .string()
+              .min(1)
               .or(zod.null())
               .optional()
               .describe(
@@ -2165,7 +2169,7 @@ export const updateCalendarBotBody = zod
           })
           .optional()
           .describe(
-            'The transcription configuration for the bot.\n\nRequired when `transcription_enabled` is `true`. Must not be provided when `transcription_enabled` is `false`.\n\n- `provider`: Speech-to-text provider (default: \"gladia\"). Supported: gladia, deepgram, assemblyai, speechmatics, soniox\n- `api_key`: Your own API key for the provider (BYOK - available on Pro plans and above)\n- `region`: Provider region (e.g. \"eu\", \"us\"). Required for some providers like Speechmatics\n- `custom_params`: Custom parameters for the transcription provider\n\nOmit this field to leave transcription configuration unchanged.'
+            'The transcription configuration for the bot.\n\nRequired when `transcription_enabled` is `true`. Must not be provided when `transcription_enabled` is `false`.\n\n- `provider`: Speech-to-text provider (default: \"gladia\"). Supported: gladia, deepgram, assemblyai, speechmatics, soniox\n- `api_key`: Your own API key for the provider (BYOK - available on all plans)\n- `region`: Provider region (e.g. \"eu\", \"us\"). Required for some providers like Speechmatics\n- `custom_params`: Custom parameters for the transcription provider\n\nOmit this field to leave transcription configuration unchanged.'
           ),
         callback_enabled: zod
           .boolean()

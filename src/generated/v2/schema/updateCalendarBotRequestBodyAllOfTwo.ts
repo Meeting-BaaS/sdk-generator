@@ -129,7 +129,7 @@ If you want to change transcription settings, you must provide both `transcripti
 Required when `transcription_enabled` is `true`. Must not be provided when `transcription_enabled` is `false`.
 
 - `provider`: Speech-to-text provider (default: "gladia"). Supported: gladia, deepgram, assemblyai, speechmatics, soniox
-- `api_key`: Your own API key for the provider (BYOK - available on Pro plans and above)
+- `api_key`: Your own API key for the provider (BYOK - available on all plans)
 - `region`: Provider region (e.g. "eu", "us"). Required for some providers like Speechmatics
 - `custom_params`: Custom parameters for the transcription provider
 
