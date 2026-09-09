@@ -23,9 +23,9 @@ import type { UpdateCalendarBotRequestBodyInputAllOfTwoZoomConfig } from "./upda
  */
 export type UpdateCalendarBotRequestBodyInputAllOfTwo = {
   /**
-   * The name of the bot.
+   * The name requested for the bot.
 
-This name will be displayed as the bot's name in the meeting.
+This name is displayed for anonymous joins. For an authenticated Microsoft Teams join using `teams_config`, Microsoft Teams ignores this value and displays the signed-in Microsoft 365 account's display name and profile instead.
    * @minLength 1
    * @maxLength 255
    */
@@ -82,8 +82,10 @@ Leave null for anonymous Meet joins, Zoom, or Microsoft Teams. */
   meet_config?: UpdateCalendarBotRequestBodyInputAllOfTwoMeetConfig
   /** Teams-only configuration for authenticated bots via a signed-in Microsoft account.
 
-- credential_id: pin a specific login.
-- email_group: pool selector (preferred — takes priority).
+Microsoft Teams displays the selected account's Microsoft 365 name and profile; `bot_name` is ignored for the authenticated join.
+
+- credential_id: pin a specific login and display identity.
+- email_group: least-loaded pool selector (takes priority).
 - fallback: 'fail' (default) or 'anonymous' on saturation.
 
 Leave null for anonymous Teams joins, Zoom, or Google Meet. */

@@ -10,11 +10,11 @@ import type { UpdateCalendarBotRequestBodyInputAllOfTwoTeamsConfigAnyOfFallback 
 
 export type UpdateCalendarBotRequestBodyInputAllOfTwoTeamsConfigAnyOf = {
   /**
-   * UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot.
+   * UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login—and therefore a specific Microsoft 365 display identity—for this bot. `bot_name` cannot override the signed-in account's display name.
    * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   credential_id?: string
-  /** Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string ("") to round-robin across all active logins for the team without filtering by group. */
+  /** Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string ("") to round-robin across all active logins for the team without filtering by group. The selected account controls the bot's visible Teams name and profile, so use interchangeable identities in a pool when display identity matters. */
   email_group?: UpdateCalendarBotRequestBodyInputAllOfTwoTeamsConfigAnyOfEmailGroup
   /** What to do if no teams_login slot is available.
 - 'fail' (default): bot creation fails with teams_login_unavailable.

@@ -10,8 +10,10 @@ import type { UpdateCalendarBotRequestBodyAllOfTwoTeamsConfigAnyOf } from "./upd
 /**
  * Teams-only configuration for authenticated bots via a signed-in Microsoft account.
 
-- credential_id: pin a specific login.
-- email_group: pool selector (preferred — takes priority).
+Microsoft Teams displays the selected account's Microsoft 365 name and profile; `bot_name` is ignored for the authenticated join.
+
+- credential_id: pin a specific login and display identity.
+- email_group: least-loaded pool selector (takes priority).
 - fallback: 'fail' (default) or 'anonymous' on saturation.
 
 Leave null for anonymous Teams joins, Zoom, or Google Meet.

@@ -7,6 +7,6 @@
  */
 
 /**
- * Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string ("") to round-robin across all active logins for the team without filtering by group.
+ * Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string ("") to round-robin across all active logins for the team without filtering by group. The selected account controls the bot's visible Teams name and profile, so use interchangeable identities in a pool when display identity matters.
  */
 export type UpdateCalendarBotRequestBodyAllOfTwoTeamsConfigAnyOfEmailGroup = string | string

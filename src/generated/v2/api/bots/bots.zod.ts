@@ -109,7 +109,7 @@ export const createBotBody = zod.object({
     .min(1)
     .max(createBotBodyBotNameMax)
     .describe(
-      "The name of the bot.\n\nThis name will be displayed as the bot's name in the meeting."
+      "The name requested for the bot.\n\nThis name is displayed for anonymous joins. For an authenticated Microsoft Teams join using `teams_config`, Microsoft Teams ignores this value and displays the signed-in Microsoft 365 account's display name and profile instead."
     ),
   bot_image: zod
     .string()
@@ -303,7 +303,7 @@ export const createBotBody = zod.object({
         .regex(createBotBodyTeamsConfigCredentialIdRegExp)
         .optional()
         .describe(
-          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login—and therefore a specific Microsoft 365 display identity—for this bot. `bot_name` cannot override the signed-in account's display name."
         ),
       email_group: zod
         .string()
@@ -313,7 +313,7 @@ export const createBotBody = zod.object({
         .or(zod.string())
         .optional()
         .describe(
-          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group. The selected account controls the bot\'s visible Teams name and profile, so use interchangeable identities in a pool when display identity matters.'
         ),
       fallback: zod
         .enum(["fail", "anonymous"])
@@ -325,7 +325,7 @@ export const createBotBody = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\nMicrosoft Teams displays the selected account's Microsoft 365 name and profile; `bot_name` is ignored for the authenticated join.\n\n- credential_id: pin a specific login and display identity.\n- email_group: least-loaded pool selector (takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
     ),
   extra: zod
     .record(zod.string(), zod.any())
@@ -826,7 +826,7 @@ export const batchCreateBotsBodyItem = zod.object({
     .min(1)
     .max(batchCreateBotsBodyBotNameMax)
     .describe(
-      "The name of the bot.\n\nThis name will be displayed as the bot's name in the meeting."
+      "The name requested for the bot.\n\nThis name is displayed for anonymous joins. For an authenticated Microsoft Teams join using `teams_config`, Microsoft Teams ignores this value and displays the signed-in Microsoft 365 account's display name and profile instead."
     ),
   bot_image: zod
     .string()
@@ -1020,7 +1020,7 @@ export const batchCreateBotsBodyItem = zod.object({
         .regex(batchCreateBotsBodyTeamsConfigCredentialIdRegExp)
         .optional()
         .describe(
-          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login—and therefore a specific Microsoft 365 display identity—for this bot. `bot_name` cannot override the signed-in account's display name."
         ),
       email_group: zod
         .string()
@@ -1030,7 +1030,7 @@ export const batchCreateBotsBodyItem = zod.object({
         .or(zod.string())
         .optional()
         .describe(
-          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group. The selected account controls the bot\'s visible Teams name and profile, so use interchangeable identities in a pool when display identity matters.'
         ),
       fallback: zod
         .enum(["fail", "anonymous"])
@@ -1042,7 +1042,7 @@ export const batchCreateBotsBodyItem = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\nMicrosoft Teams displays the selected account's Microsoft 365 name and profile; `bot_name` is ignored for the authenticated join.\n\n- credential_id: pin a specific login and display identity.\n- email_group: least-loaded pool selector (takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
     ),
   extra: zod
     .record(zod.string(), zod.any())
@@ -2168,7 +2168,7 @@ export const createScheduledBotBody = zod
       .min(1)
       .max(createScheduledBotBodyBotNameMax)
       .describe(
-        "The name of the bot.\n\nThis name will be displayed as the bot's name in the meeting."
+        "The name requested for the bot.\n\nThis name is displayed for anonymous joins. For an authenticated Microsoft Teams join using `teams_config`, Microsoft Teams ignores this value and displays the signed-in Microsoft 365 account's display name and profile instead."
       ),
     bot_image: zod
       .string()
@@ -2362,7 +2362,7 @@ export const createScheduledBotBody = zod
           .regex(createScheduledBotBodyTeamsConfigCredentialIdRegExp)
           .optional()
           .describe(
-            "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+            "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login—and therefore a specific Microsoft 365 display identity—for this bot. `bot_name` cannot override the signed-in account's display name."
           ),
         email_group: zod
           .string()
@@ -2372,7 +2372,7 @@ export const createScheduledBotBody = zod
           .or(zod.string())
           .optional()
           .describe(
-            'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+            'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group. The selected account controls the bot\'s visible Teams name and profile, so use interchangeable identities in a pool when display identity matters.'
           ),
         fallback: zod
           .enum(["fail", "anonymous"])
@@ -2384,7 +2384,7 @@ export const createScheduledBotBody = zod
       .or(zod.null())
       .optional()
       .describe(
-        "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+        "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\nMicrosoft Teams displays the selected account's Microsoft 365 name and profile; `bot_name` is ignored for the authenticated join.\n\n- credential_id: pin a specific login and display identity.\n- email_group: least-loaded pool selector (takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
       ),
     extra: zod
       .record(zod.string(), zod.any())
@@ -2825,7 +2825,7 @@ export const batchCreateScheduledBotsBodyItem = zod
       .min(1)
       .max(batchCreateScheduledBotsBodyBotNameMax)
       .describe(
-        "The name of the bot.\n\nThis name will be displayed as the bot's name in the meeting."
+        "The name requested for the bot.\n\nThis name is displayed for anonymous joins. For an authenticated Microsoft Teams join using `teams_config`, Microsoft Teams ignores this value and displays the signed-in Microsoft 365 account's display name and profile instead."
       ),
     bot_image: zod
       .string()
@@ -3019,7 +3019,7 @@ export const batchCreateScheduledBotsBodyItem = zod
           .regex(batchCreateScheduledBotsBodyTeamsConfigCredentialIdRegExp)
           .optional()
           .describe(
-            "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+            "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login—and therefore a specific Microsoft 365 display identity—for this bot. `bot_name` cannot override the signed-in account's display name."
           ),
         email_group: zod
           .string()
@@ -3029,7 +3029,7 @@ export const batchCreateScheduledBotsBodyItem = zod
           .or(zod.string())
           .optional()
           .describe(
-            'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+            'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group. The selected account controls the bot\'s visible Teams name and profile, so use interchangeable identities in a pool when display identity matters.'
           ),
         fallback: zod
           .enum(["fail", "anonymous"])
@@ -3041,7 +3041,7 @@ export const batchCreateScheduledBotsBodyItem = zod
       .or(zod.null())
       .optional()
       .describe(
-        "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+        "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\nMicrosoft Teams displays the selected account's Microsoft 365 name and profile; `bot_name` is ignored for the authenticated join.\n\n- credential_id: pin a specific login and display identity.\n- email_group: least-loaded pool selector (takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
       ),
     extra: zod
       .record(zod.string(), zod.any())
@@ -3528,7 +3528,7 @@ export const updateScheduledBotBody = zod.object({
     .max(updateScheduledBotBodyBotNameMax)
     .optional()
     .describe(
-      "The name of the bot.\n\nThis name will be displayed as the bot's name in the meeting."
+      "The name requested for the bot.\n\nThis name is displayed for anonymous joins. For an authenticated Microsoft Teams join using `teams_config`, Microsoft Teams ignores this value and displays the signed-in Microsoft 365 account's display name and profile instead."
     ),
   bot_image: zod
     .string()
@@ -3723,7 +3723,7 @@ export const updateScheduledBotBody = zod.object({
         .regex(updateScheduledBotBodyTeamsConfigCredentialIdRegExp)
         .optional()
         .describe(
-          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login for this bot."
+          "UUID of a stored teams login (created via /v2/teams-logins). Pin a specific login—and therefore a specific Microsoft 365 display identity—for this bot. `bot_name` cannot override the signed-in account's display name."
         ),
       email_group: zod
         .string()
@@ -3733,7 +3733,7 @@ export const updateScheduledBotBody = zod.object({
         .or(zod.string())
         .optional()
         .describe(
-          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group.'
+          'Round-robin pool selector. Bot will be assigned to the least-loaded active teams_login with this email_group value. Takes priority over credential_id when both are set. Pass an empty string (\"\") to round-robin across all active logins for the team without filtering by group. The selected account controls the bot\'s visible Teams name and profile, so use interchangeable identities in a pool when display identity matters.'
         ),
       fallback: zod
         .enum(["fail", "anonymous"])
@@ -3745,7 +3745,7 @@ export const updateScheduledBotBody = zod.object({
     .or(zod.null())
     .optional()
     .describe(
-      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\n- credential_id: pin a specific login.\n- email_group: pool selector (preferred — takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
+      "Teams-only configuration for authenticated bots via a signed-in Microsoft account.\n\nMicrosoft Teams displays the selected account's Microsoft 365 name and profile; `bot_name` is ignored for the authenticated join.\n\n- credential_id: pin a specific login and display identity.\n- email_group: least-loaded pool selector (takes priority).\n- fallback: 'fail' (default) or 'anonymous' on saturation.\n\nLeave null for anonymous Teams joins, Zoom, or Google Meet."
     ),
   extra: zod
     .record(zod.string(), zod.any())
