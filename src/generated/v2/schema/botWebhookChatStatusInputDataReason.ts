@@ -7,6 +7,10 @@
  */
 
 /**
- * Human-readable error message
+ * Why chat is unavailable. Null when available is true
  */
-export type DeleteSubAccountWebhook429Message = string | null
+export type BotWebhookChatStatusInputDataReason =
+  | "organizer_disabled"
+  | "panel_not_attached"
+  | "send_failed"
+  | null

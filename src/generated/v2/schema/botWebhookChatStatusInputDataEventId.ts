@@ -6,4 +6,7 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type SetSubAccountWebhook200DataCreatedAt = string | null
+/**
+ * The UUID of the calendar event series. Null when the bot was not created from a calendar event
+ */
+export type BotWebhookChatStatusInputDataEventId = string | null

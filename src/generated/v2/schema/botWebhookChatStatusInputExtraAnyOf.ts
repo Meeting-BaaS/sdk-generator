@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type GetSubAccountWebhook200DataCreatedAt = string | null
+export type BotWebhookChatStatusInputExtraAnyOf = { [key: string]: unknown }

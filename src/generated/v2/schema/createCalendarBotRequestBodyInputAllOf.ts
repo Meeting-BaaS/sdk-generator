@@ -23,6 +23,8 @@ export type CreateCalendarBotRequestBodyInputAllOf = {
    * The name requested for the bot.
 
 This name is displayed for anonymous joins. For an authenticated Microsoft Teams join using `teams_config`, Microsoft Teams ignores this value and displays the signed-in Microsoft 365 account's display name and profile instead.
+
+For a Microsoft Teams meeting the name must be one Teams accepts for a guest, or the request is rejected: at most 50 characters; only letters, numbers, spaces and ' ’ . _ @ - · ・; no consecutive spaces; and no leading, trailing or consecutive periods. This applies to authenticated joins too, because a failed sign-in falls back to joining as a guest under this name.
    * @minLength 1
    * @maxLength 255
    */

@@ -7,6 +7,6 @@
  */
 
 /**
- * Additional error details (string or null)
+ * The UUID of the calendar event series. Null when the bot was not created from a calendar event
  */
-export type GetSubAccountWebhook429Details = string | null
+export type BotWebhookChatStatusDataEventId = string | null

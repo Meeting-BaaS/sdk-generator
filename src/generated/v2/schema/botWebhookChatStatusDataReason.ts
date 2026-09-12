@@ -7,6 +7,10 @@
  */
 
 /**
- * Additional error details (string or null)
+ * Why chat is unavailable. Null when available is true
  */
-export type DeleteSubAccount429Details = string | null
+export type BotWebhookChatStatusDataReason =
+  | "organizer_disabled"
+  | "panel_not_attached"
+  | "send_failed"
+  | null

@@ -6,4 +6,4 @@
  * OpenAPI spec version: 2.0.0
  */
 
-export type CreateSubAccount201DataExternalId = string | null
+export type BotWebhookChatStatusExtraAnyOf = { [key: string]: unknown }
