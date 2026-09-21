@@ -8,10 +8,10 @@
 import * as zod from 'zod';
 
 /**
- * @summary Generates audio from the input text.
-
-Returns the audio file content, or a stream of audio events.
-
+ * Generates audio from the input text.
+ *
+ * Returns the audio file content, or a stream of audio events.
+ * @summary Create speech
  */
 export const createSpeechBodyInputMax = 4096;
 
@@ -25,12 +25,12 @@ export const createSpeechBodySpeedMax = 4;
 export const createSpeechBodyStreamFormatDefault = `audio`;
 
 export const CreateSpeechBody = zod.object({
-  "model": zod.union([zod.string(),zod.enum(['tts-1', 'tts-1-hd', 'gpt-4o-mini-tts', 'gpt-4o-mini-tts-2025-12-15'])]).describe('One of the available [TTS models](\/docs\/models#tts): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.\n'),
+  "model": zod.union([zod.string(),zod.enum(['tts-1', 'tts-1-hd', 'gpt-4o-mini-tts', 'gpt-4o-mini-tts-2025-12-15'])]).describe('One of the available [TTS models](https:\/\/developers.openai.com\/api\/docs\/guides\/text-to-speech): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.\n'),
   "input": zod.string().max(createSpeechBodyInputMax).describe('The text to generate audio for. The maximum length is 4096 characters.'),
   "instructions": zod.string().max(createSpeechBodyInstructionsMax).optional().describe('Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.'),
   "voice": zod.union([zod.union([zod.string(),zod.enum(['alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse', 'marin', 'cedar'])]),zod.object({
   "id": zod.string().describe('The custom voice ID, e.g. `voice_1234`.')
-}).describe('Custom voice reference.')]).describe('The voice to use when generating the audio. Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice object with an `id`, for example `{ \"id\": \"voice_1234\" }`. Previews of the voices are available in the [Text to speech guide](\/docs\/guides\/text-to-speech#voice-options).'),
+}).describe('Custom voice reference.')]).describe('The voice to use when generating the audio. Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice object with an `id`, for example `{ \"id\": \"voice_1234\" }`. Previews of the voices are available in the [Text to speech guide](https:\/\/developers.openai.com\/api\/docs\/guides\/text-to-speech#voice-options).'),
   "response_format": zod.enum(['mp3', 'opus', 'aac', 'flac', 'wav', 'pcm']).default(createSpeechBodyResponseFormatDefault).describe('The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`.'),
   "speed": zod.number().min(createSpeechBodySpeedMin).max(createSpeechBodySpeedMax).default(createSpeechBodySpeedDefault).describe('The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is the default.'),
   "stream_format": zod.enum(['sse', 'audio']).default(createSpeechBodyStreamFormatDefault).describe('The format to stream the audio in. Supported formats are `sse` and `audio`. `sse` is not supported for `tts-1` or `tts-1-hd`.')
@@ -40,11 +40,11 @@ export const CreateSpeechResponse = zod.unknown()
 
 
 /**
- * @summary Transcribes audio into the input language.
-
-Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-format, or a stream of transcript events.
-
+ * Transcribes audio into the input language.
+ *
+ * Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
+ * format, or a stream of transcript events.
+ * @summary Create transcription
  */
 
 export const createTranscriptionBodyResponseFormatDefault = `json`;
@@ -61,17 +61,17 @@ export const createTranscriptionBodyKnownSpeakerReferencesMax = 4;
 
 
 export const CreateTranscriptionBody = zod.object({
-  "file": zod.instanceof(File).describe('The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n'),
+  "file": zod.instanceof(File).describe('The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\nThe request must include enough format metadata for the file to be identified. We recommend an extension-bearing filename and an appropriate content type.\n'),
   "model": zod.union([zod.string(),zod.enum(['whisper-1', 'gpt-transcribe', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe', 'gpt-4o-mini-transcribe-2025-12-15', 'gpt-4o-transcribe-diarize'])]).describe('ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`.\n'),
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format will improve accuracy and latency.\n'),
   "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe`.\n'),
   "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe`.\n'),
-  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio segment. The [prompt](\/docs\/guides\/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n'),
+  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio segment. The [prompt](https:\/\/developers.openai.com\/api\/docs\/guides\/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n'),
   "response_format": zod.enum(['json', 'text', 'srt', 'verbose_json', 'vtt', 'diarized_json']).default(createTranscriptionBodyResponseFormatDefault).describe('The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, `vtt`, or `diarized_json`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`, the only supported format is `json`. For `gpt-4o-transcribe-diarize`, the supported formats are `json`, `text`, and `diarized_json`, with `diarized_json` required to receive speaker annotations.\n'),
   "temperature": zod.number().default(createTranscriptionBodyTemperatureDefault).describe('The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https:\/\/en.wikipedia.org\/wiki\/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n'),
   "include": zod.array(zod.enum(['logprobs'])).optional().describe('Additional information to include in the transcription response.\n`logprobs` will return the log probabilities of the tokens in the\nresponse to understand the model\'s confidence in the transcription.\n`logprobs` only works with response_format set to `json` and only with\nthe models `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `gpt-4o-mini-transcribe-2025-12-15`. This field is not supported when using `gpt-4o-transcribe-diarize`.\n'),
   "timestamp_granularities": zod.array(zod.enum(['word', 'segment'])).default([`segment`]).describe('The timestamp granularities to populate for this transcription. `response_format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`. Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.\nThis option is not available for `gpt-4o-transcribe-diarize`.\n'),
-  "stream": zod.union([zod.boolean().default(createTranscriptionBodyStreamOneDefault).describe('If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent events](https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/API\/Server-sent_events\/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section of the Speech-to-Text guide](\/docs\/guides\/speech-to-text?lang=curl#streaming-transcriptions)\nfor more information.\n\nNote: Streaming is not supported for the `whisper-1` model and will be ignored.\n'),zod.null()]).optional(),
+  "stream": zod.union([zod.boolean().default(createTranscriptionBodyStreamOneDefault).describe('If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent events](https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/API\/Server-sent_events\/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section of the Speech-to-Text guide](https:\/\/developers.openai.com\/api\/docs\/guides\/speech-to-text?lang=curl#streaming)\nfor more information.\n\nNote: Streaming is not supported for the `whisper-1` model and will be ignored.\n'),zod.null()]).optional(),
   "chunking_strategy": zod.union([zod.union([zod.enum(['auto']).default(createTranscriptionBodyChunkingStrategyOneOneDefault).describe('Automatically set chunking parameters based on the audio. Must be set to `\"auto\"`.\n'),zod.object({
   "type": zod.enum(['server_vad']).describe('Must be set to `server_vad` to enable manual chunking using server side VAD.'),
   "prefix_padding_ms": zod.number().default(createTranscriptionBodyChunkingStrategyOneTwoPrefixPaddingMsDefault).describe('Amount of audio to include before the VAD detected speech (in \nmilliseconds).\n'),
@@ -159,15 +159,16 @@ export const CreateTranscriptionResponse = zod.union([zod.object({
 
 
 /**
- * @summary Translates audio into English.
+ * Translates audio into English.
+ * @summary Create translation
  */
 export const createTranslationBodyResponseFormatDefault = `json`;
 export const createTranslationBodyTemperatureDefault = 0;
 
 export const CreateTranslationBody = zod.object({
-  "file": zod.instanceof(File).describe('The audio file object (not file name) translate, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n'),
+  "file": zod.instanceof(File).describe('The audio file object (not file name) translate, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include enough format metadata for the file to be identified. We recommend an extension-bearing filename and an appropriate content type.\n'),
   "model": zod.union([zod.string(),zod.enum(['whisper-1'])]).describe('ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.\n'),
-  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio segment. The [prompt](\/docs\/guides\/speech-to-text#prompting) should be in English.\n'),
+  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio segment. The [prompt](https:\/\/developers.openai.com\/api\/docs\/guides\/speech-to-text#prompting) should be in English.\n'),
   "response_format": zod.enum(['json', 'text', 'srt', 'verbose_json', 'vtt']).default(createTranslationBodyResponseFormatDefault).describe('The format of the output, in one of these options: `json`, `text`, `srt`, `verbose_json`, or `vtt`.\n'),
   "temperature": zod.number().default(createTranslationBodyTemperatureDefault).describe('The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https:\/\/en.wikipedia.org\/wiki\/Log_probability) to automatically increase the temperature until certain thresholds are hit.\n')
 })
@@ -194,10 +195,8 @@ export const CreateTranslationResponse = zod.union([zod.object({
 
 
 /**
- * Create a custom voice you can use for audio output (for example, in Text-to-Speech and the Realtime API). This requires an audio sample and a previously uploaded consent recording.
- *
- * See the [custom voices guide](/docs/guides/text-to-speech#custom-voices) for requirements and best practices. Custom voices are limited to eligible customers.
- * @summary Creates a custom voice.
+ * Creates a custom voice.
+ * @summary Create voice
  */
 export const CreateVoiceBody = zod.object({
   "name": zod.string().describe('The name of the new voice.'),
@@ -214,20 +213,20 @@ export const CreateVoiceResponse = zod.object({
 
 
 /**
- * @summary Create a Realtime client secret with an associated session configuration.
-
-Client secrets are short-lived tokens that can be passed to a client app,
-such as a web frontend or mobile client, which grants access to the Realtime API without
-leaking your main API key. You can configure a custom TTL for each client secret.
-
-You can also attach session configuration options to the client secret, which will be
-applied to any sessions created using that client secret, but these can also be overridden
-by the client connection.
-
-[Learn more about authentication with client secrets over WebRTC](/docs/guides/realtime-webrtc).
-
-Returns the created client secret and the effective session object. The client secret is a string that looks like `ek_1234`.
-
+ * Create a Realtime client secret with an associated session configuration.
+ *
+ * Client secrets are short-lived tokens that can be passed to a client app,
+ * such as a web frontend or mobile client, which grants access to the Realtime API without
+ * leaking your main API key. You can configure a custom TTL for each client secret.
+ *
+ * You can also attach session configuration options to the client secret, which will be
+ * applied to any sessions created using that client secret, but these can also be overridden
+ * by the client connection.
+ *
+ * [Learn more about authentication with client secrets over WebRTC](https://developers.openai.com/api/docs/guides/realtime-webrtc).
+ *
+ * Returns the created client secret and the effective session object. The client secret is a string that looks like `ek_1234`.
+ * @summary Create client secret
  */
 export const createRealtimeClientSecretBodyExpiresAfterAnchorDefault = `created_at`;
 export const createRealtimeClientSecretBodyExpiresAfterSecondsDefault = 600;
@@ -304,9 +303,9 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in\n[ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n'),
   "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
   "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
-  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
+  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](https:\/\/developers.openai.com\/api\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
   "delay": zod.enum(['minimal', 'low', 'medium', 'high', 'xhigh']).optional().describe('Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n')
-}).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](\/docs\/api-reference\/audio\/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
+}).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](https:\/\/developers.openai.com\/api\/reference\/resources\/audio\/subresources\/transcriptions\/methods\/create) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
   "noise_reduction": zod.object({
   "type": zod.enum(['near_field', 'far_field']).optional().describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).nullish().default(createRealtimeClientSecretBodySessionOneAudioInputNoiseReductionDefault).describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
@@ -359,7 +358,7 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "type": zod.enum(['mcp']).describe('The type of the MCP tool. Always `mcp`.'),
   "server_label": zod.string().describe('A label for this MCP server, used to identify it in tool calls.\n'),
   "server_url": zod.url().optional().describe('The URL for the MCP server. One of `server_url`, `connector_id`, or\n`tunnel_id` must be provided.\n'),
-  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).optional().describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more\nabout service connectors [here](\/docs\/guides\/tools-remote-mcp#connectors).\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
+  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).optional().describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more\nabout service connectors [here](https:\/\/developers.openai.com\/api\/docs\/guides\/tools-connectors-mcp#connectors).\n\nThis field is deprecated for models released after September 1, 2026.\nUse `server_url` to connect to a remote MCP server, or `tunnel_id` to\nconnect through a Secure MCP Tunnel.\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
   "tunnel_id": zod.string().regex(createRealtimeClientSecretBodySessionOneToolsItemTwoTunnelIdRegExp).optional().describe('The Secure MCP Tunnel ID to use instead of a direct server URL. One of\n`server_url`, `connector_id`, or `tunnel_id` must be provided.\n'),
   "authorization": zod.string().optional().describe('An OAuth access token that can be used with a remote MCP server, either\nwith a custom MCP server URL or a service connector. Your application\nmust handle the OAuth authorization flow and provide the token here.\n'),
   "server_description": zod.string().optional().describe('Optional description of the MCP server, used to provide more context.\n'),
@@ -380,7 +379,7 @@ export const CreateRealtimeClientSecretBody = zod.object({
 }).optional().describe('A filter object to specify which tools are allowed.\n')
 }).describe('Specify which of the MCP server\'s tools require approval. Can be\n`always`, `never`, or a filter object associated with tools\nthat require approval.\n'),zod.enum(['always', 'never']).describe('Specify a single approval policy for all tools. One of `always` or\n`never`. When set to `always`, all tools will require approval. When\nset to `never`, all tools will not require approval.\n')]).default(createRealtimeClientSecretBodySessionOneToolsItemTwoRequireApprovalOneDefault).describe('Specify which of the MCP server\'s tools require approval.'),zod.null()]).optional(),
   "defer_loading": zod.boolean().optional().describe('Whether this MCP tool is deferred and discovered via tool search.\n')
-}).describe('Give the model access to additional tools via remote Model Context Protocol\n(MCP) servers. [Learn more about MCP](\/docs\/guides\/tools-remote-mcp).\n')])).optional().describe('Tools available to the model.'),
+}).describe('Give the model access to additional tools via remote Model Context Protocol\n(MCP) servers. [Learn more about MCP](https:\/\/developers.openai.com\/api\/docs\/guides\/tools-connectors-mcp).\n')])).optional().describe('Tools available to the model.'),
   "tool_choice": zod.union([zod.enum(['none', 'auto', 'required']).describe('Controls which (if any) tool is called by the model.\n\n`none` means the model will not call any tool and instead generates a message.\n\n`auto` means the model can pick between generating a message or calling one or\nmore tools.\n\n`required` means the model must call one or more tools.\n'),zod.object({
   "type": zod.enum(['function']).describe('For function calling, the type is always `function`.'),
   "name": zod.string().describe('The name of the function to call.')
@@ -418,7 +417,7 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "prompt_cache_breakpoint": zod.object({
   "mode": zod.enum(['explicit']).default(createRealtimeClientSecretBodySessionOnePromptOneVariablesOneThreePromptCacheBreakpointModeDefault).describe('The breakpoint mode. Always `explicit`.')
 }).optional().describe('Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request\'s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.')
-}).describe('An image input to the model. Learn about [image inputs](\/docs\/guides\/vision).'),zod.object({
+}).describe('An image input to the model. Learn about [image inputs](https:\/\/developers.openai.com\/api\/docs\/guides\/images-vision).'),zod.object({
   "type": zod.enum(['input_file']).default(createRealtimeClientSecretBodySessionOnePromptOneVariablesOneFourTypeDefault).describe('The type of the input item. Always `input_file`.'),
   "file_id": zod.union([zod.string().describe('The ID of the file to be sent to the model.'),zod.null()]).optional(),
   "filename": zod.string().optional().describe('The name of the file to be sent to the model.'),
@@ -429,7 +428,7 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "file_url": zod.url().optional().describe('The URL of the file to be sent to the model.'),
   "detail": zod.enum(['auto', 'low', 'high']).optional().describe('The detail level of the file to be sent to the model. Use `auto` to let the system select the detail level; for GPT-5.6 and later models, `auto` uses high-quality rendering, which may increase input token usage. Use `low` for lower-cost rendering, or `high` to render the file at higher quality. Defaults to `auto`.')
 }).describe('A file input to the model.')])).describe('Optional map of values to substitute in for variables in your\nprompt. The substitution values can either be strings, or other\nResponse input types like images or files.\n'),zod.null()]).optional()
-}).describe('Reference to a prompt template and its variables.\n[Learn more](\/docs\/guides\/text?api-mode=responses#reusable-prompts).\n'),zod.null()]).optional()
+}).describe('Reference to a prompt template and its variables.\n[Learn more](https:\/\/developers.openai.com\/api\/docs\/guides\/text?api-mode=responses#version-prompts-in-code).\n'),zod.null()]).optional()
 }).describe('Realtime session object configuration.'),zod.object({
   "type": zod.enum(['transcription']).describe('The type of session to create. Always `transcription` for transcription sessions.\n'),
   "audio": zod.object({
@@ -447,9 +446,9 @@ export const CreateRealtimeClientSecretBody = zod.object({
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in\n[ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n'),
   "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
   "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
-  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
+  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](https:\/\/developers.openai.com\/api\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
   "delay": zod.enum(['minimal', 'low', 'medium', 'high', 'xhigh']).optional().describe('Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n')
-}).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](\/docs\/api-reference\/audio\/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
+}).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](https:\/\/developers.openai.com\/api\/reference\/resources\/audio\/subresources\/transcriptions\/methods\/create) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
   "noise_reduction": zod.object({
   "type": zod.enum(['near_field', 'far_field']).optional().describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).nullish().default(createRealtimeClientSecretBodySessionTwoAudioInputNoiseReductionDefault).describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
@@ -471,7 +470,7 @@ export const CreateRealtimeClientSecretBody = zod.object({
 }).optional().describe('Configuration for input and output audio.\n'),
   "include": zod.array(zod.enum(['item.input_audio_transcription.logprobs'])).optional().describe('Additional fields to include in server outputs.\n\n`item.input_audio_transcription.logprobs`: Include logprobs for input audio transcription.\n')
 }).describe('Realtime transcription session object configuration.')]).optional().describe('Session configuration to use for the client secret. Choose either a realtime\nsession or a transcription session.\n')
-}).describe('Create a session and client secret for the Realtime API. The request can specify\neither a realtime or a transcription session configuration.\n[Learn more about the Realtime API](\/docs\/guides\/realtime).\n')
+}).describe('Create a session and client secret for the Realtime API. The request can specify\neither a realtime or a transcription session configuration.\n[Learn more about the Realtime API](https:\/\/developers.openai.com\/api\/docs\/guides\/realtime).\n')
 
 
 export const createRealtimeClientSecretResponseSessionOneAudioInputNoiseReductionDefault = null;
@@ -535,7 +534,7 @@ export const CreateRealtimeClientSecretResponse = zod.object({
   "language": zod.string().optional().describe('The language of the input audio.\n'),
   "languages": zod.array(zod.string()).min(1).optional().describe('The possible input audio languages configured for transcription, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format.\n'),
   "prompt": zod.string().optional().describe('The prompt configured for input audio transcription, when present.\n')
-}).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](\/docs\/api-reference\/audio\/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
+}).optional().describe('Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the \/audio\/transcriptions endpoint](https:\/\/developers.openai.com\/api\/reference\/resources\/audio\/subresources\/transcriptions\/methods\/create) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
   "noise_reduction": zod.object({
   "type": zod.enum(['near_field', 'far_field']).optional().describe('Type of noise reduction. `near_field` is for close-talking microphones such as headphones, `far_field` is for far-field microphones such as laptop or conference room microphones.\n')
 }).nullish().default(createRealtimeClientSecretResponseSessionOneAudioInputNoiseReductionDefault).describe('Configuration for input audio noise reduction. This can be set to `null` to turn off.\nNoise reduction filters audio added to the input audio buffer before it is sent to VAD and the model.\nFiltering the audio can improve VAD and turn detection accuracy (reducing false positives) and model performance by improving perception of the input audio.\n'),
@@ -586,7 +585,7 @@ export const CreateRealtimeClientSecretResponse = zod.object({
   "type": zod.enum(['mcp']).describe('The type of the MCP tool. Always `mcp`.'),
   "server_label": zod.string().describe('A label for this MCP server, used to identify it in tool calls.\n'),
   "server_url": zod.url().optional().describe('The URL for the MCP server. One of `server_url`, `connector_id`, or\n`tunnel_id` must be provided.\n'),
-  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).optional().describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more\nabout service connectors [here](\/docs\/guides\/tools-remote-mcp#connectors).\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
+  "connector_id": zod.enum(['connector_dropbox', 'connector_gmail', 'connector_googlecalendar', 'connector_googledrive', 'connector_microsoftteams', 'connector_outlookcalendar', 'connector_outlookemail', 'connector_sharepoint']).optional().describe('Identifier for service connectors, like those available in ChatGPT. One of\n`server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more\nabout service connectors [here](https:\/\/developers.openai.com\/api\/docs\/guides\/tools-connectors-mcp#connectors).\n\nThis field is deprecated for models released after September 1, 2026.\nUse `server_url` to connect to a remote MCP server, or `tunnel_id` to\nconnect through a Secure MCP Tunnel.\n\nCurrently supported `connector_id` values are:\n\n- Dropbox: `connector_dropbox`\n- Gmail: `connector_gmail`\n- Google Calendar: `connector_googlecalendar`\n- Google Drive: `connector_googledrive`\n- Microsoft Teams: `connector_microsoftteams`\n- Outlook Calendar: `connector_outlookcalendar`\n- Outlook Email: `connector_outlookemail`\n- SharePoint: `connector_sharepoint`\n'),
   "tunnel_id": zod.string().regex(createRealtimeClientSecretResponseSessionOneToolsItemTwoTunnelIdRegExp).optional().describe('The Secure MCP Tunnel ID to use instead of a direct server URL. One of\n`server_url`, `connector_id`, or `tunnel_id` must be provided.\n'),
   "authorization": zod.string().optional().describe('An OAuth access token that can be used with a remote MCP server, either\nwith a custom MCP server URL or a service connector. Your application\nmust handle the OAuth authorization flow and provide the token here.\n'),
   "server_description": zod.string().optional().describe('Optional description of the MCP server, used to provide more context.\n'),
@@ -607,7 +606,7 @@ export const CreateRealtimeClientSecretResponse = zod.object({
 }).optional().describe('A filter object to specify which tools are allowed.\n')
 }).describe('Specify which of the MCP server\'s tools require approval. Can be\n`always`, `never`, or a filter object associated with tools\nthat require approval.\n'),zod.enum(['always', 'never']).describe('Specify a single approval policy for all tools. One of `always` or\n`never`. When set to `always`, all tools will require approval. When\nset to `never`, all tools will not require approval.\n')]).default(createRealtimeClientSecretResponseSessionOneToolsItemTwoRequireApprovalOneDefault).describe('Specify which of the MCP server\'s tools require approval.'),zod.null()]).optional(),
   "defer_loading": zod.boolean().optional().describe('Whether this MCP tool is deferred and discovered via tool search.\n')
-}).describe('Give the model access to additional tools via remote Model Context Protocol\n(MCP) servers. [Learn more about MCP](\/docs\/guides\/tools-remote-mcp).\n')])).optional().describe('Tools available to the model.'),
+}).describe('Give the model access to additional tools via remote Model Context Protocol\n(MCP) servers. [Learn more about MCP](https:\/\/developers.openai.com\/api\/docs\/guides\/tools-connectors-mcp).\n')])).optional().describe('Tools available to the model.'),
   "tool_choice": zod.union([zod.enum(['none', 'auto', 'required']).describe('Controls which (if any) tool is called by the model.\n\n`none` means the model will not call any tool and instead generates a message.\n\n`auto` means the model can pick between generating a message or calling one or\nmore tools.\n\n`required` means the model must call one or more tools.\n'),zod.object({
   "type": zod.enum(['function']).describe('For function calling, the type is always `function`.'),
   "name": zod.string().describe('The name of the function to call.')
@@ -644,7 +643,7 @@ export const CreateRealtimeClientSecretResponse = zod.object({
   "prompt_cache_breakpoint": zod.object({
   "mode": zod.enum(['explicit']).default(createRealtimeClientSecretResponseSessionOnePromptOneVariablesOneThreePromptCacheBreakpointModeDefault).describe('The breakpoint mode. Always `explicit`.')
 }).optional().describe('Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request\'s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.')
-}).describe('An image input to the model. Learn about [image inputs](\/docs\/guides\/vision).'),zod.object({
+}).describe('An image input to the model. Learn about [image inputs](https:\/\/developers.openai.com\/api\/docs\/guides\/images-vision).'),zod.object({
   "type": zod.enum(['input_file']).default(createRealtimeClientSecretResponseSessionOnePromptOneVariablesOneFourTypeDefault).describe('The type of the input item. Always `input_file`.'),
   "file_id": zod.union([zod.string().describe('The ID of the file to be sent to the model.'),zod.null()]).optional(),
   "filename": zod.string().optional().describe('The name of the file to be sent to the model.'),
@@ -655,7 +654,7 @@ export const CreateRealtimeClientSecretResponse = zod.object({
   "file_url": zod.url().optional().describe('The URL of the file to be sent to the model.'),
   "detail": zod.enum(['auto', 'low', 'high']).optional().describe('The detail level of the file to be sent to the model. Use `auto` to let the system select the detail level; for GPT-5.6 and later models, `auto` uses high-quality rendering, which may increase input token usage. Use `low` for lower-cost rendering, or `high` to render the file at higher quality. Defaults to `auto`.')
 }).describe('A file input to the model.')])).describe('Optional map of values to substitute in for variables in your\nprompt. The substitution values can either be strings, or other\nResponse input types like images or files.\n'),zod.null()]).optional()
-}).describe('Reference to a prompt template and its variables.\n[Learn more](\/docs\/guides\/text?api-mode=responses#reusable-prompts).\n'),zod.null()]).optional()
+}).describe('Reference to a prompt template and its variables.\n[Learn more](https:\/\/developers.openai.com\/api\/docs\/guides\/text?api-mode=responses#version-prompts-in-code).\n'),zod.null()]).optional()
 }).describe('A Realtime session configuration object.\n'),zod.object({
   "type": zod.enum(['transcription']).describe('The type of session. Always `transcription` for transcription sessions.\n'),
   "id": zod.string().describe('Unique identifier for the session that looks like `sess_1234567890abcdef`.\n'),
@@ -694,16 +693,16 @@ export const CreateRealtimeClientSecretResponse = zod.object({
 
 
 /**
- * @summary Create an ephemeral API token for use in client-side applications with the
-Realtime API. Can be configured with the same session parameters as the
-`session.update` client event.
-
-It responds with a session object, plus a `client_secret` key which contains
-a usable ephemeral API token that can be used to authenticate browser clients
-for the Realtime API.
-
-Returns the created Realtime session object, plus an ephemeral key.
-
+ * Create an ephemeral API token for use in client-side applications with the
+ * Realtime API. Can be configured with the same session parameters as the
+ * `session.update` client event.
+ *
+ * It responds with a session object, plus a `client_secret` key which contains
+ * a usable ephemeral API token that can be used to authenticate browser clients
+ * for the Realtime API.
+ *
+ * Returns the created Realtime session object, plus an ephemeral key.
+ * @summary Create session
  */
 export const createRealtimeSessionBodySpeedDefault = 1;
 export const createRealtimeSessionBodySpeedMin = 0.25;
@@ -786,7 +785,7 @@ export const CreateRealtimeSessionBody = zod.object({
   "prompt_cache_breakpoint": zod.object({
   "mode": zod.enum(['explicit']).default(createRealtimeSessionBodyPromptOneVariablesOneThreePromptCacheBreakpointModeDefault).describe('The breakpoint mode. Always `explicit`.')
 }).optional().describe('Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL from the request\'s `prompt_cache_options.ttl`; the boundary is not rounded to a token block.')
-}).describe('An image input to the model. Learn about [image inputs](\/docs\/guides\/vision).'),zod.object({
+}).describe('An image input to the model. Learn about [image inputs](https:\/\/developers.openai.com\/api\/docs\/guides\/images-vision).'),zod.object({
   "type": zod.enum(['input_file']).default(createRealtimeSessionBodyPromptOneVariablesOneFourTypeDefault).describe('The type of the input item. Always `input_file`.'),
   "file_id": zod.union([zod.string().describe('The ID of the file to be sent to the model.'),zod.null()]).optional(),
   "filename": zod.string().optional().describe('The name of the file to be sent to the model.'),
@@ -797,7 +796,7 @@ export const CreateRealtimeSessionBody = zod.object({
   "file_url": zod.url().optional().describe('The URL of the file to be sent to the model.'),
   "detail": zod.enum(['auto', 'low', 'high']).optional().describe('The detail level of the file to be sent to the model. Use `auto` to let the system select the detail level; for GPT-5.6 and later models, `auto` uses high-quality rendering, which may increase input token usage. Use `low` for lower-cost rendering, or `high` to render the file at higher quality. Defaults to `auto`.')
 }).describe('A file input to the model.')])).describe('Optional map of values to substitute in for variables in your\nprompt. The substitution values can either be strings, or other\nResponse input types like images or files.\n'),zod.null()]).optional()
-}).describe('Reference to a prompt template and its variables.\n[Learn more](\/docs\/guides\/text?api-mode=responses#reusable-prompts).\n'),zod.null()]).optional()
+}).describe('Reference to a prompt template and its variables.\n[Learn more](https:\/\/developers.openai.com\/api\/docs\/guides\/text?api-mode=responses#version-prompts-in-code).\n'),zod.null()]).optional()
 }).describe('A new Realtime session configuration, with an ephemeral key. Default TTL\nfor keys is one minute.\n')
 
 
@@ -877,16 +876,16 @@ export const CreateRealtimeSessionResponse = zod.object({
 
 
 /**
- * @summary Create an ephemeral API token for use in client-side applications with the
-Realtime API specifically for realtime transcriptions.
-Can be configured with the same session parameters as the `transcription_session.update` client event.
-
-It responds with a session object, plus a `client_secret` key which contains
-a usable ephemeral API token that can be used to authenticate browser clients
-for the Realtime API.
-
-Returns the created Realtime transcription session object, plus an ephemeral key.
-
+ * Create an ephemeral API token for use in client-side applications with the
+ * Realtime API specifically for realtime transcriptions.
+ * Can be configured with the same session parameters as the `transcription_session.update` client event.
+ *
+ * It responds with a session object, plus a `client_secret` key which contains
+ * a usable ephemeral API token that can be used to authenticate browser clients
+ * for the Realtime API.
+ *
+ * Returns the created Realtime transcription session object, plus an ephemeral key.
+ * @summary Create transcription session
  */
 export const createRealtimeTranscriptionSessionBodyInputAudioNoiseReductionDefault = null;
 export const createRealtimeTranscriptionSessionBodyInputAudioFormatDefault = `pcm16`;
@@ -908,7 +907,7 @@ export const CreateRealtimeTranscriptionSessionBody = zod.object({
   "language": zod.string().optional().describe('The language of the input audio. Supplying the input language in\n[ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) (e.g. `en`) format\nwill improve accuracy and latency.\n'),
   "languages": zod.array(zod.string()).min(1).optional().describe('Possible languages of the input audio, in [ISO-639-1](https:\/\/en.wikipedia.org\/wiki\/List_of_ISO_639-1_codes) format. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
   "keywords": zod.array(zod.string()).optional().describe('Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe` and `gpt-live-transcribe`.\n'),
-  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
+  "prompt": zod.string().optional().describe('An optional text to guide the model\'s style or continue a previous audio\nsegment.\nFor `whisper-1`, the [prompt is a list of keywords](https:\/\/developers.openai.com\/api\/docs\/guides\/speech-to-text#prompting).\nFor `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example \"expect words related to technology\".\nPrompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.\n'),
   "delay": zod.enum(['minimal', 'low', 'medium', 'high', 'xhigh']).optional().describe('Controls how long the model waits before emitting transcription text.\nHigher values can improve transcription accuracy at the cost of latency.\nOnly supported with `gpt-realtime-whisper` in GA Realtime sessions.\n')
 }).optional().describe('Configuration for input audio transcription. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.\n'),
   "include": zod.array(zod.enum(['item.input_audio_transcription.logprobs'])).optional().describe('The set of items to include in the transcription. Current available items are:\n`item.input_audio_transcription.logprobs`\n')

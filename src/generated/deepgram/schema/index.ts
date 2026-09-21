@@ -21,6 +21,7 @@ export * from './listenV1MediaTranscribeResponse200.js';
 export * from './listenV1RequestUrl.js';
 export * from './listenV1Response.js';
 export * from './listenV1ResponseMetadata.js';
+export * from './listenV1ResponseMetadataDiarizeInfo.js';
 export * from './listenV1ResponseMetadataIntentsInfo.js';
 export * from './listenV1ResponseMetadataModelInfo.js';
 export * from './listenV1ResponseMetadataSentimentInfo.js';

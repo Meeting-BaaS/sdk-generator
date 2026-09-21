@@ -66,7 +66,7 @@ export const speechToTextBodyEntityRedactionModeDefault = `enumerated_entity_typ
 export const speechToTextBodyKeytermsDefault = [];
 
 export const SpeechToTextBody = zod.object({
-  "model_id": zod.enum(['scribe_v1', 'scribe_v2']).describe('The ID of the model to use for transcription.'),
+  "model_id": zod.string().describe('The ID of the model to use for transcription.'),
   "file": zod.union([zod.instanceof(File),zod.null()]).optional().describe('The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 5.0GB.'),
   "language_code": zod.union([zod.string(),zod.null()]).optional().describe('An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically.'),
   "tag_audio_events": zod.boolean().default(speechToTextBodyTagAudioEventsDefault).describe('Whether to tag audio events like (laughter), (footsteps), etc. in the transcription.'),

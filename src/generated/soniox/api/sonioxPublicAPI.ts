@@ -24,6 +24,8 @@ import type {
   GetFilesParams,
   GetFilesResponse,
   GetModelsResponse,
+  GetSharedVoicesParams,
+  GetSharedVoicesResponse,
   GetTTSModelsResponse,
   GetTranscriptionsCountResponse,
   GetTranscriptionsParams,
@@ -56,6 +58,7 @@ import type {
 
 import {
   ConcurrentStreamKind,
+  TTSVoiceAge,
   TTSVoiceGender,
   TranscriptionMode,
   TranscriptionStatus,
@@ -119,7 +122,7 @@ export const getFile = (
   }
 
 /**
- * Permanently deletes specified file.
+ * Permanently deletes specified file. If a transcription that has not started processing yet still references the file, that transcription fails with `file_not_found`, so delete the file only after the transcription reaches `completed` or `error`.
  * @summary Delete file
  */
 export const deleteFile = (
@@ -182,7 +185,7 @@ export const getTranscription = (
   }
 
 /**
- * Permanently deletes a transcription and its associated files. Cannot delete transcriptions that are currently processing.
+ * Permanently deletes a transcription. Files uploaded through the Files API are not deleted; use the delete file endpoint to remove them. Cannot delete transcriptions that are currently processing.
  * @summary Delete transcription
  */
 export const deleteTranscription = (
@@ -310,6 +313,20 @@ export const getTtsModels = (
   }
 
 /**
+ * Retrieves the shared voices built into a TTS model, optionally filtered by gender, age, accent, use case and style. All given filters must match. For the voices you have cloned yourself, see `GET /v1/voices` instead.
+ * @summary Get shared voices
+ */
+export const getSharedVoices = (
+    params: GetSharedVoicesParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<GetSharedVoicesResponse>> => {
+    return axios.get(
+      `/v1/shared-voices`,{
+    ...options,
+        params: {...params, ...options?.params},}
+    );
+  }
+
+/**
  * Generates audio from text using the TTS REST endpoint.
  * @summary Generate speech
  */
@@ -416,6 +433,7 @@ export type DeleteVoiceResult = AxiosResponse<void>
 export type RecomputeVoiceResult = AxiosResponse<Voice>
 export type GetModelsResult = AxiosResponse<GetModelsResponse>
 export type GetTtsModelsResult = AxiosResponse<GetTTSModelsResponse>
+export type GetSharedVoicesResult = AxiosResponse<GetSharedVoicesResponse>
 export type GenerateTtsResult = AxiosResponse<Blob>
 export type CreateTemporaryApiKeyResult = AxiosResponse<CreateTemporaryApiKeyResponse>
 export type GetUsageLogsResult = AxiosResponse<GetUsageLogsResponse>
@@ -454,7 +472,9 @@ export const getRecomputeVoiceResponseMock = (overrideResponse: Partial<Extract<
 
 export const getGetModelsResponseMock = (overrideResponse: Partial<Extract<GetModelsResponse, object>> = {}): GetModelsResponse => ({models: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), aliased_model_id: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), name: faker.string.alpha({length: {min: 10, max: 20}}), context_version: faker.helpers.arrayElement([faker.number.int(),null,]), transcription_mode: faker.helpers.arrayElement(Object.values(TranscriptionMode)), languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({code: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}})})), supports_language_hints_strict: faker.datatype.boolean(), supports_max_endpoint_delay: faker.datatype.boolean(), supports_endpoint_sensitivity: faker.datatype.boolean(), supports_endpoint_latency_adjustment: faker.datatype.boolean(), endpoint_latency_adjustment_max_level: faker.number.int(), translation_targets: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({target_language: faker.string.alpha({length: {min: 10, max: 20}}), source_languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), exclude_source_languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}})))})), two_way_translation_pairs: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), one_way_translation: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), two_way_translation: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,])})), ...overrideResponse})
 
-export const getGetTtsModelsResponseMock = (overrideResponse: Partial<Extract<GetTTSModelsResponse, object>> = {}): GetTTSModelsResponse => ({models: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), aliased_model_id: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), name: faker.string.alpha({length: {min: 10, max: 20}}), languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({code: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}})})), voices: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.string.alpha({length: {min: 10, max: 20}}), gender: faker.helpers.arrayElement(Object.values(TTSVoiceGender))})), supports_timestamps: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), supports_speed_adjustment: faker.datatype.boolean(), speed_min: faker.number.float({fractionDigits: 2}), speed_max: faker.number.float({fractionDigits: 2}), supports_silence_reduction: faker.datatype.boolean()})), ...overrideResponse})
+export const getGetTtsModelsResponseMock = (overrideResponse: Partial<Extract<GetTTSModelsResponse, object>> = {}): GetTTSModelsResponse => ({models: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), aliased_model_id: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), name: faker.string.alpha({length: {min: 10, max: 20}}), languages: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({code: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}})})), voices: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.string.alpha({length: {min: 10, max: 20}}), gender: faker.helpers.arrayElement(Object.values(TTSVoiceGender))})), supports_timestamps: faker.datatype.boolean(), supports_voice_cloning: faker.datatype.boolean(), voice_cloning_max_audio_duration_ms: faker.helpers.arrayElement([faker.number.int(),null,]), supports_speed_adjustment: faker.datatype.boolean(), speed_min: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),null,]), speed_max: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}),null,]), supports_silence_reduction: faker.datatype.boolean()})), ...overrideResponse})
+
+export const getGetSharedVoicesResponseMock = (overrideResponse: Partial<Extract<GetSharedVoicesResponse, object>> = {}): GetSharedVoicesResponse => ({voices: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.string.alpha({length: {min: 10, max: 20}}), gender: faker.helpers.arrayElement(Object.values(TTSVoiceGender)), age: faker.helpers.arrayElement(Object.values(TTSVoiceAge)), accent: faker.string.alpha({length: {min: 10, max: 20}}), use_case: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), style: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}})))})), next_page_cursor: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), ...overrideResponse})
 
 export const getGenerateTtsResponseMock = (): ArrayBuffer => (faker.helpers.arrayElement([new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 })), new ArrayBuffer(faker.number.int({ min: 1, max: 64 }))]))
 
@@ -691,6 +711,18 @@ export const getGetTtsModelsMockHandler = (overrideResponse?: GetTTSModelsRespon
   }, options)
 }
 
+export const getGetSharedVoicesMockHandler = (overrideResponse?: GetSharedVoicesResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetSharedVoicesResponse> | GetSharedVoicesResponse), options?: RequestHandlerOptions) => {
+  return http.get('https://api.soniox.com/v1/shared-voices', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetSharedVoicesResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
 export const getGenerateTtsMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
   return http.post('https://api.soniox.com/tts', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
 
@@ -786,6 +818,7 @@ export const getSonioxPublicAPIMock = () => [
   getRecomputeVoiceMockHandler(),
   getGetModelsMockHandler(),
   getGetTtsModelsMockHandler(),
+  getGetSharedVoicesMockHandler(),
   getGenerateTtsMockHandler(),
   getCreateTemporaryApiKeyMockHandler(),
   getGetUsageLogsMockHandler(),

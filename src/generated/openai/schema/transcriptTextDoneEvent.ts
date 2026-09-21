@@ -11,7 +11,7 @@ import type { TranscriptTextDoneEventType } from './transcriptTextDoneEventType.
 import type { TranscriptTextUsageTokens } from './transcriptTextUsageTokens.js';
 
 /**
- * Emitted when the transcription is complete. Contains the complete transcription text. Only emitted when you [create a transcription](/docs/api-reference/audio/create-transcription) with the `Stream` parameter set to `true`.
+ * Emitted when the transcription is complete. Contains the complete transcription text. Only emitted when you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `Stream` parameter set to `true`.
  */
 export interface TranscriptTextDoneEvent {
   /** The type of the event. Always `transcript.text.done`. */
@@ -20,7 +20,7 @@ export interface TranscriptTextDoneEvent {
   text: string;
   /** The languages detected in the audio. Returned by `gpt-transcribe`. An empty array indicates that no language could be reliably detected. */
   languages?: TranscriptionLanguage[];
-  /** The log probabilities of the individual tokens in the transcription. Only included if you [create a transcription](/docs/api-reference/audio/create-transcription) with the `include[]` parameter set to `logprobs`. */
+  /** The log probabilities of the individual tokens in the transcription. Only included if you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `include[]` parameter set to `logprobs`. */
   logprobs?: TranscriptTextDoneEventLogprobsItem[];
   usage?: TranscriptTextUsageTokens;
 }

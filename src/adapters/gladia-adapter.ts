@@ -23,7 +23,6 @@ import type { InitTranscriptionRequest } from "../generated/gladia/schema/initTr
 import type { LanguageConfig } from "../generated/gladia/schema/languageConfig"
 import type { ListTranscriptionResponseItemsItem } from "../generated/gladia/schema/listTranscriptionResponseItemsItem"
 import type { NamedEntityRecognitionMessage } from "../generated/gladia/schema/namedEntityRecognitionMessage"
-import type { PostChapterizationMessage } from "../generated/gladia/schema/postChapterizationMessage"
 import type { PostFinalTranscriptMessage } from "../generated/gladia/schema/postFinalTranscriptMessage"
 import type { PostSummarizationMessage } from "../generated/gladia/schema/postSummarizationMessage"
 import type { PostTranscriptMessage } from "../generated/gladia/schema/postTranscriptMessage"
@@ -131,7 +130,6 @@ type GladiaWebSocketMessage =
   | SentimentAnalysisMessage
   | NamedEntityRecognitionMessage
   | PostSummarizationMessage
-  | PostChapterizationMessage
   | AudioChunkAckMessage
   | StartSessionMessage
   | StartRecordingMessage
@@ -532,7 +530,6 @@ export class GladiaAdapter extends BaseAdapter {
         entities: result?.named_entity_recognition || undefined,
         sentiment: result?.sentiment_analysis || undefined,
         audioToLlm: result?.audio_to_llm || undefined,
-        chapters: result?.chapterization || undefined,
         structuredData: result?.structured_data_extraction || undefined,
         customMetadata: response.custom_metadata || undefined
       },
@@ -1563,25 +1560,8 @@ export class GladiaAdapter extends BaseAdapter {
         break
       }
 
-      case "post_chapterization": {
-        const chapterMsg = message as PostChapterizationMessage
-        if (chapterMsg.error) {
-          callbacks?.onChapterization?.({
-            chapters: [],
-            error: typeof chapterMsg.error === "string" ? chapterMsg.error : "Chapterization failed"
-          })
-        } else if (chapterMsg.data) {
-          callbacks?.onChapterization?.({
-            chapters: chapterMsg.data.results.map((ch) => ({
-              headline: ch.headline,
-              summary: ch.summary || ch.abstractive_summary || ch.extractive_summary || "",
-              start: ch.start,
-              end: ch.end
-            }))
-          })
-        }
-        break
-      }
+      // Note: Gladia retired post-processing chapterization (2026-09); the
+      // "post_chapterization" live message no longer exists upstream.
 
       // ─────────────────────────────────────────────────────────────────
       // Acknowledgment events
@@ -1740,7 +1720,6 @@ export type {
   SentimentAnalysisMessage,
   NamedEntityRecognitionMessage,
   PostSummarizationMessage,
-  PostChapterizationMessage,
   AudioChunkAckMessage,
   StartSessionMessage,
   StartRecordingMessage,

@@ -6,6 +6,8 @@
  * OpenAPI spec version: 2.3.0
  */
 
+export * from './_misalignmentErrorType.js';
+export * from './_misalignmentSteer.js';
 export * from './audioResponseFormat.js';
 export * from './audioTranscription.js';
 export * from './audioTranscriptionDelay.js';
@@ -28,8 +30,12 @@ export * from './createTranslationRequestResponseFormat.js';
 export * from './createTranslationResponseJson.js';
 export * from './createTranslationResponseVerboseJson.js';
 export * from './createVoiceRequest.js';
+export * from './error.js';
+export * from './errorResponse.js';
 export * from './fileInputDetail.js';
 export * from './imageDetail.js';
+export * from './inferenceRateLimitedResponse.js';
+export * from './inferenceServiceUnavailableResponse.js';
 export * from './inputFileContent.js';
 export * from './inputFileContentType.js';
 export * from './inputImageContent.js';
@@ -42,6 +48,7 @@ export * from './mCPToolFilter.js';
 export * from './mCPToolHeaders.js';
 export * from './mCPToolRequireApproval.js';
 export * from './mCPToolType.js';
+export * from './misalignmentErrorDetailsResource.js';
 export * from './noiseReductionType.js';
 export * from './prompt.js';
 export * from './promptCacheBreakpointConfig.js';

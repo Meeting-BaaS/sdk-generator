@@ -8,7 +8,7 @@
  * - Realtime streaming endpoints (WebSocket-based)
  * And fixes any validation issues for Orval compatibility.
  *
- * Source: https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
+ * Source: https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml
  */
 
 const fs = require("node:fs")
@@ -28,7 +28,17 @@ if (!fs.existsSync(SPEC_PATH)) {
 
 // Read the spec
 const specContent = fs.readFileSync(SPEC_PATH, "utf8")
-const spec = yaml.load(specContent)
+
+// js-yaml cannot parse a `|+` block scalar whose only content is a
+// whitespace-only line (the upstream suffix example is a bare newline):
+// it fails to infer the block indent and rejects the following key with
+// "bad indentation of a mapping entry". Rewrite such scalars to an
+// equivalent inline "\n" before parsing.
+const sanitizedContent = specContent.replace(
+  /^([ \t]*)example: \|\+\n(?:[ \t]*\n)+(?=[ \t]*\S)/gm,
+  '$1example: "\\n"\n'
+)
+const spec = yaml.load(sanitizedContent)
 
 let fixCount = 0
 
@@ -92,8 +102,39 @@ function collectRefs(obj, refs = new Set()) {
   return refs
 }
 
-// Collect refs from paths
+// Named responses (components.responses) are referenced from paths and in
+// turn reference schemas (e.g. ErrorResponse); prune the unused ones and
+// include the kept ones in schema collection so their refs stay resolvable.
+function collectResponseRefs(obj, refs = new Set()) {
+  if (!obj || typeof obj !== "object") return refs
+  if (obj.$ref && typeof obj.$ref === "string") {
+    const match = obj.$ref.match(/#\/components\/responses\/(.+)/)
+    if (match) refs.add(match[1])
+  }
+  for (const value of Object.values(obj)) {
+    collectResponseRefs(value, refs)
+  }
+  return refs
+}
+
+if (spec.components?.responses) {
+  const referencedResponses = collectResponseRefs(spec.paths)
+  for (const responseName of Object.keys(spec.components.responses)) {
+    if (!referencedResponses.has(responseName)) {
+      delete spec.components.responses[responseName]
+      fixCount++
+    }
+  }
+  console.log(
+    `   Kept ${Object.keys(spec.components.responses).length} referenced named response(s)`
+  )
+}
+
+// Collect refs from paths and the named responses they use
 let referencedSchemas = collectRefs(spec.paths)
+if (spec.components?.responses) {
+  referencedSchemas = collectRefs(spec.components.responses, referencedSchemas)
+}
 console.log(`   Found ${referencedSchemas.size} directly referenced schemas`)
 
 // Step 3: Resolve transitive dependencies (schemas that reference other schemas)

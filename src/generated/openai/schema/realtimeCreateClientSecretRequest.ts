@@ -12,7 +12,7 @@ import type { RealtimeTranscriptionSessionCreateRequestGA } from './realtimeTran
 /**
  * Create a session and client secret for the Realtime API. The request can specify
  * either a realtime or a transcription session configuration.
- * [Learn more about the Realtime API](/docs/guides/realtime).
+ * [Learn more about the Realtime API](https://developers.openai.com/api/docs/guides/realtime).
  */
 export interface RealtimeCreateClientSecretRequest {
   /**

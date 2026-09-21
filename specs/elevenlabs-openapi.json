@@ -429,12 +429,11 @@
         "properties": {
           "model_id": {
             "type": "string",
-            "enum": [
-              "scribe_v1",
-              "scribe_v2"
-            ],
             "title": "Model Id",
-            "description": "The ID of the model to use for transcription."
+            "description": "The ID of the model to use for transcription.",
+            "examples": [
+              "scribe_v2"
+            ]
           },
           "file": {
             "anyOf": [

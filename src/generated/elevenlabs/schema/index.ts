@@ -10,7 +10,6 @@ export * from './additionalFormatResponseModel.js';
 export * from './additionalFormats.js';
 export * from './bodySpeechToTextV1SpeechToTextPost.js';
 export * from './bodySpeechToTextV1SpeechToTextPostFileFormat.js';
-export * from './bodySpeechToTextV1SpeechToTextPostModelId.js';
 export * from './bodySpeechToTextV1SpeechToTextPostMultichannelOutputStyle.js';
 export * from './bodySpeechToTextV1SpeechToTextPostTimestampsGranularity.js';
 export * from './bodySpeechToTextV1SpeechToTextPostWebhookMetadata.js';

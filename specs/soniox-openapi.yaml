@@ -444,7 +444,7 @@ paths:
                 validation_errors: []
                 request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
                 more_info: https://soniox.com/docs/api-reference/errors#internal-error
-      description: Permanently deletes specified file.
+      description: Permanently deletes specified file. If a transcription that has not started processing yet still references the file, that transcription fails with `file_not_found`, so delete the file only after the transcription reaches `completed` or `error`.
       tags:
         - Files
       security:
@@ -950,7 +950,7 @@ paths:
                 validation_errors: []
                 request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
                 more_info: https://soniox.com/docs/api-reference/errors#internal-error
-      description: Permanently deletes a transcription and its associated files. Cannot delete transcriptions that are currently processing.
+      description: Permanently deletes a transcription. Files uploaded through the Files API are not deleted; use the delete file endpoint to remove them. Cannot delete transcriptions that are currently processing.
       tags:
         - Transcriptions
       security:
@@ -1456,6 +1456,23 @@ paths:
                 validation_errors: []
                 request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
                 more_info: https://soniox.com/docs/api-reference/errors#unauthenticated
+        '429':
+          description: |
+            Rate / capacity limit exceeded.
+
+            Error types:
+            - `limit_exceeded`: The caller hit a per-minute request rate limit for model listing. The `message` describes which limit was hit.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 429
+                error_type: limit_exceeded
+                message: Requests per minute limit for model listing has been exceeded for your organization.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#limit-exceeded
         '500':
           description: Internal server error.
           content:
@@ -1470,6 +1487,220 @@ paths:
                 request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
                 more_info: https://soniox.com/docs/api-reference/errors#internal-error
       description: Retrieves list of available TTS models and their attributes.
+      tags:
+        - TTS Models
+      security:
+        - PublicApiAuth: []
+  /v1/shared-voices:
+    get:
+      operationId: get_shared_voices
+      summary: Get shared voices
+      parameters:
+        - in: query
+          name: model
+          schema:
+            description: Id of the TTS model whose voices to return.
+            maxLength: 64
+            title: Model
+            type: string
+          required: true
+          description: Id of the TTS model whose voices to return.
+        - in: query
+          name: gender
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/TTSVoiceGender'
+              - type: 'null'
+            description: Only return voices of this gender.
+          required: false
+          description: Only return voices of this gender.
+        - in: query
+          name: age
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/TTSVoiceAge'
+              - type: 'null'
+            description: Only return voices of this age.
+          required: false
+          description: Only return voices of this age.
+        - in: query
+          name: accent
+          schema:
+            anyOf:
+              - maxLength: 40
+                type: string
+              - type: 'null'
+            description: Only return voices with this accent.
+            title: Accent
+          required: false
+          description: Only return voices with this accent.
+        - in: query
+          name: use_case
+          schema:
+            anyOf:
+              - items:
+                  maxLength: 40
+                  type: string
+                maxItems: 10
+                type: array
+              - type: 'null'
+            description: Only return voices tagged with every listed use case. Repeat the parameter to pass several values, or separate them with commas.
+            title: Use Case
+          required: false
+          description: Only return voices tagged with every listed use case. Repeat the parameter to pass several values, or separate them with commas.
+        - in: query
+          name: style
+          schema:
+            anyOf:
+              - items:
+                  maxLength: 40
+                  type: string
+                maxItems: 10
+                type: array
+              - type: 'null'
+            description: Only return voices tagged with every listed style. Repeat the parameter to pass several values, or separate them with commas.
+            title: Style
+          required: false
+          description: Only return voices tagged with every listed style. Repeat the parameter to pass several values, or separate them with commas.
+        - in: query
+          name: limit
+          schema:
+            default: 100
+            description: Maximum number of voices to return.
+            maximum: 200
+            minimum: 1
+            title: Limit
+            type: integer
+          required: false
+          description: Maximum number of voices to return.
+        - in: query
+          name: cursor
+          schema:
+            anyOf:
+              - type: string
+              - type: 'null'
+            description: Pagination cursor for the next page of results. Pass the same filters alongside it; the cursor points into the filtered list, not the whole catalogue.
+            title: Cursor
+          required: false
+          description: Pagination cursor for the next page of results. Pass the same filters alongside it; the cursor points into the filtered list, not the whole catalogue.
+      responses:
+        '200':
+          description: List of shared voices matching the filters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSharedVoicesResponse'
+              example:
+                voices:
+                  - id: Maya
+                    description: A steady, clear voice with a natural presence and measured delivery that feels confident, warm, and easy to listen to.
+                    gender: female
+                    age: middle_aged
+                    accent: british
+                    use_case:
+                      - conversational
+                    style:
+                      - smooth
+                      - confident
+                      - neutral
+                  - id: Victoria
+                    description: A poised female voice with a refined British accent, smooth pacing, and a lightly textured tone that feels elegant, confident, and composed.
+                    gender: female
+                    age: middle_aged
+                    accent: british
+                    use_case:
+                      - educational
+                      - narration
+                      - conversational
+                    style:
+                      - formal
+                      - bright
+                      - confident
+                      - neutral
+                      - calm
+                next_page_cursor: cursor_or_null
+        '400':
+          description: |
+            Invalid request.
+
+            Error types:
+            - `invalid_request`: The `model` parameter is missing, or a filter or pagination value is invalid (unknown `gender` or `age`, a value longer than 40 characters, more than 10 `use_case` / `style` values, or `limit` outside 1-200). Inspect `validation_errors`.
+            - `invalid_cursor`: The `cursor` parameter is invalid. Omit `cursor` to start pagination from the beginning.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 400
+                error_type: invalid_request
+                message: Your request did not pass validation. One or more fields in the request body are missing or have invalid values. See `validation_errors` for the specific field and retry with corrected values.
+                validation_errors:
+                  - error_type: enum
+                    location: query.gender
+                    message: Input should be 'male', 'female' or 'neutral'
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#invalid-request
+        '401':
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 401
+                error_type: unauthenticated
+                message: Incorrect API key provided. You can get an API key at https://console.soniox.com
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#unauthenticated
+        '404':
+          description: |
+            TTS model not found.
+
+            Error types:
+            - `invalid_request`: No TTS model with this id exists. List the available models with `GET /v1/tts-models` and retry with one of their ids.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 404
+                error_type: invalid_request
+                message: TTS model 'tts-rt-v0' not found.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#invalid-request
+        '429':
+          description: |
+            Rate / capacity limit exceeded.
+
+            Error types:
+            - `limit_exceeded`: The caller hit a per-minute request rate limit for model listing. The `message` describes which limit was hit.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 429
+                error_type: limit_exceeded
+                message: Requests per minute limit for model listing has been exceeded for your organization.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#limit-exceeded
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example:
+                status_code: 500
+                error_type: internal_error
+                message: The server encountered an error. Please try again. If the issue persists contact support@soniox.com.
+                validation_errors: []
+                request_id: 3d37a3bd-5078-47ee-a369-b204e3bbedda
+                more_info: https://soniox.com/docs/api-reference/errors#internal-error
+      description: Retrieves the shared voices built into a TTS model, optionally filtered by gender, age, accent, use case and style. All given filters must match. For the voices you have cloned yourself, see `GET /v1/voices` instead.
       tags:
         - TTS Models
       security:
@@ -1724,7 +1955,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateTemporaryApiKeyResponse'
               example:
-                api_key: temp:WYJ67RBEFUWQXXPKYPD2UGXKWB
+                api_key: snx_temp_AcsDGHvigal7tHRzzzqJI7EdJ5CFwk9C0PtXN_s_cUKJ.Oo1TyosFa7b3rgAcXA2bayqBFO7667gXROEu0mH0U4vgvlNzCqVGgTzitabbXlK7FKH-sSy0F1NKI1OOJzQaAw.YPj4oA
                 expires_at: '2025-02-22T22:47:37.150Z'
         '400':
           description: |
@@ -2938,7 +3169,7 @@ components:
             - format: uuid
               type: string
             - type: 'null'
-          description: ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified.
+          description: ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified. Keep the file until the transcription reaches `completed` or `error`; deleting it earlier fails the transcription with `file_not_found`.
           title: File Id
         language_hints:
           anyOf:
@@ -4138,18 +4369,32 @@ components:
         supports_timestamps:
           title: Does this model support returning timestamps for generated audio?
           type: boolean
+        supports_voice_cloning:
+          description: Whether the model supports voice cloning, that is voices created with `POST /v1/voices`.
+          title: Supports Voice Cloning
+          type: boolean
+        voice_cloning_max_audio_duration_ms:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          description: Maximum duration (in milliseconds) of the reference audio accepted for voice cloning. Null when the model does not support voice cloning.
+          title: Voice Cloning Max Audio Duration Ms
         supports_speed_adjustment:
           description: Whether the model supports adjusting the speaking rate via the `speed` parameter.
           title: Supports Speed Adjustment
           type: boolean
         speed_min:
-          description: Minimum supported speaking rate.
+          anyOf:
+            - type: number
+            - type: 'null'
+          description: Minimum supported speaking rate. Null when the model does not support speed adjustment.
           title: Speed Min
-          type: number
         speed_max:
-          description: Maximum supported speaking rate.
+          anyOf:
+            - type: number
+            - type: 'null'
+          description: Maximum supported speaking rate. Null when the model does not support speed adjustment.
           title: Speed Max
-          type: number
         supports_silence_reduction:
           description: Whether the model supports shortening the pauses between words via the `reduce_silence` parameter.
           title: Supports Silence Reduction
@@ -4160,6 +4405,9 @@ components:
         - name
         - languages
         - voices
+        - supports_timestamps
+        - supports_voice_cloning
+        - voice_cloning_max_audio_duration_ms
         - supports_speed_adjustment
         - speed_min
         - speed_max
@@ -4192,6 +4440,73 @@ components:
         - neutral
       title: TTSVoiceGender
       type: string
+    TTSVoiceAge:
+      enum:
+        - young
+        - middle_aged
+        - old
+      title: TTSVoiceAge
+      type: string
+    TTSVoiceDetails:
+      properties:
+        id:
+          description: Unique identifier of the voice.
+          title: Id
+          type: string
+        description:
+          description: Description of the TTS voice.
+          title: Description
+          type: string
+        gender:
+          $ref: '#/components/schemas/TTSVoiceGender'
+          description: Gender of the TTS voice.
+        age:
+          $ref: '#/components/schemas/TTSVoiceAge'
+          description: Perceived age of the speaker.
+        accent:
+          description: Accent of the voice, e.g. `american`, `british`.
+          title: Accent
+          type: string
+        use_case:
+          description: Tags describing what the voice is suited for, e.g. `narration`, `conversational`.
+          items:
+            type: string
+          title: Use Case
+          type: array
+        style:
+          description: Tags describing how the voice sounds, e.g. `warm`, `energetic`.
+          items:
+            type: string
+          title: Style
+          type: array
+      required:
+        - id
+        - description
+        - gender
+        - age
+        - accent
+        - use_case
+        - style
+      title: TTSVoiceDetails
+      type: object
+    GetSharedVoicesResponse:
+      properties:
+        voices:
+          description: List of voices matching the filters.
+          items:
+            $ref: '#/components/schemas/TTSVoiceDetails'
+          title: Voices
+          type: array
+        next_page_cursor:
+          anyOf:
+            - type: string
+            - type: 'null'
+          description: A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.
+          title: Next Page Cursor
+      required:
+        - voices
+      title: GetSharedVoicesResponse
+      type: object
     CreateTTSPayload:
       example:
         model: tts-rt-v1
@@ -4306,7 +4621,7 @@ components:
       type: object
     CreateTemporaryApiKeyResponse:
       example:
-        api_key: temp:WYJ67RBEFUWQXXPKYPD2UGXKWB
+        api_key: snx_temp_AcsDGHvigal7tHRzzzqJI7EdJ5CFwk9C0PtXN_s_cUKJ.Oo1TyosFa7b3rgAcXA2bayqBFO7667gXROEu0mH0U4vgvlNzCqVGgTzitabbXlK7FKH-sSy0F1NKI1OOJzQaAw.YPj4oA
         expires_at: '2025-02-22T22:47:37.150Z'
       properties:
         api_key:

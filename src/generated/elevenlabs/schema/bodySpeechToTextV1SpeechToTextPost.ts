@@ -7,14 +7,13 @@
  */
 import type { AdditionalFormats } from './additionalFormats.js';
 import type { BodySpeechToTextV1SpeechToTextPostFileFormat } from './bodySpeechToTextV1SpeechToTextPostFileFormat.js';
-import type { BodySpeechToTextV1SpeechToTextPostModelId } from './bodySpeechToTextV1SpeechToTextPostModelId.js';
 import type { BodySpeechToTextV1SpeechToTextPostMultichannelOutputStyle } from './bodySpeechToTextV1SpeechToTextPostMultichannelOutputStyle.js';
 import type { BodySpeechToTextV1SpeechToTextPostTimestampsGranularity } from './bodySpeechToTextV1SpeechToTextPostTimestampsGranularity.js';
 import type { BodySpeechToTextV1SpeechToTextPostWebhookMetadata } from './bodySpeechToTextV1SpeechToTextPostWebhookMetadata.js';
 
 export interface BodySpeechToTextV1SpeechToTextPost {
   /** The ID of the model to use for transcription. */
-  model_id: BodySpeechToTextV1SpeechToTextPostModelId;
+  model_id: string;
   /** The file to transcribe (100ms minimum audio length). All major audio and video formats are supported. Exactly one of the file or cloud_storage_url parameters must be provided. The file size must be less than 5.0GB. */
   file?: Blob | null;
   /** An ISO-639-1 or ISO-639-3 language_code corresponding to the language of the audio file. Can sometimes improve transcription performance if known beforehand. Defaults to null, in this case the language is predicted automatically. */

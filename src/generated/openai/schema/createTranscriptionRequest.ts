@@ -11,7 +11,10 @@ import type { TranscriptionInclude } from './transcriptionInclude.js';
 import type { VadConfig } from './vadConfig.js';
 
 export interface CreateTranscriptionRequest {
-  /** The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. */
+  /**
+     * The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
+     * The request must include enough format metadata for the file to be identified. We recommend an extension-bearing filename and an appropriate content type.
+     */
   file: Blob;
   /** ID of the model to use. The options are `gpt-transcribe`, `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, `gpt-4o-mini-transcribe-2025-12-15`, `whisper-1` (which is powered by our open source Whisper V2 model), and `gpt-4o-transcribe-diarize`. */
   model: string | 'whisper-1' | 'gpt-transcribe' | 'gpt-4o-transcribe' | 'gpt-4o-mini-transcribe' | 'gpt-4o-mini-transcribe-2025-12-15' | 'gpt-4o-transcribe-diarize';
@@ -24,7 +27,7 @@ export interface CreateTranscriptionRequest {
   languages?: string[];
   /** Words or phrases to guide transcription of the input audio. Supported by `gpt-transcribe`. */
   keywords?: string[];
-  /** An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`. */
+  /** An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`. */
   prompt?: string;
   response_format?: AudioResponseFormat;
   /** The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit. */

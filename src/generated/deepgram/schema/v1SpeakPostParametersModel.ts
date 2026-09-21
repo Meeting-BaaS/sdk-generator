@@ -107,7 +107,6 @@ export const V1SpeakPostParametersModel = {
   'aura-2-livia-it': 'aura-2-livia-it',
   'aura-2-maia-it': 'aura-2-maia-it',
   'aura-2-melia-it': 'aura-2-melia-it',
-  'aura-2-perseo-it': 'aura-2-perseo-it',
   'aura-2-ama-ja': 'aura-2-ama-ja',
   'aura-2-ebisu-ja': 'aura-2-ebisu-ja',
   'aura-2-fujin-ja': 'aura-2-fujin-ja',

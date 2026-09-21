@@ -1260,7 +1260,7 @@ export const GLADIA_STREAMING_FIELDS = [
         name: "chapterization",
         type: "boolean",
         required: true,
-        description: "If true, generates chapters for the whole transcription.",
+        description: "Deprecated: this parameter is ignored.",
         default: false
       }
     ]
@@ -1645,7 +1645,8 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
     name: "keywords",
     type: "string",
     required: false,
-    description: "Keywords can boost or suppress specialized terminology and brands"
+    description:
+      "Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3 models; use `keyterm` instead."
   },
   {
     name: "language",
@@ -1756,6 +1757,7 @@ export const DEEPGRAM_TRANSCRIPTION_FIELDS = [
       "ka",
       "ka-GE",
       "kk",
+      "kk-KZ",
       "km",
       "kn",
       "kn-IN",
@@ -2140,7 +2142,8 @@ export const DEEPGRAM_STREAMING_FIELDS = [
     name: "keywords",
     type: "string",
     required: false,
-    description: "Keywords can boost or suppress specialized terminology and brands"
+    description:
+      "Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3 models; use `keyterm` instead."
   },
   {
     name: "language",
@@ -2251,6 +2254,7 @@ export const DEEPGRAM_STREAMING_FIELDS = [
       "ka",
       "ka-GE",
       "kk",
+      "kk-KZ",
       "km",
       "kn",
       "kn-IN",
@@ -3234,6 +3238,14 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
         required: false,
         description:
           "<Warning>Setting this parameter too high may hurt model accuracy</Warning>\nA hard upper limit on the number of speaker labels. If more people speak than this value, the additional speakers are merged into existing labels. Setting it higher than the true number of speakers can cause the model to over-split and return more speakers than are actually present. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers) for more details.\n"
+      },
+      {
+        name: "include_speaker_confidence",
+        type: "boolean",
+        required: true,
+        description:
+          "When `true`, includes a `speaker_confidence` field per word and per utterance in the response. See [Speaker Diarization](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#configuration) for more details.",
+        default: false
       }
     ]
   },
@@ -3506,7 +3518,7 @@ export const ASSEMBLYAI_TRANSCRIPTION_FIELDS = [
 export type AssemblyAITranscriptionFieldName =
   (typeof ASSEMBLYAI_TRANSCRIPTION_FIELDS)[number]["name"]
 
-/** AssemblyAI streaming field metadata (40 fields) */
+/** AssemblyAI streaming field metadata (41 fields) */
 export const ASSEMBLYAI_STREAMING_FIELDS = [
   {
     name: "sampleRate",
@@ -3591,6 +3603,12 @@ export const ASSEMBLYAI_STREAMING_FIELDS = [
     description: "From SDK v3"
   },
   {
+    name: "acknowledgeSilence",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
     name: "filterProfanity",
     type: "boolean",
     required: false,
@@ -3634,6 +3652,8 @@ export const ASSEMBLYAI_STREAMING_FIELDS = [
       "u3-rt-pro-beta-1",
       "whisper-rt",
       "universal-3-5-pro",
+      "universal-3-6",
+      "universal-3-6-pro",
       "u3-pro"
     ]
   },
@@ -3839,7 +3859,7 @@ export const ASSEMBLYAI_STREAMING_FIELDS = [
 /** Field names for AssemblyAIStreaming */
 export type AssemblyAIStreamingFieldName = (typeof ASSEMBLYAI_STREAMING_FIELDS)[number]["name"]
 
-/** AssemblyAI streaming update field metadata (15 fields) */
+/** AssemblyAI streaming update field metadata (16 fields) */
 export const ASSEMBLYAI_STREAMING_UPDATE_FIELDS = [
   {
     name: "end_utterance_silence_threshold",
@@ -3887,6 +3907,12 @@ export const ASSEMBLYAI_STREAMING_UPDATE_FIELDS = [
   },
   {
     name: "session_heartbeat",
+    type: "boolean",
+    required: false,
+    description: "From SDK v3"
+  },
+  {
+    name: "acknowledge_silence",
     type: "boolean",
     required: false,
     description: "From SDK v3"
@@ -3998,7 +4024,7 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
     type: "string",
     required: true,
     description:
-      "The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\n"
+      "The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.\nThe request must include enough format metadata for the file to be identified. We recommend an extension-bearing filename and an appropriate content type.\n"
   },
   {
     name: "model",
@@ -4067,7 +4093,7 @@ export const OPENAI_TRANSCRIPTION_FIELDS = [
     type: "string",
     required: false,
     description:
-      "An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n"
+      "An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.\n"
   },
   {
     name: "response_format",
@@ -4574,10 +4600,9 @@ export type AzureListFilterFieldName = (typeof AZURE_LIST_FILTER_FIELDS)[number]
 export const ELEVENLABS_TRANSCRIPTION_FIELDS = [
   {
     name: "model_id",
-    type: "select",
+    type: "string",
     required: true,
-    description: "The ID of the model to use for transcription.",
-    options: ["scribe_v1", "scribe_v2"]
+    description: "The ID of the model to use for transcription."
   },
   {
     name: "file",
@@ -5309,7 +5334,7 @@ export const SONIOX_TRANSCRIPTION_FIELDS = [
     type: "string",
     required: false,
     description:
-      "ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified."
+      "ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified. Keep the file until the transcription reaches `completed` or `error`; deleting it earlier fails the transcription with `file_not_found`."
   },
   {
     name: "language_hints",

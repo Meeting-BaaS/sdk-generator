@@ -11,6 +11,6 @@ export interface PostProcessingConfig {
   summarization?: boolean;
   /** Summarization configuration, if `summarization` is enabled */
   summarization_config?: SummarizationConfigDTO;
-  /** If true, generates chapters for the whole transcription. */
+  /** Deprecated: this parameter is ignored. */
   chapterization?: boolean;
 }

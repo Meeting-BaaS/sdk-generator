@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.9.10] - 2026-09-21
 
+### Changed
+
+#### Provider APIs Refreshed
+
+Monthly upstream review. AssemblyAI adds the `include_speaker_confidence` request option with `speaker_confidence` on words and utterances. Deepgram adds `diarize_info` (diarizer model UUID and arch) to listen response metadata. Soniox adds a shared-voices TTS endpoint with voice age/detail schemas. OpenAI's spec now ships an explicit error taxonomy (`Error`, `ErrorResponse`, rate-limit responses with `Retry-After`, and misalignment error details), reflected in generated types; transcription model constants are unchanged. The tracked OpenAI SDK baseline moved to 7.20.0.
+
+#### OpenAI Spec Source Moved
+
+Stainless retired `app.stainless.com/api/spec/documented/openai/openapi.documented.yml` (now 404); the sync pulls `raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml` instead. The fixer gained two robustness fixes for the new source: a pre-parse rewrite of a `|+` block scalar whose only content is a whitespace-only line (js-yaml cannot infer its indentation), and pruning plus ref-walking of `components.responses` so named responses keep their schemas (`ErrorResponse`) resolvable after filtering.
+
+### Removed
+
+#### Gladia Chapterization Retired Upstream
+
+Gladia removed post-processing chapterization from its API (request flag, result field, and the live `post_chapterization` callback message are all gone from the spec). The generated chapterization schemas, the Gladia `extended.chapters` result field, and the live-message dispatch were removed accordingly. The `onChapterization` streaming callback type remains for API compatibility but no longer fires for Gladia. ElevenLabs also stopped declaring a `model_id` enum (now a plain string); model constants fall back to the curated documented list (`scribe_v1`, `scribe_v2`).
+
 ### Added
 
 #### Retryability Classification On Errors

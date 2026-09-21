@@ -90,7 +90,6 @@ import type { TopicDetectionModelResult as AssemblyAITopicsResult } from "../gen
 // Deepgram extended types
 import type { ListenV1ResponseMetadata as DeepgramMetadata } from "../generated/deepgram/schema/listenV1ResponseMetadata"
 import type { AudioToLlmListDTO as GladiaAudioToLlmResult } from "../generated/gladia/schema/audioToLlmListDTO"
-import type { ChapterizationDTO as GladiaChapters } from "../generated/gladia/schema/chapterizationDTO"
 import type { ModerationDTO as GladiaModeration } from "../generated/gladia/schema/moderationDTO"
 import type { NamedEntityRecognitionDTO as GladiaEntities } from "../generated/gladia/schema/namedEntityRecognitionDTO"
 import type { SentimentAnalysisDTO as GladiaSentiment } from "../generated/gladia/schema/sentimentAnalysisDTO"
@@ -266,7 +265,6 @@ export type {
   GladiaEntities,
   GladiaSentiment,
   GladiaAudioToLlmResult,
-  GladiaChapters,
   GladiaStructuredData,
   DeepgramMetadata
 }
@@ -313,8 +311,6 @@ export interface GladiaExtendedData {
   sentiment?: GladiaSentiment
   /** Audio-to-LLM custom prompt results */
   audioToLlm?: GladiaAudioToLlmResult
-  /** Auto-generated chapters */
-  chapters?: GladiaChapters
   /** Structured data extraction results */
   structuredData?: GladiaStructuredData
   /** Custom metadata echoed back */

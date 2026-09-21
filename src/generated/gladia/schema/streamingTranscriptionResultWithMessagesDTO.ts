@@ -4,7 +4,6 @@
  * Gladia Control API
  * OpenAPI spec version: 1.0
  */
-import type { ChapterizationDTO } from './chapterizationDTO.js';
 import type { NamedEntityRecognitionDTO } from './namedEntityRecognitionDTO.js';
 import type { SentimentAnalysisDTO } from './sentimentAnalysisDTO.js';
 import type { SummarizationDTO } from './summarizationDTO.js';
@@ -25,8 +24,6 @@ export interface StreamingTranscriptionResultWithMessagesDTO {
   named_entity_recognition?: NamedEntityRecognitionDTO;
   /** If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription */
   sentiment_analysis?: SentimentAnalysisDTO;
-  /** If `chapterization` has been enabled, will generate chapters name for different parts of the given audio. */
-  chapterization?: ChapterizationDTO;
   /** Real-Time messages sent by the server during the live transcription */
   messages?: string[];
 }

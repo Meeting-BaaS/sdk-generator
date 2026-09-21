@@ -10,7 +10,7 @@ import type { InputImageContentType } from './inputImageContentType.js';
 import type { PromptCacheBreakpointConfig } from './promptCacheBreakpointConfig.js';
 
 /**
- * An image input to the model. Learn about [image inputs](/docs/guides/vision).
+ * An image input to the model. Learn about [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
  */
 export interface InputImageContent {
   /** The type of the input item. Always `input_image`. */

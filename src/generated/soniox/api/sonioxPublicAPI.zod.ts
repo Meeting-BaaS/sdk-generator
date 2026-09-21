@@ -83,7 +83,7 @@ export const GetFileResponse = zod.object({
 
 
 /**
- * Permanently deletes specified file.
+ * Permanently deletes specified file. If a transcription that has not started processing yet still references the file, that transcription fails with `file_not_found`, so delete the file only after the transcription reaches `completed` or `error`.
  * @summary Delete file
  */
 export const DeleteFileParams = zod.object({
@@ -161,7 +161,7 @@ export const createTranscriptionBodyClientReferenceIdOneMax = 256;
 export const CreateTranscriptionBody = zod.object({
   "model": zod.string().max(createTranscriptionBodyModelMax).describe('Speech-to-text model to use for the transcription.'),
   "audio_url": zod.union([zod.string().max(createTranscriptionBodyAudioUrlOneMax).regex(createTranscriptionBodyAudioUrlOneRegExp),zod.null()]).optional().describe('URL of the audio file to transcribe. Cannot be specified if `file_id` is specified.'),
-  "file_id": zod.union([zod.uuid(),zod.null()]).optional().describe('ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified.'),
+  "file_id": zod.union([zod.uuid(),zod.null()]).optional().describe('ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified. Keep the file until the transcription reaches `completed` or `error`; deleting it earlier fails the transcription with `file_not_found`.'),
   "language_hints": zod.union([zod.array(zod.string().max(createTranscriptionBodyLanguageHintsOneItemMax)).max(createTranscriptionBodyLanguageHintsOneMax),zod.null()]).optional().describe('Expected languages in the audio. If not specified, languages are automatically detected.'),
   "language_hints_strict": zod.union([zod.boolean(),zod.null()]).optional().describe('When `true`, the model will rely more on language hints.'),
   "enable_speaker_diarization": zod.union([zod.boolean(),zod.null()]).optional().describe('When `true`, speakers are identified and separated in the transcription output.'),
@@ -254,7 +254,7 @@ export const GetTranscriptionResponse = zod.object({
 
 
 /**
- * Permanently deletes a transcription and its associated files. Cannot delete transcriptions that are currently processing.
+ * Permanently deletes a transcription. Files uploaded through the Files API are not deleted; use the delete file endpoint to remove them. Cannot delete transcriptions that are currently processing.
  * @summary Delete transcription
  */
 export const DeleteTranscriptionParams = zod.object({
@@ -464,12 +464,60 @@ export const GetTtsModelsResponse = zod.object({
   "description": zod.string().describe('Description of the TTS voice.'),
   "gender": zod.enum(['male', 'female', 'neutral']).describe('Gender of the TTS voice.')
 })).describe('List of available voices for this model.'),
-  "supports_timestamps": zod.boolean().optional(),
+  "supports_timestamps": zod.boolean(),
+  "supports_voice_cloning": zod.boolean().describe('Whether the model supports voice cloning, that is voices created with `POST \/v1\/voices`.'),
+  "voice_cloning_max_audio_duration_ms": zod.union([zod.number(),zod.null()]).describe('Maximum duration (in milliseconds) of the reference audio accepted for voice cloning. Null when the model does not support voice cloning.'),
   "supports_speed_adjustment": zod.boolean().describe('Whether the model supports adjusting the speaking rate via the `speed` parameter.'),
-  "speed_min": zod.number().describe('Minimum supported speaking rate.'),
-  "speed_max": zod.number().describe('Maximum supported speaking rate.'),
+  "speed_min": zod.union([zod.number(),zod.null()]).describe('Minimum supported speaking rate. Null when the model does not support speed adjustment.'),
+  "speed_max": zod.union([zod.number(),zod.null()]).describe('Maximum supported speaking rate. Null when the model does not support speed adjustment.'),
   "supports_silence_reduction": zod.boolean().describe('Whether the model supports shortening the pauses between words via the `reduce_silence` parameter.')
 })).describe('List of available TTS models and their attributes.')
+})
+
+
+/**
+ * Retrieves the shared voices built into a TTS model, optionally filtered by gender, age, accent, use case and style. All given filters must match. For the voices you have cloned yourself, see `GET /v1/voices` instead.
+ * @summary Get shared voices
+ */
+export const getSharedVoicesQueryModelMax = 64;
+
+export const getSharedVoicesQueryAccentOneMax = 40;
+
+export const getSharedVoicesQueryUseCaseOneItemMax = 40;
+
+export const getSharedVoicesQueryUseCaseOneMax = 10;
+
+export const getSharedVoicesQueryStyleOneItemMax = 40;
+
+export const getSharedVoicesQueryStyleOneMax = 10;
+
+export const getSharedVoicesQueryLimitDefault = 100;
+export const getSharedVoicesQueryLimitMax = 200;
+
+
+
+export const GetSharedVoicesQueryParams = zod.object({
+  "model": zod.string().max(getSharedVoicesQueryModelMax).describe('Id of the TTS model whose voices to return.'),
+  "gender": zod.union([zod.enum(['male', 'female', 'neutral']),zod.null()]).optional().describe('Only return voices of this gender.'),
+  "age": zod.union([zod.enum(['young', 'middle_aged', 'old']),zod.null()]).optional().describe('Only return voices of this age.'),
+  "accent": zod.union([zod.string().max(getSharedVoicesQueryAccentOneMax),zod.null()]).optional().describe('Only return voices with this accent.'),
+  "use_case": zod.union([zod.array(zod.string().max(getSharedVoicesQueryUseCaseOneItemMax)).max(getSharedVoicesQueryUseCaseOneMax),zod.null()]).optional().describe('Only return voices tagged with every listed use case. Repeat the parameter to pass several values, or separate them with commas.'),
+  "style": zod.union([zod.array(zod.string().max(getSharedVoicesQueryStyleOneItemMax)).max(getSharedVoicesQueryStyleOneMax),zod.null()]).optional().describe('Only return voices tagged with every listed style. Repeat the parameter to pass several values, or separate them with commas.'),
+  "limit": zod.number().min(1).max(getSharedVoicesQueryLimitMax).default(getSharedVoicesQueryLimitDefault).describe('Maximum number of voices to return.'),
+  "cursor": zod.union([zod.string(),zod.null()]).optional().describe('Pagination cursor for the next page of results. Pass the same filters alongside it; the cursor points into the filtered list, not the whole catalogue.')
+})
+
+export const GetSharedVoicesResponse = zod.object({
+  "voices": zod.array(zod.object({
+  "id": zod.string().describe('Unique identifier of the voice.'),
+  "description": zod.string().describe('Description of the TTS voice.'),
+  "gender": zod.enum(['male', 'female', 'neutral']).describe('Gender of the TTS voice.'),
+  "age": zod.enum(['young', 'middle_aged', 'old']).describe('Perceived age of the speaker.'),
+  "accent": zod.string().describe('Accent of the voice, e.g. `american`, `british`.'),
+  "use_case": zod.array(zod.string()).describe('Tags describing what the voice is suited for, e.g. `narration`, `conversational`.'),
+  "style": zod.array(zod.string()).describe('Tags describing how the voice sounds, e.g. `warm`, `energetic`.')
+})).describe('List of voices matching the filters.'),
+  "next_page_cursor": zod.union([zod.string(),zod.null()]).optional().describe('A pagination token that references the next page of results. When more data is available, this field contains a value to pass in the cursor parameter of a subsequent request. When null, no additional results are available.')
 })
 
 

@@ -61,6 +61,7 @@ export const createTranscriptBodyTwoRedactPiiSubDefault = `hash`;
 export const createTranscriptBodyTwoRedactPiiReturnUnredactedDefault = false;
 export const createTranscriptBodyTwoSentimentAnalysisDefault = false;
 export const createTranscriptBodyTwoSpeakerLabelsDefault = false;
+export const createTranscriptBodyTwoSpeakerOptionsIncludeSpeakerConfidenceDefault = false;
 export const createTranscriptBodyTwoSpeakersExpectedDefault = null;
 export const createTranscriptBodyTwoSpeechThresholdDefault = 0;
 export const createTranscriptBodyTwoSpeechThresholdMin = 0;
@@ -130,7 +131,8 @@ export const CreateTranscriptBody = zod.object({
   "speaker_labels": zod.boolean().default(createTranscriptBodyTwoSpeakerLabelsDefault).describe('Enable [Speaker diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers), can be true or false. Requires `punctuate` to be `true`.'),
   "speaker_options": zod.object({
   "min_speakers_expected": zod.number().optional().describe('A hard lower limit on the number of speaker labels — the model won\'t return fewer speakers than this. See [Set a range of possible speakers](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers#set-a-range-of-possible-speakers) for more details.'),
-  "max_speakers_expected": zod.number().optional().describe('<Warning>Setting this parameter too high may hurt model accuracy<\/Warning>\nA hard upper limit on the number of speaker labels. If more people speak than this value, the additional speakers are merged into existing labels. Setting it higher than the true number of speakers can cause the model to over-split and return more speakers than are actually present. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers#set-a-range-of-possible-speakers) for more details.\n')
+  "max_speakers_expected": zod.number().optional().describe('<Warning>Setting this parameter too high may hurt model accuracy<\/Warning>\nA hard upper limit on the number of speaker labels. If more people speak than this value, the additional speakers are merged into existing labels. Setting it higher than the true number of speakers can cause the model to over-split and return more speakers than are actually present. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers#set-a-range-of-possible-speakers) for more details.\n'),
+  "include_speaker_confidence": zod.boolean().default(createTranscriptBodyTwoSpeakerOptionsIncludeSpeakerConfidenceDefault).describe('When `true`, includes a `speaker_confidence` field per word and per utterance in the response. See [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers#configuration) for more details.')
 }).optional().describe('Specify options for [Speaker diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers#set-a-range-of-possible-speakers). Use this to set a range of possible speakers. Requires `speaker_labels` to be `true`, and cannot be used together with `speakers_expected`. When both bounds are set, `min_speakers_expected` must be less than or equal to `max_speakers_expected`.'),
   "speakers_expected": zod.number().nullish().default(createTranscriptBodyTwoSpeakersExpectedDefault).describe('Tells the speaker label model how many speakers it should attempt to identify. Requires `speaker_labels` to be `true` and must be a positive integer; cannot be used together with `speaker_options`. See [Set number of speakers expected](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers#set-number-of-speakers-expected) for more details.'),
   "speech_models": zod.array(zod.enum(['universal-3-5-pro', 'universal-2']).describe('The speech model to use for the transcription. See [Model Selection](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/select-the-speech-model) for available models.')).default([`universal-3-5-pro`, `universal-2`]).describe('Optional. List one or more speech models in priority order. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `[\"universal-3-5-pro\", \"universal-2\"]`. See [Model Selection](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/select-the-speech-model) for available models and routing behavior.\n'),
@@ -244,17 +246,35 @@ export const createTranscriptResponseUtterancesItemConfidenceMax = 1;
 export const createTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
 export const createTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
 
+export const createTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMin = 0;
+export const createTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMax = 1;
+
+export const createTranscriptResponseUtterancesItemSpeakerConfidenceMin = 0;
+export const createTranscriptResponseUtterancesItemSpeakerConfidenceMax = 1;
+
 export const createTranscriptResponseUnredactedUtterancesItemConfidenceMin = 0;
 export const createTranscriptResponseUnredactedUtterancesItemConfidenceMax = 1;
 
 export const createTranscriptResponseUnredactedUtterancesItemWordsItemConfidenceMin = 0;
 export const createTranscriptResponseUnredactedUtterancesItemWordsItemConfidenceMax = 1;
 
+export const createTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMin = 0;
+export const createTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMax = 1;
+
+export const createTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMin = 0;
+export const createTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMax = 1;
+
 export const createTranscriptResponseWordsItemConfidenceMin = 0;
 export const createTranscriptResponseWordsItemConfidenceMax = 1;
 
+export const createTranscriptResponseWordsItemSpeakerConfidenceMin = 0;
+export const createTranscriptResponseWordsItemSpeakerConfidenceMax = 1;
+
 export const createTranscriptResponseUnredactedWordsItemConfidenceMin = 0;
 export const createTranscriptResponseUnredactedWordsItemConfidenceMax = 1;
+
+export const createTranscriptResponseUnredactedWordsItemSpeakerConfidenceMin = 0;
+export const createTranscriptResponseUnredactedWordsItemSpeakerConfidenceMax = 1;
 
 
 
@@ -477,10 +497,12 @@ export const CreateTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(createTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMin).max(createTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('The words in the utterance.'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
   "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "speaker_confidence": zod.number().min(createTranscriptResponseUtterancesItemSpeakerConfidenceMin).max(createTranscriptResponseUtterancesItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.'),
   "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
 })).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) and [Multichannel transcription](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/transcribe-multiple-audio-channels) for more information.\n'),
   "unredacted_utterances": zod.array(zod.object({
@@ -494,10 +516,12 @@ export const CreateTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(createTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMin).max(createTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('The words in the utterance.'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
   "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "speaker_confidence": zod.number().min(createTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMin).max(createTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.'),
   "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
 })).nullish().describe('The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https:\/\/www.assemblyai.com\/docs\/pii-redaction) for more information.\n'),
   "webhook_auth": zod.boolean().describe('Whether [webhook](https:\/\/www.assemblyai.com\/docs\/deployment\/webhooks-for-pre-recorded-audio) authentication details were provided'),
@@ -510,7 +534,8 @@ export const CreateTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(createTranscriptResponseWordsItemSpeakerConfidenceMin).max(createTranscriptResponseWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\n'),
   "unredacted_words": zod.array(zod.object({
   "confidence": zod.number().min(createTranscriptResponseUnredactedWordsItemConfidenceMin).max(createTranscriptResponseUnredactedWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
@@ -518,7 +543,8 @@ export const CreateTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(createTranscriptResponseUnredactedWordsItemSpeakerConfidenceMin).max(createTranscriptResponseUnredactedWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).nullish().describe('The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https:\/\/www.assemblyai.com\/docs\/pii-redaction) for more information.\n'),
   "acoustic_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
   "custom_topics": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
@@ -659,17 +685,35 @@ export const getTranscriptResponseUtterancesItemConfidenceMax = 1;
 export const getTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
 export const getTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
 
+export const getTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMin = 0;
+export const getTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMax = 1;
+
+export const getTranscriptResponseUtterancesItemSpeakerConfidenceMin = 0;
+export const getTranscriptResponseUtterancesItemSpeakerConfidenceMax = 1;
+
 export const getTranscriptResponseUnredactedUtterancesItemConfidenceMin = 0;
 export const getTranscriptResponseUnredactedUtterancesItemConfidenceMax = 1;
 
 export const getTranscriptResponseUnredactedUtterancesItemWordsItemConfidenceMin = 0;
 export const getTranscriptResponseUnredactedUtterancesItemWordsItemConfidenceMax = 1;
 
+export const getTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMin = 0;
+export const getTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMax = 1;
+
+export const getTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMin = 0;
+export const getTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMax = 1;
+
 export const getTranscriptResponseWordsItemConfidenceMin = 0;
 export const getTranscriptResponseWordsItemConfidenceMax = 1;
 
+export const getTranscriptResponseWordsItemSpeakerConfidenceMin = 0;
+export const getTranscriptResponseWordsItemSpeakerConfidenceMax = 1;
+
 export const getTranscriptResponseUnredactedWordsItemConfidenceMin = 0;
 export const getTranscriptResponseUnredactedWordsItemConfidenceMax = 1;
+
+export const getTranscriptResponseUnredactedWordsItemSpeakerConfidenceMin = 0;
+export const getTranscriptResponseUnredactedWordsItemSpeakerConfidenceMax = 1;
 
 
 
@@ -892,10 +936,12 @@ export const GetTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(getTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMin).max(getTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('The words in the utterance.'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
   "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "speaker_confidence": zod.number().min(getTranscriptResponseUtterancesItemSpeakerConfidenceMin).max(getTranscriptResponseUtterancesItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.'),
   "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
 })).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) and [Multichannel transcription](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/transcribe-multiple-audio-channels) for more information.\n'),
   "unredacted_utterances": zod.array(zod.object({
@@ -909,10 +955,12 @@ export const GetTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(getTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMin).max(getTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('The words in the utterance.'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
   "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "speaker_confidence": zod.number().min(getTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMin).max(getTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.'),
   "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
 })).nullish().describe('The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https:\/\/www.assemblyai.com\/docs\/pii-redaction) for more information.\n'),
   "webhook_auth": zod.boolean().describe('Whether [webhook](https:\/\/www.assemblyai.com\/docs\/deployment\/webhooks-for-pre-recorded-audio) authentication details were provided'),
@@ -925,7 +973,8 @@ export const GetTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(getTranscriptResponseWordsItemSpeakerConfidenceMin).max(getTranscriptResponseWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\n'),
   "unredacted_words": zod.array(zod.object({
   "confidence": zod.number().min(getTranscriptResponseUnredactedWordsItemConfidenceMin).max(getTranscriptResponseUnredactedWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
@@ -933,7 +982,8 @@ export const GetTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(getTranscriptResponseUnredactedWordsItemSpeakerConfidenceMin).max(getTranscriptResponseUnredactedWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).nullish().describe('The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https:\/\/www.assemblyai.com\/docs\/pii-redaction) for more information.\n'),
   "acoustic_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
   "custom_topics": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
@@ -1019,17 +1069,35 @@ export const deleteTranscriptResponseUtterancesItemConfidenceMax = 1;
 export const deleteTranscriptResponseUtterancesItemWordsItemConfidenceMin = 0;
 export const deleteTranscriptResponseUtterancesItemWordsItemConfidenceMax = 1;
 
+export const deleteTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMin = 0;
+export const deleteTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMax = 1;
+
+export const deleteTranscriptResponseUtterancesItemSpeakerConfidenceMin = 0;
+export const deleteTranscriptResponseUtterancesItemSpeakerConfidenceMax = 1;
+
 export const deleteTranscriptResponseUnredactedUtterancesItemConfidenceMin = 0;
 export const deleteTranscriptResponseUnredactedUtterancesItemConfidenceMax = 1;
 
 export const deleteTranscriptResponseUnredactedUtterancesItemWordsItemConfidenceMin = 0;
 export const deleteTranscriptResponseUnredactedUtterancesItemWordsItemConfidenceMax = 1;
 
+export const deleteTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMin = 0;
+export const deleteTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMax = 1;
+
+export const deleteTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMin = 0;
+export const deleteTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMax = 1;
+
 export const deleteTranscriptResponseWordsItemConfidenceMin = 0;
 export const deleteTranscriptResponseWordsItemConfidenceMax = 1;
 
+export const deleteTranscriptResponseWordsItemSpeakerConfidenceMin = 0;
+export const deleteTranscriptResponseWordsItemSpeakerConfidenceMax = 1;
+
 export const deleteTranscriptResponseUnredactedWordsItemConfidenceMin = 0;
 export const deleteTranscriptResponseUnredactedWordsItemConfidenceMax = 1;
+
+export const deleteTranscriptResponseUnredactedWordsItemSpeakerConfidenceMin = 0;
+export const deleteTranscriptResponseUnredactedWordsItemSpeakerConfidenceMax = 1;
 
 
 
@@ -1252,10 +1320,12 @@ export const DeleteTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(deleteTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMin).max(deleteTranscriptResponseUtterancesItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('The words in the utterance.'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
   "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "speaker_confidence": zod.number().min(deleteTranscriptResponseUtterancesItemSpeakerConfidenceMin).max(deleteTranscriptResponseUtterancesItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.'),
   "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
 })).nullish().describe('When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.\nSee [Speaker diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) and [Multichannel transcription](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/transcribe-multiple-audio-channels) for more information.\n'),
   "unredacted_utterances": zod.array(zod.object({
@@ -1269,10 +1339,12 @@ export const DeleteTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(deleteTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMin).max(deleteTranscriptResponseUnredactedUtterancesItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('The words in the utterance.'),
   "channel": zod.string().nullish().describe('The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
   "speaker": zod.string().describe('The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. \"A\" for Speaker A, \"B\" for Speaker B, etc.'),
+  "speaker_confidence": zod.number().min(deleteTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMin).max(deleteTranscriptResponseUnredactedUtterancesItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.'),
   "translated_texts": zod.record(zod.string(), zod.string()).optional().describe('Translations keyed by language code (e.g., `{\"es\": \"Texto traducido\", \"de\": \"Übersetzter Text\"}`). Only present when `match_original_utterance` is enabled with translation.')
 })).nullish().describe('The original turn-by-turn utterance objects before PII redaction was applied. Same shape as `utterances`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `utterances` field remains fully redacted. See [PII redaction](https:\/\/www.assemblyai.com\/docs\/pii-redaction) for more information.\n'),
   "webhook_auth": zod.boolean().describe('Whether [webhook](https:\/\/www.assemblyai.com\/docs\/deployment\/webhooks-for-pre-recorded-audio) authentication details were provided'),
@@ -1285,7 +1357,8 @@ export const DeleteTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(deleteTranscriptResponseWordsItemSpeakerConfidenceMin).max(deleteTranscriptResponseWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).nullish().describe('An array of temporally-sequential word objects, one for each word in the transcript.\n'),
   "unredacted_words": zod.array(zod.object({
   "confidence": zod.number().min(deleteTranscriptResponseUnredactedWordsItemConfidenceMin).max(deleteTranscriptResponseUnredactedWordsItemConfidenceMax).describe('The confidence score for the transcript of this word'),
@@ -1293,7 +1366,8 @@ export const DeleteTranscriptResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(deleteTranscriptResponseUnredactedWordsItemSpeakerConfidenceMin).max(deleteTranscriptResponseUnredactedWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).nullish().describe('The original temporally-sequential word objects before PII redaction was applied. Same shape as `words`. Only returned when `redact_pii_return_unredacted` was set to `true` on the transcription request, otherwise this field is omitted and the `words` field remains fully redacted. See [PII redaction](https:\/\/www.assemblyai.com\/docs\/pii-redaction) for more information.\n'),
   "acoustic_model": zod.string().describe('This parameter does not currently have any functionality attached to it.'),
   "custom_topics": zod.boolean().nullish().describe('This parameter does not currently have any functionality attached to it.'),
@@ -1344,6 +1418,9 @@ export const getTranscriptSentencesResponseSentencesItemConfidenceMax = 1;
 export const getTranscriptSentencesResponseSentencesItemWordsItemConfidenceMin = 0;
 export const getTranscriptSentencesResponseSentencesItemWordsItemConfidenceMax = 1;
 
+export const getTranscriptSentencesResponseSentencesItemWordsItemSpeakerConfidenceMin = 0;
+export const getTranscriptSentencesResponseSentencesItemWordsItemSpeakerConfidenceMax = 1;
+
 
 
 export const GetTranscriptSentencesResponse = zod.object({
@@ -1361,7 +1438,8 @@ export const GetTranscriptSentencesResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(getTranscriptSentencesResponseSentencesItemWordsItemSpeakerConfidenceMin).max(getTranscriptSentencesResponseSentencesItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('An array of words in the sentence'),
   "channel": zod.string().nullish().describe('The channel of the sentence. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
   "speaker": zod.string().nullable().describe('The speaker of the sentence if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
@@ -1388,6 +1466,9 @@ export const getTranscriptParagraphsResponseParagraphsItemConfidenceMax = 1;
 export const getTranscriptParagraphsResponseParagraphsItemWordsItemConfidenceMin = 0;
 export const getTranscriptParagraphsResponseParagraphsItemWordsItemConfidenceMax = 1;
 
+export const getTranscriptParagraphsResponseParagraphsItemWordsItemSpeakerConfidenceMin = 0;
+export const getTranscriptParagraphsResponseParagraphsItemWordsItemSpeakerConfidenceMax = 1;
+
 
 
 export const GetTranscriptParagraphsResponse = zod.object({
@@ -1405,7 +1486,8 @@ export const GetTranscriptParagraphsResponse = zod.object({
   "end": zod.number().describe('The ending time, in milliseconds, for the word'),
   "text": zod.string().describe('The text of the word'),
   "channel": zod.string().nullish().describe('The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.'),
-  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null')
+  "speaker": zod.string().nullable().describe('The speaker of the word if [Speaker Diarization](https:\/\/www.assemblyai.com\/docs\/pre-recorded-audio\/label-speakers) is enabled, else null'),
+  "speaker_confidence": zod.number().min(getTranscriptParagraphsResponseParagraphsItemWordsItemSpeakerConfidenceMin).max(getTranscriptParagraphsResponseParagraphsItemWordsItemSpeakerConfidenceMax).nullish().describe('The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.')
 })).describe('An array of words in the paragraph')
 })).describe('An array of paragraphs in the transcript')
 })

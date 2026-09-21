@@ -56,7 +56,7 @@ export const ListenTranscribeQueryParams = zod.object({
   "encoding": zod.enum(['linear16', 'flac', 'mulaw', 'amr-nb', 'amr-wb', 'opus', 'speex', 'g729']).optional().describe('Specify the expected encoding of your submitted audio'),
   "filler_words": zod.boolean().default(listenTranscribeQueryFillerWordsDefault).describe('Filler Words can help transcribe interruptions in your audio, like \"uh\" and \"um\"'),
   "keyterm": zod.array(zod.string()).optional().describe('Key term prompting improves recognition of specialized terminology and brands. Only compatible with Nova-3.\n\n`keyterm` accepts plain terms only. Unlike the legacy `keywords` feature, it does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm.\n\nTo boost multiple separate keyterms, repeat the `keyterm` parameter (for example, `keyterm=term1&keyterm=term2`). To boost one multi-word phrase as a single keyterm, join the words with `%20` or `+` (for example, `keyterm=customer%20service`). Do not separate keyterms with commas, semicolons, or line breaks.\n'),
-  "keywords": zod.union([zod.string(),zod.array(zod.string())]).optional().describe('Keywords can boost or suppress specialized terminology and brands'),
+  "keywords": zod.union([zod.string(),zod.array(zod.string())]).optional().describe('Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3 models; use `keyterm` instead.'),
   "language": zod.string().default(listenTranscribeQueryLanguageDefault).describe('The [BCP-47 language tag](https:\/\/tools.ietf.org\/html\/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available'),
   "measurements": zod.boolean().default(listenTranscribeQueryMeasurementsDefault).describe('Spoken measurements will be converted to their corresponding abbreviations'),
   "model": zod.union([zod.enum(['nova-3', 'nova-3-general', 'nova-3-medical', 'nova-2', 'nova-2-general', 'nova-2-meeting', 'nova-2-finance', 'nova-2-conversationalai', 'nova-2-voicemail', 'nova-2-video', 'nova-2-medical', 'nova-2-drivethru', 'nova-2-automotive', 'nova', 'nova-general', 'nova-phonecall', 'nova-medical', 'enhanced', 'enhanced-general', 'enhanced-meeting', 'enhanced-phonecall', 'enhanced-finance', 'base', 'meeting', 'phonecall', 'finance', 'conversationalai', 'voicemail', 'video']).describe('Our public models available to all accounts'),zod.string()]).optional().describe('AI model used to process submitted audio'),
@@ -73,10 +73,6 @@ export const ListenTranscribeQueryParams = zod.object({
   "utt_split": zod.number().default(listenTranscribeQueryUttSplitDefault).describe('Seconds to wait before detecting a pause between words in submitted audio'),
   "version": zod.union([zod.enum(['latest']).describe('Use the latest version of a model'),zod.string()]).optional().describe('Version of an AI model to use'),
   "mip_opt_out": zod.boolean().default(listenTranscribeQueryMipOptOutDefault).describe('Opts out requests from the Deepgram Model Improvement Program. Refer to our Docs for pricing impacts before setting this to true. https:\/\/dpgr.am\/deepgram-mip')
-})
-
-export const ListenTranscribeHeader = zod.object({
-  "Authorization": zod.string().describe('Use `Authorization: Token <API_KEY>`\nExample: `Authorization: Token 12345abcdef`\n')
 })
 
 export const ListenTranscribeBody = zod.object({
@@ -97,6 +93,10 @@ export const ListenTranscribeResponse = zod.union([zod.object({
   "model_info": zod.looseObject({
 
 }),
+  "diarize_info": zod.object({
+  "model_uuid": zod.string().describe('The diarizer model UUID'),
+  "arch": zod.string().describe('The diarizer arch, such as `v1` or `v2`')
+}).optional().describe('The diarizer that produced the speaker labels. Present only when a diarizer ran.'),
   "summary_info": zod.object({
   "model_uuid": zod.string().optional(),
   "input_tokens": zod.number().optional(),
@@ -275,13 +275,9 @@ export const SpeakGenerateQueryParams = zod.object({
   "bit_rate": zod.union([zod.enum(['32000', '48000']).describe('Encoding - mp3(default). Supported bitrates - 32000, 48000(default) bps.'),zod.number().min(speakGenerateQueryBitRateTwoMin).max(speakGenerateQueryBitRateTwoMax),zod.number().min(speakGenerateQueryBitRateThreeMin).max(speakGenerateQueryBitRateThreeMax)]).optional().describe('The bitrate of the audio in bits per second. Choose from predefined ranges or specific values based on the encoding type.'),
   "container": zod.union([zod.enum(['none']).describe('No container.'),zod.enum(['wav']).describe('Encoding - linear16. Supported container - wav (default), or no container.'),zod.enum(['wav']).describe('Encoding - mulaw. Supported container - wav (default), or no container.'),zod.enum(['wav']).describe('Encoding - alaw. Supported container - wav (default), or no container.'),zod.enum(['ogg']).describe('Encoding - opus. Supported container - ogg (default).')]).optional().describe('Container specifies the file format wrapper for the output audio. The available options depend on the encoding type.'),
   "encoding": zod.union([zod.enum(['linear16']).describe('Encoding - linear16. Uncompressed, high-quality audio format often used for telephony or audio processing.'),zod.enum(['flac']).describe('Encoding - flac. Lossless audio format for high-quality compression.'),zod.enum(['mulaw']).describe('Encoding - mulaw. Compressed audio format commonly used in telephony.'),zod.enum(['alaw']).describe('Encoding - alaw. Similar to mulaw but used in international telephony.'),zod.enum(['mp3']).describe('Encoding - mp3. Popular compressed audio format for music and streaming.'),zod.enum(['opus']).describe('Encoding - opus. High-compression audio format optimized for real-time communications.'),zod.enum(['aac']).describe('Encoding - aac. Advanced audio format offering better quality at smaller file sizes than mp3.')]).optional().describe('Encoding allows you to specify the expected encoding of your audio output'),
-  "model": zod.enum(['aura-angus-en', 'aura-arcas-en', 'aura-asteria-en', 'aura-athena-en', 'aura-helios-en', 'aura-hera-en', 'aura-luna-en', 'aura-orion-en', 'aura-orpheus-en', 'aura-perseus-en', 'aura-stella-en', 'aura-zeus-en', 'aura-2-amalthea-en', 'aura-2-andromeda-en', 'aura-2-apollo-en', 'aura-2-arcas-en', 'aura-2-aries-en', 'aura-2-asteria-en', 'aura-2-athena-en', 'aura-2-atlas-en', 'aura-2-aurora-en', 'aura-2-callista-en', 'aura-2-cora-en', 'aura-2-cordelia-en', 'aura-2-delia-en', 'aura-2-draco-en', 'aura-2-electra-en', 'aura-2-harmonia-en', 'aura-2-helena-en', 'aura-2-hera-en', 'aura-2-hermes-en', 'aura-2-hyperion-en', 'aura-2-iris-en', 'aura-2-janus-en', 'aura-2-juno-en', 'aura-2-jupiter-en', 'aura-2-luna-en', 'aura-2-mars-en', 'aura-2-minerva-en', 'aura-2-neptune-en', 'aura-2-odysseus-en', 'aura-2-ophelia-en', 'aura-2-orion-en', 'aura-2-orpheus-en', 'aura-2-pandora-en', 'aura-2-phoebe-en', 'aura-2-pluto-en', 'aura-2-saturn-en', 'aura-2-selene-en', 'aura-2-thalia-en', 'aura-2-theia-en', 'aura-2-vesta-en', 'aura-2-zeus-en', 'aura-2-agustina-es', 'aura-2-alvaro-es', 'aura-2-antonia-es', 'aura-2-aquila-es', 'aura-2-carina-es', 'aura-2-celeste-es', 'aura-2-diana-es', 'aura-2-estrella-es', 'aura-2-gloria-es', 'aura-2-javier-es', 'aura-2-luciano-es', 'aura-2-nestor-es', 'aura-2-olivia-es', 'aura-2-selena-es', 'aura-2-silvia-es', 'aura-2-sirio-es', 'aura-2-valerio-es', 'aura-2-aurelia-de', 'aura-2-elara-de', 'aura-2-fabian-de', 'aura-2-julius-de', 'aura-2-kara-de', 'aura-2-lara-de', 'aura-2-viktoria-de', 'aura-2-beatrix-nl', 'aura-2-cornelia-nl', 'aura-2-daphne-nl', 'aura-2-hestia-nl', 'aura-2-lars-nl', 'aura-2-leda-nl', 'aura-2-rhea-nl', 'aura-2-roman-nl', 'aura-2-sander-nl', 'aura-2-agathe-fr', 'aura-2-hector-fr', 'aura-2-cesare-it', 'aura-2-cinzia-it', 'aura-2-demetra-it', 'aura-2-dionisio-it', 'aura-2-elio-it', 'aura-2-flavio-it', 'aura-2-livia-it', 'aura-2-maia-it', 'aura-2-melia-it', 'aura-2-perseo-it', 'aura-2-ama-ja', 'aura-2-ebisu-ja', 'aura-2-fujin-ja', 'aura-2-izanami-ja', 'aura-2-uzume-ja']).default(speakGenerateQueryModelDefault).describe('AI model used to process submitted text'),
+  "model": zod.enum(['aura-angus-en', 'aura-arcas-en', 'aura-asteria-en', 'aura-athena-en', 'aura-helios-en', 'aura-hera-en', 'aura-luna-en', 'aura-orion-en', 'aura-orpheus-en', 'aura-perseus-en', 'aura-stella-en', 'aura-zeus-en', 'aura-2-amalthea-en', 'aura-2-andromeda-en', 'aura-2-apollo-en', 'aura-2-arcas-en', 'aura-2-aries-en', 'aura-2-asteria-en', 'aura-2-athena-en', 'aura-2-atlas-en', 'aura-2-aurora-en', 'aura-2-callista-en', 'aura-2-cora-en', 'aura-2-cordelia-en', 'aura-2-delia-en', 'aura-2-draco-en', 'aura-2-electra-en', 'aura-2-harmonia-en', 'aura-2-helena-en', 'aura-2-hera-en', 'aura-2-hermes-en', 'aura-2-hyperion-en', 'aura-2-iris-en', 'aura-2-janus-en', 'aura-2-juno-en', 'aura-2-jupiter-en', 'aura-2-luna-en', 'aura-2-mars-en', 'aura-2-minerva-en', 'aura-2-neptune-en', 'aura-2-odysseus-en', 'aura-2-ophelia-en', 'aura-2-orion-en', 'aura-2-orpheus-en', 'aura-2-pandora-en', 'aura-2-phoebe-en', 'aura-2-pluto-en', 'aura-2-saturn-en', 'aura-2-selene-en', 'aura-2-thalia-en', 'aura-2-theia-en', 'aura-2-vesta-en', 'aura-2-zeus-en', 'aura-2-agustina-es', 'aura-2-alvaro-es', 'aura-2-antonia-es', 'aura-2-aquila-es', 'aura-2-carina-es', 'aura-2-celeste-es', 'aura-2-diana-es', 'aura-2-estrella-es', 'aura-2-gloria-es', 'aura-2-javier-es', 'aura-2-luciano-es', 'aura-2-nestor-es', 'aura-2-olivia-es', 'aura-2-selena-es', 'aura-2-silvia-es', 'aura-2-sirio-es', 'aura-2-valerio-es', 'aura-2-aurelia-de', 'aura-2-elara-de', 'aura-2-fabian-de', 'aura-2-julius-de', 'aura-2-kara-de', 'aura-2-lara-de', 'aura-2-viktoria-de', 'aura-2-beatrix-nl', 'aura-2-cornelia-nl', 'aura-2-daphne-nl', 'aura-2-hestia-nl', 'aura-2-lars-nl', 'aura-2-leda-nl', 'aura-2-rhea-nl', 'aura-2-roman-nl', 'aura-2-sander-nl', 'aura-2-agathe-fr', 'aura-2-hector-fr', 'aura-2-cesare-it', 'aura-2-cinzia-it', 'aura-2-demetra-it', 'aura-2-dionisio-it', 'aura-2-elio-it', 'aura-2-flavio-it', 'aura-2-livia-it', 'aura-2-maia-it', 'aura-2-melia-it', 'aura-2-ama-ja', 'aura-2-ebisu-ja', 'aura-2-fujin-ja', 'aura-2-izanami-ja', 'aura-2-uzume-ja']).default(speakGenerateQueryModelDefault).describe('AI model used to process submitted text'),
   "sample_rate": zod.union([zod.enum(['8000', '16000', '24000', '32000', '48000']).describe('Encoding - linear16. Supported sample rates - 8000, 16000, 24000, 32000, 48000 Hz.'),zod.enum(['8000', '16000']).describe('Encoding - mulaw. Supported sample rates - 8000, 16000 Hz.'),zod.enum(['8000', '16000']).describe('Encoding - alaw. Supported sample rates - 8000, 16000 Hz.'),zod.enum(['22050']).describe('Encoding - mp3. Sample rate is fixed and not configurable (22050 Hz).'),zod.enum(['48000']).describe('Encoding - opus. Sample rate is fixed at 48000 Hz.')]).optional().describe('Sample Rate specifies the sample rate for the output audio. Based on the encoding, different sample rates are supported. For some encodings, the sample rate is not configurable'),
   "speed": zod.number().min(speakGenerateQuerySpeedMin).max(speakGenerateQuerySpeedMax).default(speakGenerateQuerySpeedDefault).describe('Speaking rate multiplier that adjusts the pace of generated speech while preserving natural prosody and voice quality. Not yet supported in all languages.')
-})
-
-export const SpeakGenerateHeader = zod.object({
-  "Authorization": zod.string().describe('Use `Authorization: Token <API_KEY>`\nExample: `Authorization: Token 12345abcdef`\n')
 })
 
 export const SpeakGenerateBody = zod.object({
@@ -319,10 +315,6 @@ export const ReadAnalyzeQueryParams = zod.object({
   "custom_intent": zod.union([zod.string(),zod.array(zod.string())]).optional().describe('Custom intents you want the model to detect within your input audio if present'),
   "custom_intent_mode": zod.enum(['extended', 'strict']).default(readAnalyzeQueryCustomIntentModeDefault).describe('Sets how the model will interpret intents submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent` param. When `extended`, the model will return its own detected intents in the `custom_intent` param.'),
   "language": zod.string().default(readAnalyzeQueryLanguageDefault).describe('The [BCP-47 language tag](https:\/\/tools.ietf.org\/html\/bcp47) that hints at the primary spoken language. Depending on the Model and API endpoint you choose only certain languages are available')
-})
-
-export const ReadAnalyzeHeader = zod.object({
-  "Authorization": zod.string().describe('Use `Authorization: Token <API_KEY>`\nExample: `Authorization: Token 12345abcdef`\n')
 })
 
 export const ReadAnalyzeBody = zod.union([zod.object({
@@ -422,10 +414,6 @@ export const ListModelsQueryParams = zod.object({
   "include_outdated": zod.boolean().optional().describe('returns non-latest versions of models')
 })
 
-export const ListModelsHeader = zod.object({
-  "Authorization": zod.string().describe('Use `Authorization: Token <API_KEY>`\nExample: `Authorization: Token 12345abcdef`\n')
-})
-
 export const ListModelsResponse = zod.object({
   "stt": zod.array(zod.object({
   "name": zod.string().optional(),
@@ -464,10 +452,6 @@ export const ListModelsResponse = zod.object({
  */
 export const GetModelParams = zod.object({
   "model_id": zod.string().describe('The specific UUID of the model')
-})
-
-export const GetModelHeader = zod.object({
-  "Authorization": zod.string().describe('Use `Authorization: Token <API_KEY>`\nExample: `Authorization: Token 12345abcdef`\n')
 })
 
 export const GetModelResponse = zod.union([zod.object({
@@ -525,10 +509,6 @@ export const ListProjectRequestsQueryParams = zod.object({
   "status": zod.enum(['succeeded', 'failed']).optional().describe('Filter for requests that succeeded (status code < 300) or failed (status code >=400)')
 })
 
-export const ListProjectRequestsHeader = zod.object({
-  "Authorization": zod.string().describe('Use `Authorization: Token <API_KEY>`\nExample: `Authorization: Token 12345abcdef`\n')
-})
-
 export const ListProjectRequestsResponse = zod.object({
   "page": zod.number().optional().describe('The page number of the paginated response'),
   "limit": zod.number().optional().describe('The number of results per page'),
@@ -555,10 +535,6 @@ export const ListProjectRequestsResponse = zod.object({
 export const GetProjectRequestParams = zod.object({
   "project_id": zod.string().describe('The unique identifier of the project'),
   "request_id": zod.string().describe('The unique identifier of the request')
-})
-
-export const GetProjectRequestHeader = zod.object({
-  "Authorization": zod.string().describe('Use `Authorization: Token <API_KEY>`\nExample: `Authorization: Token 12345abcdef`\n')
 })
 
 export const GetProjectRequestResponse = zod.object({

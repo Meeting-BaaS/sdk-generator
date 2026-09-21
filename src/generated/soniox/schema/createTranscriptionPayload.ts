@@ -15,7 +15,7 @@ export interface CreateTranscriptionPayload {
   model: string;
   /** URL of the audio file to transcribe. Cannot be specified if `file_id` is specified. */
   audio_url?: string | null;
-  /** ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified. */
+  /** ID of the uploaded file to transcribe. Cannot be specified if `audio_url` is specified. Keep the file until the transcription reaches `completed` or `error`; deleting it earlier fails the transcription with `file_not_found`. */
   file_id?: string | null;
   /** Expected languages in the audio. If not specified, languages are automatically detected. */
   language_hints?: string[] | null;

@@ -10,7 +10,7 @@ import type { CreateSpeechRequestStreamFormat } from './createSpeechRequestStrea
 import type { VoiceIdsOrCustomVoice } from './voiceIdsOrCustomVoice.js';
 
 export interface CreateSpeechRequest {
-  /** One of the available [TTS models](/docs/models#tts): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`. */
+  /** One of the available [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`. */
   model: string | 'tts-1' | 'tts-1-hd' | 'gpt-4o-mini-tts' | 'gpt-4o-mini-tts-2025-12-15';
   /**
      * The text to generate audio for. The maximum length is 4096 characters.
@@ -22,7 +22,7 @@ export interface CreateSpeechRequest {
      * @maxLength 4096
      */
   instructions?: string;
-  /** The voice to use when generating the audio. Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech#voice-options). */
+  /** The voice to use when generating the audio. Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the voices are available in the [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options). */
   voice: VoiceIdsOrCustomVoice;
   /** The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`. */
   response_format?: CreateSpeechRequestResponseFormat;

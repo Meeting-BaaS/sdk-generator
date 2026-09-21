@@ -5,6 +5,7 @@
  * Deepgram API - Transcription, TTS, text analysis, and request history endpoints. Filtered from the official Deepgram API spec.
  * OpenAPI spec version: 1.0.0
  */
+import type { ListenV1ResponseMetadataDiarizeInfo } from './listenV1ResponseMetadataDiarizeInfo.js';
 import type { ListenV1ResponseMetadataIntentsInfo } from './listenV1ResponseMetadataIntentsInfo.js';
 import type { ListenV1ResponseMetadataModelInfo } from './listenV1ResponseMetadataModelInfo.js';
 import type { ListenV1ResponseMetadataSentimentInfo } from './listenV1ResponseMetadataSentimentInfo.js';
@@ -21,6 +22,8 @@ export interface ListenV1ResponseMetadata {
   channels: number;
   models: string[];
   model_info: ListenV1ResponseMetadataModelInfo;
+  /** The diarizer that produced the speaker labels. Present only when a diarizer ran. */
+  diarize_info?: ListenV1ResponseMetadataDiarizeInfo;
   summary_info?: ListenV1ResponseMetadataSummaryInfo;
   sentiment_info?: ListenV1ResponseMetadataSentimentInfo;
   topics_info?: ListenV1ResponseMetadataTopicsInfo;

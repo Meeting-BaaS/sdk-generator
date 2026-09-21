@@ -25,20 +25,30 @@ function main() {
 
   const spec = JSON.parse(fs.readFileSync(SPEC_PATH, "utf-8"))
 
-  // Extract model_id enum from the Body schema
+  // Extract model_id enum from the Body schema. Upstream dropped the enum in
+  // 2026-09 (model_id became a plain string with only an example), so fall
+  // back to the curated list of documented STT models when it is absent.
+  const KNOWN_MODELS = ["scribe_v1", "scribe_v2"]
   const bodySchema = spec.components?.schemas?.Body_Speech_to_Text_v1_speech_to_text_post
   const modelIdProp = bodySchema?.properties?.model_id
   const modelEnum = modelIdProp?.enum
 
-  if (!modelEnum || modelEnum.length === 0) {
-    console.error("❌ Could not find model_id enum in spec")
+  let modelIds
+  if (modelEnum && modelEnum.length > 0) {
+    modelIds = modelEnum
+    console.log(`   Found ${modelIds.length} models in spec enum: ${modelIds.join(", ")}`)
+  } else if (modelIdProp) {
+    modelIds = KNOWN_MODELS
+    console.log(
+      `   Spec no longer declares a model_id enum — using curated list: ${modelIds.join(", ")}`
+    )
+  } else {
+    console.error("❌ Could not find model_id property in spec")
     process.exit(1)
   }
 
-  console.log(`   Found ${modelEnum.length} models: ${modelEnum.join(", ")}`)
-
   // Define model metadata
-  const models = modelEnum.map((id) => {
+  const models = modelIds.map((id) => {
     const labels = {
       scribe_v1: "Scribe V1",
       scribe_v2: "Scribe V2"

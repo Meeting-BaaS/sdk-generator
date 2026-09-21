@@ -30,6 +30,13 @@ export interface TranscriptUtterance {
   channel?: string | null;
   /** The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc. */
   speaker: string;
+  /**
+     * The confidence score for the speaker label of this utterance, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.
+     * @minimum 0
+     * @maximum 1
+     * @nullable
+     */
+  speaker_confidence?: number | null;
   /** Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation. */
   translated_texts?: TranscriptUtteranceTranslatedTexts;
 }

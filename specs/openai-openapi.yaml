@@ -23,7 +23,8 @@ paths:
       operationId: createSpeech
       tags:
         - Audio
-      summary: |
+      summary: Create speech
+      description: |
         Generates audio from the input text.
 
         Returns the audio file content, or a stream of audio events.
@@ -49,8 +50,11 @@ paths:
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/CreateSpeechResponseStreamEvent'
+        '429':
+          $ref: '#/components/responses/InferenceRateLimited'
+        '503':
+          $ref: '#/components/responses/InferenceServiceUnavailable'
       x-oaiMeta:
-        name: Create speech
         group: audio
         examples:
           - title: Default
@@ -65,21 +69,17 @@ paths:
                     "voice": "alloy"
                   }' \
                   --output speech.mp3
-              python: |-
-                import os
-                from openai import OpenAI
+              python: |
+                from pathlib import Path
+                import openai
 
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
-                )
-                speech = client.audio.speech.create(
-                    input="input",
-                    model="tts-1",
-                    voice="alloy",
-                )
-                print(speech)
-                content = speech.read()
-                print(content)
+                speech_file_path = Path(__file__).parent / "speech.mp3"
+                with openai.audio.speech.with_streaming_response.create(
+                  model="gpt-4o-mini-tts",
+                  voice="alloy",
+                  input="The quick brown fox jumped over the lazy dog."
+                ) as response:
+                  response.stream_to_file(speech_file_path)
               javascript: |
                 import fs from "fs";
                 import path from "path";
@@ -118,55 +118,6 @@ paths:
 
                 using FileStream stream = File.OpenWrite("speech.mp3");
                 speech.ToStream().CopyTo(stream);
-              node.js: |-
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const speech = await client.audio.speech.create({
-                  input: 'input',
-                  model: 'tts-1',
-                  voice: 'alloy',
-                });
-
-                console.log(speech);
-
-                const content = await speech.blob();
-                console.log(content);
-              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfAudioSpeechNewsVoiceString2: openai.String(\"alloy\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.core.http.HttpResponse;
-                import com.openai.models.audio.speech.SpeechCreateParams;
-                import com.openai.models.audio.speech.SpeechModel;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        SpeechCreateParams params = SpeechCreateParams.builder()
-                            .input("input")
-                            .model(SpeechModel.TTS_1)
-                            .voice(SpeechCreateParams.Voice.UnionMember1.ALLOY)
-                            .build();
-                        HttpResponse speech = client.audio().speech().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                speech = openai.audio.speech.create(input: "input", model: :"tts-1", voice: :alloy)
-
-                puts(speech)
           - title: SSE Stream Format
             request:
               curl: |
@@ -179,77 +130,14 @@ paths:
                     "voice": "alloy",
                     "stream_format": "sse"
                   }'
-              node.js: |-
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const speech = await client.audio.speech.create({
-                  input: 'input',
-                  model: 'tts-1',
-                  voice: 'alloy',
-                });
-
-                console.log(speech);
-
-                const content = await speech.blob();
-                console.log(content);
-              python: |-
-                import os
-                from openai import OpenAI
-
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
-                )
-                speech = client.audio.speech.create(
-                    input="input",
-                    model="tts-1",
-                    voice="alloy",
-                )
-                print(speech)
-                content = speech.read()
-                print(content)
-              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfAudioSpeechNewsVoiceString2: openai.String(\"alloy\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.core.http.HttpResponse;
-                import com.openai.models.audio.speech.SpeechCreateParams;
-                import com.openai.models.audio.speech.SpeechModel;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        SpeechCreateParams params = SpeechCreateParams.builder()
-                            .input("input")
-                            .model(SpeechModel.TTS_1)
-                            .voice(SpeechCreateParams.Voice.UnionMember1.ALLOY)
-                            .build();
-                        HttpResponse speech = client.audio().speech().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                speech = openai.audio.speech.create(input: "input", model: :"tts-1", voice: :alloy)
-
-                puts(speech)
       parameters: []
   /audio/transcriptions:
     post:
       operationId: createTranscription
       tags:
         - Audio
-      summary: |
+      summary: Create transcription
+      description: |
         Transcribes audio into the input language.
 
         Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
@@ -273,8 +161,11 @@ paths:
             text/event-stream:
               schema:
                 $ref: '#/components/schemas/CreateTranscriptionResponseStreamEvent'
+        '429':
+          $ref: '#/components/responses/InferenceRateLimited'
+        '503':
+          $ref: '#/components/responses/InferenceServiceUnavailable'
       x-oaiMeta:
-        name: Create transcription
         group: audio
         examples:
           - title: Default
@@ -285,18 +176,15 @@ paths:
                   -H "Content-Type: multipart/form-data" \
                   -F file="@/path/to/file/audio.mp3" \
                   -F model="gpt-4o-transcribe"
-              python: |-
-                import os
+              python: |
                 from openai import OpenAI
+                client = OpenAI()
 
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
+                audio_file = open("speech.mp3", "rb")
+                transcript = client.audio.transcriptions.create(
+                  model="gpt-4o-transcribe",
+                  file=audio_file
                 )
-                for transcription in client.audio.transcriptions.create(
-                    file=b"Example data",
-                    model="gpt-4o-transcribe",
-                ):
-                  print(transcription)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -326,52 +214,6 @@ paths:
                 AudioTranscription transcription = client.TranscribeAudio(audioFilePath);
 
                 Console.WriteLine($"{transcription.Text}");
-              node.js: |-
-                import fs from 'fs';
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const transcription = await client.audio.transcriptions.create({
-                  file: fs.createReadStream('speech.mp3'),
-                  model: 'gpt-4o-transcribe',
-                });
-
-                console.log(transcription);
-              go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\ttranscription, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{\n\t\tFile:  io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\tModel: openai.AudioModelGPT4oTranscribe,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", transcription)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.models.audio.AudioModel;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
-                import java.io.ByteArrayInputStream;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(new ByteArrayInputStream("Example data".getBytes()))
-                            .model(AudioModel.GPT_4O_TRANSCRIBE)
-                            .build();
-                        TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                transcription = openai.audio.transcriptions.create(file: StringIO.new("Example data"), model: :"gpt-4o-transcribe")
-
-                puts(transcription)
             response: |
               {
                 "text": "Imagine the wildest idea that you've ever had, and you're curious about how it might scale to something that's a 100, a 1,000 times bigger. This is a place where you can get to do that.",
@@ -398,18 +240,29 @@ paths:
                   -F chunking_strategy=auto \
                   -F 'known_speaker_names[]=agent' \
                   -F 'known_speaker_references[]=data:audio/wav;base64,AAA...'
-              python: |-
-                import os
+              python: |
+                import base64
                 from openai import OpenAI
 
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
-                )
-                for transcription in client.audio.transcriptions.create(
-                    file=b"Example data",
-                    model="gpt-4o-transcribe",
-                ):
-                  print(transcription)
+                client = OpenAI()
+
+                def to_data_url(path: str) -> str:
+                  with open(path, "rb") as fh:
+                    return "data:audio/wav;base64," + base64.b64encode(fh.read()).decode("utf-8")
+
+                with open("meeting.wav", "rb") as audio_file:
+                  transcript = client.audio.transcriptions.create(
+                    model="gpt-4o-transcribe-diarize",
+                    file=audio_file,
+                    response_format="diarized_json",
+                    chunking_strategy="auto",
+                    extra_body={
+                      "known_speaker_names": ["agent"],
+                      "known_speaker_references": [to_data_url("agent.wav")],
+                    },
+                  )
+
+                print(transcript.segments)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -430,52 +283,6 @@ paths:
                 });
 
                 console.log(transcript.segments);
-              node.js: |-
-                import fs from 'fs';
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const transcription = await client.audio.transcriptions.create({
-                  file: fs.createReadStream('speech.mp3'),
-                  model: 'gpt-4o-transcribe',
-                });
-
-                console.log(transcription);
-              go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\ttranscription, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{\n\t\tFile:  io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\tModel: openai.AudioModelGPT4oTranscribe,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", transcription)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.models.audio.AudioModel;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
-                import java.io.ByteArrayInputStream;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(new ByteArrayInputStream("Example data".getBytes()))
-                            .model(AudioModel.GPT_4O_TRANSCRIBE)
-                            .build();
-                        TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                transcription = openai.audio.transcriptions.create(file: StringIO.new("Example data"), model: :"gpt-4o-transcribe")
-
-                puts(transcription)
             response: |
               {
                 "task": "transcribe",
@@ -521,18 +328,19 @@ paths:
                   -F file="@/path/to/file/audio.mp3" \
                   -F model="gpt-4o-mini-transcribe" \
                   -F stream=true
-              python: |-
-                import os
+              python: |
                 from openai import OpenAI
+                client = OpenAI()
 
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
+                audio_file = open("speech.mp3", "rb")
+                stream = client.audio.transcriptions.create(
+                  file=audio_file,
+                  model="gpt-4o-mini-transcribe",
+                  stream=True
                 )
-                for transcription in client.audio.transcriptions.create(
-                    file=b"Example data",
-                    model="gpt-4o-transcribe",
-                ):
-                  print(transcription)
+
+                for event in stream:
+                  print(event)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -548,52 +356,6 @@ paths:
                 for await (const event of stream) {
                   console.log(event);
                 }
-              node.js: |-
-                import fs from 'fs';
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const transcription = await client.audio.transcriptions.create({
-                  file: fs.createReadStream('speech.mp3'),
-                  model: 'gpt-4o-transcribe',
-                });
-
-                console.log(transcription);
-              go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\ttranscription, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{\n\t\tFile:  io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\tModel: openai.AudioModelGPT4oTranscribe,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", transcription)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.models.audio.AudioModel;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
-                import java.io.ByteArrayInputStream;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(new ByteArrayInputStream("Example data".getBytes()))
-                            .model(AudioModel.GPT_4O_TRANSCRIBE)
-                            .build();
-                        TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                transcription = openai.audio.transcriptions.create(file: StringIO.new("Example data"), model: :"gpt-4o-transcribe")
-
-                puts(transcription)
             response: |
               data: {"type":"transcript.text.delta","delta":"I","logprobs":[{"token":"I","logprob":-0.00007588794,"bytes":[73]}]}
 
@@ -668,18 +430,19 @@ paths:
                   -F "include[]=logprobs" \
                   -F model="gpt-4o-transcribe" \
                   -F response_format="json"
-              python: |-
-                import os
+              python: |
                 from openai import OpenAI
+                client = OpenAI()
 
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
+                audio_file = open("speech.mp3", "rb")
+                transcript = client.audio.transcriptions.create(
+                  file=audio_file,
+                  model="gpt-4o-transcribe",
+                  response_format="json",
+                  include=["logprobs"]
                 )
-                for transcription in client.audio.transcriptions.create(
-                    file=b"Example data",
-                    model="gpt-4o-transcribe",
-                ):
-                  print(transcription)
+
+                print(transcript)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -697,52 +460,6 @@ paths:
                   console.log(transcription);
                 }
                 main();
-              node.js: |-
-                import fs from 'fs';
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const transcription = await client.audio.transcriptions.create({
-                  file: fs.createReadStream('speech.mp3'),
-                  model: 'gpt-4o-transcribe',
-                });
-
-                console.log(transcription);
-              go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\ttranscription, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{\n\t\tFile:  io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\tModel: openai.AudioModelGPT4oTranscribe,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", transcription)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.models.audio.AudioModel;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
-                import java.io.ByteArrayInputStream;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(new ByteArrayInputStream("Example data".getBytes()))
-                            .model(AudioModel.GPT_4O_TRANSCRIBE)
-                            .build();
-                        TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                transcription = openai.audio.transcriptions.create(file: StringIO.new("Example data"), model: :"gpt-4o-transcribe")
-
-                puts(transcription)
             response: |
               {
                 "text": "Hey, my knee is hurting and I want to see the doctor tomorrow ideally.",
@@ -809,18 +526,19 @@ paths:
                   -F "timestamp_granularities[]=word" \
                   -F model="whisper-1" \
                   -F response_format="verbose_json"
-              python: |-
-                import os
+              python: |
                 from openai import OpenAI
+                client = OpenAI()
 
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
+                audio_file = open("speech.mp3", "rb")
+                transcript = client.audio.transcriptions.create(
+                  file=audio_file,
+                  model="whisper-1",
+                  response_format="verbose_json",
+                  timestamp_granularities=["word"]
                 )
-                for transcription in client.audio.transcriptions.create(
-                    file=b"Example data",
-                    model="gpt-4o-transcribe",
-                ):
-                  print(transcription)
+
+                print(transcript.words)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -859,52 +577,6 @@ paths:
                 AudioTranscription transcription = client.TranscribeAudio(audioFilePath, options);
 
                 Console.WriteLine($"{transcription.Text}");
-              node.js: |-
-                import fs from 'fs';
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const transcription = await client.audio.transcriptions.create({
-                  file: fs.createReadStream('speech.mp3'),
-                  model: 'gpt-4o-transcribe',
-                });
-
-                console.log(transcription);
-              go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\ttranscription, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{\n\t\tFile:  io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\tModel: openai.AudioModelGPT4oTranscribe,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", transcription)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.models.audio.AudioModel;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
-                import java.io.ByteArrayInputStream;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(new ByteArrayInputStream("Example data".getBytes()))
-                            .model(AudioModel.GPT_4O_TRANSCRIBE)
-                            .build();
-                        TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                transcription = openai.audio.transcriptions.create(file: StringIO.new("Example data"), model: :"gpt-4o-transcribe")
-
-                puts(transcription)
             response: |
               {
                 "task": "transcribe",
@@ -939,18 +611,19 @@ paths:
                   -F "timestamp_granularities[]=segment" \
                   -F model="whisper-1" \
                   -F response_format="verbose_json"
-              python: |-
-                import os
+              python: |
                 from openai import OpenAI
+                client = OpenAI()
 
-                client = OpenAI(
-                    api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
+                audio_file = open("speech.mp3", "rb")
+                transcript = client.audio.transcriptions.create(
+                  file=audio_file,
+                  model="whisper-1",
+                  response_format="verbose_json",
+                  timestamp_granularities=["segment"]
                 )
-                for transcription in client.audio.transcriptions.create(
-                    file=b"Example data",
-                    model="gpt-4o-transcribe",
-                ):
-                  print(transcription)
+
+                print(transcript.words)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -989,52 +662,6 @@ paths:
                 AudioTranscription transcription = client.TranscribeAudio(audioFilePath, options);
 
                 Console.WriteLine($"{transcription.Text}");
-              node.js: |-
-                import fs from 'fs';
-                import OpenAI from 'openai';
-
-                const client = new OpenAI({
-                  apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-                });
-
-                const transcription = await client.audio.transcriptions.create({
-                  file: fs.createReadStream('speech.mp3'),
-                  model: 'gpt-4o-transcribe',
-                });
-
-                console.log(transcription);
-              go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\ttranscription, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{\n\t\tFile:  io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\tModel: openai.AudioModelGPT4oTranscribe,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", transcription)\n}\n"
-              java: |-
-                package com.openai.example;
-
-                import com.openai.client.OpenAIClient;
-                import com.openai.client.okhttp.OpenAIOkHttpClient;
-                import com.openai.models.audio.AudioModel;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
-                import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
-                import java.io.ByteArrayInputStream;
-
-                public final class Main {
-                    private Main() {}
-
-                    public static void main(String[] args) {
-                        OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                        TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(new ByteArrayInputStream("Example data".getBytes()))
-                            .model(AudioModel.GPT_4O_TRANSCRIBE)
-                            .build();
-                        TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
-                    }
-                }
-              ruby: |-
-                require "openai"
-
-                openai = OpenAI::Client.new(api_key: "My API Key")
-
-                transcription = openai.audio.transcriptions.create(file: StringIO.new("Example data"), model: :"gpt-4o-transcribe")
-
-                puts(transcription)
             response: |
               {
                 "task": "transcribe",
@@ -1069,7 +696,8 @@ paths:
       operationId: createTranslation
       tags:
         - Audio
-      summary: Translates audio into English.
+      summary: Create translation
+      description: Translates audio into English.
       requestBody:
         required: true
         content:
@@ -1085,8 +713,11 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/CreateTranslationResponseJson'
                   - $ref: '#/components/schemas/CreateTranslationResponseVerboseJson'
+        '429':
+          $ref: '#/components/responses/InferenceRateLimited'
+        '503':
+          $ref: '#/components/responses/InferenceServiceUnavailable'
       x-oaiMeta:
-        name: Create translation
         group: audio
         examples:
           request:
@@ -1096,18 +727,15 @@ paths:
                 -H "Content-Type: multipart/form-data" \
                 -F file="@/path/to/file/german.m4a" \
                 -F model="whisper-1"
-            python: |-
-              import os
+            python: |
               from openai import OpenAI
+              client = OpenAI()
 
-              client = OpenAI(
-                  api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
+              audio_file = open("speech.mp3", "rb")
+              transcript = client.audio.translations.create(
+                model="whisper-1",
+                file=audio_file
               )
-              translation = client.audio.translations.create(
-                  file=b"Example data",
-                  model="whisper-1",
-              )
-              print(translation)
             javascript: |
               import fs from "fs";
               import OpenAI from "openai";
@@ -1138,52 +766,6 @@ paths:
               AudioTranscription transcription = client.TranscribeAudio(audioFilePath);
 
               Console.WriteLine($"{transcription.Text}");
-            node.js: |-
-              import fs from 'fs';
-              import OpenAI from 'openai';
-
-              const client = new OpenAI({
-                apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-              });
-
-              const translation = await client.audio.translations.create({
-                file: fs.createReadStream('speech.mp3'),
-                model: 'whisper-1',
-              });
-
-              console.log(translation);
-            go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\ttranslation, err := client.Audio.Translations.New(context.TODO(), openai.AudioTranslationNewParams{\n\t\tFile:  io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\tModel: openai.AudioModelWhisper1,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", translation)\n}\n"
-            java: |-
-              package com.openai.example;
-
-              import com.openai.client.OpenAIClient;
-              import com.openai.client.okhttp.OpenAIOkHttpClient;
-              import com.openai.models.audio.AudioModel;
-              import com.openai.models.audio.translations.TranslationCreateParams;
-              import com.openai.models.audio.translations.TranslationCreateResponse;
-              import java.io.ByteArrayInputStream;
-
-              public final class Main {
-                  private Main() {}
-
-                  public static void main(String[] args) {
-                      OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                      TranslationCreateParams params = TranslationCreateParams.builder()
-                          .file(new ByteArrayInputStream("Example data".getBytes()))
-                          .model(AudioModel.WHISPER_1)
-                          .build();
-                      TranslationCreateResponse translation = client.audio().translations().create(params);
-                  }
-              }
-            ruby: |-
-              require "openai"
-
-              openai = OpenAI::Client.new(api_key: "My API Key")
-
-              translation = openai.audio.translations.create(file: StringIO.new("Example data"), model: :"whisper-1")
-
-              puts(translation)
           response: |
             {
               "text": "Hello, my name is Wolfgang and I come from Germany. Where are you heading today?"
@@ -1194,11 +776,8 @@ paths:
       operationId: createVoice
       tags:
         - Audio
-      summary: Creates a custom voice.
-      description: |
-        Create a custom voice you can use for audio output (for example, in Text-to-Speech and the Realtime API). This requires an audio sample and a previously uploaded consent recording.
-
-        See the [custom voices guide](/docs/guides/text-to-speech#custom-voices) for requirements and best practices. Custom voices are limited to eligible customers.
+      summary: Create voice
+      description: Creates a custom voice.
       requestBody:
         required: true
         content:
@@ -1213,7 +792,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/VoiceResource'
       x-oaiMeta:
-        name: Create voice
         group: audio
         examples:
           request:
@@ -1224,11 +802,11 @@ paths:
                 -F "name=My new voice" \
                 -F "consent=cons_1234" \
                 -F "audio_sample=@$HOME/audio_sample.wav;type=audio/x-wav"
-          response: ''
       parameters: []
   /realtime/client_secrets:
     post:
-      summary: |
+      summary: Create client secret
+      description: |
         Create a Realtime client secret with an associated session configuration.
 
         Client secrets are short-lived tokens that can be passed to a client app,
@@ -1239,7 +817,7 @@ paths:
         applied to any sessions created using that client secret, but these can also be overridden
         by the client connection.
 
-        [Learn more about authentication with client secrets over WebRTC](/docs/guides/realtime-webrtc).
+        [Learn more about authentication with client secrets over WebRTC](https://developers.openai.com/api/docs/guides/realtime-webrtc).
 
         Returns the created client secret and the effective session object. The client secret is a string that looks like `ek_1234`.
       operationId: create-realtime-client-secret
@@ -1260,7 +838,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/RealtimeCreateClientSecretResponse'
       x-oaiMeta:
-        name: Create client secret
         group: realtime
         examples:
           request:
@@ -1279,51 +856,6 @@ paths:
                     "instructions": "You are a friendly assistant."
                   }
                 }'
-            node.js: |-
-              import OpenAI from 'openai';
-
-              const client = new OpenAI({
-                apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
-              });
-
-              const clientSecret = await client.realtime.clientSecrets.create();
-
-              console.log(clientSecret.expires_at);
-            python: |-
-              import os
-              from openai import OpenAI
-
-              client = OpenAI(
-                  api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
-              )
-              client_secret = client.realtime.client_secrets.create()
-              print(client_secret.expires_at)
-            go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n\t\"github.com/openai/openai-go/realtime\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tclientSecret, err := client.Realtime.ClientSecrets.New(context.TODO(), realtime.ClientSecretNewParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", clientSecret.ExpiresAt)\n}\n"
-            java: |-
-              package com.openai.example;
-
-              import com.openai.client.OpenAIClient;
-              import com.openai.client.okhttp.OpenAIOkHttpClient;
-              import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
-              import com.openai.models.realtime.clientsecrets.ClientSecretCreateResponse;
-
-              public final class Main {
-                  private Main() {}
-
-                  public static void main(String[] args) {
-                      OpenAIClient client = OpenAIOkHttpClient.fromEnv();
-
-                      ClientSecretCreateResponse clientSecret = client.realtime().clientSecrets().create();
-                  }
-              }
-            ruby: |-
-              require "openai"
-
-              openai = OpenAI::Client.new(api_key: "My API Key")
-
-              client_secret = openai.realtime.client_secrets.create
-
-              puts(client_secret)
           response: |
             {
               "value": "ek_68af296e8e408191a1120ab6383263c2",
@@ -1371,7 +903,8 @@ paths:
       parameters: []
   /realtime/sessions:
     post:
-      summary: |
+      summary: Create session
+      description: |
         Create an ephemeral API token for use in client-side applications with the
         Realtime API. Can be configured with the same session parameters as the
         `session.update` client event.
@@ -1399,7 +932,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/RealtimeSessionCreateResponse'
       x-oaiMeta:
-        name: Create session
         group: realtime
         examples:
           request:
@@ -1440,7 +972,8 @@ paths:
       parameters: []
   /realtime/transcription_sessions:
     post:
-      summary: |
+      summary: Create transcription session
+      description: |
         Create an ephemeral API token for use in client-side applications with the
         Realtime API specifically for realtime transcriptions. 
         Can be configured with the same session parameters as the `transcription_session.update` client event.
@@ -1468,7 +1001,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/RealtimeTranscriptionSessionCreateResponse'
       x-oaiMeta:
-        name: Create transcription session
         group: realtime
         examples:
           request:
@@ -1553,7 +1085,7 @@ components:
           description: |
             An optional text to guide the model's style or continue a previous audio
             segment.
-            For `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).
+            For `whisper-1`, the [prompt is a list of keywords](https://developers.openai.com/api/docs/guides/speech-to-text#prompting).
             For `gpt-4o-transcribe` models (excluding `gpt-4o-transcribe-diarize`), the prompt is a free text string, for example "expect words related to technology".
             Prompt is not supported with `gpt-realtime-whisper` in GA Realtime sessions.
         delay:
@@ -1607,7 +1139,7 @@ components:
       properties:
         model:
           description: |
-            One of the available [TTS models](/docs/models#tts): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
+            One of the available [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
           anyOf:
             - type: string
             - type: string
@@ -1626,7 +1158,7 @@ components:
           description: Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.
           maxLength: 4096
         voice:
-          description: 'The voice to use when generating the audio. Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech#voice-options).'
+          description: 'The voice to use when generating the audio. Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the voices are available in the [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).'
           $ref: '#/components/schemas/VoiceIdsOrCustomVoice'
         response_format:
           description: The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`.
@@ -1669,6 +1201,7 @@ components:
         file:
           description: |
             The audio file object (not file name) to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
+            The request must include enough format metadata for the file to be identified. We recommend an extension-bearing filename and an appropriate content type.
           type: string
           x-oaiTypeLabel: file
           format: binary
@@ -1707,7 +1240,7 @@ components:
             type: string
         prompt:
           description: |
-            An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.
+            An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting) should match the audio language. This field is not supported when using `gpt-4o-transcribe-diarize`.
           type: string
         response_format:
           $ref: '#/components/schemas/AudioResponseFormat'
@@ -1743,7 +1276,7 @@ components:
             - description: |
                 If set to true, the model response data will be streamed to the client
                 as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
-                See the [Streaming section of the Speech-to-Text guide](/docs/guides/speech-to-text?lang=curl#streaming-transcriptions)
+                See the [Streaming section of the Speech-to-Text guide](https://developers.openai.com/api/docs/guides/speech-to-text?lang=curl#streaming)
                 for more information.
 
                 Note: Streaming is not supported for the `whisper-1` model and will be ignored.
@@ -1983,7 +1516,7 @@ components:
       properties:
         file:
           description: |
-            The audio file object (not file name) translate, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
+            The audio file object (not file name) translate, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include enough format metadata for the file to be identified. We recommend an extension-bearing filename and an appropriate content type.
           type: string
           x-oaiTypeLabel: file
           format: binary
@@ -2000,7 +1533,7 @@ components:
           x-oaiTypeLabel: string
         prompt:
           description: |
-            An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text#prompting) should be in English.
+            An optional text to guide the model's style or continue a previous audio segment. The [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting) should be in English.
           type: string
         response_format:
           description: |
@@ -2073,12 +1606,41 @@ components:
         - name
         - audio_sample
         - consent
+    Error:
+      type: object
+      properties:
+        code:
+          anyOf:
+            - type: string
+            - type: 'null'
+        message:
+          type: string
+        param:
+          anyOf:
+            - type: string
+            - type: 'null'
+        type:
+          type: string
+        misalignment:
+          $ref: '#/components/schemas/MisalignmentErrorDetailsResource'
+      required:
+        - type
+        - message
+        - param
+        - code
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+      required:
+        - error
     MCPTool:
       type: object
       title: MCP tool
       description: |
         Give the model access to additional tools via remote Model Context Protocol
-        (MCP) servers. [Learn more about MCP](/docs/guides/tools-remote-mcp).
+        (MCP) servers. [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
       properties:
         type:
           type: string
@@ -2098,6 +1660,7 @@ components:
             `tunnel_id` must be provided.
         connector_id:
           type: string
+          deprecated: true
           enum:
             - connector_dropbox
             - connector_gmail
@@ -2110,7 +1673,11 @@ components:
           description: |
             Identifier for service connectors, like those available in ChatGPT. One of
             `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more
-            about service connectors [here](/docs/guides/tools-remote-mcp#connectors).
+            about service connectors [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+
+            This field is deprecated for models released after September 1, 2026.
+            Use `server_url` to connect to a remote MCP server, or `tunnel_id` to
+            connect through a Secure MCP Tunnel.
 
             Currently supported `connector_id` values are:
 
@@ -2233,7 +1800,7 @@ components:
         - type: object
           description: |
             Reference to a prompt template and its variables.
-            [Learn more](/docs/guides/text?api-mode=responses#reusable-prompts).
+            [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
           required:
             - id
           properties:
@@ -2288,7 +1855,7 @@ components:
       description: |
         Create a session and client secret for the Realtime API. The request can specify
         either a realtime or a transcription session configuration.
-        [Learn more about the Realtime API](/docs/guides/realtime).
+        [Learn more about the Realtime API](https://developers.openai.com/api/docs/guides/realtime).
       properties:
         expires_after:
           type: object
@@ -2736,7 +2303,7 @@ components:
                   description: The format of the input audio.
                 transcription:
                   description: |
-                    Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](/docs/api-reference/audio/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
+                    Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
                   $ref: '#/components/schemas/AudioTranscription'
                 noise_reduction:
                   type: object
@@ -3174,7 +2741,7 @@ components:
                   description: The format of the input audio.
                 transcription:
                   description: |
-                    Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](/docs/api-reference/audio/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
+                    Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
                   $ref: '#/components/schemas/AudioTranscriptionResponse'
                 noise_reduction:
                   type: object
@@ -3399,7 +2966,7 @@ components:
                   $ref: '#/components/schemas/RealtimeAudioFormats'
                 transcription:
                   description: |
-                    Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](/docs/api-reference/audio/createTranscription) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
+                    Configuration for input audio transcription, defaults to off and can be set to `null` to turn off once on. Input audio transcription is not native to the model, since the model consumes audio directly. Transcription runs asynchronously through [the /audio/transcriptions endpoint](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) and should be treated as guidance of input audio content rather than precisely what the model heard. The client can optionally set the language and prompt for transcription, these offer additional guidance to the transcription service.
                   $ref: '#/components/schemas/AudioTranscription'
                 noise_reduction:
                   type: object
@@ -3947,7 +3514,7 @@ components:
         - required
     TranscriptTextDeltaEvent:
       type: object
-      description: Emitted when there is an additional text delta. This is also the first event emitted when the transcription starts. Only emitted when you [create a transcription](/docs/api-reference/audio/create-transcription) with the `Stream` parameter set to `true`.
+      description: Emitted when there is an additional text delta. This is also the first event emitted when the transcription starts. Only emitted when you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `Stream` parameter set to `true`.
       properties:
         type:
           type: string
@@ -3963,7 +3530,7 @@ components:
         logprobs:
           type: array
           description: |
-            The log probabilities of the delta. Only included if you [create a transcription](/docs/api-reference/audio/create-transcription) with the `include[]` parameter set to `logprobs`.
+            The log probabilities of the delta. Only included if you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `include[]` parameter set to `logprobs`.
           items:
             type: object
             properties:
@@ -3998,7 +3565,7 @@ components:
           }
     TranscriptTextDoneEvent:
       type: object
-      description: Emitted when the transcription is complete. Contains the complete transcription text. Only emitted when you [create a transcription](/docs/api-reference/audio/create-transcription) with the `Stream` parameter set to `true`.
+      description: Emitted when the transcription is complete. Contains the complete transcription text. Only emitted when you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `Stream` parameter set to `true`.
       properties:
         type:
           type: string
@@ -4020,7 +3587,7 @@ components:
         logprobs:
           type: array
           description: |
-            The log probabilities of the individual tokens in the transcription. Only included if you [create a transcription](/docs/api-reference/audio/create-transcription) with the `include[]` parameter set to `logprobs`.
+            The log probabilities of the individual tokens in the transcription. Only included if you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `include[]` parameter set to `logprobs`.
           items:
             type: object
             properties:
@@ -4064,7 +3631,7 @@ components:
     TranscriptTextSegmentEvent:
       type: object
       description: |
-        Emitted when a diarized transcription returns a completed segment with speaker information. Only emitted when you [create a transcription](/docs/api-reference/audio/create-transcription) with `stream` set to `true` and `response_format` set to `diarized_json`.
+        Emitted when a diarized transcription returns a completed segment with speaker information. Only emitted when you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with `stream` set to `true` and `response_format` set to `diarized_json`.
       properties:
         type:
           type: string
@@ -4450,7 +4017,7 @@ components:
         - type
         - detail
       title: Input image
-      description: An image input to the model. Learn about [image inputs](/docs/guides/vision).
+      description: An image input to the model. Learn about [image inputs](https://developers.openai.com/api/docs/guides/images-vision).
     FileInputDetail:
       type: string
       enum:
@@ -4497,6 +4064,79 @@ components:
       enum:
         - direct
         - programmatic
+    _MisalignmentErrorType:
+      anyOf:
+        - type: string
+        - type: string
+          enum:
+            - potentially_unintended_data_transfer
+            - potentially_unintended_data_access
+            - potentially_unintended_destructive_activity
+            - other
+    _MisalignmentSteer:
+      properties:
+        message:
+          type: string
+          description: The public continuation instruction.
+      type: object
+      required:
+        - message
+    MisalignmentErrorDetailsResource:
+      properties:
+        error_type:
+          $ref: '#/components/schemas/_MisalignmentErrorType'
+          description: An optional classification; clients must accept additional values.
+        detailed_explanation:
+          type: string
+          description: The public explanation for this block.
+        steer:
+          $ref: '#/components/schemas/_MisalignmentSteer'
+          description: An optional public continuation instruction.
+      type: object
+      required: []
+  responses:
+    InferenceRateLimited:
+      description: The request was rejected because a rate limit was exceeded. A slow_down error means traffic increased too quickly; reduce your request rate, then increase it gradually.
+      headers:
+        Retry-After:
+          description: The minimum number of seconds to wait before retrying. This header is returned when the server has computed a retry delay and may be omitted.
+          schema:
+            type: integer
+            minimum: 1
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            slowDown:
+              summary: Traffic increased too quickly
+              value:
+                error:
+                  message: Your request rate increased too quickly. Please reduce the request rate and gradually increase it again.
+                  type: rate_limit_error
+                  param: null
+                  code: slow_down
+    InferenceServiceUnavailable:
+      description: The service is temporarily unavailable. A server_is_overloaded error means the requested model is temporarily overloaded; retry after a brief delay.
+      headers:
+        Retry-After:
+          description: The minimum number of seconds to wait before retrying. This header is returned when the server has computed a retry delay and may be omitted.
+          schema:
+            type: integer
+            minimum: 1
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            serverOverloaded:
+              summary: The requested model is temporarily overloaded
+              value:
+                error:
+                  message: The model is temporarily overloaded. Please retry your request after a brief delay.
+                  type: service_unavailable_error
+                  param: null
+                  code: server_is_overloaded
   securitySchemes:
     ApiKeyAuth:
       type: http
@@ -4519,6 +4159,8 @@ x-oaiMeta:
       beta: true
     - id: containers
       title: Containers
+    - id: live
+      title: Live (alpha)
     - id: realtime
       title: Realtime
     - id: chat
@@ -4534,12 +4176,20 @@ x-oaiMeta:
     - id: responses-streaming
       title: Streaming events
       description: |
-        When you [create a Response](/docs/api-reference/responses/create) with
+        When you [create a Response](https://developers.openai.com/api/reference/resources/responses/methods/create) with
         `stream` set to `true`, the server will emit server-sent events to the
         client as the Response is generated. This section contains the events that
         are emitted by the server.
 
-        [Learn more about streaming responses](/docs/guides/streaming-responses?api-mode=responses).
+        When processing a `compaction_trigger`, `response.compaction.compacting`
+        reports newly sampled summary output at most once every 30 seconds. It
+        carries no summary content and does not modify the compaction output item.
+        The existing `response.output_item.added` and `response.output_item.done`
+        events mark that item's lifecycle; `response.output_item.done` carries its
+        final encrypted content. A short compaction may finish without emitting a
+        progress event.
+
+        [Learn more about streaming responses](https://developers.openai.com/api/docs/guides/streaming-responses).
       navigationGroup: responses
       sections:
         - type: object
@@ -4562,6 +4212,9 @@ x-oaiMeta:
           path: <auto>
         - type: object
           key: ResponseOutputItemDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseCompactionCompactingEvent
           path: <auto>
         - type: object
           key: ResponseContentPartAddedEvent
@@ -4698,16 +4351,31 @@ x-oaiMeta:
         - type: object
           key: ResponsesClientEventResponseCreate
           path: <auto>
+        - type: object
+          key: ResponseSteerEvent
+          path: <auto>
     - id: responses-websocket-server-events
       title: Server events (WebSocket only)
       description: |
         Events emitted only over a Responses API WebSocket connection.
       navigationGroup: responses
+      sections:
+        - type: object
+          key: ResponseSteerAcceptedEvent
+          path: <auto>
+        - type: object
+          key: ResponseSteerPendingEvent
+          path: <auto>
+        - type: object
+          key: ResponseSteerFailedEvent
+          path: <auto>
     - id: responses-websocket-shared-events
       title: Server events
       description: |
         These events use the same payloads over WebSocket and
-        [HTTP streaming](./streaming-events).
+        [HTTP streaming](https://developers.openai.com/api/reference/resources/responses/streaming-events).
+        Compaction progress follows the same cadence and output-item lifecycle
+        described in HTTP streaming.
       navigationGroup: responses
       sections:
         - type: object
@@ -4730,6 +4398,9 @@ x-oaiMeta:
           path: <auto>
         - type: object
           key: ResponseOutputItemDoneEvent
+          path: <auto>
+        - type: object
+          key: ResponseCompactionCompactingEvent
           path: <auto>
         - type: object
           key: ResponseContentPartAddedEvent
@@ -4857,13 +4528,40 @@ x-oaiMeta:
         - type: object
           key: ResponseErrorEvent
           path: <auto>
+    - id: safety-cases
+      title: Safety Cases
+      description: |
+        Retrieve details about a safety warning or deactivation using the case ID
+        from a `safety.warning_issued` or `safety.deactivation_issued` webhook event.
+        Cases belong to an organization and require an API key with `api.safety.read`.
+      navigationGroup: endpoints
+      sections:
+        - type: endpoint
+          key: Getsafetycase
+          path: retrieve
+        - type: object
+          key: SafetyCaseResource
+          path: object
+    - id: safety-alerts
+      title: Safety Alerts
+      description: |
+        Retrieve approved safety alerts with an API key. Project keys require
+        `api.safety.alerts.read` and can read alerts from their project.
+      navigationGroup: endpoints
+      sections:
+        - type: endpoint
+          key: Getprojectsafetyalert
+          path: retrieve
+        - type: object
+          key: SafetyAlertResource
+          path: object
     - id: webhook-events
       title: Webhook Events
       description: |
         Webhooks are HTTP requests sent by OpenAI to a URL you specify when certain
         events happen during the course of API usage.
 
-        [Learn more about webhooks](/docs/guides/webhooks).
+        [Learn more about webhooks](https://developers.openai.com/api/docs/guides/webhooks).
       navigationGroup: webhooks
       sections:
         - type: object
@@ -4914,11 +4612,26 @@ x-oaiMeta:
         - type: object
           key: WebhookLiveCallIncoming
           path: <auto>
+        - type: object
+          key: WebhookLiveTransportIncoming
+          path: <auto>
+        - type: object
+          key: WebhookSafetyWarningIssued
+          path: <auto>
+        - type: object
+          key: WebhookSafetyDeactivationIssued
+          path: <auto>
+        - type: object
+          key: WebhookSafetyAlertCreated
+          path: <auto>
+        - type: object
+          key: WebhookSafetyOrgAlertCreated
+          path: <auto>
     - id: images-streaming
       title: Image Streaming
       description: |
         Stream image generation and editing in real time with server-sent events.
-        [Learn more about image streaming](/docs/guides/image-generation).
+        [Learn more about image streaming](https://developers.openai.com/api/docs/guides/image-generation).
       navigationGroup: endpoints
       sections:
         - type: object
@@ -5157,7 +4870,7 @@ x-oaiMeta:
       description: |
         Stream Chat Completions in real time. Receive chunks of completions
         returned from the model using server-sent events.
-        [Learn more](/docs/guides/streaming-responses?api-mode=chat).
+        [Learn more](https://developers.openai.com/api/docs/guides/streaming-responses).
       navigationGroup: chat
       sections:
         - type: object
@@ -5168,11 +4881,11 @@ x-oaiMeta:
       beta: true
       description: |
         Stream the result of executing a Run or resuming a Run after submitting tool outputs.
-        You can stream events from the [Create Thread and Run](/docs/api-reference/runs/createThreadAndRun),
-        [Create Run](/docs/api-reference/runs/createRun), and [Submit Tool Outputs](/docs/api-reference/runs/submitToolOutputs)
+        You can stream events from the [Create Thread and Run](https://developers.openai.com/api/docs/assistants/migration),
+        [Create Run](https://developers.openai.com/api/docs/assistants/migration), and [Submit Tool Outputs](https://developers.openai.com/api/docs/assistants/migration)
         endpoints by passing `"stream": true`. The response will be a [Server-Sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) stream.
         Our Node and Python SDKs provide helpful utilities to make streaming easy. Reference the
-        [Assistants API quickstart](/docs/assistants/overview) to learn more.
+        [Assistants API quickstart](https://developers.openai.com/api/docs/assistants/migration) to learn more.
       navigationGroup: assistants
       sections:
         - type: object
@@ -5348,4 +5061,98 @@ x-oaiMeta:
           path: <auto>
         - type: object
           key: RealtimeBetaServerEventRateLimitsUpdated
+          path: <auto>
+    - id: live-client-events
+      title: Client events
+      description: Initialize a primary WebSocket with session.start and wait for session.started before sending other events. WebRTC creation starts the session for you. Start with the [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting) to design frontend instructions and delegation policy; see [backend prompting](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt) for tools and business rules.
+      navigationGroup: live
+      sections:
+        - type: object
+          key: LiveSessionStartEvent
+          path: <auto>
+        - type: object
+          key: LiveForkSessionStartEvent
+          path: <auto>
+        - type: object
+          key: LiveSessionUpdateParam
+          path: <auto>
+        - type: object
+          key: LiveInputAudioAppendEvent
+          path: <auto>
+        - type: object
+          key: LiveInputAudioMuteParam
+          path: <auto>
+        - type: object
+          key: LiveInputAudioUnmuteParam
+          path: <auto>
+        - type: object
+          key: LiveInstructionsAppendParam
+          path: <auto>
+        - type: object
+          key: LiveThinkingAppendParam
+          path: <auto>
+        - type: object
+          key: LiveCommentaryAppendParam
+          path: <auto>
+        - type: object
+          key: LiveResponseItemCreateParam
+          path: <auto>
+        - type: object
+          key: LiveResponseCreateParam
+          path: <auto>
+        - type: object
+          key: LiveSessionCloseParam
+          path: <auto>
+    - id: live-server-events
+      title: Server events
+      description: Live server events. Responses delegation lifecycle events arrive inside response.event, not as top-level response events. Start with the [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting) to design frontend instructions and delegation policy; see [backend prompting](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt) for tools and business rules.
+      navigationGroup: live
+      sections:
+        - type: object
+          key: LiveSessionStarted
+          path: <auto>
+        - type: object
+          key: LiveSessionUpdated
+          path: <auto>
+        - type: object
+          key: LiveInputAudioMuted
+          path: <auto>
+        - type: object
+          key: LiveInputAudioUnmuted
+          path: <auto>
+        - type: object
+          key: LiveInstructionsAppended
+          path: <auto>
+        - type: object
+          key: LiveThinkingAppended
+          path: <auto>
+        - type: object
+          key: LiveCommentaryAppended
+          path: <auto>
+        - type: object
+          key: LiveOutputAudioDelta
+          path: <auto>
+        - type: object
+          key: LiveInputTranscriptDelta
+          path: <auto>
+        - type: object
+          key: LiveOutputTranscriptDelta
+          path: <auto>
+        - type: object
+          key: LiveDelegationCreated
+          path: <auto>
+        - type: object
+          key: LiveResponseEvent
+          path: <auto>
+        - type: object
+          key: LiveSessionUsageUpdated
+          path: <auto>
+        - type: object
+          key: LiveSessionClosed
+          path: <auto>
+        - type: object
+          key: LiveErrorEvent
+          path: <auto>
+        - type: object
+          key: LiveInfoEvent
           path: <auto>

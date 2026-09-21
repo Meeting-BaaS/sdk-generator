@@ -18,13 +18,17 @@ export interface TTSModel {
   languages: Language[];
   /** List of available voices for this model. */
   voices: TTSVoice[];
-  supports_timestamps?: boolean;
+  supports_timestamps: boolean;
+  /** Whether the model supports voice cloning, that is voices created with `POST /v1/voices`. */
+  supports_voice_cloning: boolean;
+  /** Maximum duration (in milliseconds) of the reference audio accepted for voice cloning. Null when the model does not support voice cloning. */
+  voice_cloning_max_audio_duration_ms: number | null;
   /** Whether the model supports adjusting the speaking rate via the `speed` parameter. */
   supports_speed_adjustment: boolean;
-  /** Minimum supported speaking rate. */
-  speed_min: number;
-  /** Maximum supported speaking rate. */
-  speed_max: number;
+  /** Minimum supported speaking rate. Null when the model does not support speed adjustment. */
+  speed_min: number | null;
+  /** Maximum supported speaking rate. Null when the model does not support speed adjustment. */
+  speed_max: number | null;
   /** Whether the model supports shortening the pauses between words via the `reduce_silence` parameter. */
   supports_silence_reduction: boolean;
 }

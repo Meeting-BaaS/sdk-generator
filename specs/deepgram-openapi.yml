@@ -152,7 +152,7 @@ paths:
               type: string
         - name: keywords
           in: query
-          description: Keywords can boost or suppress specialized terminology and brands
+          description: Keywords can boost or suppress specialized terminology and brands. `keywords` is not supported with Nova-3 models; use `keyterm` instead.
           required: false
           schema:
             $ref: '#/components/schemas/V1ListenPostParametersKeywords'
@@ -267,14 +267,6 @@ paths:
           schema:
             type: boolean
             default: false
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Returns either transcription results, or a request_id when using a callback.
@@ -294,6 +286,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ListenV1RequestUrl'
+      security:
+        - ApiKeyAuth: []
   /v1/speak:
     post:
       operationId: speakGenerate
@@ -373,14 +367,6 @@ paths:
             minimum: 0.7
             maximum: 1.5
             default: 1
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Successful text-to-speech transformation
@@ -400,6 +386,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SpeakV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/read:
     post:
       operationId: readAnalyze
@@ -487,14 +475,6 @@ paths:
           schema:
             type: string
             default: en
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Successful text analysis
@@ -514,6 +494,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReadV1Request'
+      security:
+        - ApiKeyAuth: []
   /v1/models:
     get:
       operationId: listModels
@@ -528,14 +510,6 @@ paths:
           required: false
           schema:
             type: boolean
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of models
@@ -549,6 +523,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/models/{model_id}:
     get:
       operationId: getModel
@@ -560,14 +536,6 @@ paths:
         - name: model_id
           in: path
           description: The specific UUID of the model
-          required: true
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
           required: true
           schema:
             type: string
@@ -584,6 +552,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/requests:
     get:
       operationId: listProjectRequests
@@ -665,14 +635,6 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/V1ProjectsProjectIdRequestsGetParametersStatus'
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A list of requests for a specific project
@@ -686,6 +648,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
   /v1/projects/{project_id}/requests/{request_id}:
     get:
       operationId: getProjectRequest
@@ -706,14 +670,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: Authorization
-          in: header
-          description: |
-            Use `Authorization: Token <API_KEY>`
-            Example: `Authorization: Token 12345abcdef`
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A specific request for a specific project
@@ -727,6 +683,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
+tags:
+  - name: models
 servers:
   - url: https://agent.deepgram.com
     description: Production
@@ -961,6 +921,20 @@ components:
       type: object
       properties: {}
       title: ListenV1ResponseMetadataModelInfo
+    ListenV1ResponseMetadataDiarizeInfo:
+      type: object
+      properties:
+        model_uuid:
+          type: string
+          description: The diarizer model UUID
+        arch:
+          type: string
+          description: The diarizer arch, such as `v1` or `v2`
+      required:
+        - model_uuid
+        - arch
+      description: The diarizer that produced the speaker labels. Present only when a diarizer ran.
+      title: ListenV1ResponseMetadataDiarizeInfo
     ListenV1ResponseMetadataSummaryInfo:
       type: object
       properties:
@@ -1027,6 +1001,9 @@ components:
             type: string
         model_info:
           $ref: '#/components/schemas/ListenV1ResponseMetadataModelInfo'
+        diarize_info:
+          $ref: '#/components/schemas/ListenV1ResponseMetadataDiarizeInfo'
+          description: The diarizer that produced the speaker labels. Present only when a diarizer ran.
         summary_info:
           $ref: '#/components/schemas/ListenV1ResponseMetadataSummaryInfo'
         sentiment_info:
@@ -1687,7 +1664,6 @@ components:
         - aura-2-livia-it
         - aura-2-maia-it
         - aura-2-melia-it
-        - aura-2-perseo-it
         - aura-2-ama-ja
         - aura-2-ebisu-ja
         - aura-2-fujin-ja

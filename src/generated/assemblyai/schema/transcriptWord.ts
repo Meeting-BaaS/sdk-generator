@@ -29,4 +29,11 @@ export interface TranscriptWord {
      * @nullable
      */
   speaker: string | null;
+  /**
+     * The confidence score for the speaker label of this word, between 0 and 1. Only present when `speaker_options.include_speaker_confidence` is `true`.
+     * @minimum 0
+     * @maximum 1
+     * @nullable
+     */
+  speaker_confidence?: number | null;
 }

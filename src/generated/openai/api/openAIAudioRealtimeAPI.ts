@@ -33,10 +33,10 @@ import type {
 } from '../schema';
 
 /**
- * @summary Generates audio from the input text.
-
-Returns the audio file content, or a stream of audio events.
-
+ * Generates audio from the input text.
+ *
+ * Returns the audio file content, or a stream of audio events.
+ * @summary Create speech
  */
 export const createSpeech = (
     createSpeechRequest: CreateSpeechRequest, options?: AxiosRequestConfig
@@ -50,11 +50,11 @@ export const createSpeech = (
   }
 
 /**
- * @summary Transcribes audio into the input language.
-
-Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
-format, or a stream of transcript events.
-
+ * Transcribes audio into the input language.
+ *
+ * Returns a transcription object in `json`, `diarized_json`, or `verbose_json`
+ * format, or a stream of transcript events.
+ * @summary Create transcription
  */
 export const createTranscription = (
     createTranscriptionRequest: CreateTranscriptionRequest, options?: AxiosRequestConfig
@@ -105,7 +105,8 @@ if(createTranscriptionRequest.known_speaker_references !== undefined) {
   }
 
 /**
- * @summary Translates audio into English.
+ * Translates audio into English.
+ * @summary Create translation
  */
 export const createTranslation = (
     createTranslationRequest: CreateTranslationRequest, options?: AxiosRequestConfig
@@ -129,10 +130,8 @@ if(createTranslationRequest.temperature !== undefined) {
   }
 
 /**
- * Create a custom voice you can use for audio output (for example, in Text-to-Speech and the Realtime API). This requires an audio sample and a previously uploaded consent recording.
- *
- * See the [custom voices guide](/docs/guides/text-to-speech#custom-voices) for requirements and best practices. Custom voices are limited to eligible customers.
- * @summary Creates a custom voice.
+ * Creates a custom voice.
+ * @summary Create voice
  */
 export const createVoice = (
     createVoiceRequest: CreateVoiceRequest, options?: AxiosRequestConfig
@@ -148,20 +147,20 @@ formData.append(`consent`, createVoiceRequest.consent);
   }
 
 /**
- * @summary Create a Realtime client secret with an associated session configuration.
-
-Client secrets are short-lived tokens that can be passed to a client app,
-such as a web frontend or mobile client, which grants access to the Realtime API without
-leaking your main API key. You can configure a custom TTL for each client secret.
-
-You can also attach session configuration options to the client secret, which will be
-applied to any sessions created using that client secret, but these can also be overridden
-by the client connection.
-
-[Learn more about authentication with client secrets over WebRTC](/docs/guides/realtime-webrtc).
-
-Returns the created client secret and the effective session object. The client secret is a string that looks like `ek_1234`.
-
+ * Create a Realtime client secret with an associated session configuration.
+ *
+ * Client secrets are short-lived tokens that can be passed to a client app,
+ * such as a web frontend or mobile client, which grants access to the Realtime API without
+ * leaking your main API key. You can configure a custom TTL for each client secret.
+ *
+ * You can also attach session configuration options to the client secret, which will be
+ * applied to any sessions created using that client secret, but these can also be overridden
+ * by the client connection.
+ *
+ * [Learn more about authentication with client secrets over WebRTC](https://developers.openai.com/api/docs/guides/realtime-webrtc).
+ *
+ * Returns the created client secret and the effective session object. The client secret is a string that looks like `ek_1234`.
+ * @summary Create client secret
  */
 export const createRealtimeClientSecret = (
     realtimeCreateClientSecretRequest: RealtimeCreateClientSecretRequest, options?: AxiosRequestConfig
@@ -173,16 +172,16 @@ export const createRealtimeClientSecret = (
   }
 
 /**
- * @summary Create an ephemeral API token for use in client-side applications with the
-Realtime API. Can be configured with the same session parameters as the
-`session.update` client event.
-
-It responds with a session object, plus a `client_secret` key which contains
-a usable ephemeral API token that can be used to authenticate browser clients
-for the Realtime API.
-
-Returns the created Realtime session object, plus an ephemeral key.
-
+ * Create an ephemeral API token for use in client-side applications with the
+ * Realtime API. Can be configured with the same session parameters as the
+ * `session.update` client event.
+ *
+ * It responds with a session object, plus a `client_secret` key which contains
+ * a usable ephemeral API token that can be used to authenticate browser clients
+ * for the Realtime API.
+ *
+ * Returns the created Realtime session object, plus an ephemeral key.
+ * @summary Create session
  */
 export const createRealtimeSession = (
     realtimeSessionCreateRequest: RealtimeSessionCreateRequest, options?: AxiosRequestConfig
@@ -194,16 +193,16 @@ export const createRealtimeSession = (
   }
 
 /**
- * @summary Create an ephemeral API token for use in client-side applications with the
-Realtime API specifically for realtime transcriptions.
-Can be configured with the same session parameters as the `transcription_session.update` client event.
-
-It responds with a session object, plus a `client_secret` key which contains
-a usable ephemeral API token that can be used to authenticate browser clients
-for the Realtime API.
-
-Returns the created Realtime transcription session object, plus an ephemeral key.
-
+ * Create an ephemeral API token for use in client-side applications with the
+ * Realtime API specifically for realtime transcriptions.
+ * Can be configured with the same session parameters as the `transcription_session.update` client event.
+ *
+ * It responds with a session object, plus a `client_secret` key which contains
+ * a usable ephemeral API token that can be used to authenticate browser clients
+ * for the Realtime API.
+ *
+ * Returns the created Realtime transcription session object, plus an ephemeral key.
+ * @summary Create transcription session
  */
 export const createRealtimeTranscriptionSession = (
     realtimeTranscriptionSessionCreateRequest: RealtimeTranscriptionSessionCreateRequest, options?: AxiosRequestConfig

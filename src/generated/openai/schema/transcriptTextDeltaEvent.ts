@@ -9,14 +9,14 @@ import type { TranscriptTextDeltaEventLogprobsItem } from './transcriptTextDelta
 import type { TranscriptTextDeltaEventType } from './transcriptTextDeltaEventType.js';
 
 /**
- * Emitted when there is an additional text delta. This is also the first event emitted when the transcription starts. Only emitted when you [create a transcription](/docs/api-reference/audio/create-transcription) with the `Stream` parameter set to `true`.
+ * Emitted when there is an additional text delta. This is also the first event emitted when the transcription starts. Only emitted when you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `Stream` parameter set to `true`.
  */
 export interface TranscriptTextDeltaEvent {
   /** The type of the event. Always `transcript.text.delta`. */
   type: TranscriptTextDeltaEventType;
   /** The text delta that was additionally transcribed. */
   delta: string;
-  /** The log probabilities of the delta. Only included if you [create a transcription](/docs/api-reference/audio/create-transcription) with the `include[]` parameter set to `logprobs`. */
+  /** The log probabilities of the delta. Only included if you [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create) with the `include[]` parameter set to `logprobs`. */
   logprobs?: TranscriptTextDeltaEventLogprobsItem[];
   /** Identifier of the diarized segment that this delta belongs to. Only present when using `gpt-4o-transcribe-diarize`. */
   segment_id?: string;

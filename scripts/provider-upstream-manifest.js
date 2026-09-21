@@ -35,7 +35,7 @@ const SPEC_SOURCES = {
     fixedBy: "fix-deepgram-spec.js"
   },
   openai: {
-    url: "https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml",
+    url: "https://raw.githubusercontent.com/openai/openai-openapi/master/openapi.yaml",
     output: "specs/openai-openapi.yaml",
     format: "yaml",
     fixedBy: "fix-openai-spec.js"

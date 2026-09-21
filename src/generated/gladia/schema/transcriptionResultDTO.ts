@@ -5,7 +5,6 @@
  * OpenAPI spec version: 1.0
  */
 import type { AudioToLlmListDTO } from './audioToLlmListDTO.js';
-import type { ChapterizationDTO } from './chapterizationDTO.js';
 import type { DiarizationDTO } from './diarizationDTO.js';
 import type { DisplayModeDTO } from './displayModeDTO.js';
 import type { ModerationDTO } from './moderationDTO.js';
@@ -47,8 +46,6 @@ export interface TranscriptionResultDTO {
   sentences?: SentencesDTO;
   /** If `display_mode` has been enabled, the output will be reordered, creating new utterances when speakers overlapped */
   display_mode?: DisplayModeDTO;
-  /** If `chapterization` has been enabled, will generate chapters name for different parts of the given audio. */
-  chapterization?: ChapterizationDTO;
   /** If `diarization` has been requested and an error has occurred, the result will appear here */
   diarization?: DiarizationDTO;
 }

@@ -534,17 +534,6 @@ export const PreRecordedControllerGetPreRecordedJobsV2Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.array(zod.string()).nullable().describe('If `display_mode` has been enabled, proposes an alternative display output.')
 }).optional().describe('If `display_mode` has been enabled, the output will be reordered, creating new utterances when speakers overlapped'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "diarization": zod.object({
   "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
   "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
@@ -940,17 +929,6 @@ export const PreRecordedControllerGetPreRecordedJobV2Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.array(zod.string()).nullable().describe('If `display_mode` has been enabled, proposes an alternative display output.')
 }).optional().describe('If `display_mode` has been enabled, the output will be reordered, creating new utterances when speakers overlapped'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "diarization": zod.object({
   "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
   "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
@@ -1580,17 +1558,6 @@ export const TranscriptionControllerListV2Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.array(zod.string()).nullable().describe('If `display_mode` has been enabled, proposes an alternative display output.')
 }).optional().describe('If `display_mode` has been enabled, the output will be reordered, creating new utterances when speakers overlapped'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "diarization": zod.object({
   "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
   "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
@@ -1686,7 +1653,7 @@ export const TranscriptionControllerListV2Response = zod.object({
   "summarization_config": zod.object({
   "type": zod.enum(['general', 'bullet_points', 'concise']).describe('The type of summarization to apply').default(transcriptionControllerListV2ResponseItemsItemTwoRequestParamsOnePostProcessingOneSummarizationConfigOneTypeDefault).describe('The type of summarization to apply')
 }).optional().describe('Summarization configuration, if `summarization` is enabled'),
-  "chapterization": zod.boolean().default(transcriptionControllerListV2ResponseItemsItemTwoRequestParamsOnePostProcessingOneChapterizationDefault).describe('If true, generates chapters for the whole transcription.')
+  "chapterization": zod.boolean().default(transcriptionControllerListV2ResponseItemsItemTwoRequestParamsOnePostProcessingOneChapterizationDefault).describe('Deprecated: this parameter is ignored.')
 }).optional().describe('Specify the post-processing configuration'),
   "messages_config": zod.object({
   "receive_partial_transcripts": zod.boolean().default(transcriptionControllerListV2ResponseItemsItemTwoRequestParamsOneMessagesConfigOneReceivePartialTranscriptsDefault).describe('If true, partial transcript will be sent to websocket.'),
@@ -1841,17 +1808,6 @@ export const TranscriptionControllerListV2Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.string().describe('If `sentiment_analysis` has been enabled, Gladia will analyze the sentiments and emotions of the audio')
 }).optional().describe('If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "messages": zod.array(zod.string()).optional().describe('Real-Time messages sent by the server during the live transcription')
 }).nullish().describe('Live transcription\'s result when status is \"done\"')
 })])).describe('List of transcriptions')
@@ -2295,17 +2251,6 @@ export const TranscriptionControllerGetTranscriptV2Response = zod.union([zod.obj
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.array(zod.string()).nullable().describe('If `display_mode` has been enabled, proposes an alternative display output.')
 }).optional().describe('If `display_mode` has been enabled, the output will be reordered, creating new utterances when speakers overlapped'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "diarization": zod.object({
   "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
   "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
@@ -2401,7 +2346,7 @@ export const TranscriptionControllerGetTranscriptV2Response = zod.union([zod.obj
   "summarization_config": zod.object({
   "type": zod.enum(['general', 'bullet_points', 'concise']).describe('The type of summarization to apply').default(transcriptionControllerGetTranscriptV2ResponseTwoRequestParamsOnePostProcessingOneSummarizationConfigOneTypeDefault).describe('The type of summarization to apply')
 }).optional().describe('Summarization configuration, if `summarization` is enabled'),
-  "chapterization": zod.boolean().default(transcriptionControllerGetTranscriptV2ResponseTwoRequestParamsOnePostProcessingOneChapterizationDefault).describe('If true, generates chapters for the whole transcription.')
+  "chapterization": zod.boolean().default(transcriptionControllerGetTranscriptV2ResponseTwoRequestParamsOnePostProcessingOneChapterizationDefault).describe('Deprecated: this parameter is ignored.')
 }).optional().describe('Specify the post-processing configuration'),
   "messages_config": zod.object({
   "receive_partial_transcripts": zod.boolean().default(transcriptionControllerGetTranscriptV2ResponseTwoRequestParamsOneMessagesConfigOneReceivePartialTranscriptsDefault).describe('If true, partial transcript will be sent to websocket.'),
@@ -2556,17 +2501,6 @@ export const TranscriptionControllerGetTranscriptV2Response = zod.union([zod.obj
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.string().describe('If `sentiment_analysis` has been enabled, Gladia will analyze the sentiments and emotions of the audio')
 }).optional().describe('If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "messages": zod.array(zod.string()).optional().describe('Real-Time messages sent by the server during the live transcription')
 }).nullish().describe('Live transcription\'s result when status is \"done\"')
 })])
@@ -3105,17 +3039,6 @@ export const HistoryControllerGetListV1Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.array(zod.string()).nullable().describe('If `display_mode` has been enabled, proposes an alternative display output.')
 }).optional().describe('If `display_mode` has been enabled, the output will be reordered, creating new utterances when speakers overlapped'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "diarization": zod.object({
   "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
   "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
@@ -3211,7 +3134,7 @@ export const HistoryControllerGetListV1Response = zod.object({
   "summarization_config": zod.object({
   "type": zod.enum(['general', 'bullet_points', 'concise']).describe('The type of summarization to apply').default(historyControllerGetListV1ResponseItemsItemTwoRequestParamsOnePostProcessingOneSummarizationConfigOneTypeDefault).describe('The type of summarization to apply')
 }).optional().describe('Summarization configuration, if `summarization` is enabled'),
-  "chapterization": zod.boolean().default(historyControllerGetListV1ResponseItemsItemTwoRequestParamsOnePostProcessingOneChapterizationDefault).describe('If true, generates chapters for the whole transcription.')
+  "chapterization": zod.boolean().default(historyControllerGetListV1ResponseItemsItemTwoRequestParamsOnePostProcessingOneChapterizationDefault).describe('Deprecated: this parameter is ignored.')
 }).optional().describe('Specify the post-processing configuration'),
   "messages_config": zod.object({
   "receive_partial_transcripts": zod.boolean().default(historyControllerGetListV1ResponseItemsItemTwoRequestParamsOneMessagesConfigOneReceivePartialTranscriptsDefault).describe('If true, partial transcript will be sent to websocket.'),
@@ -3366,17 +3289,6 @@ export const HistoryControllerGetListV1Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.string().describe('If `sentiment_analysis` has been enabled, Gladia will analyze the sentiments and emotions of the audio')
 }).optional().describe('If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "messages": zod.array(zod.string()).optional().describe('Real-Time messages sent by the server during the live transcription')
 }).nullish().describe('Live transcription\'s result when status is \"done\"')
 })])).describe('List of jobs')
@@ -3501,7 +3413,7 @@ export const StreamingControllerInitStreamingSessionV2Body = zod.object({
   "summarization_config": zod.object({
   "type": zod.enum(['general', 'bullet_points', 'concise']).describe('The type of summarization to apply').default(streamingControllerInitStreamingSessionV2BodyPostProcessingOneSummarizationConfigOneTypeDefault).describe('The type of summarization to apply')
 }).optional().describe('Summarization configuration, if `summarization` is enabled'),
-  "chapterization": zod.boolean().default(streamingControllerInitStreamingSessionV2BodyPostProcessingOneChapterizationDefault).describe('If true, generates chapters for the whole transcription.')
+  "chapterization": zod.boolean().default(streamingControllerInitStreamingSessionV2BodyPostProcessingOneChapterizationDefault).describe('Deprecated: this parameter is ignored.')
 }).optional().describe('Specify the post-processing configuration'),
   "messages_config": zod.object({
   "receive_partial_transcripts": zod.boolean().default(streamingControllerInitStreamingSessionV2BodyMessagesConfigOneReceivePartialTranscriptsDefault).describe('If true, partial transcript will be sent to websocket.'),
@@ -3703,7 +3615,7 @@ export const StreamingControllerGetStreamingJobsV2Response = zod.object({
   "summarization_config": zod.object({
   "type": zod.enum(['general', 'bullet_points', 'concise']).describe('The type of summarization to apply').default(streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsOnePostProcessingOneSummarizationConfigOneTypeDefault).describe('The type of summarization to apply')
 }).optional().describe('Summarization configuration, if `summarization` is enabled'),
-  "chapterization": zod.boolean().default(streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsOnePostProcessingOneChapterizationDefault).describe('If true, generates chapters for the whole transcription.')
+  "chapterization": zod.boolean().default(streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsOnePostProcessingOneChapterizationDefault).describe('Deprecated: this parameter is ignored.')
 }).optional().describe('Specify the post-processing configuration'),
   "messages_config": zod.object({
   "receive_partial_transcripts": zod.boolean().default(streamingControllerGetStreamingJobsV2ResponseItemsItemRequestParamsOneMessagesConfigOneReceivePartialTranscriptsDefault).describe('If true, partial transcript will be sent to websocket.'),
@@ -3858,17 +3770,6 @@ export const StreamingControllerGetStreamingJobsV2Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.string().describe('If `sentiment_analysis` has been enabled, Gladia will analyze the sentiments and emotions of the audio')
 }).optional().describe('If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "messages": zod.array(zod.string()).optional().describe('Real-Time messages sent by the server during the live transcription')
 }).nullish().describe('Live transcription\'s result when status is \"done\"')
 })).describe('List of live transcriptions')
@@ -4025,7 +3926,7 @@ export const StreamingControllerGetStreamingJobV2Response = zod.object({
   "summarization_config": zod.object({
   "type": zod.enum(['general', 'bullet_points', 'concise']).describe('The type of summarization to apply').default(streamingControllerGetStreamingJobV2ResponseRequestParamsOnePostProcessingOneSummarizationConfigOneTypeDefault).describe('The type of summarization to apply')
 }).optional().describe('Summarization configuration, if `summarization` is enabled'),
-  "chapterization": zod.boolean().default(streamingControllerGetStreamingJobV2ResponseRequestParamsOnePostProcessingOneChapterizationDefault).describe('If true, generates chapters for the whole transcription.')
+  "chapterization": zod.boolean().default(streamingControllerGetStreamingJobV2ResponseRequestParamsOnePostProcessingOneChapterizationDefault).describe('Deprecated: this parameter is ignored.')
 }).optional().describe('Specify the post-processing configuration'),
   "messages_config": zod.object({
   "receive_partial_transcripts": zod.boolean().default(streamingControllerGetStreamingJobV2ResponseRequestParamsOneMessagesConfigOneReceivePartialTranscriptsDefault).describe('If true, partial transcript will be sent to websocket.'),
@@ -4180,17 +4081,6 @@ export const StreamingControllerGetStreamingJobV2Response = zod.object({
 }).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
   "results": zod.string().describe('If `sentiment_analysis` has been enabled, Gladia will analyze the sentiments and emotions of the audio')
 }).optional().describe('If `sentiment_analysis` has been enabled, sentiment analysis of the audio speech transcription'),
-  "chapterization": zod.object({
-  "success": zod.boolean().describe('The audio intelligence model succeeded to get a valid output'),
-  "is_empty": zod.boolean().describe('The audio intelligence model returned an empty value'),
-  "exec_time": zod.number().describe('Time audio intelligence model took to complete the task'),
-  "error": zod.object({
-  "status_code": zod.number().describe('Status code of the addon error'),
-  "exception": zod.string().describe('Reason of the addon error'),
-  "message": zod.string().describe('Detailed message of the addon error')
-}).nullable().describe('`null` if `success` is `true`. Contains the error details of the failed model'),
-  "results": zod.record(zod.string(), zod.unknown()).nullable().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.')
-}).optional().describe('If `chapterization` has been enabled, will generate chapters name for different parts of the given audio.'),
   "messages": zod.array(zod.string()).optional().describe('Real-Time messages sent by the server during the live transcription')
 }).nullish().describe('Live transcription\'s result when status is \"done\"')
 })

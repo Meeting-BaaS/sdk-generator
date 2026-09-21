@@ -767,22 +767,6 @@ describe("GladiaAdapter", () => {
       }
     })
     ws.receive({
-      type: "post_chapterization",
-      session_id: "live-1",
-      created_at: "2026-06-24T00:00:09Z",
-      error: null,
-      data: {
-        results: [
-          {
-            headline: "Intro",
-            summary: "Greeting",
-            start: 0,
-            end: 1.2
-          }
-        ]
-      }
-    })
-    ws.receive({
       type: "audio_chunk_ack",
       session_id: "live-1",
       created_at: "2026-06-24T00:00:10Z",
@@ -869,16 +853,9 @@ describe("GladiaAdapter", () => {
     expect(onSummarization).toHaveBeenCalledWith({
       summary: "Greeting summary"
     })
-    expect(onChapterization).toHaveBeenCalledWith({
-      chapters: [
-        {
-          headline: "Intro",
-          summary: "Greeting",
-          start: 0,
-          end: 1.2
-        }
-      ]
-    })
+    // Gladia retired post-processing chapterization (2026-09); the live
+    // "post_chapterization" message no longer exists upstream.
+    expect(onChapterization).not.toHaveBeenCalled()
     expect(onAudioAck).toHaveBeenCalledWith({
       byteRange: [0, 3],
       timeRange: [0, 0.1],
