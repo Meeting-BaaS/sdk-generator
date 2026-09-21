@@ -35,6 +35,9 @@ export const ERROR_CODES = {
   /** Rate limit exceeded */
   RATE_LIMIT: "RATE_LIMIT",
 
+  /** Network-level failure before an HTTP response (DNS, reset, refused) */
+  NETWORK_ERROR: "NETWORK_ERROR",
+
   /** Provider server error (5xx) */
   SERVER_ERROR: "SERVER_ERROR",
 
@@ -64,6 +67,7 @@ export const ERROR_MESSAGES: Record<ErrorCode, string> = {
   INVALID_INPUT: "Invalid input provided",
   AUTHENTICATION_ERROR: "Authentication failed (invalid or missing API key)",
   RATE_LIMIT: "Rate limit exceeded",
+  NETWORK_ERROR: "Network error before a response was received",
   SERVER_ERROR: "Provider server error",
   NOT_SUPPORTED: "Operation not supported by this provider",
   NO_RESULTS: "No transcription results available",
@@ -213,4 +217,93 @@ export function extractProviderMessage(data: unknown): string | undefined {
   // Deepgram legacy: { err_msg: "..." }
   if (typeof d.err_msg === "string") return d.err_msg
   return undefined
+}
+
+/**
+ * Extract structured validation messages from a provider's HTTP error body
+ *
+ * Providers report field-level validation failures in arrays that the summary
+ * message only alludes to (e.g. Gladia's "See validation_errors for more
+ * details."). Covered shapes:
+ * - Gladia: `{ validation_errors: ["..."] }`
+ * - AssemblyAI/Deepgram style: `{ errors: ["..."] }` or `{ errors: [{ message: "..." }] }`
+ * - FastAPI (ElevenLabs, Soniox): `{ detail: [{ loc: [...], msg: "..." }] }`
+ */
+export function extractValidationErrors(data: unknown): string[] | undefined {
+  if (!data || typeof data !== "object") return undefined
+  const d = data as Record<string, unknown>
+
+  const collected: string[] = []
+
+  const pushEntry = (entry: unknown) => {
+    if (typeof entry === "string") {
+      collected.push(entry)
+      return
+    }
+    if (entry && typeof entry === "object") {
+      const e = entry as Record<string, unknown>
+      // FastAPI: { loc: ["body", "field"], msg: "..." }
+      if (typeof e.msg === "string") {
+        const loc = Array.isArray(e.loc) ? e.loc.join(".") : undefined
+        collected.push(loc ? `${loc}: ${e.msg}` : e.msg)
+        return
+      }
+      if (typeof e.message === "string") {
+        collected.push(e.message)
+      }
+    }
+  }
+
+  if (Array.isArray(d.validation_errors)) {
+    for (const entry of d.validation_errors) pushEntry(entry)
+  }
+  if (Array.isArray(d.errors)) {
+    for (const entry of d.errors) pushEntry(entry)
+  }
+  if (Array.isArray(d.detail)) {
+    for (const entry of d.detail) pushEntry(entry)
+  }
+
+  return collected.length > 0 ? collected : undefined
+}
+
+/**
+ * Map a Node/axios errno-style error code to a semantic SDK error code
+ *
+ * These errors carry no HTTP response, so the status-based mapping never
+ * runs; without this they were all reported as UNKNOWN_ERROR.
+ */
+export function errnoToErrorCode(code: string | undefined): ErrorCode | undefined {
+  switch (code) {
+    case "ECONNABORTED": // axios request timeout
+    case "ETIMEDOUT":
+      return ERROR_CODES.CONNECTION_TIMEOUT
+    case "ECONNRESET":
+    case "ECONNREFUSED":
+    case "ENOTFOUND":
+    case "EAI_AGAIN":
+    case "EPIPE":
+      return ERROR_CODES.NETWORK_ERROR
+    default:
+      return undefined
+  }
+}
+
+/**
+ * Error codes worth retrying: the failure is transient (network, timeout,
+ * throttling, provider outage) rather than a property of the request.
+ */
+export const RETRYABLE_ERROR_CODES: ReadonlySet<ErrorCode> = new Set([
+  ERROR_CODES.CONNECTION_TIMEOUT,
+  ERROR_CODES.NETWORK_ERROR,
+  ERROR_CODES.RATE_LIMIT,
+  ERROR_CODES.SERVER_ERROR,
+  ERROR_CODES.POLLING_TIMEOUT
+])
+
+/**
+ * Whether an error code represents a transient failure that a retry can fix
+ */
+export function isRetryableErrorCode(code: string): boolean {
+  return RETRYABLE_ERROR_CODES.has(code as ErrorCode)
 }

@@ -293,3 +293,104 @@ describe("BaseAdapter helpers", () => {
     })
   })
 })
+
+describe("createErrorResponse normalization", () => {
+  const initialized = () => {
+    const adapter = new HarnessAdapter()
+    adapter.initialize({ apiKey: "secret", timeout: 1234 })
+    return adapter
+  }
+
+  it("appends Gladia validation_errors to the message and exposes them structured", () => {
+    const adapter = initialized()
+    const axiosError = Object.assign(new Error("Request failed with status code 400"), {
+      response: {
+        status: 400,
+        statusText: "Bad Request",
+        data: {
+          statusCode: 400,
+          message: "Invalid parameter(s). See validation_errors for more details.",
+          validation_errors: ["audio_to_llm_config.each value in prompts must be a string"]
+        }
+      }
+    })
+
+    const result = adapter.exposeErrorResponse(axiosError)
+
+    expect(result.error?.message).toBe(
+      "Invalid parameter(s). See validation_errors for more details.; audio_to_llm_config.each value in prompts must be a string"
+    )
+    expect(result.error?.validationErrors).toEqual([
+      "audio_to_llm_config.each value in prompts must be a string"
+    ])
+    expect(result.error?.code).toBe(ERROR_CODES.INVALID_INPUT)
+    expect(result.error?.retryable).toBe(false)
+  })
+
+  it("extracts FastAPI-style detail arrays with field locations", () => {
+    const adapter = initialized()
+    const axiosError = Object.assign(new Error("Request failed with status code 422"), {
+      response: {
+        status: 422,
+        data: {
+          detail: [{ loc: ["body", "language_code"], msg: "value is not a valid enumeration" }]
+        }
+      }
+    })
+
+    const result = adapter.exposeErrorResponse(axiosError)
+
+    expect(result.error?.validationErrors).toEqual([
+      "body.language_code: value is not a valid enumeration"
+    ])
+    expect(result.error?.message).toContain("body.language_code: value is not a valid enumeration")
+  })
+
+  it("classifies axios timeouts as retryable CONNECTION_TIMEOUT with the timeout budget", () => {
+    const adapter = initialized()
+    const axiosError = Object.assign(new Error("timeout of 1234ms exceeded"), {
+      code: "ECONNABORTED"
+    })
+
+    const result = adapter.exposeErrorResponse(axiosError)
+
+    expect(result.error?.code).toBe(ERROR_CODES.CONNECTION_TIMEOUT)
+    expect(result.error?.retryable).toBe(true)
+    expect(result.error?.statusCode).toBeUndefined()
+    expect((result.error?.details as { timeoutMs?: number }).timeoutMs).toBe(1234)
+  })
+
+  it("classifies network errnos as retryable NETWORK_ERROR", () => {
+    const adapter = initialized()
+
+    for (const errno of ["ECONNRESET", "ECONNREFUSED", "ENOTFOUND", "EAI_AGAIN", "EPIPE"]) {
+      const result = adapter.exposeErrorResponse(
+        Object.assign(new Error(`socket error ${errno}`), { code: errno })
+      )
+      expect(result.error?.code).toBe(ERROR_CODES.NETWORK_ERROR)
+      expect(result.error?.retryable).toBe(true)
+      expect(result.error?.statusCode).toBeUndefined()
+    }
+  })
+
+  it("marks throttling and server errors retryable, HTTP status winning over errno", () => {
+    const adapter = initialized()
+
+    const throttled = adapter.exposeErrorResponse(
+      Object.assign(new Error("Request failed with status code 429"), {
+        code: "ECONNRESET",
+        response: { status: 429, data: { message: "Too many requests" } }
+      })
+    )
+    expect(throttled.error?.code).toBe(ERROR_CODES.RATE_LIMIT)
+    expect(throttled.error?.retryable).toBe(true)
+
+    const server = adapter.exposeErrorResponse(
+      Object.assign(new Error("Request failed with status code 503"), {
+        response: { status: 503, data: {} }
+      })
+    )
+    expect(server.error?.code).toBe(ERROR_CODES.SERVER_ERROR)
+    expect(server.error?.retryable).toBe(true)
+  })
+})

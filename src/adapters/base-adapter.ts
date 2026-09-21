@@ -19,8 +19,11 @@ import type {
 import {
   ERROR_CODES,
   type ErrorCode,
+  errnoToErrorCode,
   extractProviderMessage,
-  httpStatusToErrorCode
+  extractValidationErrors,
+  httpStatusToErrorCode,
+  isRetryableErrorCode
 } from "../utils/errors"
 
 /**
@@ -209,15 +212,29 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
     const httpStatusText = err.response?.statusText
     const responseData = err.response?.data
 
-    // Derive semantic error code from HTTP status when no explicit code given
+    // Derive semantic error code: explicit code, then HTTP status, then
+    // Node/axios errno (timeouts and network failures carry no response)
+    const errnoCode = httpStatus ? undefined : errnoToErrorCode(err.code)
     const errorCode =
       code ||
       (httpStatus ? httpStatusToErrorCode(httpStatus) : undefined) ||
+      errnoCode ||
       ERROR_CODES.UNKNOWN_ERROR
 
-    // Surface the real provider error message instead of axios's generic one
+    // Surface the real provider error message instead of axios's generic one,
+    // appending field-level validation details the summary only alludes to
     const providerMessage = extractProviderMessage(responseData)
-    const message = providerMessage || err.message || "An unknown error occurred"
+    const validationErrors = extractValidationErrors(responseData)
+    const baseMessage = providerMessage || err.message || "An unknown error occurred"
+    const message = validationErrors
+      ? `${baseMessage}; ${validationErrors.join("; ")}`
+      : baseMessage
+
+    // Record which timeout budget was hit for request-timeout failures
+    const timeoutMs =
+      errnoCode === ERROR_CODES.CONNECTION_TIMEOUT
+        ? this.config?.timeout || DEFAULT_TIMEOUTS.HTTP_REQUEST
+        : undefined
 
     return {
       success: false,
@@ -226,6 +243,8 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
         code: errorCode,
         message,
         statusCode: httpStatus,
+        retryable: isRetryableErrorCode(errorCode),
+        ...(validationErrors ? { validationErrors } : {}),
         details: {
           // Include full error object
           error: error,
@@ -235,6 +254,7 @@ export abstract class BaseAdapter implements TranscriptionAdapter {
           httpStatus,
           httpStatusText,
           responseData,
+          ...(timeoutMs !== undefined ? { timeoutMs } : {}),
           // Include provider name for debugging
           provider: this.name
         }

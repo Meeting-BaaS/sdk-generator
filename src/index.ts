@@ -35,6 +35,16 @@ export * as SpeechmaticsZodSchemas from "./generated/speechmatics/api/speechmati
 export * as SpeechmaticsTypes from "./generated/speechmatics/schema"
 // Provider metadata (capabilities, languages, display names)
 export * from "./provider-metadata"
+// Error taxonomy and retry classification
+export type { ErrorCode, StandardError } from "./utils/errors"
+export {
+  ERROR_CODES,
+  errnoToErrorCode,
+  extractValidationErrors,
+  httpStatusToErrorCode,
+  isRetryableErrorCode,
+  RETRYABLE_ERROR_CODES
+} from "./utils/errors"
 export type { FieldType, ZodFieldConfig } from "./utils/zod-to-field-configs"
 // Zod-to-field-configs utility
 export { excludeFields, filterFields, zodToFieldConfigs } from "./utils/zod-to-field-configs"

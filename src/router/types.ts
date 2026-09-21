@@ -994,6 +994,13 @@ export interface UnifiedTranscriptResponse<
     details?: unknown
     /** HTTP status code if applicable */
     statusCode?: number
+    /**
+     * Whether the failure is transient (timeout, network, 429, 5xx) and a
+     * retry can succeed. Set on errors produced by adapter HTTP calls.
+     */
+    retryable?: boolean
+    /** Field-level validation messages extracted from the provider response */
+    validationErrors?: string[]
   }
   /**
    * Raw provider response (for advanced usage)

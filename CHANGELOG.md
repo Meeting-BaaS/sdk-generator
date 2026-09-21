@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.10] - 2026-09-21
+
+### Added
+
+#### Retryability Classification On Errors
+
+Failed responses from adapter HTTP calls now carry `error.retryable`: `true` for transient failures (`CONNECTION_TIMEOUT`, `NETWORK_ERROR`, `RATE_LIMIT`, `SERVER_ERROR`, `POLLING_TIMEOUT`), `false` for request-shaped failures (`INVALID_INPUT`, `AUTHENTICATION_ERROR`, and the rest). The taxonomy is exported for callers: `ERROR_CODES`, `RETRYABLE_ERROR_CODES`, `isRetryableErrorCode`, `httpStatusToErrorCode`, and `errnoToErrorCode` are now part of the main entrypoint, so consumers no longer need message regexes or their own errno allowlists to decide whether to retry.
+
+#### Validation Details On Error Messages
+
+Provider validation arrays are now appended to `error.message` (joined with `; `) and exposed structured as `error.validationErrors: string[]`. Covered shapes: Gladia `validation_errors`, AssemblyAI/Deepgram-style `errors[]` (strings or `{ message }`), and FastAPI-style `detail[]` (`{ loc, msg }`, rendered as `loc.path: msg`). A Gladia 400 whose summary says "See validation_errors for more details." now carries those details in the message itself instead of only inside `error.details.responseData`.
+
+### Fixed
+
+#### Timeouts And Network Failures No Longer UNKNOWN_ERROR
+
+Errors without an HTTP response previously fell through status mapping to `UNKNOWN_ERROR`. Node/axios errno codes are now mapped: `ECONNABORTED`/`ETIMEDOUT` → `CONNECTION_TIMEOUT`, and `ECONNRESET`/`ECONNREFUSED`/`ENOTFOUND`/`EAI_AGAIN`/`EPIPE` → the new `NETWORK_ERROR` code, all with `statusCode` left undefined and `retryable: true`. Request-timeout failures additionally record the timeout budget that was hit as `error.details.timeoutMs`.
+
 ## [0.9.9] - 2026-08-17
 
 ### Changed
