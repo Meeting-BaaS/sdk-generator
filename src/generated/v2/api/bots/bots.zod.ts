@@ -628,7 +628,11 @@ export const listBotsResponse = zod.object({
         .regex(listBotsResponseDataItemBotIdRegExp)
         .describe("The UUID of the bot"),
       bot_name: zod.string().describe("The name of the bot"),
-      meeting_url: zod.string().url().describe("The URL of the meeting"),
+      meeting_url: zod
+        .string()
+        .describe(
+          'The URL of the meeting, set to \"[deleted]\" once the bot\'s data has been deleted'
+        ),
       meeting_platform: zod
         .enum(["zoom", "meet", "teams"])
         .describe("The platform of the meeting (zoom, meet, or teams)"),
@@ -1250,7 +1254,11 @@ export const getBotDetailsResponse = zod.object({
       .regex(getBotDetailsResponseDataBotIdRegExp)
       .describe("The UUID of the bot"),
     bot_name: zod.string().describe("The name of the bot"),
-    meeting_url: zod.string().url().describe("The URL of the meeting"),
+    meeting_url: zod
+      .string()
+      .describe(
+        'The URL of the meeting, set to \"[deleted]\" once the bot\'s data has been deleted'
+      ),
     meeting_platform: zod.enum(["zoom", "meet", "teams"]).describe("The platform of the meeting"),
     recording_mode: zod
       .enum(["audio_only", "speaker_view", "gallery_view"])

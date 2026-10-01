@@ -38,7 +38,7 @@ export type GetBotDetailsResponseInputData = {
   bot_id: string
   /** The name of the bot */
   bot_name: string
-  /** The URL of the meeting */
+  /** The URL of the meeting, set to "[deleted]" once the bot's data has been deleted */
   meeting_url: string
   /** The platform of the meeting */
   meeting_platform: GetBotDetailsResponseInputDataMeetingPlatform
