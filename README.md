@@ -475,6 +475,48 @@ interface BaasClientConfig {
 
 If you're upgrading from v4.x, see [MIGRATION.md](MIGRATION.md) for detailed migration instructions.
 
+## Documentation Generation
+
+The SDK includes automated documentation generation using [TypeDoc](https://typedoc.org/) and [typedoc-plugin-markdown](https://www.npmjs.com/package/typedoc-plugin-markdown) to generate comprehensive markdown documentation organized into 3 separate sections (Client/Bridge, v1 API, v2 API).
+
+### Generate Documentation
+
+```bash
+pnpm docs:generate    # Generate all documentation
+pnpm docs:clean       # Clean generated docs
+```
+
+### Configuration
+
+Documentation generation is configured using three separate TypeDoc configuration files:
+
+- **`typedoc.config.mjs`** - Client/Bridge documentation
+  - Entry points: `src/node/client.ts`, `src/node/types.d.ts`
+  - Output: `docs/generated/client/`
+  - Documents: `createBaasClient()` factory and configuration types
+
+- **`typedoc.v1.config.mjs`** - v1 API documentation
+  - Entry points: `src/node/v1-methods.ts`, `src/node/types.d.ts`
+  - Output: `docs/generated/v1/`
+  - Documents: v1 methods like `joinMeeting()`, `leaveMeeting()`, etc.
+  - Excludes: v2-specific code and types
+
+- **`typedoc.v2.config.mjs`** - v2 API documentation
+  - Entry points: `src/node/v2-methods.ts`, `src/node/types.d.ts`
+  - Output: `docs/generated/v2/`
+  - Documents: v2 methods like `createBot()`, `batchCreateBots()`, etc.
+  - Excludes: v1-specific code and types
+
+### Output Structure
+
+Documentation is output to `docs/generated/` with a landing page at [INDEX.md](docs/generated/INDEX.md) showing v1 vs v2 comparisons and navigation to:
+
+- **Client/Bridge API** (`docs/generated/client/`) - How to use `createBaasClient()` with type-safe version selection
+- **v1 API Reference** (`docs/generated/v1/`) - Complete v1 API methods and types
+- **v2 API Reference** (`docs/generated/v2/`) - Complete v2 API methods and types
+
+See [ADDING_NEW_API_VERSION.md](ADDING_NEW_API_VERSION.md) for details on adding new API versions to the SDK.
+
 ## Contributing
 
 We welcome contributions! Please see [DEVELOPMENT.md](DEVELOPMENT.md) for development guidelines.
