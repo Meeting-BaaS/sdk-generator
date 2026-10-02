@@ -3452,17 +3452,11 @@ export const updateScheduledBotParams = zod.object({
 
 export const updateScheduledBotBodyBotNameMax = 255
 export const updateScheduledBotBodyBotImageMaxThree = 5
-export const updateScheduledBotBodyBotImageDefault = null
 export const updateScheduledBotBodyBotImageConfigLoopModeDefault = "auto"
 export const updateScheduledBotBodyBotImageConfigImageDurationDefault = 30
 export const updateScheduledBotBodyBotImageConfigImageDurationMin = 10
 
 export const updateScheduledBotBodyBotImageConfigImageDurationMax = 120
-export const updateScheduledBotBodyBotImageConfigDefault = null
-export const updateScheduledBotBodyAllowMultipleBotsDefault = true
-export const updateScheduledBotBodyIgnoredParticipantNamesDefault = []
-export const updateScheduledBotBodyRecordingModeDefault = "speaker_view"
-export const updateScheduledBotBodyEntryMessageDefault = null
 export const updateScheduledBotBodyTimeoutConfigWaitingRoomTimeoutDefault = 600
 export const updateScheduledBotBodyTimeoutConfigWaitingRoomTimeoutMin = 120
 
@@ -3482,30 +3476,18 @@ export const updateScheduledBotBodyTimeoutConfigGracePeriodMax = 600
 export const updateScheduledBotBodyTimeoutConfigMaxRecordingDurationMinOne = 7200
 export const updateScheduledBotBodyTimeoutConfigMaxRecordingDurationMaxOne = 43200
 export const updateScheduledBotBodyTimeoutConfigMaxRecordingDurationDefault = null
-export const updateScheduledBotBodyTimeoutConfigDefault = {
-  waiting_room_timeout: 600,
-  no_one_joined_timeout: 600,
-  silence_timeout: 600,
-  grace_period: 0,
-  max_recording_duration: null
-}
 export const updateScheduledBotBodyZoomConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
-export const updateScheduledBotBodyZoomConfigDefault = null
 export const updateScheduledBotBodyMeetConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 export const updateScheduledBotBodyMeetConfigEmailGroupMaxOne = 254
 export const updateScheduledBotBodyMeetConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
-export const updateScheduledBotBodyMeetConfigDefault = null
 export const updateScheduledBotBodyTeamsConfigCredentialIdRegExp =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 export const updateScheduledBotBodyTeamsConfigEmailGroupMaxOne = 254
 export const updateScheduledBotBodyTeamsConfigEmailGroupRegExpOne =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/
-export const updateScheduledBotBodyTeamsConfigDefault = null
-export const updateScheduledBotBodyExtraDefault = null
-export const updateScheduledBotBodyStreamingEnabledDefault = false
 export const updateScheduledBotBodyStreamingConfigModeDefault = "audio"
 export const updateScheduledBotBodyStreamingConfigInputUrlDefault = null
 export const updateScheduledBotBodyStreamingConfigOutputUrlDefault = null
@@ -3515,17 +3497,12 @@ export const updateScheduledBotBodyStreamingConfigTranscriptionApiKeyDefault = n
 export const updateScheduledBotBodyStreamingConfigTranscriptionRegionDefault = null
 export const updateScheduledBotBodyStreamingConfigTranscriptionCustomParamsDefault = null
 export const updateScheduledBotBodyStreamingConfigTranscriptionDefault = null
-export const updateScheduledBotBodyStreamingConfigDefault = null
-export const updateScheduledBotBodyTranscriptionEnabledDefault = false
 export const updateScheduledBotBodyTranscriptionConfigProviderDefault = "gladia"
 export const updateScheduledBotBodyTranscriptionConfigApiKeyDefault = null
 export const updateScheduledBotBodyTranscriptionConfigRegionDefault = null
 export const updateScheduledBotBodyTranscriptionConfigCustomParamsDefault = null
-export const updateScheduledBotBodyTranscriptionConfigDefault = null
-export const updateScheduledBotBodyCallbackEnabledDefault = false
 export const updateScheduledBotBodyCallbackConfigSecretDefault = null
 export const updateScheduledBotBodyCallbackConfigMethodDefault = "POST"
-export const updateScheduledBotBodyCallbackConfigDefault = null
 export const updateScheduledBotBodyJoinAtRegExp =
   /^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$/
 
@@ -3578,19 +3555,19 @@ export const updateScheduledBotBody = zod.object({
     ),
   allow_multiple_bots: zod
     .boolean()
-    .default(updateScheduledBotBodyAllowMultipleBotsDefault)
+    .optional()
     .describe(
       "Whether to allow multiple bots to join the same meeting.\n\nIf set to `false`, only a single bot will be allowed to join using the same meeting URL within the last 5 minutes. This prevents duplicate bots from joining the same meeting.\n\nIf set to `true` (default), multiple bots can join the same meeting URL.\n\nDefault: `true`"
     ),
   ignored_participant_names: zod
     .array(zod.string())
-    .default(updateScheduledBotBodyIgnoredParticipantNamesDefault)
+    .optional()
     .describe(
       "Participant names to ignore when evaluating auto-leave conditions.\n\nThe bot will not count participants matching these names when determining whether to leave a meeting. This is useful when multiple bots may join the same meeting across different environments (e.g., sandbox, staging).\n\nBy ignoring other bots' participant names, each bot can correctly detect when human participants have left and leave the meeting rather than remaining indefinitely."
     ),
   recording_mode: zod
     .enum(["audio_only", "speaker_view", "gallery_view"])
-    .default(updateScheduledBotBodyRecordingModeDefault)
+    .optional()
     .describe(
       "The recording mode of the bot.\n\nDetermines what the bot records during the meeting:\n\n- `speaker_view`: Records the speaker's view (default). Shows the active speaker or presenter.\n- `audio_only`: Records only the audio without video.\n- `gallery_view`: Records the entire gallery view (coming soon).\n\nDefault: `speaker_view`"
     ),
@@ -3645,7 +3622,7 @@ export const updateScheduledBotBody = zod.object({
           "The maximum recording duration in seconds. When set, the bot will automatically end the recording after this duration regardless of silence or participant activity. When null, the default 4-hour internal timeout applies.\n\nRange: 7200–43200 seconds (2–12 hours)"
         )
     })
-    .default(updateScheduledBotBodyTimeoutConfigDefault)
+    .optional()
     .describe(
       "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
     ),
