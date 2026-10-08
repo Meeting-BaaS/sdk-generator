@@ -8,7 +8,7 @@
 import type { UpdateScheduledBotRequestBodyTimeoutConfigMaxRecordingDuration } from "./updateScheduledBotRequestBodyTimeoutConfigMaxRecordingDuration"
 
 /**
- * Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours).
+ * Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. The bot leaves everyone_left_timeout seconds after every other participant has left. Zoom bots that join with Zoom credentials use waiting_room_timeout, no_one_joined_timeout (when nobody else joins) and everyone_left_timeout; browser-based Zoom bots also use silence_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours).
  */
 export type UpdateScheduledBotRequestBodyTimeoutConfig = {
   /**
@@ -49,6 +49,18 @@ Maximum: 60 minutes
    * @maximum 3600
    */
   silence_timeout: number
+  /**
+   * The timeout in seconds for the bot to wait after every other participant has left before leaving the meeting.
+
+If the bot is the only participant left for this duration, it will leave the meeting. Participants listed in ignored_participant_names are not counted. Applies to Google Meet, Microsoft Teams and Zoom. Zoom bots that join without Zoom credentials (browser-based) cannot see the participant list and still leave through silence_timeout.
+
+Default: 30 seconds
+Minimum: 10 seconds
+Maximum: 30 minutes
+   * @minimum 10
+   * @maximum 1800
+   */
+  everyone_left_timeout: number
   /**
    * The grace period in seconds at the start of the meeting during which no timeout conditions (waiting room, no participants, silence) will trigger.
 

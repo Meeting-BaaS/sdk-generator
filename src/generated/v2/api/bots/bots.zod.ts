@@ -51,6 +51,10 @@ export const createBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const createBotBodyTimeoutConfigSilenceTimeoutMax = 3600
+export const createBotBodyTimeoutConfigEveryoneLeftTimeoutDefault = 30
+export const createBotBodyTimeoutConfigEveryoneLeftTimeoutMin = 10
+
+export const createBotBodyTimeoutConfigEveryoneLeftTimeoutMax = 1800
 export const createBotBodyTimeoutConfigGracePeriodDefault = 0
 export const createBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -62,6 +66,7 @@ export const createBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
+  everyone_left_timeout: 30,
   grace_period: 0,
   max_recording_duration: null
 }
@@ -199,6 +204,14 @@ export const createBotBody = zod.object({
         .describe(
           "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
         ),
+      everyone_left_timeout: zod
+        .number()
+        .min(createBotBodyTimeoutConfigEveryoneLeftTimeoutMin)
+        .max(createBotBodyTimeoutConfigEveryoneLeftTimeoutMax)
+        .default(createBotBodyTimeoutConfigEveryoneLeftTimeoutDefault)
+        .describe(
+          "The timeout in seconds for the bot to wait after every other participant has left before leaving the meeting.\n\nIf the bot is the only participant left for this duration, it will leave the meeting. Participants listed in ignored_participant_names are not counted. Applies to Google Meet, Microsoft Teams and Zoom. Zoom bots that join without Zoom credentials (browser-based) cannot see the participant list and still leave through silence_timeout.\n\nDefault: 30 seconds\nMinimum: 10 seconds\nMaximum: 30 minutes"
+        ),
       grace_period: zod
         .number()
         .min(createBotBodyTimeoutConfigGracePeriodMin)
@@ -219,7 +232,7 @@ export const createBotBody = zod.object({
     })
     .default(createBotBodyTimeoutConfigDefault)
     .describe(
-      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
+      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. The bot leaves everyone_left_timeout seconds after every other participant has left. Zoom bots that join with Zoom credentials use waiting_room_timeout, no_one_joined_timeout (when nobody else joins) and everyone_left_timeout; browser-based Zoom bots also use silence_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
     ),
   zoom_config: zod
     .object({
@@ -772,6 +785,10 @@ export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const batchCreateBotsBodyTimeoutConfigSilenceTimeoutMax = 3600
+export const batchCreateBotsBodyTimeoutConfigEveryoneLeftTimeoutDefault = 30
+export const batchCreateBotsBodyTimeoutConfigEveryoneLeftTimeoutMin = 10
+
+export const batchCreateBotsBodyTimeoutConfigEveryoneLeftTimeoutMax = 1800
 export const batchCreateBotsBodyTimeoutConfigGracePeriodDefault = 0
 export const batchCreateBotsBodyTimeoutConfigGracePeriodMin = 0
 
@@ -783,6 +800,7 @@ export const batchCreateBotsBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
+  everyone_left_timeout: 30,
   grace_period: 0,
   max_recording_duration: null
 }
@@ -920,6 +938,14 @@ export const batchCreateBotsBodyItem = zod.object({
         .describe(
           "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
         ),
+      everyone_left_timeout: zod
+        .number()
+        .min(batchCreateBotsBodyTimeoutConfigEveryoneLeftTimeoutMin)
+        .max(batchCreateBotsBodyTimeoutConfigEveryoneLeftTimeoutMax)
+        .default(batchCreateBotsBodyTimeoutConfigEveryoneLeftTimeoutDefault)
+        .describe(
+          "The timeout in seconds for the bot to wait after every other participant has left before leaving the meeting.\n\nIf the bot is the only participant left for this duration, it will leave the meeting. Participants listed in ignored_participant_names are not counted. Applies to Google Meet, Microsoft Teams and Zoom. Zoom bots that join without Zoom credentials (browser-based) cannot see the participant list and still leave through silence_timeout.\n\nDefault: 30 seconds\nMinimum: 10 seconds\nMaximum: 30 minutes"
+        ),
       grace_period: zod
         .number()
         .min(batchCreateBotsBodyTimeoutConfigGracePeriodMin)
@@ -940,7 +966,7 @@ export const batchCreateBotsBodyItem = zod.object({
     })
     .default(batchCreateBotsBodyTimeoutConfigDefault)
     .describe(
-      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
+      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. The bot leaves everyone_left_timeout seconds after every other participant has left. Zoom bots that join with Zoom credentials use waiting_room_timeout, no_one_joined_timeout (when nobody else joins) and everyone_left_timeout; browser-based Zoom bots also use silence_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
     ),
   zoom_config: zod
     .object({
@@ -2115,6 +2141,10 @@ export const createScheduledBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const createScheduledBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const createScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 3600
+export const createScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutDefault = 30
+export const createScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMin = 10
+
+export const createScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMax = 1800
 export const createScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
 export const createScheduledBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -2126,6 +2156,7 @@ export const createScheduledBotBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
+  everyone_left_timeout: 30,
   grace_period: 0,
   max_recording_duration: null
 }
@@ -2266,6 +2297,14 @@ export const createScheduledBotBody = zod
           .describe(
             "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
           ),
+        everyone_left_timeout: zod
+          .number()
+          .min(createScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMin)
+          .max(createScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMax)
+          .default(createScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutDefault)
+          .describe(
+            "The timeout in seconds for the bot to wait after every other participant has left before leaving the meeting.\n\nIf the bot is the only participant left for this duration, it will leave the meeting. Participants listed in ignored_participant_names are not counted. Applies to Google Meet, Microsoft Teams and Zoom. Zoom bots that join without Zoom credentials (browser-based) cannot see the participant list and still leave through silence_timeout.\n\nDefault: 30 seconds\nMinimum: 10 seconds\nMaximum: 30 minutes"
+          ),
         grace_period: zod
           .number()
           .min(createScheduledBotBodyTimeoutConfigGracePeriodMin)
@@ -2286,7 +2325,7 @@ export const createScheduledBotBody = zod
       })
       .default(createScheduledBotBodyTimeoutConfigDefault)
       .describe(
-        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
+        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. The bot leaves everyone_left_timeout seconds after every other participant has left. Zoom bots that join with Zoom credentials use waiting_room_timeout, no_one_joined_timeout (when nobody else joins) and everyone_left_timeout; browser-based Zoom bots also use silence_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
       ),
     zoom_config: zod
       .object({
@@ -2772,6 +2811,10 @@ export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutDefault = 60
 export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const batchCreateScheduledBotsBodyTimeoutConfigSilenceTimeoutMax = 3600
+export const batchCreateScheduledBotsBodyTimeoutConfigEveryoneLeftTimeoutDefault = 30
+export const batchCreateScheduledBotsBodyTimeoutConfigEveryoneLeftTimeoutMin = 10
+
+export const batchCreateScheduledBotsBodyTimeoutConfigEveryoneLeftTimeoutMax = 1800
 export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodDefault = 0
 export const batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMin = 0
 
@@ -2783,6 +2826,7 @@ export const batchCreateScheduledBotsBodyTimeoutConfigDefault = {
   waiting_room_timeout: 600,
   no_one_joined_timeout: 600,
   silence_timeout: 600,
+  everyone_left_timeout: 30,
   grace_period: 0,
   max_recording_duration: null
 }
@@ -2923,6 +2967,14 @@ export const batchCreateScheduledBotsBodyItem = zod
           .describe(
             "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
           ),
+        everyone_left_timeout: zod
+          .number()
+          .min(batchCreateScheduledBotsBodyTimeoutConfigEveryoneLeftTimeoutMin)
+          .max(batchCreateScheduledBotsBodyTimeoutConfigEveryoneLeftTimeoutMax)
+          .default(batchCreateScheduledBotsBodyTimeoutConfigEveryoneLeftTimeoutDefault)
+          .describe(
+            "The timeout in seconds for the bot to wait after every other participant has left before leaving the meeting.\n\nIf the bot is the only participant left for this duration, it will leave the meeting. Participants listed in ignored_participant_names are not counted. Applies to Google Meet, Microsoft Teams and Zoom. Zoom bots that join without Zoom credentials (browser-based) cannot see the participant list and still leave through silence_timeout.\n\nDefault: 30 seconds\nMinimum: 10 seconds\nMaximum: 30 minutes"
+          ),
         grace_period: zod
           .number()
           .min(batchCreateScheduledBotsBodyTimeoutConfigGracePeriodMin)
@@ -2943,7 +2995,7 @@ export const batchCreateScheduledBotsBodyItem = zod
       })
       .default(batchCreateScheduledBotsBodyTimeoutConfigDefault)
       .describe(
-        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
+        "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. The bot leaves everyone_left_timeout seconds after every other participant has left. Zoom bots that join with Zoom credentials use waiting_room_timeout, no_one_joined_timeout (when nobody else joins) and everyone_left_timeout; browser-based Zoom bots also use silence_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
       ),
     zoom_config: zod
       .object({
@@ -3469,6 +3521,10 @@ export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutDefault = 600
 export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutMin = 300
 
 export const updateScheduledBotBodyTimeoutConfigSilenceTimeoutMax = 3600
+export const updateScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutDefault = 30
+export const updateScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMin = 10
+
+export const updateScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMax = 1800
 export const updateScheduledBotBodyTimeoutConfigGracePeriodDefault = 0
 export const updateScheduledBotBodyTimeoutConfigGracePeriodMin = 0
 
@@ -3604,6 +3660,14 @@ export const updateScheduledBotBody = zod.object({
         .describe(
           "The timeout in seconds for the bot to wait for silence before leaving the meeting.\n\nIf no audio is detected for this duration after the bot joins, the bot will leave the meeting. Only applicable for Google Meet and Microsoft Teams meetings.\n\nDefault: 600 seconds (10 minutes)\nMinimum: 5 minutes\nMaximum: 60 minutes"
         ),
+      everyone_left_timeout: zod
+        .number()
+        .min(updateScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMin)
+        .max(updateScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutMax)
+        .default(updateScheduledBotBodyTimeoutConfigEveryoneLeftTimeoutDefault)
+        .describe(
+          "The timeout in seconds for the bot to wait after every other participant has left before leaving the meeting.\n\nIf the bot is the only participant left for this duration, it will leave the meeting. Participants listed in ignored_participant_names are not counted. Applies to Google Meet, Microsoft Teams and Zoom. Zoom bots that join without Zoom credentials (browser-based) cannot see the participant list and still leave through silence_timeout.\n\nDefault: 30 seconds\nMinimum: 10 seconds\nMaximum: 30 minutes"
+        ),
       grace_period: zod
         .number()
         .min(updateScheduledBotBodyTimeoutConfigGracePeriodMin)
@@ -3624,7 +3688,7 @@ export const updateScheduledBotBody = zod.object({
     })
     .optional()
     .describe(
-      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. Zoom only uses waiting_room_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
+      "Configuration for automatic meeting exit behavior. For Google Meet and Microsoft Teams, the bot uses waiting_room_timeout to wait in the waiting room, then no_one_joined_timeout to wait for participants when first joining the meeting, and finally switches to silence_timeout monitoring once participants are detected. The bot leaves everyone_left_timeout seconds after every other participant has left. Zoom bots that join with Zoom credentials use waiting_room_timeout, no_one_joined_timeout (when nobody else joins) and everyone_left_timeout; browser-based Zoom bots also use silence_timeout. Optional max_recording_duration sets a hard cap on total recording time (up to 12 hours)."
     ),
   zoom_config: zod
     .object({
