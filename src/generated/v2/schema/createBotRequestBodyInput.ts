@@ -61,7 +61,7 @@ Determines what the bot records during the meeting:
 
 - `speaker_view`: Records the speaker's view (default). Shows the active speaker or presenter.
 - `audio_only`: Records only the audio without video.
-- `gallery_view`: Records the entire gallery view (coming soon).
+- `gallery_view`: Records Google Meet's tiled gallery view. Other platforms currently fall back to `speaker_view`.
 
 Default: `speaker_view` */
   recording_mode?: CreateBotRequestBodyInputRecordingMode

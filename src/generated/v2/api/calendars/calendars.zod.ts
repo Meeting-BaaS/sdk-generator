@@ -1353,7 +1353,7 @@ export const createCalendarBotBody = zod
       .enum(["audio_only", "speaker_view", "gallery_view"])
       .default(createCalendarBotBodyRecordingModeDefault)
       .describe(
-        "The recording mode of the bot.\n\nDetermines what the bot records during the meeting:\n\n- `speaker_view`: Records the speaker's view (default). Shows the active speaker or presenter.\n- `audio_only`: Records only the audio without video.\n- `gallery_view`: Records the entire gallery view (coming soon).\n\nDefault: `speaker_view`"
+        "The recording mode of the bot.\n\nDetermines what the bot records during the meeting:\n\n- `speaker_view`: Records the speaker's view (default). Shows the active speaker or presenter.\n- `audio_only`: Records only the audio without video.\n- `gallery_view`: Records Google Meet's tiled gallery view. Other platforms currently fall back to `speaker_view`.\n\nDefault: `speaker_view`"
       ),
     entry_message: zod
       .string()
@@ -1889,7 +1889,7 @@ export const updateCalendarBotBody = zod
           .enum(["audio_only", "speaker_view", "gallery_view"])
           .default(updateCalendarBotBodyRecordingModeDefault)
           .describe(
-            "The recording mode of the bot.\n\nDetermines what the bot records during the meeting:\n\n- `speaker_view`: Records the speaker's view (default). Shows the active speaker or presenter.\n- `audio_only`: Records only the audio without video.\n- `gallery_view`: Records the entire gallery view (coming soon).\n\nDefault: `speaker_view`"
+            "The recording mode of the bot.\n\nDetermines what the bot records during the meeting:\n\n- `speaker_view`: Records the speaker's view (default). Shows the active speaker or presenter.\n- `audio_only`: Records only the audio without video.\n- `gallery_view`: Records Google Meet's tiled gallery view. Other platforms currently fall back to `speaker_view`.\n\nDefault: `speaker_view`"
           ),
         entry_message: zod
           .string()
