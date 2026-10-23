@@ -26,6 +26,9 @@ pnpm-debug.log*
 Thumbs.db
 
 # Test coverage
-coverage/ 
+coverage/
 # Temporary files
 tmp/
+
+# Generated documentation
+docs/generated/
