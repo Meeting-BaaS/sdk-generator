@@ -727,6 +727,11 @@ export const listBotsResponse = zod.object({
           byok_transcription: zod.number().describe("BYOK transcription tokens consumed"),
           streaming_input: zod.number().describe("Streaming input tokens consumed"),
           streaming_output: zod.number().describe("Streaming output tokens consumed"),
+          voice_pipeline: zod
+            .number()
+            .describe(
+              "Tokens for a speaking bot's voice pipeline (speech-to-text, text-to-speech, language model) on Meeting BaaS provider keys, passed through at provider cost (0 on your own keys)"
+            ),
           total: zod.number().describe("Total tokens consumed")
         })
         .or(zod.null())
@@ -1446,10 +1451,77 @@ export const getBotDetailsResponse = zod.object({
         byok_transcription: zod.number().describe("BYOK transcription tokens consumed"),
         streaming_input: zod.number().describe("Streaming input tokens consumed"),
         streaming_output: zod.number().describe("Streaming output tokens consumed"),
+        voice_pipeline: zod
+          .number()
+          .describe(
+            "Tokens for a speaking bot's voice pipeline (speech-to-text, text-to-speech, language model) on Meeting BaaS provider keys, passed through at provider cost (0 on your own keys)"
+          ),
         total: zod.number().describe("Total tokens consumed")
       })
       .or(zod.null())
       .describe("Token consumption breakdown (null if not yet consumed)"),
+    provider_usage: zod
+      .object({
+        stt: zod.object({
+          provider: zod.string().or(zod.null()).describe("Speech-to-text provider"),
+          key_source: zod
+            .string()
+            .describe(
+              "Whose key the provider ran on: 'platform' (Meeting BaaS, billed as voice_pipeline tokens) or 'caller' (your own key, not billed here)"
+            ),
+          audio_seconds: zod.number().describe("Seconds of audio transcribed"),
+          cost_cents: zod.number().describe("List cost in cents at the rate card")
+        }),
+        tts: zod.object({
+          provider: zod.string().or(zod.null()).describe("Text-to-speech provider"),
+          key_source: zod
+            .string()
+            .describe(
+              "Whose key the provider ran on: 'platform' (Meeting BaaS, billed as voice_pipeline tokens) or 'caller' (your own key, not billed here)"
+            ),
+          characters: zod.number().describe("Characters spoken"),
+          requests: zod.number().describe("Text-to-speech requests"),
+          cost_cents: zod.number().describe("List cost in cents at the rate card")
+        }),
+        llm: zod.object({
+          provider: zod.string().or(zod.null()).describe("Language model provider"),
+          model: zod.string().or(zod.null()).describe("Model name as the provider reported it"),
+          key_source: zod
+            .string()
+            .describe(
+              "Whose key the provider ran on: 'platform' (Meeting BaaS, billed as voice_pipeline tokens) or 'caller' (your own key, not billed here)"
+            ),
+          turns: zod.number().describe("Model calls"),
+          prompt_tokens: zod.number().describe("Prompt tokens, cached ones included"),
+          cached_prompt_tokens: zod
+            .number()
+            .describe("Prompt tokens read back from the provider's cache"),
+          completion_tokens: zod.number().describe("Completion tokens"),
+          cost_cents: zod.number().describe("List cost in cents at the rate card")
+        }),
+        billable_cents: zod
+          .number()
+          .describe(
+            "Cents on Meeting BaaS keys, passed through at provider cost; 0 when every provider ran on your own keys"
+          ),
+        billed_tokens: zod
+          .number()
+          .or(zod.null())
+          .describe("Tokens debited for billable_cents at your token price (null until billed)"),
+        cents_per_token: zod
+          .number()
+          .or(zod.null())
+          .describe("Your token price the pass-through was converted at (null until billed)"),
+        rate_card_version: zod.string().describe("Rate card the costs were priced with"),
+        reported_at: zod
+          .string()
+          .or(zod.null())
+          .describe("When the speaking service reported the usage")
+      })
+      .or(zod.null())
+      .describe(
+        "Voice pipeline usage of a speaking bot (null for other bots, or until the speaking service reports it)"
+      ),
     extra: zod
       .record(zod.string(), zod.any())
       .or(zod.null())

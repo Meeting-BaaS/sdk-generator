@@ -19,6 +19,7 @@ import type { GetBotDetailsResponseDataJoinedAt } from "./getBotDetailsResponseD
 import type { GetBotDetailsResponseDataMeetingPlatform } from "./getBotDetailsResponseDataMeetingPlatform"
 import type { GetBotDetailsResponseDataMeetLoginCredentialId } from "./getBotDetailsResponseDataMeetLoginCredentialId"
 import type { GetBotDetailsResponseDataParticipantsItem } from "./getBotDetailsResponseDataParticipantsItem"
+import type { GetBotDetailsResponseDataProviderUsage } from "./getBotDetailsResponseDataProviderUsage"
 import type { GetBotDetailsResponseDataRawTranscription } from "./getBotDetailsResponseDataRawTranscription"
 import type { GetBotDetailsResponseDataRecordingMode } from "./getBotDetailsResponseDataRecordingMode"
 import type { GetBotDetailsResponseDataSpeakersItem } from "./getBotDetailsResponseDataSpeakersItem"
@@ -85,6 +86,8 @@ export type GetBotDetailsResponseData = {
   error_message: GetBotDetailsResponseDataErrorMessage
   /** Token consumption breakdown (null if not yet consumed) */
   tokens: GetBotDetailsResponseDataTokens
+  /** Voice pipeline usage of a speaking bot (null for other bots, or until the speaking service reports it) */
+  provider_usage: GetBotDetailsResponseDataProviderUsage
   /** Custom metadata associated with the bot */
   extra: GetBotDetailsResponseDataExtra
   /** Zoom configuration for this bot (null if not a Zoom bot or no zoom config provided) */

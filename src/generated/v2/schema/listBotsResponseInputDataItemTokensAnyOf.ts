@@ -17,6 +17,8 @@ export type ListBotsResponseInputDataItemTokensAnyOf = {
   streaming_input: number
   /** Streaming output tokens consumed */
   streaming_output: number
+  /** Tokens for a speaking bot's voice pipeline (speech-to-text, text-to-speech, language model) on Meeting BaaS provider keys, passed through at provider cost (0 on your own keys) */
+  voice_pipeline: number
   /** Total tokens consumed */
   total: number
 }
