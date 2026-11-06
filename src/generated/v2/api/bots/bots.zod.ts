@@ -1275,6 +1275,8 @@ export const getBotDetailsResponseDataZoomConfigCredentialIdRegExpOne =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 export const getBotDetailsResponseDataMeetLoginCredentialIdRegExpOne =
   /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
+export const getBotDetailsResponseDataTeamsLoginCredentialIdRegExpOne =
+  /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/
 
 export const getBotDetailsResponse = zod.object({
   success: zod.boolean(),
@@ -1562,6 +1564,33 @@ export const getBotDetailsResponse = zod.object({
       .or(zod.null())
       .describe(
         "UUID of the meet login assigned to this bot for SAML SSO sign-in (null for anonymous bots or non-Meet platforms)"
+      ),
+    teams_login: zod
+      .object({
+        credential_id: zod
+          .string()
+          .uuid()
+          .regex(getBotDetailsResponseDataTeamsLoginCredentialIdRegExpOne)
+          .or(zod.null())
+          .describe(
+            "UUID of the Teams login assigned to this bot (null for bots created without a Teams credential)"
+          ),
+        mode: zod
+          .enum(["signed_in", "guest"])
+          .or(zod.null())
+          .describe(
+            "How the bot asked to join: signed_in with the assigned Microsoft 365 account, guest after an anonymous fallback, or null when the bot never reached the waiting room"
+          ),
+        fallback_applied: zod
+          .boolean()
+          .or(zod.null())
+          .describe(
+            "True when a Teams credential was assigned but the bot asked in as a guest; null when the join mode is unknown"
+          )
+      })
+      .or(zod.null())
+      .describe(
+        "Teams sign-in outcome (null for non-Teams platforms). Reported by the bot on the in_waiting_room status."
       ),
     callback_config: zod
       .object({

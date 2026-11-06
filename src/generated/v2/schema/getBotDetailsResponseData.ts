@@ -24,6 +24,7 @@ import type { GetBotDetailsResponseDataRawTranscription } from "./getBotDetailsR
 import type { GetBotDetailsResponseDataRecordingMode } from "./getBotDetailsResponseDataRecordingMode"
 import type { GetBotDetailsResponseDataSpeakersItem } from "./getBotDetailsResponseDataSpeakersItem"
 import type { GetBotDetailsResponseDataStatus } from "./getBotDetailsResponseDataStatus"
+import type { GetBotDetailsResponseDataTeamsLogin } from "./getBotDetailsResponseDataTeamsLogin"
 import type { GetBotDetailsResponseDataTokens } from "./getBotDetailsResponseDataTokens"
 import type { GetBotDetailsResponseDataTranscription } from "./getBotDetailsResponseDataTranscription"
 import type { GetBotDetailsResponseDataTranscriptionIds } from "./getBotDetailsResponseDataTranscriptionIds"
@@ -94,6 +95,8 @@ export type GetBotDetailsResponseData = {
   zoom_config: GetBotDetailsResponseDataZoomConfig
   /** UUID of the meet login assigned to this bot for SAML SSO sign-in (null for anonymous bots or non-Meet platforms) */
   meet_login_credential_id: GetBotDetailsResponseDataMeetLoginCredentialId
+  /** Teams sign-in outcome (null for non-Teams platforms). Reported by the bot on the in_waiting_room status. */
+  teams_login: GetBotDetailsResponseDataTeamsLogin
   /** Callback configuration (null if callback is disabled) */
   callback_config: GetBotDetailsResponseDataCallbackConfig
 }
