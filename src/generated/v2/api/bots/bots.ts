@@ -57,7 +57,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
     
     Returns a `bot_id` (UUID) that you can use to track status, retrieve meeting data, and manage the bot. The bot will be queued immediately and join the meeting as soon as possible (may take up to 2 minutes depending on availability of bot slots).
     
-    **Token Reservation:** 0.5 tokens are reserved immediately upon creation. These tokens will be consumed based on the bot's duration and outcome. If the bot fails due to user-responsible errors (`BOT_NOT_ACCEPTED`, `TIMEOUT_WAITING_TO_START`), recording tokens will be charged based on the time spent in the waiting room.
+    **Token Reservation:** 0.5 tokens are reserved immediately upon creation. These tokens will be consumed based on the bot's duration and outcome. If the bot fails due to user-responsible errors (`BOT_NOT_ACCEPTED`, `TIMEOUT_WAITING_TO_START`), recording tokens will be charged based on the time spent in the waiting room. A bot that Google Meet itself refuses (`BOT_REJECTED_BY_GOOGLE`) is not charged for that time.
     
     **Deduplication:** By default, multiple bots can join the same meeting URL. Set `allow_multiple_bots: false` to prevent duplicate bots within 5 minutes. The deduplication check expires after 5 minutes, allowing a new bot to join the same meeting URL after that period.
     
